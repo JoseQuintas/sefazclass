@@ -36,19 +36,20 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
    LOCAL aDelimitadores, nCont, cXmlTagInicial, cXmlTagFinal
 
    aDelimitadores := { ;
-      { "<enviMDFe",   "</MDFe></enviMDFe>" }, ;
-      { "<eventoMDFe", "</eventoMDFe>" }, ;
-      { "<eventoCTe",  "</eventoCTe>" }, ;
-      { "<infMDFe",    "</MDFe>" }, ;
-      { "<infCte",     "</CTe>" }, ;
-      { "<infNFe",     "</NFe>" }, ;
-      { "<infDPEC",    "</envDPEC>" }, ;
-      { "<infInut",    "<inutNFe>" }, ;
-      { "<infCanc",    "</cancNFe>" }, ;
-      { "<infInut",    "</inutNFe>" }, ;
-      { "<infEvento",  "</evento>" }, ;
-      { "<infPedidoCancelamento", "</Pedido>" }, ; // NFSE ABRASF Cancelamento
-      { "<infRps",     "</Rps>" } }                // NFSE ABRASF
+      { "<enviMDFe",              "</MDFe></enviMDFe>" }, ;
+      { "<eventoMDFe",            "</eventoMDFe>" }, ;
+      { "<eventoCTe",             "</eventoCTe>" }, ;
+      { "<infMDFe",               "</MDFe>" }, ;
+      { "<infCte",                "</CTe>" }, ;
+      { "<infNFe",                "</NFe>" }, ;
+      { "<infDPEC",               "</envDPEC>" }, ;
+      { "<infInut",               "<inutNFe>" }, ;
+      { "<infCanc",               "</cancNFe>" }, ;
+      { "<infInut",               "</inutNFe>" }, ;
+      { "<infEvento",             "</evento>" }, ;
+      { "<infPedidoCancelamento", "</Pedido>" }, ;    // NFSE ABRASF Cancelamento
+      { "<infRps",                "</Rps>" }, ;                  // NFSE ABRASF
+      { "<LoteRps",               "</EnviarLoteRpsEnvio>" } }    // Lote NFSE
 
    // Define Tipo de Documento
 

@@ -1,2 +1,3 @@
 # sefazclass
-comunicação sefaz
+Comunicação sefaz
+Nome temporário, até definir o caminho.
