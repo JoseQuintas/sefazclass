@@ -3,6 +3,7 @@
 *----------------------------------------------------------------
 
 * 2015.12.13.1930 - Correção do webservice SVRS (RJ etc)
+* 2016.02.02.1140 - Atualização de UFs em servidores virtuais
 *-----------------------------------------------------------------
 
 #include "hbclass.ch"
@@ -29,6 +30,7 @@
 #define WSMDFESTATUSSERVICO        20
 #define WSMDFECONSNAOENC           21
 #define WSNFEDISTRIBUICAODFE       22
+#define WSMDFEDISTRIBUICAODFE      23
 
 #define WSHOMOLOGACAO   "2"
 #define WSPRODUCAO      "1"
@@ -65,6 +67,7 @@ CREATE CLASS SefazClass
    METHOD MDFeConsulta( cChave, cCertificado, cAmbiente )
    METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
    METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
+   METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD MDFeStatus( cUF, cCertificado, cAmbiente )
    METHOD NFeCancela( cXml, cUF, cCertificado, cAmbiente )
    METHOD NFeCadastro( cCnpj, cUF, cCertificado, cAmbiente )
@@ -246,6 +249,37 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
    ::cXmlDados    += [</consReciMDFe>]
    ::XmlSoapPost( cUF, cCertificado, WSPROJETOMDFE )
    RETURN ::cXmlRetorno
+
+
+// Iniciado apenas 2016.01.31.2200
+METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) CLASS SefazClass
+
+   cUF           := iif( cUF == NIL, ::cUF, cUF )
+   cUltNSU       := iif( cUltNSU == NIL, "0", cUltNSU )
+   cNSU          := iif( cNSU == NIL, "", cNSU )
+   cCertificado  := iif( cCertificado == NIL, ::cCertificado, cCertificado )
+   cAmbiente     := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
+   ::cVersaoXml  := "1.00"
+   ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe"
+   ::cSoapAction := "mdfeDistDFeInteresse"
+   ::cXmlDados := ""
+   ::cXmlDados += [<distDFeInt xmlns="http://www.portalfiscal.inf.br/nfe" versao "] + ::cVersaoXml + [">]
+   ::cXmlDados += XmlTag( "tpAmb", cAmbiente )
+   ::cXmlDados += XmlTag( "cUFAutor", UFCodigo( cUF ) )
+   ::cXmlDados += XmlTag( "CNPJ", cCnpj )
+   IF Empty( cNSU )
+      ::cXmlDados += [<distNSU>]
+      ::cXmlDados += XmlTag( "ultNSU", cUltNSU )
+      ::cXmlDados += [</distNSU>]
+   ELSE
+      ::cXmlDados += [<consNSU>]
+      ::cXmlDados += XmlTag( "NSU", cNSU )
+      ::cXmlDados += [</consNSU>]
+   ENDIF
+   ::cXmlDados += [</distDFeInt>]
+   ::cWebService := ::GetWebService( cUF, WSMDFEDISTRIBUICAODFE, cAmbiente, WSPROJETOMDFE )
+   ::XmlSoapPost( cUF, cCertificado, WSPROJETOMDFE )
+   RETURN NIL
 
 
 METHOD MDFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
@@ -670,9 +704,9 @@ METHOD TipoXml( cXml ) CLASS SefazClass
 
 
 METHOD GetWebService( cUF, nWsServico, cAmbiente, cProjeto ) CLASS SefazClass
-   // SVAN: ES,MA,PA,PI,RN
-   // SVRS: AC,AL,AM,AP,DF,MS,PB,RJ,RO,RR,SC,SE,TO
-   // Autorizadores: AM,BA,CE,GO,MG,MS,MT,PE,PR,RN,RS,SP,SVAN,SVRS,SCAN
+   // SVAN: MA,PA,PI
+   // SVRS: AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO
+   // Autorizadores: AM,BA,CE,GO,MA,MG,MS,MT,PE,PR,RS,SP,SVCAN,SVCRS,AN
 
    LOCAL cTexto
 
@@ -681,7 +715,7 @@ METHOD GetWebService( cUF, nWsServico, cAmbiente, cProjeto ) CLASS SefazClass
    IF ::cScan == "SCAN"
       cTexto := UrlWebService( "SCAN", cAmbiente, nWsServico, ::cVersao )
    ELSEIF ::cScan == "SVCAN"
-      IF cUF $ "AC,AL,AM,AP,DF,MS,PB,RJ,RO,RR,SE,TO"
+      IF cUF $ "AM,BA,CE,GO,MA,MS,MT,PA,PE,PI,PR"
          cTexto := UrlWebService( "SVCRS", cAmbiente, nWsServico, ::cVersao )
       ELSE
          cTexto := UrlWebService( "SVCAN", cAmbiente, nWsServico, ::cVersao )
@@ -690,9 +724,9 @@ METHOD GetWebService( cUF, nWsServico, cAmbiente, cProjeto ) CLASS SefazClass
       cTexto := UrlWebService( cUf, cAmbiente, nWsServico, ::cVersao )
    ENDIF
    IF Empty( cTexto ) // UFs sem Webservice próprio
-      IF cUf $ "AC,AL,AM,AP,DF,MS,PB,RJ,RO,RR,SC,SE,TO" // Sefaz Virtual RS
+      IF cUf $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO" // Sefaz Virtual RS
          cTexto := UrlWebService( "SVRS", cAmbiente, nWsServico, ::cVersao )
-      ELSEIF cUf $ "ES,MA,PA,PI,RN" // Sefaz Virtual
+      ELSEIF cUf $ "MA,PA,PI" // Sefaz Virtual
          cTexto := UrlWebService( "SVAN", cAmbiente, nWsServico, ::cVersao )
       ENDIF
       IF Empty( cTexto ) // Não tem específico
@@ -1170,6 +1204,7 @@ STATIC FUNCTION UrlWebService( cUF, cAmbiente, nWsServico, cVersao )
       CASE nWsServico == WSNFEDOWNLOADNF ;             cUrlWs := "https://nfe.sefaz.rs.gov.br/ws/nfeDownloadNF/nfeDownloadNF.asmx"
       CASE nWsServico == WSNFEAUTORIZACAO ;            cUrlWs := "https://nfe.sefaz.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
       CASE nWsServico == WSNFERETAUTORIZACAO ;         cUrlWs := "https://nfe.sefaz.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
+      CASE nWsServico == WSMDFEDISTRIBUICAODFE ;       cUrlWs := "https://mdfe.svrs.rs.gov.br/WS/MDFeDistribuicaoDFe/MDFeDistribuicaoDFe.asmx"
       ENDCASE
 
    CASE cUF == "RS" .AND. cAmbiente == WSHOMOLOGACAO
