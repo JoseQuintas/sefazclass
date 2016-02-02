@@ -365,7 +365,7 @@ METHOD NFeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlDados   +=    XmlTag( "xServ", "CONSULTAR" )
    ::cXmlDados   +=    XmlTag( "chNFe", cChave )
    ::cXmlDados   += [</consSitNFe>]
-   IF .NOT. Substr( cChave, 21, 2 ) $ "55,65"
+   IF Substr( cChave, 21, 2 ) != "55"
       ::cXmlRetorno := "*ERRO* Chave não se refere a NFE"
    ELSE
       ::XmlSoapPost( cUF, cCertificado, WSPROJETONFE )
@@ -1012,6 +1012,11 @@ STATIC FUNCTION UrlWebService( cUF, cAmbiente, nWsServico, cVersao )
       CASE nWsServico == WSNFERECEPCAOEVENTO ;         cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento"
       CASE nWsServico == WSNFERETRECEPCAO ;            cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRetRecepcao2"
       CASE nWsServico == WSNFESTATUSSERVICO ;          cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2"
+      ENDCASE
+
+   CASE cUF == "ES"
+      DO CASE
+      CASE nWsServico == WSNFECONSULTACADASTRO ;       cUrlWs := "https://app.sefaz.es.gov.br/ConsultaCadastroService/CadConsultaCadastro2.asmx"
       ENDCASE
 
    CASE cUF == "GO" .AND. cAmbiente == WSPRODUCAO
