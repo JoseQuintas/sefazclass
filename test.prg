@@ -147,12 +147,15 @@ PROCEDURE Main
 
 FUNCTION SetupHarbour()
 
+#ifndef __XHARBOUR__
    hb_gtInfo( HB_GTI_INKEYFILTER, { | nKey | MyInkeyFilter( nKey ) } ) // pra funcionar control-V
+#endif
    SET( _SET_EVENTMASK, INKEY_ALL - INKEY_MOVE )
    SET CONFIRM ON
    RETURN NIL
 
 
+#ifndef __XHARBOUR__
 // rotina do ctrl-v
 FUNCTION MyInkeyFilter( nKey )
 
@@ -168,3 +171,4 @@ FUNCTION MyInkeyFilter( nKey )
       ENDIF
    ENDSWITCH
    RETURN nKey
+#endif
