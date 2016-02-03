@@ -147,20 +147,24 @@ PROCEDURE Main
 
 FUNCTION SetupHarbour()
 
-   hb_gtInfo( HB_GTI_INKEYFILTER, ;
-      { | nKey |
-      LOCAL nBits, lIsKeyCtrl
-      nBits := hb_GtInfo( HB_GTI_KBDSHIFTS )
-      lIsKeyCtrl := ( nBits == hb_BitOr( nBits, HB_GTI_KBD_CTRL ) )
-      SWITCH nKey
-      CASE K_CTRL_V
-         IF lIsKeyCtrl
-            hb_GtInfo( HB_GTI_CLIPBOARDPASTE )
-            RETURN 0
-         ENDIF
-      ENDSWITCH
-      RETURN nKey
-       } )
+   hb_gtInfo( HB_GTI_INKEYFILTER, { | nKey | MyInkeyFilter( nKey ) } ) // pra funcionar control-V
    SET( _SET_EVENTMASK, INKEY_ALL - INKEY_MOVE )
    SET CONFIRM ON
    RETURN NIL
+
+
+// rotina do ctrl-v
+FUNCTION MyInkeyFilter( nKey )
+
+   LOCAL nBits, lIsKeyCtrl
+
+   nBits := hb_GtInfo( HB_GTI_KBDSHIFTS )
+   lIsKeyCtrl := ( nBits == hb_BitOr( nBits, HB_GTI_KBD_CTRL ) )
+   SWITCH nKey
+   CASE K_CTRL_V
+      IF lIsKeyCtrl
+         hb_GtInfo( HB_GTI_CLIPBOARDPASTE )
+         RETURN 0
+      ENDIF
+   ENDSWITCH
+   RETURN nKey
