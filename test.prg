@@ -11,7 +11,7 @@ PROCEDURE Main
 
    SetupHarbour()
    SetMode( 33, 80 )
-   Set( _SET_CODEPAGE, "PTISO" )
+   // Set( _SET_CODEPAGE, "PTISO" )
    SetColor( "W/B,N/W,,,W/B" )
 
    oSefaz              := SefazClass():New()
