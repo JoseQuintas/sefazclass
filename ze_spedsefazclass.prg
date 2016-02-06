@@ -818,7 +818,11 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       cSoapAction := ::cSoapAction
    //ENDIF
    BEGIN SEQUENCE
+#ifdef __XHARBOUR__
+      oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
+#else
       oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP" )
+#endif
       IF ::cCertificado != NIL
          oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
       ENDIF
