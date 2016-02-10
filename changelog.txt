@@ -2,12 +2,19 @@
    Tag IndSinc no envio de Lote - Ricardo C. Freitas
 
 2016.02.10.0800 José M. C. Quintas
-   Harbour/xHarbour MSXML2.ServerXMLHTTP.6.0
+   Mesmo componente funcionando em Harbour e xHarbour MSXML2.ServerXMLHTTP.6.0
+   Testado com Harbour em Windows 7 64 bits
 
 2016.01.14.1700 José M. C. Quintas
    Endereços SVRS e SVCRS - Ricardo C. Freitas
 
+2016.02.04.1300 José M. C. Quintas
+   Melhorada compatibilidade com xHarbour
+   Troca para BEGIN SEQUENCE/END SEQUENCE padrão, apenas pra agilizar liberação pra testes
+
 2016.02.02.1500 José M. C. Quintas
+   Ajuste da assinatura de lote de NFSe ABRASF
+   Ajuste pra consulta protocolo aceitar chave de NFCe
    ES possui consulta cadastro em homologação - Ricardo C. Freitas
 
 2016.01.02.1140 José M. C. Quintas
