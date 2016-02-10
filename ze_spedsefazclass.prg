@@ -2,13 +2,6 @@
 * ZE_SPEDSEFAZCLASS - ROTINAS PRA COMUNICACAO SEFAZ
 *----------------------------------------------------------------
 
-* 2015.12.13.1930 - Correção do webservice SVRS (RJ etc)
-* 2016.02.02.1140 - Atualização de UFs em servidores virtuais
-* 2016.01.14.1700 - Endereços SVRS e SVCRS (Ricardo C. Freitas)
-* 2016.02.10.0800 - Harbour MSXML2.ServerXMLHTTP.6.0 (José M. C. Quintas)
-* 2016.02.10.1740 - Tag IndSinc no envio de Lote (Ricardo C. Freitas)
-*-----------------------------------------------------------------
-
 #include "hbclass.ch"
 
 #define WSCTERECEPCAO              1

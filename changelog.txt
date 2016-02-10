@@ -1,0 +1,18 @@
+2016.02.10.1740 Ricardo C. Freitas
+   Tag IndSinc no envio de Lote (Ricardo C. Freitas)
+
+2016.02.10.0800 José M. C. Quintas
+   Harbour/xHarbour MSXML2.ServerXMLHTTP.6.0
+
+2016.01.14.1700 Ricardo C. Freitas
+   Endereços SVRS e SVCRS (Ricardo C. Freitas)
+
+2016.02.02.1500 Ricardo C. Freitas
+   ES possui consulta cadastro em homologação
+
+2016.01.02.1140 José M. C. Quintas
+   Atualização das UFs que utilizam serviços virtuais
+
+2015.12.13.1930 José M. C. Quintas
+   Correção do XML de webservice SVRS, pra corrigir RJ
+   A mesma correção já vale pra outras UFs que utilizem o SVRS
