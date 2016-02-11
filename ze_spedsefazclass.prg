@@ -814,7 +814,11 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    //ELSE
       cSoapAction := ::cSoapAction
    //ENDIF
-   BEGIN SEQUENCE
+#ifdef __XHARBOUR__
+   TRY
+#else
+   BEGIN SEQUENCE WITH __BreakBlock()
+#endif
       oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
       IF ::cCertificado != NIL
          oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
@@ -825,7 +829,11 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       oServer:Send( ::cXmlSoap )
       oServer:WaitForResponse( 500 )
       cRetorno := oServer:ResponseBody
+#ifdef __XHARBOUR__
+   END
+#else
    ENDSEQUENCE
+#endif
    IF ::lGravaTemp
       hb_MemoWrit( "xml1-soap.xml", ::cXmlSoap )
       hb_MemoWrit( "xml2-action.xml", cSoapAction )
