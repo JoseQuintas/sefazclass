@@ -35,6 +35,9 @@
 #define WSPROJETOCTE   "cte"
 #define WSPROJETOMDFE  "mdfe"
 
+#define INDSINC_RETORNA_PROTOCOLO "0"
+#define INDSINC_RETORNA_RECIBO    "1"
+
 CREATE CLASS SefazClass
 
    VAR    cAmbiente     INIT WSPRODUCAO
@@ -159,7 +162,6 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    ::cXmlDados    += [<envicte versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    // FOR nCont = 1 TO Len( Lotes )
    ::cXmlDados += XmlTag( "idLote", cLote )
-   ::cXmlDados += XmlTag( "indSinc", "1" )
    ::cXmlDados += cXml
    // NEXT
    ::cXmlDados += [</envicte>]
@@ -589,6 +591,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    ::cXmlDados    += [<enviNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    // FOR nCont = 1 TO Len( Lotes )
    ::cXmlDados += XmlTag( "idLote", cLote )
+   ::cXmlDados += XmlTag( "indSinc", INDSINC_RETORNA_PROTOCOLO )
    ::cXmlDados += cXml
    // NEXT
    ::cXmlDados += [</enviNFe>]
