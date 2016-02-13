@@ -71,9 +71,9 @@ CREATE CLASS SefazClass
    METHOD NFeCancela( cXml, cUF, cCertificado, cAmbiente )
    METHOD NFeCadastro( cCnpj, cUF, cCertificado, cAmbiente )
    METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente )
-   METHOD NFeEventoCCE( cChave, cSequencia, cTexto, cCertificado, cAmbiente )
-   METHOD NFeEventoCancela( cChave, nProt, xJust, cCertificado, cAmbiente )
-   METHOD NFeEventoNaoRealizada( cChave, xJust, cCertificado, cAmbiente )
+   METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
+   METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
+   METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente )
    METHOD NFeConsulta( cChave, cCertificado, cAmbiente )
    METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD NFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente )
@@ -93,18 +93,18 @@ CREATE CLASS SefazClass
 
 // Apenas anotado
 
-//METHOD CTEEventoCCE( cChave, cSequencia, cTexto, cCertificado ) CLASS SefazClass
+//METHOD CTEEventoCCE( cChave, nSequencia, cTexto, cCertificado ) CLASS SefazClass
 //
 //   ::cVersaoXml   := "2.00"
 //   cProjeto    := WSPROJETOCTE
 //   cUF         := UFNome( Substr( cChave, 1, 2 ) )
 //   ::cXmlDados := ""
-//   ::cXmlDados += [<eventoCTe xmlns="http://portalfiscal.inf.br/cte" versao="] + ::cVersaoXml + [">]
-//   ::cXmlDados += [<infEvento Id="ID110110] + cChave + StrZero( Val( cSequencia ), 2 ) + [">]
+//   ::cXmlDados += [<eventoCTe versao="] + ::cVersaoXml + [" xmlns="http://portalfiscal.inf.br/cte">]
+//   ::cXmlDados += [<infEvento Id="ID110110] + cChave + Ltrim( Str( nSequencia ) ) + [">]
 //   ::cXmlDados += [<cOrgao>31</cOrgao><tpAmb>2</tpAmb><CNPJ>] + Substr( cChave, 7, 14 ) + [</CNPJ>]
 //   ::cXmlDados += [<chCTe>] + cChave + [</chCTe>]
 //   ::cXmlDados += [<dhEvento>] + Transform( Dtos( Date(), "@R 9999-99-99" ) + [T] + Time() + [</dhEvento><tpEvento>110110</tpEvento>]
-//   ::cXmlDados += [<nSeqEvento>] + cSequencia + [</nSeqEvento><detEvento versaoEvento="] + ::cVersaoXml + [">]
+//   ::cXmlDados += [<nSeqEvento>] + Ltrim( Str( nSequencia ) ) + [</nSeqEvento><detEvento versaoEvento="] + ::cVersaoXml + [">]
 //   ::cXmlDados += [<evCCeCTe><descEvento>Carta de Correcao</descEvento>]
 //   ::cXmlDados += [<infCorrecao><grupoAlterado>xobs</grupoAlterado>]
 //   ::cXmlDados += [<campoAlterado>obs</campoAlterado>]
@@ -262,7 +262,7 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe"
    ::cSoapAction := "mdfeDistDFeInteresse"
    ::cXmlDados := ""
-   ::cXmlDados += [<distDFeInt xmlns="http://www.portalfiscal.inf.br/nfe" versao "] + ::cVersaoXml + [">]
+   ::cXmlDados += [<distDFeInt versao "] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados += XmlTag( "tpAmb", cAmbiente )
    ::cXmlDados += XmlTag( "cUFAutor", UFCodigo( cUF ) )
    ::cXmlDados += XmlTag( "CNPJ", cCnpj )
@@ -410,7 +410,7 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
    ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe"
    ::cSoapAction := "nfeDistDFeInteresse"
    ::cXmlDados := ""
-   ::cXmlDados += [<distDFeInt xmlns="http://www.portalfiscal.inf.br/nfe" versao "] + ::cVersaoXml + [">]
+   ::cXmlDados += [<distDFeInt versao "] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados += XmlTag( "tpAmb", cAmbiente )
    ::cXmlDados += XmlTag( "cUFAutor", UFCodigo( cUF ) )
    ::cXmlDados += XmlTag( "CNPJ", cCnpj )
@@ -429,20 +429,22 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
    RETURN NIL
 
 
-METHOD NFeEventoCCE( cChave, cSequencia, cTexto, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS SefazClass
 
    LOCAL cXml := ""
 
    cAmbiente := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
+   nSequencia := iif( nSequencia == NIL, 1, nSequencia )
+
    cXml += [<evento xmlns="http://www.portal.inf.br/nfe" versao "1.00">]
-   cXml +=    [<InfEvento Id="ID110110] + cChave + StrZero( Val( cSequencia ), 2 ) + [">]
+   cXml +=    [<InfEvento Id="ID110110] + cChave + Ltrim( Str( nSequencia ) ) + [">]
    cXml +=       XmlTag( "Orgao", UFSigla( Substr( cChave, 1, 2 ) ) )
    cXml +=       XmlTag( "tpAmb", cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    cXml +=       XmlTag( "chNFe", cChave )
    cXml +=       XmlTag( "dhEvento", DateTimeXml() )
    cXml +=       XmlTag( "tpEvento", "110110" )
-   cXml +=       XmlTag( "nSeqEvento", StrZero( Val( cSequencia ), 2 ) )
+   cXml +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia ) ) )
    cXml +=       XmlTag( "verEvento", "1.00" )
    cXml +=       [<detEvento versao="1.00">]
    cXml +=          XmlTag( "descEvento", "Carta de Correcao" )
@@ -466,11 +468,14 @@ METHOD NFeEventoCCE( cChave, cSequencia, cTexto, cCertificado, cAmbiente ) CLASS
    RETURN ::cXmlRetorno
 
 
-METHOD NFeEventoCancela( cChave, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
    LOCAL cXml := ""
 
    cAmbiente := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
+   cCertificado := iif( cCertificado == NIL, ::cCertificado, cCertificado )
+   nSequencia := iif( nSequencia == NIL, 1, nSequencia )
+
    cXml += [<evento versao "1.00" xmlns="http://www.portal.inf.br/nfe">]
    cXml +=    [<InfEvento Id="ID110111" + cChave + StrZero( 1, 2 ) + [">]
    cXml +=       XmlTag( "cOrgao", UFSigla( Substr( cChave, 1, 2 ) ) )
@@ -479,7 +484,7 @@ METHOD NFeEventoCancela( cChave, nProt, xJust, cCertificado, cAmbiente ) CLASS S
    cXml +=       XmlTag( "chNFe", cChave )
    cXml +=       XmlTag( "dhEvento", DateTimeXml() )
    cXml +=       XmlTag( "tpEvento", "110111" )
-   cXml +=       XmlTag( "nSeqEvento", StrZero( 1, 2 ) )
+   cXml +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
    cXml +=       XmlTag( "verEvento", "1.00" )
    cXml +=       [<detEvento versao="1.00">]
    cXml +=          XmlTag( "descEvento", "Cancelamento" )
@@ -495,12 +500,14 @@ METHOD NFeEventoCancela( cChave, nProt, xJust, cCertificado, cAmbiente ) CLASS S
    RETURN ::cXmlRetorno
 
 
-METHOD NFeEventoNaoRealizada( cChave, xJust, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
    LOCAL cXml := ""
 
    cAmbiente := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
-   cXml += [<evento xmlns="http://www.portal.inf.br/nfe" versao "1.00">]
+   nSequencia := iif( nSequencia == NIL, 1, nSequencia )
+
+   cXml += [<evento versao "1.00" xmlns="http://www.portal.inf.br/nfe" >]
    cXml +=    [<InfEvento Id="ID210240] + cChave + StrZero( 1, 2 ) + [">]
    cXml +=       XmlTag( "Orgao", UFSigla( Substr( cChave, 1, 2 ) ) )
    cXml +=       XmlTag( "tpAmb", cAmbiente )
