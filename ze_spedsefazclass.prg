@@ -471,9 +471,9 @@ METHOD NFeEventoCancela( cChave, nProt, xJust, cCertificado, cAmbiente ) CLASS S
    LOCAL cXml := ""
 
    cAmbiente := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
-   cXml += [<evento xmlns="http://www.portal.inf.br/nfe" versao "1.00">]
+   cXml += [<evento versao "1.00" xmlns="http://www.portal.inf.br/nfe">]
    cXml +=    [<InfEvento Id="ID110111" + cChave + StrZero( 1, 2 ) + [">]
-   cXml +=       XmlTag( "Orgao", UFSigla( Substr( cChave, 1, 2 ) ) )
+   cXml +=       XmlTag( "cOrgao", UFSigla( Substr( cChave, 1, 2 ) ) )
    cXml +=       XmlTag( "tpAmb", cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    cXml +=       XmlTag( "chNFe", cChave )
@@ -482,7 +482,7 @@ METHOD NFeEventoCancela( cChave, nProt, xJust, cCertificado, cAmbiente ) CLASS S
    cXml +=       XmlTag( "nSeqEvento", StrZero( 1, 2 ) )
    cXml +=       XmlTag( "verEvento", "1.00" )
    cXml +=       [<detEvento versao="1.00">]
-   cXml +=          XmlTag( "descEvento", "CANCELAMENTO" )
+   cXml +=          XmlTag( "descEvento", "Cancelamento" )
    cXml +=          XmlTag( "nProt", Ltrim( Str( nProt ) ) )
    cXml +=          XmlTag( "xJust", xJust )
    cXml +=       [</detEvento>]
@@ -1293,12 +1293,12 @@ STATIC FUNCTION UrlWebService( cUF, cAmbiente, nWsServico, cVersao )
    CASE cUF == "SVRS" .AND. cAmbiente == WSHOMOLOGACAO
       DO CASE
       CASE nWsServico == WSNFECONSULTAPROTOCOLO ;   cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
-      CASE nWsServico == WSNFERECEPCAOEVENTO ;    cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
-      CASE nWsServico == WSNFECONSULTACADASTRO ;   cUrlWs := "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx"
-      CASE nWsServico == WSNFEINUTILIZACAO ;     cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
-      CASE nWsServico == WSNFEAUTORIZACAO ;      cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
-      CASE nWsServico == WSNFERETAUTORIZACAO ;    cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
-      CASE nWsServico == WSNFESTATUSSERVICO ;     cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
+      CASE nWsServico == WSNFERECEPCAOEVENTO ;      cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
+      CASE nWsServico == WSNFECONSULTACADASTRO ;    cUrlWs := "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx"
+      CASE nWsServico == WSNFEINUTILIZACAO ;        cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
+      CASE nWsServico == WSNFEAUTORIZACAO ;         cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
+      CASE nWsServico == WSNFERETAUTORIZACAO ;      cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
+      CASE nWsServico == WSNFESTATUSSERVICO ;       cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
       ENDCASE
 
    CASE cUF == "SCAN" .AND. cAmbiente == WSPRODUCAO
