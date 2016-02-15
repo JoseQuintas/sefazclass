@@ -100,7 +100,7 @@ CREATE CLASS SefazClass
 //   cUF         := UFNome( Substr( cChave, 1, 2 ) )
 //   ::cXmlDados := ""
 //   ::cXmlDados += [<eventoCTe versao="] + ::cVersaoXml + [" xmlns="http://portalfiscal.inf.br/cte">]
-//   ::cXmlDados += [<infEvento Id="ID110110] + cChave + Ltrim( Str( nSequencia ) ) + [">]
+//   ::cXmlDados += [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
 //   ::cXmlDados += [<cOrgao>31</cOrgao><tpAmb>2</tpAmb><CNPJ>] + Substr( cChave, 7, 14 ) + [</CNPJ>]
 //   ::cXmlDados += [<chCTe>] + cChave + [</chCTe>]
 //   ::cXmlDados += [<dhEvento>] + Transform( Dtos( Date(), "@R 9999-99-99" ) + [T] + Time() + [</dhEvento><tpEvento>110110</tpEvento>]
@@ -437,8 +437,8 @@ METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS
    nSequencia := iif( nSequencia == NIL, 1, nSequencia )
 
    cXml += [<evento xmlns="http://www.portal.inf.br/nfe" versao "1.00">]
-   cXml +=    [<InfEvento Id="ID110110] + cChave + Ltrim( Str( nSequencia ) ) + [">]
-   cXml +=       XmlTag( "Orgao", UFSigla( Substr( cChave, 1, 2 ) ) )
+   cXml +=    [<InfEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
+   cXml +=       XmlTag( "cOrgao", UFSigla( Substr( cChave, 1, 2 ) ) )
    cXml +=       XmlTag( "tpAmb", cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    cXml +=       XmlTag( "chNFe", cChave )
@@ -477,7 +477,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    nSequencia := iif( nSequencia == NIL, 1, nSequencia )
 
    cXml += [<evento versao "1.00" xmlns="http://www.portal.inf.br/nfe">]
-   cXml +=    [<InfEvento Id="ID110111" + cChave + StrZero( 1, 2 ) + [">]
+   cXml +=    [<InfEvento Id="ID110111" + cChave + StrZero( nSequencia, 2 ) + [">]
    cXml +=       XmlTag( "cOrgao", UFSigla( Substr( cChave, 1, 2 ) ) )
    cXml +=       XmlTag( "tpAmb", cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
@@ -508,8 +508,8 @@ METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente
    nSequencia := iif( nSequencia == NIL, 1, nSequencia )
 
    cXml += [<evento versao "1.00" xmlns="http://www.portal.inf.br/nfe" >]
-   cXml +=    [<InfEvento Id="ID210240] + cChave + StrZero( 1, 2 ) + [">]
-   cXml +=       XmlTag( "Orgao", UFSigla( Substr( cChave, 1, 2 ) ) )
+   cXml +=    [<InfEvento Id="ID210240] + cChave + StrZero( nSequencia, 2 ) + [">]
+   cXml +=       XmlTag( "cOrgao", UFSigla( Substr( cChave, 1, 2 ) ) )
    cXml +=       XmlTag( "tpAmb", cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    cXml +=       XmlTag( "chNFe", cChave )
