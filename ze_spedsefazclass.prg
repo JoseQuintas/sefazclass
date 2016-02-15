@@ -438,7 +438,7 @@ METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS
 
    cXml += [<evento xmlns="http://www.portal.inf.br/nfe" versao "1.00">]
    cXml +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
-   cXml +=       XmlTag( "cOrgao", UFSigla( Substr( cChave, 1, 2 ) ) )
+   cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    cXml +=       XmlTag( "tpAmb", cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    cXml +=       XmlTag( "chNFe", cChave )
@@ -478,7 +478,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    cXml += [<evento versao "1.00" xmlns="http://www.portal.inf.br/nfe">]
    cXml +=    [<infEvento Id="ID110111" + cChave + StrZero( nSequencia, 2 ) + [">]
-   cXml +=       XmlTag( "cOrgao", UFSigla( Substr( cChave, 1, 2 ) ) )
+   cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    cXml +=       XmlTag( "tpAmb", cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    cXml +=       XmlTag( "chNFe", cChave )
@@ -509,7 +509,7 @@ METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente
 
    cXml += [<evento versao "1.00" xmlns="http://www.portal.inf.br/nfe" >]
    cXml +=    [<infEvento Id="ID210240] + cChave + StrZero( nSequencia, 2 ) + [">]
-   cXml +=       XmlTag( "cOrgao", UFSigla( Substr( cChave, 1, 2 ) ) )
+   cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    cXml +=       XmlTag( "tpAmb", cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    cXml +=       XmlTag( "chNFe", cChave )
