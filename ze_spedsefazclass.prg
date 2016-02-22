@@ -834,11 +834,15 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
 #else
    BEGIN SEQUENCE WITH __BreakBlock()
 #endif
+#ifdef __XHARBOUR__
       IF ::cUF == "GO" .AND. ::cAmbiente == "2"
          oServer := win_OleCreateObject( "MSXML2.ServerXmlHTTP.5.0" )
       ELSE
          oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
       ENDIF
+#else
+      oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP" ) // experimental pra ver se Harbour troca automático
+#endif
       IF ::cCertificado != NIL
          oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
       ENDIF
@@ -1008,7 +1012,7 @@ STATIC FUNCTION UrlWebService( cUF, cAmbiente, nWsServico, cVersao )
       CASE nWsServico == WSNFERECEPCAO ;               cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeRecepcao2.asmx"
       CASE nWsServico == WSNFERECEPCAOEVENTO ;         cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx"
       CASE nWsServico == WSNFERETRECEPCAO ;            cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeRetRecepcao2.asmx"
-      CASE nWsServico == WSNFESTATUSSERVICO ;          cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeStatusServico2.asmx"
+      CASE nWsServico == WSNFESTATUSSERVICO ;          cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx"
       ENDCASE
 
    CASE cUF == "CE" .AND. cAmbiente == WSPRODUCAO
