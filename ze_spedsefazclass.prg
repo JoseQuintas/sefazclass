@@ -639,8 +639,13 @@ METHOD NFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    cAmbiente      := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
    cUF            := iif( cUF == NIL, ::cUF, cUF )
    ::cVersaoXml   := "3.10"
-   ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2"
-   ::cSoapAction  := "nfeStatusServicoNF2"
+   IF ::cUF == "BA"
+      ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico"
+      ::cSoapAction  := "nfeStatusServicoNF"
+   ELSE
+      ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2"
+      ::cSoapAction  := "nfeStatusServicoNF2"
+   ENDIF
    ::cWebService  := ::GetWebService( cUF, WSNFESTATUSSERVICO, cAmbiente, WSPROJETONFE )
    ::cXmlDados    := ""
    ::cXmlDados    += [<consStatServ versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
@@ -829,7 +834,11 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
 #else
    BEGIN SEQUENCE WITH __BreakBlock()
 #endif
-      oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
+      IF ::cUF == "GO" .AND. ::cAmbiente == "2"
+         oServer := win_OleCreateObject( "MSXML2.ServerXmlHTTP.5.0" )
+      ELSE
+         oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
+      ENDIF
       IF ::cCertificado != NIL
          oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
       ENDIF
