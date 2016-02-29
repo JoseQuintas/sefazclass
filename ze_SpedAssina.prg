@@ -1,8 +1,10 @@
-*----------------------------------------------------------------
-* ZE_SPEDASSINA - ASSINATURA SPED
-*----------------------------------------------------------------
+/*
+----------------------------------------------------------------
+ZE_SPEDASSINA - ASSINATURA SPED
+----------------------------------------------------------------
 
-*-----------------------------------------------------------------
+-----------------------------------------------------------------
+*/
 
 #define _CAPICOM_STORE_OPEN_READ_ONLY                 0           // Somente Smart Card em Modo de Leitura
 
@@ -31,9 +33,9 @@
 
 FUNCTION AssinaXml( cTxtXml, cCertCN )
 
-   LOCAL oDOMDoc, nPosIni, nPosFim, xmlHeaderAntes, xmldsig, dsigns, oCert, oCapicomStore, oError, xmlHeaderDepois
-   LOCAL XMLAssinado, SIGNEDKEY, DSIGKEY, SCONTAINER, SPROVIDER, ETYPE, cURI, cRetorno, nP, nResult
-   LOCAL aDelimitadores, nCont, cXmlTagInicial, cXmlTagFinal
+   LOCAL oDOMDoc, nPosIni, nPosFim, xmlHeaderAntes, xmldsig, dsigns, oCert, oCapicomStore, xmlHeaderDepois
+   LOCAL XMLAssinado, SIGNEDKEY, DSIGKEY, SCONTAINER, SPROVIDER, ETYPE, cURI, nP, nResult
+   LOCAL aDelimitadores, nCont, cXmlTagInicial, cXmlTagFinal, cRetorno := "Erro: Problemas pra assinar XML"
 
    aDelimitadores := { ;
       { "<enviMDFe",              "</MDFe></enviMDFe>" }, ;
@@ -105,31 +107,19 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
    BEGIN SEQUENCE WITH __BreakBlock()
 #endif
       oDOMDoc := Win_OleCreateObject( "MSXML2.DOMDocument.5.0" )
-   RECOVER
-      cRetorno := "Erro Assinatura: Não carregado MSXML2.DOMDocument.5.0"
-      RETURN cRetorno
-#ifdef __XHARBOUR__
-   END
-#else
-   END SEQUENCE
-#endif
+   //RECOVER
+   //   cRetorno := "Erro Assinatura: Não carregado MSXML2.DOMDocument.5.0"
+   //   RETURN cRetorno
 
    oDOMDoc:async              := .F.
    oDOMDoc:resolveExternals   := .F.
    oDOMDoc:validateOnParse    := .T.
    oDOMDoc:preserveWhiteSpace := .T.
 
-#ifdef __XHARBOUR__
-   TRY
-#else
-   BEGIN SEQUENCE WITH __BreakBlock()
-#endif
       xmldsig := Win_OleCreateObject( "MSXML2.MXDigitalSignature.5.0" )
-   RECOVER
-      cRetorno := "Erro Assinatura: Não carregado MSXML2.MXDigitalSignature.5.0"
-      RETURN cRetorno
-   END SEQUENCE
-
+   //RECOVER
+   //   cRetorno := "Erro Assinatura: Não carregado MSXML2.MXDigitalSignature.5.0"
+   //   RETURN cRetorno
    oDOMDoc:LoadXML( cTxtXml )
    IF oDOMDoc:parseError:errorCode <> 0 // XML não carregado
       cRetorno := "Erro Assinatura: Não foi possivel carregar o documento pois ele não corresponde ao seu Schema" + HB_EOL()
@@ -137,81 +127,41 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
       cRetorno += " Caractere na linha: " + Str( oDOMDoc:parseError:linepos ) + HB_EOL()
       cRetorno += " Causa do erro: "      + oDOMDoc:parseError:reason         + HB_EOL()
       cRetorno += "code: "                + Str( oDOMDoc:parseError:errorCode )
-      RETURN cRetorno
    ENDIF
 
    DSIGNS = [xmlns:ds="http://www.w3.org/2000/09/xmldsig#"]
    oDOMDoc:setProperty( "SelectionNamespaces", DSIGNS )
 
    IF .NOT. "</Signature>" $ cTxtXml
-      RETURN "Erro Assinatura: Bloco Assinatura não encontrado"
+      cRetorno := "Erro Assinatura: Bloco Assinatura não encontrado"
    ENDIF
-#ifdef __XHARBOUR__
-   TRY
-#else
-   BEGIN SEQUENCE WITH __BreakBlock()
-#endif
       xmldsig:signature := oDOMDoc:selectSingleNode(".//ds:Signature")
-   RECOVER
-      cRetorno := "Erro Assinatura: Template de assinatura não encontrado"
-      RETURN cRetorno
-#ifdef __XHARBOUR__
-   END
-#else
-   END SEQUENCE
-#endif
+   //RECOVER
+   //   cRetorno := "Erro Assinatura: Template de assinatura não encontrado"
 
    oCert:= CapicomCertificado( cCertCn )
    IF oCert == NIL
       cRetorno := "Erro Assinatura: Certificado não encontrado ou vencido"
-      RETURN cRetorno
    ENDIF
 
    oCapicomStore := Win_OleCreateObject( "CAPICOM.Store" )
-#ifdef __XHARBOUR
-   TRY
-#else
-   BEGIN SEQUENCE WITH __BreakBlock()
-#endif
       oCapicomStore:open( _CAPICOM_MEMORY_STORE, 'Memoria', _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
-   RECOVER USING oError
-      cRetorno := "Erro Assinatura: Ao criar espaço certificado na memória " + HB_EOL()
-      cRetorno += "Error: "     + Transform( oError:GenCode, NIL )   + ";"   + HB_EOL()
-      cRetorno += "SubC: "      + Transform( oError:SubCode, NIL )   + ";"   + HB_EOL()
-      cRetorno += "OSCode: "    + Transform( oError:OsCode,  NIL )   + ";"   + HB_EOL()
-      cRetorno += "SubSystem: " + Transform( oError:SubSystem, NIL ) + ";"   + HB_EOL()
-      cRetorno += "Mensagem: "  + oError:Description
-      RETURN cRetorno
-#ifdef __XHARBOUR__
-   END
-#else
-   END SEQUENCE
-#endif
+   //RECOVER USING oError
+   //   cRetorno := "Erro Assinatura: Ao criar espaço certificado na memória " + HB_EOL()
+   //   cRetorno += "Error: "     + Transform( oError:GenCode, NIL )   + ";"   + HB_EOL()
+   //   cRetorno += "SubC: "      + Transform( oError:SubCode, NIL )   + ";"   + HB_EOL()
+   //   cRetorno += "OSCode: "    + Transform( oError:OsCode,  NIL )   + ";"   + HB_EOL()
+   //   cRetorno += "SubSystem: " + Transform( oError:SubSystem, NIL ) + ";"   + HB_EOL()
+   //   cRetorno += "Mensagem: "  + oError:Description
 
-#ifdef __XHARBOUR__
-   TRY
-#else
-   BEGIN SEQUENCE WITH __BreakBlock()
-#endif
       oCapicomStore:Add( oCert )
-#ifdef __XHARBOUR__
-   CATCH
-#else
-   RECOVER USING oError
-#endif
-      cRetorno := "Erro Assinatura: Ao adicionar certificado na memória " + HB_EOL()
-      cRetorno += "Error: "     + Transform( oError:GenCode, NIL) + ";"   + HB_EOL()
-      cRetorno += "SubC: "      + Transform( oError:SubCode, NIL) + ";"   + HB_EOL()
-      cRetorno += "OSCode: "    + Transform( oError:OsCode,  NIL) + ";"   + HB_EOL()
-      cRetorno += "SubSystem: " + Transform( oError:SubSystem, NIL) + ";" + HB_EOL()
-      cRetorno += "Mensagem: "  + oError:Description
-      // oCapicomStore:Close()
-      RETURN cRetorno
-#ifdef __XHARBOUR__
-   END
-#else
-   END SEQUENCE
-#endif
+   //RECOVER USING oError
+   //   cRetorno := "Erro Assinatura: Ao adicionar certificado na memória " + HB_EOL()
+   //   cRetorno += "Error: "     + Transform( oError:GenCode, NIL) + ";"   + HB_EOL()
+   //   cRetorno += "SubC: "      + Transform( oError:SubCode, NIL) + ";"   + HB_EOL()
+   //   cRetorno += "OSCode: "    + Transform( oError:OsCode,  NIL) + ";"   + HB_EOL()
+   //   cRetorno += "SubSystem: " + Transform( oError:SubSystem, NIL) + ";" + HB_EOL()
+   //   cRetorno += "Mensagem: "  + oError:Description
 
    xmldsig:store := oCapicomStore
 
@@ -222,8 +172,6 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
    dsigKey    := xmldsig:CreateKeyFromCSP( eType, sProvider, sContainer, 0 )
    IF ( dsigKey = NIL )
       cRetorno := "Erro Assinatura: Ao criar a chave do CSP."
-      // oCapicomStore:Close()
-      RETURN cRetorno
    ENDIF
 
    SignedKey := XmlDSig:Sign( DSigKey, 2 )
@@ -245,8 +193,6 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
       XMLAssinado := Substr( XMLAssinado, 1, nPosIni ) + Substr( XMLAssinado, nPosFim, Len( XMLAssinado ) )
    ELSE
       cRetorno := "Erro Assinatura: Assinatura Falhou."
-      // oCapicomStore:Close()
-      RETURN cRetorno
    ENDIF
 
    IF xmlHeaderAntes <> ""
@@ -261,9 +207,15 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
          XMLAssinado := xmlHeaderAntes + XMLAssinado
       ENDIF
    ENDIF
-   // oCapicomStore:Close()
+   cRetorno := "OK"
    cTxtXml    := XmlAssinado
-   cRetorno   := "OK"
+#ifdef __XHARBOUR__
+   CATCH
+   END
+#else
+   END SEQUENCE
+#endif
+
    RETURN cRetorno
 *----------------------------------------------------------------
 

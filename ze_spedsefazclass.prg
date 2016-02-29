@@ -1,6 +1,8 @@
-*----------------------------------------------------------------
-* ZE_SPEDSEFAZCLASS - ROTINAS PRA COMUNICACAO SEFAZ
-*----------------------------------------------------------------
+/*
+----------------------------------------------------------------
+ZE_SPEDSEFAZCLASS - ROTINAS PRA COMUNICACAO SEFAZ
+----------------------------------------------------------------
+*/
 
 #include "hbclass.ch"
 
@@ -850,6 +852,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       oServer:WaitForResponse( 500 )
       cRetorno := oServer:ResponseBody
 #ifdef __XHARBOUR__
+   CATCH
    END
 #else
    ENDSEQUENCE
