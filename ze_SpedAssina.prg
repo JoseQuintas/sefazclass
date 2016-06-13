@@ -1,6 +1,9 @@
 /*
+----------------------------------------------------------------
 ZE_SPEDASSINA - ASSINATURA SPED
+----------------------------------------------------------------
 
+-----------------------------------------------------------------
 */
 
 #define _CAPICOM_STORE_OPEN_READ_ONLY                 0           // Somente Smart Card em Modo de Leitura
@@ -119,10 +122,10 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
    //   RETURN cRetorno
    oDOMDoc:LoadXML( cTxtXml )
    IF oDOMDoc:parseError:errorCode <> 0 // XML não carregado
-      cRetorno := "Erro Assinatura: Não foi possivel carregar o documento pois ele não corresponde ao seu Schema" + hb_eol()
-      cRetorno += " Linha: "              + Str( oDOMDoc:parseError:line )    + hb_eol()
-      cRetorno += " Caractere na linha: " + Str( oDOMDoc:parseError:linepos ) + hb_eol()
-      cRetorno += " Causa do erro: "      + oDOMDoc:parseError:reason         + hb_eol()
+      cRetorno := "Erro Assinatura: Não foi possivel carregar o documento pois ele não corresponde ao seu Schema" + HB_EOL()
+      cRetorno += " Linha: "              + Str( oDOMDoc:parseError:line )    + HB_EOL()
+      cRetorno += " Caractere na linha: " + Str( oDOMDoc:parseError:linepos ) + HB_EOL()
+      cRetorno += " Causa do erro: "      + oDOMDoc:parseError:reason         + HB_EOL()
       cRetorno += "code: "                + Str( oDOMDoc:parseError:errorCode )
    ENDIF
 
@@ -144,20 +147,20 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
    oCapicomStore := Win_OleCreateObject( "CAPICOM.Store" )
       oCapicomStore:open( _CAPICOM_MEMORY_STORE, 'Memoria', _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
    //RECOVER USING oError
-   //   cRetorno := "Erro Assinatura: Ao criar espaço certificado na memória " + hb_eol()
-   //   cRetorno += "Error: "     + Transform( oError:GenCode, NIL )   + ";"   + hb_eol()
-   //   cRetorno += "SubC: "      + Transform( oError:SubCode, NIL )   + ";"   + hb_eol()
-   //   cRetorno += "OSCode: "    + Transform( oError:OsCode,  NIL )   + ";"   + hb_eol()
-   //   cRetorno += "SubSystem: " + Transform( oError:SubSystem, NIL ) + ";"   + hb_eol()
+   //   cRetorno := "Erro Assinatura: Ao criar espaço certificado na memória " + HB_EOL()
+   //   cRetorno += "Error: "     + Transform( oError:GenCode, NIL )   + ";"   + HB_EOL()
+   //   cRetorno += "SubC: "      + Transform( oError:SubCode, NIL )   + ";"   + HB_EOL()
+   //   cRetorno += "OSCode: "    + Transform( oError:OsCode,  NIL )   + ";"   + HB_EOL()
+   //   cRetorno += "SubSystem: " + Transform( oError:SubSystem, NIL ) + ";"   + HB_EOL()
    //   cRetorno += "Mensagem: "  + oError:Description
 
       oCapicomStore:Add( oCert )
    //RECOVER USING oError
-   //   cRetorno := "Erro Assinatura: Ao adicionar certificado na memória " + hb_eol()
-   //   cRetorno += "Error: "     + Transform( oError:GenCode, NIL) + ";"   + hb_eol()
-   //   cRetorno += "SubC: "      + Transform( oError:SubCode, NIL) + ";"   + hb_eol()
-   //   cRetorno += "OSCode: "    + Transform( oError:OsCode,  NIL) + ";"   + hb_eol()
-   //   cRetorno += "SubSystem: " + Transform( oError:SubSystem, NIL) + ";" + hb_eol()
+   //   cRetorno := "Erro Assinatura: Ao adicionar certificado na memória " + HB_EOL()
+   //   cRetorno += "Error: "     + Transform( oError:GenCode, NIL) + ";"   + HB_EOL()
+   //   cRetorno += "SubC: "      + Transform( oError:SubCode, NIL) + ";"   + HB_EOL()
+   //   cRetorno += "OSCode: "    + Transform( oError:OsCode,  NIL) + ";"   + HB_EOL()
+   //   cRetorno += "SubSystem: " + Transform( oError:SubSystem, NIL) + ";" + HB_EOL()
    //   cRetorno += "Mensagem: "  + oError:Description
 
    xmldsig:store := oCapicomStore
@@ -214,6 +217,7 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
 #endif
 
    RETURN cRetorno
+*----------------------------------------------------------------
 
 
 STATIC FUNCTION SignatureNode( cUri )
@@ -239,15 +243,15 @@ STATIC FUNCTION SignatureNode( cUri )
    cSignatureNode +=    [<KeyInfo>]
    cSignatureNode +=    [</KeyInfo>]
    cSignatureNode += [</Signature>]
-
    RETURN cSignatureNode
+*----------------------------------------------------------------
 
 
 FUNCTION FakeSignature( cUri )
 
    LOCAL cXml
 
-   hb_Default( @cUri, [#ProjetoChave] )
+   cUri := iif( cUri == NIL, [#ProjetoChave], cUri )
    cXml := [<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">]
    cXml += [<SignedInfo>]
    cXml += [<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>]
@@ -299,5 +303,5 @@ FUNCTION FakeSignature( cUri )
    cXml += [</X509Data>]
    cXml += [</KeyInfo>]
    cXml += [</Signature>]
-
    RETURN cXml
+*----------------------------------------------------------------
