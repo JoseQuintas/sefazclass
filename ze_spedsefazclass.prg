@@ -3,6 +3,10 @@ ze_spedsefazclass - rotinas pra comunicação com SEFAZ
 
 2016.06.08.0320 - IndSinc em NfeLoteEnvia
 2016.06.11.1800 - Mais status válidos como XML oficial
+2016.06.15.1200 - Correção temporária, apenas envialote retornando protocolo cria o autorizado
+2016.06.15.2200 - Correção, estava invertido indsinc
+2016.06.17.1130 - Ajustes diversos
+2016.06.23.2200 - Mensagens de erro no SOAP
 */
 
 #include "hbclass.ch"
@@ -38,8 +42,8 @@ ze_spedsefazclass - rotinas pra comunicação com SEFAZ
 #define WS_PROJETO_CTE               "cte"
 #define WS_PROJETO_MDFE              "mdfe"
 
-#define INDSINC_RETORNA_PROTOCOLO    "0"
-#define INDSINC_RETORNA_RECIBO       "1"
+#define INDSINC_RETORNA_PROTOCOLO    "1"
+#define INDSINC_RETORNA_RECIBO       "0"
 
 CREATE CLASS SefazClass
 
@@ -58,7 +62,6 @@ CREATE CLASS SefazClass
    VAR    cWebService   INIT ""
    VAR    cXmlSoap      INIT ""
    VAR    cIndSinc      INIT INDSINC_RETORNA_PROTOCOLO
-   VAR    lGravaTemp    INIT .F.
    // --- Uso em processo ---
    VAR    cProjeto      INIT WS_PROJETO_NFE
    VAR    cXmlRecibo    INIT ""
@@ -95,7 +98,6 @@ CREATE CLASS SefazClass
    METHOD MicrosoftXmlSoapPost()
 
    ENDCLASS
-
 
 // Apenas anotado
 
@@ -156,7 +158,6 @@ METHOD CTeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-
 METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @cCertificado, ::cCertificado )
@@ -177,7 +178,6 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
 
    RETURN ::cXmlRetorno
 
-
 METHOD CTeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @cCertificado, ::cCertificado )
@@ -195,7 +195,6 @@ METHOD CTeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::XmlSoapPost( cUF, cCertificado, WS_PROJETO_CTE )
 
    RETURN ::cXmlRetorno
-
 
 METHOD MDFeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -222,7 +221,6 @@ METHOD MDFeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-
 METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @cCertificado, ::cCertificado )
@@ -243,7 +241,6 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    RETURN ::cXmlRetorno
 
-
 METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @cCertificado, ::cCertificado )
@@ -261,7 +258,6 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
    ::XmlSoapPost( cUF, cCertificado, WS_PROJETO_MDFE )
 
    RETURN ::cXmlRetorno
-
 
 // Iniciado apenas 2016.01.31.2200
 METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) CLASS SefazClass
@@ -294,7 +290,6 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
 
    RETURN NIL
 
-
 METHOD MDFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @cCertificado, ::cCertificado )
@@ -314,10 +309,7 @@ METHOD MDFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-
-//
-// Este serviço foi desativado e substituído pelo evento
-//
+/* Este serviço foi desativado e substituído pelo evento */
 METHOD NFeCancela( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @cCertificado, ::cCertificado )
@@ -331,7 +323,6 @@ METHOD NFeCancela( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::XmlSoapPost( cUF, cCertificado, WS_PROJETO_NFE )
 
    RETURN ::cXmlRetorno
-
 
 METHOD NFeCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -353,7 +344,6 @@ METHOD NFeCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::XmlSoapPost( cUF, cCertificado, WS_PROJETO_NFE )
 
    RETURN ::cXmlRetorno
-
 
 METHOD NFeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -389,8 +379,7 @@ METHOD NFeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-
-// Iniciado apenas 2015.07.31.1400
+/* Iniciado apenas 2015.07.31.1400 */
 METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @cUltNSU, "0" )
@@ -416,8 +405,7 @@ METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAm
 
    RETURN ::cXmlRetorno
 
-
-// Iniciado apenas 2015.07.31.1400
+/* Iniciado apenas 2015.07.31.1400 */
 METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @cUF, ::cUF )
@@ -447,7 +435,6 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
    ::XmlSoapPost( cUF, cCertificado, WS_PROJETO_NFE )
 
    RETURN NIL
-
 
 METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -488,7 +475,6 @@ METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS
 
    RETURN ::cXmlRetorno
 
-
 METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
    LOCAL cXml := ""
@@ -521,7 +507,6 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    RETURN ::cXmlRetorno
 
-
 METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
    LOCAL cXml := ""
@@ -551,7 +536,6 @@ METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente
 
    RETURN ::cXmlRetorno
 
-
 METHOD NFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente ) CLASS SefazClass
 
    LOCAL cUF
@@ -571,7 +555,6 @@ METHOD NFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente ) CLASS SefazClass
    ::XmlSoapPost( cUF, cCertificado, WS_PROJETO_NFE )
 
    RETURN ::cXmlRetorno
-
 
 METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -602,7 +585,6 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    RETURN ::cXmlRetorno
 
-
 METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass
 
    hb_Default( @cCertificado, ::cCertificado )
@@ -622,7 +604,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       ::cWebService  := ::GetWebService( cUF, WS_NFE_AUTORIZACAO, cAmbiente, WS_PROJETO_NFE )
    ENDIF
    ::cXmlDados += [<enviNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
-   // FOR nCont = 1 TO Len( Lotes )
+   // FOR EACH cXmlNota IN aXmlNotas
    ::cXmlDados += XmlTag( "idLote", cLote )
    ::cXmlDados += XmlTag( "indSinc", cIndSinc )
    ::cXmlDados += cXml
@@ -633,11 +615,10 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       ::cXmlRecibo := ::cXmlRetorno
    ELSE
       ::cXmlProtocolo := ::cXmlRetorno
-      ::cXmlRetorno   := ::NfeGeraAutorizado()
+      ::cXmlRetorno   := ::NfeGeraAutorizado( cXml, ::cXmlProtocolo )
    ENDIF
 
    RETURN ::cXmlRetorno
-
 
 METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -663,11 +644,10 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ::XmlSoapPost( cUF, cCertificado, WS_PROJETO_NFE )
    ::cXmlProtocolo := ::cXmlRetorno
    IF .NOT. Empty( ::cXml )
-      ::NfeGeraAutorizado()
+      // ::NfeGeraAutorizado() // a consulta retorna mais que o protocolo
    ENDIF
 
    RETURN ::cXmlRetorno
-
 
 METHOD NFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -685,7 +665,6 @@ METHOD NFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::cWebService  := ::GetWebService( cUF, WS_NFE_STATUSSERVICO, cAmbiente, WS_PROJETO_NFE )
    ::cXmlDados    := ""
    ::cXmlDados    += [<consStatServ versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
-   // precisava disto antes, de repente alguma UF ainda precisa
    ::cXmlDados    +=    XmlTag( "tpAmb", cAmbiente )
    ::cXmlDados    +=    XmlTag( "cUF", UFCodigo( cUF ) )
    ::cXmlDados    +=    XmlTag( "xServ", "STATUS" )
@@ -694,14 +673,13 @@ METHOD NFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-
-// Apenas anotado, falta checar validade dos XMLs, muitíssimo importante
+/* Apenas anotado, falta checar validade dos XMLs, muitíssimo importante */
 
 METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
-   hb_Default( @cXmlAssinado, ::cXml )
-   hb_Default( @cXmlProtocolo, ::cXmlProtocolo )
-   ::cStatus := Pad( XmlNode( XmlNode( ::XmlProtocolo, "infProt" ), "cStat" ), 3 ) // Pad() garante 3 caracteres
+   hb_Default( @cXmlAssinado, "" )
+   hb_Default( @cXmlProtocolo, "" )
+   ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protNFe" ), "cStat" ), 3 ) // Pad() garante 3 caracteres
    IF .NOT. ::cStatus $ "100,101,150,301,302"
       ::cXmlRetorno := "Erro: Status do protocolo não serve como autorização"
       RETURN ::cXmlRetorno
@@ -709,15 +687,14 @@ METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cXmlAutorizado := [<?xml version="1.0" encoding="UTF-8"?>]
    ::cXmlAutorizado += [<nfeProc versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlAutorizado +=    cXmlAssinado
-   ::cXmlAutorizado +=    cXmlProtocolo
+   ::cXmlAutorizado +=    [<protNFe versao="3.10">] + XmlNode( cXmlProtocolo, "protNFe" ) + [</protNFe>]
    ::cXmlAutorizado += [</nfeProc>]
 
    RETURN ::cXmlAutorizado
 
-
 METHOD TipoXml( cXml ) CLASS SefazClass
 
-   LOCAL aTipos, cTipoXml, nCont, cTipoEvento
+   LOCAL aTipos, cTipoXml, cTipoEvento, oElemento
 
    aTipos := { ;
       { [<infMDFe],   [MDFE] }, ;  // primeiro, pois tem nfe e cte
@@ -728,10 +705,11 @@ METHOD TipoXml( cXml ) CLASS SefazClass
       { [<infCanc],   [NFEC] }, ;
       { [<infInut],   [INUT] }, ;
       { [<infEvento], [EVEN] } }
+
    cTipoXml := "XX"
-   FOR nCont = 1 TO Len( aTipos )
-      IF Upper( aTipos[ nCont, 1 ] ) $ Upper( cXml )
-         cTipoXml := aTipos[ nCont, 2 ]
+   FOR EACH oElemento IN aTipos
+      IF Upper( oElemento[ 1 ] ) $ Upper( cXml )
+         cTipoXml := oElemento[ 2 ]
          IF cTipoXml == "EVEN"
             cTipoEvento := XmlTag( cXml, "tpEvento" )
             DO CASE
@@ -750,7 +728,6 @@ METHOD TipoXml( cXml ) CLASS SefazClass
    NEXT
 
    RETURN cTipoXml
-
 
 METHOD GetWebService( cUF, nWsServico, cAmbiente, cProjeto ) CLASS SefazClass
    // SVAN: MA,PA,PI
@@ -786,7 +763,6 @@ METHOD GetWebService( cUF, nWsServico, cAmbiente, cProjeto ) CLASS SefazClass
    ENDIF
 
    RETURN cTexto
-
 
 METHOD XmlSoapPost( cUF, cCertificado, cProjeto ) CLASS SefazClass
 
@@ -826,7 +802,6 @@ METHOD XmlSoapPost( cUF, cCertificado, cProjeto ) CLASS SefazClass
 
    RETURN NIL
 
-
 METHOD XmlSoapEnvelope( cUF, cProjeto ) CLASS SefazClass
 
    hb_Default( @cUF, ::cUF )
@@ -860,10 +835,9 @@ METHOD XmlSoapEnvelope( cUF, cProjeto ) CLASS SefazClass
 
    RETURN ::cXmlSoap
 
-
 METHOD MicrosoftXmlSoapPost() CLASS SefazClass
 
-   LOCAL oServer, nCont, cRetorno := "Erro: Na comunicação SOAP"
+   LOCAL oServer, nCont, cRetorno
    LOCAL cSoapAction
 
    //IF ::cSoapAction == "nfeDistDFeInteresse" .OR. ::cSoapAction == "nfeConsultaNFDest"
@@ -873,94 +847,49 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    //ENDIF
 #ifdef __XHARBOUR__
    TRY
-      IF ( ::cUF == "GO" .AND. ::cAmbiente == "2" )
-         oServer := win_OleCreateObject( "MSXML2.ServerXmlHTTP.5.0" )
+      IF ::cUF == "GO" .AND. ::cAmbiente == "2"
+         ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP.5.0"
+         oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.5.0" )
       ELSE
+         ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP.6.0"
          oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
       ENDIF
 #else
    BEGIN SEQUENCE WITH __BreakBlock()
+      ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP"
       oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP" )
 #endif
+      ::cXmlRetorno := "Erro: No uso do objeto MSXML2.ServerXmlHTTP"
       IF ::cCertificado != NIL
          oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
       ENDIF
+      ::cXmlRetorno := "Erro: Na conexão com webservice " + ::cWebService
       oServer:Open( "POST", ::cWebService, .F. )
       oServer:SetRequestHeader( "SOAPAction", cSoapAction )
       oServer:SetRequestHeader( "Content-Type", "application/soap+xml; charset=utf-8" )
       oServer:Send( ::cXmlSoap )
       oServer:WaitForResponse( 500 )
       cRetorno := oServer:ResponseBody
+      IF ValType( cRetorno ) == "C"
+         ::cXmlRetorno := cRetorno
+      ELSEIF cRetorno == NIL
+         ::cXmlRetorno := "Erro: Sem retorno do webservice"
+      ELSE
+         ::cXmlRetorno := ""
+         FOR nCont = 1 TO Len( cRetorno )
+            ::cXmlRetorno += Chr( cRetorno[ nCont ] )
+         NEXT
+      ENDIF
 #ifdef __XHARBOUR__
-   CATCH
-   END
+   END TRY
 #else
-   ENDSEQUENCE
+   END SEQUENCE
 #endif
-   IF ::lGravaTemp
-      hb_MemoWrit( "xml1-soap.xml", ::cXmlSoap )
-      hb_MemoWrit( "xml2-action.xml", cSoapAction )
-      hb_MemoWrit( "xml3-url.xml", ::cWebService )
-      hb_MemoWrit( "xml4-retorno.xml", cRetorno )
-   ENDIF
-   IF ValType( cRetorno ) == "C"
-      ::cXmlRetorno := cRetorno
-   ELSEIF cRetorno == NIL
-      ::cXmlRetorno := "Erro SOAP: na comunicação"
-   ELSE
-      ::cXmlRetorno := ""
-      FOR nCont = 1 TO Len( cRetorno )
-         ::cXmlRetorno += Chr( cRetorno[ nCont ] )
-      NEXT
-   ENDIF
    // IF .NOT. "<cStat>" $ cRetorno
    //   cRetorno := "<cStat>ERRO NO RETORNO</cStat>" + cRetorno
    // ENDIF
 
    RETURN NIL
-
-
-#ifdef LIBCURL // pra nao compilar
-//
-// Pode ser usada a LibCurl pra comunicação
-
-METHOD CurlSoapPost() CLASS SefazClass
-
-   LOCAL aHeader := Array(3)
-
-   aHeader[ 1 ] := [Content-Type: application/soap+xml;charset=utf-8;action="] + ::cServico + ["]
-   aHeader[ 2 ] := [SOAPAction: "] + ::cSoapAction + ["]
-   aHeader[ 3 ] := [Content-length: ] + AllTrim( Str( Len( ::cXml ) ) )
-   curl_global_init()
-   oCurl = curl_easy_init()
-   curl_easy_setopt( oCurl, HB_CURLOPT_URL, ::cWebService )
-   curl_easy_setopt( oCurl, HB_CURLOPT_PORT , 443 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_VERBOSE, .F. ) // 1
-   curl_easy_setopt( oCurl, HB_CURLOPT_HEADER, 1 ) //retorna o cabecalho de resposta
-   curl_easy_setopt( oCurl, HB_CURLOPT_SSLVERSION, 3 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_SSL_VERIFYHOST, 0 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_SSL_VERIFYPEER, 0 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_SSLCERT, ::cCertificadoPublicKeyFile ) // Falta na classe
-   curl_easy_setopt( oCurl, HB_CURLOPT_KEYPASSWD, ::cCertificadoPassword )    // Falta na classe
-   curl_easy_setopt( oCurl, HB_CURLOPT_SSLKEY, ::cCertificadoPrivateKeyFile ) // Falta na classe
-   curl_easy_setopt( oCurl, HB_CURLOPT_POST, 1 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_POSTFIELDS, ::cXml )
-   curl_easy_setopt( oCurl, HB_CURLOPT_WRITEFUNCTION, 1 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_DL_BUFF_SETUP )
-   curl_easy_setopt( oCurl, HB_CURLOPT_HTTPHEADER, aHeader )
-   curl_easy_perform( oCurl )
-   retHTTP := curl_easy_getinfo( oCurl, HB_CURLINFO_RESPONSE_CODE )
-   ::cXmlRetorno := ""
-   IF retHTTP = 200 // OK
-      curl_easy_setopt( ocurl, HB_CURLOPT_DL_BUFF_GET, @::cXmlRetorno )
-      cXMLResp := Substr( cXMLResp, AT( '<?xml', ::cXmlRetorno ) )
-   ENDIF
-   curl_easy_cleanup( oCurl )
-   curl_global_cleanup()
-
-   RETURN NIL
-#endif
-
 
 FUNCTION UFCodigo( cSigla )
 
@@ -979,7 +908,6 @@ FUNCTION UFCodigo( cSigla )
 
    RETURN cCodigo
 
-
 FUNCTION UFSigla( cCodigo )
 
    LOCAL cUFs, cSigla, nPosicao
@@ -997,7 +925,6 @@ FUNCTION UFSigla( cCodigo )
    ENDIF
 
    RETURN cSigla
-
 
 STATIC FUNCTION UrlWebService( cUF, cAmbiente, nWsServico, cVersao )
 
@@ -1533,3 +1460,44 @@ STATIC FUNCTION UrlWebService( cUF, cAmbiente, nWsServico, cVersao )
    ENDCASE
 
    RETURN cUrlWs
+
+#ifdef LIBCURL // pra nao compilar, apenas anotado
+//
+// Pode ser usada a LibCurl pra comunicação
+
+METHOD CurlSoapPost() CLASS SefazClass
+
+   LOCAL aHeader := Array(3)
+
+   aHeader[ 1 ] := [Content-Type: application/soap+xml;charset=utf-8;action="] + ::cServico + ["]
+   aHeader[ 2 ] := [SOAPAction: "] + ::cSoapAction + ["]
+   aHeader[ 3 ] := [Content-length: ] + AllTrim( Str( Len( ::cXml ) ) )
+   curl_global_init()
+   oCurl = curl_easy_init()
+   curl_easy_setopt( oCurl, HB_CURLOPT_URL, ::cWebService )
+   curl_easy_setopt( oCurl, HB_CURLOPT_PORT , 443 )
+   curl_easy_setopt( oCurl, HB_CURLOPT_VERBOSE, .F. ) // 1
+   curl_easy_setopt( oCurl, HB_CURLOPT_HEADER, 1 ) //retorna o cabecalho de resposta
+   curl_easy_setopt( oCurl, HB_CURLOPT_SSLVERSION, 3 )
+   curl_easy_setopt( oCurl, HB_CURLOPT_SSL_VERIFYHOST, 0 )
+   curl_easy_setopt( oCurl, HB_CURLOPT_SSL_VERIFYPEER, 0 )
+   curl_easy_setopt( oCurl, HB_CURLOPT_SSLCERT, ::cCertificadoPublicKeyFile ) // Falta na classe
+   curl_easy_setopt( oCurl, HB_CURLOPT_KEYPASSWD, ::cCertificadoPassword )    // Falta na classe
+   curl_easy_setopt( oCurl, HB_CURLOPT_SSLKEY, ::cCertificadoPrivateKeyFile ) // Falta na classe
+   curl_easy_setopt( oCurl, HB_CURLOPT_POST, 1 )
+   curl_easy_setopt( oCurl, HB_CURLOPT_POSTFIELDS, ::cXml )
+   curl_easy_setopt( oCurl, HB_CURLOPT_WRITEFUNCTION, 1 )
+   curl_easy_setopt( oCurl, HB_CURLOPT_DL_BUFF_SETUP )
+   curl_easy_setopt( oCurl, HB_CURLOPT_HTTPHEADER, aHeader )
+   curl_easy_perform( oCurl )
+   retHTTP := curl_easy_getinfo( oCurl, HB_CURLINFO_RESPONSE_CODE )
+   ::cXmlRetorno := ""
+   IF retHTTP = 200 // OK
+      curl_easy_setopt( ocurl, HB_CURLOPT_DL_BUFF_GET, @::cXmlRetorno )
+      cXMLResp := Substr( cXMLResp, AT( '<?xml', ::cXmlRetorno ) )
+   ENDIF
+   curl_easy_cleanup( oCurl )
+   curl_global_cleanup()
+
+   RETURN NIL
+#endif
