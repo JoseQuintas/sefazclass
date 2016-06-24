@@ -687,7 +687,7 @@ METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cXmlAutorizado := [<?xml version="1.0" encoding="UTF-8"?>]
    ::cXmlAutorizado += [<nfeProc versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlAutorizado +=    cXmlAssinado
-   ::cXmlAutorizado +=    [<protNFe versao="3.10">] + XmlNode( cXmlProtocolo, "protNFe" ) + [</protNFe>]
+   ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protNFe", .T. )
    ::cXmlAutorizado += [</nfeProc>]
 
    RETURN ::cXmlAutorizado
