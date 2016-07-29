@@ -1,8 +1,11 @@
 test.prg
 ze_capicom.prg
 ze_SpedAssina.prg
+ze_spedAssinachk.prg
 ze_spedsefazclass.prg
-ze_XmlFun.prg
+ze_spedxmlclass.prg
+ze_spedxmlvalida.prg
+ze_xmlfun.prg
 ze_xharbour.prg
 
 hbwin.hbc
