@@ -5,8 +5,11 @@ ZE_SPEDXMLCLASS - CLASSES PARA NFE/CTE/MDFE/CCE
 ...
 2016.07.05.1200 - Formatação do fonte
 2016.07.10.1330 - Status do documento
+
+*** Sujeito a mudanças nos nomes em atualizações futuras, e novos campos
 */
 
+#include "jpa.ch"
 #include "hbclass.ch"
 
 CREATE CLASS NfeCadastroClass
@@ -315,12 +318,12 @@ FUNCTION XmlToDoc( cXmlInput )
    CASE Len( oDoc:cErro ) != 0
    CASE Len( oDoc:ChaveAcesso ) != 44
       oDoc:cErro := "Tamanho da chave de acesso inválido"
-   //CASE Right( oDoc:ChaveAcesso, 1 ) != CalculaDigito( Substr( oDoc:ChaveAcesso, 1, 43 ), "11" )
-   //   oDoc:cErro := "Dígito da chave de acesso inválido"
+   CASE Right( oDoc:ChaveAcesso, 1 ) != CalculaDigito( Substr( oDoc:ChaveAcesso, 1, 43 ), "11" )
+      oDoc:cErro := "Dígito da chave de acesso inválido"
    CASE Substr( oDoc:ChaveAcesso, 5, 2 ) < "01" .OR. Substr( oDoc:ChaveAcesso, 5, 2 ) > "12"
       oDoc:cErro := "Mes da chave inválido"
-   //CASE .NOT. ValidCnpjCpf( Substr( oDoc:ChaveAcesso, 7, 14 ) )
-   //   oDoc:cErro := "CNPJ inválido na chave de acesso"
+   CASE .NOT. ValidCnpjCpf( Substr( oDoc:ChaveAcesso, 7, 14 ) )
+      oDoc:cErro := "CNPJ inválido na chave de acesso"
    CASE Val( oDoc:Protocolo ) == 0
       oDoc:cErro := "Sem protocolo"
    CASE Empty( oDoc:cAssinatura )
@@ -536,7 +539,7 @@ FUNCTION XmlToDocNfeCancel( cXmlInput, oNFe )
          ENDIF
          mProtocolo := XmlNode( mXmlInfComTag, "nProt" )
       ELSE
-         //SayScroll( "Formato do arquivo de cancelamento diferente. Avise JPA" )
+         SayScroll( "Formato do arquivo de cancelamento diferente. Avise JPA" )
          mChave := ""
          mProtocolo := ""
       End If
@@ -584,7 +587,7 @@ FUNCTION XmlToDocMDFEEmi( cXmlInput, oMDFE )
    LOCAL cBlocoInfNfeComTag, cBlocoChave, cBlocoIde, cBlocoInfAdic
    LOCAL cBlocoEmit, cBlocoEndereco
 
-   //cXmlInput := XmlTransform( cXmlInput )
+   cXmlInput := XmlTransform( cXmlInput )
 
    cBlocoInfNfeComTag := XmlNode( cXmlInput, "infMDFe", .T. )
 
