@@ -3,16 +3,15 @@ ze_spedxmlvalida - Validação de XML
 2016.07.28.1620 - José Quintas
 */
 
-/*
 PROCEDURE PTESValidaXml
 
    LOCAL cRetorno
 
-   cRetorno := ValidaXml( MemoRead( "jpa.cfg" ) )
+   Inkey(0)
+   cRetorno := ValidaXml( MemoRead( "d:\jpa\cordeiro\nfe\tmp\nf000094053-02-assinado.xml" ), "NFE" )
    MsgExclamation( cRetorno )
 
    RETURN
-*/
 
 FUNCTION ValidaXml( cXml, cTipo )
 
@@ -43,7 +42,7 @@ FUNCTION ValidaXml( cXml, cTipo )
       oXmlSchema := win_OleCreateObject( "MSXML2.XMLSchemaCache.6.0" )
 
       DO CASE
-      CASE cTipo == "NFE" ;    cFileXSD := "nfe_v3.10.xsd"
+      CASE cTipo == "NFE" ;    cFileXSD := Left( hb_Argv(0), Rat( "\", hb_Argv(0) ) ) + "schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd"
       OTHERWISE
          cRetorno := "OK"       /* Validação básica */
          BREAK

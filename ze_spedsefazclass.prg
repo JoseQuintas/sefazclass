@@ -9,6 +9,8 @@ ze_spedsefazclass - rotinas pra comunicação com SEFAZ
 2016.06.23.2200 - Mensagens de erro no SOAP
 2016.07.06.2130 - Usadas as variáveis da classe por default
 2016.07.26.0930 - Correção no consulta recibo ::cXmlRetorno (estava ::cXml )
+2016.08.06.1230 - DateTimeXml() pra pegar conforme UF
+2016.08.07.1700 - Correção ref. num. recibo
 */
 
 #include "hbclass.ch"
@@ -50,14 +52,15 @@ ze_spedsefazclass - rotinas pra comunicação com SEFAZ
 CREATE CLASS SefazClass
 
    // --- configuração
-   VAR    cProjeto       INIT WS_PROJETO_NFE
+   VAR    cProjeto       INIT WS_PROJETO_NFE          // Modificada conforme método
    VAR    cAmbiente      INIT WS_AMBIENTE_PRODUCAO
-   VAR    cVersao        INIT "3.10"
+   VAR    cVersao        INIT "3.10"                  // Modificada conforme método
    VAR    cScan          INIT "N"
-   VAR    cUF            INIT "SP"
-   VAR    cCertificado   INIT ""
-   VAR    cIndSinc       INIT INDSINC_RETORNA_RECIBO
+   VAR    cUF            INIT "SP"                    // Modificada conforme método
+   VAR    cCertificado   INIT ""                      // Nome do certificado
+   VAR    cIndSinc       INIT INDSINC_RETORNA_RECIBO  // Poucas UFs opção de protocolo
    VAR    nTempoEspera   INIT 7                       // intervalo entre envia lote e consulta recibo
+   VAR    cUFTimeZone    INIT NIL                     // Para ::DateTimeXml()
    // --- uso em geral
    VAR    cXmlDados      INIT ""
    VAR    cXmlRetorno    INIT "Erro Desconhecido"
@@ -101,6 +104,7 @@ CREATE CLASS SefazClass
    METHOD XmlSoapEnvelope( cUF, cProjeto )
    METHOD XmlSoapPost( cUF, cCertificado, cProjeto )
    METHOD MicrosoftXmlSoapPost()
+   METHOD DateTimeXml( dDate, cTime, cUF )
 
    ENDCLASS
 
@@ -116,7 +120,7 @@ CREATE CLASS SefazClass
 //   ::cXmlDados += [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
 //   ::cXmlDados += [<cOrgao>] + UFSigla( ::cUF ) + [</cOrgao><tpAmb>] + ::cAmbiente + [</tpAmb><CNPJ>] + Substr( cChave, 7, 14 ) + [</CNPJ>]
 //   ::cXmlDados += [<chCTe>] + cChave + [</chCTe>]
-//   ::cXmlDados += [<dhEvento>] + DateTimeXml( Date(), Time(), .F. ) + [</dhEvento><tpEvento>110110</tpEvento>]
+//   ::cXmlDados += [<dhEvento>] + ::DateTimeXml( , , "--" ) + [</dhEvento><tpEvento>110110</tpEvento>]
 //   ::cXmlDados += [<nSeqEvento>] + Ltrim( Str( nSequencia ) ) + [</nSeqEvento><detEvento versaoEvento="] + ::cVersaoXml + [">]
 //   ::cXmlDados += [<evCCeCTe><descEvento>Carta de Correcao</descEvento>]
 //   ::cXmlDados += [<infCorrecao><grupoAlterado>xobs</grupoAlterado>]
@@ -175,6 +179,9 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    ENDIF
    IF cAmbiente != NIL
       ::cAmbiente := cAmbiente
+   ENDIF
+   IF Empty( cLote )
+      cLote := "1"
    ENDIF
    ::cVersaoXml   := "1.00"
    ::cServico     := "http://www.portalfiscal.inf.br/cte/wsdl/cteRecepcao"
@@ -506,7 +513,7 @@ METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS
    cXml +=       XmlTag( "tpAmb", ::cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    cXml +=       XmlTag( "chNFe", cChave )
-   cXml +=       XmlTag( "dhEvento", DateTimeXml() )
+   cXml +=       XmlTag( "dhEvento", ::DateTimeXml() )
    cXml +=       XmlTag( "tpEvento", "110110" )
    cXml +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia ) ) )
    cXml +=       XmlTag( "verEvento", "1.00" )
@@ -553,7 +560,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    cXml +=       XmlTag( "tpAmb", ::cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    cXml +=       XmlTag( "chNFe", cChave )
-   cXml +=       XmlTag( "dhEvento", DateTimeXml() )
+   cXml +=       XmlTag( "dhEvento", ::DateTimeXml() )
    cXml +=       XmlTag( "tpEvento", "110111" )
    cXml +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
    cXml +=       XmlTag( "verEvento", "1.00" )
@@ -592,7 +599,7 @@ METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente
    cXml +=       XmlTag( "tpAmb", ::cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    cXml +=       XmlTag( "chNFe", cChave )
-   cXml +=       XmlTag( "dhEvento", DateTimeXml() )
+   cXml +=       XmlTag( "dhEvento", ::DateTimeXml() )
    cXml +=       XmlTag( "tpEvento", "210240" )
    cXml +=       XmlTag( "nSeqEvento", StrZero( 1, 2 ) )
    cXml +=       XmlTag( "verEvento", "1.00" )
@@ -678,6 +685,9 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       ::cAmbiente := cAmbiente
    ENDIF
    hb_Default( @cIndSinc, ::cIndSinc )
+   IF Empty( cLote )
+      cLote := "1"
+   ENDIF
 
    ::cXmlDados    := ""
    ::cVersaoXml   := "3.10"
@@ -702,8 +712,11 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       ENDIF
    ELSE
       ::cXmlRecibo    := ::cXmlRetorno // precaução confirmar depois pra tratar automático se retornar protocolo retornar recibo
-      ::cXmlProtocolo := ::cXmlRetorno
-      ::cXmlRetorno   := ::NfeGeraAutorizado( cXml, ::cXmlProtocolo )
+      ::cRecibo       := XmlNode( ::cXmlRecibo, "nRec" )
+      IF .NOT. Empty( ::cRecibo )
+         ::cXmlProtocolo := ::cXmlRetorno
+         ::cXmlRetorno   := ::NfeGeraAutorizado( cXml, ::cXmlProtocolo )
+      ENDIF
    ENDIF
 
    RETURN ::cXmlRetorno
@@ -722,21 +735,14 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF cAmbiente != NIL
       ::cAmbiente := cAmbiente
    ENDIF
-   IF ::cVersao == "2.00"
-      ::cVersaoXml   := "2.00"
-      ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetRecepcao2"
-      ::cSoapAction  := "nfeRetRecepcao2"
-      ::cWebService  := ::GetWebService( ::cUF, WS_NFE_RETRECEPCAO, ::cAmbiente, WS_PROJETO_NFE )
-   ELSE // 3.10
-      ::cVersaoXml := "3.10"
-      ::cServico := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
-      ::cSoapAction := "NfeRetAutorizacao"
-      ::cWebService := ::GetWebService( ::cUf, WS_NFE_RETAUTORIZACAO, ::cAmbiente, WS_PROJETO_NFE )
-   ENDIF
+   ::cVersaoXml := "3.10"
+   ::cServico := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
+   ::cSoapAction := "NfeRetAutorizacao"
+   ::cWebService := ::GetWebService( ::cUf, WS_NFE_RETAUTORIZACAO, ::cAmbiente, WS_PROJETO_NFE )
    ::cXmlDados     := ""
    ::cXmlDados     += [<consReciNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados     +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDados     +=    XmlTag( "nRec", cRecibo )
+   ::cXmlDados     +=    XmlTag( "nRec", ::cRecibo )
    ::cXmlDados     += [</consReciNFe>]
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_NFE )
    ::cXmlProtocolo := ::cXmlRetorno
@@ -784,10 +790,10 @@ METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    hb_Default( @cXmlProtocolo, "" )
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protNFe" ), "cStat" ), 3 ) // Pad() garante 3 caracteres
    IF .NOT. ::cStatus $ "100,101,150,301,302"
-      ::cXmlRetorno := "Erro: Status do protocolo não serve como autorização"
+      ::cXmlRetorno := "Sem autorização: " + ::cXmlProtocolo
       RETURN ::cXmlRetorno
    ENDIF
-   ::cXmlAutorizado := [<?xml version="1.0" encoding="UTF-8"?>]
+   ::cXmlAutorizado := [<?xml version="1.0"?>] //  encoding="utf-8"?>]
    ::cXmlAutorizado += [<nfeProc versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protNFe", .T. )
@@ -804,7 +810,7 @@ METHOD NfeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       ::cXmlRetorno := "Erro: Status do protocolo não serve como autorização"
       RETURN ::cXmlRetorno
    ENDIF
-   ::cXmlAutorizado := [<?xml version="1.00" encoding="UTF-8"?>]
+   ::cXmlAutorizado := [<?xml version="1.00"?>] //  encoding="utf-8"?>]
    ::cXmlAutorizado += [<procEventoNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao = "1.00">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEvento" )
@@ -939,7 +945,7 @@ METHOD XmlSoapEnvelope( cUF, cProjeto ) CLASS SefazClass
    ENDIF
    hb_Default( @cProjeto, ::cProjeto )
    ::cXmlSoap := ""
-   ::cXmlSoap += [<?xml version="1.0" encoding="utf-8"?>] // UTF-8
+   ::cXmlSoap += [<?xml version="1.0"?>] //  encoding="utf-8"?>]
    ::cXmlSoap += [<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ]
    ::cXmlSoap +=    [xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">]
    IF ::cSoapAction != "nfeDistDFeInteresse"
@@ -1017,6 +1023,28 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    // ENDIF
 
    RETURN NIL
+
+METHOD DateTimeXml( dDate, cTime, cUF )
+
+   LOCAL cText
+
+   hb_Default( @dDate, Date() )
+   hb_Default( @cTime, Time() )
+
+   IF cUF == NIL
+      cUF := iif( ::cUFTimeZone == NIL, ::cUF, ::cUFTimeZone )
+   ENDIF
+
+   cText := Transform( Dtos( dDate ), "@R 9999-99-99" ) + "T" + Time()
+
+   DO CASE
+   CASE cUF $ "--"             ; cText += "" // no UTF
+   CASE cUF $ "AC"             ; cText += "-05:00"
+   CASE cUF $ "AM,MT,MS,RO,RR" ; cText += "-04:00"
+   OTHERWISE                   ; cText += "-03:00"
+   ENDCASE
+
+   RETURN cText
 
 FUNCTION UFCodigo( cSigla )
 

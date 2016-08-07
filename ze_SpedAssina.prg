@@ -100,6 +100,7 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
    ENDIF
 
    BEGIN SEQUENCE WITH __BreakBlock()
+
       oDOMDoc := Win_OleCreateObject( "MSXML2.DOMDocument.5.0" )
       //RECOVER
       //   cRetorno := "Erro Assinatura: Não carregado MSXML2.DOMDocument.5.0"
@@ -203,6 +204,7 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
       ENDIF
       cRetorno := "OK"
       cTxtXml    := XmlAssinado
+
    END SEQUENCE
 
    RETURN cRetorno

@@ -7,6 +7,7 @@ FUNCTION ChkSignature( cXml, cCertificadoCN )
    LOCAL oKeyInfo, oPubKey, oVerifiedKey, oSignature, oCapicomChain
 
    BEGIN SEQUENCE WITH __BreakBlock()
+
       XmlDoc        := win_OleCreateObject( "MSXML2.DOMDocument.5.0" )
       XmlDSig       := win_OleCreateObject( "MSXML2.MXDigitalSignature.5.0" )
       oCapicomChain := Win_OleCreateObject( "CAPICOM.Chain" )
@@ -44,6 +45,7 @@ FUNCTION ChkSignature( cXml, cCertificadoCN )
          BREAK
       ENDIF
       cXmlRetorno := "OK"
+
    END SEQUENCE
    IF cXmlRetorno == "OK" // pelo temo que demora, melhor não usar
       oCapicomChain:Build( oVerifiedKey:GetVerifyingCertificate )
@@ -53,6 +55,5 @@ FUNCTION ChkSignature( cXml, cCertificadoCN )
       //NEXT
    ENDIF
    HB_SYMBOL_UNUSED( cCertificadoCN )
+
    RETURN cXmlRetorno
-
-
