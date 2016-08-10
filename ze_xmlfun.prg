@@ -6,6 +6,8 @@
 2016.07.20.1620 - Fuso horário correto SP
 */
 
+#define DOW_DOMINGO 0
+
 FUNCTION XmlNode( cXml, cNode, lComTag )
 
    LOCAL mInicio, mFim, cResultado := ""
@@ -94,21 +96,82 @@ FUNCTION DateXml( dDate )
 
    RETURN Transform( Dtos( dDate ), "@R 9999-99-99" )
 
-FUNCTION DateTimeXml( dDate, cTime, lUTC )
-
-   // AC = -05:00
-   // AM,MT,MS,RO,RR = -04:00
-   // AL,AP,BA,CE,DF,ES,GO,MA,MG,RS,SC,PA,PB,PE,PR,PR,RJ,RN,RS,SE,SP,TO = -03:00
-   hb_Default( @cTime, Time() )
-   hb_Default( @lUTC, .T. )
-
-   RETURN Transform( Dtos( dDate ), "@R 9999-99-99" ) + "T" + cTime + iif( lUTC, "-03:00", "" )
-
 FUNCTION NumberXml( nValue, nDecimals )
 
    hb_Default( @nDecimals, 0 )
 
    RETURN Ltrim( Str( nValue, 16, nDecimals ) )
+
+FUNCTION DateTimeXml( dDate, cTime, cUF )
+
+   LOCAL cText, lHorarioVerao
+
+   hb_Default( @dDate, Date() )
+   hb_Default( @cTime, Time() )
+   hb_Default( @cUF, "SP" )
+
+   lHorarioVerao := ( dDate >= HorarioVeraoInicio( Year( dDate ) ) .AND. dDate <= HorarioVeraoTermino( Year( dDate - 1 ) ) )
+   cText := Transform( Dtos( dDate ), "@R 9999-99-99" ) + "T" + cTime
+
+   DO CASE
+   CASE cUF $ "NOUTF"                                          ; cText += "" // no UTF
+   CASE cUF $ "AC"                                             ; cText += "-05:00"
+   CASE cUF $ "MT,MS" .AND. lHorarioVerao                      ; cText += "-05:00"
+   CASE cUF $ "DF,ES,GO,MG,PR,RJ,RS,SC,SP" .AND. lHorarioVerao ; cText += "-04:00"
+   CASE cUF $ "AM,MT,MS,RO,RR"                                 ; cText += "-04:00"
+   OTHERWISE                                                   ; cText += "-03:00"
+   ENDCASE
+
+   RETURN cText
+
+FUNCTION DomingoDePascoa( iAno )
+
+   LOCAL iA, iB, iC, iD, iE, iF, iG, iH, iI, iK, iL, iM, iMes, iDia
+
+   iA := iAno % 19
+   iB := Int( iAno / 100 )
+   iC := iAno % 100
+   iD := Int( iB / 4 )
+   iE := iB % 4
+   iF := Int( ( iB + 8 ) / 25 )
+   iG := Int( ( iB - iF + 1 ) / 3 )
+   iH := ( 19 * iA + iB - iD - iG + 15 ) % 30
+   iI := Int( iC / 4 )
+   iK := iC % 4
+   iL := ( 32 + 2 * iE + 2 * iI - iH - iK ) % 7
+   iM := Int( ( iA + 11 * iH + 22 * iL) / 451 )
+   iMes := Int( ( iH + iL - 7 * iM + 114 ) / 31 )
+   iDia := ( ( iH + iL - 7 * iM + 114 ) % 31 ) + 1
+
+   RETURN Stod( StrZero( iAno, 4 ) + StrZero( iMes, 2 ) + StrZero( iDia, 2 ) )
+
+FUNCTION TercaDeCarnaval( iAno )
+
+   RETURN DomingoDePascoa( iAno ) - 47
+
+/* Terceiro domingo de outubro */
+FUNCTION HorarioVeraoInicio( iAno )
+
+   LOCAL dPrimeiroDeOutubro, dPrimeiroDomingoDeOutubro, dTerceiroDomingoDeOutubro
+
+   dPrimeiroDeOutubro := Stod( StrZero( iAno, 4 ) + "1001" )
+   dPrimeiroDomingoDeOutubro := dPrimeiroDeOutubro + iif( Dow( dPrimeiroDeOutubro ) == DOW_DOMINGO, 0, ( 7 - Dow( dPrimeiroDeOutubro ) + 1 ) )
+   dTerceiroDomingoDeOutubro := dPrimeiroDomingoDeOutubro + 14
+
+   RETURN dTerceiroDomingoDeOutubro
+
+FUNCTION HorarioVeraoTermino( iAno )
+
+   LOCAL dPrimeiroDeFevereiro, dPrimeiroDomingoDeFevereiro, dTerceiroDomingoDeFevereiro
+
+   dPrimeiroDeFevereiro := Stod( StrZero( iAno + 1, 4 ) + "0201" )
+   dPrimeiroDomingoDeFevereiro := dPrimeiroDeFevereiro + iif( Dow( dPrimeiroDeFevereiro ) == DOW_DOMINGO, 0, ( 7 - Dow( dPrimeiroDeFevereiro ) + 1 ) )
+   dTerceiroDomingoDeFevereiro := dPrimeiroDomingoDeFevereiro + 14
+   IF dTerceiroDomingoDeFevereiro == TercaDeCarnaval( iAno + 1 ) - 2 /* nao pode ser domingo de carnaval */
+      dTerceiroDomingoDeFevereiro += 7
+   ENDIF
+
+   RETURN dTerceiroDomingoDeFevereiro
 
 FUNCTION SoNumeros( cTxt )
 
@@ -121,3 +184,83 @@ FUNCTION SoNumeros( cTxt )
    NEXT
 
    RETURN cSoNumeros
+
+STATIC FUNCTION ValidCnpj( cCnpj )
+
+   LOCAL cNumero, lOk
+
+   cNumero := SoNumeros( cCnpj )
+   cNumero := Left( cNumero + Replicate( "0", 12 ), 12 )
+   cNumero := cNumero + CalculaDigito( cNumero, "11" )
+   cNumero := cNumero + CalculaDigito( cNumero, "11" )
+   lOk     := ( SoNumeros( cNumero ) == SoNumeros( cCnpj ) )
+   RETURN lOk
+
+STATIC FUNCTION ValidCpf( cCpf )
+
+   LOCAL cNumero, lOk
+
+   cNumero := SoNumeros( cCpf )
+   cNumero := Left( cNumero + Replicate( "0", 9 ), 9 )
+   cNumero := cNumero + CalculaDigito( cNumero, "10" )
+   cNumero := cNumero + CalculaDigito( cNumero, "10" )
+   lOk     := ( SoNumeros( cCpf ) == SoNumeros( cNumero ) )
+
+   RETURN lOk
+
+FUNCTION ValidCnpjCpf( cCnpj )
+
+   LOCAL lOk
+
+   lOk := ( ValidCnpj( cCnpj ) .OR. ValidCpf( cCnpj ) )
+
+   RETURN lOk
+
+FUNCTION CalculaDigito( cNumero, cModulo )
+
+   LOCAL nFator, nCont, nSoma, nResto, nModulo, cCalculo
+
+   IF Empty( cNumero )
+      RETURN ""
+   ENDIF
+   cCalculo := AllTrim( cNumero )
+   IF cModulo $ "10,11"
+      nModulo := Val( cModulo )
+      nFator  := 2
+      nSoma   := 0
+      IF nModulo == 10
+         FOR nCont = Len( cCalculo ) To 1 Step -1
+            nSoma += Val( Substr( cCalculo, nCont, 1 ) ) * nFator
+            nFator += 1
+         NEXT
+      ELSE
+         FOR nCont = Len( cCalculo ) To 1 Step -1
+            nSoma += Val( Substr( cCalculo, nCont, 1 ) ) * nFator
+            IF nFator == 9
+               nFator := 2
+            ELSE
+               nFator += 1
+            ENDIF
+         NEXT
+      ENDIF
+      nResto := nSoma - ( Int( nSoma / 11 ) * 11 )
+      nResto := 11 - nResto
+      IF nResto > 9
+         nResto := 0
+      ENDIF
+      cCalculo := Str(nResto,1)
+   ENDIF
+
+   RETURN cCalculo
+
+FUNCTION MsgExclamation( cText )
+
+   wapi_MessageBox( wapi_GetActiveWindow(), cText, "Atenção", WIN_MB_ICONASTERISK )
+
+   RETURN NIL
+
+// só pra não aparecer erro
+
+FUNCTION SayScroll( ... )
+
+   RETURN NIL

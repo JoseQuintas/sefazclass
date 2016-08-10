@@ -9,7 +9,6 @@ ZE_SPEDXMLCLASS - CLASSES PARA NFE/CTE/MDFE/CCE
 *** Sujeito a mudanças nos nomes em atualizações futuras, e novos campos
 */
 
-#include "jpa.ch"
 #include "hbclass.ch"
 
 CREATE CLASS NfeCadastroClass
