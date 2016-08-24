@@ -7,6 +7,80 @@ ze_xmlfun - Funções pra trabalhar com XML
 2016.08.12.1740 - Parâmetro ref UTC (da forma anterior confunde)
 */
 
+#define DOW_DOMINGO   1
+
+FUNCTION XmlTransform( cXml )
+
+   LOCAL nCont, cRemoveTag, lUtf8
+
+   cRemoveTag := { ;
+      [<?xml version="1.0" encoding="utf-8"?>], ; // Petrobras inventou de usar assim
+      [<?xml version="1.0" encoding="UTF-8"?>] }  // Alguns usam assim
+
+   FOR nCont = 1 TO Len( cRemoveTag )
+      cXml := StrTran( cXml, cRemoveTag[ nCont ], "" )
+   NEXT
+   IF .NOT. ["] $ cXml // Petrobras usa aspas simples
+      cXml := StrTran( cXml, ['], ["] )
+   ENDIF
+
+   lUtf8 := .F.
+   IF Substr( cXml, 1, 1 ) $ Chr(239) + Chr(187) + Chr(191)
+      lUtf8 := .T.
+   ENDIF
+   FOR nCont = 128 TO 159
+      IF Chr( nCont ) $ cXml
+         lUtf8 := .T.
+      ENDIF
+   NEXT
+   IF lUtf8
+      cXml := hb_Utf8ToStr( cXml )
+   ENDIF
+   FOR nCont = 1 TO 2
+      cXml := StrTran( cXml, Chr(26), "" )
+      cXml := StrTran( cXml, Chr(13), "" )
+      cXml := StrTran( cXml, Chr(10), "" )
+      IF Substr( cXml, 1, 1 ) $ Chr(239) + Chr(187) + Chr(191)
+         cXml := Substr( cXml, 2 )
+      ENDIF
+      cXml := StrTran( cXml, " />", "/>" ) // Diferenca entre versoes do emissor
+      cXml := StrTran( cXml, Chr(195) + Chr(173), "i" ) // i acentuado minusculo
+      cXml := StrTran( cXml, Chr(195) + Chr(135), "C" ) // c cedilha maiusculo
+      cXml := StrTran( cXml, Chr(195) + Chr(141), "I" ) // i acentuado maiusculo
+      cXml := StrTran( cXml, Chr(195) + Chr(163), "a" ) // a acentuado minusculo
+      cXml := StrTran( cXml, Chr(195) + Chr(167), "c" ) // c acentuado minusculo
+      cXml := StrTran( cXml, Chr(195) + Chr(161), "a" ) // a acentuado minusculo
+      cXml := StrTran( cXml, Chr(195) + Chr(131), "A" ) // a acentuado maiusculo
+      cXml := StrTran( cXml, Chr(194) + Chr(186), "o." ) // numero simbolo
+      // so pra corrigir no MySql
+      cXml := StrTran( cXml, "+" + Chr(129), "A" )
+      cXml := StrTran( cXml, "+" + Chr(137), "E" )
+      cXml := StrTran( cXml, "+" + Chr(131), "A" )
+      cXml := StrTran( cXml, "+" + Chr(135), "C" )
+      cXml := StrTran( cXml, "?" + Chr(167), "c" )
+      cXml := StrTran( cXml, "?" + Chr(163), "a" )
+      cXml := StrTran( cXml, "?" + Chr(173), "i" )
+      cXml := StrTran( cXml, "?" + Chr(131), "A" )
+      cXml := StrTran( cXml, "?" + Chr(161), "a" )
+      cXml := StrTran( cXml, "?" + Chr(141), "I" )
+      cXml := StrTran( cXml, "?" + Chr(135), "C" )
+      cXml := StrTran( cXml, Chr(195) + Chr(156), "a" )
+      cXml := StrTran( cXml, Chr(195) + Chr(159), "A" )
+      cXml := StrTran( cXml, "?" + Chr(129), "A" )
+      cXml := StrTran( cXml, "?" + Chr(137), "E" )
+      cXml := StrTran( cXml, Chr(195) + "?", "C" )
+      cXml := StrTran( cXml, "?" + Chr(149), "O" )
+      cXml := StrTran( cXml, "?" + Chr(154), "U" )
+      cXml := StrTran( cXml, "+" + Chr(170), "o" )
+      cXml := StrTran( cXml, "?" + Chr(128), "A" )
+      cXml := StrTran( cXml, Chr(195) + Chr(166), "e" )
+      cXml := StrTran( cXml, Chr(135) + Chr(227), "ca" )
+      cXml := StrTran( cXml, "n" + Chr(227), "na" )
+      cXml := StrTran( cXml, Chr(162), "o" )
+   NEXT
+
+   RETURN cXml
+
 FUNCTION XmlNode( cXml, cNode, lComTag )
 
    LOCAL mInicio, mFim, cResultado := ""
@@ -247,12 +321,6 @@ FUNCTION CalculaDigito( cNumero, cModulo )
    ENDIF
 
    RETURN cCalculo
-
-FUNCTION MsgExclamation( cText )
-
-   wapi_MessageBox( wapi_GetActiveWindow(), cText, "Atenção", WIN_MB_ICONASTERISK )
-
-   RETURN NIL
 
 // só pra não aparecer erro
 

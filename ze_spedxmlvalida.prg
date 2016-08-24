@@ -3,15 +3,16 @@ ze_spedxmlvalida - Validação de XML
 2016.07.28.1620 - José Quintas
 */
 
+/*
 PROCEDURE PTESValidaXml
 
    LOCAL cRetorno
 
-   Inkey(0)
    cRetorno := ValidaXml( MemoRead( "d:\jpa\cordeiro\nfe\tmp\nf000094053-02-assinado.xml" ), "NFE" )
    MsgExclamation( cRetorno )
 
    RETURN
+*/
 
 FUNCTION ValidaXml( cXml, cTipo )
 
