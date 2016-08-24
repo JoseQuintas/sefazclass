@@ -1,12 +1,11 @@
 /*
-* ze_xmlfun - Funções para trabalhar com XML
+ze_xmlfun - Funções pra trabalhar com XML
 2012.02.11 - José Quintas
 
 ...
 2016.07.20.1620 - Fuso horário correto SP
+2016.08.12.1740 - Parâmetro ref UTC (da forma anterior confunde)
 */
-
-#define DOW_DOMINGO 0
 
 FUNCTION XmlNode( cXml, cNode, lComTag )
 
@@ -82,13 +81,9 @@ FUNCTION XmlTag( cTag, cConteudo )
 
    RETURN cTexto
 
-// Existem 5 caracteres de uso especial no XML:
-// (<) &lt. (>) &gt. (&) &amp. (") &quot e (') &apos.
-//
-
 FUNCTION UTF8( cTexto )
 
-   cTexto := StrTran( cTexto, "&", "&amp;" )
+   cTexto := StrTran( cTexto, "&", "&amp;" ) // (<) &lt; (>) &gt; (&) &amp; (") &quot; (') &apos;
 
    RETURN cTexto
 
@@ -102,19 +97,20 @@ FUNCTION NumberXml( nValue, nDecimals )
 
    RETURN Ltrim( Str( nValue, 16, nDecimals ) )
 
-FUNCTION DateTimeXml( dDate, cTime, cUF )
+FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC )
 
    LOCAL cText, lHorarioVerao
 
    hb_Default( @dDate, Date() )
    hb_Default( @cTime, Time() )
    hb_Default( @cUF, "SP" )
+   hb_Default( @lUTC, .T. )
 
    lHorarioVerao := ( dDate >= HorarioVeraoInicio( Year( dDate ) ) .AND. dDate <= HorarioVeraoTermino( Year( dDate - 1 ) ) )
    cText := Transform( Dtos( dDate ), "@R 9999-99-99" ) + "T" + cTime
 
    DO CASE
-   CASE cUF $ "NOUTF"                                          ; cText += "" // no UTF
+   CASE .NOT. lUTC ; cText += "" // no UTC
    CASE cUF $ "AC"                                             ; cText += "-05:00"
    CASE cUF $ "MT,MS" .AND. lHorarioVerao                      ; cText += "-05:00"
    CASE cUF $ "DF,ES,GO,MG,PR,RJ,RS,SC,SP" .AND. lHorarioVerao ; cText += "-04:00"
@@ -149,7 +145,6 @@ FUNCTION TercaDeCarnaval( iAno )
 
    RETURN DomingoDePascoa( iAno ) - 47
 
-/* Terceiro domingo de outubro */
 FUNCTION HorarioVeraoInicio( iAno )
 
    LOCAL dPrimeiroDeOutubro, dPrimeiroDomingoDeOutubro, dTerceiroDomingoDeOutubro

@@ -1,16 +1,6 @@
 /*
 ze_spedsefazclass - rotinas pra comunicação com SEFAZ
 
-2016.06.08.0320 - IndSinc em NfeLoteEnvia
-2016.06.11.1800 - Mais status válidos como XML oficial
-2016.06.15.1200 - Correção temporária, apenas envialote retornando protocolo cria o autorizado
-2016.06.15.2200 - Correção, estava invertido indsinc
-2016.06.17.1130 - Ajustes diversos
-2016.06.23.2200 - Mensagens de erro no SOAP
-2016.07.06.2130 - Usadas as variáveis da classe por default
-2016.07.26.0930 - Correção no consulta recibo ::cXmlRetorno (estava ::cXml )
-2016.08.06.1230 - DateTimeXml() pra pegar conforme UF
-2016.08.07.1700 - Correção ref. num. recibo
 */
 
 #include "hbclass.ch"
@@ -48,8 +38,6 @@ ze_spedsefazclass - rotinas pra comunicação com SEFAZ
 
 #define INDSINC_RETORNA_PROTOCOLO    "1"
 #define INDSINC_RETORNA_RECIBO       "0"
-
-#define DOW_DOMINGO                  1
 
 CREATE CLASS SefazClass
 
@@ -124,7 +112,7 @@ CREATE CLASS SefazClass
 //   ::cXmlDados += [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
 //   ::cXmlDados += [<cOrgao>] + ::UFSigla( ::cUF ) + [</cOrgao><tpAmb>] + ::cAmbiente + [</tpAmb><CNPJ>] + Substr( cChave, 7, 14 ) + [</CNPJ>]
 //   ::cXmlDados += [<chCTe>] + cChave + [</chCTe>]
-//   ::cXmlDados += [<dhEvento>] + ::DateTimeXml( , , "NOUTF" ) + [</dhEvento><tpEvento>110110</tpEvento>]
+//   ::cXmlDados += [<dhEvento>] + ::DateTimeXml( , , , .F. ) + [</dhEvento><tpEvento>110110</tpEvento>]
 //   ::cXmlDados += [<nSeqEvento>] + Ltrim( Str( nSequencia ) ) + [</nSeqEvento><detEvento versaoEvento="] + ::cVersaoXml + [">]
 //   ::cXmlDados += [<evCCeCTe><descEvento>Carta de Correcao</descEvento>]
 //   ::cXmlDados += [<infCorrecao><grupoAlterado>xobs</grupoAlterado>]
@@ -558,8 +546,8 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
 
-   cXml += [<evento versao "1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
-   cXml +=    [<infEvento Id="ID110111" + cChave + StrZero( nSequencia, 2 ) + [">]
+   cXml += [<evento versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   cXml +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    cXml +=       XmlTag( "tpAmb", ::cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
