@@ -1,6 +1,7 @@
 /*
 ze_spedsefazclass - rotinas pra comunicação com SEFAZ
 
+2016.09.14.1400 - Correção SOAP Action de consultar recibo MDFe
 Nota: CTE 2.00 vale até 06/2017 e CTE 3.00 começa em 12/2016
 */
 
@@ -74,24 +75,32 @@ CREATE CLASS SefazClass
    VAR    cWebService    INIT ""                      /* Endereço de webservice */
    VAR    cXmlSoap       INIT ""                      /* XML completo enviado pra Sefaz, incluindo informações do envelope */
 
+   METHOD CTeConsulta( ... )   INLINE  ::CTeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
+   METHOD NFeConsulta( ... )   INLINE  ::NFeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
+   METHOD MDFeConsulta( ... )  INLINE  ::MDFeConsultaProtocolo( ... )   // Não usar, apenas compatibilidade
+   METHOD CTeStatus( ... )     INLINE  ::CTeStatusServico( ... )        // Não usar, apenas compatibilidade
+   METHOD NFeStatus( ... )     INLINE  ::NFeStatusServico( ... )        // Não usar, apenas compatibilidade
+   METHOD MDFeStatus( ... )    INLINE  ::MDFeStatusServico( ... )       // Não usar, apenas compatibilidade
+   METHOD NFeCadastro( ... )   INLINE  ::NFeConsultaCadastro( ... )     // Não usar, apenas compatibilidade
+
    METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
    METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
-   METHOD CTeStatus( cUF, cCertificado, cAmbiente )
-   METHOD CTeConsulta( cChave, cCertificado, cAmbiente )
+   METHOD CTeStatusServico( cUF, cCertificado, cAmbiente )
+   METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente )
 
    METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
    METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
-   METHOD MDFeStatus( cUF, cCertificado, cAmbiente )
-   METHOD MDFeConsulta( cChave, cCertificado, cAmbiente )
+   METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente )
+   METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
 
    METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
    METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc )
    METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
-   METHOD NFeStatus( cUF, cCertificado, cAmbiente )
-   METHOD NFeConsulta( cChave, cCertificado, cAmbiente )
+   METHOD NFeStatusServico( cUF, cCertificado, cAmbiente )
+   METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
 
    METHOD NFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente )
    METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
@@ -99,7 +108,7 @@ CREATE CLASS SefazClass
    METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente )
 
-   METHOD NFeCadastro( cCnpj, cUF, cCertificado, cAmbiente )
+   METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente )
 
    METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente )
@@ -150,7 +159,7 @@ CREATE CLASS SefazClass
 //
 //   RETURN NIL
 
-METHOD CTeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    IF cCertificado != NIL
       ::cCertificado := cCertificado
@@ -163,8 +172,7 @@ METHOD CTeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cServico     := "http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta"
    ::cSoapAction  := "cteConsultaCT"
    ::cWebService  := ::GetWebService( ::cUF, WS_CTE_CONSULTAPROTOCOLO, ::cAmbiente, WS_PROJETO_CTE )
-   ::cXmlDados    := ""
-   ::cXmlDados    += [<consSitCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
+   ::cXmlDados    := [<consSitCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlDados    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados    +=    XmlTag( "xServ", "CONSULTAR" )
    ::cXmlDados    +=    XmlTag( "chCTe", cChave )
@@ -195,12 +203,9 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    ::cServico     := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao"
    ::cSoapAction  := "cteRecepcaoLote"
    ::cWebService  := ::GetWebService( ::cUF, WS_CTE_RECEPCAO, ::cAmbiente, WS_PROJETO_CTE )
-   ::cXmlDados    := ""
-   ::cXmlDados    += [<envicte versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
-   // FOR nCont = 1 TO Len( Lotes )
-   ::cXmlDados    += XmlTag( "idLote", cLote )
-   ::cXmlDados    += cXml
-   // NEXT
+   ::cXmlDados    := [<envicte versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
+   ::cXmlDados    +=    XmlTag( "idLote", cLote )
+   ::cXmlDados    +=    cXml
    ::cXmlDados    += [</envicte>]
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_CTE )
    ::cXmlRecibo := ::cXmlRetorno
@@ -210,10 +215,14 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
       ::CteConsultaRecibo()
       ::cXmlRetorno := ::CteGeraAutorizado( cXml, ::cXmlProtocolo )
    ENDIF
+
    RETURN ::cXmlRetorno
 
 METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
+   IF cRecibo != NIL
+      ::cRecibo := cRecibo
+   ENDIF
    IF cUF != NIL
       ::cUF := cUF
    ENDIF
@@ -228,8 +237,8 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ::cSoapAction := "cteRetRecepcao"
    ::cWebService := ::GetWebService( ::cUF, WS_CTE_RETRECEPCAO, ::cAmbiente, WS_PROJETO_CTE )
    ::cXmlDados   := [<consReciCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
-   ::cXmlDados   += XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDados   += XmlTag( "nRec",  cRecibo )
+   ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDados   +=    XmlTag( "nRec",  ::cRecibo )
    ::cXmlDados   += [</consReciCTe>]
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_CTE )
    ::cXmlProtocolo := ::cXmlRetorno
@@ -254,7 +263,7 @@ METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    RETURN ::cXmlAutorizado
 
-METHOD CTeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    IF cUF != NIL
       ::cUF := cUF
@@ -269,8 +278,7 @@ METHOD CTeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::cServico     := "http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico"
    ::cSoapAction  := "cteStatusServicoCT"
    ::cWebService  := ::GetWebService( ::cUF, WS_CTE_STATUSSERVICO, ::cAmbiente, WS_PROJETO_CTE )
-   ::cXmlDados    := ""
-   ::cXmlDados    += [<consStatServCte versao="]  + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
+   ::cXmlDados    := [<consStatServCte versao="]  + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlDados    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados    +=    XmlTag( "xServ", "STATUS" )
    ::cXmlDados    += [</consStatServCte>]
@@ -278,7 +286,7 @@ METHOD CTeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-METHOD MDFeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    IF cCertificado != NIL
       ::cCertificado := cCertificado
@@ -291,8 +299,7 @@ METHOD MDFeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cServico    := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta"
    ::cSoapAction := "mdfeConsultaMDF"
    ::cWebService := ::GetWebService( ::cUF, WS_MDFE_CONSULTA, ::cAmbiente, WS_PROJETO_MDFE )
-   ::cXmlDados   := ""
-   ::cXmlDados   += [<consSitMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cXmlDados   := [<consSitMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados   +=    XmlTag( "xServ", "CONSULTAR" )
    ::cXmlDados   +=    XmlTag( "chMDFe", cChave )
@@ -316,16 +323,13 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF cAmbiente != NIL
       ::cAmbiente := cAmbiente
    ENDIF
-   ::cXmlDados    := ""
    ::cVersaoXml   := "1.00"
    ::cServico     := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao"
    ::cSoapAction  := "MDFeRecepcao"
    ::cWebService  := ::GetWebService( ::cUF, WS_MDFE_RECEPCAO, ::cAmbiente, WS_PROJETO_MDFE )
-   ::cXmlDados    += [<enviMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
-   // FOR nCont = 1 TO Len( Lotes )
-   ::cXmlDados    += XmlTag( "idLote", cLote )
-   ::cXmlDados    += cXml
-   // NEXT
+   ::cXmlDados    := [<enviMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cXmlDados    +=    XmlTag( "idLote", cLote )
+   ::cXmlDados    +=    cXml
    ::cXmlDados    += [</enviMDFe>]
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_MDFE )
    ::cXmlRecibo := ::cXmlRetorno
@@ -340,6 +344,9 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
 METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
+   IF cRecibo != NIL
+      ::cRecibo := cRecibo
+   ENDIF
    IF cUF != NIL
       ::cUF := cUF
    ENDIF
@@ -351,12 +358,11 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
    ENDIF
    ::cVersaoXml   := "1.00"
    ::cServico     := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao"
-   ::cSoapAction  := "MDFeRetRecepcao"
+   ::cSoapAction  := "mdfeRetRecepcao"
    ::cWebService  := ::GetWebService( ::cUF, WS_MDFE_RETRECEPCAO, ::cAmbiente, WS_PROJETO_MDFE )
-   ::cXmlDados    := ""
-   ::cXmlDados    += [<consReciMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cXmlDados    := [<consReciMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlDados    +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDados    +=    XmlTag( "nRec", cRecibo )
+   ::cXmlDados    +=    XmlTag( "nRec", ::cRecibo )
    ::cXmlDados    += [</consReciMDFe>]
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_MDFE )
    ::cXmlProtocolo := ::cXmlRetorno
@@ -380,19 +386,18 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    ::cVersaoXml  := "1.00"
    ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe"
    ::cSoapAction := "mdfeDistDFeInteresse"
-   ::cXmlDados   := ""
-   ::cXmlDados   += [<distDFeInt versao "] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
-   ::cXmlDados   += XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDados   += XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
-   ::cXmlDados   += XmlTag( "CNPJ", cCnpj )
+   ::cXmlDados   := [<distDFeInt versao "] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDados   +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
+   ::cXmlDados   +=    XmlTag( "CNPJ", cCnpj )
    IF Empty( cNSU )
-      ::cXmlDados += [<distNSU>]
-      ::cXmlDados += XmlTag( "ultNSU", cUltNSU )
-      ::cXmlDados += [</distNSU>]
+      ::cXmlDados +=   [<distNSU>]
+      ::cXmlDados +=      XmlTag( "ultNSU", cUltNSU )
+      ::cXmlDados +=   [</distNSU>]
    ELSE
-      ::cXmlDados += [<consNSU>]
-      ::cXmlDados += XmlTag( "NSU", cNSU )
-      ::cXmlDados += [</consNSU>]
+      ::cXmlDados +=   [<consNSU>]
+      ::cXmlDados +=      XmlTag( "NSU", cNSU )
+      ::cXmlDados +=   [</consNSU>]
    ENDIF
    ::cXmlDados   += [</distDFeInt>]
    ::cWebService := ::GetWebService( ::cUF, WS_MDFE_DISTRIBUICAODFE, ::cAmbiente, WS_PROJETO_MDFE )
@@ -417,7 +422,7 @@ METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    RETURN ::cXmlAutorizado
 
-METHOD MDFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    IF cUF != NIL
       ::cUF := cUF
@@ -432,8 +437,7 @@ METHOD MDFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::cServico     := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF"
    ::cSoapAction  := "MDFeStatusServico"
    ::cWebService  := ::GetWebService( ::cUF, WS_MDFE_STATUSSERVICO, ::cAmbiente, WS_PROJETO_MDFE )
-   ::cXmlDados    := ""
-   ::cXmlDados    += [<consStatServMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cXmlDados    := [<consStatServMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlDados    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados    +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
    ::cXmlDados    +=    XmlTag( "xServ", "STATUS" )
@@ -442,7 +446,7 @@ METHOD MDFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-METHOD NFeCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    IF cUF != NIL
       ::cUF := cUF
@@ -457,8 +461,7 @@ METHOD NFeCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2"
    ::cSoapAction  := "CadConsultaCadastro2"
    ::cWebService  := ::GetWebService( ::cUF, WS_NFE_CONSULTACADASTRO, ::cAmbiente, WS_PROJETO_NFE )
-   ::cXmlDados    := ""
-   ::cXmlDados    += [<ConsCad versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlDados    := [<ConsCad versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados    +=    [<infCons>]
    ::cXmlDados    +=       XmlTag( "xServ", "CONS-CAD" )
    ::cXmlDados    +=       XmlTag( "UF", ::cUF )
@@ -469,7 +472,7 @@ METHOD NFeCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-METHOD NFeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    IF cCertificado != NIL
       ::cCertificado := cCertificado
@@ -491,8 +494,7 @@ METHOD NFeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
       ::cSoapAction := "NfeConsulta2"
    ENDCASE
    ::cWebService := ::GetWebService( ::cUF, WS_NFE_CONSULTAPROTOCOLO, ::cAmbiente, WS_PROJETO_NFE )
-   ::cXmlDados   := ""
-   ::cXmlDados   += [<consSitNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlDados   := [<consSitNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados   +=    XmlTag( "xServ", "CONSULTAR" )
    ::cXmlDados   +=    XmlTag( "chNFe", cChave )
@@ -525,12 +527,12 @@ METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAm
    ::cSoapAction := "nfeConsultaNFDest"
    ::cWebService := ::GetWebService( ::cUF, WS_NFE_CONSULTADEST, ::cAmbiente, WS_PROJETO_NFE )
    ::cXmlDados   := [<consNFeDest versao="] + ::cVersaoXml + [">]
-   ::cXmlDados   += XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDados   += XmlTag( "xServ", "CONSULTAR NFE DEST" )
-   ::cXmlDados   += XmlTag( "CNPJ", SoNumeros( cCnpj ) )
-   ::cXmlDados   += XmlTag( "indNFe", "0" ) // 0=todas,1=sem manif,2=sem nada
-   ::cXmlDados   += XmlTag( "indEmi", "0" ) // 0=todas, 1=sem cnpj raiz(sem matriz/filial)
-   ::cXmlDados   += XmlTag( "ultNSU", cUltNsu )
+   ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDados   +=    XmlTag( "xServ", "CONSULTAR NFE DEST" )
+   ::cXmlDados   +=    XmlTag( "CNPJ", SoNumeros( cCnpj ) )
+   ::cXmlDados   +=    XmlTag( "indNFe", "0" ) // 0=todas,1=sem manif,2=sem nada
+   ::cXmlDados   +=    XmlTag( "indEmi", "0" ) // 0=todas, 1=sem cnpj raiz(sem matriz/filial)
+   ::cXmlDados   +=    XmlTag( "ultNSU", cUltNsu )
    ::cXmlDados   += [</consNFeDest>]
 
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_NFE )
@@ -554,19 +556,18 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
    ::cVersaoXml  := "1.00"
    ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe"
    ::cSoapAction := "nfeDistDFeInteresse"
-   ::cXmlDados   := ""
-   ::cXmlDados   += [<distDFeInt versao "] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
-   ::cXmlDados   += XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDados   += XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
-   ::cXmlDados   += XmlTag( "CNPJ", cCnpj )
+   ::cXmlDados   := [<distDFeInt versao "] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDados   +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
+   ::cXmlDados   +=    XmlTag( "CNPJ", cCnpj )
    IF Empty( cNSU )
-      ::cXmlDados += [<distNSU>]
-      ::cXmlDados += XmlTag( "ultNSU", cUltNSU )
-      ::cXmlDados += [</distNSU>]
+      ::cXmlDados +=   [<distNSU>]
+      ::cXmlDados +=      XmlTag( "ultNSU", cUltNSU )
+      ::cXmlDados +=   [</distNSU>]
    ELSE
-      ::cXmlDados += [<consNSU>]
-      ::cXmlDados += XmlTag( "NSU", cNSU )
-      ::cXmlDados += [</consNSU>]
+      ::cXmlDados +=   [<consNSU>]
+      ::cXmlDados +=      XmlTag( "NSU", cNSU )
+      ::cXmlDados +=   [</consNSU>]
    ENDIF
    ::cXmlDados   += [</distDFeInt>]
    ::cWebService := ::GetWebService( ::cUF, WS_NFE_DISTRIBUICAODFE, ::cAmbiente, WS_PROJETO_NFE )
@@ -576,7 +577,7 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
 
 METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL cXml := ""
+   LOCAL cXml
 
    IF cCertificado != NIL
       ::cCertificado := cCertificado
@@ -588,7 +589,7 @@ METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS
 
    ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
 
-   cXml += [<evento xmlns="http://www.portalfiscal.inf.br/nfe" versao "1.00">]
+   cXml := [<evento xmlns="http://www.portalfiscal.inf.br/nfe" versao "1.00">]
    cXml +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
    cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    cXml +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -623,7 +624,7 @@ METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS
 
 METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL cXml := ""
+   LOCAL cXml
 
    IF cCertificado != NIL
       ::cCertificado := cCertificado
@@ -635,7 +636,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
 
-   cXml += [<evento versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   cXml := [<evento versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
    cXml +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    cXml +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -662,7 +663,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
 METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL cXml := ""
+   LOCAL cXml
 
    IF cCertificado != NIL
       ::cCertificado := cCertificado
@@ -674,7 +675,7 @@ METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente
 
    ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
 
-   cXml += [<evento versao "1.00" xmlns="http://www.portal.inf.br/nfe" >]
+   cXml := [<evento versao "1.00" xmlns="http://www.portal.inf.br/nfe" >]
    cXml +=    [<infEvento Id="ID210240] + cChave + StrZero( nSequencia, 2 ) + [">]
    cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    cXml +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -710,8 +711,7 @@ METHOD NFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente ) CLASS SefazClass
    ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"
    ::cSoapAction  := "nfeRecepcaoEvento"
    ::cWebService  := ::GetWebService( ::cUF, WS_NFE_RECEPCAOEVENTO, ::cAmbiente, WS_PROJETO_NFE )
-   ::cXmlDados    := ""
-   ::cXmlDados    += [<envEvento versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlDados    := [<envEvento versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados    +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
    ::cXmlDados    +=    cXml
    ::cXmlDados    += [</envEvento>]
@@ -734,8 +734,7 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2"
    ::cSoapAction := "NfeInutilizacao2"
    ::cWebService := ::GetWebService( ::cUF, WS_NFE_INUTILIZACAO, ::cAmbiente, WS_PROJETO_NFE )
-   ::cXmlDados   := ""
-   ::cXmlDados   += [<inutNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlDados   := [<inutNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados   +=    [<infInut Id="ID] + ::cUF + cAno + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
    ::cXmlDados   +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
    ::cXmlDados   +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -770,18 +769,17 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       cLote := "1"
    ENDIF
 
-   ::cXmlDados    := ""
    ::cVersaoXml   := "3.10"
    ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao"
    ::cSoapAction  := "NfeAutorizacao"
    ::cWebService  := ::GetWebService( ::cUF, WS_NFE_AUTORIZACAO, ::cAmbiente, WS_PROJETO_NFE )
-   ::cXmlDados += [<enviNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlDados    := [<enviNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    // FOR EACH cXmlNota IN aXmlNotas
-   ::cXmlDados += XmlTag( "idLote", cLote )
-   ::cXmlDados += XmlTag( "indSinc", cIndSinc )
-   ::cXmlDados += cXml
+   ::cXmlDados    += XmlTag( "idLote", cLote )
+   ::cXmlDados    += XmlTag( "indSinc", cIndSinc )
+   ::cXmlDados    += cXml
    // NEXT
-   ::cXmlDados += [</enviNFe>]
+   ::cXmlDados    += [</enviNFe>]
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_NFE )
    IF cIndSinc == INDSINC_RETORNA_RECIBO
       ::cXmlRecibo := ::cXmlRetorno
@@ -792,7 +790,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
          ::cXmlRetorno := ::NfeGeraAutorizado( cXml, ::cXmlProtocolo )
       ENDIF
    ELSE
-      ::cXmlRecibo    := ::cXmlRetorno // precaução confirmar depois pra tratar automático se retornar protocolo retornar recibo
+      ::cXmlRecibo    := ::cXmlRetorno
       ::cRecibo       := XmlNode( ::cXmlRecibo, "nRec" )
       IF ! Empty( ::cRecibo )
          ::cXmlProtocolo := ::cXmlRetorno
@@ -816,24 +814,20 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF cAmbiente != NIL
       ::cAmbiente := cAmbiente
    ENDIF
-   ::cVersaoXml := "3.10"
-   ::cServico := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
-   ::cSoapAction := "NfeRetAutorizacao"
-   ::cWebService := ::GetWebService( ::cUf, WS_NFE_RETAUTORIZACAO, ::cAmbiente, WS_PROJETO_NFE )
-   ::cXmlDados     := ""
-   ::cXmlDados     += [<consReciNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cVersaoXml    := "3.10"
+   ::cServico      := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
+   ::cSoapAction   := "NfeRetAutorizacao"
+   ::cWebService   := ::GetWebService( ::cUf, WS_NFE_RETAUTORIZACAO, ::cAmbiente, WS_PROJETO_NFE )
+   ::cXmlDados     := [<consReciNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados     +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados     +=    XmlTag( "nRec", ::cRecibo )
    ::cXmlDados     += [</consReciNFe>]
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_NFE )
    ::cXmlProtocolo := ::cXmlRetorno
-   IF ! Empty( ::cXmlRetorno )
-      // ::NfeGeraAutorizado() // a consulta retorna mais que o protocolo
-   ENDIF
 
    RETURN ::cXmlRetorno
 
-METHOD NFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    IF cUF != NIL
       ::cUF := cUF
@@ -852,13 +846,12 @@ METHOD NFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass
       ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2"
       ::cSoapAction  := "nfeStatusServicoNF2"
    ENDIF
-   ::cWebService  := ::GetWebService( ::cUF, WS_NFE_STATUSSERVICO, ::cAmbiente, WS_PROJETO_NFE )
-   ::cXmlDados    := ""
-   ::cXmlDados    += [<consStatServ versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
-   ::cXmlDados    +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDados    +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
-   ::cXmlDados    +=    XmlTag( "xServ", "STATUS" )
-   ::cXmlDados    += [</consStatServ>]
+   ::cWebService     := ::GetWebService( ::cUF, WS_NFE_STATUSSERVICO, ::cAmbiente, WS_PROJETO_NFE )
+   ::cXmlDados       := [<consStatServ versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlDados       +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDados       +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
+   ::cXmlDados       +=    XmlTag( "xServ", "STATUS" )
+   ::cXmlDados       += [</consStatServ>]
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_NFE )
 
    RETURN ::cXmlRetorno
@@ -872,7 +865,7 @@ METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       ::cXmlRetorno := "Não autorizado: " + ::cXmlProtocolo
       RETURN ::cXmlRetorno
    ENDIF
-   ::cXmlAutorizado := [<?xml version="1.0"?>] //  encoding="utf-8"?>]
+   ::cXmlAutorizado := [<?xml version="1.0"?>]
    ::cXmlAutorizado += [<nfeProc versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protNFe", .T. )
@@ -1009,14 +1002,7 @@ METHOD XmlSoapPost( cUF, cCertificado, cProjeto ) CLASS SefazClass
    CASE Empty( ::cSoapAction )
       ::cXmlRetorno := "Erro SOAP: Não há endereço de SOAP Action"
       RETURN NIL
-   //CASE Empty( ::cVersaoXml )
-   //   ::cXmlRetorno := "Erro SOAP: Não há número de versão"
-   //   RETURN NIL
    ENDCASE
-   //IF Empty( ::cUF )
-   //   ::cXmlRetorno := "Erro SOAP: Não há sigla de UF"
-   //   RETURN NIL
-   //ENDIF
    ::XmlSoapEnvelope( ::cUF, cProjeto )
    ::MicrosoftXmlSoapPost()
    IF Upper( Left( ::cXmlRetorno, 4 ) )  == "ERRO"
@@ -1038,10 +1024,10 @@ METHOD XmlSoapEnvelope( cUF, cProjeto ) CLASS SefazClass
       ::cUF := cUF
    ENDIF
    hb_Default( @cProjeto, ::cProjeto )
-   ::cXmlSoap := ""
-   ::cXmlSoap += [<?xml version="1.0"?>] //  encoding="utf-8"?>]
-   ::cXmlSoap += [<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ]
-   ::cXmlSoap +=    [xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">]
+   ::cXmlSoap    := ""
+   ::cXmlSoap    += [<?xml version="1.0"?>] //  encoding="utf-8"?>]
+   ::cXmlSoap    += [<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ]
+   ::cXmlSoap    +=    [xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">]
    IF ::cSoapAction != "nfeDistDFeInteresse"
       ::cXmlSoap +=    [<soap12:Header>]
       ::cXmlSoap +=       [<] + cProjeto + [CabecMsg xmlns="] + ::cServico + [">]
@@ -1050,20 +1036,20 @@ METHOD XmlSoapEnvelope( cUF, cProjeto ) CLASS SefazClass
       ::cXmlSoap +=       [</] + cProjeto + [CabecMsg>]
       ::cXmlSoap +=    [</soap12:Header>]
    ENDIF
-   ::cXmlSoap +=    [<soap12:Body>]
+   ::cXmlSoap    +=    [<soap12:Body>]
    IF ::cSoapAction == "nfeDistDFeInteresse"
       ::cXmlSoap += [<nfeDistDFeInteresse xmlns="] + ::cServico + [">]
       ::cXmlSoap +=       [<] + cProjeto + [DadosMsg>]
    ELSE
       ::cXmlSoap +=       [<] + cProjeto + [DadosMsg xmlns="] + ::cServico + [">]
    ENDIF
-   ::cXmlSoap += ::cXmlDados
-   ::cXmlSoap +=    [</] + cProjeto + [DadosMsg>]
+   ::cXmlSoap    += ::cXmlDados
+   ::cXmlSoap    +=    [</] + cProjeto + [DadosMsg>]
    IF ::cSoapAction == "nfeDistDFeInteresse"
       ::cXmlSoap += [</nfeDistDFeInteresse>]
    ENDIF
-   ::cXmlSoap +=    [</soap12:Body>]
-   ::cXmlSoap += [</soap12:Envelope>]
+   ::cXmlSoap    +=    [</soap12:Body>]
+   ::cXmlSoap    += [</soap12:Envelope>]
 
    RETURN ::cXmlSoap
 
