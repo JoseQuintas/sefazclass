@@ -391,7 +391,7 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    ::cVersaoXml  := "1.00"
    ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe"
    ::cSoapAction := "mdfeDistDFeInteresse"
-   ::cXmlDados   := [<distDFeInt versao "] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlDados   := [<distDFeInt versao="] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados   +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
    ::cXmlDados   +=    XmlTag( "CNPJ", cCnpj )
@@ -561,7 +561,7 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
    ::cVersaoXml  := "1.00"
    ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe"
    ::cSoapAction := "nfeDistDFeInteresse"
-   ::cXmlDados   := [<distDFeInt versao "] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlDados   := [<distDFeInt versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados   +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
    ::cXmlDados   +=    XmlTag( "CNPJ", cCnpj )
@@ -594,7 +594,7 @@ METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS
 
    ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
 
-   cXml := [<evento xmlns="http://www.portalfiscal.inf.br/nfe" versao "1.00">]
+   cXml := [<evento xmlns="http://www.portalfiscal.inf.br/nfe" versao="1.00">]
    cXml +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
    cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    cXml +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -680,7 +680,7 @@ METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente
 
    ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
 
-   cXml := [<evento versao "1.00" xmlns="http://www.portal.inf.br/nfe" >]
+   cXml := [<evento versao="1.00" xmlns="http://www.portal.inf.br/nfe" >]
    cXml +=    [<infEvento Id="ID210240] + cChave + StrZero( nSequencia, 2 ) + [">]
    cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    cXml +=       XmlTag( "tpAmb", ::cAmbiente )
