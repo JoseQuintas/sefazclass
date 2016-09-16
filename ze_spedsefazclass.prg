@@ -3,6 +3,7 @@ ze_spedsefazclass - rotinas pra comunicação com SEFAZ
 
 2016.09.14.1400 - Correção SOAP Action de consultar recibo MDFe
 2016.09.15.1230 - Motivo correto, do protocolo e não da consulta
+2016.09.16.1750 - Correção mdfeProc, estava MDFeProc
 
 Nota: CTE 2.00 vale até 06/2017 e CTE 3.00 começa em 12/2016
 */
@@ -258,7 +259,7 @@ METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       ::cXmlRetorno := "Não autorizado: " + ::cXmlProtocolo
       RETURN ::cXmlRetorno
    ENDIF
-   ::cXmlAutorizado := [<?xml version="1.0"?>]
+   ::cXmlAutorizado := [<?xml version="1.00"?>]
    ::cXmlAutorizado += [<cteProc versao="2.00" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protCTe", .T. )
@@ -420,10 +421,10 @@ METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       RETURN ::cXmlRetorno
    ENDIF
    ::cXmlAutorizado := [<?xml version="1.00"?>]
-   ::cXmlAutorizado += [<MDFeProc versao="1.00" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cXmlAutorizado += [<mdfeProc versao="1.00" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlAUtorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protMDFe", .T. )
-   ::cXmlAutorizado += [</MDFeProc>]
+   ::cXmlAutorizado += [</mdfeProc>]
 
    RETURN ::cXmlAutorizado
 
@@ -888,8 +889,8 @@ METHOD NfeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       ::cXmlRetorno := "Erro: Status do protocolo não serve como autorização"
       RETURN ::cXmlRetorno
    ENDIF
-   ::cXmlAutorizado := [<?xml version="1.00"?>] //  encoding="utf-8"?>]
-   ::cXmlAutorizado += [<procEventoNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao = "1.00">]
+   ::cXmlAutorizado := [<?xml version="1.00"?>]
+   ::cXmlAutorizado += [<procEventoNFe versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEvento" )
    ::cXmlAutorizado += [</procEvento>]
