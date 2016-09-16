@@ -2,6 +2,8 @@
 ze_spedsefazclass - rotinas pra comunicação com SEFAZ
 
 2016.09.14.1400 - Correção SOAP Action de consultar recibo MDFe
+2016.09.15.1230 - Motivo correto, do protocolo e não da consulta
+
 Nota: CTE 2.00 vale até 06/2017 e CTE 3.00 começa em 12/2016
 */
 
@@ -68,6 +70,7 @@ CREATE CLASS SefazClass
    VAR    cXmlAutorizado INIT ""                      /* XML autorizado, caso tudo ocorra sem problemas */
    VAR    cStatus        INIT ""                      /* Status obtido da resposta final da Fazenda */
    VAR    cRecibo        INIT ""                      /* Número do recibo */
+   VAR    cMotivo        INIT ""                      /* Motivo constante no Recibo */
    /* uso interno */
    VAR    cVersaoXml     INIT ""                      /* Apenas versão usada no XML */
    VAR    cServico       INIT ""                      /* Operação existente no webservice */
@@ -242,6 +245,7 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ::cXmlDados   += [</consReciCTe>]
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_CTE )
    ::cXmlProtocolo := ::cXmlRetorno
+   ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
 
    RETURN ::cXmlRetorno
 
@@ -366,6 +370,7 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
    ::cXmlDados    += [</consReciMDFe>]
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_MDFE )
    ::cXmlProtocolo := ::cXmlRetorno
+   ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
 
    RETURN ::cXmlRetorno
 
@@ -418,7 +423,7 @@ METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cXmlAutorizado += [<MDFeProc versao="1.00" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlAUtorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protMDFe", .T. )
-   ::cXmlAutorizado += [<MDFeProc>]
+   ::cXmlAutorizado += [</MDFeProc>]
 
    RETURN ::cXmlAutorizado
 
@@ -824,6 +829,7 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ::cXmlDados     += [</consReciNFe>]
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_NFE )
    ::cXmlProtocolo := ::cXmlRetorno
+   ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
 
    RETURN ::cXmlRetorno
 
