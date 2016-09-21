@@ -327,3 +327,34 @@ FUNCTION CalculaDigito( cNumero, cModulo )
 FUNCTION SayScroll( ... )
 
    RETURN NIL
+
+FUNCTION FormatNumber( nValor, nTamanho, nDecimais )
+
+   LOCAL cPicture
+
+   hb_Default( @nDecimais, 2 )
+   hb_Default( @nTamanho, 15 )
+
+   IF ValType( nValor ) == "C" // será perigoso ??
+      nValor := Val( nValor )
+   ENDIF
+
+   cPicture := Replicate( "9", nTamanho - iif( nDecimais == 0, 0, nDecimais + 1 ) )
+   cPicture := Ltrim( Transform( Val( cPicture ), "999,999,999,999,999" ) )
+   IF nDecimais != 0
+      cPicture += "." + Replicate( "9", nDecimais )
+   ENDIF
+
+   RETURN Transform( nValor, "@E " + cPicture )
+
+FUNCTION XmlToString( cTexto )
+
+   cTexto := Strtran( cTexto, "&amp;", "&" )
+   cTexto := StrTran( cTexto, "&quot;", ["] )
+   cTexto := StrTran( cTexto, "&#39;", "'" )
+   cTexto := StrTran( cTexto, "&lt;", "<" )
+   cTexto := StrTran( cTexto, "&gt;", ">" )
+   cTexto := StrTran( cTexto, "&#176;", "º" )
+   cTexto := StrTran( cTexto, "&#170;", "ª" )
+
+   RETURN cTexto

@@ -17,6 +17,9 @@ FUNCTION hb_Eol()
 FUNCTION wapi_MessageBox( nHwnd, cText, cTitle )
    RETURN Alert( cText )
 
+FUNCTION hb_Hash()
+   RETURN Hash()
+
 * w32ole.prg baseada na win32ole.prg v 1.82 2005/04/29 do xharbour
 
 STATIC bOleInitialized:=.F.
