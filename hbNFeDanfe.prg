@@ -1,7 +1,7 @@
 /*
 HBNFEDANFE - Funcoes e Classes Relativas a Impressao Danfe PDF
 Usado como Base o Projeto Open ACBR e Sites sobre XML, Certificados e Afins
-https://github.com/fernandoathayde/hbnfe
+hbnfe: https://github.com/fernandoathayde/hbnfe
 */
 
 #include "common.ch"
