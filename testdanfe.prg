@@ -23,11 +23,9 @@ PROCEDURE TesteDanfe
    oDanfe:cEmailEmitente := ""
    oDanfe:cFile          := "xmlcarta.pdf"
    oDanfe:Execute()
-   IF .NOT. oDanfe:aRetorno[ "OK" ]
-      ? oDanfe:aRetorno[ "MsgErro" ]
+   IF oDanfe:cRetorno != "OK"
+      ? oDanfe:cRetorno
    ENDIF
    RUN ( "cmd /c start " + oDanfe:cFile )
-   ? formatNumber( 4545,15,0 )
-   ? formatNumber( 23432,15,3)
 
    RETURN

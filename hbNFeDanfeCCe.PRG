@@ -63,7 +63,7 @@ CLASS hbNFeDanfeCCe
    VAR nLogoStyle // 1-esquerda, 2-direita, 3-expandido
 
    VAR cFile
-   VAR aRetorno
+   VAR cRetorno
 
    ENDCLASS
 
@@ -80,42 +80,36 @@ METHOD execute() CLASS hbNFeDanfeCCe
       ::cFonteCorrecoes := 'Courier'
    ENDIF
 
-   ::aRetorno := hb_Hash()
-
-   IF !FILE(::cArquivoCCeXML)
-      ::aRetorno[ 'OK' ] := .F.
-      ::aRetorno[ 'MsgErro' ] := 'Arquivo não encontrado ! '+::cArquivoCCeXML
-      RETURN(::aRetorno)
+   IF ! FILE(::cArquivoCCeXML)
+      ::cRetorno := "Arquivo não encontrado " + ::cArquivoCCeXML
+      RETURN ::cRetorno
    ENDIF
    ::cXMLCCe := MEMOREAD( ::cArquivoCCeXML )
    ::cChaveCCe := SUBS( ::cXMLCCe, AT('Id=',::cXMLCCe)+3+9,44)
 
-   IF !FILE(::cArquivoNFeXML)
-      ::aRetorno[ 'OK' ] := .F.
-      ::aRetorno[ 'MsgErro' ] := 'Arquivo não encontrado ! '+::cArquivoNFeXML
-      RETURN(::aRetorno)
+   IF ! FILE(::cArquivoNFeXML)
+      ::cRetorno := "Arquivo não encontrado " + ::cArquivoNFeXML
+      RETURN ::cRetorno
    ENDIF
    ::cXMLNFe := MEMOREAD( ::cArquivoNFeXML )
    ::cChaveNFe := SUBS( ::cXMLNFe, AT('Id=',::cXMLNFe)+3+4,44)
 
    IF ::cChaveCCe != ::cChaveNFe
-      ::aRetorno[ 'OK' ] := .F.
-      ::aRetorno[ 'MsgErro' ] := 'Arquivos XML com Chaves diferentes...! ' + ';Chave NF-e: ' + ::cChaveNFe + ';Chave CC-e: ' + ::cChaveCCe
-      RETURN(::aRetorno)
+      ::cRetorno := "Arquivos XML com Chaves diferentes. Chave NF-e: " + ::cChaveNFe + " Chave CC-e: " + ::cChaveCCe
+      RETURN ::cRetorno
    ENDIF
 
-   IF !::buscaDadosXML()
-      RETURN(::aRetorno)
+   IF ! ::buscaDadosXML()
+      RETURN ::cRetorno
    ENDIF
 
-   IF !::geraCCePDF()
-      ::aRetorno[ 'OK' ] := .F.
-      ::aRetorno[ 'MsgErro' ] := 'Problema ao gerar o PDF da Carta de Correção !'
-      RETURN(::aRetorno)
+   IF ! ::geraCCePDF()
+      ::cRetorno := "Problema ao gerar o PDF da Carta de Correção"
+      RETURN ::cRetorno
    ENDIF
-   ::aRetorno[ 'OK' ] := .T.
+   ::cRetorno := "OK"
 
-   RETURN(::aRetorno)
+   RETURN ::cRetorno
 
 METHOD buscaDadosXML() CLASS hbNFeDanfeCCe
 
@@ -182,7 +176,7 @@ METHOD buscaDadosXML() CLASS hbNFeDanfeCCe
    END
    ::aDest[ "IE" ] := hbNFe_PegaDadosXML("IE", cDest )
 
-   RETURN(.T.)
+   RETURN .T.
 
 METHOD geraCCePDF() CLASS hbNFeDanfeCCe
 
@@ -192,9 +186,8 @@ METHOD geraCCePDF() CLASS hbNFeDanfeCCe
    // criacao objeto pdf
    ::oPdf := HPDF_New()
    IF ::oPdf == NIL
-      ::aRetorno[ 'OK' ] := .F.
-      ::aRetorno[ 'MsgErro' ] := 'Falha da criação do objeto PDF da Carta de Correção!'
-      RETURN(.F.)
+      ::cRetorno := "Falha da criação do objeto PDF da Carta de Correção!"
+      RETURN ::cRetorno
    ENDIF
 
    /* set compression mode */
@@ -229,9 +222,8 @@ METHOD geraCCePDF() CLASS hbNFeDanfeCCe
 
    #ifdef __XHARBOUR__
      if !file('fontes\Code128bWinLarge.afm') .or. !file('fontes\Code128bWinLarge.pfb')
-        ::aRetorno[ 'OK' ] := .F.
-        ::aRetorno[ 'MsgErro' ] := 'Arquivos: fontes\Code128bWinLarge, nao encontrados...!'
-        RETURN(.F.)
+        ::cRetorno := "Arquivos: fontes\Code128bWinLarge, nao encontrados"
+        RETURN cRetorno
      endif
      ::cFonteCode128 := HPDF_LoadType1FontFromFile(::oPdf, 'fontes\Code128bWinLarge.afm', 'fontes\Code128bWinLarge.pfb')   && Code 128
      ::cFonteCode128F := HPDF_GetFont( ::oPdf, ::cFonteCode128, "WinAnsiEncoding" )
