@@ -4,6 +4,7 @@ Usado como Base o Projeto Open ACBR e Sites sobre XML, Certificados e Afins
 https://github.com/fernandoathayde/hbnfe
 */
 
+#pragma -w1
 #include "common.ch"
 #include "hbclass.ch"
 #include "harupdf.ch"
@@ -16,6 +17,9 @@ https://github.com/fernandoathayde/hbnfe
 #xcommand TRY  => BEGIN SEQUENCE WITH {| oErr | Break( oErr ) }
 #xcommand CATCH [<!oErr!>] => RECOVER [USING <oErr>] <-oErr->
 #xcommand FINALLY => ALWAYS
+#define _LOGO_ESQUERDA        1
+#define _LOGO_DIREITA         2
+#define _LOGO_EXPANDIDO       3
 
 CLASS hbNFeDanfe
 

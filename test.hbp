@@ -18,8 +18,8 @@ hbct.hbc
 
 -m
 -n
-#-w3
-#-es2
+-w3
+-es2
 -compr
 -strip
 -jobs=1
