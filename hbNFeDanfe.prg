@@ -4,7 +4,6 @@ Usado como Base o Projeto Open ACBR e Sites sobre XML, Certificados e Afins
 https://github.com/fernandoathayde/hbnfe
 */
 
-#pragma -w1
 #include "common.ch"
 #include "hbclass.ch"
 #include "harupdf.ch"
@@ -37,7 +36,7 @@ CLASS hbNFeDanfe
    METHOD dadosImposto()
    METHOD dadosTransporte()
    METHOD cabecalhoProdutos()
-   METHOD desenhaBoxProdutos(nTamanhoProd,nLarguraBox)
+   METHOD desenhaBoxProdutos(nLinhaFinalProd,nTamanhoProd)
    METHOD produtos()
    METHOD totalServico()
    METHOD dadosAdicionais()
@@ -167,8 +166,8 @@ METHOD execute() CLASS hbNFeDanfe
 METHOD buscaDadosXML() CLASS hbNFeDanfe
 
    LOCAL cIde, cEmit, cDest, cRetirada, cEntrega, cICMSTotal, cISSTotal, cRetTrib, ;
-         cTransp, cVeicTransp, cReboque, cCobranca, cInfAdic, cObsCont, cObsFisco, ;
-         cExporta, cCompra, cInfProt
+         cTransp, cVeicTransp, cReboque, cInfAdic, cObsCont, cObsFisco, ;
+         cExporta, cCompra, cInfProt // /////////////////////// cCobranca
 
    cIde := hbNFe_PegaDadosXML("ide", ::cXML )
    ::aIde := hb_Hash()
@@ -508,7 +507,7 @@ METHOD calculaItens1Folha(nItensInicial) CLASS hbNFeDanfe
 
 METHOD novaPagina() CLASS hbNFeDanfe
 
-   LOCAL nRadiano, nAltura, nLargura, nAngulo
+   LOCAL nRadiano, nAltura, nAngulo // //////////////////////////// nLargura
 
    ::oPdfPage := HPDF_AddPage( ::oPdf )
    IF ::lPaisagem = .T.
@@ -517,7 +516,7 @@ METHOD novaPagina() CLASS hbNFeDanfe
       HPDF_Page_SetSize( ::oPdfPage, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT )
    ENDIF
    nAltura := HPDF_Page_GetHeight( ::oPdfPage )
-   nLargura := HPDF_Page_GetWidth( ::oPdfPage )
+   // ///////////////////////////nLargura := HPDF_Page_GetWidth( ::oPdfPage )
 
    IF ::lPaisagem = .T. // paisagem
       ::nLinhaPdf := nAltura - 10 && Margem Superior
@@ -1274,7 +1273,7 @@ METHOD cabecalhoCobranca(nLinhaFinalCob,nTamanhoCob) CLASS hbNFeDanfe
 
 METHOD faturas() CLASS hbNFeDanfe
 
-   LOCAL nTamForm, nI, cDups, nColuna, cDup, cNumero, cVencimento, cValor
+   LOCAL nTamForm, cDups, nColuna, cDup, cNumero, cVencimento, cValor // ////////////////////////// nI
 
    IF ::nFolha = 1
       IF ::lPaisagem = .T. // paisagem
@@ -2619,6 +2618,8 @@ FUNCTION hbNFe_Texto_Hpdf( oPdfPage2, x1, y1, x2, y2, cText, align, desconhecido
    ENDIF
    HPDF_Page_EndText  ( oPdfPage2 )
 
+   HB_SYMBOL_UNUSED( desconhecido )
+
    RETURN NIL
 
 FUNCTION hbNFe_Box_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen)
@@ -2667,7 +2668,7 @@ FUNCTION CodificaCode128c(pcCodigoBarra)
 && Autor                  : Anderson Camilo
 && Data                   : 19/03/2012
 
-LOCAL nI :=0, checksum :=0, nValorCar :=0, cCode128 := '', cCodigoBarra :=''
+LOCAL nI :=0, checksum :=0, nValorCar, cCode128 := '', cCodigoBarra
 
    cCodigoBarra = pcCodigoBarra
    IF len( cCodigoBarra ) > 0    && Verifica se os caracteres são válidos (somente números)
