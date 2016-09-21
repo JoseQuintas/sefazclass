@@ -241,7 +241,7 @@ METHOD geraCCePDF() CLASS hbNFeDanfeCCe
    ::eventos()
    ::rodape()
 
-   ::cFile := iif( ::cFile == NIL, ::cChaveNFe + "-CCe.PDF", ::cFile )
+   ::cFile := iif( ::cFile == NIL, ::cChaveNFe + "-110110.PDF", ::cFile ) // 110110 é o evento carta de correção
 
    HPDF_SaveToFile( ::oPdf, ::cFile )
    HPDF_Free( ::oPdf )

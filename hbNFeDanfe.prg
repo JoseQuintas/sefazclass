@@ -21,7 +21,7 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 
 CLASS hbNFeDanfe
 
-   METHOD execute()
+   METHOD execute( cXmlNota, cFilePDF )
    METHOD buscaDadosXML()
    METHOD geraPDF()
    METHOD novaPagina()
@@ -51,7 +51,6 @@ CLASS hbNFeDanfe
    VAR cSiteEmitente     INIT ""
    VAR cEmailEmitente    INIT ""
    VAR cDesenvolvedor    INIT ""
-   VAR cArquivoXML
    VAR cXML
    VAR cChave
    VAR aIde
@@ -116,11 +115,11 @@ CLASS hbNFeDanfe
    VAR lValorDesc INIT .F.
    VAR nCasasQtd INIT 2
    VAR nCasasVUn INIT 2
-   VAR aRetorno
+   VAR cRetorno
 
    ENDCLASS
 
-METHOD execute() CLASS hbNFeDanfe
+METHOD execute( cXmlNota, cFilePDF ) CLASS hbNFeDanfe
 
    IF ::lLaser <> Nil
       ::lLaser := .T.
@@ -128,18 +127,21 @@ METHOD execute() CLASS hbNFeDanfe
    IF ::cFonteNFe = Nil
       ::cFonteNFe := 'Times'
    ENDIF
-   ::aRetorno := hb_Hash()
 
-   IF !FILE(::cArquivoXML)
-      ::aRetorno[ 'OK' ] := .F.
-      ::aRetorno[ 'MsgErro' ] := 'Arquivo não encontrado ! '+::cArquivoXML
-      RETURN(::aRetorno)
+   IF Empty( cXmlNota )
+      ::cRetorno := "XML sem conteúdo"
+      RETURN ::cRetorno
    ENDIF
-   ::cXML := MEMOREAD( ::cArquivoXML )
+
+   IF ! Empty( cFilePDF )
+      ::cFile := cFilePDF
+   ENDIF
+
+   ::cXML := cXmlNota
    ::cChave := SUBS( ::cXML, AT('Id=',::cXML)+3+4,44)
 
    IF !::buscaDadosXML()
-      RETURN(::aRetorno)
+      RETURN ::cRetorno
    ENDIF
 
    IF ::aIde[ "tpImp" ] = "2"  // paisagem
@@ -154,13 +156,12 @@ METHOD execute() CLASS hbNFeDanfe
       ::nLarguraDescricao := 39
    ENDIF
    IF !::geraPDF()
-      ::aRetorno[ 'OK' ] := .F.
-      ::aRetorno[ 'MsgErro' ] := 'Problema ao gerar o PDF !'
-      RETURN(::aRetorno)
+      ::cRetorno := "Problema ao gerar o PDF"
+      RETURN ::cRetorno
    ENDIF
-   ::aRetorno[ 'OK' ] := .T.
+   ::cRetorno := "OK"
 
-   RETURN ::aRetorno
+   RETURN ::cRetorno
 
 METHOD buscaDadosXML() CLASS hbNFeDanfe
 
@@ -236,9 +237,8 @@ METHOD buscaDadosXML() CLASS hbNFeDanfe
    ::aDest[ "UF" ] := hbNFe_PegaDadosXML("UF", cDest )
    ::aDest[ "CEP" ] := hbNFe_PegaDadosXML("CEP", cDest )
    *IF ( ::aDest[ "CEP" ] = Nil .OR. EMPTY(ALLTRIM(::aDest[ "CEP" ])) ) .AND. ::aDest[ "UF" ]  <> "EX"
-   *   ::aRetorno[ 'OK' ] := .F.
-   *   ::aRetorno[ 'MsgErro' ] := 'Destinatário sem CEP ou inválido !'
-   *   RETURN(.F.)
+   *   ::cRetorno := "Destinatário sem CEP ou inválido"
+   *   RETURN .F.
    *ENDIF
    ::aDest[ "cPais" ] := hbNFe_PegaDadosXML("cPais", cDest )
    ::aDest[ "xPais" ] := hbNFe_PegaDadosXML("xPais", cDest )
@@ -251,9 +251,8 @@ METHOD buscaDadosXML() CLASS hbNFeDanfe
    ::aDest[ "ISUF" ] := hbNFe_PegaDadosXML("ISUF", cDest ) // NFE 2.0
    ::aDest[ "email" ] := hbNFe_PegaDadosXML("email", cDest ) // NFE 2.0
 *   IF ::aDest[ "email" ] = Nil .OR. EMPTY(ALLTRIM(::aDest[ "email" ]))
-*      ::aRetorno[ 'OK' ] := .F.
-*      ::aRetorno[ 'MsgErro' ] := 'Destinatário sem eMail ou inválido !'
-*      RETURN(.F.)
+*      ::cRetorno := "Destinatário sem eMail ou inválido"
+*      RETURN .F.
 *   ENDIF
 
    cRetirada := hbNFe_PegaDadosXML("retirada", ::cXML )
@@ -406,9 +405,8 @@ METHOD geraPDF() CLASS hbNFeDanfe
    // criacao objeto pdf
    ::oPdf := HPDF_New()
    IF ::oPdf == NIL
-      ::aRetorno[ 'OK' ] := .F.
-      ::aRetorno[ 'MsgErro' ] := 'Falha da criação do objeto PDF !'
-      RETURN(.F.)
+      ::cRetorno := "Falha da criação do objeto PDF"
+      RETURN .F.
    ENDIF
    /* set compression mode */
    HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
@@ -425,9 +423,8 @@ METHOD geraPDF() CLASS hbNFeDanfe
 
    #ifdef __XHARBOUR__
      if !file('fontes\Code128bWinLarge.afm') .or. !file('fontes\Code128bWinLarge.pfb')
-        ::aRetorno[ 'OK' ] := .F.
-        ::aRetorno[ 'MsgErro' ] := 'Arquivos: fontes\Code128bWinLarge, nao encontrados...!'
-        RETURN(.F.)
+        ::cRetorno := "Arquivos: fontes\Code128bWinLarge, nao encontrados...!"
+        RETURN .F.
      endif
 
       && Inserido por Anderson Camilo em 04/04/2012
