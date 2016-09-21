@@ -1,4 +1,7 @@
 test.prg
+testdanfe.prg
+hbnfedanfe.prg
+hbnfedanfecce.prg
 ze_capicom.prg
 ze_SpedAssina.prg
 ze_spedAssinachk.prg
@@ -9,11 +12,14 @@ ze_xmlfun.prg
 ze_xharbour.prg
 
 hbwin.hbc
+hbzebra.hbc
+hbhpdf.hbc
+hbct.hbc
 
 -m
 -n
--w3
--es2
+#-w3
+#-es2
 -compr
 -strip
 -jobs=1
