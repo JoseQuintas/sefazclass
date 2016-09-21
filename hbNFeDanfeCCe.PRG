@@ -21,7 +21,7 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 
 CLASS hbNFeDanfeCCe
 
-   METHOD execute()
+   METHOD execute( cXmlCarta, cXmlNota, cFilePDF )
    METHOD buscaDadosXML()
    METHOD geraCCePDF()
    METHOD cabecalho()
@@ -32,8 +32,6 @@ CLASS hbNFeDanfeCCe
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
    VAR cEmailEmitente    INIT ""
-   VAR cArquivoNFeXML
-   VAR cArquivoCCeXML
    VAR cXMLNFe
    VAR cXMLCCe
    VAR cChaveNFe
@@ -66,31 +64,28 @@ CLASS hbNFeDanfeCCe
 
    ENDCLASS
 
-METHOD execute() CLASS hbNFeDanfeCCe
+METHOD execute( cXmlCarta, cXmlNota, cFilePDF ) CLASS hbNFeDanfeCCe
 
-   IF ::lLaser <> Nil
-      ::lLaser := .T.
-   ENDIF
-   IF ::cFonteCCe = Nil
-      ::cFonteCCe := 'Times'
-   ENDIF
+   hb_Default( @::lLaser, .T. )
+   hb_Default( @::cFonteCCe, "Times" )
+   hb_Default( @::cFonteCorrecoes, "Courier" )
 
-   IF ::cFonteCorrecoes = Nil
-      ::cFonteCorrecoes := 'Courier'
-   ENDIF
-
-   IF ! FILE(::cArquivoCCeXML)
-      ::cRetorno := "Arquivo não encontrado " + ::cArquivoCCeXML
+   IF Empty( cXmlCarta )
+      ::cRetorno := "Não tem conteúdo do XML da carta de correção"
       RETURN ::cRetorno
    ENDIF
-   ::cXMLCCe := MEMOREAD( ::cArquivoCCeXML )
+   IF Empty( cXmlNota )
+      ::cRetorno := "Não tem conteúdo do XML da nota"
+      RETURN ::cRetorno
+   ENDIF
+   IF .NOT. Empty( cFilePDF )
+      ::cFile := cFilePDF
+   ENDIF
+
+   ::cXMLCCe := cXmlCarta
    ::cChaveCCe := SUBS( ::cXMLCCe, AT('Id=',::cXMLCCe)+3+9,44)
 
-   IF ! FILE(::cArquivoNFeXML)
-      ::cRetorno := "Arquivo não encontrado " + ::cArquivoNFeXML
-      RETURN ::cRetorno
-   ENDIF
-   ::cXMLNFe := MEMOREAD( ::cArquivoNFeXML )
+   ::cXMLNFe := cXmlNota
    ::cChaveNFe := SUBS( ::cXMLNFe, AT('Id=',::cXMLNFe)+3+4,44)
 
    IF ::cChaveCCe != ::cChaveNFe

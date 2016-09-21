@@ -17,12 +17,9 @@ PROCEDURE TesteDanfe
    RUN ( "cmd /c start " + oDanfe:cFile )
 
    oDanfe := hbnfeDanfeCce():New()
-   oDanfe:cArquivoNfeXml := "xmlnota.xml"
-   oDanfe:cArquivoCceXml := "xmlcarta.xml"
    oDanfe:cSiteEmitente  := ""
    oDanfe:cEmailEmitente := ""
-   oDanfe:cFile          := "xmlcarta.pdf"
-   oDanfe:Execute()
+   oDanfe:Execute( MemoRead( "xmlcarta.xml" ), MemoRead( "xmlnota.xml" ), "xmlcarta.pdf" )
    IF oDanfe:cRetorno != "OK"
       ? oDanfe:cRetorno
    ENDIF
