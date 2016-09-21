@@ -4,7 +4,6 @@ Usado como Base o Projeto Open ACBR e Sites sobre XML, Certificados e Afins
 https://github.com/fernandoathayde/hbnfe
 */
 
-#pragma -w1
 #include "common.ch"
 #include "hbclass.ch"
 #include "harupdf.ch"
@@ -187,8 +186,8 @@ METHOD buscaDadosXML() CLASS hbNFeDanfeCCe
 
 METHOD geraCCePDF() CLASS hbNFeDanfeCCe
 
-   LOCAL nItem, nIdes, nItensNF, nItens1Folha
-   LOCAL nRadiano, nAltura, nLargura, nAngulo
+   // /////////////////////////////////////// LOCAL nItem, nIdes, nItensNF, nItens1Folha
+   LOCAL nAltura // ///////////////////////// nRadiano, nLargura, nAngulo
 
    // criacao objeto pdf
    ::oPdf := HPDF_New()
@@ -244,12 +243,12 @@ METHOD geraCCePDF() CLASS hbNFeDanfeCCe
 
    HPDF_Page_SetSize( ::oPdfPage, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT )
    nAltura := HPDF_Page_GetHeight( ::oPdfPage )    &&  = 841,89
-   nLargura := HPDF_Page_GetWidth( ::oPdfPage )    &&  = 595,28
+   // ///////////////////nLargura := HPDF_Page_GetWidth( ::oPdfPage )    &&  = 595,28
 
    ::nLinhaPdf := nAltura - 25   && Margem Superior
 
-   nAngulo := 45                   /* A rotation of 45 degrees. */
-   nRadiano := nAngulo / 180 * 3.141592 /* Calcurate the radian value. */
+   /////////////////////nAngulo := 45                   /* A rotation of 45 degrees. */
+   // //////////////////nRadiano := nAngulo / 180 * 3.141592 /* Calcurate the radian value. */
 
    ::cabecalho()
    ::destinatario()
