@@ -171,14 +171,14 @@ METHOD buscaDadosXML() CLASS hbNFeDanfe
 
    cIde := hbNFe_PegaDadosXML("ide", ::cXML )
    ::aIde := hb_Hash()
-   ::aIde[ "cUF" ] := hbNFe_PegaDadosXML("cUF", cIde )
-   ::aIde[ "cNF" ] := hbNFe_PegaDadosXML("cNF", cIde )
-   ::aIde[ "natOp" ] := hbNFe_PegaDadosXML("natOp", cIde )
-   ::aIde[ "indPag" ] := hbNFe_PegaDadosXML("indPag", cIde )
-   ::aIde[ "mod" ] := hbNFe_PegaDadosXML("mod", cIde )
-   ::aIde[ "serie" ] := hbNFe_PegaDadosXML("serie", cIde )
-   ::aIde[ "nNF" ] := hbNFe_PegaDadosXML("nNF", cIde )
-   ::aIde[ "dhEmi" ] := hbNFe_PegaDadosXML("dhEmi", cIde )
+   ::aIde[ "cUF" ]      := hbNFe_PegaDadosXML("cUF", cIde )
+   ::aIde[ "cNF" ]      := hbNFe_PegaDadosXML("cNF", cIde )
+   ::aIde[ "natOp" ]    := hbNFe_PegaDadosXML("natOp", cIde )
+   ::aIde[ "indPag" ]   := hbNFe_PegaDadosXML("indPag", cIde )
+   ::aIde[ "mod" ]      := hbNFe_PegaDadosXML("mod", cIde )
+   ::aIde[ "serie" ]    := hbNFe_PegaDadosXML("serie", cIde )
+   ::aIde[ "nNF" ]      := hbNFe_PegaDadosXML("nNF", cIde )
+   ::aIde[ "dhEmi" ]    := hbNFe_PegaDadosXML("dhEmi", cIde )
    IF ::aIde[ "dhEmi" ] = Nil .OR. EMPTY(::aIde[ "dhEmi" ]) // NFE 2.0
       ::aIde[ "dhEmi" ] := hbNFe_PegaDadosXML("dEmi", cIde )
    ENDIF
@@ -186,215 +186,214 @@ METHOD buscaDadosXML() CLASS hbNFeDanfe
    IF ::aIde[ "dhSaiEnt" ] = Nil .OR. EMPTY(::aIde[ "dhSaiEnt" ]) // NFE 2.0
       ::aIde[ "dhSaiEnt" ] := hbNFe_PegaDadosXML("dSaiEnt", cIde )+"T"+TIME()
    ENDIF
-   ::aIde[ "tpNF" ] := hbNFe_PegaDadosXML("tpNF", cIde )
-   ::aIde[ "cMunFG" ] := hbNFe_PegaDadosXML("cMunFG", cIde )
-   ::aIde[ "tpImp" ] := hbNFe_PegaDadosXML("tpImp", cIde )  // 1 - retrato 2-paisagem
-   ::aIde[ "tpEmis" ] := hbNFe_PegaDadosXML("tpEmis", cIde )
-   ::aIde[ "cDV" ] := hbNFe_PegaDadosXML("cDV", cIde )
-   ::aIde[ "tpAmb" ] := hbNFe_PegaDadosXML("tpAmb", cIde )  // 1- producao 2-homologacao
-   ::aIde[ "finNFe" ] := hbNFe_PegaDadosXML("finNFe", cIde ) // finalidade 1-normal/2-complementar 3- de ajuste
+   ::aIde[ "tpNF" ]    := hbNFe_PegaDadosXML("tpNF", cIde )
+   ::aIde[ "cMunFG" ]  := hbNFe_PegaDadosXML("cMunFG", cIde )
+   ::aIde[ "tpImp" ]   := hbNFe_PegaDadosXML("tpImp", cIde )  // 1 - retrato 2-paisagem
+   ::aIde[ "tpEmis" ]  := hbNFe_PegaDadosXML("tpEmis", cIde )
+   ::aIde[ "cDV" ]     := hbNFe_PegaDadosXML("cDV", cIde )
+   ::aIde[ "tpAmb" ]   := hbNFe_PegaDadosXML("tpAmb", cIde )  // 1- producao 2-homologacao
+   ::aIde[ "finNFe" ]  := hbNFe_PegaDadosXML("finNFe", cIde ) // finalidade 1-normal/2-complementar 3- de ajuste
    ::aIde[ "procEmi" ] := hbNFe_PegaDadosXML("procEmi", cIde ) //0 - emissão de NF-e com aplicativo do contribuinte 1 - emissão de NF-e avulsa pelo Fisco 2 - emissão de NF-e avulsa pelo contribuinte com seu certificado digital, através do site do Fisco 3- emissão NF-e pelo contribuinte com aplicativo fornecido pelo Fisco.
    ::aIde[ "verProc" ] := hbNFe_PegaDadosXML("verProc", cIde ) // versao sistema
 
    cEmit := hbNFe_PegaDadosXML("emit", ::cXML )
    ::aEmit := hb_Hash()
-   ::aEmit[ "CNPJ" ] := hbNFe_PegaDadosXML("CNPJ", cEmit )
-   ::aEmit[ "CPF" ] := hbNFe_PegaDadosXML("CPF", cEmit ) // avulso pelo fisco
-   ::aEmit[ "xNome" ] := XmlToString( hbNFe_PegaDadosXML("xNome", cEmit ) )
-   ::aEmit[ "xFant" ] := hbNFe_PegaDadosXML("xFant", cEmit )
-   ::aEmit[ "xLgr" ] := hbNFe_PegaDadosXML("xLgr", cEmit )
-   ::aEmit[ "nro" ] := hbNFe_PegaDadosXML("nro", cEmit )
+   ::aEmit[ "CNPJ" ]    := hbNFe_PegaDadosXML("CNPJ", cEmit )
+   ::aEmit[ "CPF" ]     := hbNFe_PegaDadosXML("CPF", cEmit ) // avulso pelo fisco
+   ::aEmit[ "xNome" ]   := XmlToString( hbNFe_PegaDadosXML("xNome", cEmit ) )
+   ::aEmit[ "xFant" ]   := hbNFe_PegaDadosXML("xFant", cEmit )
+   ::aEmit[ "xLgr" ]    := hbNFe_PegaDadosXML("xLgr", cEmit )
+   ::aEmit[ "nro" ]     := hbNFe_PegaDadosXML("nro", cEmit )
    ::aEmit[ "xBairro" ] := hbNFe_PegaDadosXML("xBairro", cEmit )
-   ::aEmit[ "cMun" ] := hbNFe_PegaDadosXML("cMun", cEmit )
-   ::aEmit[ "xMun" ] := hbNFe_PegaDadosXML("xMun", cEmit )
-   ::aEmit[ "UF" ] := hbNFe_PegaDadosXML("UF", cEmit )
-   ::aEmit[ "CEP" ] := hbNFe_PegaDadosXML("CEP", cEmit )
-   ::aEmit[ "cPais" ] := hbNFe_PegaDadosXML("cPais", cEmit )
-   ::aEmit[ "xPais" ] := hbNFe_PegaDadosXML("xPais", cEmit )
-   ::aEmit[ "fone" ] := hbNFe_PegaDadosXML("fone", cEmit ) // NFE 2.0
-   ::aEmit[ "IE" ] := hbNFe_PegaDadosXML("IE", cEmit )
-   ::aEmit[ "IEST" ] := hbNFe_PegaDadosXML("IEST", cEmit )
-   ::aEmit[ "IM" ] := hbNFe_PegaDadosXML("IM", cEmit )
-   ::aEmit[ "CNAE" ] := hbNFe_PegaDadosXML("CNAE", cEmit )
-   ::aEmit[ "CRT" ] := hbNFe_PegaDadosXML("CRT", cEmit ) // NFE 2.0 1 simpl nac 2 sim nac ex. sub receita 3 regime normal
+   ::aEmit[ "cMun" ]    := hbNFe_PegaDadosXML("cMun", cEmit )
+   ::aEmit[ "xMun" ]    := hbNFe_PegaDadosXML("xMun", cEmit )
+   ::aEmit[ "UF" ]      := hbNFe_PegaDadosXML("UF", cEmit )
+   ::aEmit[ "CEP" ]     := hbNFe_PegaDadosXML("CEP", cEmit )
+   ::aEmit[ "cPais" ]   := hbNFe_PegaDadosXML("cPais", cEmit )
+   ::aEmit[ "xPais" ]   := hbNFe_PegaDadosXML("xPais", cEmit )
+   ::aEmit[ "fone" ]    := hbNFe_PegaDadosXML("fone", cEmit ) // NFE 2.0
+   ::aEmit[ "IE" ]      := hbNFe_PegaDadosXML("IE", cEmit )
+   ::aEmit[ "IEST" ]    := hbNFe_PegaDadosXML("IEST", cEmit )
+   ::aEmit[ "IM" ]      := hbNFe_PegaDadosXML("IM", cEmit )
+   ::aEmit[ "CNAE" ]    := hbNFe_PegaDadosXML("CNAE", cEmit )
+   ::aEmit[ "CRT" ]     := hbNFe_PegaDadosXML("CRT", cEmit ) // NFE 2.0 1 simpl nac 2 sim nac ex. sub receita 3 regime normal
 
    TRY
-      ::cTelefoneEmitente := TRANSF( Sonumeros(ALLTRIM(hbNFe_PegaDadosXML("fone", cEmit ))),"@R (99) 99999-9999")
+      ::cTelefoneEmitente := TRANSF( Sonumeros( ALLTRIM( hbNFe_PegaDadosXML( "fone", cEmit ) ) ), "@R (99) 99999-9999" )
    CATCH
       ::cTelefoneEmitente := ""
    END
 
-   cDest := hbNFe_PegaDadosXML("dest", ::cXML )
+   cDest := hbNFe_PegaDadosXML( "dest", ::cXML )
    ::aDest := hb_Hash()
-   ::aDest[ "CNPJ" ] := hbNFe_PegaDadosXML("CNPJ", cDest )
-   ::aDest[ "CPF" ] := hbNFe_PegaDadosXML("CPF", cDest )
-   ::aDest[ "xNome" ] := XmlToString( hbNFe_PegaDadosXML("xNome", cDest ) )
-   ::aDest[ "xLgr" ] := hbNFe_PegaDadosXML("xLgr", cDest )
-   ::aDest[ "nro" ] := hbNFe_PegaDadosXML("nro", cDest )
-   ::aDest[ "xBairro" ] := hbNFe_PegaDadosXML("xBairro", cDest )
-   ::aDest[ "cMun" ] := hbNFe_PegaDadosXML("cMun", cDest )
-   ::aDest[ "xMun" ] := hbNFe_PegaDadosXML("xMun", cDest )
-   ::aDest[ "UF" ] := hbNFe_PegaDadosXML("UF", cDest )
-   ::aDest[ "CEP" ] := hbNFe_PegaDadosXML("CEP", cDest )
+   ::aDest[ "CNPJ" ]    := hbNFe_PegaDadosXML( "CNPJ", cDest )
+   ::aDest[ "CPF" ]     := hbNFe_PegaDadosXML( "CPF", cDest )
+   ::aDest[ "xNome" ]   := XmlToString( hbNFe_PegaDadosXML( "xNome", cDest ) )
+   ::aDest[ "xLgr" ]    := hbNFe_PegaDadosXML( "xLgr", cDest )
+   ::aDest[ "nro" ]     := hbNFe_PegaDadosXML( "nro", cDest )
+   ::aDest[ "xBairro" ] := hbNFe_PegaDadosXML( "xBairro", cDest )
+   ::aDest[ "cMun" ]    := hbNFe_PegaDadosXML( "cMun", cDest )
+   ::aDest[ "xMun" ]    := hbNFe_PegaDadosXML( "xMun", cDest )
+   ::aDest[ "UF" ]      := hbNFe_PegaDadosXML( "UF", cDest )
+   ::aDest[ "CEP" ]     := hbNFe_PegaDadosXML( "CEP", cDest )
    *IF ( ::aDest[ "CEP" ] = Nil .OR. EMPTY(ALLTRIM(::aDest[ "CEP" ])) ) .AND. ::aDest[ "UF" ]  <> "EX"
    *   ::cRetorno := "Destinatário sem CEP ou inválido"
    *   RETURN .F.
    *ENDIF
-   ::aDest[ "cPais" ] := hbNFe_PegaDadosXML("cPais", cDest )
-   ::aDest[ "xPais" ] := hbNFe_PegaDadosXML("xPais", cDest )
+   ::aDest[ "cPais" ] := hbNFe_PegaDadosXML( "cPais", cDest )
+   ::aDest[ "xPais" ] := hbNFe_PegaDadosXML( "xPais", cDest )
    TRY
-      ::aDest[ "fone" ] := IF(LEN(hbNFe_PegaDadosXML("fone", cDest ))<=8,"00"+hbNFe_PegaDadosXML("fone", cDest ),hbNFe_PegaDadosXML("fone", cDest ))
+      ::aDest[ "fone" ] := iif( LEN( hbNFe_PegaDadosXML( "fone", cDest ) ) <= 8, "00" + hbNFe_PegaDadosXML( "fone", cDest ), hbNFe_PegaDadosXML( "fone", cDest ) )
    CATCH
       ::aDest[ "fone" ] := ''
    END
-   ::aDest[ "IE" ] := hbNFe_PegaDadosXML("IE", cDest )
-   ::aDest[ "ISUF" ] := hbNFe_PegaDadosXML("ISUF", cDest ) // NFE 2.0
-   ::aDest[ "email" ] := hbNFe_PegaDadosXML("email", cDest ) // NFE 2.0
+   ::aDest[ "IE" ]    := hbNFe_PegaDadosXML( "IE", cDest )
+   ::aDest[ "ISUF" ]  := hbNFe_PegaDadosXML( "ISUF", cDest ) // NFE 2.0
+   ::aDest[ "email" ] := hbNFe_PegaDadosXML( "email", cDest ) // NFE 2.0
 *   IF ::aDest[ "email" ] = Nil .OR. EMPTY(ALLTRIM(::aDest[ "email" ]))
 *      ::cRetorno := "Destinatário sem eMail ou inválido"
 *      RETURN .F.
 *   ENDIF
 
-   cRetirada := hbNFe_PegaDadosXML("retirada", ::cXML )
+   cRetirada := hbNFe_PegaDadosXML( "retirada", ::cXML )
    ::aRetirada := hb_Hash()
-   ::aRetirada[ "CNPJ" ] := hbNFe_PegaDadosXML("CNPJ", cRetirada ) // NFE 2.0
-   ::aRetirada[ "CPF" ] := hbNFe_PegaDadosXML("CPF", cRetirada ) // NFE 2.0
-   ::aRetirada[ "xLgr" ] := hbNFe_PegaDadosXML("xLgr", cRetirada )
-   ::aRetirada[ "nro" ] := hbNFe_PegaDadosXML("nro", cRetirada )
-   ::aRetirada[ "xCpl" ] := hbNFe_PegaDadosXML("xCpl", cRetirada )
-   ::aRetirada[ "xBairro" ] := hbNFe_PegaDadosXML("xBairro", cRetirada )
-   ::aRetirada[ "cMun" ] := hbNFe_PegaDadosXML("cMun", cRetirada )
-   ::aRetirada[ "xMun" ] := hbNFe_PegaDadosXML("xMun", cRetirada )
-   ::aRetirada[ "UF" ] := hbNFe_PegaDadosXML("UF", cRetirada )
+   ::aRetirada[ "CNPJ" ]    := hbNFe_PegaDadosXML( "CNPJ", cRetirada ) // NFE 2.0
+   ::aRetirada[ "CPF" ]     := hbNFe_PegaDadosXML( "CPF", cRetirada ) // NFE 2.0
+   ::aRetirada[ "xLgr" ]    := hbNFe_PegaDadosXML( "xLgr", cRetirada )
+   ::aRetirada[ "nro" ]     := hbNFe_PegaDadosXML( "nro", cRetirada )
+   ::aRetirada[ "xCpl" ]    := hbNFe_PegaDadosXML( "xCpl", cRetirada )
+   ::aRetirada[ "xBairro" ] := hbNFe_PegaDadosXML( "xBairro", cRetirada )
+   ::aRetirada[ "cMun" ]    := hbNFe_PegaDadosXML( "cMun", cRetirada )
+   ::aRetirada[ "xMun" ]    := hbNFe_PegaDadosXML( "xMun", cRetirada )
+   ::aRetirada[ "UF" ]      := hbNFe_PegaDadosXML( "UF", cRetirada )
 
-   cEntrega := hbNFe_PegaDadosXML("entrega", ::cXML )
+   cEntrega := hbNFe_PegaDadosXML( "entrega", ::cXML )
    ::aEntrega := hb_Hash()
-   ::aEntrega[ "CNPJ" ] := hbNFe_PegaDadosXML("CNPJ", cEntrega ) // NFE 2.0
-   ::aEntrega[ "CPF" ] := hbNFe_PegaDadosXML("CPF", cEntrega ) // NFE 2.0
-   ::aEntrega[ "xLgr" ] := hbNFe_PegaDadosXML("xLgr", cEntrega )
-   ::aEntrega[ "nro" ] := hbNFe_PegaDadosXML("nro", cEntrega )
-   ::aEntrega[ "xCpl" ] := hbNFe_PegaDadosXML("xCpl", cEntrega )
-   ::aEntrega[ "xBairro" ] := hbNFe_PegaDadosXML("xBairro", cEntrega )
-   ::aEntrega[ "cMun" ] := hbNFe_PegaDadosXML("cMun", cEntrega )
-   ::aEntrega[ "xMun" ] := hbNFe_PegaDadosXML("xMun", cEntrega )
-   ::aEntrega[ "UF" ] := hbNFe_PegaDadosXML("UF", cEntrega )
+   ::aEntrega[ "CNPJ" ]    := hbNFe_PegaDadosXML( "CNPJ", cEntrega ) // NFE 2.0
+   ::aEntrega[ "CPF" ]     := hbNFe_PegaDadosXML( "CPF", cEntrega ) // NFE 2.0
+   ::aEntrega[ "xLgr" ]    := hbNFe_PegaDadosXML( "xLgr", cEntrega )
+   ::aEntrega[ "nro" ]     := hbNFe_PegaDadosXML( "nro", cEntrega )
+   ::aEntrega[ "xCpl" ]    := hbNFe_PegaDadosXML( "xCpl", cEntrega )
+   ::aEntrega[ "xBairro" ] := hbNFe_PegaDadosXML( "xBairro", cEntrega )
+   ::aEntrega[ "cMun" ]    := hbNFe_PegaDadosXML( "cMun", cEntrega )
+   ::aEntrega[ "xMun" ]    := hbNFe_PegaDadosXML( "xMun", cEntrega )
+   ::aEntrega[ "UF" ]      := hbNFe_PegaDadosXML( "UF", cEntrega )
 
 
 
    // totais da NF
    cICMSTotal := hbNFe_PegaDadosXML("ICMSTot", ::cXML )
    ::aICMSTotal := hb_Hash()
-   ::aICMSTotal[ "vBC" ] := hbNFe_PegaDadosXML("vBC", cICMSTotal )
-   ::aICMSTotal[ "vICMS" ] := hbNFe_PegaDadosXML("vICMS", cICMSTotal )
-   ::aICMSTotal[ "vBCST" ] := hbNFe_PegaDadosXML("vBCST", cICMSTotal )
-   ::aICMSTotal[ "vST" ] := hbNFe_PegaDadosXML("vST", cICMSTotal )
-   ::aICMSTotal[ "vProd" ] := hbNFe_PegaDadosXML("vProd", cICMSTotal )
-   ::aICMSTotal[ "vFrete" ] := hbNFe_PegaDadosXML("vFrete", cICMSTotal )
-   ::aICMSTotal[ "vSeg" ] := hbNFe_PegaDadosXML("vSeg", cICMSTotal )
-   ::aICMSTotal[ "vDesc" ] := hbNFe_PegaDadosXML("vDesc", cICMSTotal )
-   ::aICMSTotal[ "vII" ] := hbNFe_PegaDadosXML("vII", cICMSTotal )
-   ::aICMSTotal[ "vIPI" ] := hbNFe_PegaDadosXML("vIPI", cICMSTotal )
-   ::aICMSTotal[ "vPIS" ] := hbNFe_PegaDadosXML("vPIS", cICMSTotal )
-   ::aICMSTotal[ "vCOFINS" ] := hbNFe_PegaDadosXML("vCOFINS", cICMSTotal )
-   ::aICMSTotal[ "vOutro" ] := hbNFe_PegaDadosXML("vOutro", cICMSTotal )
-   ::aICMSTotal[ "vNF" ] := hbNFe_PegaDadosXML("vNF", cICMSTotal )
+   ::aICMSTotal[ "vBC" ]     := hbNFe_PegaDadosXML( "vBC", cICMSTotal )
+   ::aICMSTotal[ "vICMS" ]   := hbNFe_PegaDadosXML( "vICMS", cICMSTotal )
+   ::aICMSTotal[ "vBCST" ]   := hbNFe_PegaDadosXML( "vBCST", cICMSTotal )
+   ::aICMSTotal[ "vST" ]     := hbNFe_PegaDadosXML( "vST", cICMSTotal )
+   ::aICMSTotal[ "vProd" ]   := hbNFe_PegaDadosXML( "vProd", cICMSTotal )
+   ::aICMSTotal[ "vFrete" ]  := hbNFe_PegaDadosXML( "vFrete", cICMSTotal )
+   ::aICMSTotal[ "vSeg" ]    := hbNFe_PegaDadosXML( "vSeg", cICMSTotal )
+   ::aICMSTotal[ "vDesc" ]   := hbNFe_PegaDadosXML( "vDesc", cICMSTotal )
+   ::aICMSTotal[ "vII" ]     := hbNFe_PegaDadosXML( "vII", cICMSTotal )
+   ::aICMSTotal[ "vIPI" ]    := hbNFe_PegaDadosXML( "vIPI", cICMSTotal )
+   ::aICMSTotal[ "vPIS" ]    := hbNFe_PegaDadosXML( "vPIS", cICMSTotal )
+   ::aICMSTotal[ "vCOFINS" ] := hbNFe_PegaDadosXML( "vCOFINS", cICMSTotal )
+   ::aICMSTotal[ "vOutro" ]  := hbNFe_PegaDadosXML( "vOutro", cICMSTotal )
+   ::aICMSTotal[ "vNF" ]     := hbNFe_PegaDadosXML( "vNF", cICMSTotal )
 
    cISSTotal := hbNFe_PegaDadosXML("ISSQNtot", ::cXML )
    ::aISSTotal := hb_Hash()
-   ::aISSTotal[ "vServ" ] := hbNFe_PegaDadosXML("vServ", cISSTotal )
-   ::aISSTotal[ "vBC" ] := hbNFe_PegaDadosXML("vBC", cISSTotal )
-   ::aISSTotal[ "vISS" ] := hbNFe_PegaDadosXML("vISS", cISSTotal )
-   ::aISSTotal[ "vPIS" ] := hbNFe_PegaDadosXML("vPIS", cISSTotal )
-   ::aISSTotal[ "vCOFINS" ] := hbNFe_PegaDadosXML("vCOFINS", cISSTotal )
+   ::aISSTotal[ "vServ" ]   := hbNFe_PegaDadosXML( "vServ", cISSTotal )
+   ::aISSTotal[ "vBC" ]     := hbNFe_PegaDadosXML( "vBC", cISSTotal )
+   ::aISSTotal[ "vISS" ]    := hbNFe_PegaDadosXML( "vISS", cISSTotal )
+   ::aISSTotal[ "vPIS" ]    := hbNFe_PegaDadosXML( "vPIS", cISSTotal )
+   ::aISSTotal[ "vCOFINS" ] := hbNFe_PegaDadosXML( "vCOFINS", cISSTotal )
 
    cRetTrib := hbNFe_PegaDadosXML("RetTrib", ::cXML )
    ::aRetTrib := hb_Hash()
-   ::aRetTrib[ "vRetPIS" ] := hbNFe_PegaDadosXML("vRetPIS", cRetTrib )
-   ::aRetTrib[ "vRetCOFINS" ] := hbNFe_PegaDadosXML("vRetCOFINS", cRetTrib )
-   ::aRetTrib[ "vRetCSLL" ] := hbNFe_PegaDadosXML("vRetCSLL", cRetTrib )
-   ::aRetTrib[ "vBCIRRF" ] := hbNFe_PegaDadosXML("vBCIRRF", cRetTrib )
-   ::aRetTrib[ "vIRRF" ] := hbNFe_PegaDadosXML("vIRRF", cRetTrib )
-   ::aRetTrib[ "vBCRetPrev" ] := hbNFe_PegaDadosXML("vBCRetPrev", cRetTrib )
-   ::aRetTrib[ "vRetPrev" ] := hbNFe_PegaDadosXML("vRetPrev", cRetTrib )
+   ::aRetTrib[ "vRetPIS" ]    := hbNFe_PegaDadosXML( "vRetPIS", cRetTrib )
+   ::aRetTrib[ "vRetCOFINS" ] := hbNFe_PegaDadosXML( "vRetCOFINS", cRetTrib )
+   ::aRetTrib[ "vRetCSLL" ]   := hbNFe_PegaDadosXML( "vRetCSLL", cRetTrib )
+   ::aRetTrib[ "vBCIRRF" ]    := hbNFe_PegaDadosXML( "vBCIRRF", cRetTrib )
+   ::aRetTrib[ "vIRRF" ]      := hbNFe_PegaDadosXML( "vIRRF", cRetTrib )
+   ::aRetTrib[ "vBCRetPrev" ] := hbNFe_PegaDadosXML( "vBCRetPrev", cRetTrib )
+   ::aRetTrib[ "vRetPrev" ]   := hbNFe_PegaDadosXML( "vRetPrev", cRetTrib )
 
 
    cTransp := hbNFe_PegaDadosXML("transp", ::cXML )
    ::aTransp := hb_Hash()
-   ::aTransp[ "modFrete" ] := hbNFe_PegaDadosXML("modFrete", cTransp )
-   ::aTransp[ "CNPJ" ] := hbNFe_PegaDadosXML("CNPJ", cTransp )
-   ::aTransp[ "CPF" ] := hbNFe_PegaDadosXML("CPF", cTransp )
-   ::aTransp[ "xNome" ] := hbNFe_PegaDadosXML("xNome", cTransp )
-   ::aTransp[ "IE" ] := hbNFe_PegaDadosXML("IE", cTransp ) // NFE 2.0
-   ::aTransp[ "xEnder" ] := hbNFe_PegaDadosXML("xEnder", cTransp )
-   ::aTransp[ "xMun" ] := hbNFe_PegaDadosXML("xMun", cTransp )
-   ::aTransp[ "UF" ] := hbNFe_PegaDadosXML("UF", cTransp )
+   ::aTransp[ "modFrete" ] := hbNFe_PegaDadosXML( "modFrete", cTransp )
+   ::aTransp[ "CNPJ" ]     := hbNFe_PegaDadosXML( "CNPJ", cTransp )
+   ::aTransp[ "CPF" ]      := hbNFe_PegaDadosXML( "CPF", cTransp )
+   ::aTransp[ "xNome" ]    := hbNFe_PegaDadosXML( "xNome", cTransp )
+   ::aTransp[ "IE" ]       := hbNFe_PegaDadosXML( "IE", cTransp ) // NFE 2.0
+   ::aTransp[ "xEnder" ]   := hbNFe_PegaDadosXML( "xEnder", cTransp )
+   ::aTransp[ "xMun" ]     := hbNFe_PegaDadosXML( "xMun", cTransp )
+   ::aTransp[ "UF" ]       := hbNFe_PegaDadosXML( "UF", cTransp )
    // veicTransp
    cVeicTransp := hbNFe_PegaDadosXML("veicTransp", cTransp )
    ::aVeicTransp := hb_Hash()
-   ::aVeicTransp[ "placa" ] := hbNFe_PegaDadosXML("placa", cVeicTransp )
-   ::aVeicTransp[ "UF" ] := hbNFe_PegaDadosXML("UF", cVeicTransp )
-   ::aVeicTransp[ "RNTC" ] := hbNFe_PegaDadosXML("RNTC", cVeicTransp ) //ANTT
+   ::aVeicTransp[ "placa" ] := hbNFe_PegaDadosXML( "placa", cVeicTransp )
+   ::aVeicTransp[ "UF" ] := hbNFe_PegaDadosXML( "UF", cVeicTransp )
+   ::aVeicTransp[ "RNTC" ] := hbNFe_PegaDadosXML( "RNTC", cVeicTransp ) //ANTT
    //reboque
    cReboque := hbNFe_PegaDadosXML("veicTransp", cTransp )
    ::aReboque := hb_Hash()
-   ::aReboque[ "placa" ] := hbNFe_PegaDadosXML("placa", cReboque )
-   ::aReboque[ "UF" ] := hbNFe_PegaDadosXML("UF", cReboque )
-   ::aReboque[ "RNTC" ] := hbNFe_PegaDadosXML("RNTC", cReboque ) //ANTT
+   ::aReboque[ "placa" ] := hbNFe_PegaDadosXML( "placa", cReboque )
+   ::aReboque[ "UF" ]    := hbNFe_PegaDadosXML( "UF", cReboque )
+   ::aReboque[ "RNTC" ]  := hbNFe_PegaDadosXML( "RNTC", cReboque ) //ANTT
    // dados transportados
-   ::aTransp[ "qVol" ] := hbNFe_PegaDadosXML("qVol", cTransp )
-   ::aTransp[ "esp" ] := hbNFe_PegaDadosXML("esp", cTransp )
-   ::aTransp[ "marca" ] := hbNFe_PegaDadosXML("marca", cTransp )
-   ::aTransp[ "nVol" ] := hbNFe_PegaDadosXML("nVol", cTransp )
-   ::aTransp[ "pesoL" ] := hbNFe_PegaDadosXML("pesoL", cTransp )
-   ::aTransp[ "pesoB" ] := hbNFe_PegaDadosXML("pesoB", cTransp )
-   ::aTransp[ "nLacre" ] := hbNFe_PegaDadosXML("nLacre", cTransp )
+   ::aTransp[ "qVol" ]   := hbNFe_PegaDadosXML( "qVol", cTransp )
+   ::aTransp[ "esp" ]    := hbNFe_PegaDadosXML( "esp", cTransp )
+   ::aTransp[ "marca" ]  := hbNFe_PegaDadosXML( "marca", cTransp )
+   ::aTransp[ "nVol" ]   := hbNFe_PegaDadosXML( "nVol", cTransp )
+   ::aTransp[ "pesoL" ]  := hbNFe_PegaDadosXML( "pesoL", cTransp )
+   ::aTransp[ "pesoB" ]  := hbNFe_PegaDadosXML( "pesoB", cTransp )
+   ::aTransp[ "nLacre" ] := hbNFe_PegaDadosXML( "nLacre", cTransp )
 
-   ::cCobranca := hbNFe_PegaDadosXML("cobr", ::cXML )
+   ::cCobranca := hbNFe_PegaDadosXML( "cobr", ::cXML )
+   cInfAdic    := hbNFe_PegaDadosXML( "infAdic", ::cXML )
+   ::aInfAdic  := hb_Hash()
 
-   cInfAdic := hbNFe_PegaDadosXML("infAdic", ::cXML )
-   ::aInfAdic := hb_Hash()
-
-   IF !EMPTY(cInfAdic)   // Mauricio Cruz - 28/09/2011   && Anderson Retirei o + antes do CHR(13)+CHR(10)
-      ::aInfAdic[ "infCpl" ] := hbNFe_PegaDadosXML("infCpl", cInfAdic )
-	  IF !EMPTY(::aInfAdic[ "infCpl" ])
-         ::aInfAdic[ "infCpl" ] := STRTRAN( ::aInfAdic[ "infCpl" ], ";", CHR(13)+CHR(10) )
+   IF ! EMPTY( cInfAdic )   // Mauricio Cruz - 28/09/2011   && Anderson Retirei o + antes do CHR(13)+CHR(10)
+      ::aInfAdic[ "infCpl" ] := hbNFe_PegaDadosXML( "infCpl", cInfAdic )
+	  IF !EMPTY(::aInfAdic[ "infCpl" ] )
+         ::aInfAdic[ "infCpl" ] := STRTRAN( ::aInfAdic[ "infCpl" ], ";", CHR(13) + CHR(10) )
 	   ELSE
          ::aInfAdic[ "infCpl" ] := ""
-	  endif
+	  ENDIF
    ELSE
       ::aInfAdic[ "infCpl" ] := ""
    ENDIF
    //obsCont
    cObsCont := hbNFe_PegaDadosXML("obsCont", cInfAdic )
    ::aObsCont := hb_Hash()
-   ::aObsCont[ "xCampo" ] := hbNFe_PegaDadosXML("xCampo", cObsCont )
-   ::aObsCont[ "xTexto" ] := hbNFe_PegaDadosXML("xTexto", cObsCont )
+   ::aObsCont[ "xCampo" ] := hbNFe_PegaDadosXML( "xCampo", cObsCont )
+   ::aObsCont[ "xTexto" ] := hbNFe_PegaDadosXML( "xTexto", cObsCont )
    //obsFisco
-   cObsFisco := hbNFe_PegaDadosXML("obsFisco", cInfAdic )
+   cObsFisco := hbNFe_PegaDadosXML( "obsFisco", cInfAdic )
    ::aObsFisco := hb_Hash()
-   ::aObsFisco[ "xCampo" ] := hbNFe_PegaDadosXML("xCampo", cObsFisco )
-   ::aObsFisco[ "xTexto" ] := hbNFe_PegaDadosXML("xTexto", cObsFisco )
+   ::aObsFisco[ "xCampo" ] := hbNFe_PegaDadosXML( "xCampo", cObsFisco )
+   ::aObsFisco[ "xTexto" ] := hbNFe_PegaDadosXML( "xTexto", cObsFisco )
 
    cExporta := hbNFe_PegaDadosXML("exporta", ::cXML )
    ::aExporta := hb_Hash()
-   ::aExporta[ "UFEmbarq" ] := hbNFe_PegaDadosXML("infCpl", cExporta )
-   ::aExporta[ "xLocEmbarq" ] := hbNFe_PegaDadosXML("infCpl", cExporta )
+   ::aExporta[ "UFEmbarq" ]   := hbNFe_PegaDadosXML( "infCpl", cExporta )
+   ::aExporta[ "xLocEmbarq" ] := hbNFe_PegaDadosXML( "infCpl", cExporta )
 
    cCompra := hbNFe_PegaDadosXML("compra", ::cXML )
    ::aCompra := hb_Hash()
-   ::aCompra[ "xNEmp" ] := hbNFe_PegaDadosXML("infCpl", cCompra )
-   ::aCompra[ "xPed" ] := hbNFe_PegaDadosXML("infCpl", cCompra )
-   ::aCompra[ "xCont" ] := hbNFe_PegaDadosXML("infCpl", cCompra )
+   ::aCompra[ "xNEmp" ] := hbNFe_PegaDadosXML( "infCpl", cCompra )
+   ::aCompra[ "xPed" ]  := hbNFe_PegaDadosXML( "infCpl", cCompra )
+   ::aCompra[ "xCont" ] := hbNFe_PegaDadosXML( "infCpl", cCompra )
 
    cInfProt := hbNFe_PegaDadosXML("infProt", ::cXML, "infProt" )
    //cInfProt := hbNFe_PegaDadosXML("infProt", ::cXML )
 
    ::aInfProt := hb_Hash()
-   ::aInfProt[ "nProt" ] := hbNFe_PegaDadosXML("nProt", cInfProt )
-   ::aInfProt[ "dhRecbto" ] := hbNFe_PegaDadosXML("dhRecbto", cInfProt )
-   ::aInfProt[ "digVal" ] := hbNFe_PegaDadosXML("digVal", cInfProt )
-   ::aInfProt[ "cStat" ] := hbNFe_PegaDadosXML("cStat", cInfProt )
-   ::aInfProt[ "xMotivo" ] := hbNFe_PegaDadosXML("xMotivo", cInfProt )
+   ::aInfProt[ "nProt" ]    := hbNFe_PegaDadosXML( "nProt", cInfProt )
+   ::aInfProt[ "dhRecbto" ] := hbNFe_PegaDadosXML( "dhRecbto", cInfProt )
+   ::aInfProt[ "digVal" ]   := hbNFe_PegaDadosXML( "digVal", cInfProt )
+   ::aInfProt[ "cStat" ]    := hbNFe_PegaDadosXML( "cStat", cInfProt )
+   ::aInfProt[ "xMotivo" ]  := hbNFe_PegaDadosXML( "xMotivo", cInfProt )
 
    RETURN .T.
 
@@ -412,24 +411,24 @@ METHOD geraPDF() CLASS hbNFeDanfe
    HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
    /* setando fonte */
    IF ::cFonteNFe == "Times"
-      ::oPdfFontCabecalho := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
+      ::oPdfFontCabecalho     := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
       ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Times-Bold", "CP1252" )
    ELSE
-      ::oPdfFontCabecalho := HPDF_GetFont( ::oPdf, "Courier", "CP1252" )
+      ::oPdfFontCabecalho     := HPDF_GetFont( ::oPdf, "Courier", "CP1252" )
       ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Courier-Bold", "CP1252" )
    ENDIF
 
    &&  Alterado por Anderson Camilo em 06/11/2012
 
    #ifdef __XHARBOUR__
-     if !file('fontes\Code128bWinLarge.afm') .or. !file('fontes\Code128bWinLarge.pfb')
-        ::cRetorno := "Arquivos: fontes\Code128bWinLarge, nao encontrados...!"
+     IF ! File( "fontes\Code128bWinLarge.afm" ) .or. ! File( "fontes\Code128bWinLarge.pfb" )
+        ::cRetorno := "Arquivos fontes\Code128bWinLarge, nao encontrados...!"
         RETURN .F.
-     endif
+     ENDIF
 
       && Inserido por Anderson Camilo em 04/04/2012
 
-   ::cFonteCode128 := HPDF_LoadType1FontFromFile(::oPdf, 'fontes\Code128bWinLarge.afm', 'fontes\Code128bWinLarge.pfb')   && Code 128
+   ::cFonteCode128  := HPDF_LoadType1FontFromFile( ::oPdf, "fontes\Code128bWinLarge.afm", "fontes\Code128bWinLarge.pfb" )   && Code 128
    ::cFonteCode128F := HPDF_GetFont( ::oPdf, ::cFonteCode128, "WinAnsiEncoding" )
    #endif
    // final da criacao e definicao do objeto pdf
@@ -439,25 +438,25 @@ METHOD geraPDF() CLASS hbNFeDanfe
    // calculando quantidade de itens
    nItem := 1
    DO WHILE .T.
-      ::ProcessaItens(::cXML,nItem)
+      ::ProcessaItens( ::cXML, nItem )
       IF ::aItem[ "cProd" ] = Nil
          EXIT
       ENDIF
       nItem ++
-      FOR nIdes = 2 TO MLCOUNT(::aItem[ "xProd" ],::nLarguraDescricao)
+      FOR nIdes = 2 TO MLCOUNT( ::aItem[ "xProd" ],::nLarguraDescricao )
          nItem ++
       NEXT
    ENDDO
-   nItensNF := (nItem-1)
+   nItensNF := ( nItem - 1 )
    // calcula itens 1a Folha
-   nItens1Folha := ::calculaItens1Folha(::nItens1Folha)
+   nItens1Folha := ::calculaItens1Folha( ::nItens1Folha )
    // calcula itens demais folhas
    nItensNF -= nItens1Folha
    ::nFolhas := 1
    IF nItensNF > 0
-      ::nFolhas += INT( nItensNF/::nItensDemaisFolhas )
-      IF !INT( nItensNF/::nItensDemaisFolhas ) == nItensNF/::nItensDemaisFolhas
-         ::nFolhas ++
+      ::nFolhas += INT( nItensNF / ::nItensDemaisFolhas )
+      IF ! INT( nItensNF / ::nItensDemaisFolhas ) == nItensNF / ::nItensDemaisFolhas
+         ::nFolhas++
       ENDIF
    ENDIF
    // fim
@@ -484,17 +483,17 @@ METHOD geraPDF() CLASS hbNFeDanfe
 
    RETURN .T.
 
-METHOD calculaItens1Folha(nItensInicial) CLASS hbNFeDanfe
+METHOD calculaItens1Folha( nItensInicial ) CLASS hbNFeDanfe
 
    LOCAL nRetorno
 
    IF ::lLaser = .T. // LASER
       nItensInicial += 9
    ENDIF
-   IF EMPTY(::cCobranca)
+   IF EMPTY( ::cCobranca )
       nItensInicial += 2
    ENDIF
-   IF VAL(IF(::aISSTotal[ "vServ" ]<>Nil,::aISSTotal[ "vServ" ],"0")) <= 0 // sem servico
+   IF VAL( IF( ::aISSTotal[ "vServ" ] <> Nil, ::aISSTotal[ "vServ" ], "0" ) ) <= 0 // sem servico
       nItensInicial += 4
    ENDIF
    nRetorno := nItensInicial
@@ -526,65 +525,65 @@ METHOD novaPagina() CLASS hbNFeDanfe
 
    IF ::aIde[ "tpEmis" ] = "5" // Contingencia
       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
-      HPDF_Page_BeginText(::oPdfPage)
-      HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 160)
-      HPDF_Page_SetRGBFill(::oPdfPage, 0.75, 0.75, 0.75)
-      HPDF_Page_ShowText(::oPdfPage, "DANFE EM CONTINGÊNCIA. IMPRESSO EM")
-      HPDF_Page_EndText(::oPdfPage)
+      HPDF_Page_BeginText( ::oPdfPage)
+      HPDF_Page_SetTextMatrix( ::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 160 )
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
+      HPDF_Page_ShowText( ::oPdfPage, "DANFE EM CONTINGÊNCIA. IMPRESSO EM" )
+      HPDF_Page_EndText( ::oPdfPage )
 
       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
-      HPDF_Page_BeginText(::oPdfPage)
-      HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 130)
-      HPDF_Page_SetRGBFill(::oPdfPage, 0.75, 0.75, 0.75)
-      HPDF_Page_ShowText(::oPdfPage, "DECORRÊNCIA DE PROBLEMAS TÉCNICOS.")
-      HPDF_Page_EndText(::oPdfPage)
+      HPDF_Page_BeginText( ::oPdfPage )
+      HPDF_Page_SetTextMatrix( ::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 130 )
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
+      HPDF_Page_ShowText( ::oPdfPage, "DECORRÊNCIA DE PROBLEMAS TÉCNICOS." )
+      HPDF_Page_EndText( ::oPdfPage )
 
-      HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
    ENDIF
 
    IF ::aIde[ "tpEmis" ] = "4" // DEPEC
       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
-      HPDF_Page_BeginText(::oPdfPage)
-      HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 190)
-      HPDF_Page_SetRGBFill(::oPdfPage, 0.75, 0.75, 0.75)
-      HPDF_Page_ShowText(::oPdfPage, "DANFE IMPRESSO EM CONTINGÊNCIA - DEPEC")
-      HPDF_Page_EndText(::oPdfPage)
+      HPDF_Page_BeginText( ::oPdfPage)
+      HPDF_Page_SetTextMatrix(::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 190)
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
+      HPDF_Page_ShowText( ::oPdfPage, "DANFE IMPRESSO EM CONTINGÊNCIA - DEPEC" )
+      HPDF_Page_EndText( ::oPdfPage)
 
       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
-      HPDF_Page_BeginText(::oPdfPage)
-      HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 160)
-      HPDF_Page_SetRGBFill(::oPdfPage, 0.75, 0.75, 0.75)
-      HPDF_Page_ShowText(::oPdfPage, "REGULARMENTE RECEBIDO PELA RECEITA")
-      HPDF_Page_EndText(::oPdfPage)
+      HPDF_Page_BeginText( ::oPdfPage )
+      HPDF_Page_SetTextMatrix( ::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 160)
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
+      HPDF_Page_ShowText( ::oPdfPage, "REGULARMENTE RECEBIDO PELA RECEITA" )
+      HPDF_Page_EndText( ::oPdfPage )
 
       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
-      HPDF_Page_BeginText(::oPdfPage)
-      HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 130)
-      HPDF_Page_SetRGBFill(::oPdfPage, 0.75, 0.75, 0.75)
-      HPDF_Page_ShowText(::oPdfPage, "FEDERAL DO BRASIL.")
-      HPDF_Page_EndText(::oPdfPage)
+      HPDF_Page_BeginText( ::oPdfPage )
+      HPDF_Page_SetTextMatrix( ::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 130)
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
+      HPDF_Page_ShowText( ::oPdfPage, "FEDERAL DO BRASIL." )
+      HPDF_Page_EndText( ::oPdfPage )
 
       HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
    ENDIF
 
    IF ::aIde[ "tpAmb" ] = "2"
       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
-      HPDF_Page_BeginText(::oPdfPage)
-      HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 100)
-      HPDF_Page_SetRGBFill(::oPdfPage, 0.75, 0.75, 0.75)
-      HPDF_Page_ShowText(::oPdfPage, "AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL")
-      HPDF_Page_EndText(::oPdfPage)
+      HPDF_Page_BeginText( ::oPdfPage )
+      HPDF_Page_SetTextMatrix( ::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 100)
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
+      HPDF_Page_ShowText( ::oPdfPage, "AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL" )
+      HPDF_Page_EndText( ::oPdfPage )
 
-      HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
+      HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
       IF ::lPaisagem = .T. // paisagem
-         hbNFe_Line_Hpdf( ::oPdfPage, 15, 95, 675, 475, 2.0)
+         hbNFe_Line_Hpdf( ::oPdfPage, 15, 95, 675, 475, 2.0 )
       ELSE
-         hbNFe_Line_Hpdf( ::oPdfPage, 15, 95, 550, 630, 2.0)
+         hbNFe_Line_Hpdf( ::oPdfPage, 15, 95, 550, 630, 2.0 )
       ENDIF
 
-      HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
+      HPDF_Page_SetRGBStroke( ::oPdfPage, 0, 0, 0 ) // reseta cor linhas
 
-      HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
    ENDIF
 
    RETURN NIL
@@ -605,9 +604,9 @@ METHOD saltaPagina() CLASS hbNFeDanfe
       ::canhoto()
       ::cabecalho()
       ::cabecalhoProdutos()
-      nLinhaFinalProd := ::nLinhaPdf-(::nItensFolha*6)-2
-      nTamanhoProd := (::nItensFolha*6)+2
-      ::desenhaBoxProdutos(nLinhaFinalProd,nTamanhoProd)
+      nLinhaFinalProd := ::nLinhaPdf - ( ::nItensFolha * 6 ) - 2
+      nTamanhoProd := ( ::nItensFolha * 6 ) + 2
+      ::desenhaBoxProdutos( nLinhaFinalProd, nTamanhoProd )
    ENDIF
 
    RETURN NIL
@@ -618,43 +617,43 @@ METHOD canhoto() CLASS hbNFeDanfe
       IF ::lPaisagem = .T. // paisagem
          hbNFe_Box_Hpdf( ::oPdfPage,   5, 20, 50, 565, ::nLarguraBox )
          // recebemos
-         hbNFe_Texto_Hpdf( ::oPdfPage,  14, 21, 14+8, ::nLinhaPdf, "Recebemos de "+TRIM(::aEmit[ "xNome" ])+" os produtos constantes da Nota Fiscal indicada ao lado", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 7, 90 )
+         hbNFe_Texto_Hpdf( ::oPdfPage,  14, 21, 14 + 8, ::nLinhaPdf, "Recebemos de "+TRIM(::aEmit[ "xNome" ])+" os produtos constantes da Nota Fiscal indicada ao lado", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 7, 90 )
          // quadro numero da NF
          hbNFe_Box_Hpdf( ::oPdfPage,   5, 505, 50, 80, ::nLarguraBox )
-         hbNFe_Texto_Hpdf( ::oPdfPage,  14, 506, 14+8, Nil, "NOTA FISCAL", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8, 90 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  30, 506, 30+8, Nil, "Nº: "+SUBS(STRZERO(VAL(::aIde[ "nNF" ]),9),1,3)+"."+SUBS(STRZERO(VAL(::aIde[ "nNF" ]),9),4,3)+"."+SUBS(STRZERO(VAL(::aIde[ "nNF" ]),9),7,3), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8, 90 )
-         hbNFe_Texto_Hpdf( ::oPdfPage,  46, 506, 46+8, Nil, "SÉRIE "+::aIde[ "serie" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8, 90 )
+         hbNFe_Texto_Hpdf( ::oPdfPage,  14, 506, 14 + 8, Nil, "NOTA FISCAL", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8, 90 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  30, 506, 30 + 8, Nil, "Nº: " + SUBS( STRZERO( VAL( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SUBS( STRZERO( VAL( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SUBS( STRZERO(VAL( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8, 90 )
+         hbNFe_Texto_Hpdf( ::oPdfPage,  46, 506, 46 + 8, Nil, "SÉRIE " + ::aIde[ "serie" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8, 90 )
 
          // data recebimento
          hbNFe_Box_Hpdf( ::oPdfPage,  20, 20, 35, 120, ::nLarguraBox )
-         hbNFe_Texto_Hpdf( ::oPdfPage, 26, 21, 26+8, Nil, "DATA DE RECEBIMENTO", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6, 90 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 26, 21, 26 + 8, Nil, "DATA DE RECEBIMENTO", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6, 90 )
          // identificacao
          hbNFe_Box_Hpdf( ::oPdfPage,  20, 140, 35, 365, ::nLarguraBox )
-         hbNFe_Texto_Hpdf( ::oPdfPage,  26, 141, 26+8, Nil, "IDENTIFICAÇÃO E ASSINATURA DO RECEBEDOR", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6, 90 )
+         hbNFe_Texto_Hpdf( ::oPdfPage,  26, 141, 26 + 8, Nil, "IDENTIFICAÇÃO E ASSINATURA DO RECEBEDOR", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6, 90 )
 
          // corte
          IF ::cFonteNFe == "Times"
-            hbNFe_Texto_Hpdf( ::oPdfPage, 62, 20, 62+8, Nil, REPLIC("- ",110), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 8, 90 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 62, 20, 62 + 8, Nil, REPLIC("- ",110), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 8, 90 )
          ELSE
-            hbNFe_Texto_Hpdf( ::oPdfPage, 65, 20, 65+6, Nil, REPLIC("- ",78), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6, 90 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 65, 20, 65 + 6, Nil, REPLIC("- ",78), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6, 90 )
          ENDIF
       ELSE // retrato
-         hbNFe_Box_Hpdf( ::oPdfPage, 5, ::nLinhaPdf-44, 585, 44, ::nLarguraBox )
+         hbNFe_Box_Hpdf( ::oPdfPage, 5, ::nLinhaPdf - 44, 585, 44, ::nLarguraBox )
          // recebemos
          hbNFe_Texto_Hpdf( ::oPdfPage, 6, ::nLinhaPdf, 490, Nil, "Recebemos de "+::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
          hbNFe_Texto_Hpdf( ::oPdfPage, 6, ::nLinhaPdf-7, 490, Nil, "os produtos constantes da Nota Fiscal indicada ao lado", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
          // quadro numero da NF
-         hbNFe_Box_Hpdf( ::oPdfPage, 505, ::nLinhaPdf-44, 85, 44, ::nLarguraBox )
-         hbNFe_Texto_Hpdf( ::oPdfPage, 506, ::nLinhaPdf-8, 589, Nil, "NF-e", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-           hbNFe_Texto_Hpdf( ::oPdfPage, 506, ::nLinhaPdf-20, 589, Nil, "Nº: "+SUBS(STRZERO(VAL(::aIde[ "nNF" ]),9),1,3)+"."+SUBS(STRZERO(VAL(::aIde[ "nNF" ]),9),4,3)+"."+SUBS(STRZERO(VAL(::aIde[ "nNF" ]),9),7,3), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-         hbNFe_Texto_Hpdf( ::oPdfPage, 506, ::nLinhaPdf-32, 589, Nil, "SÉRIE "+::aIde[ "serie" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Box_Hpdf( ::oPdfPage, 505, ::nLinhaPdf - 44, 85, 44, ::nLarguraBox )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 506, ::nLinhaPdf - 8, 589, Nil, "NF-e", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+           hbNFe_Texto_Hpdf( ::oPdfPage, 506, ::nLinhaPdf - 20, 589, Nil, "Nº: "+SUBS( STRZERO( VAL( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SUBS( STRZERO( VAL( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SUBS( STRZERO( VAL( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 506, ::nLinhaPdf - 32, 589, Nil, "SÉRIE "+::aIde[ "serie" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
          ::nLinhaPdf -= 18
 
          // data recebimento
-         hbNFe_Box_Hpdf( ::oPdfPage,   5, ::nLinhaPdf-26, 130, 26, ::nLarguraBox )
-         hbNFe_Texto_Hpdf( ::oPdfPage, 6, ::nLinhaPdf,134, Nil, "DATA DE RECEBIMENTO", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
+         hbNFe_Box_Hpdf( ::oPdfPage,   5, ::nLinhaPdf - 26, 130, 26, ::nLarguraBox )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 6, ::nLinhaPdf, 134, Nil, "DATA DE RECEBIMENTO", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
          // identificacao
-         hbNFe_Box_Hpdf( ::oPdfPage, 135, ::nLinhaPdf-26, 370, 26, ::nLarguraBox )
+         hbNFe_Box_Hpdf( ::oPdfPage, 135, ::nLinhaPdf - 26, 370, 26, ::nLarguraBox )
          hbNFe_Texto_Hpdf( ::oPdfPage, 136, ::nLinhaPdf, 470, Nil, "IDENTIFICAÇÃO E ASSINATURA DO RECEBEDOR", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
          ::nLinhaPdf -= 24
 
@@ -662,7 +661,7 @@ METHOD canhoto() CLASS hbNFeDanfe
          IF ::cFonteNFe == "Times"
             hbNFe_Texto_Hpdf( ::oPdfPage,  5, ::nLinhaPdf, 590, Nil, REPLIC("- ",125), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 8 )
          ELSE
-            hbNFe_Texto_Hpdf( ::oPdfPage,  5, ::nLinhaPdf-2, 590, Nil, REPLIC("- ",81), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
+            hbNFe_Texto_Hpdf( ::oPdfPage,  5, ::nLinhaPdf - 2, 590, Nil, REPLIC("- ",81), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
          ENDIF
          ::nLinhaPdf -= 10
       ENDIF
@@ -687,57 +686,57 @@ METHOD cabecalho() CLASS hbNFeDanfe
       hbNFe_Box_Hpdf( ::oPdfPage, 70, ::nLinhaPdf-80, 330, 80, ::nLarguraBox )
       IF EMPTY( ::cLogoFile )
           hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf   , 399, Nil, "IDENTIFICAÇÃO DO EMITENTE" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
-          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-6 , 399, Nil, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
-          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-18, 399, Nil, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
-          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-30, 399, Nil, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-38, 399, Nil, ::aEmit[ "xBairro" ]+" - "+TRANSF( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-46, 399, Nil, ::aEmit[ "xMun" ]+" - "+::aEmit[ "UF" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-54, 399, Nil, TRIM(IF(!EMPTY(::cTelefoneEmitente),"FONE: "+::cTelefoneEmitente,"")), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-62, 399, Nil, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-70, 399, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 6 , 399, Nil, TRIM( MEMOLINE( ::aEmit[ "xNome" ], 30, 1 ) ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
+          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 18, 399, Nil, TRIM( MEMOLINE( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
+          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 30, 399, Nil, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 38, 399, Nil, ::aEmit[ "xBairro" ] + " - " + TRANSF( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 46, 399, Nil, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 54, 399, Nil, TRIM( iif( ! EMPTY( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 62, 399, Nil, TRIM( ::cSiteEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 70, 399, Nil, TRIM( ::cEmailEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
        ELSE
           IF ::nLogoStyle = _LOGO_EXPANDIDO
              oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
-             HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - (72+6), 328, 72 )
+             HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - ( 72 + 6 ), 328, 72 )
           ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
              oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
-             HPDF_Page_DrawImage( ::oPdfPage, oImage,71, ::nLinhaPdf - (72+6), 62, 72 )
-              hbNFe_Texto_Hpdf( ::oPdfPage,135, ::nLinhaPdf-6 , 399, Nil, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
-              hbNFe_Texto_Hpdf( ::oPdfPage,135, ::nLinhaPdf-18, 399, Nil, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
-              hbNFe_Texto_Hpdf( ::oPdfPage,135, ::nLinhaPdf-30, 399, Nil, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-              hbNFe_Texto_Hpdf( ::oPdfPage,135, ::nLinhaPdf-38, 399, Nil, ::aEmit[ "xBairro" ]+" - "+TRANSF( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-              hbNFe_Texto_Hpdf( ::oPdfPage,135, ::nLinhaPdf-46, 399, Nil, ::aEmit[ "xMun" ]+" - "+::aEmit[ "UF" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-              hbNFe_Texto_Hpdf( ::oPdfPage,135, ::nLinhaPdf-54, 399, Nil, TRIM(IF(!EMPTY(::cTelefoneEmitente),"FONE: "+::cTelefoneEmitente,"")), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-              hbNFe_Texto_Hpdf( ::oPdfPage,135, ::nLinhaPdf-62, 399, Nil, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-              hbNFe_Texto_Hpdf( ::oPdfPage,135, ::nLinhaPdf-70, 399, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+             HPDF_Page_DrawImage( ::oPdfPage, oImage, 71, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
+              hbNFe_Texto_Hpdf( ::oPdfPage, 135, ::nLinhaPdf - 6 , 399, Nil, TRIM( MEMOLINE( ::aEmit[ "xNome" ], 30, 1 ) ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
+              hbNFe_Texto_Hpdf( ::oPdfPage, 135, ::nLinhaPdf - 18, 399, Nil, TRIM( MEMOLINE( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
+              hbNFe_Texto_Hpdf( ::oPdfPage, 135, ::nLinhaPdf - 30, 399, Nil, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+              hbNFe_Texto_Hpdf( ::oPdfPage, 135, ::nLinhaPdf - 38, 399, Nil, ::aEmit[ "xBairro" ]+" - "+TRANSF( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+              hbNFe_Texto_Hpdf( ::oPdfPage, 135, ::nLinhaPdf - 46, 399, Nil, ::aEmit[ "xMun" ]+" - "+::aEmit[ "UF" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+              hbNFe_Texto_Hpdf( ::oPdfPage, 135, ::nLinhaPdf - 54, 399, Nil, TRIM( IF( ! EMPTY( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+              hbNFe_Texto_Hpdf( ::oPdfPage, 135, ::nLinhaPdf - 62, 399, Nil, TRIM( ::cSiteEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+              hbNFe_Texto_Hpdf( ::oPdfPage, 135, ::nLinhaPdf - 70, 399, Nil, TRIM( ::cEmailEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
           ELSEIF ::nLogoStyle = _LOGO_DIREITA
              oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
-             HPDF_Page_DrawImage( ::oPdfPage, oImage,337, ::nLinhaPdf - (72+6), 62, 72 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-6 , 335, Nil, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-18, 335, Nil, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-30, 335, Nil, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-38, 335, Nil, ::aEmit[ "xBairro" ]+" - "+TRANSF( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-46, 335, Nil, ::aEmit[ "xMun" ]+" - "+::aEmit[ "UF" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-54, 335, Nil, TRIM(IF(!EMPTY(::cTelefoneEmitente),"FONE: "+::cTelefoneEmitente,"")), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-62, 335, Nil, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf-70, 335, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+             HPDF_Page_DrawImage( ::oPdfPage, oImage, 337, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 6 , 335, Nil, TRIM( MEMOLINE( ::aEmit[ "xNome" ], 30, 1 ) ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 18, 335, Nil, TRIM( MEMOLINE( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 30, 335, Nil, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 38, 335, Nil, ::aEmit[ "xBairro" ] + " - " + TRANSF( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 46, 335, Nil, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 54, 335, Nil, TRIM( iif( ! EMPTY( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 62, 335, Nil, TRIM( ::cSiteEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 70, 335, Nil, TRIM( ::cEmailEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
            ENDIF
       ENDIF
 
       // numero nf tipo
-      hbNFe_Box_Hpdf( ::oPdfPage,400, ::nLinhaPdf-80, 125, 80, ::nLarguraBox )
-      hbNFe_Texto_Hpdf( ::oPdfPage,401, ::nLinhaPdf-4, 524, Nil, "DANFE" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
-      hbNFe_Texto_Hpdf( ::oPdfPage,401, ::nLinhaPdf-16, 524, Nil, "Documento Auxiliar da" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-      hbNFe_Texto_Hpdf( ::oPdfPage,401, ::nLinhaPdf-24, 524, Nil, "Nota Fiscal Eletrônica" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+      hbNFe_Box_Hpdf( ::oPdfPage, 400, ::nLinhaPdf - 80, 125, 80, ::nLarguraBox )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 401, ::nLinhaPdf - 4, 524, Nil, "DANFE" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 401, ::nLinhaPdf - 16, 524, Nil, "Documento Auxiliar da" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 401, ::nLinhaPdf - 24, 524, Nil, "Nota Fiscal Eletrônica" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
 
-      hbNFe_Texto_Hpdf( ::oPdfPage,411, ::nLinhaPdf-36, 524, Nil, "0 - ENTRADA" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 8 )
-      hbNFe_Texto_Hpdf( ::oPdfPage,411, ::nLinhaPdf-44, 524, Nil, "1 - SAÍDA" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 8 )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 411, ::nLinhaPdf - 36, 524, Nil, "0 - ENTRADA" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 8 )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 411, ::nLinhaPdf - 44, 524, Nil, "1 - SAÍDA" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 8 )
       // preenchimento do tipo de nf
-      hbNFe_Box_Hpdf( ::oPdfPage,495, ::nLinhaPdf-52, 20, 16, ::nLarguraBox )
-      hbNFe_Texto_Hpdf( ::oPdfPage,496, ::nLinhaPdf-40, 514, Nil, ::aIde[ "tpNF" ] , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+      hbNFe_Box_Hpdf( ::oPdfPage, 495, ::nLinhaPdf - 52, 20, 16, ::nLarguraBox )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 496, ::nLinhaPdf - 40, 514, Nil, ::aIde[ "tpNF" ] , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
 
-      hbNFe_Texto_Hpdf( ::oPdfPage,401, ::nLinhaPdf-56, 524, Nil, "Nº: "+SUBS(STRZERO(VAL(::aIde[ "nNF" ]),9),1,3)+"."+SUBS(STRZERO(VAL(::aIde[ "nNF" ]),9),4,3)+"."+SUBS(STRZERO(VAL(::aIde[ "nNF" ]),9),7,3) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
-      hbNFe_Texto_Hpdf( ::oPdfPage,401, ::nLinhaPdf-66, 524, Nil, "SÉRIE: "+::aIde[ "serie" ]+" - FOLHA "+ALLTRIM(STR(::nFolha))+"/"+ALLTRIM(STR(::nFolhas)) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 401, ::nLinhaPdf - 56, 524, Nil, "Nº: " + SUBS( STRZERO( VAL( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SUBS( STRZERO( VAL( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SUBS( STRZERO( VAL( ::aIde[ "nNF" ] ), 9 ), 7, 3 ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 401, ::nLinhaPdf - 66, 524, Nil, "SÉRIE: "+::aIde[ "serie" ] + " - FOLHA " + ALLTRIM( STR( ::nFolha ) ) + "/" + ALLTRIM( STR( ::nFolhas ) ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
 
       // codigo barras
       hbNFe_Box_Hpdf( ::oPdfPage,525, ::nLinhaPdf-35, 305, 35, ::nLarguraBox )
@@ -748,76 +747,76 @@ METHOD cabecalho() CLASS hbNFeDanfe
 *         hbNFe_Texto_Hpdf( ::oPdfPage,540, ::nLinhaPdf-19, 815, Nil, "{"+::cChave+"~" , HPDF_TALIGN_CENTER, Nil, oCode128F,11 )
 
                        && Modificado por Anderson Camilo em 04/04/2012
-          hbNFe_Texto_Hpdf( ::oPdfPage,540, ::nLinhaPdf-1.5, 815, Nil, CodificaCode128c(::cChave), HPDF_TALIGN_CENTER, Nil, ::cFonteCode128F, 15 )
+          hbNFe_Texto_Hpdf( ::oPdfPage, 540, ::nLinhaPdf - 1.5, 815, Nil, CodificaCode128c( ::cChave ), HPDF_TALIGN_CENTER, Nil, ::cFonteCode128F, 15 )
 
 
       #else
           hZebra := hb_zebra_create_code128( ::cChave, Nil )
-          hbNFe_Zebrea_Draw_Hpdf( hZebra, ::oPdfPage, 540, ::nLinhaPdf-32, 1.0, 30 )
+          hbNFe_Zebrea_Draw_Hpdf( hZebra, ::oPdfPage, 540, ::nLinhaPdf - 32, 1.0, 30 )
       #endif
       // chave de acesso
-      hbNFe_Box_Hpdf( ::oPdfPage,525, ::nLinhaPdf-55, 305, 55, ::nLarguraBox )
-      hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-36   , 829, Nil, "CHAVE DE ACESSO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
+      hbNFe_Box_Hpdf( ::oPdfPage, 525, ::nLinhaPdf - 55, 305, 55, ::nLarguraBox )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 36   , 829, Nil, "CHAVE DE ACESSO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
       IF ::cFonteNFe == "Times"
-         hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-44   , 829, Nil, TRANSF(::cChave, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999") , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 9 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 44   , 829, Nil, TRANSF( ::cChave, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999" ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 9 )
       ELSE
-         hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-44   , 829, Nil, TRANSF(::cChave, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999") , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 44   , 829, Nil, TRANSF( ::cChave, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999" ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
       ENDIF
       // mensagem sistema sefaz
-      hbNFe_Box_Hpdf( ::oPdfPage,525, ::nLinhaPdf-80, 305, 80, ::nLarguraBox )
+      hbNFe_Box_Hpdf( ::oPdfPage, 525, ::nLinhaPdf - 80, 305, 80, ::nLarguraBox )
       IF ::aInfProt[ "nProt" ] = NIL .OR. EMPTY( ::aInfProt[ "nProt" ] )
-         hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-55   , 829, Nil, "N F E   A I N D A   N Ã O   F O I" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-         hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-63   , 829, Nil, "A U T O R I Z A D A   P E L A" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-         hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-71   , 829, Nil, "S E F A Z   (SEM VALIDADE FISCAL)" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 55   , 829, Nil, "N F E   A I N D A   N Ã O   F O I" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 63   , 829, Nil, "A U T O R I Z A D A   P E L A" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 71   , 829, Nil, "S E F A Z   (SEM VALIDADE FISCAL)" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
       ELSE
-         hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-55   , 829, Nil, "Consulta de autenticidade no portal nacional" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-         hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-63   , 829, Nil, "da NF-e www.nfe.fazenda.gov.br/portal ou" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-         hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-71   , 829, Nil, "no site da Sefaz Autorizadora" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 55   , 829, Nil, "Consulta de autenticidade no portal nacional" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 63   , 829, Nil, "da NF-e www.nfe.fazenda.gov.br/portal ou" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 71   , 829, Nil, "no site da Sefaz Autorizadora" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
       ENDIF
 
       ::nLinhaPdf -= 80
 
       // NATUREZA
-      hbNFe_Box_Hpdf( ::oPdfPage, 70, ::nLinhaPdf-16, 455, 16, ::nLarguraBox )
-      hbNFe_Texto_Hpdf( ::oPdfPage,71, ::nLinhaPdf-1  , 524, Nil, "NATUREZA DA OPERAÇÃO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
-      hbNFe_Texto_Hpdf( ::oPdfPage,71, ::nLinhaPdf-5  , 524, Nil, ::aIde[ "natOp" ] , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
+      hbNFe_Box_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 16, 455, 16, ::nLarguraBox )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 1  , 524, Nil, "NATUREZA DA OPERAÇÃO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 5  , 524, Nil, ::aIde[ "natOp" ] , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
       // PROTOCOLO
-      hbNFe_Box_Hpdf( ::oPdfPage,525, ::nLinhaPdf-16, 305, 16, ::nLarguraBox )
-      hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-1   , 829, Nil, "PROTOCOLO DE AUTORIZAÇÃO DE USO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
+      hbNFe_Box_Hpdf( ::oPdfPage, 525, ::nLinhaPdf - 16, 305, 16, ::nLarguraBox )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 1   , 829, Nil, "PROTOCOLO DE AUTORIZAÇÃO DE USO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
       IF ::aInfProt[ "nProt" ] <> Nil
    	     IF ::aInfProt[ "cStat" ] = '100'
-            hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-1   , 829, Nil, "PROTOCOLO DE AUTORIZAÇÃO DE USO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 1   , 829, Nil, "PROTOCOLO DE AUTORIZAÇÃO DE USO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
          ELSEIF ::aInfProt[ "cStat" ] = '101' .OR. ::aInfProt[ "cStat" ] = '135'
-            hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-1   , 829, Nil, "PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 1   , 829, Nil, "PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
    	     ENDIF
 
          IF ::cFonteNFe == "Times"
-            hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-6   , 829, Nil, ::aInfProt[ "nProt" ]+" "+SUBS(SUBS(::aInfProt[ "dhRecbto" ],1,10),9,2)+"/"+SUBS(SUBS(::aInfProt[ "dhRecbto" ],1,10),6,2)+"/"+SUBS(SUBS(::aInfProt[ "dhRecbto" ],1,10),1,4)+" "+SUBS(::aInfProt[ "dhRecbto" ],12,8) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 9 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 6   , 829, Nil, ::aInfProt[ "nProt" ] + " " + SUBS( SUBS( ::aInfProt[ "dhRecbto" ], 1, 10 ), 9, 2 ) + "/" + SUBS( SUBS( ::aInfProt[ "dhRecbto" ], 1, 10 ), 6, 2 ) + "/" + SUBS( SUBS( ::aInfProt[ "dhRecbto" ], 1, 10 ), 1, 4 ) + " " + SUBS( ::aInfProt[ "dhRecbto" ], 12, 8 ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 9 )
          ELSE
-            hbNFe_Texto_Hpdf( ::oPdfPage,526, ::nLinhaPdf-6   , 829, Nil, ::aInfProt[ "nProt" ]+" "+SUBS(SUBS(::aInfProt[ "dhRecbto" ],1,10),9,2)+"/"+SUBS(SUBS(::aInfProt[ "dhRecbto" ],1,10),6,2)+"/"+SUBS(SUBS(::aInfProt[ "dhRecbto" ],1,10),1,4)+" "+SUBS(::aInfProt[ "dhRecbto" ],12,8) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 9 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 6   , 829, Nil, ::aInfProt[ "nProt" ] + " " + SUBS( SUBS( ::aInfProt[ "dhRecbto" ], 1, 10 ), 9, 2 ) + "/" + SUBS( SUBS( ::aInfProt[ "dhRecbto" ], 1, 10 ), 6, 2 ) + "/" + SUBS( SUBS( ::aInfProt[ "dhRecbto" ], 1, 10 ), 1, 4 ) +" " + SUBS( ::aInfProt[ "dhRecbto" ], 12, 8 ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 9 )
          ENDIF
       ENDIF
 
       ::nLinhaPdf -= 16
 
       // I.E.
-      hbNFe_Box_Hpdf( ::oPdfPage, 70, ::nLinhaPdf-16, 240, 16, ::nLarguraBox )
-      hbNFe_Texto_Hpdf( ::oPdfPage,71, ::nLinhaPdf-1  , 309, Nil, "INSCRIÇÃO ESTADUAL" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
-      hbNFe_Texto_Hpdf( ::oPdfPage,71, ::nLinhaPdf-5  , 309, Nil, ::aEmit[ "IE" ] , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
+      hbNFe_Box_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 16, 240, 16, ::nLarguraBox )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 1  , 309, Nil, "INSCRIÇÃO ESTADUAL" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 71, ::nLinhaPdf - 5  , 309, Nil, ::aEmit[ "IE" ] , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
       // I.E. SUBS. TRIB.
-      hbNFe_Box_Hpdf( ::oPdfPage,310, ::nLinhaPdf-16, 400, 16, ::nLarguraBox )
-      hbNFe_Texto_Hpdf( ::oPdfPage,311, ::nLinhaPdf-1  , 709, Nil, "INSCRIÇÃO ESTADUAL DO SUBS. TRIBUTÁRIO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
-      hbNFe_Texto_Hpdf( ::oPdfPage,311, ::nLinhaPdf-5  , 709, Nil, "" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
+      hbNFe_Box_Hpdf( ::oPdfPage, 310, ::nLinhaPdf - 16, 400, 16, ::nLarguraBox )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 311, ::nLinhaPdf - 1  , 709, Nil, "INSCRIÇÃO ESTADUAL DO SUBS. TRIBUTÁRIO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 311, ::nLinhaPdf - 5  , 709, Nil, "" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
       // CNPJ
-      hbNFe_Box_Hpdf( ::oPdfPage,710, ::nLinhaPdf-16, 120, 16, ::nLarguraBox )
-      hbNFe_Texto_Hpdf( ::oPdfPage,711, ::nLinhaPdf-1  , 829, Nil, "C.N.P.J." , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
-      hbNFe_Texto_Hpdf( ::oPdfPage,711, ::nLinhaPdf-5  , 829, Nil, TRANSF(::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99"), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
+      hbNFe_Box_Hpdf( ::oPdfPage, 710, ::nLinhaPdf - 16, 120, 16, ::nLarguraBox )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 711, ::nLinhaPdf-1  , 829, Nil, "C.N.P.J." , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 5 )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 711, ::nLinhaPdf-5  , 829, Nil, TRANSF(::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
 
       ::nLinhaPdf -= 17
    ELSE
-      hbNFe_Box_Hpdf( ::oPdfPage,  5, ::nLinhaPdf-80, 585, 80, ::nLarguraBox )
+      hbNFe_Box_Hpdf( ::oPdfPage,  5, ::nLinhaPdf - 80, 585, 80, ::nLarguraBox )
       // logo/dados empresa
-      hbNFe_Box_Hpdf( ::oPdfPage,  5, ::nLinhaPdf-80, 240, 80, ::nLarguraBox )
+      hbNFe_Box_Hpdf( ::oPdfPage,  5, ::nLinhaPdf - 80, 240, 80, ::nLarguraBox )
       hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf   , 244, Nil, "IDENTIFICAÇÃO DO EMITENTE" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
       IF EMPTY( ::cLogoFile )
           hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-6 , 244, Nil, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )

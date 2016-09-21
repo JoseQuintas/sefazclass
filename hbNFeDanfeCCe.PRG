@@ -78,7 +78,7 @@ METHOD execute( cXmlCarta, cXmlNota, cFilePDF ) CLASS hbNFeDanfeCCe
       ::cRetorno := "Não tem conteúdo do XML da nota"
       RETURN ::cRetorno
    ENDIF
-   IF .NOT. Empty( cFilePDF )
+   IF ! Empty( cFilePDF )
       ::cFile := cFilePDF
    ENDIF
 

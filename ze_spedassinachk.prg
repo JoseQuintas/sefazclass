@@ -17,7 +17,7 @@ FUNCTION ChkSignature( cXml, cCertificadoCN )
       XmlDoc:ValidateOnParse    := .F.
       XmlDoc:ResolveExternals   := .F.
 
-      IF .NOT. XmlDoc:LoadXml( cXml )
+      IF ! XmlDoc:LoadXml( cXml )
          cXmlRetorno := "Cannot load file. reason " + XmlDoc:ParseError:Reason
          BREAK
       ENDIF

@@ -249,7 +249,7 @@ FUNCTION XmlToDoc( cXmlInput )
 
    LOCAL oDoc
 
-   IF .NOT. ["] $ cXmlInput  // Petrobras usa aspas simples
+   IF ! ["] $ cXmlInput  // Petrobras usa aspas simples
       cXmlInput := StrTran( cXmlInput, ['], ["] )
    ENDIF
    oDoc := DocSpedClass():New()
@@ -321,7 +321,7 @@ FUNCTION XmlToDoc( cXmlInput )
       oDoc:cErro := "Dígito da chave de acesso inválido"
    CASE Substr( oDoc:ChaveAcesso, 5, 2 ) < "01" .OR. Substr( oDoc:ChaveAcesso, 5, 2 ) > "12"
       oDoc:cErro := "Mes da chave inválido"
-   CASE .NOT. ValidCnpjCpf( Substr( oDoc:ChaveAcesso, 7, 14 ) )
+   CASE ! ValidCnpjCpf( Substr( oDoc:ChaveAcesso, 7, 14 ) )
       oDoc:cErro := "CNPJ inválido na chave de acesso"
    CASE Val( oDoc:Protocolo ) == 0
       oDoc:cErro := "Sem protocolo"
@@ -367,7 +367,7 @@ FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
          RETURN NIL
       ENDIF
       oNfe:cNumDoc := StrZero( Val( oNfe:cNumDoc ), 9 )
-      IF .NOT. Empty( XmlDate( XmlNode( cBlocoIde, "dhEmi" ) ) )
+      IF ! Empty( XmlDate( XmlNode( cBlocoIde, "dhEmi" ) ) )
          oNfe:DataEmissao := XmlDate( XmlNode( cBlocoIde, "dhEmi" ) )
          oNfe:DataSaida   := XmlDate( XmlNode( cBlocoIde, "dhSaiEnt" ) )
       ELSE

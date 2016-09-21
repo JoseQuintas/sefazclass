@@ -48,7 +48,7 @@ FUNCTION ValidaXml( cXml, cTipo )
          cRetorno := "OK"       /* Validação básica */
          BREAK
       ENDCASE
-      IF .NOT. File( cFileXSD )
+      IF ! File( cFileXSD )
          cRetorno := "Erro não encontrado arquivo " + cFileXSD
          BREAK
       ENDIF

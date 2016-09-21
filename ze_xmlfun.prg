@@ -20,7 +20,7 @@ FUNCTION XmlTransform( cXml )
    FOR nCont = 1 TO Len( cRemoveTag )
       cXml := StrTran( cXml, cRemoveTag[ nCont ], "" )
    NEXT
-   IF .NOT. ["] $ cXml // Petrobras usa aspas simples
+   IF ! ["] $ cXml // Petrobras usa aspas simples
       cXml := StrTran( cXml, ['], ["] )
    ENDIF
 
@@ -91,7 +91,7 @@ FUNCTION XmlNode( cXml, cNode, lComTag )
    ENDIF
    mInicio := At( "<" + cNode, cXml )
    IF mInicio != 0
-      IF .NOT. lComTag
+      IF ! lComTag
          mInicio := mInicio + Len( cNode ) + 2
          IF mInicio != 1 .AND. Substr( cXml, mInicio - 1, 1 ) != ">" // Quando tem elementos no bloco
             mInicio := hb_At( ">", cXml, mInicio ) + 1
@@ -184,7 +184,7 @@ FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC )
    cText := Transform( Dtos( dDate ), "@R 9999-99-99" ) + "T" + cTime
 
    DO CASE
-   CASE .NOT. lUTC ; cText += "" // no UTC
+   CASE ! lUTC ; cText += "" // no UTC
    CASE cUF $ "AC"                                             ; cText += "-05:00"
    CASE cUF $ "MT,MS" .AND. lHorarioVerao                      ; cText += "-05:00"
    CASE cUF $ "DF,ES,GO,MG,PR,RJ,RS,SC,SP" .AND. lHorarioVerao ; cText += "-04:00"
