@@ -4,7 +4,7 @@ PROCEDURE TesteDanfe
 
    LOCAL oDanfe
 
-   oDanfe                 := hbnfeDanfe():new()
+   oDanfe := hbnfeDanfe():new()
    oDanfe:Execute( MemoRead( "xmlnota.xml" ), "xmlnota.pdf" )
    IF oDanfe:cRetorno != "OK"
       ? oDanfe:cRetorno
