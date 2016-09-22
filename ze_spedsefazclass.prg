@@ -912,7 +912,7 @@ METHOD NfeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cXmlAutorizado := [<?xml version="1.00"?>]
    ::cXmlAutorizado += [<procEventoNFe versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlAutorizado +=    cXmlAssinado
-   ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEvento" )
+   ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEvento", .T. ) // não conteúdo, mas completo
    ::cXmlAutorizado += [</procEventoNFe>]
 
    RETURN ::cXmlAutorizado
