@@ -905,7 +905,7 @@ METHOD NfeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    hb_Default( @cXmlAssinado, "" )
    hb_Default( @cXmlProtocolo, "" )
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "cStat" ), 3 )
-   IF ::cStatus != "135"
+   IF ! ::cStatus $ "135,155" // 155=cancelamento fora do prazo
       ::cXmlRetorno := "Erro: Status do protocolo não serve como autorização"
       RETURN ::cXmlRetorno
    ENDIF
@@ -913,7 +913,7 @@ METHOD NfeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cXmlAutorizado += [<procEventoNFe versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEvento" )
-   ::cXmlAutorizado += [</procEvento>]
+   ::cXmlAutorizado += [</procEventoNFe>]
 
    RETURN ::cXmlAutorizado
 
