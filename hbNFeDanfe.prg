@@ -589,7 +589,7 @@ METHOD saltaPagina() CLASS hbNFeDanfe
 
    LOCAL nLinhaFinalProd, nTamanhoProd
 
-   IF ::nLinhaFolha > ::nItensFolha
+   //IF ::nLinhaFolha > ::nItensFolha
       ::nLinhaPdf -= 2
       ::totalServico()
       ::dadosAdicionais()
@@ -604,7 +604,7 @@ METHOD saltaPagina() CLASS hbNFeDanfe
       nLinhaFinalProd := ::nLinhaPdf - ( ::nItensFolha * 6 ) - 2
       nTamanhoProd := ( ::nItensFolha * 6 ) + 2
       ::desenhaBoxProdutos( nLinhaFinalProd, nTamanhoProd )
-   ENDIF
+   //ENDIF
 
    RETURN NIL
 
@@ -2009,7 +2009,9 @@ METHOD produtos() CLASS hbNFeDanfe
    nItem := 1
    ::nLinhaFolha := 1
    DO WHILE .T.
-      ::saltaPagina()
+      IF ::nLinhaFolha > ::nItensFolha
+         ::saltaPagina()
+      ENDIF
       ::ProcessaItens( ::cXML, nItem )
       IF ::aItem[ "cProd" ] = NIL
          EXIT
@@ -2041,14 +2043,18 @@ METHOD produtos() CLASS hbNFeDanfe
          nItem++
          ::nLinhaFolha ++
          FOR nIdes = 2 TO MLCOUNT( ::aItem[ "xProd" ], ::nLarguraDescricao )
-            ::saltaPagina()
+            IF ::nLinhaFolha > ::nItensFolha
+               ::saltaPagina()
+            ENDIF
             /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLarguraDescricao,nIdes)), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
             ::nLinhaFolha ++
             ::nLinhaPdf -= 6
          NEXT
          TRY
             FOR nIDes = 1 TO MLCOUNT(::aItem[ "infAdProd" ],::nLarguraDescricao )
-                ::saltaPagina()
+                IF ::nLinhaFolha > ::nItensFolha
+                   ::saltaPagina()
+                ENDIF
                 /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM(MEMOLINE(::aItem[ "infAdProd" ],::nLarguraDescricao,nIdes)), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                 ::nLinhaFolha ++
                 ::nLinhaPdf -= 6
@@ -2083,14 +2089,18 @@ METHOD produtos() CLASS hbNFeDanfe
              nItem++
              ::nLinhaFolha ++
              FOR nIdes = 2 TO MLCount( ::aItem[ "xProd" ], ::nLarguraDescricao )
-                ::saltaPagina()
+                IF ::nLinhaFolha > ::nItensFolha
+                   ::saltaPagina()
+                ENDIF
                 /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "xProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                 ::nLinhaFolha ++
                 ::nLinhaPdf -= 6
              NEXT
              TRY
                FOR nIDes = 1 TO MLCount( ::aItem[ "infAdProd" ], ::nLarguraDescricao )
-                  ::saltaPagina()
+                  IF ::nLinhaFolha > ::nItensFolha
+                     ::saltaPagina()
+                  ENDIF
                   /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "infAdProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                   ::nLinhaFolha ++
                   ::nLinhaPdf -= 6
@@ -2126,7 +2136,9 @@ METHOD produtos() CLASS hbNFeDanfe
              nItem++
              ::nLinhaFolha ++
              FOR nIdes = 2 TO MLCOUNT(::aItem[ "xProd" ],::nLarguraDescricao)
-                ::saltaPagina()
+                IF ::nLinhaFolha > ::nItensFolha
+                   ::saltaPagina()
+                ENDIF
                 // DESCRI
                 hbNFe_Texto_Hpdf( ::oPdfPage,61, ::nLinhaPdf, 204, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLarguraDescricao,nIdes)), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                 ::nLinhaFolha ++
@@ -2134,7 +2146,9 @@ METHOD produtos() CLASS hbNFeDanfe
              NEXT
              TRY
                FOR nIDes = 1 TO MLCOUNT(::aItem[ "infAdProd" ],::nLarguraDescricao)
-                  ::saltaPagina()
+                  IF ::nLinhaFolha > ::nItensFolha
+                     ::saltaPagina()
+                  ENDIF
                   // DESCRI
                   hbNFe_Texto_Hpdf( ::oPdfPage,61, ::nLinhaPdf, 204, NIL, TRIM(MEMOLINE(::aItem[ "infAdProd" ],::nLarguraDescricao,nIdes)), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                   ::nLinhaFolha ++
