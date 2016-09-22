@@ -169,194 +169,190 @@ METHOD buscaDadosXML() CLASS hbNFeDanfe
          cTransp, cVeicTransp, cReboque, cInfAdic, cObsCont, cObsFisco, ;
          cExporta, cCompra, cInfProt // /////////////////////// cCobranca
 
-   cIde := hbNFe_PegaDadosXml( "ide", ::cXML )
+   cIde := XmlNode( ::cXml, "ide" )
    ::aIde := hb_Hash()
-   ::aIde[ "cUF" ]      := hbNFe_PegaDadosXML( "cUF", cIde )
-   ::aIde[ "cNF" ]      := hbNFe_PegaDadosXML( "cNF", cIde )
-   ::aIde[ "natOp" ]    := hbNFe_PegaDadosXML( "natOp", cIde )
-   ::aIde[ "indPag" ]   := hbNFe_PegaDadosXML( "indPag", cIde )
-   ::aIde[ "mod" ]      := hbNFe_PegaDadosXML( "mod", cIde )
-   ::aIde[ "serie" ]    := hbNFe_PegaDadosXML( "serie", cIde )
-   ::aIde[ "nNF" ]      := hbNFe_PegaDadosXML( "nNF", cIde )
-   ::aIde[ "dhEmi" ]    := hbNFe_PegaDadosXML( "dhEmi", cIde )
-   IF ::aIde[ "dhEmi" ] = NIL .OR. Empty( ::aIde[ "dhEmi" ] ) // NFE 2.0
-      ::aIde[ "dhEmi" ] := hbNFe_PegaDadosXML( "dEmi", cIde )
+   ::aIde[ "cUF" ]      := XmlNode( cIde, "cUF" )
+   ::aIde[ "cNF" ]      := XmlNode( cIde, "cUF" )
+   ::aIde[ "natOp" ]    := XmlNode( cIde, "natOp" )
+   ::aIde[ "indPag" ]   := XmlNode( cIde, "indPag" )
+   ::aIde[ "mod" ]      := XmlNode( cIde, "mod" )
+   ::aIde[ "serie" ]    := XmlNode( cIde, "serie" )
+   ::aIde[ "nNF" ]      := XmlNode( cIde, "nNF" )
+   ::aIde[ "dhEmi" ]    := XmlNode( cIde, "dhEmi" )
+   IF Empty( ::aIde[ "dhEmi" ] ) // NFE 2.0
+      ::aIde[ "dhEmi" ] := XmlNode( cIde, "dEmi" )
    ENDIF
-   ::aIde[ "dhSaiEnt" ] := hbNFe_PegaDadosXML( "dhSaiEnt", cIde )
-   IF ::aIde[ "dhSaiEnt" ] = NIL .OR. Empty(::aIde[ "dhSaiEnt" ] ) // NFE 2.0
-      ::aIde[ "dhSaiEnt" ] := hbNFe_PegaDadosXML( "dSaiEnt", cIde )+"T"+TIME()
+   ::aIde[ "dhSaiEnt" ] := XmlNode( cIde, "dhSaiEnt" )
+   IF Empty(::aIde[ "dhSaiEnt" ] ) // NFE 2.0
+      ::aIde[ "dhSaiEnt" ] := XmlNode( cIde, "dSaiEnt" ) + "T" + Time()
    ENDIF
-   ::aIde[ "tpNF" ]    := hbNFe_PegaDadosXML( "tpNF", cIde )
-   ::aIde[ "cMunFG" ]  := hbNFe_PegaDadosXML( "cMunFG", cIde )
-   ::aIde[ "tpImp" ]   := hbNFe_PegaDadosXML( "tpImp", cIde )  // 1 - retrato 2-paisagem
-   ::aIde[ "tpEmis" ]  := hbNFe_PegaDadosXML( "tpEmis", cIde )
-   ::aIde[ "cDV" ]     := hbNFe_PegaDadosXML( "cDV", cIde )
-   ::aIde[ "tpAmb" ]   := hbNFe_PegaDadosXML( "tpAmb", cIde )  // 1- producao 2-homologacao
-   ::aIde[ "finNFe" ]  := hbNFe_PegaDadosXML( "finNFe", cIde ) // finalidade 1-normal/2-complementar 3- de ajuste
-   ::aIde[ "procEmi" ] := hbNFe_PegaDadosXML( "procEmi", cIde ) //0 - emissão de NF-e com aplicativo do contribuinte 1 - emissão de NF-e avulsa pelo Fisco 2 - emissão de NF-e avulsa pelo contribuinte com seu certificado digital, através do site do Fisco 3- emissão NF-e pelo contribuinte com aplicativo fornecido pelo Fisco.
-   ::aIde[ "verProc" ] := hbNFe_PegaDadosXML( "verProc", cIde ) // versao sistema
+   ::aIde[ "tpNF" ]    := XmlNode( cIde, "tpNF" )
+   ::aIde[ "cMunFG" ]  := XmlNode( cIde, "cMunFG" )
+   ::aIde[ "tpImp" ]   := XmlNode( cIde, "tpImp" )  // 1 - retrato 2-paisagem
+   ::aIde[ "tpEmis" ]  := XmlNode( cIde, "tpEmis" )
+   ::aIde[ "cDV" ]     := XmlNode( cIde, "cDV" )
+   ::aIde[ "tpAmb" ]   := XmlNode( cIde, "tpAmb" )  // 1- producao 2-homologacao
+   ::aIde[ "finNFe" ]  := XmlNode( cIde, "finNFe" ) // finalidade 1-normal/2-complementar 3- de ajuste
+   ::aIde[ "procEmi" ] := XmlNode( cIde, "procEmi" ) //0 - emissão de NF-e com aplicativo do contribuinte 1 - emissão de NF-e avulsa pelo Fisco 2 - emissão de NF-e avulsa pelo contribuinte com seu certificado digital, através do site do Fisco 3- emissão NF-e pelo contribuinte com aplicativo fornecido pelo Fisco.
+   ::aIde[ "verProc" ] := XmlNode( cIde, "verProc" ) // versao sistema
 
-   cEmit := hbNFe_PegaDadosXML( "emit", ::cXML )
+   cEmit := XmlNode( ::cXml, "emit" )
    ::aEmit := hb_Hash()
-   ::aEmit[ "CNPJ" ]    := hbNFe_PegaDadosXML( "CNPJ", cEmit )
-   ::aEmit[ "CPF" ]     := hbNFe_PegaDadosXML( "CPF", cEmit ) // avulso pelo fisco
-   ::aEmit[ "xNome" ]   := XmlToString( hbNFe_PegaDadosXML( "xNome", cEmit ) )
-   ::aEmit[ "xFant" ]   := hbNFe_PegaDadosXML( "xFant", cEmit )
-   ::aEmit[ "xLgr" ]    := hbNFe_PegaDadosXML( "xLgr", cEmit )
-   ::aEmit[ "nro" ]     := hbNFe_PegaDadosXML( "nro", cEmit )
-   ::aEmit[ "xBairro" ] := hbNFe_PegaDadosXML( "xBairro", cEmit )
-   ::aEmit[ "cMun" ]    := hbNFe_PegaDadosXML( "cMun", cEmit )
-   ::aEmit[ "xMun" ]    := hbNFe_PegaDadosXML( "xMun", cEmit )
-   ::aEmit[ "UF" ]      := hbNFe_PegaDadosXML( "UF", cEmit )
-   ::aEmit[ "CEP" ]     := hbNFe_PegaDadosXML( "CEP", cEmit )
-   ::aEmit[ "cPais" ]   := hbNFe_PegaDadosXML( "cPais", cEmit )
-   ::aEmit[ "xPais" ]   := hbNFe_PegaDadosXML( "xPais", cEmit )
-   ::aEmit[ "fone" ]    := hbNFe_PegaDadosXML( "fone", cEmit ) // NFE 2.0
-   ::aEmit[ "IE" ]      := hbNFe_PegaDadosXML( "IE", cEmit )
-   ::aEmit[ "IEST" ]    := hbNFe_PegaDadosXML( "IEST", cEmit )
-   ::aEmit[ "IM" ]      := hbNFe_PegaDadosXML( "IM", cEmit )
-   ::aEmit[ "CNAE" ]    := hbNFe_PegaDadosXML( "CNAE", cEmit )
-   ::aEmit[ "CRT" ]     := hbNFe_PegaDadosXML( "CRT", cEmit ) // NFE 2.0 1 simpl nac 2 sim nac ex. sub receita 3 regime normal
+   ::aEmit[ "CNPJ" ]    := XmlNode( cEmit, "CNPJ" )
+   ::aEmit[ "CPF" ]     := XmlNode( cEmit, "CPF" ) // avulso pelo fisco
+   ::aEmit[ "xNome" ]   := XmlToString( XmlNode( cEmit, "xNome" ) )
+   ::aEmit[ "xFant" ]   := XmlNode( cEmit, "xFant" )
+   ::aEmit[ "xLgr" ]    := XmlNode( cEmit, "xLgr" )
+   ::aEmit[ "nro" ]     := XmlNode( cEmit, "nro" )
+   ::aEmit[ "xBairro" ] := XmlNode( cEmit, "xBairro" )
+   ::aEmit[ "cMun" ]    := XmlNode( cEmit, "cMun" )
+   ::aEmit[ "xMun" ]    := XmlNode( cEmit, "xMun" )
+   ::aEmit[ "UF" ]      := XmlNode( cEmit, "UF" )
+   ::aEmit[ "CEP" ]     := XmlNode( cEmit, "CEP" )
+   ::aEmit[ "cPais" ]   := XmlNode( cEmit, "cPais" )
+   ::aEmit[ "xPais" ]   := XmlNode( cEmit, "xPais" )
+   ::aEmit[ "fone" ]    := XmlNode( cEmit, "fone" ) // NFE 2.0
+   ::aEmit[ "IE" ]      := XmlNode( cEmit, "IE" )
+   ::aEmit[ "IEST" ]    := XmlNode( cEmit, "IEST" )
+   ::aEmit[ "IM" ]      := XmlNode( cEmit, "IM" )
+   ::aEmit[ "CNAE" ]    := XmlNode( cEmit, "CNAE" )
+   ::aEmit[ "CRT" ]     := XmlNode( cEmit, "CRT" ) // NFE 2.0 1 simpl nac 2 sim nac ex. sub receita 3 regime normal
 
-   TRY
-      ::cTelefoneEmitente := Transform( Sonumeros( AllTrim( hbNFe_PegaDadosXML( "fone", cEmit ) ) ), "@R (99) 99999-9999" )
-   CATCH
-      ::cTelefoneEmitente := ""
-   END
+   ::cTelefoneEmitente := XmlNode( cEmit, "fone" )
+   IF .NOT. Empty( ::cTelefoneEmitente )
+      ::cTelefoneEmitente := Transform( SoNumeros( ::cTelefoneEmitente ), "@R (99) 99999-9999" )
+   ENDIF
 
-   cDest := hbNFe_PegaDadosXML( "dest", ::cXML )
+   cDest := XmlNode( ::cXml, "dest" )
    ::aDest := hb_Hash()
-   ::aDest[ "CNPJ" ]    := hbNFe_PegaDadosXML( "CNPJ", cDest )
-   ::aDest[ "CPF" ]     := hbNFe_PegaDadosXML( "CPF", cDest )
-   ::aDest[ "xNome" ]   := XmlToString( hbNFe_PegaDadosXML( "xNome", cDest ) )
-   ::aDest[ "xLgr" ]    := hbNFe_PegaDadosXML( "xLgr", cDest )
-   ::aDest[ "nro" ]     := hbNFe_PegaDadosXML( "nro", cDest )
-   ::aDest[ "xBairro" ] := hbNFe_PegaDadosXML( "xBairro", cDest )
-   ::aDest[ "cMun" ]    := hbNFe_PegaDadosXML( "cMun", cDest )
-   ::aDest[ "xMun" ]    := hbNFe_PegaDadosXML( "xMun", cDest )
-   ::aDest[ "UF" ]      := hbNFe_PegaDadosXML( "UF", cDest )
-   ::aDest[ "CEP" ]     := hbNFe_PegaDadosXML( "CEP", cDest )
+   ::aDest[ "CNPJ" ]    := XmlNode( cDest, "CNPJ" )
+   ::aDest[ "CPF" ]     := XmlNode( cDest, "CPF" )
+   ::aDest[ "xNome" ]   := XmlToString( XmlNode( cDest, "xNome" ) )
+   ::aDest[ "xLgr" ]    := XmlNode( cDest, "xLgr" )
+   ::aDest[ "nro" ]     := XmlNode( cDest, "nro" )
+   ::aDest[ "xBairro" ] := XmlNode( cDest, "xBairro" )
+   ::aDest[ "cMun" ]    := XmlNode( cDest, "cMun" )
+   ::aDest[ "xMun" ]    := XmlNode( cDest, "xMun" )
+   ::aDest[ "UF" ]      := XmlNode( cDest, "UF" )
+   ::aDest[ "CEP" ]     := XmlNode( cDest, "CEP" )
    *IF ( ::aDest[ "CEP" ] = NIL .OR. EMPTY( AllTrim(::aDest[ "CEP" ])) ) .AND. ::aDest[ "UF" ]  <> "EX"
    *   ::cRetorno := "Destinatário sem CEP ou inválido"
    *   RETURN .F.
    *ENDIF
-   ::aDest[ "cPais" ] := hbNFe_PegaDadosXML( "cPais", cDest )
-   ::aDest[ "xPais" ] := hbNFe_PegaDadosXML( "xPais", cDest )
-   TRY
-      ::aDest[ "fone" ] := iif( LEN( hbNFe_PegaDadosXML( "fone", cDest ) ) <= 8, "00" + hbNFe_PegaDadosXML( "fone", cDest ), hbNFe_PegaDadosXML( "fone", cDest ) )
-   CATCH
-      ::aDest[ "fone" ] := ''
-   END
-   ::aDest[ "IE" ]    := hbNFe_PegaDadosXML( "IE", cDest )
-   ::aDest[ "ISUF" ]  := hbNFe_PegaDadosXML( "ISUF", cDest ) // NFE 2.0
-   ::aDest[ "email" ] := hbNFe_PegaDadosXML( "email", cDest ) // NFE 2.0
+   ::aDest[ "cPais" ] := XmlNode( cDest, "cPais" )
+   ::aDest[ "xPais" ] := XmlNode( cDest, "xPais" )
+   ::aDest[ "fone" ]  := XmlNode( cDest, "fone" )
+   IF Len( ::aDest[ "fone" ] ) <= 8
+      ::aDest[ "fone" ] := "00" + ::aDest[ "fone" ]
+   ENDIF
+   ::aDest[ "IE" ]    := XmlNode( cDest, "IE" )
+   ::aDest[ "ISUF" ]  := XmlNode( cDest, "ISUF" ) // NFE 2.0
+   ::aDest[ "email" ] := XmlNode( cDest, "email" ) // NFE 2.0
 *   IF ::aDest[ "email" ] = NIL .OR. EMPTY( AllTrim(::aDest[ "email" ]))
 *      ::cRetorno := "Destinatário sem eMail ou inválido"
 *      RETURN .F.
 *   ENDIF
 
-   cRetirada := hbNFe_PegaDadosXML( "retirada", ::cXML )
+   cRetirada := XmlNode( ::cXml, "retirada" )
    ::aRetirada := hb_Hash()
-   ::aRetirada[ "CNPJ" ]    := hbNFe_PegaDadosXML( "CNPJ", cRetirada ) // NFE 2.0
-   ::aRetirada[ "CPF" ]     := hbNFe_PegaDadosXML( "CPF", cRetirada ) // NFE 2.0
-   ::aRetirada[ "xLgr" ]    := hbNFe_PegaDadosXML( "xLgr", cRetirada )
-   ::aRetirada[ "nro" ]     := hbNFe_PegaDadosXML( "nro", cRetirada )
-   ::aRetirada[ "xCpl" ]    := hbNFe_PegaDadosXML( "xCpl", cRetirada )
-   ::aRetirada[ "xBairro" ] := hbNFe_PegaDadosXML( "xBairro", cRetirada )
-   ::aRetirada[ "cMun" ]    := hbNFe_PegaDadosXML( "cMun", cRetirada )
-   ::aRetirada[ "xMun" ]    := hbNFe_PegaDadosXML( "xMun", cRetirada )
-   ::aRetirada[ "UF" ]      := hbNFe_PegaDadosXML( "UF", cRetirada )
+   ::aRetirada[ "CNPJ" ]    := XmlNode( cRetirada, "CNPJ" ) // NFE 2.0
+   ::aRetirada[ "CPF" ]     := XmlNode( cRetirada, "CPF" ) // NFE 2.0
+   ::aRetirada[ "xLgr" ]    := XmlNode( cRetirada, "xLgr" )
+   ::aRetirada[ "nro" ]     := XmlNode( cRetirada, "nro" )
+   ::aRetirada[ "xCpl" ]    := XmlNode( cRetirada, "xCpl" )
+   ::aRetirada[ "xBairro" ] := XmlNode( cRetirada, "xBairro" )
+   ::aRetirada[ "cMun" ]    := XmlNode( cRetirada, "cMun" )
+   ::aRetirada[ "xMun" ]    := XmlNode( cRetirada, "xMun" )
+   ::aRetirada[ "UF" ]      := XmlNode( cRetirada, "UF" )
 
-   cEntrega := hbNFe_PegaDadosXML( "entrega", ::cXML )
+   cEntrega := XmlNode( ::cXml, "entrega" )
    ::aEntrega := hb_Hash()
-   ::aEntrega[ "CNPJ" ]    := hbNFe_PegaDadosXML( "CNPJ", cEntrega ) // NFE 2.0
-   ::aEntrega[ "CPF" ]     := hbNFe_PegaDadosXML( "CPF", cEntrega ) // NFE 2.0
-   ::aEntrega[ "xLgr" ]    := hbNFe_PegaDadosXML( "xLgr", cEntrega )
-   ::aEntrega[ "nro" ]     := hbNFe_PegaDadosXML( "nro", cEntrega )
-   ::aEntrega[ "xCpl" ]    := hbNFe_PegaDadosXML( "xCpl", cEntrega )
-   ::aEntrega[ "xBairro" ] := hbNFe_PegaDadosXML( "xBairro", cEntrega )
-   ::aEntrega[ "cMun" ]    := hbNFe_PegaDadosXML( "cMun", cEntrega )
-   ::aEntrega[ "xMun" ]    := hbNFe_PegaDadosXML( "xMun", cEntrega )
-   ::aEntrega[ "UF" ]      := hbNFe_PegaDadosXML( "UF", cEntrega )
-
-
+   ::aEntrega[ "CNPJ" ]    := XmlNode( cEntrega, "CNPJ" ) // NFE 2.0
+   ::aEntrega[ "CPF" ]     := XmlNode( cEntrega, "CPF" ) // NFE 2.0
+   ::aEntrega[ "xLgr" ]    := XmlNode( cEntrega, "xLgr" )
+   ::aEntrega[ "nro" ]     := XmlNode( cEntrega, "nro" )
+   ::aEntrega[ "xCpl" ]    := XmlNode( cEntrega, "xCpl" )
+   ::aEntrega[ "xBairro" ] := XmlNode( cEntrega, "xBairro" )
+   ::aEntrega[ "cMun" ]    := XmlNode( cEntrega, "cMun" )
+   ::aEntrega[ "xMun" ]    := XmlNode( cEntrega, "xMun" )
+   ::aEntrega[ "UF" ]      := XmlNode( cEntrega, "UF" )
 
    // totais da NF
-   cICMSTotal := hbNFe_PegaDadosXml( "ICMSTot", ::cXML )
+   cICMSTotal := XmlNode( ::cXml, "ICMSTot" )
    ::aICMSTotal := hb_Hash()
-   ::aICMSTotal[ "vBC" ]     := hbNFe_PegaDadosXML( "vBC", cICMSTotal )
-   ::aICMSTotal[ "vICMS" ]   := hbNFe_PegaDadosXML( "vICMS", cICMSTotal )
-   ::aICMSTotal[ "vBCST" ]   := hbNFe_PegaDadosXML( "vBCST", cICMSTotal )
-   ::aICMSTotal[ "vST" ]     := hbNFe_PegaDadosXML( "vST", cICMSTotal )
-   ::aICMSTotal[ "vProd" ]   := hbNFe_PegaDadosXML( "vProd", cICMSTotal )
-   ::aICMSTotal[ "vFrete" ]  := hbNFe_PegaDadosXML( "vFrete", cICMSTotal )
-   ::aICMSTotal[ "vSeg" ]    := hbNFe_PegaDadosXML( "vSeg", cICMSTotal )
-   ::aICMSTotal[ "vDesc" ]   := hbNFe_PegaDadosXML( "vDesc", cICMSTotal )
-   ::aICMSTotal[ "vII" ]     := hbNFe_PegaDadosXML( "vII", cICMSTotal )
-   ::aICMSTotal[ "vIPI" ]    := hbNFe_PegaDadosXML( "vIPI", cICMSTotal )
-   ::aICMSTotal[ "vPIS" ]    := hbNFe_PegaDadosXML( "vPIS", cICMSTotal )
-   ::aICMSTotal[ "vCOFINS" ] := hbNFe_PegaDadosXML( "vCOFINS", cICMSTotal )
-   ::aICMSTotal[ "vOutro" ]  := hbNFe_PegaDadosXML( "vOutro", cICMSTotal )
-   ::aICMSTotal[ "vNF" ]     := hbNFe_PegaDadosXML( "vNF", cICMSTotal )
+   ::aICMSTotal[ "vBC" ]     := XmlNode( cICMSTotal, "vBC" )
+   ::aICMSTotal[ "vICMS" ]   := XmlNode( cICMSTotal, "vICMS" )
+   ::aICMSTotal[ "vBCST" ]   := XmlNode( cICMSTotal, "vBCST" )
+   ::aICMSTotal[ "vST" ]     := XmlNode( cICMSTotal, "vST" )
+   ::aICMSTotal[ "vProd" ]   := XmlNode( cICMSTotal, "vProd" )
+   ::aICMSTotal[ "vFrete" ]  := XmlNode( cICMSTotal, "vFrete" )
+   ::aICMSTotal[ "vSeg" ]    := XmlNode( cICMSTotal, "vSeg" )
+   ::aICMSTotal[ "vDesc" ]   := XmlNode( cICMSTotal, "vDesc" )
+   ::aICMSTotal[ "vII" ]     := XmlNode( cICMSTotal, "vII" )
+   ::aICMSTotal[ "vIPI" ]    := XmlNode( cICMSTotal, "vIPI" )
+   ::aICMSTotal[ "vPIS" ]    := XmlNode( cICMSTotal, "vPIS" )
+   ::aICMSTotal[ "vCOFINS" ] := XmlNode( cICMSTotal, "vCOFINS" )
+   ::aICMSTotal[ "vOutro" ]  := XmlNode( cICMSTotal, "vOutro" )
+   ::aICMSTotal[ "vNF" ]     := XmlNode( cICMSTotal, "vNF" )
 
-   cISSTotal := hbNFe_PegaDadosXml( "ISSQNtot", ::cXML )
+   cISSTotal := XmlNode( ::cXml, "ISSQNtot" )
    ::aISSTotal := hb_Hash()
-   ::aISSTotal[ "vServ" ]   := hbNFe_PegaDadosXML( "vServ", cISSTotal )
-   ::aISSTotal[ "vBC" ]     := hbNFe_PegaDadosXML( "vBC", cISSTotal )
-   ::aISSTotal[ "vISS" ]    := hbNFe_PegaDadosXML( "vISS", cISSTotal )
-   ::aISSTotal[ "vPIS" ]    := hbNFe_PegaDadosXML( "vPIS", cISSTotal )
-   ::aISSTotal[ "vCOFINS" ] := hbNFe_PegaDadosXML( "vCOFINS", cISSTotal )
+   ::aISSTotal[ "vServ" ]   := XmlNode( cISSTotal, "vServ" )
+   ::aISSTotal[ "vBC" ]     := XmlNode( cISSTotal, "vBC" )
+   ::aISSTotal[ "vISS" ]    := XmlNode( cISSTotal, "vISS" )
+   ::aISSTotal[ "vPIS" ]    := XmlNode( cISSTotal, "vPIS" )
+   ::aISSTotal[ "vCOFINS" ] := XmlNode( cISSTotal, "vCOFINS" )
 
-   cRetTrib := hbNFe_PegaDadosXml( "RetTrib", ::cXML )
+   cRetTrib := XmlNode( ::cXml, "RetTrib" )
    ::aRetTrib := hb_Hash()
-   ::aRetTrib[ "vRetPIS" ]    := hbNFe_PegaDadosXML( "vRetPIS", cRetTrib )
-   ::aRetTrib[ "vRetCOFINS" ] := hbNFe_PegaDadosXML( "vRetCOFINS", cRetTrib )
-   ::aRetTrib[ "vRetCSLL" ]   := hbNFe_PegaDadosXML( "vRetCSLL", cRetTrib )
-   ::aRetTrib[ "vBCIRRF" ]    := hbNFe_PegaDadosXML( "vBCIRRF", cRetTrib )
-   ::aRetTrib[ "vIRRF" ]      := hbNFe_PegaDadosXML( "vIRRF", cRetTrib )
-   ::aRetTrib[ "vBCRetPrev" ] := hbNFe_PegaDadosXML( "vBCRetPrev", cRetTrib )
-   ::aRetTrib[ "vRetPrev" ]   := hbNFe_PegaDadosXML( "vRetPrev", cRetTrib )
+   ::aRetTrib[ "vRetPIS" ]    := XmlNode( cRetTrib, "vRetPIS" )
+   ::aRetTrib[ "vRetCOFINS" ] := XmlNode( cRetTrib, "vRetCOFINS" )
+   ::aRetTrib[ "vRetCSLL" ]   := XmlNode( cRetTrib, "vRetCSLL" )
+   ::aRetTrib[ "vBCIRRF" ]    := XmlNode( cRetTrib, "vBCIRRF" )
+   ::aRetTrib[ "vIRRF" ]      := XmlNode( cRetTrib, "vIRRF" )
+   ::aRetTrib[ "vBCRetPrev" ] := XmlNode( cRetTrib, "vBCRetPrev" )
+   ::aRetTrib[ "vRetPrev" ]   := XmlNode( cRetTrib, "vRetPrev" )
 
 
-   cTransp := hbNFe_PegaDadosXml( "transp", ::cXML )
+   cTransp := XmlNode( ::cXml, "transp" )
    ::aTransp := hb_Hash()
-   ::aTransp[ "modFrete" ] := hbNFe_PegaDadosXML( "modFrete", cTransp )
-   ::aTransp[ "CNPJ" ]     := hbNFe_PegaDadosXML( "CNPJ", cTransp )
-   ::aTransp[ "CPF" ]      := hbNFe_PegaDadosXML( "CPF", cTransp )
-   ::aTransp[ "xNome" ]    := hbNFe_PegaDadosXML( "xNome", cTransp )
-   ::aTransp[ "IE" ]       := hbNFe_PegaDadosXML( "IE", cTransp ) // NFE 2.0
-   ::aTransp[ "xEnder" ]   := hbNFe_PegaDadosXML( "xEnder", cTransp )
-   ::aTransp[ "xMun" ]     := hbNFe_PegaDadosXML( "xMun", cTransp )
-   ::aTransp[ "UF" ]       := hbNFe_PegaDadosXML( "UF", cTransp )
-   // veicTransp
-   cVeicTransp := hbNFe_PegaDadosXml( "veicTransp", cTransp )
-   ::aVeicTransp := hb_Hash()
-   ::aVeicTransp[ "placa" ] := hbNFe_PegaDadosXML( "placa", cVeicTransp )
-   ::aVeicTransp[ "UF" ] := hbNFe_PegaDadosXML( "UF", cVeicTransp )
-   ::aVeicTransp[ "RNTC" ] := hbNFe_PegaDadosXML( "RNTC", cVeicTransp ) //ANTT
-   //reboque
-   cReboque := hbNFe_PegaDadosXml( "veicTransp", cTransp )
-   ::aReboque := hb_Hash()
-   ::aReboque[ "placa" ] := hbNFe_PegaDadosXML( "placa", cReboque )
-   ::aReboque[ "UF" ]    := hbNFe_PegaDadosXML( "UF", cReboque )
-   ::aReboque[ "RNTC" ]  := hbNFe_PegaDadosXML( "RNTC", cReboque ) //ANTT
+   ::aTransp[ "modFrete" ] := XmlNode( cTransp, "modFrete" )
+   ::aTransp[ "CNPJ" ]     := XmlNode( cTransp, "CNPJ" )
+   ::aTransp[ "CPF" ]      := XmlNode( cTransp, "CPF" )
+   ::aTransp[ "xNome" ]    := XmlNode( cTransp, "xNome" )
+   ::aTransp[ "IE" ]       := XmlNode( cTransp, "IE" ) // NFE 2.0
+   ::aTransp[ "xEnder" ]   := XmlNode( cTransp, "xEnder" )
+   ::aTransp[ "xMun" ]     := XmlNode( cTransp, "xMun" )
+   ::aTransp[ "UF" ]       := XmlNode( cTransp, "UF" )
    // dados transportados
-   ::aTransp[ "qVol" ]   := hbNFe_PegaDadosXML( "qVol", cTransp )
-   ::aTransp[ "esp" ]    := hbNFe_PegaDadosXML( "esp", cTransp )
-   ::aTransp[ "marca" ]  := hbNFe_PegaDadosXML( "marca", cTransp )
-   ::aTransp[ "nVol" ]   := hbNFe_PegaDadosXML( "nVol", cTransp )
-   ::aTransp[ "pesoL" ]  := hbNFe_PegaDadosXML( "pesoL", cTransp )
-   ::aTransp[ "pesoB" ]  := hbNFe_PegaDadosXML( "pesoB", cTransp )
-   ::aTransp[ "nLacre" ] := hbNFe_PegaDadosXML( "nLacre", cTransp )
+   ::aTransp[ "qVol" ]   := XmlNode( cTransp, "qVol" )
+   ::aTransp[ "esp" ]    := XmlNode( cTransp, "esp" )
+   ::aTransp[ "marca" ]  := XmlNode( cTransp, "marca" )
+   ::aTransp[ "nVol" ]   := XmlNode( cTransp, "nVol" )
+   ::aTransp[ "pesoL" ]  := XmlNode( cTransp, "pesoL" )
+   ::aTransp[ "pesoB" ]  := XmlNode( cTransp, "pesoB" )
+   ::aTransp[ "nLacre" ] := XmlNode( cTransp, "nLacre" )
+   // veicTransp
+   cVeicTransp := XmlNode( cTransp, "veicTransp" )
+   ::aVeicTransp := hb_Hash()
+   ::aVeicTransp[ "placa" ] := XmlNode( cVeicTransp, "placa" )
+   ::aVeicTransp[ "UF" ]    := XmlNode( cVeicTransp, "UF" )
+   ::aVeicTransp[ "RNTC" ]  := XmlNode( cVeicTransp, "RNTC" ) //ANTT
+   //reboque
+   cReboque := XmlNode( cTransp, "veicTransp" )
+   ::aReboque := hb_Hash()
+   ::aReboque[ "placa" ] := XmlNode( cReboque, "placa" )
+   ::aReboque[ "UF" ]    := XmlNode( cReboque, "UF" )
+   ::aReboque[ "RNTC" ]  := XmlNode( cReboque, "RNTC" ) //ANTT
 
-   ::cCobranca := hbNFe_PegaDadosXML( "cobr", ::cXML )
-   cInfAdic    := hbNFe_PegaDadosXML( "infAdic", ::cXML )
+   ::cCobranca := XmlNode( ::cXml, "cobr" )
+   cInfAdic    := XmlNode( ::cXml, "infAdic" )
    ::aInfAdic  := hb_Hash()
 
-   IF ! EMPTY( cInfAdic )   // Mauricio Cruz - 28/09/2011   && Anderson Retirei o + antes do CHR(13)+CHR(10)
-      ::aInfAdic[ "infCpl" ] := hbNFe_PegaDadosXML( "infCpl", cInfAdic )
-	  IF !EMPTY(::aInfAdic[ "infCpl" ] )
-         ::aInfAdic[ "infCpl" ] := STRTRAN( ::aInfAdic[ "infCpl" ], ";", CHR(13) + CHR(10) )
+   IF ! Empty( cInfAdic )   // Mauricio Cruz - 28/09/2011   && Anderson Retirei o + antes do CHR(13)+CHR(10)
+      ::aInfAdic[ "infCpl" ] := XmlNode( cInfAdic, "infCpl" )
+	  IF ! Empty( ::aInfAdic[ "infCpl" ] )
+         ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";", CHR(13) + CHR(10) )
 	   ELSE
          ::aInfAdic[ "infCpl" ] := ""
 	  ENDIF
@@ -364,36 +360,34 @@ METHOD buscaDadosXML() CLASS hbNFeDanfe
       ::aInfAdic[ "infCpl" ] := ""
    ENDIF
    //obsCont
-   cObsCont := hbNFe_PegaDadosXml( "obsCont", cInfAdic )
+   cObsCont := XmlNode( cInfAdic, "obsCont" )
    ::aObsCont := hb_Hash()
-   ::aObsCont[ "xCampo" ] := hbNFe_PegaDadosXML( "xCampo", cObsCont )
-   ::aObsCont[ "xTexto" ] := hbNFe_PegaDadosXML( "xTexto", cObsCont )
+   ::aObsCont[ "xCampo" ] := XmlNode( cObsCont, "xCampo" )
+   ::aObsCont[ "xTexto" ] := XmlNode( cObsCont, "xTexto" )
    //obsFisco
-   cObsFisco := hbNFe_PegaDadosXML( "obsFisco", cInfAdic )
+   cObsFisco := XmlNode( cInfAdic, "obsFisco" )
    ::aObsFisco := hb_Hash()
-   ::aObsFisco[ "xCampo" ] := hbNFe_PegaDadosXML( "xCampo", cObsFisco )
-   ::aObsFisco[ "xTexto" ] := hbNFe_PegaDadosXML( "xTexto", cObsFisco )
+   ::aObsFisco[ "xCampo" ] := XmlNode( cObsFisco, "xCampo" )
+   ::aObsFisco[ "xTexto" ] := XmlNOde( cObsFisco, "xTexto" )
 
-   cExporta := hbNFe_PegaDadosXml( "exporta", ::cXML )
+   cExporta := XmlNode( ::cXml, "exporta" )
    ::aExporta := hb_Hash()
-   ::aExporta[ "UFEmbarq" ]   := hbNFe_PegaDadosXML( "infCpl", cExporta )
-   ::aExporta[ "xLocEmbarq" ] := hbNFe_PegaDadosXML( "infCpl", cExporta )
+   ::aExporta[ "UFEmbarq" ]   := XmlNode( cExporta, "infCpl" )
+   ::aExporta[ "xLocEmbarq" ] := XmlNode( cExporta, "infCpl" )
 
-   cCompra := hbNFe_PegaDadosXml( "compra", ::cXML )
+   cCompra := XmlNode( ::cXml, "compra" )
    ::aCompra := hb_Hash()
-   ::aCompra[ "xNEmp" ] := hbNFe_PegaDadosXML( "infCpl", cCompra )
-   ::aCompra[ "xPed" ]  := hbNFe_PegaDadosXML( "infCpl", cCompra )
-   ::aCompra[ "xCont" ] := hbNFe_PegaDadosXML( "infCpl", cCompra )
+   ::aCompra[ "xNEmp" ] := XmlNode( cCompra, "infCpl" )
+   ::aCompra[ "xPed" ]  := XmlNode( cCompra, "infCpl" )
+   ::aCompra[ "xCont" ] := XmlNode( cCompra, "infCpl" )
 
-   cInfProt := hbNFe_PegaDadosXml( "infProt", ::cXML, "infProt" )
-   //cInfProt := hbNFe_PegaDadosXml( "infProt", ::cXML )
-
+   cInfProt := XmlNode( ::cXml, "infProt" )
    ::aInfProt := hb_Hash()
-   ::aInfProt[ "nProt" ]    := hbNFe_PegaDadosXML( "nProt", cInfProt )
-   ::aInfProt[ "dhRecbto" ] := hbNFe_PegaDadosXML( "dhRecbto", cInfProt )
-   ::aInfProt[ "digVal" ]   := hbNFe_PegaDadosXML( "digVal", cInfProt )
-   ::aInfProt[ "cStat" ]    := hbNFe_PegaDadosXML( "cStat", cInfProt )
-   ::aInfProt[ "xMotivo" ]  := hbNFe_PegaDadosXML( "xMotivo", cInfProt )
+   ::aInfProt[ "nProt" ]    := XmlNode( cInfProt, "nProt" )
+   ::aInfProt[ "dhRecbto" ] := XmlNode( cInfProt, "dhRecbto" )
+   ::aInfProt[ "digVal" ]   := XmlNode( cInfProt, "digVal" )
+   ::aInfProt[ "cStat" ]    := XmlNode( cInfProt, "cStat" )
+   ::aInfProt[ "xMotivo" ]  := XmlNode( cInfProt, "xMotivo" )
 
    RETURN .T.
 
@@ -614,11 +608,11 @@ METHOD canhoto() CLASS hbNFeDanfe
       IF ::lPaisagem = .T. // paisagem
          hbNFe_Box_Hpdf( ::oPdfPage,   5, 20, 50, 565, ::nLarguraBox )
          // recebemos
-         hbNFe_Texto_Hpdf( ::oPdfPage,  14, 21, 14 + 8, ::nLinhaPdf, "Recebemos de "+TRIM(::aEmit[ "xNome" ])+" os produtos constantes da Nota Fiscal indicada ao lado", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 7, 90 )
+         hbNFe_Texto_Hpdf( ::oPdfPage,  14, 21, 14 + 8, ::nLinhaPdf, "Recebemos de " + Trim( ::aEmit[ "xNome" ] ) + " os produtos constantes da Nota Fiscal indicada ao lado", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 7, 90 )
          // quadro numero da NF
          hbNFe_Box_Hpdf( ::oPdfPage,   5, 505, 50, 80, ::nLarguraBox )
          hbNFe_Texto_Hpdf( ::oPdfPage,  14, 506, 14 + 8, NIL, "NOTA FISCAL", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8, 90 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  30, 506, 30 + 8, NIL, "Nº: " + Substr( StrZero( VAL( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + Substr( StrZero( VAL( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + Substr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8, 90 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  30, 506, 30 + 8, NIL, "Nº: " + Transform( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), "@R 999.999.999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8, 90 )
          hbNFe_Texto_Hpdf( ::oPdfPage,  46, 506, 46 + 8, NIL, "SÉRIE " + ::aIde[ "serie" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8, 90 )
 
          // data recebimento
@@ -630,9 +624,9 @@ METHOD canhoto() CLASS hbNFeDanfe
 
          // corte
          IF ::cFonteNFe == "Times"
-            hbNFe_Texto_Hpdf( ::oPdfPage, 62, 20, 62 + 8, NIL, REPLIC("- ",110), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 8, 90 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 62, 20, 62 + 8, NIL, Replicate( "- ",110 ), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 8, 90 )
          ELSE
-            hbNFe_Texto_Hpdf( ::oPdfPage, 65, 20, 65 + 6, NIL, REPLIC("- ",78), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6, 90 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 65, 20, 65 + 6, NIL, Replicate( "- ",78 ), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6, 90 )
          ENDIF
       ELSE // retrato
          hbNFe_Box_Hpdf( ::oPdfPage, 5, ::nLinhaPdf - 44, 585, 44, ::nLarguraBox )
@@ -642,7 +636,7 @@ METHOD canhoto() CLASS hbNFeDanfe
          // quadro numero da NF
          hbNFe_Box_Hpdf( ::oPdfPage, 505, ::nLinhaPdf - 44, 85, 44, ::nLarguraBox )
          hbNFe_Texto_Hpdf( ::oPdfPage, 506, ::nLinhaPdf - 8, 589, NIL, "NF-e", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
-           hbNFe_Texto_Hpdf( ::oPdfPage, 506, ::nLinhaPdf - 20, 589, NIL, "Nº: " + Substr( StrZero( VAL( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + Substr( StrZero( VAL( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + Substr( StrZero( VAL( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
+           hbNFe_Texto_Hpdf( ::oPdfPage, 506, ::nLinhaPdf - 20, 589, NIL, "Nº: " + Transform( StrZero( VAL( ::aIde[ "nNF" ] ), 9 ), "@R 999.999.999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
          hbNFe_Texto_Hpdf( ::oPdfPage, 506, ::nLinhaPdf - 32, 589, NIL, "SÉRIE "+::aIde[ "serie" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
          ::nLinhaPdf -= 18
 
@@ -732,7 +726,7 @@ METHOD cabecalho() CLASS hbNFeDanfe
       hbNFe_Box_Hpdf( ::oPdfPage, 495, ::nLinhaPdf - 52, 20, 16, ::nLarguraBox )
       hbNFe_Texto_Hpdf( ::oPdfPage, 496, ::nLinhaPdf - 40, 514, NIL, ::aIde[ "tpNF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
 
-      hbNFe_Texto_Hpdf( ::oPdfPage, 401, ::nLinhaPdf - 56, 524, NIL, "Nº: " + Substr( StrZero( VAL( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + Substr( StrZero( VAL( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + Substr( StrZero( VAL( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 10 )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 401, ::nLinhaPdf - 56, 524, NIL, "Nº: " + Transform( StrZero( VAL( ::aIde[ "nNF" ] ), 9 ), "@R 999.999.999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 10 )
       hbNFe_Texto_Hpdf( ::oPdfPage, 401, ::nLinhaPdf - 66, 524, NIL, "SÉRIE: "+::aIde[ "serie" ] + " - FOLHA " + AllTrim( STR( ::nFolha ) ) + "/" + AllTrim( STR( ::nFolhas ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 10 )
 
       // codigo barras
@@ -816,41 +810,41 @@ METHOD cabecalho() CLASS hbNFeDanfe
       hbNFe_Box_Hpdf( ::oPdfPage,  5, ::nLinhaPdf - 80, 240, 80, ::nLarguraBox )
       hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf, 244, NIL, "IDENTIFICAÇÃO DO EMITENTE", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
       IF EMPTY( ::cLogoFile )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-6, 244, NIL, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,1)), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-18, 244, NIL, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-30, 244, NIL, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-38, 244, NIL, ::aEmit[ "xBairro" ]+" - "+Transform( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-46, 244, NIL, ::aEmit[ "xMun" ]+" - "+::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-54, 244, NIL, TRIM(IF(!EMPTY(::cTelefoneEmitente),"FONE: "+::cTelefoneEmitente,"")), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-6, 244, NIL, TRIM( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-18, 244, NIL, TRIM( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-30, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-38, 244, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-46, 244, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-54, 244, NIL, TRIM( iif( ! Empty( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
           hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-62, 244, NIL, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
           hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-70, 244, NIL, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       ELSE
           IF ::nLogoStyle = _LOGO_EXPANDIDO
              oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
-             HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - (72+6), 238, 72 )
+             HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - ( 72 + 6 ), 238, 72 )
           ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
              oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
-             HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - (72+6), 62, 72 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf-6, 244, NIL, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,1)), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
+             HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 6, 244, NIL, TRIM( MEMOLINE( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
              && Anderson camilo   30/12/2011  Comentei esta linha porque a razão social estava saindo um nome sobre o outro
 *            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf-18, 244, NIL, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf-30, 244, NIL, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf-38, 244, NIL, ::aEmit[ "xBairro" ]+" - "+Transform( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf-46, 244, NIL, ::aEmit[ "xMun" ]+" - "+::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf-54, 244, NIL, TRIM(IF(!EMPTY(::cTelefoneEmitente),"FONE: "+::cTelefoneEmitente,"")), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf-62, 244, NIL, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf-70, 244, NIL, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 30, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 38, 244, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 46, 244, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 54, 244, NIL, TRIM( iif( ! EMPTY( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 62, 244, NIL, TRIM( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 70, 244, NIL, TRIM( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
           ELSEIF ::nLogoStyle = _LOGO_DIREITA
              oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
-             HPDF_Page_DrawImage( ::oPdfPage, oImage,182, ::nLinhaPdf - (72+6), 62, 72 )
-            hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-6, 180, NIL, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,1)), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
-            hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-18, 180, NIL, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
+             HPDF_Page_DrawImage( ::oPdfPage, oImage,182, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
+            hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-6, 180, NIL, TRIM( MEMOLINE( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
+            hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-18, 180, NIL, TRIM( MEMOLINE( ::aEmit[ "xNome" ],30, 2 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
             hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-30, 180, NIL, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
             hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-38, 180, NIL, ::aEmit[ "xBairro" ]+" - "+Transform( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
             hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-46, 180, NIL, ::aEmit[ "xMun" ]+" - "+::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-54, 180, NIL, TRIM(IF(!EMPTY(::cTelefoneEmitente),"FONE: "+::cTelefoneEmitente,"")), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-62, 180, NIL, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-            hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-70, 180, NIL, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-54, 180, NIL, TRIM( iif( ! EMPTY( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-62, 180, NIL, TRIM( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+            hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-70, 180, NIL, TRIM( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
            ENDIF
       ENDIF
       // numero nf tipo
@@ -886,42 +880,42 @@ METHOD cabecalho() CLASS hbNFeDanfe
 
 
       // chave de acesso
-      hbNFe_Box_Hpdf( ::oPdfPage,370, ::nLinhaPdf-55, 220, 55, ::nLarguraBox )
-      hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-36, 589, NIL, "CHAVE DE ACESSO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
+      hbNFe_Box_Hpdf( ::oPdfPage, 370, ::nLinhaPdf - 55, 220, 55, ::nLarguraBox )
+      hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf - 36, 589, NIL, "CHAVE DE ACESSO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
       IF ::cFonteNFe == "Times"
-         hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-44, 589, NIL, Transform(::cChave, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf - 44, 589, NIL, Transform(::cChave, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       ELSE
-         hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-44, 589, NIL, Transform(::cChave, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf - 44, 589, NIL, Transform(::cChave, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
       ENDIF
       // mensagem sistema sefaz
-      hbNFe_Box_Hpdf( ::oPdfPage,370, ::nLinhaPdf-80, 220, 80, ::nLarguraBox )
+      hbNFe_Box_Hpdf( ::oPdfPage, 370, ::nLinhaPdf-80, 220, 80, ::nLarguraBox )
       IF ::aInfProt[ "nProt" ] = NIL .OR. EMPTY( ::aInfProt[ "nProt" ] )
-         hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-55, 589, NIL, "N F E   A I N D A   N Ã O   F O I", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
-         hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-63, 589, NIL, "A U T O R I Z A D A   P E L A", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
-         hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-71, 589, NIL, "S E F A Z   (SEM VALIDADE FISCAL)", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf - 55, 589, NIL, "N F E   A I N D A   N Ã O   F O I", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf - 63, 589, NIL, "A U T O R I Z A D A   P E L A", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf - 71, 589, NIL, "S E F A Z   (SEM VALIDADE FISCAL)", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
       ELSE
-         hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-55, 589, NIL, "Consulta de autenticidade no portal nacional", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
-         hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-63, 589, NIL, "da NF-e www.nfe.fazenda.gov.br/portal ou", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
-         hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-71, 589, NIL, "no site da Sefaz Autorizadora", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf - 55, 589, NIL, "Consulta de autenticidade no portal nacional", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf - 63, 589, NIL, "da NF-e www.nfe.fazenda.gov.br/portal ou", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
+         hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf - 71, 589, NIL, "no site da Sefaz Autorizadora", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
       ENDIF
 
       ::nLinhaPdf -= 80
 
       // NATUREZA
-      hbNFe_Box_Hpdf( ::oPdfPage,  5, ::nLinhaPdf-16, 365, 16, ::nLarguraBox )
+      hbNFe_Box_Hpdf( ::oPdfPage,  5, ::nLinhaPdf - 16, 365, 16, ::nLarguraBox )
       hbNFe_Texto_Hpdf( ::oPdfPage,6, ::nLinhaPdf - 1,  369, NIL, "NATUREZA DA OPERAÇÃO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
-      hbNFe_Texto_Hpdf( ::oPdfPage,6, ::nLinhaPdf-5, 369, NIL, ::aIde[ "natOp" ], HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 10 )
+      hbNFe_Texto_Hpdf( ::oPdfPage,6, ::nLinhaPdf - 5, 369, NIL, ::aIde[ "natOp" ], HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 10 )
       // PROTOCOLO
-      hbNFe_Box_Hpdf( ::oPdfPage,370, ::nLinhaPdf-16, 220, 16, ::nLarguraBox )
+      hbNFe_Box_Hpdf( ::oPdfPage,370, ::nLinhaPdf - 16, 220, 16, ::nLarguraBox )
 
 	  // Alterado por Anderson Camilo em 06/08/2013
 *      hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-1, 589, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
       IF ::aInfProt[ "nProt" ] <> NIL
 
          IF ::aInfProt[ "cStat" ] = '100'
-            hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-1, 589, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf - 1, 589, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
          ELSEIF ::aInfProt[ "cStat" ] = '101' .OR. ::aInfProt[ "cStat" ] = '135'
-            hbNFe_Texto_Hpdf( ::oPdfPage,371, ::nLinhaPdf-1, 589, NIL, "PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
+            hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf - 1, 589, NIL, "PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
          ENDIF
 
          IF ::cFonteNFe == "Times"
