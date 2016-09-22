@@ -432,8 +432,7 @@ METHOD geraPDF() CLASS hbNFeDanfe
    // calculando quantidade de itens
    nItem := 1
    DO WHILE .T.
-      ::ProcessaItens( ::cXML, nItem )
-      IF ::aItem[ "cProd" ] = NIL
+      IF .NOT. ::ProcessaItens( ::cXML, nItem )
          EXIT
       ENDIF
       nItem ++
@@ -1269,13 +1268,13 @@ METHOD faturas() CLASS hbNFeDanfe
          nColuna := 0
          DO WHILE AT("<dup>", cDups) > 0
             nColuna ++
-            cDup := hbNFe_PegaDadosXml( "dup", cDups )
+            cDup := XmlNode( cDups, "dup" )
 
-            cNumero := hbNFe_PegaDadosXml( "nDup", cDup )
-            IF !EMPTY(cNumero)
-               cVencimento := hbNFe_PegaDadosXml( "dVenc", cDup )
-               cVencimento := Substr(cVencimento,9,2)+"/" + Substr(cVencimento,6,2)+"/" + Substr(cVencimento,1,4)
-               cValor := AllTrim( FormatNumber( Val(hbNFe_PegaDadosXml( "vDup", cDup )),13,2))
+            cNumero := XmlNode( cDup, "nDup" )
+            IF ! Empty( cNumero )
+               cVencimento := XmlNode( cDup, "dVenc" )
+               cVencimento := Substr( cVencimento, 9, 2 ) + "/" + Substr( cVencimento, 6, 2 ) + "/" + Substr( cVencimento, 1, 4 )
+               cValor := AllTrim( FormatNumber( Val( XmlNode( cDup, "vDup" ) ), 13, 2 ) )
             ELSE
                nColuna --
                EXIT
@@ -1310,15 +1309,15 @@ METHOD faturas() CLASS hbNFeDanfe
 
          cDups := ::cCobranca
          nColuna := 0
-         DO WHILE AT("<dup>", cDups) > 0
+         DO WHILE AT( "<dup>", cDups ) > 0
             nColuna ++
-            cDup := hbNFe_PegaDadosXml( "dup", cDups )
+            cDup := XmlNode( cDups, "dup" )
 
-            cNumero := hbNFe_PegaDadosXml( "nDup", cDup )
-            IF !EMPTY(cNumero)
-               cVencimento := hbNFe_PegaDadosXml( "dVenc", cDup )
-               cVencimento := Substr(cVencimento,9,2)+"/" + Substr(cVencimento,6,2)+"/" + Substr(cVencimento,1,4)
-               cValor := AllTrim( FormatNumber( Val(hbNFe_PegaDadosXml( "vDup", cDup )),13,2))
+            cNumero := XmlNode( cDup, "nDup" )
+            IF ! Empty( cNumero )
+               cVencimento := XmlNode( cDup, "dVenc" )
+               cVencimento := Substr( cVencimento, 9, 2 ) + "/" + Substr( cVencimento, 6, 2 ) + "/" + Substr( cVencimento, 1, 4 )
+               cValor := AllTrim( FormatNumber( Val( XmlNode( cDup, "vDup" ) ), 13, 2 ) )
             ELSE
                nColuna --
                EXIT
@@ -2006,8 +2005,7 @@ METHOD produtos() CLASS hbNFeDanfe
       IF ::nLinhaFolha > ::nItensFolha
          ::saltaPagina()
       ENDIF
-      ::ProcessaItens( ::cXML, nItem )
-      IF ::aItem[ "cProd" ] = NIL
+      IF .NOT. ::ProcessaItens( ::cXML, nItem )
          EXIT
       ENDIF
 
@@ -2304,29 +2302,32 @@ METHOD ProcessaItens(cXML,nItem) CLASS hbNFeDanfe
 
 
    cItem := hbNFe_PegaDadosXML('det nItem="'+AllTrim(STR(nItem))+'"', cXML, "det" )
+   IF Empty( cItem )
+      RETURN .F.
+   ENDIF
    ::aItem := hb_Hash()
-   ::aItem[ "cProd" ] := hbNFe_PegaDadosXml( "cProd", cItem )
-   ::aItem[ "cEAN" ] := hbNFe_PegaDadosXml( "cEAN", cItem )
-   ::aItem[ "xProd" ] := hbNFe_PegaDadosXml( "xProd", cItem )
-   ::aItem[ "NCM" ] := hbNFe_PegaDadosXml( "NCM", cItem )
-   ::aItem[ "EXTIPI" ] := hbNFe_PegaDadosXml( "EXTIPI", cItem )
-   ::aItem[ "CFOP" ] := hbNFe_PegaDadosXml( "CFOP", cItem )
-   ::aItem[ "uCom" ] := hbNFe_PegaDadosXml( "uCom", cItem )
-   ::aItem[ "qCom" ] := hbNFe_PegaDadosXml( "qCom", cItem )
-   ::aItem[ "vUnCom" ] := hbNFe_PegaDadosXml( "vUnCom", cItem )
-   ::aItem[ "vProd" ] := hbNFe_PegaDadosXml( "vProd", cItem )
-   ::aItem[ "cEANTrib" ] := hbNFe_PegaDadosXml( "cEANTrib", cItem )
-   ::aItem[ "uTrib" ] := hbNFe_PegaDadosXml( "uTrib", cItem )
-   ::aItem[ "qTrib" ] := hbNFe_PegaDadosXml( "qTrib", cItem ) // NFE 2.0
-   ::aItem[ "vUnTrib" ] := hbNFe_PegaDadosXml( "vUnTrib", cItem ) // NFE 2.0
-   ::aItem[ "vFrete" ] := hbNFe_PegaDadosXml( "vFrete", cItem )
-   ::aItem[ "vSeg" ] := hbNFe_PegaDadosXml( "vSeg", cItem )
-   ::aItem[ "vDesc" ] := hbNFe_PegaDadosXml( "vDesc", cItem )
-   ::aItem[ "vOutro" ] := hbNFe_PegaDadosXml( "vOutro", cItem ) // NFE 2.0
-   ::aItem[ "indTot" ] := hbNFe_PegaDadosXml( "indTot", cItem ) // NFE 2.0
-   ::aItem[ "infAdProd" ] := hbNFe_PegaDadosXml( "infAdProd", cItem )
+   ::aItem[ "cProd" ]     := XmlNode( cItem, "cProd" )
+   ::aItem[ "cEAN" ]      := XmlNode( cItem, "cEAN" )
+   ::aItem[ "xProd" ]     := XmlNode( cItem, "xProd" )
+   ::aItem[ "NCM" ]       := XmlNode( cItem, "NCM" )
+   ::aItem[ "EXTIPI" ]    := XmlNode( cItem, "EXTIPI" )
+   ::aItem[ "CFOP" ]      := XmlNode( cItem, "CFOP" )
+   ::aItem[ "uCom" ]      := XmlNode( cItem, "uCom" )
+   ::aItem[ "qCom" ]      := XmlNode( cItem, "qCom" )
+   ::aItem[ "vUnCom" ]    := XmlNode( cItem, "vUnCom" )
+   ::aItem[ "vProd" ]     := XmlNode( cItem, "vProd" )
+   ::aItem[ "cEANTrib" ]  := XmlNode( cItem, "cEANTrib" )
+   ::aItem[ "uTrib" ]     := XmlNode( cItem, "uTrib" )
+   ::aItem[ "qTrib" ]     := XmlNode( cItem, "qTrib" ) // NFE 2.0
+   ::aItem[ "vUnTrib" ]   := XmlNode( cItem, "vUnTrib" ) // NFE 2.0
+   ::aItem[ "vFrete" ]    := XmlNode( cItem, "vFrete" )
+   ::aItem[ "vSeg" ]      := XmlNode( cItem, "vSeg" )
+   ::aItem[ "vDesc" ]     := XmlNode( cItem, "vDesc" )
+   ::aItem[ "vOutro" ]    := XmlNode( cItem, "vOutro" ) // NFE 2.0
+   ::aItem[ "indTot" ]    := XmlNode( cItem, "indTot" ) // NFE 2.0
+   ::aItem[ "infAdProd" ] := XmlNode( cItem, "infAdProd" )
    IF ::aItem[ "infAdProd" ] <> NIL
-      ::aItem[ "infAdProd" ] := STRTRAN( ::aItem[ "infAdProd" ], ";", CHR(13)+CHR(10) )
+      ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ], ";", CHR(13)+CHR(10) )
    ENDIF
 
    cItemDI := hbNFe_PegaDadosXML('DI', cItem )
@@ -2525,7 +2526,7 @@ METHOD ProcessaItens(cXML,nItem) CLASS hbNFeDanfe
    ::aItemISSQN[ "cListServ" ] := hbNFe_PegaDadosXml( "cListServ", cItemISSQN )
    ::aItemISSQN[ "cSitTrib" ] := hbNFe_PegaDadosXml( "cSitTrib", cItemISSQN )  // N – NORMAL R – RETIDA S –SUBSTITUTA I – ISENTA. (v.2.0)
 
-   RETURN NIL
+   RETURN .T.
 
 FUNCTION hbNFe_PegaDadosXML(cElemento, cStringXML, cElemento2)
 
