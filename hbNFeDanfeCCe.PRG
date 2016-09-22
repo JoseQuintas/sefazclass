@@ -12,9 +12,6 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 //   #include "hbcompat.ch"
 #endif
 //#include "hbnfe.ch"
-#xcommand TRY  => BEGIN SEQUENCE WITH {| oErr | Break( oErr ) }
-#xcommand CATCH [<!oErr!>] => RECOVER [USING <oErr>] <-oErr->
-#xcommand FINALLY => ALWAYS
 #define _LOGO_ESQUERDA        1
 #define _LOGO_DIREITA         2
 #define _LOGO_EXPANDIDO       3
@@ -109,66 +106,64 @@ METHOD buscaDadosXML() CLASS hbNFeDanfeCCe
 
    LOCAL cInfCCe, cInfCCeRet, cIde, cEmit, cDest
 
-   cInfCCe := hbNFe_PegaDadosXML( "infEvento", ::cXMLCCe, "infEvento" )
+   cInfCCe := XmlNode( ::cXmlCce, "infEvento" )
    ::aInfCCe := hb_Hash()
-   ::aInfCCe[ "cOrgao" ]     := hbNFe_PegaDadosXML( "cOrgao", cInfCCe )
-   ::aInfCCe[ "tpEvento" ]   := hbNFe_PegaDadosXML( "tpEvento", cInfCCe )
-   ::aInfCCe[ "nSeqEvento" ] := hbNFe_PegaDadosXML( "nSeqEvento", cInfCCe )
-   ::aInfCCe[ "verEvento" ]  := hbNFe_PegaDadosXML( "verEvento", cInfCCe )
-   ::aInfCCe[ "xCorrecao" ]  := hbNFe_PegaDadosXML( "xCorrecao", cInfCCe )
+   ::aInfCCe[ "cOrgao" ]     := XmlNode( cInfCce, "cOrgao" )
+   ::aInfCCe[ "tpEvento" ]   := XmlNode( cInfCce, "tpEvento" )
+   ::aInfCCe[ "nSeqEvento" ] := XmlNode( cInfCce, "nSeqEvento" )
+   ::aInfCCe[ "verEvento" ]  := XmlNode( cInfCce, "verEvento" )
+   ::aInfCCe[ "xCorrecao" ]  := XmlNode( cInfCce, "xCorrecao" )
 
-   cInfCCeRet := hbNFe_PegaDadosXML( "retEvento", ::cXMLCCe, "retEvento" )
-   ::aInfCCe[ "cStat" ]       := hbNFe_PegaDadosXML( "cStat", cInfCCeRet )
-   ::aInfCCe[ "xMotivo" ]     := hbNFe_PegaDadosXML( "xMotivo", cInfCCeRet )
-   ::aInfCCe[ "dhRegEvento" ] := hbNFe_PegaDadosXML( "dhRegEvento", cInfCCeRet )
-   ::aInfCCe[ "nProt" ]       := hbNFe_PegaDadosXML( "nProt", cInfCCeRet )
+   cInfCCeRet := XmlNode( ::cXmlCce, "retEvento" )
+   ::aInfCCe[ "cStat" ]       := XmlNode( cInfCceRet, "cStat" )
+   ::aInfCCe[ "xMotivo" ]     := XmlNode( cInfCceRet, "xMotivo" )
+   ::aInfCCe[ "dhRegEvento" ] := XmlNode( cInfCceRet, "dhRegEvento" )
+   ::aInfCCe[ "nProt" ]       := XmlNode( cInfCceRet, "nProt" )
 
-   cIde := hbNFe_PegaDadosXML("ide", ::cXMLNFe )
+   cIde := XmlNode( ::cXmlNfe, "ide" )
    ::aIde := hb_Hash()
-   ::aIde[ "mod" ]   := hbNFe_PegaDadosXML( "mod", cIde )
-   ::aIde[ "serie" ] := hbNFe_PegaDadosXML( "serie", cIde )
-   ::aIde[ "nNF" ]   := hbNFe_PegaDadosXML( "nNF", cIde )
-   ::aIde[ "dhEmi" ] := hbNFe_PegaDadosXML( "dhEmi", cIde )
+   ::aIde[ "mod" ]   := XmlNode( cIde, "mod" )
+   ::aIde[ "serie" ] := XmlNode( cIde, "serie" )
+   ::aIde[ "nNF" ]   := XmlNode( cIde, "nNF" )
+   ::aIde[ "dhEmi" ] := XmlNode( cIde, "dhEmi" )
 
-   cEmit := hbNFe_PegaDadosXML("emit", ::cXMLNFe )
+   cEmit := XmlNode( ::cXmlNfe, "emit" )
    ::aEmit := hb_Hash()
-   ::aEmit[ "CNPJ" ]    := hbNFe_PegaDadosXML( "CNPJ", cEmit )
-   ::aEmit[ "xNome" ]   := XmlToString( hbNFe_PegaDadosXML( "xNome", cEmit ) )
-   ::aEmit[ "xFant" ]   := hbNFe_PegaDadosXML( "xFant",   cEmit )
-   ::aEmit[ "xLgr" ]    := hbNFe_PegaDadosXML( "xLgr",    cEmit )
-   ::aEmit[ "nro" ]     := hbNFe_PegaDadosXML( "nro",     cEmit )
-   ::aEmit[ "xBairro" ] := hbNFe_PegaDadosXML( "xBairro", cEmit )
-   ::aEmit[ "cMun" ]    := hbNFe_PegaDadosXML( "cMun",    cEmit )
-   ::aEmit[ "xMun" ]    := hbNFe_PegaDadosXML( "xMun",    cEmit )
-   ::aEmit[ "UF" ]      := hbNFe_PegaDadosXML( "UF",      cEmit )
-   ::aEmit[ "CEP" ]     := hbNFe_PegaDadosXML( "CEP",     cEmit )
-   ::aEmit[ "fone" ]    := hbNFe_PegaDadosXML( "fone",    cEmit ) // NFE 2.0
-   ::aEmit[ "IE" ]      := hbNFe_PegaDadosXML( "IE",      cEmit )
+   ::aEmit[ "CNPJ" ]    := XmlNode( cEmit, "CNPJ" )
+   ::aEmit[ "xNome" ]   := XmlToString( XmlNode( cEmit, "xNome" ) )
+   ::aEmit[ "xFant" ]   := XmlNode( cEmit, "xFant" )
+   ::aEmit[ "xLgr" ]    := XmlNode( cEmit, "xLgr" )
+   ::aEmit[ "nro" ]     := XmlNode( cEmit, "nro" )
+   ::aEmit[ "xBairro" ] := XmlNode( cEmit, "xBairro" )
+   ::aEmit[ "cMun" ]    := XmlNode( cEmit, "cMun" )
+   ::aEmit[ "xMun" ]    := XmlNode( cEmit, "xMun" )
+   ::aEmit[ "UF" ]      := XmlNode( cEmit, "UF" )
+   ::aEmit[ "CEP" ]     := XmlNode( cEmit, "CEP" )
+   ::aEmit[ "fone" ]    := XmlNode( cEmit, "fone" ) // NFE 2.0
+   ::aEmit[ "IE" ]      := XmlNode( cEmit, "IE" )
 
-   TRY
-      ::cTelefoneEmitente := Transform( SoNumeros( hbNFe_PegaDadosXML( "fone", cEmit ) ), "@R (99) 9999-9999" )
-   CATCH
-      ::cTelefoneEmitente := ""
+   ::cTelefoneEmitente := XmlNode( cEmit, "fone" )
+   IF .NOT. Empty( ::cTelefoneEmitente )
+      ::cTelefoneEmitente := Transform( SoNumeros( ::cTelefoneEmitente ), "@R (99) 9999-9999" )
    END
 
-   cDest := hbNFe_PegaDadosXML( "dest", ::cXMLNFe )
+   cDest := XmlNode( ::cXmlNfe, "dest" )
    ::aDest := hb_Hash()
-   ::aDest[ "CNPJ" ]    := hbNFe_PegaDadosXML( "CNPJ",    cDest )
-   ::aDest[ "CPF" ]     := hbNFe_PegaDadosXML( "CPF",     cDest )
-   ::aDest[ "xNome" ]   := XmlToString( hbNFe_PegaDadosXML( "xNome", cDest ) )
-   ::aDest[ "xLgr" ]    := hbNFe_PegaDadosXML( "xLgr",    cDest )
-   ::aDest[ "nro" ]     := hbNFe_PegaDadosXML( "nro",     cDest )
-   ::aDest[ "xBairro" ] := hbNFe_PegaDadosXML( "xBairro", cDest )
-   ::aDest[ "cMun" ]    := hbNFe_PegaDadosXML( "cMun",    cDest )
-   ::aDest[ "xMun" ]    := hbNFe_PegaDadosXML( "xMun",    cDest )
-   ::aDest[ "UF" ]      := hbNFe_PegaDadosXML( "UF",      cDest )
-   ::aDest[ "CEP" ]     := hbNFe_PegaDadosXML( "CEP",     cDest )
-   TRY
-      ::aDest[ "fone" ] := IF( LEN( hbNFe_PegaDadosXML( "fone", cDest ) ) <= 8, "00" + hbNFe_PegaDadosXML( "fone", cDest ), hbNFe_PegaDadosXML( "fone", cDest ) )
-   CATCH
-      ::aDest[ "fone" ] := ''
-   END
-   ::aDest[ "IE" ] := hbNFe_PegaDadosXML( "IE", cDest )
+   ::aDest[ "CNPJ" ]    := XmlNode( cDest, "CNPJ" )
+   ::aDest[ "CPF" ]     := XmlNode( cDest, "CPF" )
+   ::aDest[ "xNome" ]   := XmlToString( XmlNode( cDest, "xNome" ) )
+   ::aDest[ "xLgr" ]    := XmlNode( cDest, "xLgr" )
+   ::aDest[ "nro" ]     := XmlNode( cDest, "nro" )
+   ::aDest[ "xBairro" ] := XmlNode( cDest, "xBairro" )
+   ::aDest[ "cMun" ]    := XmlNode( cDest, "cMun" )
+   ::aDest[ "xMun" ]    := XmlNode( cDest, "xMun" )
+   ::aDest[ "UF" ]      := XmlNode( cDest, "UF" )
+   ::aDest[ "CEP" ]     := XmlNode( cDest, "CEP" )
+   ::aDest[ "fone" ]    := XmlNode( cDest, "fone" )
+   IF Len( ::aDest[ "fone" ] ) <= 8
+      ::aDest[ "fone" ] := "00" + ::aDest[ "fone" ]
+   ENDIF
+   ::aDest[ "IE" ] := XmlNode( cDest, "IE" )
 
    RETURN .T.
 
@@ -420,20 +415,17 @@ METHOD destinatario() CLASS hbNFeDanfeCCe
    ::nLinhaPdf -= 20
 
    // ENDEREÇO
-   hbNFe_Box_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 20, 270, 20, ::nLarguraBox )
-   hbNFe_Texto_Hpdf( ::oPdfPage,32, ::nLinhaPdf    , 298, Nil, "ENDEREÇO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
-   hbNFe_Texto_Hpdf( ::oPdfPage,32, ::nLinhaPDF - 6  , 298, Nil, ::aDest[ "xLgr" ]+" "+::aDest[ "nro" ] , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 9 )
+   hbNFe_Box_Hpdf( ::oPdfPage, 30, ::nLinhaPDF - 20, 270, 20, ::nLarguraBox )
+   hbNFe_Texto_Hpdf( ::oPdfPage, 32, ::nLinhaPdf    , 298, Nil, "ENDEREÇO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
+   hbNFe_Texto_Hpdf( ::oPdfPage, 32, ::nLinhaPDF - 6  , 298, Nil, ::aDest[ "xLgr" ]+" "+::aDest[ "nro" ] , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 9 )
    // BAIRRO
-   hbNFe_Box_Hpdf( ::oPdfPage,300, ::nLinhaPDF - 20, 195, 20, ::nLarguraBox )
-   hbNFe_Texto_Hpdf( ::oPdfPage,302, ::nLinhaPdf    , 494, Nil, "BAIRRO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
-   hbNFe_Texto_Hpdf( ::oPdfPage,302, ::nLinhaPDF - 6  , 494, Nil, ::aDest[ "xBairro" ] , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 11 )
+   hbNFe_Box_Hpdf( ::oPdfPage, 300, ::nLinhaPDF - 20, 195, 20, ::nLarguraBox )
+   hbNFe_Texto_Hpdf( ::oPdfPage, 302, ::nLinhaPdf    , 494, Nil, "BAIRRO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
+   hbNFe_Texto_Hpdf( ::oPdfPage, 302, ::nLinhaPDF - 6  , 494, Nil, ::aDest[ "xBairro" ] , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 11 )
    // CEP
-   hbNFe_Box_Hpdf( ::oPdfPage,495, ::nLinhaPDF - 20, 70, 20, ::nLarguraBox )
-   hbNFe_Texto_Hpdf( ::oPdfPage,497, ::nLinhaPdf    , 564, Nil, "C.E.P." , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
-   TRY
-      hbNFe_Texto_Hpdf( ::oPdfPage,497, ::nLinhaPDF - 6  , 564, Nil, Transform(::aDest[ "CEP" ], "@R 99999-999") , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 11 )
-   CATCH
-   END
+   hbNFe_Box_Hpdf( ::oPdfPage, 495, ::nLinhaPDF - 20, 70, 20, ::nLarguraBox )
+   hbNFe_Texto_Hpdf( ::oPdfPage, 497, ::nLinhaPdf    , 564, Nil, "C.E.P." , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
+   hbNFe_Texto_Hpdf( ::oPdfPage, 497, ::nLinhaPDF - 6  , 564, Nil, Transform(::aDest[ "CEP" ], "@R 99999-999") , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 11 )
 
    ::nLinhaPdf -= 20
 
@@ -444,10 +436,10 @@ METHOD destinatario() CLASS hbNFeDanfeCCe
    // FONE/FAX
    hbNFe_Box_Hpdf( ::oPdfPage,285, ::nLinhaPDF - 20, 140, 20, ::nLarguraBox )
    hbNFe_Texto_Hpdf( ::oPdfPage,287, ::nLinhaPdf    , 424, Nil, "FONE/FAX" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )
-   IF LEN(::aDest[ "fone" ])=10
-      hbNFe_Texto_Hpdf( ::oPdfPage,287, ::nLinhaPDF - 6  , 424, Nil, Transform(::aDest[ "fone" ], "@R (99) 9999-9999") , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 11 )
-   ELSEIF LEN(::aDest[ "fone" ])>10
-      hbNFe_Texto_Hpdf( ::oPdfPage,287, ::nLinhaPDF - 6  , 424, Nil, Transform(::aDest[ "fone" ], "@R +99 (99) 9999-9999") , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 11 )
+   IF LEN( ::aDest[ "fone" ] ) = 10
+      hbNFe_Texto_Hpdf( ::oPdfPage,287, ::nLinhaPDF - 6  , 424, Nil, Transform( ::aDest[ "fone" ], "@R (99) 9999-9999" ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 11 )
+   ELSEIF LEN( ::aDest[ "fone" ] ) > 10
+      hbNFe_Texto_Hpdf( ::oPdfPage,287, ::nLinhaPDF - 6  , 424, Nil, Transform( ::aDest[ "fone" ], "@R +99 (99) 9999-9999" ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 11 )
    ENDIF
    // ESTADO
    hbNFe_Texto_Hpdf( ::oPdfPage,427, ::nLinhaPdf    , 454, Nil, "ESTADO" , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 6 )

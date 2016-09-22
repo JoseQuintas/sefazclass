@@ -83,31 +83,28 @@ FUNCTION XmlTransform( cXml )
 
 FUNCTION XmlNode( cXml, cNode, lComTag )
 
-   LOCAL mInicio, mFim, cResultado := ""
+   LOCAL nInicio, nFim, cResultado := ""
 
    hb_Default( @lComTag, .F. )
+   nInicio := At( "<" + cNode, cXml )
+   // a linha abaixo é depois de pegar o início, senão falha
    IF " " $ cNode
       cNode := Substr( cNode, 1, At( " ", cNode ) - 1 )
    ENDIF
-   mInicio := At( "<" + cNode, cXml )
-   IF mInicio != 0
+   IF nInicio != 0
       IF ! lComTag
-         mInicio := mInicio + Len( cNode ) + 2
-         IF mInicio != 1 .AND. Substr( cXml, mInicio - 1, 1 ) != ">" // Quando tem elementos no bloco
-            mInicio := hb_At( ">", cXml, mInicio ) + 1
+         nInicio := nInicio + Len( cNode ) + 2
+         IF nInicio != 1 .AND. Substr( cXml, nInicio - 1, 1 ) != ">" // Quando tem elementos no bloco
+            nInicio := hb_At( ">", cXml, nInicio ) + 1
          ENDIF
       ENDIF
-   ENDIF
-   IF mInicio != 0
-      mFim = hb_At( "</" + cNode + ">", cXml, mInicio )
-      IF mFim != 0
-         mFim -=1
+      nFim = hb_At( "</" + cNode + ">", cXml, nInicio )
+      IF nFim != 0
+         nFim -=1
          IF lComTag
-            mFim := mFim + Len( cNode ) + 3
+            nFim := nFim + Len( cNode ) + 3
          ENDIF
-      ENDIF
-      IF mFim <> 0
-         cResultado := Substr( cXml, mInicio, mFim - mInicio + 1 )
+         cResultado := Substr( cXml, nInicio, nFim - nInicio + 1 )
       ENDIF
    ENDIF
 
@@ -115,16 +112,16 @@ FUNCTION XmlNode( cXml, cNode, lComTag )
 
 FUNCTION XmlElement( cXml, cElement )
 
-   LOCAL mInicio, mFim, cResultado := ""
+   LOCAL nInicio, nFim, cResultado := ""
 
-   mInicio := At( cElement + "=", cXml )
-   IF mInicio != 0
-      mInicio += 1
-      mInicio := hb_At( "=", cXml, mInicio ) + 2
+   nInicio := At( cElement + "=", cXml )
+   IF nInicio != 0
+      nInicio += 1
+      nInicio := hb_At( "=", cXml, nInicio ) + 2
    ENDIF
-   mFim    := hb_At( ["], cXml, mInicio ) - 1
-   IF mInicio > 0 .AND. mFim > 0 .AND. mFim > mInicio
-      cResultado = Substr( cXml, mInicio, mFim - mInicio + 1 )
+   nFim    := hb_At( ["], cXml, nInicio ) - 1
+   IF nInicio > 0 .AND. nFim > 0 .AND. nFim > nInicio
+      cResultado = Substr( cXml, nInicio, nFim - nInicio + 1 )
    ENDIF
 
    RETURN cResultado

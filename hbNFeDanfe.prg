@@ -9,12 +9,7 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #ifndef __XHARBOUR__
    #include "hbwin.ch"
    #include "hbzebra.ch"
-//   #include "hbcompat.ch"
 #endif
-//#include "hbnfe.ch"
-#xcommand TRY  => BEGIN SEQUENCE WITH {| oErr | Break( oErr ) }
-#xcommand CATCH [<!oErr!>] => RECOVER [USING <oErr>] <-oErr->
-#xcommand FINALLY => ALWAYS
 #define _LOGO_ESQUERDA        1
 #define _LOGO_DIREITA         2
 #define _LOGO_EXPANDIDO       3
@@ -235,10 +230,6 @@ METHOD buscaDadosXML() CLASS hbNFeDanfe
    ::aDest[ "xMun" ]    := XmlNode( cDest, "xMun" )
    ::aDest[ "UF" ]      := XmlNode( cDest, "UF" )
    ::aDest[ "CEP" ]     := XmlNode( cDest, "CEP" )
-   *IF ( ::aDest[ "CEP" ] = NIL .OR. EMPTY( AllTrim(::aDest[ "CEP" ])) ) .AND. ::aDest[ "UF" ]  <> "EX"
-   *   ::cRetorno := "Destinatário sem CEP ou inválido"
-   *   RETURN .F.
-   *ENDIF
    ::aDest[ "cPais" ] := XmlNode( cDest, "cPais" )
    ::aDest[ "xPais" ] := XmlNode( cDest, "xPais" )
    ::aDest[ "fone" ]  := XmlNode( cDest, "fone" )
@@ -248,10 +239,6 @@ METHOD buscaDadosXML() CLASS hbNFeDanfe
    ::aDest[ "IE" ]    := XmlNode( cDest, "IE" )
    ::aDest[ "ISUF" ]  := XmlNode( cDest, "ISUF" ) // NFE 2.0
    ::aDest[ "email" ] := XmlNode( cDest, "email" ) // NFE 2.0
-*   IF ::aDest[ "email" ] = NIL .OR. EMPTY( AllTrim(::aDest[ "email" ]))
-*      ::cRetorno := "Destinatário sem eMail ou inválido"
-*      RETURN .F.
-*   ENDIF
 
    cRetirada := XmlNode( ::cXml, "retirada" )
    ::aRetirada := hb_Hash()
@@ -484,7 +471,7 @@ METHOD calculaItens1Folha( nItensInicial ) CLASS hbNFeDanfe
    IF EMPTY( ::cCobranca )
       nItensInicial += 2
    ENDIF
-   IF VAL( IF( ::aISSTotal[ "vServ" ] <> NIL, ::aISSTotal[ "vServ" ], "0" ) ) <= 0 // sem servico
+   IF VAL( ::aISSTotal[ "vServ" ] ) <= 0 // sem servico
       nItensInicial += 4
    ENDIF
 
@@ -754,7 +741,7 @@ METHOD cabecalho() CLASS hbNFeDanfe
       ENDIF
       // mensagem sistema sefaz
       hbNFe_Box_Hpdf( ::oPdfPage, 525, ::nLinhaPdf - 80, 305, 80, ::nLarguraBox )
-      IF ::aInfProt[ "nProt" ] = NIL .OR. EMPTY( ::aInfProt[ "nProt" ] )
+      IF Empty( ::aInfProt[ "nProt" ] )
          hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 55, 829, NIL, "N F E   A I N D A   N Ã O   F O I", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
          hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 63, 829, NIL, "A U T O R I Z A D A   P E L A", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
          hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 71, 829, NIL, "S E F A Z   (SEM VALIDADE FISCAL)", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
@@ -773,13 +760,12 @@ METHOD cabecalho() CLASS hbNFeDanfe
       // PROTOCOLO
       hbNFe_Box_Hpdf( ::oPdfPage, 525, ::nLinhaPdf - 16, 305, 16, ::nLarguraBox )
       hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 1, 829, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
-      IF ::aInfProt[ "nProt" ] <> NIL
-   	     IF ::aInfProt[ "cStat" ] = '100'
+      IF .NOT. Empty( ::aInfProt[ "nProt" ] )
+   	   IF ::aInfProt[ "cStat" ] = '100'
             hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 1, 829, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
          ELSEIF ::aInfProt[ "cStat" ] = '101' .OR. ::aInfProt[ "cStat" ] = '135'
             hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 1, 829, NIL, "PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
-   	     ENDIF
-
+   	   ENDIF
          IF ::cFonteNFe == "Times"
             hbNFe_Texto_Hpdf( ::oPdfPage, 526, ::nLinhaPdf - 6, 829, NIL, ::aInfProt[ "nProt" ] + " " + Substr( Substr( ::aInfProt[ "dhRecbto" ], 1, 10 ), 9, 2 ) + "/" + Substr( Substr( ::aInfProt[ "dhRecbto" ], 1, 10 ), 6, 2 ) + "/" + Substr( Substr( ::aInfProt[ "dhRecbto" ], 1, 10 ), 1, 4 ) + " " + Substr( ::aInfProt[ "dhRecbto" ], 12, 8 ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 9 )
          ELSE
@@ -809,14 +795,14 @@ METHOD cabecalho() CLASS hbNFeDanfe
       hbNFe_Box_Hpdf( ::oPdfPage,  5, ::nLinhaPdf - 80, 240, 80, ::nLarguraBox )
       hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf, 244, NIL, "IDENTIFICAÇÃO DO EMITENTE", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
       IF EMPTY( ::cLogoFile )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-6, 244, NIL, TRIM( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-18, 244, NIL, TRIM( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-30, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-38, 244, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-46, 244, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-54, 244, NIL, TRIM( iif( ! Empty( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-62, 244, NIL, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf-70, 244, NIL, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf - 6, 244, NIL, TRIM( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf - 18, 244, NIL, TRIM( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf - 30, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf - 38, 244, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf - 46, 244, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf - 54, 244, NIL, TRIM( iif( ! Empty( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf - 62, 244, NIL, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  6, ::nLinhaPdf - 70, 244, NIL, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       ELSE
           IF ::nLogoStyle = _LOGO_EXPANDIDO
              oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
@@ -984,17 +970,11 @@ METHOD destinatario() CLASS hbNFeDanfe
       hbNFe_Box_Hpdf( ::oPdfPage,700, ::nLinhaPdf-16, 60, 16, ::nLarguraBox )
       hbNFe_Texto_Hpdf( ::oPdfPage,701, ::nLinhaPdf - 1,  759, NIL, "C.E.P.", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
 
-      TRY                 && Modificado por Anderson  Camilo 15/02/2012
-         hbNFe_Texto_Hpdf( ::oPdfPage,704, ::nLinhaPdf-5, 759, NIL, Transform(::aDest[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
-      CATCH
-      end
+      hbNFe_Texto_Hpdf( ::oPdfPage,704, ::nLinhaPdf-5, 759, NIL, Transform( ::aDest[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
       // DATA DE SAIDA/ENTRADA
       hbNFe_Box_Hpdf( ::oPdfPage,760, ::nLinhaPdf-16, 70, 16, ::nLarguraBox )
       hbNFe_Texto_Hpdf( ::oPdfPage,761, ::nLinhaPdf - 1,  829, NIL, "DATA SAIDA/ENTRADA", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
-      TRY
-         hbNFe_Texto_Hpdf( ::oPdfPage,761, ::nLinhaPdf-5, 829, NIL, Substr(::aIde[ "dSaiEnt" ],9,2)+"/" + Substr(::aIde[ "dSaiEnt" ],6,2)+"/" + Substr(::aIde[ "dSaiEnt" ],1,4), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
-      CATCH
-      END
+      hbNFe_Texto_Hpdf( ::oPdfPage,761, ::nLinhaPdf-5, 829, NIL, Substr( ::aIde[ "dSaiEnt" ], 9, 2 ) + "/" + Substr( ::aIde[ "dSaiEnt" ], 6, 2 ) + "/" + Substr( ::aIde[ "dSaiEnt" ], 1, 4 ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
 
       ::nLinhaPdf -= 16
 
@@ -1061,17 +1041,11 @@ METHOD destinatario() CLASS hbNFeDanfe
       // CEP
       hbNFe_Box_Hpdf( ::oPdfPage,460, ::nLinhaPdf-16, 60, 16, ::nLarguraBox )
       hbNFe_Texto_Hpdf( ::oPdfPage,461, ::nLinhaPdf - 1,  519, NIL, "C.E.P.", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
-      TRY
-         hbNFe_Texto_Hpdf( ::oPdfPage,461, ::nLinhaPdf-5, 519, NIL, Transform(::aDest[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
-      CATCH
-      END
+      hbNFe_Texto_Hpdf( ::oPdfPage,461, ::nLinhaPdf-5, 519, NIL, Transform( ::aDest[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
       // DATA DE SAIDA/ENTRADA
       hbNFe_Box_Hpdf( ::oPdfPage,520, ::nLinhaPdf-16, 70, 16, ::nLarguraBox )
       hbNFe_Texto_Hpdf( ::oPdfPage,521, ::nLinhaPdf - 1,  589, NIL, "DATA SAIDA/ENTRADA", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
-      TRY
-         hbNFe_Texto_Hpdf( ::oPdfPage,521, ::nLinhaPdf-5, 589, NIL, Substr(::aIde[ "dhSaiEnt" ],9,2)+"/" + Substr(::aIde[ "dhSaiEnt" ],6,2)+"/" + Substr(::aIde[ "dhSaiEnt" ],1,4), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
-      CATCH
-      END
+      hbNFe_Texto_Hpdf( ::oPdfPage,521, ::nLinhaPdf-5, 589, NIL, Substr(::aIde[ "dhSaiEnt" ], 9, 2 ) + "/" + Substr( ::aIde[ "dhSaiEnt" ], 6, 2) + "/" + Substr( ::aIde[ "dhSaiEnt" ], 1, 4 ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
 
       ::nLinhaPdf -= 16
 
@@ -1266,7 +1240,7 @@ METHOD faturas() CLASS hbNFeDanfe
 
          cDups := ::cCobranca
          nColuna := 0
-         DO WHILE AT("<dup>", cDups) > 0
+         DO WHILE AT( "<dup>", cDups ) > 0
             nColuna ++
             cDup := XmlNode( cDups, "dup" )
 
@@ -2002,13 +1976,12 @@ METHOD produtos() CLASS hbNFeDanfe
    nItem := 1
    ::nLinhaFolha := 1
    DO WHILE .T.
-      IF ::nLinhaFolha > ::nItensFolha
-         ::saltaPagina()
-      ENDIF
       IF .NOT. ::ProcessaItens( ::cXML, nItem )
          EXIT
       ENDIF
-
+      IF ::nLinhaFolha > ::nItensFolha
+         ::saltaPagina()
+      ENDIF
       IF ::lPaisagem = .T. // paisagem
          /* CODIGO */ hbNFe_Texto_Hpdf( ::oPdfPage,71, ::nLinhaPdf, 124, NIL, ::aItem[ "cProd" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
          /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLarguraDescricao,1)), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
@@ -2042,17 +2015,14 @@ METHOD produtos() CLASS hbNFeDanfe
             ::nLinhaFolha ++
             ::nLinhaPdf -= 6
          NEXT
-         TRY
-            FOR nIDes = 1 TO MLCOUNT(::aItem[ "infAdProd" ],::nLarguraDescricao )
-                IF ::nLinhaFolha > ::nItensFolha
-                   ::saltaPagina()
-                ENDIF
-                /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM(MEMOLINE(::aItem[ "infAdProd" ],::nLarguraDescricao,nIdes)), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
-                ::nLinhaFolha ++
-                ::nLinhaPdf -= 6
-            NEXT
-         CATCH
-         END
+         FOR nIDes = 1 TO MLCOUNT( ::aItem[ "infAdProd" ], ::nLarguraDescricao )
+             IF ::nLinhaFolha > ::nItensFolha
+                ::saltaPagina()
+             ENDIF
+             /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM( MEMOLINE( ::aItem[ "infAdProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
+             ::nLinhaFolha ++
+             ::nLinhaPdf -= 6
+         NEXT
          IF ::nLinhaFolha <= ::nItensFolha
             hbNFe_Line_Hpdf( ::oPdfPage,70, ::nLinhaPdf-0.5, 830, ::nLinhaPdf-0.5, ::nLarguraBox)
          ENDIF
@@ -2088,17 +2058,14 @@ METHOD produtos() CLASS hbNFeDanfe
                 ::nLinhaFolha ++
                 ::nLinhaPdf -= 6
              NEXT
-             TRY
-               FOR nIDes = 1 TO MLCount( ::aItem[ "infAdProd" ], ::nLarguraDescricao )
-                  IF ::nLinhaFolha > ::nItensFolha
-                     ::saltaPagina()
-                  ENDIF
-                  /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "infAdProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
-                  ::nLinhaFolha ++
-                  ::nLinhaPdf -= 6
-               NEXT
-            CATCH
-            END
+            FOR nIDes = 1 TO MLCount( ::aItem[ "infAdProd" ], ::nLarguraDescricao )
+               IF ::nLinhaFolha > ::nItensFolha
+                  ::saltaPagina()
+               ENDIF
+               /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "infAdProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
+               ::nLinhaFolha ++
+               ::nLinhaPdf -= 6
+            NEXT
           ELSE
              /* CODIGO */ hbNFe_Texto_Hpdf( ::oPdfPage, 6, ::nLinhaPdf, 59, NIL, ::aItem[ "cProd" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
              /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "xProd" ], ::nLarguraDescricao, 1 ) ), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
@@ -2113,16 +2080,12 @@ METHOD produtos() CLASS hbNFeDanfe
              /* QUANT. */         hbNFe_Texto_Hpdf( ::oPdfPage, 296, ::nLinhaPdf, 329, NIL, AllTrim( FormatNumber( Val(::aItem[ "qCom" ] ), 15, ::nCasasQtd)), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 5 )
              /* VALOR UNITARIO */ hbNFe_Texto_Hpdf( ::oPdfPage, 331, ::nLinhaPdf, 369, NIL, AllTrim( FormatNumber( Val(::aItem[ "vUnCom" ] ), 15, ::nCasasVUn ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
              /* VALOR LÍQUIDO */  hbNFe_Texto_Hpdf( ::oPdfPage, 371, ::nLinhaPdf, 409, NIL, AllTrim( FormatNumber( Val(::aItem[ "vProd" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
-             TRY
-                /* VALOR DESCONTO */ hbNFe_Texto_Hpdf( ::oPdfPage, 411, ::nLinhaPdf, 444, NIL, AllTrim( FormatNumber( Val( ::aItem[ "vDesc" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
-             CATCH
-                /* VALOR DESCONTO */ hbNFe_Texto_Hpdf( ::oPdfPage, 411, ::nLinhaPdf, 444, NIL, AllTrim( FormatNumber( Val( "0.00"), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
-             END
-             /* BC ICMS */    hbNFe_Texto_Hpdf( ::oPdfPage, 446, ::nLinhaPdf, 484, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "vBC" ] <> NIL,::aItemICMS[ "vBC" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
-             /* VALOR ICMS */ hbNFe_Texto_Hpdf( ::oPdfPage, 486, ::nLinhaPdf, 519, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "vICMS" ] <> NIL,::aItemICMS[ "vICMS" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
-             /* VALOR IPI */  hbNFe_Texto_Hpdf( ::oPdfPage, 521, ::nLinhaPdf, 549, NIL, AllTrim( FormatNumber( Val( iif( ::aItemIPI[ "vIPI" ] <> NIL,::aItemIPI[ "vIPI" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
-             /* ALIQ ICMS */  hbNFe_Texto_Hpdf( ::oPdfPage, 551, ::nLinhaPdf, 569, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "pICMS" ] <> NIL,::aItemICMS[ "pICMS" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
-             /* ALIQ IPI */   hbNFe_Texto_Hpdf( ::oPdfPage, 571, ::nLinhaPdf, 589, NIL, AllTrim( FormatNumber( Val( iif( ::aItemIPI[ "pIPI" ] <> NIL,::aItemIPI[ "pIPI" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
+             /* VALOR DESCONTO */ hbNFe_Texto_Hpdf( ::oPdfPage, 411, ::nLinhaPdf, 444, NIL, AllTrim( FormatNumber( Val( ::aItem[ "vDesc" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
+             /* BC ICMS */        hbNFe_Texto_Hpdf( ::oPdfPage, 446, ::nLinhaPdf, 484, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "vBC" ] <> NIL,::aItemICMS[ "vBC" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
+             /* VALOR ICMS */     hbNFe_Texto_Hpdf( ::oPdfPage, 486, ::nLinhaPdf, 519, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "vICMS" ] <> NIL,::aItemICMS[ "vICMS" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
+             /* VALOR IPI */      hbNFe_Texto_Hpdf( ::oPdfPage, 521, ::nLinhaPdf, 549, NIL, AllTrim( FormatNumber( Val( iif( ::aItemIPI[ "vIPI" ] <> NIL,::aItemIPI[ "vIPI" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
+             /* ALIQ ICMS */      hbNFe_Texto_Hpdf( ::oPdfPage, 551, ::nLinhaPdf, 569, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "pICMS" ] <> NIL,::aItemICMS[ "pICMS" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
+             /* ALIQ IPI */       hbNFe_Texto_Hpdf( ::oPdfPage, 571, ::nLinhaPdf, 589, NIL, AllTrim( FormatNumber( Val( iif( ::aItemIPI[ "pIPI" ] <> NIL,::aItemIPI[ "pIPI" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 6 )
              ::nLinhaPdf -= 6
 
              nItem++
@@ -2131,30 +2094,25 @@ METHOD produtos() CLASS hbNFeDanfe
                 IF ::nLinhaFolha > ::nItensFolha
                    ::saltaPagina()
                 ENDIF
-                // DESCRI
-                hbNFe_Texto_Hpdf( ::oPdfPage,61, ::nLinhaPdf, 204, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLarguraDescricao,nIdes)), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
+                /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, TRIM( MEMOLINE( ::aItem[ "xProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                 ::nLinhaFolha ++
                 ::nLinhaPdf -= 6
              NEXT
-             TRY
-               FOR nIDes = 1 TO MLCOUNT(::aItem[ "infAdProd" ],::nLarguraDescricao)
-                  IF ::nLinhaFolha > ::nItensFolha
-                     ::saltaPagina()
-                  ENDIF
-                  // DESCRI
-                  hbNFe_Texto_Hpdf( ::oPdfPage,61, ::nLinhaPdf, 204, NIL, TRIM(MEMOLINE(::aItem[ "infAdProd" ],::nLarguraDescricao,nIdes)), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
-                  ::nLinhaFolha ++
-                  ::nLinhaPdf -= 6
-               NEXT
-            CATCH
-            END
+             FOR nIDes = 1 TO MLCOUNT(::aItem[ "infAdProd" ],::nLarguraDescricao)
+               IF ::nLinhaFolha > ::nItensFolha
+                  ::saltaPagina()
+               ENDIF
+               /* DESCRI */ hbNFe_Texto_Hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, TRIM( MEMOLINE( ::aItem[ "infAdProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
+               ::nLinhaFolha ++
+               ::nLinhaPdf -= 6
+            NEXT
          ENDIF
          IF ::nLinhaFolha <= ::nItensFolha
-            hbNFe_Line_Hpdf( ::oPdfPage, 5, ::nLinhaPdf-0.5, 590, ::nLinhaPdf-0.5, ::nLarguraBox)
+            hbNFe_Line_Hpdf( ::oPdfPage, 5, ::nLinhaPdf - 0.5, 590, ::nLinhaPdf - 0.5, ::nLarguraBox)
          ENDIF
       ENDIF
    ENDDO
-   ::nLinhaPdf -= ((::nItensFolha-::nLinhaFolha+1)*6)
+   ::nLinhaPdf -= ( ( ::nItensFolha - ::nLinhaFolha + 1 ) * 6 )
 
    ::nLinhaPdf -= 2
 
@@ -2294,17 +2252,25 @@ METHOD rodape() CLASS hbNFeDanfe
 
    RETURN NIL
 
-METHOD ProcessaItens(cXML,nItem) CLASS hbNFeDanfe
+METHOD ProcessaItens( cXML, nItem ) CLASS hbNFeDanfe
 
    LOCAL cItem, cItemDI, cItemAdi, cItemICMS, cItemICMSPart, cItemICMSST,;
          cItemICMSSN101, cItemICMSSN102, cItemICMSSN201, cItemICMSSN202, cItemICMSSN500, cItemICMSSN900,;
-         cItemIPI, cItemII, cItemPIS, cItemPISST, cItemCOFINS, cItemCOFINSST, cItemISSQN
+         cItemIPI, cItemII, cItemPIS, cItemPISST, cItemCOFINS, cItemCOFINSST, cItemISSQN, cTag
 
-
-   cItem := hbNFe_PegaDadosXML('det nItem="'+AllTrim(STR(nItem))+'"', cXML, "det" )
-   IF Empty( cItem )
+   cTag := "<det nItem=" + Quoted2( AllTrim( Str( nItem ) ) )
+   ? cTag
+   IF .NOT. cTag $ cXml
+      ? "nao achou " + Str( nItem )
       RETURN .F.
    ENDIF
+   cItem := Substr( cXml, At( "<" + cTag, cXml ) )
+   IF .NOT. "</det" $ cItem
+      ? "nao achou " + Str( nItem )
+      RETURN .F.
+   ENDIF
+   ? "achou item"
+   cItem := Substr( cItem, 1, At( "</det", cXml ) - 1 )
    ::aItem := hb_Hash()
    ::aItem[ "cProd" ]     := XmlNode( cItem, "cProd" )
    ::aItem[ "cEAN" ]      := XmlNode( cItem, "cEAN" )
@@ -2327,225 +2293,204 @@ METHOD ProcessaItens(cXML,nItem) CLASS hbNFeDanfe
    ::aItem[ "indTot" ]    := XmlNode( cItem, "indTot" ) // NFE 2.0
    ::aItem[ "infAdProd" ] := XmlNode( cItem, "infAdProd" )
    IF ::aItem[ "infAdProd" ] <> NIL
-      ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ], ";", CHR(13)+CHR(10) )
+      ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ], ";", CHR(13) + CHR(10) )
    ENDIF
 
-   cItemDI := hbNFe_PegaDadosXML('DI', cItem )
+   cItemDI := XmlNode( cItem, "DI" )
    ::aItemDI := hb_Hash()
-   ::aItemDI[ "nDI" ] := hbNFe_PegaDadosXml( "nDI", cItemDI )
-   ::aItemDI[ "dDI" ] := hbNFe_PegaDadosXml( "dDI", cItemDI )
-   ::aItemDI[ "xLocDesemb" ] := hbNFe_PegaDadosXml( "xLocDesemb", cItemDI )
-   ::aItemDI[ "UFDesemb" ] := hbNFe_PegaDadosXml( "UFDesemb", cItemDI )
-   ::aItemDI[ "dDesemb" ] := hbNFe_PegaDadosXml( "dDesemb", cItemDI )
-   ::aItemDI[ "cExportador" ] := hbNFe_PegaDadosXml( "cExportador", cItemDI )
+   ::aItemDI[ "nDI" ]         := XmlNode( cItemDI, "nDI" )
+   ::aItemDI[ "dDI" ]         := XmlNode( cItemDI, "dDI" )
+   ::aItemDI[ "xLocDesemb" ]  := XmlNOde( cItemDI, "xLocDesemb" )
+   ::aItemDI[ "UFDesemb" ]    := XmlNode( cItemDI, "UFDesemb" )
+   ::aItemDI[ "dDesemb" ]     := XmlNode( cItemDI, "dDesemb" )
+   ::aItemDI[ "cExportador" ] := XmlNode( cItemDI, "cExportador" )
 
-   cItemAdi := hbNFe_PegaDadosXML('adi', cItem )
+   cItemAdi := XmlNode( cItem, "adi" )
    ::aItemAdi := hb_Hash()
-   ::aItemAdi[ "nAdicao" ] := hbNFe_PegaDadosXml( "nAdicao", cItemAdi )
-   ::aItemAdi[ "nSeqAdic" ] := hbNFe_PegaDadosXml( "nSeqAdic", cItemAdi )
-   ::aItemAdi[ "cFabricante" ] := hbNFe_PegaDadosXml( "cFabricante", cItemAdi )
-   ::aItemAdi[ "vDescDI" ] := hbNFe_PegaDadosXml( "vDescDI", cItemAdi )
-   ::aItemAdi[ "xPed" ] := hbNFe_PegaDadosXml( "xPed", cItemAdi ) // NFE 2.0
-   ::aItemAdi[ "nItemPed" ] := hbNFe_PegaDadosXml( "nItemPed", cItemAdi ) // NFE 2.0
+   ::aItemAdi[ "nAdicao" ]     := XmlNode( cItemAdi, "nAdicao" )
+   ::aItemAdi[ "nSeqAdic" ]    := XmlNode( cItemAdi, "nSeqAdic" )
+   ::aItemAdi[ "cFabricante" ] := XmlNode( cItemAdi, "cFabricante" )
+   ::aItemAdi[ "vDescDI" ]     := XmlNode( cItemAdi, "vDescDI" )
+   ::aItemAdi[ "xPed" ]        := XmlNode( cItemAdi, "xPed" ) // NFE 2.0
+   ::aItemAdi[ "nItemPed" ]    := XmlNode( cItemAdi, "nItemPed" ) // NFE 2.0
 
    // todo veiculos (veicProd), medicamentos (med), armamentos (arm), combustiveis (comb)
 
-   cItemICMS := hbNFe_PegaDadosXML('ICMS', cItem )
+   cItemICMS := XmlNode( cItem, "ICMS" )
    ::aItemICMS := hb_Hash()
-   ::aItemICMS[ "orig" ] := hbNFe_PegaDadosXml( "orig", cItemICMS )
-   ::aItemICMS[ "CST" ] := hbNFe_PegaDadosXml( "CST", cItemICMS )
-   ::aItemICMS[ "CSOSN" ] := hbNFe_PegaDadosXml( "CSOSN", cItemICMS )
-   ::aItemICMS[ "vBCSTRet" ] := hbNFe_PegaDadosXml( "vBCSTRet", cItemICMS )
-   ::aItemICMS[ "vICMSSTRet" ] := hbNFe_PegaDadosXml( "vICMSSTRet", cItemICMS )
-   ::aItemICMS[ "modBC" ] := hbNFe_PegaDadosXml( "modBC", cItemICMS )
-   ::aItemICMS[ "pRedBC" ] := hbNFe_PegaDadosXml( "pRedBC", cItemICMS )
-   ::aItemICMS[ "vBC" ] := hbNFe_PegaDadosXml( "vBC", cItemICMS )
-   ::aItemICMS[ "pICMS" ] := hbNFe_PegaDadosXml( "pICMS", cItemICMS )
-   ::aItemICMS[ "vICMS" ] := hbNFe_PegaDadosXml( "vICMS", cItemICMS )
-   ::aItemICMS[ "motDesICMS" ] := hbNFe_PegaDadosXml( "motDesICMS", cItemICMS )
-   ::aItemICMS[ "modBCST" ] := hbNFe_PegaDadosXml( "nItemICMS", cItemICMS )
-   ::aItemICMS[ "pMVAST" ] := hbNFe_PegaDadosXml( "pMVAST", cItemICMS )
-   ::aItemICMS[ "pRedBCST" ] := hbNFe_PegaDadosXml( "pRedBCST", cItemICMS )
-   ::aItemICMS[ "vBCST" ] := hbNFe_PegaDadosXml( "vBCST", cItemICMS )
-   ::aItemICMS[ "pICMSST" ] := hbNFe_PegaDadosXml( "pICMSST", cItemICMS )
-   ::aItemICMS[ "vICMSST" ] := hbNFe_PegaDadosXml( "vICMSST", cItemICMS )
+   ::aItemICMS[ "orig" ]       := XmlNode( cItemIcms, "orig" )
+   ::aItemICMS[ "CST" ]        := XmlNode( cItemIcms, "CST" )
+   ::aItemICMS[ "CSOSN" ]      := XmlNode( cItemIcms, "CSOSN" )
+   ::aItemICMS[ "vBCSTRet" ]   := XmlNode( cItemIcms, "vBCSTRet" )
+   ::aItemICMS[ "vICMSSTRet" ] := XmlNode( cItemIcms, "vICMSSTRet" )
+   ::aItemICMS[ "modBC" ]      := XmlNode( cItemIcms, "modBC" )
+   ::aItemICMS[ "pRedBC" ]     := XmlNode( cItemIcms, "pRedBC" )
+   ::aItemICMS[ "vBC" ]        := XmlNode( cItemIcms, "vBC" )
+   ::aItemICMS[ "pICMS" ]      := XmlNode( cItemIcms, "pICMS" )
+   ::aItemICMS[ "vICMS" ]      := XmlNode( cItemIcms, "vICMS" )
+   ::aItemICMS[ "motDesICMS" ] := XmlNode( cItemIcms, "motDesICMS" )
+   ::aItemICMS[ "modBCST" ]    := XmlNode( cItemIcms, "nItemICMS" )
+   ::aItemICMS[ "pMVAST" ]     := XmlNode( cItemIcms, "pMVAST" )
+   ::aItemICMS[ "pRedBCST" ]   := XmlNode( cItemIcms, "pRedBCST" )
+   ::aItemICMS[ "vBCST" ]      := XmlNode( cItemIcms, "vBCST" )
+   ::aItemICMS[ "pICMSST" ]    := XmlNode( cItemIcms, "pICMSST" )
+   ::aItemICMS[ "vICMSST" ]    := XmlNode( cItemIcms, "vICMSST" )
 
-   cItemICMSPart := hbNFe_PegaDadosXML('ICMSPart', cItem )
+   cItemICMSPart := XmlNode( cItem, "ICMSPart" )
    ::aItemICMSPart := hb_Hash()
-   ::aItemICMSPart[ "orig" ] := hbNFe_PegaDadosXml( "orig", cItemICMSPart )
-   ::aItemICMSPart[ "CST" ] := hbNFe_PegaDadosXml( "CST", cItemICMSPart )
-   ::aItemICMSPart[ "modBC" ] := hbNFe_PegaDadosXml( "modBC", cItemICMSPart )
-   ::aItemICMSPart[ "pRedBC" ] := hbNFe_PegaDadosXml( "pRedBC", cItemICMSPart )
-   ::aItemICMSPart[ "vBC" ] := hbNFe_PegaDadosXml( "vBC", cItemICMSPart )
-   ::aItemICMSPart[ "pICMS" ] := hbNFe_PegaDadosXml( "pICMS", cItemICMSPart )
-   ::aItemICMSPart[ "vICMS" ] := hbNFe_PegaDadosXml( "vICMS", cItemICMSPart )
-   ::aItemICMSPart[ "modBCST" ] := hbNFe_PegaDadosXml( "nItemICMSPart", cItemICMSPart )
-   ::aItemICMSPart[ "pMVAST" ] := hbNFe_PegaDadosXml( "pMVAST", cItemICMSPart )
-   ::aItemICMSPart[ "pRedBCST" ] := hbNFe_PegaDadosXml( "pRedBCST", cItemICMSPart )
-   ::aItemICMSPart[ "vBCST" ] := hbNFe_PegaDadosXml( "vBCST", cItemICMSPart )
-   ::aItemICMSPart[ "pICMSST" ] := hbNFe_PegaDadosXml( "pICMSST", cItemICMSPart )
-   ::aItemICMSPart[ "vICMSST" ] := hbNFe_PegaDadosXml( "vICMSST", cItemICMSPart )
-   ::aItemICMSPart[ "pBCOp" ] := hbNFe_PegaDadosXml( "pBCOp", cItemICMSPart )
-   ::aItemICMSPart[ "UFST" ] := hbNFe_PegaDadosXml( "UFST", cItemICMSPart )
+   ::aItemICMSPart[ "orig" ]     := XmlNode( cItemIcmsPart, "orig" )
+   ::aItemICMSPart[ "CST" ]      := XmlNode( cItemIcmsPart, "CST" )
+   ::aItemICMSPart[ "modBC" ]    := XmlNode( cItemIcmsPart, "modBC" )
+   ::aItemICMSPart[ "pRedBC" ]   := XmlNode( cItemIcmsPart, "pRedBC" )
+   ::aItemICMSPart[ "vBC" ]      := XmlNode( cItemIcmsPart, "vBC" )
+   ::aItemICMSPart[ "pICMS" ]    := XmlNode( cItemIcmsPart, "pICMS" )
+   ::aItemICMSPart[ "vICMS" ]    := XmlNode( cItemIcmsPart, "vICMS" )
+   ::aItemICMSPart[ "modBCST" ]  := XmlNode( cItemIcmsPart, "nItemICMSPart" )
+   ::aItemICMSPart[ "pMVAST" ]   := XmlNode( cItemIcmsPart, "pMVAST" )
+   ::aItemICMSPart[ "pRedBCST" ] := XmlNode( cItemIcmsPart, "pRedBCST" )
+   ::aItemICMSPart[ "vBCST" ]    := XmlNode( cItemIcmsPart, "vBCST" )
+   ::aItemICMSPart[ "pICMSST" ]  := XmlNode( cItemIcmsPart, "pICMSST" )
+   ::aItemICMSPart[ "vICMSST" ]  := XmlNode( cItemIcmsPart, "vICMSST" )
+   ::aItemICMSPart[ "pBCOp" ]    := XmlNode( cItemIcmsPart, "pBCOp" )
+   ::aItemICMSPart[ "UFST" ]     := XmlNode( cItemIcmsPart, "UFST" )
 
-   cItemICMSST := hbNFe_PegaDadosXML('ICMSST', cItem )
+   cItemICMSST := XmlNode( cItem, "ICMSST" )
    ::aItemICMSST := hb_Hash()
-   ::aItemICMSST[ "orig" ] := hbNFe_PegaDadosXml( "orig", cItemICMSST )
-   ::aItemICMSST[ "CST" ] := hbNFe_PegaDadosXml( "CST", cItemICMSST )
-   ::aItemICMSST[ "vBCSTRet" ] := hbNFe_PegaDadosXml( "vBCSTRet", cItemICMSST )
-   ::aItemICMSST[ "vICMSSTRet" ] := hbNFe_PegaDadosXml( "vICMSSTRet", cItemICMSST )
-   ::aItemICMSST[ "vBCSTDest" ] := hbNFe_PegaDadosXml( "vBCSTDest", cItemICMSST )
-   ::aItemICMSST[ "vICMSSTDest" ] := hbNFe_PegaDadosXml( "vICMSSTDest", cItemICMSST )
+   ::aItemICMSST[ "orig" ]        := XmlNode( cItemIcmsSt, "orig" )
+   ::aItemICMSST[ "CST" ]         := XmlNode( cItemIcmsSt, "CST" )
+   ::aItemICMSST[ "vBCSTRet" ]    := XmlNode( cItemIcmsSt, "vBCSTRet" )
+   ::aItemICMSST[ "vICMSSTRet" ]  := XmlNode( cItemIcmsSt, "vICMSSTRet" )
+   ::aItemICMSST[ "vBCSTDest" ]   := XmlNode( cItemIcmsSt, "vBCSTDest" )
+   ::aItemICMSST[ "vICMSSTDest" ] := XmlNode( cItemIcmsSt, "vICMSSTDest" )
 
-   cItemICMSSN101 := hbNFe_PegaDadosXML('ICMSSN101', cItem )
+   cItemICMSSN101 := XmlNode( cItem, "ICMSSN101" )
    ::aItemICMSSN101 := hb_Hash()
-   ::aItemICMSSN101[ "orig" ] := hbNFe_PegaDadosXml( "orig", cItemICMSSN101 )
-   ::aItemICMSSN101[ "CSOSN" ] := hbNFe_PegaDadosXml( "CSOSN", cItemICMSSN101 )
-   ::aItemICMSSN101[ "pCredSN" ] := hbNFe_PegaDadosXml( "pCredSN", cItemICMSSN101 )
-   ::aItemICMSSN101[ "vCredICMSSN" ] := hbNFe_PegaDadosXml( "vCredICMSSN", cItemICMSSN101 )
+   ::aItemICMSSN101[ "orig" ]        := XmlNode( cItemIcmsSN101, "orig" )
+   ::aItemICMSSN101[ "CSOSN" ]       := XmlNode( cItemIcmsSN101, "CSOSN" )
+   ::aItemICMSSN101[ "pCredSN" ]     := XmlNode( cItemIcmsSN101, "pCredSN" )
+   ::aItemICMSSN101[ "vCredICMSSN" ] := XmlNode( cItemIcmsSN101, "vCredICMSSN" )
 
-   cItemICMSSN102 := hbNFe_PegaDadosXML('ICMSSN102', cItem ) //102,103,300 ou 400
+   cItemICMSSN102 := XmlNode( cItem, "ICMSSN102" ) //102,103,300 ou 400
    ::aItemICMSSN102 := hb_Hash()
-   ::aItemICMSSN102[ "orig" ] := hbNFe_PegaDadosXml( "orig", cItemICMSSN102 )
-   ::aItemICMSSN102[ "CSOSN" ] := hbNFe_PegaDadosXml( "CSOSN", cItemICMSSN102 )
+   ::aItemICMSSN102[ "orig" ]  := XmlNode( cItemIcmsSN102, "orig" )
+   ::aItemICMSSN102[ "CSOSN" ] := XmlNode( cItemIcmsSN102, "CSOSN" )
 
-   cItemICMSSN201 := hbNFe_PegaDadosXML('ICMSSN201', cItem )
+   cItemICMSSN201 := XmlNode( cItem, "ICMSSN201" )
    ::aItemICMSSN201 := hb_Hash()
-   ::aItemICMSSN201[ "orig" ] := hbNFe_PegaDadosXml( "orig", cItemICMSSN201 )
-   ::aItemICMSSN201[ "CSOSN" ] := hbNFe_PegaDadosXml( "CSOSN", cItemICMSSN201 )
-   ::aItemICMSSN201[ "modBCST" ] := hbNFe_PegaDadosXml( "modBCST", cItemICMSSN201 )
-   ::aItemICMSSN201[ "pMVAST" ] := hbNFe_PegaDadosXml( "pMVAST", cItemICMSSN201 )
-   ::aItemICMSSN201[ "pRedBCST" ] := hbNFe_PegaDadosXml( "pRedBCST", cItemICMSSN201 )
-   ::aItemICMSSN201[ "vBCST" ] := hbNFe_PegaDadosXml( "vBCST", cItemICMSSN201 )
-   ::aItemICMSSN201[ "pICMSST" ] := hbNFe_PegaDadosXml( "pICMSST", cItemICMSSN201 )
-   ::aItemICMSSN201[ "vICMSST" ] := hbNFe_PegaDadosXml( "vICMSST", cItemICMSSN201 )
-   ::aItemICMSSN201[ "pCredSN" ] := hbNFe_PegaDadosXml( "pCredSN", cItemICMSSN201 )
-   ::aItemICMSSN201[ "vCredICMSSN" ] := hbNFe_PegaDadosXml( "vCredICMSSN", cItemICMSSN201 )
+   ::aItemICMSSN201[ "orig" ]        := XmlNode( cItemIcmsSN201, "orig" )
+   ::aItemICMSSN201[ "CSOSN" ]       := XmlNode( cItemIcmsSN201, "CSOSN" )
+   ::aItemICMSSN201[ "modBCST" ]     := XmlNode( cItemIcmsSN201, "modBCST" )
+   ::aItemICMSSN201[ "pMVAST" ]      := XmlNode( cItemIcmsSN201, "pMVAST" )
+   ::aItemICMSSN201[ "pRedBCST" ]    := XmlNode( cItemIcmsSN201, "pRedBCST" )
+   ::aItemICMSSN201[ "vBCST" ]       := XmlNode( cItemIcmsSN201, "vBCST" )
+   ::aItemICMSSN201[ "pICMSST" ]     := XmlNode( cItemIcmsSN201, "pICMSST" )
+   ::aItemICMSSN201[ "vICMSST" ]     := XmlNode( cItemIcmsSN201, "vICMSST" )
+   ::aItemICMSSN201[ "pCredSN" ]     := XmlNode( cItemIcmsSN201, "pCredSN" )
+   ::aItemICMSSN201[ "vCredICMSSN" ] := XmlNode( cItemIcmsSN201, "vCredICMSSN" )
 
-   cItemICMSSN202 := hbNFe_PegaDadosXML('ICMSSN202', cItem )  // 202 ou 203
+   cItemICMSSN202 := XmlNode( cItem, "ICMSSN202" )  // 202 ou 203
    ::aItemICMSSN202 := hb_Hash()
-   ::aItemICMSSN202[ "orig" ] := hbNFe_PegaDadosXml( "orig", cItemICMSSN202 )
-   ::aItemICMSSN202[ "CSOSN" ] := hbNFe_PegaDadosXml( "CSOSN", cItemICMSSN202 )
-   ::aItemICMSSN202[ "modBCST" ] := hbNFe_PegaDadosXml( "modBCST", cItemICMSSN202 )
-   ::aItemICMSSN202[ "pMVAST" ] := hbNFe_PegaDadosXml( "pMVAST", cItemICMSSN202 )
-   ::aItemICMSSN202[ "pRedBCST" ] := hbNFe_PegaDadosXml( "pRedBCST", cItemICMSSN202 )
-   ::aItemICMSSN202[ "vBCST" ] := hbNFe_PegaDadosXml( "vBCST", cItemICMSSN202 )
-   ::aItemICMSSN202[ "pICMSST" ] := hbNFe_PegaDadosXml( "pICMSST", cItemICMSSN202 )
-   ::aItemICMSSN202[ "vICMSST" ] := hbNFe_PegaDadosXml( "vICMSST", cItemICMSSN202 )
+   ::aItemICMSSN202[ "orig" ]     := XmlNode( cItemIcmsSN202, "orig" )
+   ::aItemICMSSN202[ "CSOSN" ]    := XmlNode( cItemIcmsSN202, "CSOSN" )
+   ::aItemICMSSN202[ "modBCST" ]  := XmlNode( cItemIcmsSN202, "modBCST" )
+   ::aItemICMSSN202[ "pMVAST" ]   := XmlNode( cItemIcmsSN202, "pMVAST" )
+   ::aItemICMSSN202[ "pRedBCST" ] := XmlNode( cItemIcmsSN202, "pRedBCST" )
+   ::aItemICMSSN202[ "vBCST" ]    := XmlNode( cItemIcmsSN202, "vBCST" )
+   ::aItemICMSSN202[ "pICMSST" ]  := XmlNode( cItemIcmsSN202, "pICMSST" )
+   ::aItemICMSSN202[ "vICMSST" ]  := XmlNode( cItemIcmsSN202, "vICMSST" )
 
-   cItemICMSSN500 := hbNFe_PegaDadosXML('ICMSSN500', cItem )
+   cItemICMSSN500 := XmlNode( cItem, "ICMSSN500" )
    ::aItemICMSSN500 := hb_Hash()
-   ::aItemICMSSN500[ "orig" ] := hbNFe_PegaDadosXml( "orig", cItemICMSSN500 )
-   ::aItemICMSSN500[ "CSOSN" ] := hbNFe_PegaDadosXml( "CSOSN", cItemICMSSN500 )
-   ::aItemICMSSN500[ "vBCSTRet" ] := hbNFe_PegaDadosXml( "vBCSTRet", cItemICMSSN500 )
-   ::aItemICMSSN500[ "vICMSSTRet" ] := hbNFe_PegaDadosXml( "vICMSSTRet", cItemICMSSN500 )
+   ::aItemICMSSN500[ "orig" ]       := XmlNode( cItemIcmsSN500, "orig" )
+   ::aItemICMSSN500[ "CSOSN" ]      := XmlNode( cItemIcmsSN500, "CSOSN" )
+   ::aItemICMSSN500[ "vBCSTRet" ]   := XmlNode( cItemIcmsSN500, "vBCSTRet" )
+   ::aItemICMSSN500[ "vICMSSTRet" ] := XmlNode( cItemIcmsSN500, "vICMSSTRet" )
 
-   cItemICMSSN900 := hbNFe_PegaDadosXML('ICMSSN900', cItem )
+   cItemICMSSN900 := XmlNode( cItem, "ICMSSN900" )
    ::aItemICMSSN900 := hb_Hash()
-   ::aItemICMSSN900[ "orig" ] := hbNFe_PegaDadosXml( "orig", cItemICMSSN900 )
-   ::aItemICMSSN900[ "CSOSN" ] := hbNFe_PegaDadosXml( "CSOSN", cItemICMSSN900 )
-   ::aItemICMSSN900[ "modBC" ] := hbNFe_PegaDadosXml( "modBC", cItemICMSSN900 )
-   ::aItemICMSSN900[ "pRedBC" ] := hbNFe_PegaDadosXml( "pRedBC", cItemICMSSN900 )
-   ::aItemICMSSN900[ "vBC" ] := hbNFe_PegaDadosXml( "vBC", cItemICMSSN900 )
-   ::aItemICMSSN900[ "pICMS" ] := hbNFe_PegaDadosXml( "pICMS", cItemICMSSN900 )
-   ::aItemICMSSN900[ "vICMS" ] := hbNFe_PegaDadosXml( "vICMS", cItemICMSSN900 )
-   ::aItemICMSSN900[ "modBCST" ] := hbNFe_PegaDadosXml( "modBCST", cItemICMSSN900 )
-   ::aItemICMSSN900[ "pMVAST" ] := hbNFe_PegaDadosXml( "pMVAST", cItemICMSSN900 )
-   ::aItemICMSSN900[ "pRedBCST" ] := hbNFe_PegaDadosXml( "pRedBCST", cItemICMSSN900 )
-   ::aItemICMSSN900[ "vBCST" ] := hbNFe_PegaDadosXml( "vBCST", cItemICMSSN900 )
-   ::aItemICMSSN900[ "pICMSST" ] := hbNFe_PegaDadosXml( "pICMSST", cItemICMSSN900 )
-   ::aItemICMSSN900[ "vICMSST" ] := hbNFe_PegaDadosXml( "vICMSST", cItemICMSSN900 )
-   ::aItemICMSSN900[ "pCredSN" ] := hbNFe_PegaDadosXml( "pCredSN", cItemICMSSN900 )
-   ::aItemICMSSN900[ "vCredICMSSN" ] := hbNFe_PegaDadosXml( "vCredICMSSN", cItemICMSSN900 )
+   ::aItemICMSSN900[ "orig" ]        := XmlNode( cItemIcmsSN900, "orig" )
+   ::aItemICMSSN900[ "CSOSN" ]       := XmlNode( cItemIcmsSN900, "CSOSN" )
+   ::aItemICMSSN900[ "modBC" ]       := XmlNode( cItemIcmsSN900, "modBC" )
+   ::aItemICMSSN900[ "pRedBC" ]      := XmlNode( cItemIcmsSN900, "pRedBC" )
+   ::aItemICMSSN900[ "vBC" ]         := XmlNode( cItemIcmsSN900, "vBC" )
+   ::aItemICMSSN900[ "pICMS" ]       := XmlNode( cItemIcmsSN900, "pICMS" )
+   ::aItemICMSSN900[ "vICMS" ]       := XmlNode( cItemIcmsSN900, "vICMS" )
+   ::aItemICMSSN900[ "modBCST" ]     := XmlNode( cItemIcmsSN900, "modBCST" )
+   ::aItemICMSSN900[ "pMVAST" ]      := XmlNode( cItemIcmsSN900, "pMVAST" )
+   ::aItemICMSSN900[ "pRedBCST" ]    := XmlNode( cItemIcmsSN900, "pRedBCST" )
+   ::aItemICMSSN900[ "vBCST" ]       := XmlNode( cItemIcmsSN900, "vBCST" )
+   ::aItemICMSSN900[ "pICMSST" ]     := XmlNode( cItemIcmsSN900, "pICMSST" )
+   ::aItemICMSSN900[ "vICMSST" ]     := XmlNode( cItemIcmsSN900, "vICMSST" )
+   ::aItemICMSSN900[ "pCredSN" ]     := XmlNode( cItemIcmsSN900, "pCredSN" )
+   ::aItemICMSSN900[ "vCredICMSSN" ] := XmlNode( cItemIcmsSN900, "vCredICMSSN" )
 
 
-   cItemIPI := hbNFe_PegaDadosXML('IPI', cItem )
+   cItemIPI := XmlNode( cItem, "IPI" )
    ::aItemIPI := hb_Hash()
-   ::aItemIPI[ "clEnq" ] := hbNFe_PegaDadosXml( "clEnq", cItemIPI )
-   ::aItemIPI[ "CNPJProd" ] := hbNFe_PegaDadosXml( "CNPJProd", cItemIPI )
-   ::aItemIPI[ "cSelo" ] := hbNFe_PegaDadosXml( "cSelo", cItemIPI )
-   ::aItemIPI[ "qSelo" ] := hbNFe_PegaDadosXml( "qSelo", cItemIPI )
-   ::aItemIPI[ "cEnq" ] := hbNFe_PegaDadosXml( "cEnq", cItemIPI )
+   ::aItemIPI[ "clEnq" ]    := XmlNode( cItemIPI, "clEnq" )
+   ::aItemIPI[ "CNPJProd" ] := XmlNode( cItemIPI, "CNPJProd" )
+   ::aItemIPI[ "cSelo" ]    := XmlNode( cItemIPI, "cSelo" )
+   ::aItemIPI[ "qSelo" ]    := XmlNode( cItemIPI, "qSelo" )
+   ::aItemIPI[ "cEnq" ]     := XmlNode( cItemIPI, "cEnq" )
 
-   ::aItemIPI[ "CST" ] := hbNFe_PegaDadosXml( "CST", cItemIPI )
-   ::aItemIPI[ "vBC" ] := hbNFe_PegaDadosXml( "vBC", cItemIPI )
-   ::aItemIPI[ "pIPI" ] := hbNFe_PegaDadosXml( "pIPI", cItemIPI )
-   ::aItemIPI[ "qUnid" ] := hbNFe_PegaDadosXml( "qUnid", cItemIPI )
-   ::aItemIPI[ "vUnid" ] := hbNFe_PegaDadosXml( "vUnid", cItemIPI )
-   ::aItemIPI[ "vIPI" ] := hbNFe_PegaDadosXml( "vIPI", cItemIPI )
+   ::aItemIPI[ "CST" ]   := XmlNode( cItemIPI, "CST" )
+   ::aItemIPI[ "vBC" ]   := XmlNode( cItemIPI, "vBC" )
+   ::aItemIPI[ "pIPI" ]  := XmlNode( cItemIPI, "pIPI" )
+   ::aItemIPI[ "qUnid" ] := XmlNode( cItemIPI, "qUnid" )
+   ::aItemIPI[ "vUnid" ] := XmlNode( cItemIPI, "vUnid" )
+   ::aItemIPI[ "vIPI" ]  := XmlNode( cItemIPI, "vIPI" )
 
-   cItemII := hbNFe_PegaDadosXML('II', cItem )
+   cItemII := XmlNode( cItem, "II" )
    ::aItemII := hb_Hash()
-   ::aItemII[ "vBC" ] := hbNFe_PegaDadosXml( "vBC", cItemII )
-   ::aItemII[ "vDespAdu" ] := hbNFe_PegaDadosXml( "vDespAdu", cItemII )
-   ::aItemII[ "vII" ] := hbNFe_PegaDadosXml( "vII", cItemII )
-   ::aItemII[ "vIOF" ] := hbNFe_PegaDadosXml( "vIOF", cItemII )
+   ::aItemII[ "vBC" ]      := XmlNode( cItemII, "vBC" )
+   ::aItemII[ "vDespAdu" ] := XmlNode( cItemII, "vDespAdu" )
+   ::aItemII[ "vII" ]      := XmlNode( cItemII, "vII" )
+   ::aItemII[ "vIOF" ]     := XmlNode( cItemII, "vIOF" )
 
-   cItemPIS := hbNFe_PegaDadosXML('PIS', cItem )
+   cItemPIS := XmlNode( cItem, "PIS" )
    ::aItemPIS := hb_Hash()
-   ::aItemPIS[ "CST" ] := hbNFe_PegaDadosXml( "CST", cItemPIS )
-   ::aItemPIS[ "vBC" ] := hbNFe_PegaDadosXml( "vBC", cItemPIS )
-   ::aItemPIS[ "pPIS" ] := hbNFe_PegaDadosXml( "pPIS", cItemPIS )
-   ::aItemPIS[ "vPIS" ] := hbNFe_PegaDadosXml( "vPIS", cItemPIS )
+   ::aItemPIS[ "CST" ]       := XmlNode( cItemPIS, "CST" )
+   ::aItemPIS[ "vBC" ]       := XmlNode( cItemPIS, "vBC" )
+   ::aItemPIS[ "pPIS" ]      := XmlNode( cItemPIS, "pPIS" )
+   ::aItemPIS[ "vPIS" ]      := XmlNode( cItemPIS, "vPIS" )
+   ::aItemPIS[ "qBCProd" ]   := XmlNode( cItemPIS, "qBCProd" )
+   ::aItemPIS[ "vAliqProd" ] := XmlNode( cItemPIS, "vAliqProd" )
 
-   ::aItemPIS[ "qBCProd" ] := hbNFe_PegaDadosXml( "qBCProd", cItemPIS )
-   ::aItemPIS[ "vAliqProd" ] := hbNFe_PegaDadosXml( "vAliqProd", cItemPIS )
-
-   cItemPISST := hbNFe_PegaDadosXML('PISST', cItem )
+   cItemPISST := XmlNode( cItem, "PISST" )
    ::aItemPISST := hb_Hash()
-   ::aItemPISST[ "vBC" ] := hbNFe_PegaDadosXml( "vBC", cItemPISST )
-   ::aItemPISST[ "pPIS" ] := hbNFe_PegaDadosXml( "pPIS", cItemPISST )
-   ::aItemPISST[ "vPIS" ] := hbNFe_PegaDadosXml( "vPIS", cItemPISST )
-   ::aItemPISST[ "qBCProd" ] := hbNFe_PegaDadosXml( "qBCProd", cItemPISST )
-   ::aItemPISST[ "vAliqProd" ] := hbNFe_PegaDadosXml( "vAliqProd", cItemPISST )
+   ::aItemPISST[ "vBC" ]       := XmlNode( cItemPISST, "vBC" )
+   ::aItemPISST[ "pPIS" ]      := XmlNode( cItemPISST, "pPIS" )
+   ::aItemPISST[ "vPIS" ]      := XmlNode( cItemPISST, "vPIS" )
+   ::aItemPISST[ "qBCProd" ]   := XmlNode( cItemPISST, "qBCProd" )
+   ::aItemPISST[ "vAliqProd" ] := XmlNode( cItemPISST, "vAliqProd" )
 
-   cItemCOFINS := hbNFe_PegaDadosXML('COFINS', cItem )
+   cItemCOFINS := XmlNode( cItem, "COFINS" )
    ::aItemCOFINS := hb_Hash()
-   ::aItemCOFINS[ "CST" ] := hbNFe_PegaDadosXml( "CST", cItemCOFINS )
-   ::aItemCOFINS[ "vBC" ] := hbNFe_PegaDadosXml( "vBC", cItemCOFINS )
-   ::aItemCOFINS[ "pCOFINS" ] := hbNFe_PegaDadosXml( "pCOFINS", cItemCOFINS )
-   ::aItemCOFINS[ "vCOFINS" ] := hbNFe_PegaDadosXml( "vCOFINS", cItemCOFINS )
+   ::aItemCOFINS[ "CST" ]       := XmlNode( cItemCofins, "CST" )
+   ::aItemCOFINS[ "vBC" ]       := XmlNode( cItemCofins, "vBC" )
+   ::aItemCOFINS[ "pCOFINS" ]   := XmlNode( cItemCofins, "pCOFINS" )
+   ::aItemCOFINS[ "vCOFINS" ]   := XmlNode( cItemCofins, "vCOFINS" )
+   ::aItemCOFINS[ "qBCProd" ]   := XmlNode( cItemCofins, "qBCProd" )
+   ::aItemCOFINS[ "vAliqProd" ] := XmlNode( cItemCofins, "vAliqProd" )
 
-   ::aItemCOFINS[ "qBCProd" ] := hbNFe_PegaDadosXml( "qBCProd", cItemCOFINS )
-   ::aItemCOFINS[ "vAliqProd" ] := hbNFe_PegaDadosXml( "vAliqProd", cItemCOFINS )
-
-   cItemCOFINSST := hbNFe_PegaDadosXML('COFINSST', cItem )
+   cItemCOFINSST := XmlNode( cItem, "COFINSST" )
    ::aItemCOFINSST := hb_Hash()
-   ::aItemCOFINSST[ "vBC" ] := hbNFe_PegaDadosXml( "vBC", cItemCOFINSST )
-   ::aItemCOFINSST[ "pCOFINS" ] := hbNFe_PegaDadosXml( "pCOFINS", cItemCOFINSST )
-   ::aItemCOFINSST[ "vCOFINS" ] := hbNFe_PegaDadosXml( "vCOFINS", cItemCOFINSST )
-   ::aItemCOFINSST[ "qBCProd" ] := hbNFe_PegaDadosXml( "qBCProd", cItemCOFINSST )
-   ::aItemCOFINSST[ "vAliqProd" ] := hbNFe_PegaDadosXml( "vAliqProd", cItemCOFINSST )
+   ::aItemCOFINSST[ "vBC" ]       := XmlNode( cItemCofinsST, "vBC" )
+   ::aItemCOFINSST[ "pCOFINS" ]   := XmlNode( cItemCofinsST, "pCOFINS" )
+   ::aItemCOFINSST[ "vCOFINS" ]   := XmlNode( cItemCofinsST, "vCOFINS" )
+   ::aItemCOFINSST[ "qBCProd" ]   := XmlNode( cItemCofinsST, "qBCProd" )
+   ::aItemCOFINSST[ "vAliqProd" ] := XmlNode( cItemCofinsST, "vAliqProd" )
 
-   cItemISSQN := hbNFe_PegaDadosXML('ISSQN', cItem )
+   cItemISSQN := XmlNode( cItem, "ISSQN" )
    ::aItemISSQN := hb_Hash()
-   ::aItemISSQN[ "vBC" ] := hbNFe_PegaDadosXml( "vBC", cItemISSQN )
-   ::aItemISSQN[ "vAliq" ] := hbNFe_PegaDadosXml( "vAliq", cItemISSQN )
-   ::aItemISSQN[ "vISSQN" ] := hbNFe_PegaDadosXml( "vISSQN", cItemISSQN )
-   ::aItemISSQN[ "cMunFG" ] := hbNFe_PegaDadosXml( "cMunFG", cItemISSQN )
-   ::aItemISSQN[ "cListServ" ] := hbNFe_PegaDadosXml( "cListServ", cItemISSQN )
-   ::aItemISSQN[ "cSitTrib" ] := hbNFe_PegaDadosXml( "cSitTrib", cItemISSQN )  // N – NORMAL R – RETIDA S –SUBSTITUTA I – ISENTA. (v.2.0)
+   ::aItemISSQN[ "vBC" ]       := XmlNode( cItemISSQN, "vBC" )
+   ::aItemISSQN[ "vAliq" ]     := XmlNode( cItemISSQN, "vAliq" )
+   ::aItemISSQN[ "vISSQN" ]    := XmlNode( cItemISSQN, "vISSQN" )
+   ::aItemISSQN[ "cMunFG" ]    := XmlNode( cItemISSQN, "cMunFG" )
+   ::aItemISSQN[ "cListServ" ] := XmlNode( cItemISSQN, "cListServ" )
+   ::aItemISSQN[ "cSitTrib" ]  := XmlNode( cItemISSQN, "cSitTrib" )  // N – NORMAL R – RETIDA S –SUBSTITUTA I – ISENTA. (v.2.0)
 
    RETURN .T.
-
-FUNCTION hbNFe_PegaDadosXML(cElemento, cStringXML, cElemento2)
-
-   LOCAL InicioDoDado,FinalDoDado,nPosIni,nPosFim, cRet := NIL
-
-   IF cStringXML = NIL
-      RETURN cRet
-   ENDIF
-   InicioDoDado := Iif( cElemento2 == NIL, "<" + cElemento + ">", "<" + cElemento )
-   FinalDoDado  := Iif( cElemento2 == NIL, "</" + cElemento + ">", '</' + cElemento2 + '>' )
-   nPosIni      := At( InicioDoDado, cStringXML )
-   nPosFim      := hb_At( FinalDoDado, cStringXML, nPosIni )
-
-   IF nPosIni==0 .OR. nPosFim==0
-      RETURN cRet
-   ENDIF
-   cRet := Substr( cStringXML, nPosIni + Len( IniciodoDado ), nPosFim - nPosIni - Len( FinalDoDado ) + 1 )
-
-   RETURN cRet
 
 FUNCTION hbNFe_Texto_Hpdf( oPdfPage2, x1, y1, x2, y2, cText, align, desconhecido, oFontePDF, nTamFonte, nAngulo )
 
@@ -2632,8 +2577,8 @@ LOCAL nI :=0, checksum :=0, nValorCar, cCode128 := '', cCodigoBarra
       IF nI > 0
          nI = 1 &&  nI é o índice da cadeia
          cCode128 = chr(155)
-         DO WHILE nI <= len ( cCodigoBarra )
-            nValorCar = val ( substr( cCodigoBarra, nI, 2 ) )
+         DO WHILE nI <= len( cCodigoBarra )
+            nValorCar = val( substr( cCodigoBarra, nI, 2 ) )
             IF nValorCar = 0
                 nValorCar += 128
              ELSEIF nValorCar < 95
@@ -2673,3 +2618,7 @@ LOCAL nI :=0, checksum :=0, nValorCar, cCode128 := '', cCodigoBarra
    ENDIF
 
    RETURN cCode128
+
+STATIC FUNCTION Quoted2( cText )
+
+   RETURN ["] + cText + ["]
