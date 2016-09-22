@@ -248,22 +248,22 @@ METHOD cabecalho() CLASS hbNFeDanfeCCe
 
    LOCAL oImage, hZebra
 
-   hbNFe_Box_Hpdf( ::oPdfPage, 30,::nLinhaPDF - 106,   535,  110, ::nLarguraBox )    && Quadro Cabeçalho
+   hbNFe_Box_Hpdf( ::oPdfPage, 30, ::nLinhaPDF - 106,   535,  110, ::nLarguraBox )    && Quadro Cabeçalho
 
    // logo/dados empresa
 
-   hbNFe_Box_Hpdf( ::oPdfPage, 290,::nLinhaPDF - 106,  275,  110, ::nLarguraBox )    && Quadro CC-e, Chave de Acesso e Codigo de Barras
-   hbNFe_Texto_Hpdf( ::oPdfPage,30, ::nLinhaPdf + 2,     274, Nil, "IDENTIFICAÇÃO DO EMITENTE" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 6 )
+   hbNFe_Box_Hpdf( ::oPdfPage, 290, ::nLinhaPDF - 106,  275,  110, ::nLarguraBox )    && Quadro CC-e, Chave de Acesso e Codigo de Barras
+   hbNFe_Texto_Hpdf( ::oPdfPage, 30, ::nLinhaPdf + 2,     274, Nil, "IDENTIFICAÇÃO DO EMITENTE" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 6 )
    // alert('nLogoStyle: ' + ::nLogoStyle +';_LOGO_ESQUERDA: ' + _LOGO_ESQUERDA)
    IF EMPTY( ::cLogoFile )
-       hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 6 ,  289, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 14 )
-       hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 20,  289, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,2)) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 14 )
+       hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 6 ,  289, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 14 )
+       hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 20,  289, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 14 )
        hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 42,  289, Nil, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
        hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 52,  289, Nil, ::aEmit[ "xBairro" ]+" - "+ Transform( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
        hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 62,  289, Nil, ::aEmit[ "xMun" ]+" - "+::aEmit[ "UF" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
-       hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 72,  289, Nil, TRIM(IF(! Empty(::cTelefoneEmitente),"FONE: "+::cTelefoneEmitente,"")), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
-       hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 82,  289, Nil, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
-       hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 92,  289, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
+       hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 72,  289, Nil, TRIM( iif( ! Empty( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
+       hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 82,  289, Nil, TRIM( ::cSiteEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
+       hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 92,  289, Nil, TRIM( ::cEmailEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
    ELSE
        IF ::nLogoStyle = _LOGO_EXPANDIDO
           oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
@@ -276,21 +276,21 @@ METHOD cabecalho() CLASS hbNFeDanfeCCe
           hbNFe_Texto_Hpdf( ::oPdfPage,  100, ::nLinhaPDF - 42,  289, Nil, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
           hbNFe_Texto_Hpdf( ::oPdfPage,  100, ::nLinhaPDF - 52,  289, Nil, ::aEmit[ "xBairro" ]+" - "+ Transform( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
           hbNFe_Texto_Hpdf( ::oPdfPage,  100, ::nLinhaPDF - 62,  289, Nil, ::aEmit[ "xMun" ]+" - "+::aEmit[ "UF" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  100, ::nLinhaPDF - 72,  289, Nil, TRIM(IF(! Empty(::cTelefoneEmitente),"FONE: "+::cTelefoneEmitente,"")), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  100, ::nLinhaPDF - 82,  289, Nil, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  100, ::nLinhaPDF - 92,  289, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  100, ::nLinhaPDF - 72,  289, Nil, TRIM( iif( ! Empty( ::cTelefoneEmitente ),"FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  100, ::nLinhaPDF - 82,  289, Nil, TRIM( ::cSiteEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  100, ::nLinhaPDF - 92,  289, Nil, TRIM( ::cEmailEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
 
 		ELSEIF ::nLogoStyle = _LOGO_DIREITA
           oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
           HPDF_Page_DrawImage( ::oPdfPage, oImage, 220, ::nLinhaPdf - (62+18), 62, 62 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 6 ,  218, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 20 , 218, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,2)) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 6 ,  218, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 20 , 218, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
           hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 42,  218, Nil, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
           hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 52,  218, Nil, ::aEmit[ "xBairro" ]+" - "+ Transform( ::aEmit[ "CEP" ], "@R 99999-999"), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
           hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 62,  218, Nil, ::aEmit[ "xMun" ]+" - "+::aEmit[ "UF" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 72,  218, Nil, TRIM(IF(! Empty(::cTelefoneEmitente),"FONE: "+::cTelefoneEmitente,"")), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 82,  218, Nil, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
-          hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 92,  218, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 72,  218, Nil, TRIM( iif( ! Empty( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 82,  218, Nil, TRIM( ::cSiteEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
+          hbNFe_Texto_Hpdf( ::oPdfPage,  30, ::nLinhaPDF - 92,  218, Nil, TRIM( ::cEmailEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
         ENDIF
    ENDIF
 
@@ -512,7 +512,7 @@ METHOD eventos() CLASS hbNFeDanfeCCe
 
    ::nLinhaPdf -= 12
 
-   cMemo :=  IF(::aInfCCe[ "xCorrecao" ] <> Nil, ::aInfCCe[ "xCorrecao" ],"")
+   cMemo := ::aInfCCe[ "xCorrecao" ]
 
    cMemo := STRTRAN( cMemo , ";", CHR(13)+CHR(10) )
    nCompLinha := 77
