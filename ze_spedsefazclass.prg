@@ -780,6 +780,14 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
    ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
 
+   IF ::cStatus == "102"
+      ::cXmlAutorizado := [<ProcInutNFe versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">]
+      ::cXmlAutorizado += ::cXmlDados
+      ::cXmlAutorizado += XmlNode( ::cXmlRetorno, "retInutNFe", .T. )
+      ::cXmlAutorizado += [</ProcInutNFe>]
+      ::cXmlRetorno := ::cXmlAutorizado
+   ENDIF
+
    RETURN ::cXmlRetorno
 
 METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass
