@@ -5,6 +5,7 @@ ze_spedsefazclass - rotinas pra comunicação com SEFAZ
 2016.09.15.1230 - Motivo correto, do protocolo e não da consulta
 2016.09.16.1750 - Correção mdfeProc, estava MDFeProc
 2016.09.23.1620 - Inutilização
+2016.09.23.1640 - Ajustes finais inutilização
 
 Nota: CTE 2.00 vale até 06/2017 e CTE 3.00 começa em 12/2016
 */
@@ -758,7 +759,7 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    ::cSoapAction := "NfeInutilizacaoNF2"
    ::cWebService := ::GetWebService( ::cUF, WS_NFE_INUTILIZACAO, ::cAmbiente, WS_PROJETO_NFE )
    ::cXmlDados   := [<inutNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
-   ::cXmlDados   +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + cAno + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
+   ::cXmlDados   +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + Right( cAno, 2 ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
    ::cXmlDados   +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
    ::cXmlDados   +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados   +=       XmlTag( "xServ", "INUTILIZAR" )
@@ -775,6 +776,9 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    AssinaXml( @::cXmlDados, ::cCertificado )
    ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_NFE )
+
+   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
 
    RETURN ::cXmlRetorno
 
