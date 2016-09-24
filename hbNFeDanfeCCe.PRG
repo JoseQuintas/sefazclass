@@ -18,13 +18,13 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 
 CLASS hbNFeDanfeCCe
 
-   METHOD execute( cXmlCarta, cXmlNota, cFilePDF )
-   METHOD buscaDadosXML()
-   METHOD geraCCePDF()
-   METHOD cabecalho()
-   METHOD destinatario()
-   METHOD eventos()
-   METHOD rodape()
+   METHOD Execute( cXmlCarta, cXmlNota, cFilePDF )
+   METHOD BuscaDadosXML()
+   METHOD GeraCCePDF()
+   METHOD Cabecalho()
+   METHOD Destinatario()
+   METHOD Eventos()
+   METHOD Rodape()
 
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
@@ -61,7 +61,7 @@ CLASS hbNFeDanfeCCe
 
    ENDCLASS
 
-METHOD execute( cXmlCarta, cXmlNota, cFilePDF ) CLASS hbNFeDanfeCCe
+METHOD Execute( cXmlCarta, cXmlNota, cFilePDF ) CLASS hbNFeDanfeCCe
 
    hb_Default( @::lLaser, .T. )
    hb_Default( @::cFonteCCe, "Times" )
@@ -102,7 +102,7 @@ METHOD execute( cXmlCarta, cXmlNota, cFilePDF ) CLASS hbNFeDanfeCCe
 
    RETURN ::cRetorno
 
-METHOD buscaDadosXML() CLASS hbNFeDanfeCCe
+METHOD BuscaDadosXML() CLASS hbNFeDanfeCCe
 
    LOCAL cInfCCe, cInfCCeRet, cIde, cEmit, cDest
 
@@ -167,7 +167,7 @@ METHOD buscaDadosXML() CLASS hbNFeDanfeCCe
 
    RETURN .T.
 
-METHOD geraCCePDF() CLASS hbNFeDanfeCCe
+METHOD GeraCCePDF() CLASS hbNFeDanfeCCe
 
    // /////////////////////////////////////// LOCAL nItem, nIdes, nItensNF, nItens1Folha
    LOCAL nAltura // ///////////////////////// nRadiano, nLargura, nAngulo
@@ -244,7 +244,7 @@ METHOD geraCCePDF() CLASS hbNFeDanfeCCe
    RETURN(.T.)
 
 
-METHOD cabecalho() CLASS hbNFeDanfeCCe
+METHOD Cabecalho() CLASS hbNFeDanfeCCe
 
    LOCAL oImage, hZebra
 
@@ -388,7 +388,7 @@ METHOD cabecalho() CLASS hbNFeDanfeCCe
 
    RETURN NIL
 
-METHOD destinatario() CLASS hbNFeDanfeCCe
+METHOD Destinatario() CLASS hbNFeDanfeCCe
 
    // REMETENTE / DESTINATARIO
 
@@ -453,7 +453,7 @@ METHOD destinatario() CLASS hbNFeDanfeCCe
 
    RETURN NIL
 
-METHOD eventos() CLASS hbNFeDanfeCCe
+METHOD Eventos() CLASS hbNFeDanfeCCe
 
    LOCAL cDataHoraReg, cMemo, nI, nCompLinha
 
@@ -531,7 +531,7 @@ METHOD eventos() CLASS hbNFeDanfeCCe
 
    RETURN NIL
 
-METHOD rodape() CLASS hbNFeDanfeCCe
+METHOD Rodape() CLASS hbNFeDanfeCCe
 
    LOCAL cTextoCond, nTamFonte
 
