@@ -107,63 +107,62 @@ METHOD BuscaDadosXML() CLASS hbNFeDanfeCCe
    LOCAL cInfCCe, cInfCCeRet, cIde, cEmit, cDest
 
    cInfCCe := XmlNode( ::cXmlCce, "infEvento" )
-   ::aInfCCe := hb_Hash()
-   ::aInfCCe[ "cOrgao" ]     := XmlNode( cInfCce, "cOrgao" )
-   ::aInfCCe[ "tpEvento" ]   := XmlNode( cInfCce, "tpEvento" )
-   ::aInfCCe[ "nSeqEvento" ] := XmlNode( cInfCce, "nSeqEvento" )
-   ::aInfCCe[ "verEvento" ]  := XmlNode( cInfCce, "verEvento" )
-   ::aInfCCe[ "xCorrecao" ]  := XmlNode( cInfCce, "xCorrecao" )
+      ::aInfCCe := hb_Hash()
+      ::aInfCCe[ "cOrgao" ]     := XmlNode( cInfCce, "cOrgao" )
+      ::aInfCCe[ "tpEvento" ]   := XmlNode( cInfCce, "tpEvento" )
+      ::aInfCCe[ "nSeqEvento" ] := XmlNode( cInfCce, "nSeqEvento" )
+      ::aInfCCe[ "verEvento" ]  := XmlNode( cInfCce, "verEvento" )
+      ::aInfCCe[ "xCorrecao" ]  := XmlNode( cInfCce, "xCorrecao" )
 
    cInfCCeRet := XmlNode( ::cXmlCce, "retEvento" )
-   ::aInfCCe[ "cStat" ]       := XmlNode( cInfCceRet, "cStat" )
-   ::aInfCCe[ "xMotivo" ]     := XmlNode( cInfCceRet, "xMotivo" )
-   ::aInfCCe[ "dhRegEvento" ] := XmlNode( cInfCceRet, "dhRegEvento" )
-   ::aInfCCe[ "nProt" ]       := XmlNode( cInfCceRet, "nProt" )
+      ::aInfCCe[ "cStat" ]       := XmlNode( cInfCceRet, "cStat" )
+      ::aInfCCe[ "xMotivo" ]     := XmlNode( cInfCceRet, "xMotivo" )
+      ::aInfCCe[ "dhRegEvento" ] := XmlNode( cInfCceRet, "dhRegEvento" )
+      ::aInfCCe[ "nProt" ]       := XmlNode( cInfCceRet, "nProt" )
 
    cIde := XmlNode( ::cXmlNfe, "ide" )
-   ::aIde := hb_Hash()
-   ::aIde[ "mod" ]   := XmlNode( cIde, "mod" )
-   ::aIde[ "serie" ] := XmlNode( cIde, "serie" )
-   ::aIde[ "nNF" ]   := XmlNode( cIde, "nNF" )
-   ::aIde[ "dhEmi" ] := XmlNode( cIde, "dhEmi" )
+      ::aIde := hb_Hash()
+      ::aIde[ "mod" ]   := XmlNode( cIde, "mod" )
+      ::aIde[ "serie" ] := XmlNode( cIde, "serie" )
+      ::aIde[ "nNF" ]   := XmlNode( cIde, "nNF" )
+      ::aIde[ "dhEmi" ] := XmlNode( cIde, "dhEmi" )
 
    cEmit := XmlNode( ::cXmlNfe, "emit" )
-   ::aEmit := hb_Hash()
-   ::aEmit[ "CNPJ" ]    := XmlNode( cEmit, "CNPJ" )
-   ::aEmit[ "xNome" ]   := XmlToString( XmlNode( cEmit, "xNome" ) )
-   ::aEmit[ "xFant" ]   := XmlNode( cEmit, "xFant" )
-   ::aEmit[ "xLgr" ]    := XmlNode( cEmit, "xLgr" )
-   ::aEmit[ "nro" ]     := XmlNode( cEmit, "nro" )
-   ::aEmit[ "xBairro" ] := XmlNode( cEmit, "xBairro" )
-   ::aEmit[ "cMun" ]    := XmlNode( cEmit, "cMun" )
-   ::aEmit[ "xMun" ]    := XmlNode( cEmit, "xMun" )
-   ::aEmit[ "UF" ]      := XmlNode( cEmit, "UF" )
-   ::aEmit[ "CEP" ]     := XmlNode( cEmit, "CEP" )
-   ::aEmit[ "fone" ]    := XmlNode( cEmit, "fone" ) // NFE 2.0
-   ::aEmit[ "IE" ]      := XmlNode( cEmit, "IE" )
-
-   ::cTelefoneEmitente := XmlNode( cEmit, "fone" )
-   IF .NOT. Empty( ::cTelefoneEmitente )
-      ::cTelefoneEmitente := Transform( SoNumeros( ::cTelefoneEmitente ), "@R (99) 9999-9999" )
-   END
+      ::aEmit := hb_Hash()
+      ::aEmit[ "CNPJ" ]    := XmlNode( cEmit, "CNPJ" )
+      ::aEmit[ "xNome" ]   := XmlToString( XmlNode( cEmit, "xNome" ) )
+      ::aEmit[ "xFant" ]   := XmlNode( cEmit, "xFant" )
+      ::aEmit[ "xLgr" ]    := XmlNode( cEmit, "xLgr" )
+      ::aEmit[ "nro" ]     := XmlNode( cEmit, "nro" )
+      ::aEmit[ "xBairro" ] := XmlNode( cEmit, "xBairro" )
+      ::aEmit[ "cMun" ]    := XmlNode( cEmit, "cMun" )
+      ::aEmit[ "xMun" ]    := XmlNode( cEmit, "xMun" )
+      ::aEmit[ "UF" ]      := XmlNode( cEmit, "UF" )
+      ::aEmit[ "CEP" ]     := XmlNode( cEmit, "CEP" )
+      ::aEmit[ "fone" ]    := XmlNode( cEmit, "fone" ) // NFE 2.0
+      ::aEmit[ "IE" ]      := XmlNode( cEmit, "IE" )
+      ::cTelefoneEmitente := XmlNode( cEmit, "fone" )
+      IF .NOT. Empty( ::cTelefoneEmitente )
+         ::cTelefoneEmitente := Transform( SoNumeros( ::cTelefoneEmitente ), "@R (99) 9999-9999" )
+      END
 
    cDest := XmlNode( ::cXmlNfe, "dest" )
-   ::aDest := hb_Hash()
-   ::aDest[ "CNPJ" ]    := XmlNode( cDest, "CNPJ" )
-   ::aDest[ "CPF" ]     := XmlNode( cDest, "CPF" )
-   ::aDest[ "xNome" ]   := XmlToString( XmlNode( cDest, "xNome" ) )
-   ::aDest[ "xLgr" ]    := XmlNode( cDest, "xLgr" )
-   ::aDest[ "nro" ]     := XmlNode( cDest, "nro" )
-   ::aDest[ "xBairro" ] := XmlNode( cDest, "xBairro" )
-   ::aDest[ "cMun" ]    := XmlNode( cDest, "cMun" )
-   ::aDest[ "xMun" ]    := XmlNode( cDest, "xMun" )
-   ::aDest[ "UF" ]      := XmlNode( cDest, "UF" )
-   ::aDest[ "CEP" ]     := XmlNode( cDest, "CEP" )
-   ::aDest[ "fone" ]    := XmlNode( cDest, "fone" )
-   IF Len( ::aDest[ "fone" ] ) <= 8
-      ::aDest[ "fone" ] := "00" + ::aDest[ "fone" ]
-   ENDIF
-   ::aDest[ "IE" ] := XmlNode( cDest, "IE" )
+      ::aDest := hb_Hash()
+      ::aDest[ "CNPJ" ]    := XmlNode( cDest, "CNPJ" )
+      ::aDest[ "CPF" ]     := XmlNode( cDest, "CPF" )
+      ::aDest[ "xNome" ]   := XmlToString( XmlNode( cDest, "xNome" ) )
+      ::aDest[ "xLgr" ]    := XmlNode( cDest, "xLgr" )
+      ::aDest[ "nro" ]     := XmlNode( cDest, "nro" )
+      ::aDest[ "xBairro" ] := XmlNode( cDest, "xBairro" )
+      ::aDest[ "cMun" ]    := XmlNode( cDest, "cMun" )
+      ::aDest[ "xMun" ]    := XmlNode( cDest, "xMun" )
+      ::aDest[ "UF" ]      := XmlNode( cDest, "UF" )
+      ::aDest[ "CEP" ]     := XmlNode( cDest, "CEP" )
+      ::aDest[ "fone" ]    := XmlNode( cDest, "fone" )
+      IF Len( ::aDest[ "fone" ] ) <= 8
+         ::aDest[ "fone" ] := "00" + ::aDest[ "fone" ]
+      ENDIF
+      ::aDest[ "IE" ] := XmlNode( cDest, "IE" )
 
    RETURN .T.
 
@@ -210,10 +209,10 @@ METHOD GeraCCePDF() CLASS hbNFeDanfeCCe
    ENDIF
 
    #ifdef __XHARBOUR__
-     if ! file( 'fontes\Code128bWinLarge.afm' ) .OR. ! file( 'fontes\Code128bWinLarge.pfb' )
+     IF ! File( 'fontes\Code128bWinLarge.afm' ) .OR. ! File( 'fontes\Code128bWinLarge.pfb' )
         ::cRetorno := "Arquivos: fontes\Code128bWinLarge, nao encontrados"
         RETURN cRetorno
-     endif
+     ENDIF
      ::cFonteCode128  := HPDF_LoadType1FontFromFile( ::oPdf, 'fontes\Code128bWinLarge.afm', 'fontes\Code128bWinLarge.pfb' )   && Code 128
      ::cFonteCode128F := HPDF_GetFont( ::oPdf, ::cFonteCode128, "WinAnsiEncoding" )
    #endif
@@ -231,18 +230,17 @@ METHOD GeraCCePDF() CLASS hbNFeDanfeCCe
    /////////////////////nAngulo := 45                   /* A rotation of 45 degrees. */
    // //////////////////nRadiano := nAngulo / 180 * 3.141592 /* Calcurate the radian value. */
 
-   ::cabecalho()
-   ::destinatario()
-   ::eventos()
-   ::rodape()
+   ::Cabecalho()
+   ::Destinatario()
+   ::Eventos()
+   ::Rodape()
 
    ::cFile := iif( ::cFile == NIL, ::cChaveNFe + "-110110.PDF", ::cFile ) // 110110 é o evento carta de correção
 
    HPDF_SaveToFile( ::oPdf, ::cFile )
    HPDF_Free( ::oPdf )
 
-   RETURN(.T.)
-
+   RETURN .T.
 
 METHOD Cabecalho() CLASS hbNFeDanfeCCe
 
@@ -335,7 +333,6 @@ METHOD Cabecalho() CLASS hbNFeDanfeCCe
       ENDIF
 */
 
-
    hbNFe_Texto_Hpdf( ::oPdfPage,292, ::nLinhaPDF - 2   , 554, Nil, "CC-e" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 18 )
    hbNFe_Texto_Hpdf( ::oPdfPage,296, ::nLinhaPDF - 22   , 554, Nil, "CARTA DE CORREÇÃO ELETRÔNICA" , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 14 )
 
@@ -349,12 +346,12 @@ METHOD Cabecalho() CLASS hbNFeDanfeCCe
    ENDIF
 
    // codigo barras
-   #ifdef __XHARBOUR__
-        hbNFe_Texto_Hpdf( ::oPdfPage,291, ::nLinhaPDF - 65, 555, Nil, CodificaCode128c(::cChaveNFe), HPDF_TALIGN_CENTER, Nil, ::cFonteCode128F, 18 )
-   #else
-      hZebra := hb_zebra_create_code128( ::cChaveNFe, Nil )
-      hbNFe_Zebrea_Draw_Hpdf( hZebra, ::oPdfPage, 300, ::nLinhaPDF - 100, 0.9, 30 )
-   #endif
+#ifdef __XHARBOUR__
+   hbNFe_Texto_Hpdf( ::oPdfPage,291, ::nLinhaPDF - 65, 555, Nil, CodificaCode128c(::cChaveNFe), HPDF_TALIGN_CENTER, Nil, ::cFonteCode128F, 18 )
+#else
+   hZebra := hb_zebra_create_code128( ::cChaveNFe, Nil )
+   hbNFe_Zebrea_Draw_Hpdf( hZebra, ::oPdfPage, 300, ::nLinhaPDF - 100, 0.9, 30 )
+#endif
 
    ::nLinhaPdf -= 106
 
