@@ -539,11 +539,11 @@ METHOD Rodape() CLASS hbnfeDaEvento
 
    IF ::cFonteEvento == "Times"
       nTamFonte = 13
-    ELSEIF ::cFonteEvento == "Helvetica"
+   ELSEIF ::cFonteEvento == "Helvetica"
       nTamFonte = 12
-    ELSEIF ::cFonteEvento == "Courier-Oblique"
+   ELSEIF ::cFonteEvento == "Courier-Oblique"
       nTamFonte = 9
-    ELSE
+   ELSE
       nTamFonte = 9
    ENDIF
 
@@ -612,3 +612,62 @@ METHOD Rodape() CLASS hbnfeDaEvento
    hbNFe_Texto_Hpdf( ::oPdfPage, 300, ::nLinhaPDF - 108, 574, Nil, trim( MemoLine( ::aEmit[ "xNome" ],40,2 ) ) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 9 )
 
    RETURN NIL
+
+STATIC FUNCTION hbNFe_Box_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen)
+
+   HPDF_Page_SetLineWidth( oPdfPage2, nPen )
+   HPDF_Page_Rectangle( oPdfPage2, x1, y1, x2, y2 )
+   HPDF_Page_Stroke( oPdfPage2 )
+
+   RETURN NIL
+
+STATIC FUNCTION hbNFe_Line_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen, FLAG )
+
+   HPDF_Page_SetLineWidth( oPdfPage2, nPen )
+   IF FLAG <> NIL
+      HPDF_Page_SetLineCap( oPdfPage2, FLAG )
+   ENDIF
+   HPDF_Page_MoveTo( oPdfPage2, x1, y1 )
+   HPDF_Page_LineTo( oPdfPage2, x2, y2 )
+   HPDF_Page_Stroke( oPdfPage2 )
+   IF FLAG <> NIL
+      HPDF_Page_SetLineCap( oPdfPage2, HPDF_BUTT_END )
+   ENDIF
+
+   RETURN NIL
+
+STATIC FUNCTION hbNFe_Texto_Hpdf( oPdfPage2, x1, y1, x2, y2, cText, align, desconhecido, oFontePDF, nTamFonte, nAngulo )
+
+   LOCAL nRadiano
+
+   IF oFontePDF <> NIL
+      HPDF_Page_SetFontAndSize( oPdfPage2, oFontePDF, nTamFonte )
+   ENDIF
+   IF x2 = NIL
+      x2 := x1 - nTamFonte
+   ENDIF
+   HPDF_Page_BeginText( oPdfPage2 )
+   IF nAngulo == NIL // horizontal normal
+      HPDF_Page_TextRect ( oPdfPage2,  x1, y1, x2, y2, cText, align, NIL )
+   ELSE
+      nRadiano := nAngulo / 180 * 3.141592 /* Calcurate the radian value. */
+      HPDF_Page_SetTextMatrix( oPdfPage2, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), x1, y1 )
+      HPDF_Page_ShowText( oPdfPage2, cText )
+   ENDIF
+   HPDF_Page_EndText  ( oPdfPage2 )
+
+   HB_SYMBOL_UNUSED( desconhecido )
+
+   RETURN NIL
+
+STATIC FUNCTION hbNFe_Zebrea_Draw_Hpdf( hZebra, page, ... )
+
+   IF hb_zebra_GetError( hZebra ) != 0
+      RETURN HB_ZEBRA_ERROR_INVALIDZEBRA
+   ENDIF
+
+   hb_zebra_draw( hZebra, {| x, y, w, h | HPDF_Page_Rectangle( page, x, y, w, h ) }, ... )
+
+   HPDF_Page_Fill( page )
+
+   RETURN 0

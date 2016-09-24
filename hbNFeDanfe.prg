@@ -2435,7 +2435,7 @@ METHOD ProcessaItens( cXML, nItem ) CLASS hbNFeDanfe
 
    RETURN .T.
 
-FUNCTION hbNFe_Texto_Hpdf( oPdfPage2, x1, y1, x2, y2, cText, align, desconhecido, oFontePDF, nTamFonte, nAngulo )
+STATIC FUNCTION hbNFe_Texto_Hpdf( oPdfPage2, x1, y1, x2, y2, cText, align, desconhecido, oFontePDF, nTamFonte, nAngulo )
 
    LOCAL nRadiano
 
@@ -2459,7 +2459,7 @@ FUNCTION hbNFe_Texto_Hpdf( oPdfPage2, x1, y1, x2, y2, cText, align, desconhecido
 
    RETURN NIL
 
-FUNCTION hbNFe_Box_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen)
+STATIC FUNCTION hbNFe_Box_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen)
 
    HPDF_Page_SetLineWidth( oPdfPage2, nPen )
    HPDF_Page_Rectangle( oPdfPage2, x1, y1, x2, y2 )
@@ -2467,7 +2467,7 @@ FUNCTION hbNFe_Box_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen)
 
    RETURN NIL
 
-FUNCTION hbNFe_Line_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen, FLAG )
+STATIC FUNCTION hbNFe_Line_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen, FLAG )
 
    HPDF_Page_SetLineWidth( oPdfPage2, nPen )
    IF FLAG <> NIL
@@ -2482,30 +2482,17 @@ FUNCTION hbNFe_Line_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen, FLAG )
 
    RETURN NIL
 
-#ifndef __XHARBOUR__
-FUNCTION hbNFe_Zebrea_Draw_Hpdf( hZebra, page, ... )
+#ifdef __XHARBOUR__
+STATIC FUNCTION CodificaCode128c( pcCodigoBarra )
 
-   IF hb_zebra_GetError( hZebra ) != 0
-      RETURN HB_ZEBRA_ERROR_INVALIDZEBRA
-   ENDIF
+   //  Parameters de entrada : O codigo de barras no formato Code128C "somente numeros" campo tipo caracter
+   //  Retorno               : Retorna o código convertido e com o caracter de START e STOP mais o checksum
+   //                        : para impressão do código de barras utilizando a fonte Code128bWin, é necessário
+   //                        : para utilizar essa fonte os arquivos Code128bWin.ttf, Code128bWin.afm e Code128bWin.pfb
+   // Autor                  : Anderson Camilo
+   // Data                   : 19/03/2012
 
-   hb_zebra_draw( hZebra, {| x, y, w, h | HPDF_Page_Rectangle( page, x, y, w, h ) }, ... )
-
-   HPDF_Page_Fill( page )
-
-   RETURN 0
-#endif
-
-FUNCTION CodificaCode128c( pcCodigoBarra )
-
-//  Parameters de entrada : O codigo de barras no formato Code128C "somente numeros" campo tipo caracter
-//  Retorno               : Retorna o código convertido e com o caracter de START e STOP mais o checksum
-//                        : para impressão do código de barras utilizando a fonte Code128bWin, é necessário
-//                        : para utilizar essa fonte os arquivos Code128bWin.ttf, Code128bWin.afm e Code128bWin.pfb
-// Autor                  : Anderson Camilo
-// Data                   : 19/03/2012
-
-LOCAL nI := 0, checksum := 0, nValorCar, cCode128 := '', cCodigoBarra
+   LOCAL nI := 0, checksum := 0, nValorCar, cCode128 := '', cCodigoBarra
 
    cCodigoBarra = pcCodigoBarra
    IF len( cCodigoBarra ) > 0    // Verifica se os caracteres são válidos (somente números)
@@ -2561,6 +2548,20 @@ LOCAL nI := 0, checksum := 0, nValorCar, cCode128 := '', cCodigoBarra
    ENDIF
 
    RETURN cCode128
+#else
+STATIC FUNCTION hbNFe_Zebrea_Draw_Hpdf( hZebra, page, ... )
+
+   IF hb_zebra_GetError( hZebra ) != 0
+      RETURN HB_ZEBRA_ERROR_INVALIDZEBRA
+   ENDIF
+
+   hb_zebra_draw( hZebra, {| x, y, w, h | HPDF_Page_Rectangle( page, x, y, w, h ) }, ... )
+
+   HPDF_Page_Fill( page )
+
+   RETURN 0
+
+#endif
 
 STATIC FUNCTION Quoted2( cText )
 
