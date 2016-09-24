@@ -13,7 +13,7 @@ PROCEDURE TesteDanfe
    ENDIF
    RUN ( "cmd /c start " + oDanfe:cFile )
 
-   oDanfe := hbnfeDanfeCce():New()
+   oDanfe := hbnfeDaEvento():New()
    oDanfe:Execute( MemoRead( "xmlcarta.xml" ), MemoRead( "xmlnota.xml" ), "xmlcarta.pdf" )
    IF oDanfe:cRetorno != "OK"
       ? oDanfe:cRetorno

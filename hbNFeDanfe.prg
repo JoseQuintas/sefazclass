@@ -1,5 +1,5 @@
 /*
-HBNFEDANFE - Funcoes e Classes Relativas a Impressao Danfe PDF
+HBNFEDANFE - DOCUMENTO AUXILIAR DA NFE
 Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 */
 
