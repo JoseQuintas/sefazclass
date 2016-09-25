@@ -1,12 +1,11 @@
 test.prg
-hbnfedabase.prg
-hbnfedanfe.prg
-hbnfedaevento.prg
-hbnfedacte.prg
-hbnfedamdfe.prg
 ze_capicom.prg
 ze_SpedAssina.prg
 ze_spedAssinachk.prg
+ze_SpedDaCte.prg
+ze_SpedDaEvento.prg
+ze_SpedDaMdfe.prg
+ze_SpedDaNfe.prg
 ze_spedsefazclass.prg
 ze_spedxmlclass.prg
 ze_spedxmlvalida.prg
