@@ -1,4 +1,5 @@
 test.prg
+hbnfedabase.prg
 testdanfe.prg
 hbnfedanfe.prg
 hbnfedaevento.prg
@@ -25,3 +26,5 @@ hbct.hbc
 -compr
 -strip
 -jobs=1
+-workdir=c:\temp
+-inc

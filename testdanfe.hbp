@@ -3,8 +3,12 @@ hbnfedaCte.prg
 hbnfedaMdfe.prg
 hbnfedaNfe.prg
 hbnfedaEvento.prg
+hbnfedabase.prg
 ze_xmlfun.prg
 hbwin.hbc
 xhb.hbc
 hbzebra.hbc
 hbhpdf.hbc
+-compr
+-workdir=c:\temp
+-inc
