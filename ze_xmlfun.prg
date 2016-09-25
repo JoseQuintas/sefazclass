@@ -5,6 +5,7 @@ ze_xmlfun - Funções pra trabalhar com XML
 ...
 2016.07.20.1620 - Fuso horário correto SP
 2016.08.12.1740 - Parâmetro ref UTC (da forma anterior confunde)
+2016
 */
 
 #define DOW_DOMINGO   1
@@ -149,12 +150,6 @@ FUNCTION XmlTag( cTag, cConteudo )
       ENDIF
       cTexto := cTexto + [<] + cTag + [>] + cConteudo + [</] + cTag + [>]
    ENDIF
-
-   RETURN cTexto
-
-FUNCTION UTF8( cTexto )
-
-   cTexto := StrTran( cTexto, "&", "&amp;" ) // (<) &lt; (>) &gt; (&) &amp; (") &quot; (') &apos;
 
    RETURN cTexto
 
@@ -353,5 +348,17 @@ FUNCTION XmlToString( cTexto )
    cTexto := StrTran( cTexto, "&gt;", ">" )
    cTexto := StrTran( cTexto, "&#176;", "º" )
    cTexto := StrTran( cTexto, "&#170;", "ª" )
+
+   RETURN cTexto
+
+FUNCTION StringToXml( cTexto )
+
+   cTexto := StrTran( cTexto, "&", "&amp;" )
+   cTexto := StrTran( cTexto, ["], "&quot;" )
+   cTexto := StrTran( cTexto, "'", "&#39;" )
+   cTexto := StrTran( cTexto, "<", "&lt;" )
+   cTexto := StrTran( cTexto, ">", "&gt;" )
+   cTexto := StrTran( cTexto, "º", "&#176;" )
+   cTexto := StrTran( cTexto, "ª", "&#170;" )
 
    RETURN cTexto
