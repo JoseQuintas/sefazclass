@@ -415,8 +415,10 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    // box do logotipo e dados do emitente
 
    hbnfe_Box_hpdf( ::oPdfPage,  020, ::nLinhaPdf - 150, 555, 150, ::nLarguraBox )
-   oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
-   HPDF_Page_DrawImage( ::oPdfPage, oImage, 025, ::nLinhaPdf - ( 142 + 1 ), 200, 132 )
+   IF ! Empty( ::cLogoFile )
+      oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
+      HPDF_Page_DrawImage( ::oPdfPage, oImage, 025, ::nLinhaPdf - ( 142 + 1 ), 200, 132 )
+   ENDIF
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -018, 560, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 16 )
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -060, 560, Nil, 'CNPJ: ' + TRANSF( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscrição Estadual: ' + FormatIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -072, 560, Nil, 'Logradouro: ' + ::aEmit[ "xLgr" ], HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )

@@ -121,16 +121,12 @@ CREATE CLASS hbnfeDacte
    DATA nCasasVUn INIT 2
    DATA cRetorno
 
-ENDCLASS
+   ENDCLASS
 
 METHOD Execute( cXml, cFilePDF ) CLASS hbnfeDaCte
 
-   IF ::lLaser <> Nil
-      ::lLaser := .T.
-   ENDIF
-   IF ::cFonteNFe = Nil
-      ::cFonteNFe := 'Times'
-   ENDIF
+   hb_Default( ::lLaser, .T. )
+   hb_Default( ::cFonteNFe, "Times" )
 
    IF cXml == NIL
       ::cRetorno := "Não informado texto do XML"
@@ -309,35 +305,43 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
          XmlNode( cComp, "xNome" ), ;
          XmlNode( "vComp" ) } )
    ENDDO
+
    cImp := XmlNode( ::cXml, "imp" )
+
    cIcms00 := XmlNodeInvertido( "ICMS00", cImp )
    ::aIcms00 := hb_Hash()
    FOR EACH oElement IN { "CST", "vBC", "pICMS", "vICMS" }
       ::aIcms00[ oElement ] := XmlNode( cIcms00, oElement )
    NEXT
+
    cIcms20 := XmlNodeInvertido( "ICMS20", cImp )
    ::aIcms20 := hb_Hash()
    FOR EACH oElement IN { "CST", "vBC", "pRedBC", "pICMS", "vICMS" }
       ::aIcms20[ oElement ] := XmlNode( cIcms20, oElement )
    NEXT
+
    cIcms45 := XmlNodeInvertido( "ICMS45", cImp )
    ::aIcms45 := hb_Hash()
    ::aIcms45[ "CST" ] := XmlNodeInvertido( "CST", cIcms45 ) // NFE 2.0
+
    cIcms60 := XmlNodeInvertido( "ICMS60", cImp )
    ::aIcms60 := hb_Hash()
    FOR EACH oElement IN { "CST", "vBCSTRet", "vICMSSTRet", "pICMSSTRet", "vCred" }
       ::aIcms60[ oElement ]  := XmlNode( cIcms60, oElement )
    NEXT
+
    cIcms90 := XmlNodeInvertido( "ICMS90", cImp )
    ::aIcms90 := hb_Hash()
    FOR EACH oElement IN { "CST", "pRedBC", "vBC", "pICMS", "vICMS", "vCred" }
       ::aIcms90[ oElement ] := XmlNode( cICms90, oElement )
    NEXT
+
    cIcmsUF := XmlNodeInvertido( "ICMSOutraUF", cImp )
    ::aIcmsUF := hb_Hash()
    FOR EACH oElement IN { "CST", "pRedBCOutraUF", "vBCOutraUF", "pICMSOutraUF", "vICMSOutraUF" }
       ::aIcmsUF[ oElement ] := XmlNode( cIcmsUF, oElement )
    NEXT
+
    cIcmsSN := XmlNodeInvertido( "ICMSSN", cImp )
    ::aIcmsSN := hb_Hash()
    ::aIcmsSN[ "indSN" ] := XmlNodeInvertido( "indSN", cIcmsSN ) // NFE 2.0
@@ -469,7 +473,7 @@ METHOD NovaPagina() CLASS hbnfeDaCte
 
    HPDF_Page_SetSize( ::oPdfPage, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT )
 
-   ::nLinhaPdf := HPDF_Page_GetHeight( ::oPDFPage ) -3     // Margem Superior
+   ::nLinhaPdf := HPDF_Page_GetHeight( ::oPDFPage ) - 3     // Margem Superior
    nAngulo := 45                   /* A rotation of 45 degrees. */
 
    nRadiano := nAngulo / 180 * 3.141592 /* Calcurate the radian value. */
@@ -546,8 +550,19 @@ METHOD Cabecalho() CLASS hbnfeDaCte
 
    // box do logotipo e dados do emitente
    hbnfe_Box_hpdf( ::oPdfPage,  003, ::nLinhaPdf - 119, 295, 119, ::nLarguraBox )
-   oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
-   HPDF_Page_DrawImage( ::oPdfPage, oImage, 115, ::nLinhaPdf - ( 52 + 1 ), 100, 052 )
+
+
+   //------------------------------teste
+   IF .T.
+      RETURN NIL
+   ENDIF
+   //------------------------------teste
+
+
+   IF ! Empty( ::cLogoFile )
+      oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
+      HPDF_Page_DrawImage( ::oPdfPage, oImage, 115, ::nLinhaPdf - ( 52 + 1 ), 100, 052 )
+   ENDIF
    IF Len( ::aEmit[ "xNome" ] ) <= 25
       hbnfe_Texto_hpdf( ::oPdfPage,  3, ::nLinhaPdf - 056, 295, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
    ELSE

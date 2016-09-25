@@ -14,8 +14,6 @@ PROCEDURE Main
    // Set( _SET_CODEPAGE, "PTISO" )
    SetColor( "W/B,N/W,,,W/B" )
 
-   TestDanfe()
-
    oSefaz     := SefazClass():New()
    oSefaz:cUF := "SP"
 
@@ -30,7 +28,8 @@ PROCEDURE Main
       @ Row() + 1, 5 PROMPT "Protocolo NFE"
       @ Row() + 1, 5 PROMPT "Protocolo CTE"
       @ Row() + 1, 5 PROMPT "Protocolo MDFE"
-      // @ Row() + 1, 5 PROMPT "Consulta Destinadas"
+      @ Row() + 1, 5 PROMPT "Consulta Destinadas"
+      @ Row() + 1, 5 PROMPT "Teste Danfe"
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
@@ -128,7 +127,7 @@ PROCEDURE Main
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
-      CASE nOpc == nOpcTemp
+      CASE nOpc == nOpcTemp++
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          @ 9, 1 GET cCnpj PICTURE "@9"
          READ
@@ -142,6 +141,12 @@ PROCEDURE Main
          oSefaz:nfeConsultaDest( cCnpj, "0" )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
+
+      CASE nOpc == nOpcTemp++
+         TestDanfe()
+
+      CASE nOpc == nOpcTemp  // pra não esquecer o ++, último não tem
+
       ENDCASE
    ENDDO
 

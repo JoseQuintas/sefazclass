@@ -22,7 +22,7 @@ CLASS hbnfeDaEvento
 
    METHOD Execute( cXmlEvento, cXmlDocumento, cFilePDF )
    METHOD BuscaDadosXML()
-   METHOD GeraPDF()
+   METHOD GeraPDF( cFilePDF )
    METHOD Cabecalho()
    METHOD Destinatario()
    METHOD Eventos()
@@ -58,7 +58,6 @@ CLASS hbnfeDaEvento
    VAR cLogoFile
    VAR nLogoStyle // 1-esquerda, 2-direita, 3-expandido
 
-   VAR cFile
    VAR cRetorno
 
 ENDCLASS
@@ -77,9 +76,6 @@ METHOD Execute( cXmlEvento, cXmlDocumento, cFilePDF ) CLASS hbnfeDaEvento
    // ::cRetorno := "Não tem conteúdo do XML da nota"
    // RETURN ::cRetorno
    // ENDIF
-   IF ! Empty( cFilePDF )
-      ::cFile := cFilePDF
-   ENDIF
 
    ::cXmlEvento   := cXmlEvento
    ::cChaveEvento := SubStr( ::cXmlEvento, At( "Id=", ::cXmlEvento ) + 3 + 9, 44 )
@@ -97,7 +93,7 @@ METHOD Execute( cXmlEvento, cXmlDocumento, cFilePDF ) CLASS hbnfeDaEvento
       RETURN ::cRetorno
    ENDIF
 
-   IF ! ::GeraPDF()
+   IF ! ::GeraPDF( cFilePDF )
       ::cRetorno := "Problema ao gerar o PDF da Carta de Correção"
       RETURN ::cRetorno
    ENDIF
@@ -169,7 +165,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaEvento
 
    RETURN .T.
 
-METHOD GeraPDF() CLASS hbNfeDaEvento
+METHOD GeraPDF( cFilePDF ) CLASS hbNfeDaEvento
 
    // /////////////////////////////////////// LOCAL nItem, nIdes, nItensNF, nItens1Folha
    LOCAL nAltura // ///////////////////////// nRadiano, nLargura, nAngulo
@@ -238,9 +234,7 @@ METHOD GeraPDF() CLASS hbNfeDaEvento
    ::Eventos()
    ::Rodape()
 
-   ::cFile := iif( ::cFile == NIL, ::cChaveNFe + "-110110.PDF", ::cFile ) // 110110 é o evento carta de correção
-
-   HPDF_SaveToFile( ::oPdf, ::cFile )
+   HPDF_SaveToFile( ::oPdf, cFilePDF )
    HPDF_Free( ::oPdf )
 
    RETURN .T.
