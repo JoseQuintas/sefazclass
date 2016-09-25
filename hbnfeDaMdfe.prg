@@ -29,6 +29,7 @@ CLASS hbnfeDaMdfe
    DATA cTelefoneEmitente INIT ""
    DATA cSiteEmitente     INIT ""
    DATA cEmailEmitente    INIT ""
+   DATA cDesenvolvedor    INIT ""
    DATA cXml
    DATA cChave
    DATA aIde
@@ -109,7 +110,7 @@ CLASS hbnfeDaMdfe
    DATA aItemCOFINSST
    DATA aItemISSQN
 
-   DATA cFonteNFe
+   DATA cFonteNFe     INIT "Times"
    DATA cFonteCode128            // Inserido por Anderson Camilo em 04/04/2012
    DATA cFonteCode128F           // Inserido por Anderson Camilo em 04/04/2012
    DATA oPdf
@@ -137,13 +138,6 @@ CLASS hbnfeDaMdfe
 ENDCLASS
 
 METHOD execute( cXml, cFilePDF ) CLASS hbnfeDaMdfe
-
-   IF ::lLaser <> Nil
-      ::lLaser := .T.
-   ENDIF
-   IF ::cFonteNFe = Nil
-      ::cFonteNFe := 'Times'
-   ENDIF
 
    IF cXml == NIL .OR. Empty( cXml )
       ::cRetorno := "Sem conteúdo XML pra gerar PDF"
@@ -422,7 +416,7 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -018, 560, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 16 )
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -060, 560, Nil, 'CNPJ: ' + TRANSF( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscrição Estadual: ' + FormatIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -072, 560, Nil, 'Logradouro: ' + ::aEmit[ "xLgr" ], HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
-   hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -084, 560, Nil, "No.: " + iif( ::aEmit[ "nro" ]  != Nil, ::aEmit[ "nro" ], '' ) + iif( ::aEmit[ "xCpl" ] != Nil, " - Complemento: " + ::aEmit[ "xCpl" ], '' ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
+   hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -084, 560, Nil, "No.: " + ::aEmit[ "nro" ] + " " + ::aEmit[ "xCpl" ], HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -096, 560, Nil, 'Bairro: ' + ::aEmit[ "xBairro" ] + " - CEP: " + TRANSF( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -108, 560, Nil, 'Município: ' + ::aEmit[ "xMun" ] + " - Estado: " + ::aEmit[ "UF" ], HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -120, 560, Nil, 'Fone/Fax:(' + SubStr( ::aEmit[ "fone" ], 1, 2 ) + ')' + SubStr( ::aEmit[ "fone" ], 3, 4 ) + '-' + SubStr( ::aEmit[ "fone" ], 7, 4 ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
@@ -440,7 +434,7 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
 #else
    // atenção - chute inicial
    hZebra := hb_zebra_create_code128( ::cChave, Nil )
-   hbNFe_Zebra_Draw_Hpdf( hZebra, ::oPdfPage, 300, ::nLinhaPDF -232, 0.9, 30 )
+   hbNFe_Zebra_Draw_Hpdf( hZebra, ::oPdfPage, 150, ::nLinhaPDF - 232, 0.9, 30 )
 #endif
    hbnfe_Line_hpdf( ::oPdfPage, 020, ::nLinhaPdf - 277, 575, ::nLinhaPdf - 277, ::nLarguraBox )
    hbnfe_Texto_hpdf( ::oPdfPage, 025, ::nLinhaPdf - 278, 575, Nil, "Chave de acesso para consulta de autenticidade no site www.mdfe.fazenda.gov.br", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 12 )
@@ -448,7 +442,7 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    hbnfe_Line_hpdf( ::oPdfPage, 020, ::nLinhaPdf - 310, 575, ::nLinhaPdf - 310, ::nLarguraBox )
    // box do No. do Protocolo
    hbnfe_Texto_hpdf( ::oPdfPage, 025, ::nLinhaPdf - 311, 575, Nil, "Protocolo de autorização de uso", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 12 )
-   IF ::aProtocolo[ "nProt" ] != Nil
+   IF ! Empty( ::aProtocolo[ "nProt" ] )
       hbnfe_Texto_hpdf( ::oPdfPage, 025, ::nLinhaPdf - 326, 575, Nil, ::aProtocolo[ "nProt" ] + ' - ' + SubStr( ::aProtocolo[ "dhRecbto" ], 9, 2 ) + "/" + SubStr( ::aProtocolo[ "dhRecbto" ], 6, 2 ) + "/" + SubStr( ::aProtocolo[ "dhRecbto" ], 1, 4 ) + ' ' + SubStr( ::aProtocolo[ "dhRecbto" ], 12 ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
    ELSE
       hbnfe_Texto_hpdf( ::oPdfPage, 025, ::nLinhaPdf - 326, 575, Nil, 'MDFe sem Autorização de Uso da SEFAZ', HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
@@ -545,9 +539,15 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    hbnfe_Texto_hpdf( ::oPdfPage, 025, ::nLinhaPdf - 565, 095, Nil, "Responsável CNPJ", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 08 )
    hbnfe_Texto_hpdf( ::oPdfPage, 100, ::nLinhaPdf - 565, 170, Nil, "Fornecedor CNPJ", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 08 )
    hbnfe_Texto_hpdf( ::oPdfPage, 175, ::nLinhaPdf - 565, 240, Nil, "No.Comprovante", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 08 )
-   hbnfe_Texto_hpdf( ::oPdfPage, 025, ::nLinhaPdf - 580, 095, Nil, TRANSF( ::aValePed[ "CNPJPg" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 08 )
-   hbnfe_Texto_hpdf( ::oPdfPage, 100, ::nLinhaPdf - 580, 170, Nil, TRANSF( ::aValePed[ "CNPJForn" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 08 )
-   hbnfe_Texto_hpdf( ::oPdfPage, 175, ::nLinhaPdf - 580, 240, Nil, ::aValePed[ "nCompra" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 08 )
+   IF ! Empty( ::aValePed[ "CNPJPg" ] )
+      hbnfe_Texto_hpdf( ::oPdfPage, 025, ::nLinhaPdf - 580, 095, Nil, TRANSF( ::aValePed[ "CNPJPg" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 08 )
+   ENDIF
+   IF ! Empty( ::aValePed[ "CNPJForn" ] )
+      hbnfe_Texto_hpdf( ::oPdfPage, 100, ::nLinhaPdf - 580, 170, Nil, TRANSF( ::aValePed[ "CNPJForn" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 08 )
+   ENDIF
+   IF ! Empty( ::aValePed[ "nCompra" ] )
+      hbnfe_Texto_hpdf( ::oPdfPage, 175, ::nLinhaPdf - 580, 240, Nil, ::aValePed[ "nCompra" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 08 )
+   ENDIF
    hbnfe_Box_hpdf( ::oPdfPage, 020, ::nLinhaPdf - 775, 555, 150, ::nLarguraBox )
    hbnfe_Texto_hpdf( ::oPdfPage, 025, ::nLinhaPdf - 625, 210, Nil, "Observações", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 12 )
    hbnfe_Texto_hpdf( ::oPdfPage, 025, ::nLinhaPdf - 640, 560, Nil, ::cInfCpl, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 10 )
@@ -557,7 +557,7 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
 
    // Data e Desenvolvedor da Impressao
    hbnfe_Texto_hpdf( ::oPdfPage, 025, ::nLinhaPdf - 800, 300, NIL, "DATA DA IMPRESSÃO: " + DToC( Date() ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 6 )
-   hbnfe_Texto_hpdf( ::oPdfPage, 400, ::nLinhaPdf - 800, 560, NIL, "VesSystem", HPDF_TALIGN_RIGHT, Nil, ::oPdfFontCabecalhoBold, 6 )
+   hbnfe_Texto_hpdf( ::oPdfPage, 400, ::nLinhaPdf - 800, 560, NIL, ::cDesenvolvedor, HPDF_TALIGN_RIGHT, Nil, ::oPdfFontCabecalhoBold, 6 )
 
    RETURN NIL
 
