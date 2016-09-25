@@ -14,8 +14,10 @@ PROCEDURE Main
    // Set( _SET_CODEPAGE, "PTISO" )
    SetColor( "W/B,N/W,,,W/B" )
 
-   oSefaz              := SefazClass():New()
-   oSefaz:cUF          := "SP"
+   TestDanfe()
+
+   oSefaz     := SefazClass():New()
+   oSefaz:cUF := "SP"
 
    DO WHILE .T.
       CLS
@@ -142,8 +144,8 @@ PROCEDURE Main
          wapi_MessageBox( , oSefaz:cXmlRetorno )
       ENDCASE
    ENDDO
-   RETURN
 
+   RETURN
 
 FUNCTION SetupHarbour()
 
@@ -172,3 +174,43 @@ FUNCTION MyInkeyFilter( nKey )
    ENDSWITCH
    RETURN nKey
 #endif
+
+FUNCTION TestDanfe()
+
+   LOCAL oDanfe
+
+   IF File( "xmlnota.xml" )
+      oDanfe := hbnfeDaNfe():New()
+      oDanfe:Execute( MemoRead( "xmlnota.xml" ), "pdfnfe.pdf" )
+      PDFOpen( "pdfnfe.pdf" )
+   ENDIF
+   IF File( "xmlcte.xml" )
+      oDanfe := hbnfeDaCte():New()
+      oDanfe:Execute( MemoRead( "xmlcte.xml" ),  "pdfcte.pdf" )
+      PDFOpen( "pdfcte.pdf" )
+   ENDIF
+   IF File( "xmlmdfe.xml" )
+      oDanfe := hbnfeDaMdfe():New()
+      oDanfe:Execute( MemoRead( "xmlmdfe.xml" ), "pdfmdfe.pdf" )
+      PDFOpen( "pdfmdfe.pdf" )
+   ENDIF
+   IF File( "xmleventonfe.xml" ) .AND. File( "xmlnota.xml" )
+      oDanfe := hbnfeDaEvento():New()
+      oDanfe:Execute( MemoRead( "xmleventonfe.xml" ), MemoRead( "xmlnota.xml" ), "pdfeventonfe.pdf" )
+      PDFOpen( "pdfeventonfe.pdf" )
+   ENDIF
+   IF File( "xmleventocte.xml" )
+      oDanfe := hbnfeDaEvento():New()
+      oDanfe:Execute( MemoRead( "xmleventocte.xml" ), "", "pdfeventocte.pdf" )
+      PDFOpen( "pdfeventocte.pdf" )
+   ENDIF
+
+   RETURN NIL
+
+FUNCTION PDFOpen( cFile )
+
+   IF File( cFile )
+      RUN ( "cmd /c start " + cFile )
+   ENDIF
+
+   RETURN NIL
