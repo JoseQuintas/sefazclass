@@ -162,174 +162,88 @@ METHOD BuscaDadosXML() CLASS hbNFeDanfe
 
    LOCAL cIde, cEmit, cDest, cRetirada, cEntrega, cICMSTotal, cISSTotal, cRetTrib, ;
          cTransp, cVeicTransp, cReboque, cInfAdic, cObsCont, cObsFisco, ;
-         cExporta, cCompra, cInfProt // /////////////////////// cCobranca
+         cExporta, cCompra, cInfProt, oElement // /////////////////////// cCobranca
 
    cIde := XmlNode( ::cXml, "ide" )
       ::aIde := hb_Hash()
-      ::aIde[ "cUF" ]      := XmlNode( cIde, "cUF" )
-      ::aIde[ "cNF" ]      := XmlNode( cIde, "cUF" )
-      ::aIde[ "natOp" ]    := XmlNode( cIde, "natOp" )
-      ::aIde[ "indPag" ]   := XmlNode( cIde, "indPag" )
-      ::aIde[ "mod" ]      := XmlNode( cIde, "mod" )
-      ::aIde[ "serie" ]    := XmlNode( cIde, "serie" )
-      ::aIde[ "nNF" ]      := XmlNode( cIde, "nNF" )
-      ::aIde[ "dhEmi" ]    := XmlNode( cIde, "dhEmi" )
+      FOR EACH oElement IN { "cUF", "cNF", "natOp", "indPag", "mod", "serie", "nNF", "dhEmi", "dhSaiEnt", "tpNF", "cMunFG", "tpImp", "tpEmis", ;
+         "cDV", "tpAmb", "finNFe", "procEmi", "verProc" }
+         ::aIde[ oElement ] := XmlNode( cIde, oElement )
+      NEXT
       IF Empty( ::aIde[ "dhEmi" ] ) // NFE 2.0
          ::aIde[ "dhEmi" ] := XmlNode( cIde, "dEmi" )
       ENDIF
-      ::aIde[ "dhSaiEnt" ] := XmlNode( cIde, "dhSaiEnt" )
       IF Empty(::aIde[ "dhSaiEnt" ] ) // NFE 2.0
          ::aIde[ "dhSaiEnt" ] := XmlNode( cIde, "dSaiEnt" ) + "T" + Time()
       ENDIF
-      ::aIde[ "tpNF" ]    := XmlNode( cIde, "tpNF" )
-      ::aIde[ "cMunFG" ]  := XmlNode( cIde, "cMunFG" )
-      ::aIde[ "tpImp" ]   := XmlNode( cIde, "tpImp" )  // 1 - retrato 2-paisagem
-      ::aIde[ "tpEmis" ]  := XmlNode( cIde, "tpEmis" )
-      ::aIde[ "cDV" ]     := XmlNode( cIde, "cDV" )
-      ::aIde[ "tpAmb" ]   := XmlNode( cIde, "tpAmb" )  // 1- producao 2-homologacao
-      ::aIde[ "finNFe" ]  := XmlNode( cIde, "finNFe" ) // finalidade 1-normal/2-complementar 3- de ajuste
-      ::aIde[ "procEmi" ] := XmlNode( cIde, "procEmi" ) //0 - emissão de NF-e com aplicativo do contribuinte 1 - emissão de NF-e avulsa pelo Fisco 2 - emissão de NF-e avulsa pelo contribuinte com seu certificado digital, através do site do Fisco 3- emissão NF-e pelo contribuinte com aplicativo fornecido pelo Fisco.
-      ::aIde[ "verProc" ] := XmlNode( cIde, "verProc" ) // versao sistema
 
    cEmit := XmlNode( ::cXml, "emit" )
       ::aEmit := hb_Hash()
-      ::aEmit[ "CNPJ" ]    := XmlNode( cEmit, "CNPJ" )
-      ::aEmit[ "CPF" ]     := XmlNode( cEmit, "CPF" ) // avulso pelo fisco
-      ::aEmit[ "xNome" ]   := XmlToString( XmlNode( cEmit, "xNome" ) )
-      ::aEmit[ "xFant" ]   := XmlNode( cEmit, "xFant" )
-      ::aEmit[ "xLgr" ]    := XmlNode( cEmit, "xLgr" )
-      ::aEmit[ "nro" ]     := XmlNode( cEmit, "nro" )
-      ::aEmit[ "xBairro" ] := XmlNode( cEmit, "xBairro" )
-      ::aEmit[ "cMun" ]    := XmlNode( cEmit, "cMun" )
-      ::aEmit[ "xMun" ]    := XmlNode( cEmit, "xMun" )
-      ::aEmit[ "UF" ]      := XmlNode( cEmit, "UF" )
-      ::aEmit[ "CEP" ]     := XmlNode( cEmit, "CEP" )
-      ::aEmit[ "cPais" ]   := XmlNode( cEmit, "cPais" )
-      ::aEmit[ "xPais" ]   := XmlNode( cEmit, "xPais" )
-      ::aEmit[ "fone" ]    := XmlNode( cEmit, "fone" ) // NFE 2.0
-      ::aEmit[ "IE" ]      := XmlNode( cEmit, "IE" )
-      ::aEmit[ "IEST" ]    := XmlNode( cEmit, "IEST" )
-      ::aEmit[ "IM" ]      := XmlNode( cEmit, "IM" )
-      ::aEmit[ "CNAE" ]    := XmlNode( cEmit, "CNAE" )
-      ::aEmit[ "CRT" ]     := XmlNode( cEmit, "CRT" ) // NFE 2.0 1 simpl nac 2 sim nac ex. sub receita 3 regime normal
-      ::cTelefoneEmitente := XmlNode( cEmit, "fone" )
+      FOR EACH oElement IN { "CNPJ", "CPF", "xNome", "xFant", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", ;
+         "fone", "IE", "IEST", "IM", "CNAE", "CRT", "fone" }
+         ::aEmit[ oElement ] := XmlNode( cEmit, oElement )
+      NEXT
+      ::aEmit[ "xNome" ]  := XmlToString( ::aEmit[ "xNome" ] )
+      ::cTelefoneEmitente := ::aEmit[ "fone" ]
       IF .NOT. Empty( ::cTelefoneEmitente )
          ::cTelefoneEmitente := Transform( SoNumeros( ::cTelefoneEmitente ), "@R (99) 99999-9999" )
       ENDIF
 
    cDest := XmlNode( ::cXml, "dest" )
       ::aDest := hb_Hash()
-      ::aDest[ "CNPJ" ]    := XmlNode( cDest, "CNPJ" )
-      ::aDest[ "CPF" ]     := XmlNode( cDest, "CPF" )
-      ::aDest[ "xNome" ]   := XmlToString( XmlNode( cDest, "xNome" ) )
-      ::aDest[ "xLgr" ]    := XmlNode( cDest, "xLgr" )
-      ::aDest[ "nro" ]     := XmlNode( cDest, "nro" )
-      ::aDest[ "xBairro" ] := XmlNode( cDest, "xBairro" )
-      ::aDest[ "cMun" ]    := XmlNode( cDest, "cMun" )
-      ::aDest[ "xMun" ]    := XmlNode( cDest, "xMun" )
-      ::aDest[ "UF" ]      := XmlNode( cDest, "UF" )
-      ::aDest[ "CEP" ]     := XmlNode( cDest, "CEP" )
-      ::aDest[ "cPais" ]   := XmlNode( cDest, "cPais" )
-      ::aDest[ "xPais" ]   := XmlNode( cDest, "xPais" )
-      ::aDest[ "fone" ]    := XmlNode( cDest, "fone" )
+      FOR EACH oElement IN { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", "fone", "IE", "ISUF", "email" }
+         ::aDest[ oElement ] := XmlNode( cDest, oElement )
+      NEXT
+      ::aDest[ "xNome" ] := XmlToString( ::aDest[ "xNome" ] )
       IF Len( ::aDest[ "fone" ] ) <= 8
          ::aDest[ "fone" ] := "00" + ::aDest[ "fone" ]
       ENDIF
-      ::aDest[ "IE" ]      := XmlNode( cDest, "IE" )
-      ::aDest[ "ISUF" ]    := XmlNode( cDest, "ISUF" ) // NFE 2.0
-      ::aDest[ "email" ]   := XmlNode( cDest, "email" ) // NFE 2.0
 
    cRetirada := XmlNode( ::cXml, "retirada" )
       ::aRetirada := hb_Hash()
-      ::aRetirada[ "CNPJ" ]    := XmlNode( cRetirada, "CNPJ" ) // NFE 2.0
-      ::aRetirada[ "CPF" ]     := XmlNode( cRetirada, "CPF" ) // NFE 2.0
-      ::aRetirada[ "xLgr" ]    := XmlNode( cRetirada, "xLgr" )
-      ::aRetirada[ "nro" ]     := XmlNode( cRetirada, "nro" )
-      ::aRetirada[ "xCpl" ]    := XmlNode( cRetirada, "xCpl" )
-      ::aRetirada[ "xBairro" ] := XmlNode( cRetirada, "xBairro" )
-      ::aRetirada[ "cMun" ]    := XmlNode( cRetirada, "cMun" )
-      ::aRetirada[ "xMun" ]    := XmlNode( cRetirada, "xMun" )
-      ::aRetirada[ "UF" ]      := XmlNode( cRetirada, "UF" )
+      FOR EACH oElement IN { "CNPJ", "CPF", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF" }
+         ::aRetirada[ oElement ] := XmlNode( cRetirada, oElement )
+      NEXT
 
    cEntrega := XmlNode( ::cXml, "entrega" )
       ::aEntrega := hb_Hash()
-      ::aEntrega[ "CNPJ" ]    := XmlNode( cEntrega, "CNPJ" ) // NFE 2.0
-      ::aEntrega[ "CPF" ]     := XmlNode( cEntrega, "CPF" ) // NFE 2.0
-      ::aEntrega[ "xLgr" ]    := XmlNode( cEntrega, "xLgr" )
-      ::aEntrega[ "nro" ]     := XmlNode( cEntrega, "nro" )
-      ::aEntrega[ "xCpl" ]    := XmlNode( cEntrega, "xCpl" )
-      ::aEntrega[ "xBairro" ] := XmlNode( cEntrega, "xBairro" )
-      ::aEntrega[ "cMun" ]    := XmlNode( cEntrega, "cMun" )
-      ::aEntrega[ "xMun" ]    := XmlNode( cEntrega, "xMun" )
-      ::aEntrega[ "UF" ]      := XmlNode( cEntrega, "UF" )
+      FOR EACH oElement IN { "CNPJ", "CPF", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF" }
+         ::aEntrega[ oElement ] := XmlNode( cEntrega, oElement )
+      NEXT
 
-   // totais da NF
    cICMSTotal := XmlNode( ::cXml, "ICMSTot" )
       ::aICMSTotal := hb_Hash()
-      ::aICMSTotal[ "vBC" ]     := XmlNode( cICMSTotal, "vBC" )
-      ::aICMSTotal[ "vICMS" ]   := XmlNode( cICMSTotal, "vICMS" )
-      ::aICMSTotal[ "vBCST" ]   := XmlNode( cICMSTotal, "vBCST" )
-      ::aICMSTotal[ "vST" ]     := XmlNode( cICMSTotal, "vST" )
-      ::aICMSTotal[ "vProd" ]   := XmlNode( cICMSTotal, "vProd" )
-      ::aICMSTotal[ "vFrete" ]  := XmlNode( cICMSTotal, "vFrete" )
-      ::aICMSTotal[ "vSeg" ]    := XmlNode( cICMSTotal, "vSeg" )
-      ::aICMSTotal[ "vDesc" ]   := XmlNode( cICMSTotal, "vDesc" )
-      ::aICMSTotal[ "vII" ]     := XmlNode( cICMSTotal, "vII" )
-      ::aICMSTotal[ "vIPI" ]    := XmlNode( cICMSTotal, "vIPI" )
-      ::aICMSTotal[ "vPIS" ]    := XmlNode( cICMSTotal, "vPIS" )
-      ::aICMSTotal[ "vCOFINS" ] := XmlNode( cICMSTotal, "vCOFINS" )
-      ::aICMSTotal[ "vOutro" ]  := XmlNode( cICMSTotal, "vOutro" )
-      ::aICMSTotal[ "vNF" ]     := XmlNode( cICMSTotal, "vNF" )
+      FOR EACH oElement IN { "vBC", "vICMS", "vBCST", "vST", "vProd", "vFrete", "vSeg", "vDesc", "vII", "vIPI", "vPIS", "vCOFINS", "vOutro", "vNF" }
+         ::aICMSTotal[ oElement ] := XmlNode( cICMSTotal, oElement )
+      NEXT
 
    cISSTotal := XmlNode( ::cXml, "ISSQNtot" )
       ::aISSTotal := hb_Hash()
-      ::aISSTotal[ "vServ" ]   := XmlNode( cISSTotal, "vServ" )
-      ::aISSTotal[ "vBC" ]     := XmlNode( cISSTotal, "vBC" )
-      ::aISSTotal[ "vISS" ]    := XmlNode( cISSTotal, "vISS" )
-      ::aISSTotal[ "vPIS" ]    := XmlNode( cISSTotal, "vPIS" )
-      ::aISSTotal[ "vCOFINS" ] := XmlNode( cISSTotal, "vCOFINS" )
+      FOR EACH oElement IN { "vServ", "vBC", "vISS", "vPIS", "vCOFINS" }
+         ::aISSTotal[ oElement ] := XmlNode( cISSTotal, oElement )
+      NEXT
 
    cRetTrib := XmlNode( ::cXml, "RetTrib" )
       ::aRetTrib := hb_Hash()
-      ::aRetTrib[ "vRetPIS" ]    := XmlNode( cRetTrib, "vRetPIS" )
-      ::aRetTrib[ "vRetCOFINS" ] := XmlNode( cRetTrib, "vRetCOFINS" )
-      ::aRetTrib[ "vRetCSLL" ]   := XmlNode( cRetTrib, "vRetCSLL" )
-      ::aRetTrib[ "vBCIRRF" ]    := XmlNode( cRetTrib, "vBCIRRF" )
-      ::aRetTrib[ "vIRRF" ]      := XmlNode( cRetTrib, "vIRRF" )
-      ::aRetTrib[ "vBCRetPrev" ] := XmlNode( cRetTrib, "vBCRetPrev" )
-      ::aRetTrib[ "vRetPrev" ]   := XmlNode( cRetTrib, "vRetPrev" )
-
+      FOR EACH oElement IN { "vRetPIS", "vRetCOFINS", "vRetCSLL", "vBCIRRF", "vIRRF", "vBCRetPrev", "vRetPrev" }
+         ::aRetTrib[ oElement ] := XmlNode( cRetTrib, oElement )
+      NEXT
 
    cTransp := XmlNode( ::cXml, "transp" )
       ::aTransp := hb_Hash()
-      ::aTransp[ "modFrete" ] := XmlNode( cTransp, "modFrete" )
-      ::aTransp[ "CNPJ" ]     := XmlNode( cTransp, "CNPJ" )
-      ::aTransp[ "CPF" ]      := XmlNode( cTransp, "CPF" )
-      ::aTransp[ "xNome" ]    := XmlNode( cTransp, "xNome" )
-      ::aTransp[ "IE" ]       := XmlNode( cTransp, "IE" ) // NFE 2.0
-      ::aTransp[ "xEnder" ]   := XmlNode( cTransp, "xEnder" )
-      ::aTransp[ "xMun" ]     := XmlNode( cTransp, "xMun" )
-      ::aTransp[ "UF" ]       := XmlNode( cTransp, "UF" )
-      // dados transportados
-      ::aTransp[ "qVol" ]   := XmlNode( cTransp, "qVol" )
-      ::aTransp[ "esp" ]    := XmlNode( cTransp, "esp" )
-      ::aTransp[ "marca" ]  := XmlNode( cTransp, "marca" )
-      ::aTransp[ "nVol" ]   := XmlNode( cTransp, "nVol" )
-      ::aTransp[ "pesoL" ]  := XmlNode( cTransp, "pesoL" )
-      ::aTransp[ "pesoB" ]  := XmlNode( cTransp, "pesoB" )
-      ::aTransp[ "nLacre" ] := XmlNode( cTransp, "nLacre" )
-      // veicTransp
+      FOR EACH oElement IN { "modFrete", "CNPJ", "CPF", "xNome", "IE", "xEnder", "xMun", "UF", "qVol", "esp", "marca", "nVol", "pesoL", "pesoB", "nLacre" }
+         ::aTransp[ oElement ] := XmlNode( cTransp, oElement )
+      NEXT
       cVeicTransp := XmlNode( cTransp, "veicTransp" )
          ::aVeicTransp := hb_Hash()
-         ::aVeicTransp[ "placa" ] := XmlNode( cVeicTransp, "placa" )
-         ::aVeicTransp[ "UF" ]    := XmlNode( cVeicTransp, "UF" )
-         ::aVeicTransp[ "RNTC" ]  := XmlNode( cVeicTransp, "RNTC" ) //ANTT
-      //reboque
+         FOR EACH oElement IN { "placa", "UF", "RNTC" }
+            ::aVeicTransp[ oElement ] := XmlNode( cVeicTransp, oElement )
+         NEXT
       cReboque := XmlNode( cTransp, "veicTransp" )
          ::aReboque := hb_Hash()
-         ::aReboque[ "placa" ] := XmlNode( cReboque, "placa" )
-         ::aReboque[ "UF" ]    := XmlNode( cReboque, "UF" )
-         ::aReboque[ "RNTC" ]  := XmlNode( cReboque, "RNTC" ) //ANTT
+         FOR EACH oElement IN { "placa", "UF", "RNTC" }
+            ::aReboque[ oElement ] := XmlNode( cReboque, oElement )
+         NEXT
 
    ::cCobranca := XmlNode( ::cXml, "cobr" )
    cInfAdic    := XmlNode( ::cXml, "infAdic" )
@@ -363,17 +277,15 @@ METHOD BuscaDadosXML() CLASS hbNFeDanfe
 
    cCompra := XmlNode( ::cXml, "compra" )
       ::aCompra := hb_Hash()
-      ::aCompra[ "xNEmp" ] := XmlNode( cCompra, "infCpl" )
-      ::aCompra[ "xPed" ]  := XmlNode( cCompra, "infCpl" )
-      ::aCompra[ "xCont" ] := XmlNode( cCompra, "infCpl" )
+      FOR EACH oElement IN { "xNEmp", "xPed", "xCont" }
+         ::aCompra[ oElement ] := XmlNode( cCompra, oElement )
+      NEXT
 
    cInfProt := XmlNode( ::cXml, "infProt" )
       ::aInfProt := hb_Hash()
-      ::aInfProt[ "nProt" ]    := XmlNode( cInfProt, "nProt" )
-      ::aInfProt[ "dhRecbto" ] := XmlNode( cInfProt, "dhRecbto" )
-      ::aInfProt[ "digVal" ]   := XmlNode( cInfProt, "digVal" )
-      ::aInfProt[ "cStat" ]    := XmlNode( cInfProt, "cStat" )
-      ::aInfProt[ "xMotivo" ]  := XmlNode( cInfProt, "xMotivo" )
+      FOR EACH oElement IN { "nProt", "dhRecbto", "digVal", "cStat", "xMotivo" }
+         ::aInfProt[ oElement ] := XmlNode( cInfProt, oElement )
+      NEXT
 
    RETURN .T.
 
@@ -2203,7 +2115,7 @@ METHOD Rodape() CLASS hbNFeDanfe
 
 METHOD ProcessaItens( cXML, nItem ) CLASS hbNFeDanfe
 
-   LOCAL cItem, cItemDI, cItemAdi, cItemICMS, cItemICMSPart, cItemICMSST,;
+   LOCAL cItem, cItemDI, cItemAdi, cItemICMS, cItemICMSPart, cItemICMSST, oElement, ;
          cItemICMSSN101, cItemICMSSN102, cItemICMSSN201, cItemICMSSN202, cItemICMSSN500, cItemICMSSN900,;
          cItemIPI, cItemII, cItemPIS, cItemPISST, cItemCOFINS, cItemCOFINSST, cItemISSQN, cTag
 
@@ -2217,221 +2129,122 @@ METHOD ProcessaItens( cXML, nItem ) CLASS hbNFeDanfe
    ENDIF
    cItem := Substr( cItem, 1, At( "</det", cXml ) - 1 )
    ::aItem := hb_Hash()
-   ::aItem[ "cProd" ]     := XmlNode( cItem, "cProd" )
-   ::aItem[ "cEAN" ]      := XmlNode( cItem, "cEAN" )
-   ::aItem[ "xProd" ]     := XmlNode( cItem, "xProd" )
-   ::aItem[ "NCM" ]       := XmlNode( cItem, "NCM" )
-   ::aItem[ "EXTIPI" ]    := XmlNode( cItem, "EXTIPI" )
-   ::aItem[ "CFOP" ]      := XmlNode( cItem, "CFOP" )
-   ::aItem[ "uCom" ]      := XmlNode( cItem, "uCom" )
-   ::aItem[ "qCom" ]      := XmlNode( cItem, "qCom" )
-   ::aItem[ "vUnCom" ]    := XmlNode( cItem, "vUnCom" )
-   ::aItem[ "vProd" ]     := XmlNode( cItem, "vProd" )
-   ::aItem[ "cEANTrib" ]  := XmlNode( cItem, "cEANTrib" )
-   ::aItem[ "uTrib" ]     := XmlNode( cItem, "uTrib" )
-   ::aItem[ "qTrib" ]     := XmlNode( cItem, "qTrib" ) // NFE 2.0
-   ::aItem[ "vUnTrib" ]   := XmlNode( cItem, "vUnTrib" ) // NFE 2.0
-   ::aItem[ "vFrete" ]    := XmlNode( cItem, "vFrete" )
-   ::aItem[ "vSeg" ]      := XmlNode( cItem, "vSeg" )
-   ::aItem[ "vDesc" ]     := XmlNode( cItem, "vDesc" )
-   ::aItem[ "vOutro" ]    := XmlNode( cItem, "vOutro" ) // NFE 2.0
-   ::aItem[ "indTot" ]    := XmlNode( cItem, "indTot" ) // NFE 2.0
-   ::aItem[ "infAdProd" ] := XmlNode( cItem, "infAdProd" )
-   IF ::aItem[ "infAdProd" ] <> NIL
-      ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ], ";", CHR(13) + CHR(10) )
-   ENDIF
+   FOR EACH oElement IN { "cProd", "cEAN", "xProd", "NCM", "EXTIPI", "CFOP", "uCom", "qCom", "vUnCom", "vProd", "cEANTrib", "uTrib", "qTrib", "vUnTrib", "vFrete", ;
+      "vSeg", "vDesc", "vOutro", "indTot", "infAdProd" }
+      ::aItem[ oElement ] := XmlNode( cItem, oElement )
+   NEXT
+   ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ], ";", CHR(13) + CHR(10) )
 
    cItemDI := XmlNode( cItem, "DI" )
       ::aItemDI := hb_Hash()
-      ::aItemDI[ "nDI" ]         := XmlNode( cItemDI, "nDI" )
-      ::aItemDI[ "dDI" ]         := XmlNode( cItemDI, "dDI" )
-      ::aItemDI[ "xLocDesemb" ]  := XmlNOde( cItemDI, "xLocDesemb" )
-      ::aItemDI[ "UFDesemb" ]    := XmlNode( cItemDI, "UFDesemb" )
-      ::aItemDI[ "dDesemb" ]     := XmlNode( cItemDI, "dDesemb" )
-      ::aItemDI[ "cExportador" ] := XmlNode( cItemDI, "cExportador" )
+      FOR EACH oElement IN { "nDI", "dDI", "xLocDesemb", "UFDesemb", "cExportador" }
+         ::aItemDI[ oElement ] := XmlNode( cItemDI, oElement )
+      NEXT
 
    cItemAdi := XmlNode( cItem, "adi" )
       ::aItemAdi := hb_Hash()
-      ::aItemAdi[ "nAdicao" ]     := XmlNode( cItemAdi, "nAdicao" )
-      ::aItemAdi[ "nSeqAdic" ]    := XmlNode( cItemAdi, "nSeqAdic" )
-      ::aItemAdi[ "cFabricante" ] := XmlNode( cItemAdi, "cFabricante" )
-      ::aItemAdi[ "vDescDI" ]     := XmlNode( cItemAdi, "vDescDI" )
-      ::aItemAdi[ "xPed" ]        := XmlNode( cItemAdi, "xPed" ) // NFE 2.0
-      ::aItemAdi[ "nItemPed" ]    := XmlNode( cItemAdi, "nItemPed" ) // NFE 2.0
+      FOR EACH oElement IN { "nAdicao", "nSeqAdic", "cFabricante", "vDescDI", "xPed", "nItemPed" }
+         ::aItemAdi[ oElement ] := XmlNode( cItemAdi, oElement )
+      NEXT
 
    // todo veiculos (veicProd), medicamentos (med), armamentos (arm), combustiveis (comb)
 
    cItemICMS := XmlNode( cItem, "ICMS" )
       ::aItemICMS := hb_Hash()
-      ::aItemICMS[ "orig" ]       := XmlNode( cItemIcms, "orig" )
-      ::aItemICMS[ "CST" ]        := XmlNode( cItemIcms, "CST" )
-      ::aItemICMS[ "CSOSN" ]      := XmlNode( cItemIcms, "CSOSN" )
-      ::aItemICMS[ "vBCSTRet" ]   := XmlNode( cItemIcms, "vBCSTRet" )
-      ::aItemICMS[ "vICMSSTRet" ] := XmlNode( cItemIcms, "vICMSSTRet" )
-      ::aItemICMS[ "modBC" ]      := XmlNode( cItemIcms, "modBC" )
-      ::aItemICMS[ "pRedBC" ]     := XmlNode( cItemIcms, "pRedBC" )
-      ::aItemICMS[ "vBC" ]        := XmlNode( cItemIcms, "vBC" )
-      ::aItemICMS[ "pICMS" ]      := XmlNode( cItemIcms, "pICMS" )
-      ::aItemICMS[ "vICMS" ]      := XmlNode( cItemIcms, "vICMS" )
-      ::aItemICMS[ "motDesICMS" ] := XmlNode( cItemIcms, "motDesICMS" )
-      ::aItemICMS[ "modBCST" ]    := XmlNode( cItemIcms, "nItemICMS" )
-      ::aItemICMS[ "pMVAST" ]     := XmlNode( cItemIcms, "pMVAST" )
-      ::aItemICMS[ "pRedBCST" ]   := XmlNode( cItemIcms, "pRedBCST" )
-      ::aItemICMS[ "vBCST" ]      := XmlNode( cItemIcms, "vBCST" )
-      ::aItemICMS[ "pICMSST" ]    := XmlNode( cItemIcms, "pICMSST" )
-      ::aItemICMS[ "vICMSST" ]    := XmlNode( cItemIcms, "vICMSST" )
+      FOR EACH oElement IN { "orig", "CST", "CSOSN", "vBCSTRet", "vICMSSTRet", "modBC", "pRedBC", "vBC", "pICMS", "vICMS", "motDesICMS", "modBCST", "pMVAST", "pRedBCST", "vBCST", "pICMSST", "vICMSST" }
+         ::aItemICMS[ oElement ] := XmlNode( cItemICMS, oElement )
+      NEXT
 
    cItemICMSPart := XmlNode( cItem, "ICMSPart" )
       ::aItemICMSPart := hb_Hash()
-      ::aItemICMSPart[ "orig" ]     := XmlNode( cItemIcmsPart, "orig" )
-      ::aItemICMSPart[ "CST" ]      := XmlNode( cItemIcmsPart, "CST" )
-      ::aItemICMSPart[ "modBC" ]    := XmlNode( cItemIcmsPart, "modBC" )
-      ::aItemICMSPart[ "pRedBC" ]   := XmlNode( cItemIcmsPart, "pRedBC" )
-      ::aItemICMSPart[ "vBC" ]      := XmlNode( cItemIcmsPart, "vBC" )
-      ::aItemICMSPart[ "pICMS" ]    := XmlNode( cItemIcmsPart, "pICMS" )
-      ::aItemICMSPart[ "vICMS" ]    := XmlNode( cItemIcmsPart, "vICMS" )
-      ::aItemICMSPart[ "modBCST" ]  := XmlNode( cItemIcmsPart, "nItemICMSPart" )
-      ::aItemICMSPart[ "pMVAST" ]   := XmlNode( cItemIcmsPart, "pMVAST" )
-      ::aItemICMSPart[ "pRedBCST" ] := XmlNode( cItemIcmsPart, "pRedBCST" )
-      ::aItemICMSPart[ "vBCST" ]    := XmlNode( cItemIcmsPart, "vBCST" )
-      ::aItemICMSPart[ "pICMSST" ]  := XmlNode( cItemIcmsPart, "pICMSST" )
-      ::aItemICMSPart[ "vICMSST" ]  := XmlNode( cItemIcmsPart, "vICMSST" )
-      ::aItemICMSPart[ "pBCOp" ]    := XmlNode( cItemIcmsPart, "pBCOp" )
-      ::aItemICMSPart[ "UFST" ]     := XmlNode( cItemIcmsPart, "UFST" )
+      FOR EACH oElement IN { "orig", "CST", "modBC", "pRedBC", "vBC", "pICMS", "vICMS", "modBCST", "pMVAST", "pRedBCST", "vBCST", "pICMSST", "vICMSST", "pBCOp", "UFST" }
+         ::aItemICMSPart[ oElement ] := XmlNode( cItemICMSPart, oElement )
+      NEXT
 
    cItemICMSST := XmlNode( cItem, "ICMSST" )
       ::aItemICMSST := hb_Hash()
-      ::aItemICMSST[ "orig" ]        := XmlNode( cItemIcmsSt, "orig" )
-      ::aItemICMSST[ "CST" ]         := XmlNode( cItemIcmsSt, "CST" )
-      ::aItemICMSST[ "vBCSTRet" ]    := XmlNode( cItemIcmsSt, "vBCSTRet" )
-      ::aItemICMSST[ "vICMSSTRet" ]  := XmlNode( cItemIcmsSt, "vICMSSTRet" )
-      ::aItemICMSST[ "vBCSTDest" ]   := XmlNode( cItemIcmsSt, "vBCSTDest" )
-      ::aItemICMSST[ "vICMSSTDest" ] := XmlNode( cItemIcmsSt, "vICMSSTDest" )
+      FOR EACH oElement IN { "orig", "CST", "vBCSTRet", "vICMSSTRet", "vBCSTDest", "vICMSSTDest" }
+         ::aItemICMSST[ oElement ] := XmlNode( cItemIcmsSt, oElement )
+      NEXT
 
    cItemICMSSN101 := XmlNode( cItem, "ICMSSN101" )
       ::aItemICMSSN101 := hb_Hash()
-      ::aItemICMSSN101[ "orig" ]        := XmlNode( cItemIcmsSN101, "orig" )
-      ::aItemICMSSN101[ "CSOSN" ]       := XmlNode( cItemIcmsSN101, "CSOSN" )
-      ::aItemICMSSN101[ "pCredSN" ]     := XmlNode( cItemIcmsSN101, "pCredSN" )
-      ::aItemICMSSN101[ "vCredICMSSN" ] := XmlNode( cItemIcmsSN101, "vCredICMSSN" )
+      FOR EACH oElement IN { "orig", "CSOSN", "pCredSN", "vCredICMSSN" }
+         ::aItemICMSSN101[ oElement ] := XmlNOde( cItemIcmsSN101, oElement )
+      NEXT
 
    cItemICMSSN102 := XmlNode( cItem, "ICMSSN102" ) //102,103,300 ou 400
       ::aItemICMSSN102 := hb_Hash()
-      ::aItemICMSSN102[ "orig" ]  := XmlNode( cItemIcmsSN102, "orig" )
-      ::aItemICMSSN102[ "CSOSN" ] := XmlNode( cItemIcmsSN102, "CSOSN" )
+      FOR EACH oElement IN { "orig", "CSOSN" }
+         ::aItemICMSSN102[ oElement ] := XmlNode( cItemIcmsSN102, oElement )
+      NEXT
 
    cItemICMSSN201 := XmlNode( cItem, "ICMSSN201" )
       ::aItemICMSSN201 := hb_Hash()
-      ::aItemICMSSN201[ "orig" ]        := XmlNode( cItemIcmsSN201, "orig" )
-      ::aItemICMSSN201[ "CSOSN" ]       := XmlNode( cItemIcmsSN201, "CSOSN" )
-      ::aItemICMSSN201[ "modBCST" ]     := XmlNode( cItemIcmsSN201, "modBCST" )
-      ::aItemICMSSN201[ "pMVAST" ]      := XmlNode( cItemIcmsSN201, "pMVAST" )
-      ::aItemICMSSN201[ "pRedBCST" ]    := XmlNode( cItemIcmsSN201, "pRedBCST" )
-      ::aItemICMSSN201[ "vBCST" ]       := XmlNode( cItemIcmsSN201, "vBCST" )
-      ::aItemICMSSN201[ "pICMSST" ]     := XmlNode( cItemIcmsSN201, "pICMSST" )
-      ::aItemICMSSN201[ "vICMSST" ]     := XmlNode( cItemIcmsSN201, "vICMSST" )
-      ::aItemICMSSN201[ "pCredSN" ]     := XmlNode( cItemIcmsSN201, "pCredSN" )
-      ::aItemICMSSN201[ "vCredICMSSN" ] := XmlNode( cItemIcmsSN201, "vCredICMSSN" )
+      FOR EACH oElement IN { "orig", "CSOSN", "modBCST", "pMVAST", "pRedBCST", "vBCST", "pICMSST", "vICMSST", "pCredSN", "vCredICMSSN" }
+         ::aItemICMSSN201[ oElement ] := XmlNode( cItemIcmsSN201, oElement )
+      NEXT
 
    cItemICMSSN202 := XmlNode( cItem, "ICMSSN202" )  // 202 ou 203
       ::aItemICMSSN202 := hb_Hash()
-      ::aItemICMSSN202[ "orig" ]     := XmlNode( cItemIcmsSN202, "orig" )
-      ::aItemICMSSN202[ "CSOSN" ]    := XmlNode( cItemIcmsSN202, "CSOSN" )
-      ::aItemICMSSN202[ "modBCST" ]  := XmlNode( cItemIcmsSN202, "modBCST" )
-      ::aItemICMSSN202[ "pMVAST" ]   := XmlNode( cItemIcmsSN202, "pMVAST" )
-      ::aItemICMSSN202[ "pRedBCST" ] := XmlNode( cItemIcmsSN202, "pRedBCST" )
-      ::aItemICMSSN202[ "vBCST" ]    := XmlNode( cItemIcmsSN202, "vBCST" )
-      ::aItemICMSSN202[ "pICMSST" ]  := XmlNode( cItemIcmsSN202, "pICMSST" )
-      ::aItemICMSSN202[ "vICMSST" ]  := XmlNode( cItemIcmsSN202, "vICMSST" )
+      FOR EACH oElement IN { "orig", "CSOSN", "modBCST", "pMVAST", "pRedBCST", "vBCST", "pICMSST", "vICMSST" }
+         ::aItemIcmsSN202[ oElement ] := XmlNode( cItemIcmsSN202, oElement )
+      NEXT
 
    cItemICMSSN500 := XmlNode( cItem, "ICMSSN500" )
       ::aItemICMSSN500 := hb_Hash()
-      ::aItemICMSSN500[ "orig" ]       := XmlNode( cItemIcmsSN500, "orig" )
-      ::aItemICMSSN500[ "CSOSN" ]      := XmlNode( cItemIcmsSN500, "CSOSN" )
-      ::aItemICMSSN500[ "vBCSTRet" ]   := XmlNode( cItemIcmsSN500, "vBCSTRet" )
-      ::aItemICMSSN500[ "vICMSSTRet" ] := XmlNode( cItemIcmsSN500, "vICMSSTRet" )
+      FOR EACH oElement IN { "orig", "CSOSN", "vBCSTRet", "vICMSSTRet" }
+         ::aItemICMSSN500[ oElement ] := XmlNode( cItemIcmsSN500, oElement )
+      NEXT
 
    cItemICMSSN900 := XmlNode( cItem, "ICMSSN900" )
       ::aItemICMSSN900 := hb_Hash()
-      ::aItemICMSSN900[ "orig" ]        := XmlNode( cItemIcmsSN900, "orig" )
-      ::aItemICMSSN900[ "CSOSN" ]       := XmlNode( cItemIcmsSN900, "CSOSN" )
-      ::aItemICMSSN900[ "modBC" ]       := XmlNode( cItemIcmsSN900, "modBC" )
-      ::aItemICMSSN900[ "pRedBC" ]      := XmlNode( cItemIcmsSN900, "pRedBC" )
-      ::aItemICMSSN900[ "vBC" ]         := XmlNode( cItemIcmsSN900, "vBC" )
-      ::aItemICMSSN900[ "pICMS" ]       := XmlNode( cItemIcmsSN900, "pICMS" )
-      ::aItemICMSSN900[ "vICMS" ]       := XmlNode( cItemIcmsSN900, "vICMS" )
-      ::aItemICMSSN900[ "modBCST" ]     := XmlNode( cItemIcmsSN900, "modBCST" )
-      ::aItemICMSSN900[ "pMVAST" ]      := XmlNode( cItemIcmsSN900, "pMVAST" )
-      ::aItemICMSSN900[ "pRedBCST" ]    := XmlNode( cItemIcmsSN900, "pRedBCST" )
-      ::aItemICMSSN900[ "vBCST" ]       := XmlNode( cItemIcmsSN900, "vBCST" )
-      ::aItemICMSSN900[ "pICMSST" ]     := XmlNode( cItemIcmsSN900, "pICMSST" )
-      ::aItemICMSSN900[ "vICMSST" ]     := XmlNode( cItemIcmsSN900, "vICMSST" )
-      ::aItemICMSSN900[ "pCredSN" ]     := XmlNode( cItemIcmsSN900, "pCredSN" )
-      ::aItemICMSSN900[ "vCredICMSSN" ] := XmlNode( cItemIcmsSN900, "vCredICMSSN" )
+      FOR EACH oElement IN { "orig", "CSOSN", "modBC", "pRedBC", "vBC", "pICMS", "vICMS", "modBCST", "pMVAST", "pRedBCST", "vBCST", ;
+         "pICMSST", "vICMSST", "pCredSN", "vCredICMSSN" }
+         ::aItemICMSSN900[ oElement ] := XmlNode( cItemIcmsSN900, oElement )
+      NEXT
 
    cItemIPI := XmlNode( cItem, "IPI" )
       ::aItemIPI := hb_Hash()
-      ::aItemIPI[ "clEnq" ]    := XmlNode( cItemIPI, "clEnq" )
-      ::aItemIPI[ "CNPJProd" ] := XmlNode( cItemIPI, "CNPJProd" )
-      ::aItemIPI[ "cSelo" ]    := XmlNode( cItemIPI, "cSelo" )
-      ::aItemIPI[ "qSelo" ]    := XmlNode( cItemIPI, "qSelo" )
-      ::aItemIPI[ "cEnq" ]     := XmlNode( cItemIPI, "cEnq" )
-      ::aItemIPI[ "CST" ]   := XmlNode( cItemIPI, "CST" )
-      ::aItemIPI[ "vBC" ]   := XmlNode( cItemIPI, "vBC" )
-      ::aItemIPI[ "pIPI" ]  := XmlNode( cItemIPI, "pIPI" )
-      ::aItemIPI[ "qUnid" ] := XmlNode( cItemIPI, "qUnid" )
-      ::aItemIPI[ "vUnid" ] := XmlNode( cItemIPI, "vUnid" )
-      ::aItemIPI[ "vIPI" ]  := XmlNode( cItemIPI, "vIPI" )
+      FOR EACH oElement IN { "clEnq", "CNPJProd", "cSelo", "qSelo", "cEnq", "CST", "vBC", "pIPI", "qUnid", "vUnid", "vIPI" }
+         ::aItemIpi[ oElement ] := XmlNode( cItemIpi, oElement )
+      NEXT
 
    cItemII := XmlNode( cItem, "II" )
       ::aItemII := hb_Hash()
-      ::aItemII[ "vBC" ]      := XmlNode( cItemII, "vBC" )
-      ::aItemII[ "vDespAdu" ] := XmlNode( cItemII, "vDespAdu" )
-      ::aItemII[ "vII" ]      := XmlNode( cItemII, "vII" )
-      ::aItemII[ "vIOF" ]     := XmlNode( cItemII, "vIOF" )
+      FOR EACH oElement IN { "vBC", "vDespAdu", "vII", "vIOF" }
+         ::aItemII[ oElement ] := XmlNode( cItemII, oElement )
+      NEXT
 
    cItemPIS := XmlNode( cItem, "PIS" )
       ::aItemPIS := hb_Hash()
-      ::aItemPIS[ "CST" ]       := XmlNode( cItemPIS, "CST" )
-      ::aItemPIS[ "vBC" ]       := XmlNode( cItemPIS, "vBC" )
-      ::aItemPIS[ "pPIS" ]      := XmlNode( cItemPIS, "pPIS" )
-      ::aItemPIS[ "vPIS" ]      := XmlNode( cItemPIS, "vPIS" )
-      ::aItemPIS[ "qBCProd" ]   := XmlNode( cItemPIS, "qBCProd" )
-      ::aItemPIS[ "vAliqProd" ] := XmlNode( cItemPIS, "vAliqProd" )
+      FOR EACH oElement IN { "CST", "vBC", "pPIS", "vPIS", "qBCProd", "vAliqProd" }
+         ::aItemPIS[ oElement ] := XmlNode( cItemPIS, oElement )
+      NEXT
 
    cItemPISST := XmlNode( cItem, "PISST" )
       ::aItemPISST := hb_Hash()
-      ::aItemPISST[ "vBC" ]       := XmlNode( cItemPISST, "vBC" )
-      ::aItemPISST[ "pPIS" ]      := XmlNode( cItemPISST, "pPIS" )
-      ::aItemPISST[ "vPIS" ]      := XmlNode( cItemPISST, "vPIS" )
-      ::aItemPISST[ "qBCProd" ]   := XmlNode( cItemPISST, "qBCProd" )
-      ::aItemPISST[ "vAliqProd" ] := XmlNode( cItemPISST, "vAliqProd" )
+      FOR EACH oElement IN { "vBC", "pPIS", "vPIS", "qBCProd", "vAliqProd" }
+         ::aItemPISST[ oElement ] := XmlNode( cItemPISST, oElement )
+      NEXT
 
    cItemCOFINS := XmlNode( cItem, "COFINS" )
       ::aItemCOFINS := hb_Hash()
-      ::aItemCOFINS[ "CST" ]       := XmlNode( cItemCofins, "CST" )
-      ::aItemCOFINS[ "vBC" ]       := XmlNode( cItemCofins, "vBC" )
-      ::aItemCOFINS[ "pCOFINS" ]   := XmlNode( cItemCofins, "pCOFINS" )
-      ::aItemCOFINS[ "vCOFINS" ]   := XmlNode( cItemCofins, "vCOFINS" )
-      ::aItemCOFINS[ "qBCProd" ]   := XmlNode( cItemCofins, "qBCProd" )
-      ::aItemCOFINS[ "vAliqProd" ] := XmlNode( cItemCofins, "vAliqProd" )
+      FOR EACH oElement IN { "CST", "vBC", "pCOFINS", "vCOFINS", "qBCProd", "vAliqProd" }
+         ::aItemCOFINS[ oElement ] := XmlNode( cItemCofins, oElement )
+      NEXT
 
    cItemCOFINSST := XmlNode( cItem, "COFINSST" )
       ::aItemCOFINSST := hb_Hash()
-      ::aItemCOFINSST[ "vBC" ]       := XmlNode( cItemCofinsST, "vBC" )
-      ::aItemCOFINSST[ "pCOFINS" ]   := XmlNode( cItemCofinsST, "pCOFINS" )
-      ::aItemCOFINSST[ "vCOFINS" ]   := XmlNode( cItemCofinsST, "vCOFINS" )
-      ::aItemCOFINSST[ "qBCProd" ]   := XmlNode( cItemCofinsST, "qBCProd" )
-      ::aItemCOFINSST[ "vAliqProd" ] := XmlNode( cItemCofinsST, "vAliqProd" )
+      FOR EACH oElement IN { "vBC", "pCOFINS", "vCOFINS", "qBCProd", "vAliqProd" }
+         ::aItemCOFINSST[ oElement ] := XmlNode( cItemCofinsST, oElement )
+      NEXT
 
    cItemISSQN := XmlNode( cItem, "ISSQN" )
       ::aItemISSQN := hb_Hash()
-      ::aItemISSQN[ "vBC" ]       := XmlNode( cItemISSQN, "vBC" )
-      ::aItemISSQN[ "vAliq" ]     := XmlNode( cItemISSQN, "vAliq" )
-      ::aItemISSQN[ "vISSQN" ]    := XmlNode( cItemISSQN, "vISSQN" )
-      ::aItemISSQN[ "cMunFG" ]    := XmlNode( cItemISSQN, "cMunFG" )
-      ::aItemISSQN[ "cListServ" ] := XmlNode( cItemISSQN, "cListServ" )
-      ::aItemISSQN[ "cSitTrib" ]  := XmlNode( cItemISSQN, "cSitTrib" )  // N – NORMAL R – RETIDA S –SUBSTITUTA I – ISENTA. (v.2.0)
+      FOR EACH oElement IN { "vBC", "vAliq", "vISSQN", "cMunFG", "cListServ", "cSitTrib" }
+         ::aItemISSQN[ oElement ] := XmlNode( cItemISSQN, oElement )
+      NEXT
 
    RETURN .T.
 
