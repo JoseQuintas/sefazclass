@@ -334,11 +334,11 @@ METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
       ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Courier-Bold", "CP1252" )
    ENDIF
 
+#ifdef __XHARBOUR__
    // Inserido por Anderson Camilo em 04/04/2012
-
    ::cFonteCode128  := HPDF_LoadType1FontFromFile( ::oPdf, 'fontes\Code128bWinLarge.afm', 'fontes\Code128bWinLarge.pfb' )   // Code 128
    ::cFonteCode128F := HPDF_GetFont( ::oPdf, ::cFonteCode128, "WinAnsiEncoding" )
-
+#endif
    // final da criacao e definicao do objeto pdf
 
    ::nFolha := 1

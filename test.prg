@@ -5,6 +5,7 @@ REQUEST HB_CODEPAGE_PTISO
 #include "hbgtinfo.ch"
 
 PROCEDURE Main
+
    LOCAL nOpc := 1, GetList := {}, cTexto := "", nOpcTemp
    LOCAL cCnpj := Space(14), cChave := Space(44), cCertificado := "", cUF := "SP", cXmlRetorno
    LOCAL oSefaz
@@ -21,6 +22,7 @@ PROCEDURE Main
       CLS
       @ 0,0 SAY ""
       @ Row() + 1, 5 PROMPT "Sair"
+      @ Row() + 1, 5 PROMPT "Teste Danfe"
       @ Row() + 1, 5 PROMPT "Seleciona certificado"
       @ Row() + 1, 5 PROMPT "UF Default"
       @ Row() + 1, 5 PROMPT "Consulta Status NFE"
@@ -29,12 +31,14 @@ PROCEDURE Main
       @ Row() + 1, 5 PROMPT "Protocolo CTE"
       @ Row() + 1, 5 PROMPT "Protocolo MDFE"
       @ Row() + 1, 5 PROMPT "Consulta Destinadas"
-      @ Row() + 1, 5 PROMPT "Teste Danfe"
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
       CASE LastKey() == K_ESC .OR. nOpc == nOpcTemp++
          EXIT
+
+      CASE nOpc == nOpcTemp++
+         TestDanfe()
 
       CASE nOpc == nOpcTemp++
          oSefaz:cCertificado := CapicomEscolheCertificado()
@@ -142,9 +146,6 @@ PROCEDURE Main
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
-      CASE nOpc == nOpcTemp++
-         TestDanfe()
-
       CASE nOpc == nOpcTemp  // pra não esquecer o ++, último não tem
 
       ENDCASE
@@ -187,28 +188,35 @@ FUNCTION TestDanfe()
    IF File( "xmlnota.xml" )
       oDanfe := hbnfeDaNfe():New()
       oDanfe:Execute( MemoRead( "xmlnota.xml" ), "pdfnfe.pdf" )
+      ? "DANFe " + oDanfe:cRetorno
       PDFOpen( "pdfnfe.pdf" )
    ENDIF
    IF File( "xmlcte.xml" )
       oDanfe := hbnfeDaCte():New()
       oDanfe:Execute( MemoRead( "xmlcte.xml" ),  "pdfcte.pdf" )
+      ? "DACTe " + oDanfe:cRetorno
       PDFOpen( "pdfcte.pdf" )
    ENDIF
    IF File( "xmlmdfe.xml" )
       oDanfe := hbnfeDaMdfe():New()
       oDanfe:Execute( MemoRead( "xmlmdfe.xml" ), "pdfmdfe.pdf" )
+      ? "DAMDFe " + oDanfe:cRetorno
       PDFOpen( "pdfmdfe.pdf" )
    ENDIF
    IF File( "xmleventonfe.xml" ) .AND. File( "xmlnota.xml" )
       oDanfe := hbnfeDaEvento():New()
       oDanfe:Execute( MemoRead( "xmleventonfe.xml" ), MemoRead( "xmlnota.xml" ), "pdfeventonfe.pdf" )
+      ? "DAEvento NFe " + oDanfe:cRetorno
       PDFOpen( "pdfeventonfe.pdf" )
    ENDIF
    IF File( "xmleventocte.xml" )
       oDanfe := hbnfeDaEvento():New()
       oDanfe:Execute( MemoRead( "xmleventocte.xml" ), "", "pdfeventocte.pdf" )
+      ? "DAEvento CTe " + oDanfe:cRetorno
       PDFOpen( "pdfeventocte.pdf" )
    ENDIF
+
+   Inkey(0)
 
    RETURN NIL
 

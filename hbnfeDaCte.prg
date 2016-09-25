@@ -447,10 +447,11 @@ METHOD GeraPDF( cFilePDF ) CLASS hbnfeDaCte
       ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Courier-Bold", "CP1252" )
    ENDIF
 
+#ifdef __XHARBOUR__
    // Inserido por Anderson Camilo em 04/04/2012
-
    ::cFonteCode128  := HPDF_LoadType1FontFromFile( ::oPdf, 'fontes\Code128bWinLarge.afm', 'fontes\Code128bWinLarge.pfb' )   // Code 128
    ::cFonteCode128F := HPDF_GetFont( ::oPdf, ::cFonteCode128, "WinAnsiEncoding" )
+#endif
 
    // final da criacao e definicao do objeto pdf
 
@@ -550,14 +551,6 @@ METHOD Cabecalho() CLASS hbnfeDaCte
 
    // box do logotipo e dados do emitente
    hbnfe_Box_hpdf( ::oPdfPage,  003, ::nLinhaPdf - 119, 295, 119, ::nLarguraBox )
-
-
-   //------------------------------teste
-   IF .T.
-      RETURN NIL
-   ENDIF
-   //------------------------------teste
-
 
    IF ! Empty( ::cLogoFile )
       oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
