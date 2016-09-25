@@ -170,13 +170,13 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    cIde := XmlNode( cIde, "toma03" )
    ::aIde[ "toma" ] := XmlNode( cIde, "toma" )
 
-   cCompl := XmlNodeInvertido( "compl", ::cXML )
+   cCompl := XmlNode( ::cXml, "compl" )
    ::aCompl := hb_Hash()
-   ::aCompl[ "xObs" ] := XmlNodeInvertido( "xObs", cCompl )
+   ::aCompl[ "xObs" ] := XmlNode( cCompl, "xObs" )
    ::aObsCont := hb_Hash()
-   ::aObsCont[ "xTexto" ] := XmlNodeInvertido( "xTexto", cCompl )
+   ::aObsCont[ "xTexto" ] := XmlNode( cCompl, "xTexto" )
 
-   cEmit := XmlNodeInvertido( "emit", ::cXML )
+   cEmit := XmlNode( ::cXml, "emit" )
    ::aEmit := hb_Hash()
    FOR EACH oELement IN { "CNPJ", "IE", "xNome", "xFant", "fone" }
       ::aEmit[ oElement ] := XmlNode( cEmit, oElement )
@@ -186,18 +186,18 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    IF ! Empty( ::cTelefoneEmitente )
       ::cTelefoneEmitente := Transform( ::cTelefoneEmitente, "@E (99) 9999-9999" )
    ENDIF
-   cEmit := XmlNodeInvertido( "enderEmit", cEmit )
+   cEmit := XmlNode( cEmit, "enderEmit" )
    FOR EACH oElement IN { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "CEP", "UF" }
       ::aEmit[ oElement ] := XmlNode( cEmit, oElement )
    NEXT
 
-   cRem := XmlNodeInvertido( "rem", ::cXML )
+   cRem := XmlNode( ::cXml, "rem" )
    ::aRem := hb_Hash()
    FOR EACH oElement IN { "CNPJ", "CPF", "IE", "xNome", "xFant", "fone", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "CEP", "UF", "cPais", "xPais" }
       ::aRem[ oElement ] := XmlNode( cRem, oElement )
    NEXT
    ::aRem[ "xNome" ] := XmlToString( ::aRem[ "xNome" ] )
-   cRem := XmlNodeInvertido( "infDoc", ::cXML )
+   cRem := XmlNode( ::cXml, "infDoc" )
    ::ainfNF := {}
    cText := cRem
    DO WHILE "<infNF" $ cText .AND. "</infNF" $ cText
@@ -308,43 +308,43 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
 
    cImp := XmlNode( ::cXml, "imp" )
 
-   cIcms00 := XmlNodeInvertido( "ICMS00", cImp )
+   cIcms00 := XmlNode( cImp, "ICMS00" )
    ::aIcms00 := hb_Hash()
    FOR EACH oElement IN { "CST", "vBC", "pICMS", "vICMS" }
       ::aIcms00[ oElement ] := XmlNode( cIcms00, oElement )
    NEXT
 
-   cIcms20 := XmlNodeInvertido( "ICMS20", cImp )
+   cIcms20 := XmlNode( cImp, "ICMS20" )
    ::aIcms20 := hb_Hash()
    FOR EACH oElement IN { "CST", "vBC", "pRedBC", "pICMS", "vICMS" }
       ::aIcms20[ oElement ] := XmlNode( cIcms20, oElement )
    NEXT
 
-   cIcms45 := XmlNodeInvertido( "ICMS45", cImp )
+   cIcms45 := XmlNode( cImp, "ICMS45" )
    ::aIcms45 := hb_Hash()
-   ::aIcms45[ "CST" ] := XmlNodeInvertido( "CST", cIcms45 ) // NFE 2.0
+   ::aIcms45[ "CST" ] := XmlNode( cIcms45, "CST" ) // NFE 2.0
 
-   cIcms60 := XmlNodeInvertido( "ICMS60", cImp )
+   cIcms60 := XmlNode( cImp, "ICMS60" )
    ::aIcms60 := hb_Hash()
    FOR EACH oElement IN { "CST", "vBCSTRet", "vICMSSTRet", "pICMSSTRet", "vCred" }
       ::aIcms60[ oElement ]  := XmlNode( cIcms60, oElement )
    NEXT
 
-   cIcms90 := XmlNodeInvertido( "ICMS90", cImp )
+   cIcms90 := XmlNode( cImp, "ICMS90" )
    ::aIcms90 := hb_Hash()
    FOR EACH oElement IN { "CST", "pRedBC", "vBC", "pICMS", "vICMS", "vCred" }
       ::aIcms90[ oElement ] := XmlNode( cICms90, oElement )
    NEXT
 
-   cIcmsUF := XmlNodeInvertido( "ICMSOutraUF", cImp )
+   cIcmsUF := XmlNode( cImp, "ICMSOutraUF" )
    ::aIcmsUF := hb_Hash()
    FOR EACH oElement IN { "CST", "pRedBCOutraUF", "vBCOutraUF", "pICMSOutraUF", "vICMSOutraUF" }
       ::aIcmsUF[ oElement ] := XmlNode( cIcmsUF, oElement )
    NEXT
 
-   cIcmsSN := XmlNodeInvertido( "ICMSSN", cImp )
+   cIcmsSN := XmlNode( cImp, "ICMSSN" )
    ::aIcmsSN := hb_Hash()
-   ::aIcmsSN[ "indSN" ] := XmlNodeInvertido( "indSN", cIcmsSN ) // NFE 2.0
+   ::aIcmsSN[ "indSN" ] := XmlNode( cIcmsSN, "indSN" ) // NFE 2.0
    ::cAdFisco := XmlNode( cImp, "infAdFisco" )
 
    ::vTotTrib  := XmlNode( ::cXml, "vTotTrib" )
@@ -367,31 +367,31 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
          XmlNode( cInfQ, "qCarga" ) } )
    ENDDO
 
-   cSeg := XmlNodeInvertido( "seg", cinfCTeNorm )
+   cSeg := XmlNode( cInfCTeNorm, "seg" )
    ::aSeg := hb_Hash()
    FOR EACH oElement IN { "respSeg", "xSeg", "nApol", "nAver", "vCarga" }
       ::aSeg[ oElement ] := XmlNode( cSeg, oElement )
    NEXT
 
-   cRodo := XmlNodeInvertido( "rodo", cinfCTeNorm )
+   cRodo := XmlNode( cInfCteNorm, "rodo" )
    ::aRodo := hb_Hash()
    FOR EACH oElement IN { "RNTRC", "dPrev", "lota", "CIOT", "nLacre" }
       ::aRodo[ oElement ] := XmlNode( oElement, cRodo )
    NEXT
 
-   cMoto := XmlNodeInvertido( "moto", cinfCTeNorm )
+   cMoto := XmlNode( cInfCteNorm, "moto" )
    ::aMoto := hb_Hash()
    FOR EACH oElement IN { "xNome", "CPF" }
       ::aMoto[ oElement ] := XmlNode( cMoto, oElement )
    NEXT
 
-   cValePed := XmlNodeInvertido( "valePed", cRodo )
+   cValePed := XmlNode( cRodo, "valePed" )
    ::aValePed := hb_Hash()
    FOR EACH oElement IN { "CNPJForn", "nCompra", "CNPJPg" }
       ::aValePed[ oElement ] := XmlNode( cValePed, oElement )
    NEXT
 
-   cProp := XmlNodeInvertido( "prop", cRodo )
+   cProp := XmlNode( cRodo, "prop" )
    ::aProp := hb_Hash()
    FOR EACH oElement IN { "CPF", "CNPJ", "RNTRC", "xNome", "IE", "UF", "tpProp" }
       ::aProp[ oElement ] := XmlNode( cProp, oElement )
@@ -453,12 +453,8 @@ METHOD GeraPDF( cFilePDF ) CLASS hbnfeDaCte
    ::cFonteCode128F := HPDF_GetFont( ::oPdf, ::cFonteCode128, "WinAnsiEncoding" )
 #endif
 
-   // final da criacao e definicao do objeto pdf
-
    ::nFolha := 1
-
    ::novaPagina()
-
    ::cabecalho()
 
    HPDF_SaveToFile( ::oPdf, cFilePDF )
@@ -1285,10 +1281,6 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ENDIF
 
    RETURN NIL
-
-STATIC FUNCTION XmlNodeInvertido( a, b, c )
-
-   RETURN XmlNode( b, a, c )
 
 STATIC FUNCTION FormatIE( cIE, cUF )
 
