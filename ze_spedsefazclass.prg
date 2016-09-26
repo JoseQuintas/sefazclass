@@ -1,13 +1,10 @@
 /*
 ze_spedsefazclass - rotinas pra comunicação com SEFAZ
 
-2016.09.14.1400 - Correção SOAP Action de consultar recibo MDFe
-2016.09.15.1230 - Motivo correto, do protocolo e não da consulta
-2016.09.16.1750 - Correção mdfeProc, estava MDFeProc
-2016.09.23.1620 - Inutilização
-2016.09.23.1640 - Ajustes finais inutilização
+2016.09.16.1750 - ok Autorização MDFe
+2016.09.23.1640 - ok Inutilização NFe
 
-Nota: CTE 2.00 vale até 06/2017 e CTE 3.00 começa em 12/2016
+Lembrete: CTE 2.00 vale até 06/2017 e CTE 3.00 começa em 12/2016
 */
 
 #include "hbclass.ch"
@@ -58,13 +55,13 @@ CREATE CLASS SefazClass
    /* configuração */
    VAR    cProjeto       INIT WS_PROJETO_NFE          /* Modificada conforme método */
    VAR    cAmbiente      INIT WS_AMBIENTE_PRODUCAO
-   VAR    cVersao        INIT "3.10"                  /* Modificada conforme método */
    VAR    cScan          INIT "N"                     /* Indicar se for SCAN/SVAN, ainda não testado */
    VAR    cUF            INIT "SP"                    /* Modificada conforme método */
    VAR    cCertificado   INIT ""                      /* Nome do certificado */
    VAR    cIndSinc       INIT INDSINC_RETORNA_RECIBO  /* Poucas UFs opção de protocolo */
    VAR    nTempoEspera   INIT 7                       /* intervalo entre envia lote e consulta recibo */
    VAR    cUFTimeZone    INIT "SP"                    /* Para DateTimeXml() Obrigatório definir UF default */
+   VAR    cVersaoXml     INIT ""                      /* Uso do XML de comunicação */
    /* XMLs de cada etapa */
    VAR    cXmlDados      INIT ""                      /* usado pra criar/complementar XML do documento */
    VAR    cXmlRetorno    INIT "Erro Desconhecido"     /* Retorno do webservice e/ou rotina */
@@ -75,7 +72,8 @@ CREATE CLASS SefazClass
    VAR    cRecibo        INIT ""                      /* Número do recibo */
    VAR    cMotivo        INIT ""                      /* Motivo constante no Recibo */
    /* uso interno */
-   VAR    cVersaoXml     INIT ""                      /* Apenas versão usada no XML */
+   VAR    cVersao        INIT "3.10"                  /* Usado em fase intermediária, exemplo, CTE 2.00 e CTE 3.00 ao mesmo tempo
+   VAR    cVersaoXml     INIT ""                      /* Modificada conforme webservice e UF */
    VAR    cServico       INIT ""                      /* Operação existente no webservice */
    VAR    cSoapAction    INIT ""                      /* Ação solicitada ao webservice */
    VAR    cWebService    INIT ""                      /* Endereço de webservice */
