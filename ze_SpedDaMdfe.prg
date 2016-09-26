@@ -4,6 +4,7 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 
 2016.09.24.1100 - Incluso, faltam alterações
 2016.09.25.0940 - Ainda não houve geração de PDF
+2016.09.26.1200 - Como é obrigatório fonte Times, fixado este fonte
 */
 
 #include "common.ch"
@@ -22,118 +23,118 @@ CLASS hbnfeDaMdfe
    METHOD novaPagina()
    METHOD cabecalho()
 
-   DATA nItens1Folha
-   DATA nItensDemaisFolhas
-   DATA nLarguraDescricao
-   DATA nLarguraCodigo
-   DATA cTelefoneEmitente INIT ""
-   DATA cSiteEmitente     INIT ""
-   DATA cEmailEmitente    INIT ""
-   DATA cDesenvolvedor    INIT ""
-   DATA cXml
-   DATA cChave
-   DATA aIde
-   DATA aCompl
-   DATA aEmit
-   DATA aMunCarreg
-   DATA aModal
-   DATA aMunDescarga
-   DATA aRem
-   DATA aTot
-   DATA cLacre
-   DATA cInfCpl
-   DATA cRntrcEmit
-   DATA cRntrcProp
-   DATA cCiot
-   DATA aCondutor
-   DATA ainfNF
-   DATA ainfNFe
-   DATA ainfCTe
-   DATA ainfOutros
-   DATA aValePed
-   DATA aDest
-   DATA aLocEnt
-   DATA aPrest
-   DATA aComp
-   DATA aIcms00
-   DATA aIcms20
-   DATA aIcms45
-   DATA aIcms60
-   DATA aIcms90
-   DATA aIcmsUF
-   DATA aIcmsSN
-   DATA cAdfisco
-   DATA aInfCarga
-   DATA aInfQ
-   DATA aSeg
-   DATA aRodo
-   DATA aMoto
-   DATA aProp
-   DATA aVeiculo
-   DATA aProtocolo
-   DATA aExped
-   DATA aReceb
-   DATA aToma
+   VAR nItens1Folha
+   VAR nItensDemaisFolhas
+   VAR nLarguraDescricao
+   VAR nLarguraCodigo
+   VAR cTelefoneEmitente INIT ""
+   VAR cSiteEmitente     INIT ""
+   VAR cEmailEmitente    INIT ""
+   VAR cDesenvolvedor    INIT ""
+   VAR cXml
+   VAR cChave
+   VAR aIde
+   VAR aCompl
+   VAR aEmit
+   VAR aMunCarreg
+   VAR aModal
+   VAR aMunDescarga
+   VAR aRem
+   VAR aTot
+   VAR cLacre
+   VAR cInfCpl
+   VAR cRntrcEmit
+   VAR cRntrcProp
+   VAR cCiot
+   VAR aCondutor
+   VAR ainfNF
+   VAR ainfNFe
+   VAR ainfCTe
+   VAR ainfOutros
+   VAR aValePed
+   VAR aDest
+   VAR aLocEnt
+   VAR aPrest
+   VAR aComp
+   VAR aIcms00
+   VAR aIcms20
+   VAR aIcms45
+   VAR aIcms60
+   VAR aIcms90
+   VAR aIcmsUF
+   VAR aIcmsSN
+   VAR cAdfisco
+   VAR aInfCarga
+   VAR aInfQ
+   VAR aSeg
+   VAR aRodo
+   VAR aMoto
+   VAR aProp
+   VAR aVeiculo
+   VAR aProtocolo
+   VAR aExped
+   VAR aReceb
+   VAR aToma
 
-   DATA aICMSTotal
-   DATA aISSTotal
-   DATA aRetTrib
-   DATA aTransp
-   DATA aVeicTransp
-   DATA aReboque
-   DATA cCobranca
-   DATA aInfAdic
-   DATA aObsCont
-   DATA aObsFisco
-   DATA aExporta
-   DATA aCompra
-   DATA aInfProt
-   DATA aInfCanc
+   VAR aICMSTotal
+   VAR aISSTotal
+   VAR aRetTrib
+   VAR aTransp
+   VAR aVeicTransp
+   VAR aReboque
+   VAR cCobranca
+   VAR aInfAdic
+   VAR aObsCont
+   VAR aObsFisco
+   VAR aExporta
+   VAR aCompra
+   VAR aInfProt
+   VAR aInfCanc
 
-   DATA aItem
-   DATA aItemDI
-   DATA aItemAdi
-   DATA aItemICMS
-   DATA aItemICMSPart
-   DATA aItemICMSST
-   DATA aItemICMSSN101
-   DATA aItemICMSSN102
-   DATA aItemICMSSN201
-   DATA aItemICMSSN202
-   DATA aItemICMSSN500
-   DATA aItemICMSSN900
-   DATA aItemIPI
-   DATA aItemII
-   DATA aItemPIS
-   DATA aItemPISST
-   DATA aItemCOFINS
-   DATA aItemCOFINSST
-   DATA aItemISSQN
+   VAR aItem
+   VAR aItemDI
+   VAR aItemAdi
+   VAR aItemICMS
+   VAR aItemICMSPart
+   VAR aItemICMSST
+   VAR aItemICMSSN101
+   VAR aItemICMSSN102
+   VAR aItemICMSSN201
+   VAR aItemICMSSN202
+   VAR aItemICMSSN500
+   VAR aItemICMSSN900
+   VAR aItemIPI
+   VAR aItemII
+   VAR aItemPIS
+   VAR aItemPISST
+   VAR aItemCOFINS
+   VAR aItemCOFINSST
+   VAR aItemISSQN
 
-   DATA cFonteNFe     INIT "Times"
-   DATA cFonteCode128            // Inserido por Anderson Camilo em 04/04/2012
-   DATA cFonteCode128F           // Inserido por Anderson Camilo em 04/04/2012
-   DATA oPdf
-   DATA oPdfPage
-   DATA oPdfFontCabecalho
-   DATA oPdfFontCabecalhoBold
-   DATA nLinhaPDF
-   DATA nLarguraBox INIT 0.5
-   DATA lLaser INIT .T.
-   DATA lPaisagem
-   DATA cLogoFile
-   DATA nLogoStyle // 1-esquerda, 2-direita, 3-expandido
+   VAR cFonteNFe     INIT "Times"
+   VAR cFonteCode128            // Inserido por Anderson Camilo em 04/04/2012
+   VAR cFonteCode128F           // Inserido por Anderson Camilo em 04/04/2012
+   VAR oPdf
+   VAR oPdfPage
+   VAR oPdfFontCabecalho
+   VAR oPdfFontCabecalhoBold
+   VAR nLinhaPDF
+   VAR nLarguraBox INIT 0.5
+   VAR lLaser INIT .T.
+   VAR lPaisagem
+   VAR cLogoFile
+   VAR nLogoStyle // 1-esquerda, 2-direita, 3-expandido
 
-   DATA nItensFolha
-   DATA nLinhaFolha
-   DATA nFolhas
-   DATA nFolha
+   VAR nItensFolha
+   VAR nLinhaFolha
+   VAR nFolhas
+   VAR nFolha
 
-   DATA lValorDesc INIT .F.
-   DATA nCasasQtd INIT 2
-   DATA nCasasVUn INIT 2
-   DATA cRetorno
-   DATA PastaPdf
+   VAR lValorDesc INIT .F.
+   VAR nCasasQtd INIT 2
+   VAR nCasasVUn INIT 2
+   VAR cRetorno
+   VAR PastaPdf
 
 ENDCLASS
 
@@ -320,13 +321,8 @@ METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
    /* set compression mode */
    HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
    /* setando fonte */
-   If ::cFonteNFe == "Times"
-      ::oPdfFontCabecalho     := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
-      ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Times-Bold", "CP1252" )
-   ELSE
-      ::oPdfFontCabecalho     := HPDF_GetFont( ::oPdf, "Courier", "CP1252" )
-      ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Courier-Bold", "CP1252" )
-   ENDIF
+   ::oPdfFontCabecalho     := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
+   ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Times-Bold", "CP1252" )
 
 #ifdef __XHARBOUR__
    // Inserido por Anderson Camilo em 04/04/2012

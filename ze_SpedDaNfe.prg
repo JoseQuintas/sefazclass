@@ -88,7 +88,7 @@ CLASS hbNFeDanfe
    VAR aItemCOFINSST
    VAR aItemISSQN
 
-   VAR cFonteNFe
+   VAR cFonteNFe  INIT "Times"
    VAR cFonteCode128            // Inserido por Anderson Camilo em 04/04/2012
    VAR cFonteCode128F           // Inserido por Anderson Camilo em 04/04/2012
    VAR oPdf
@@ -115,13 +115,6 @@ CLASS hbNFeDanfe
 ENDCLASS
 
 METHOD Execute( cXmlNota, cFilePDF ) CLASS hbNFeDanfe
-
-   IF ::lLaser <> NIL
-      ::lLaser := .T.
-   ENDIF
-   IF ::cFonteNFe = NIL
-      ::cFonteNFe := "Times"
-   ENDIF
 
    IF Empty( cXmlNota )
       ::cRetorno := "XML sem conteúdo"

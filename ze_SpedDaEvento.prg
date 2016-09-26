@@ -41,8 +41,8 @@ CLASS hbnfeDaEvento
    VAR aEmit
    VAR aDest
 
-   VAR cFonteEvento
-   VAR cFonteCorrecoes
+   VAR cFonteEvento      INIT "Times"
+   VAR cFonteCorrecoes   INIT "Courier"
    VAR cFonteCode128
    VAR cFonteCode128F
    VAR oPdf
@@ -63,10 +63,6 @@ CLASS hbnfeDaEvento
 ENDCLASS
 
 METHOD Execute( cXmlEvento, cXmlDocumento, cFilePDF ) CLASS hbnfeDaEvento
-
-   hb_default( @::lLaser, .T. )
-   hb_default( @::cFonteEvento, "Times" )
-   hb_default( @::cFonteCorrecoes, "Courier" )
 
    IF Empty( cXmlEvento )
       ::cRetorno := "Não tem conteúdo do XML da carta de correção"
@@ -181,31 +177,20 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNfeDaEvento
    HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
 
    /* setando fonte */
-   IF ::cFonteEvento == "Times"
-      ::oPdfFontCabecalho     := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
-      ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Times-Bold", "CP1252" )
-   ELSEIF ::cFonteEvento == "Helvetica"
-      ::oPdfFontCabecalho     := HPDF_GetFont( ::oPdf, "Helvetica", "CP1252" )
-      ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Helvetica-Bold", "CP1252" )
-   ELSEIF ::cFonteEvento == "Courier-Oblique"
-      ::oPdfFontCabecalho     := HPDF_GetFont( ::oPdf, "Courier-Oblique", "CP1252" )
-      ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Courier-BoldOblique", "CP1252" )
-   ELSE
-      ::oPdfFontCabecalho     := HPDF_GetFont( ::oPdf, "Courier", "CP1252" )
-      ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Courier-Bold", "CP1252" )
-   ENDIF
+   DO CASE
+   CASE ::cFonteEvento == "Times" ;           ::oPdfFontCabecalho := HPDF_GetFont( ::oPdf, "Times-Roman",     "CP1252" ) ; ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Times-Bold",          "CP1252" )
+   CASE ::cFonteEvento == "Helvetica" ;       ::oPdfFontCabecalho := HPDF_GetFont( ::oPdf, "Helvetica",       "CP1252" ) ; ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Helvetica-Bold",      "CP1252" )
+   CASE ::cFonteEvento == "Courier-Oblique" ; ::oPdfFontCabecalho := HPDF_GetFont( ::oPdf, "Courier-Oblique", "CP1252" ) ; ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Courier-BoldOblique", "CP1252" )
+   OTHERWISE ;                                ::oPdfFontCabecalho := HPDF_GetFont( ::oPdf, "Courier",         "CP1252" ) ; ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Courier-Bold",        "CP1252" )
+   ENDCASE
 
-   IF ::cFonteCorrecoes == "Times"
-      ::oPdfFontCorrecoes     := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
-   ELSEIF ::cFonteCorrecoes == "Helvetica"
-      ::oPdfFontCorrecoes     := HPDF_GetFont( ::oPdf, "Helvetica", "CP1252" )
-   ELSEIF ::cFonteCorrecoes == "Courier-Oblique"
-      ::oPdfFontCorrecoes     := HPDF_GetFont( ::oPdf, "Courier-Oblique", "CP1252" )
-   ELSEIF ::cFonteCorrecoes == "Courier-Bold"
-      ::oPdfFontCorrecoes     := HPDF_GetFont( ::oPdf, "Courier-Bold", "CP1252" )
-   ELSE
-      ::oPdfFontCorrecoes     := HPDF_GetFont( ::oPdf, "Courier", "CP1252" )
-   ENDIF
+   DO CASE
+   CASE ::cFonteCorrecoes == "Times" ;           ::oPdfFontCorrecoes := HPDF_GetFont( ::oPdf, "Times-Roman",     "CP1252" )
+   CASE ::cFonteCorrecoes == "Helvetica" ;       ::oPdfFontCorrecoes := HPDF_GetFont( ::oPdf, "Helvetica",       "CP1252" )
+   CASE ::cFonteCorrecoes == "Courier-Oblique" ; ::oPdfFontCorrecoes := HPDF_GetFont( ::oPdf, "Courier-Oblique", "CP1252" )
+   CASE ::cFonteCorrecoes == "Courier-Bold" ;    ::oPdfFontCorrecoes := HPDF_GetFont( ::oPdf, "Courier-Bold",    "CP1252" )
+   OTHERWISE ;                                   ::oPdfFontCorrecoes := HPDF_GetFont( ::oPdf, "Courier",         "CP1252" )
+   ENDCASE
 
 #ifdef __XHARBOUR__
    IF ! File( 'fontes\Code128bWinLarge.afm' ) .OR. ! File( 'fontes\Code128bWinLarge.pfb' )
