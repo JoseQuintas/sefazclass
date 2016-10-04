@@ -1,24 +1,38 @@
 /*
 ze_spedxmlvalida - Validação de XML
 2016.07.28.1620 - José Quintas
+2016.09.26.1850 - Arquivo XSD como parâmetro
+2016.10.04.0930 - Validações simples acrescentadas
 */
 
-/*
 PROCEDURE PTESValidaXml
 
-   LOCAL cRetorno
+   LOCAL cRetorno, cFileXsd, cXml
 
-   cRetorno := ValidaXml( MemoRead( "d:\jpa\cordeiro\nfe\tmp\nf000094053-02-assinado.xml" ), "NFE" )
+   cFileXsd := hb_Cwd() + "schemmas\"
+   cFileXsd += "pl_008i2_cfop_externo\nfe_v3.10.xsd"
+   //cFileXsd += "pl_cte_200a_nt2015.004\cte_v2.00.xsd"
+   //cFileXsd += "pl_mdfe_100a\mdfe_v1.00.xsd"
+   //cFileXsd += "pl_mdfe_300\mdfe_v3.00.xsd"
+
+   cXml     := MemoRead( "d:\jpa\cordeiro\nfe\tmp\nf000094053-02-assinado.xml" )
+
+   Inkey(0)
+   cRetorno := ValidaXml( cXml, cFileXsd )
    MsgExclamation( cRetorno )
 
    RETURN
-*/
 
-FUNCTION ValidaXml( cXml, cTipo )
+FUNCTION ValidaXml( cXml, cFileXsd )
 
-   LOCAL oXmlDomDoc, oXmlSchema, oXmlErro, cFileXSD := "", cRetorno := "ERRO"
+   LOCAL oXmlDomDoc, oXmlSchema, oXmlErro, cRetorno := "ERRO"
 
-   hb_DefaultValue( @cTipo, "" )
+   hb_Default( @cFileXsd, "" )
+
+   IF " <" $ cXml .OR. "> " $ cXml
+      cRetorno := "Espaços inválidos no XML entre as tags"
+      RETURN cRetorno
+   ENDIF
 
    BEGIN SEQUENCE WITH __BreakBlock()
 
@@ -42,12 +56,10 @@ FUNCTION ValidaXml( cXml, cTipo )
       cRetorno   := "Erro Carregando MSXML2.XMLSchemaCache.6.0"
       oXmlSchema := win_OleCreateObject( "MSXML2.XMLSchemaCache.6.0" )
 
-      DO CASE
-      CASE cTipo == "NFE" ;    cFileXSD := Left( hb_Argv(0), Rat( "\", hb_Argv(0) ) ) + "schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd"
-      OTHERWISE
-         cRetorno := "OK"       /* Validação básica */
+      IF Empty( cFileXsd )
+         cRetorno := "OK"
          BREAK
-      ENDCASE
+      ENDIF
       IF ! File( cFileXSD )
          cRetorno := "Erro não encontrado arquivo " + cFileXSD
          BREAK
