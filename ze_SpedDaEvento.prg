@@ -99,65 +99,30 @@ METHOD Execute( cXmlEvento, cXmlDocumento, cFilePDF ) CLASS hbnfeDaEvento
 
 METHOD BuscaDadosXML() CLASS hbnfeDaEvento
 
-   LOCAL cInfEvento, cInfEventoRet, cIde, cEmit, cDest
+   ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "infEvento" ), { "tpEvento", "nSeqEvento", "verEvento", "xCorrecao" } )
+   ::aInfEvento[ "cOrgao" ] := Left( ::cChaveEvento, 2 )
 
-   cInfEvento := XmlNode( ::cXmlEvento, "infEvento" )
-   ::aInfEvento := hb_Hash()
-   ::aInfEvento[ "cOrgao" ]     := Left( ::cChaveEvento, 2 ) // XmlNode( cInfEvento, "cOrgao" )
-   ::aInfEvento[ "tpEvento" ]   := XmlNode( cInfEvento, "tpEvento" )
-   ::aInfEvento[ "nSeqEvento" ] := XmlNode( cInfEvento, "nSeqEvento" )
-   ::aInfEvento[ "verEvento" ]  := XmlNode( cInfEvento, "verEvento" )
-   ::aInfEvento[ "xCorrecao" ]  := XmlNode( cInfEvento, "xCorrecao" )
+   ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "retEvento" ), { "cStat", "xMotivo", "dhRegEvento", "nProt" }, ::aInfEvento )
 
-   cInfEventoRet := XmlNode( ::cXmlEvento, "retEvento" )
-   ::aInfEvento[ "cStat" ]       := XmlNode( cInfEventoRet, "cStat" )
-   ::aInfEvento[ "xMotivo" ]     := XmlNode( cInfEventoRet, "xMotivo" )
-   ::aInfEvento[ "dhRegEvento" ] := XmlNode( cInfEventoRet, "dhRegEvento" )
-   ::aInfEvento[ "nProt" ]       := XmlNode( cInfEventoRet, "nProt" )
-
-   cIde := XmlNode( ::cXmlDocumento, "ide" )
    ::aIde := hb_Hash()
    ::aIde[ "mod" ]   := SubStr( ::cChaveEvento, 21, 2 ) // XmlNode( cIde, "mod" )
    ::aIde[ "serie" ] := SubStr( ::cChaveEvento, 23, 3 ) // XmlNode( cIde, "serie" )
    ::aIde[ "nNF" ]   := SubStr( ::cChaveEvento, 26, 9 ) // XmlNode( cIde, "nNF" )
-   ::aIde[ "dhEmi" ] := XmlNode( cIde, "dhEmi" )
+   ::aIde[ "dhEmi" ] := XmlNode( XmlNode( ::cXmlDocumento, "ide" ), "dhEmi" )
 
-   cEmit := XmlNode( ::cXmlDocumento, "emit" )
-   ::aEmit := hb_Hash()
-   ::aEmit[ "CNPJ" ]    := SubStr( ::cChaveEvento, 7, 14 ) // XmlNode( cEmit, "CNPJ" )
-   ::aEmit[ "xNome" ]   := XmlToString( XmlNode( cEmit, "xNome" ) )
-   ::aEmit[ "xFant" ]   := XmlNode( cEmit, "xFant" )
-   ::aEmit[ "xLgr" ]    := XmlNode( cEmit, "xLgr" )
-   ::aEmit[ "nro" ]     := XmlNode( cEmit, "nro" )
-   ::aEmit[ "xBairro" ] := XmlNode( cEmit, "xBairro" )
-   ::aEmit[ "cMun" ]    := XmlNode( cEmit, "cMun" )
-   ::aEmit[ "xMun" ]    := XmlNode( cEmit, "xMun" )
-   ::aEmit[ "UF" ]      := XmlNode( cEmit, "UF" )
-   ::aEmit[ "CEP" ]     := XmlNode( cEmit, "CEP" )
-   ::aEmit[ "fone" ]    := XmlNode( cEmit, "fone" ) // NFE 2.0
-   ::aEmit[ "IE" ]      := XmlNode( cEmit, "IE" )
-   ::cTelefoneEmitente := XmlNode( cEmit, "fone" )
+   ::aEmit := XmlToHash( XmlNode( ::cXmlDocumento, "emit" ), { "xNome", "xFant", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "fone", "IE" } )
+   ::aEmit[ "CNPJ" ] := SubStr( ::cChaveEvento, 7, 14 )
+   ::aEmit[ "xNome" ]   := XmlToString( ::aEmit[ "xNome" ] )
+   ::cTelefoneEmitente := ::aEmit[ "fone" ]
    IF ! Empty( ::cTelefoneEmitente )
       ::cTelefoneEmitente := Transform( SoNumeros( ::cTelefoneEmitente ), "@R (99) 9999-9999" )
    END
 
-   cDest := XmlNode( ::cXmlDocumento, "dest" )
-   ::aDest := hb_Hash()
-   ::aDest[ "CNPJ" ]    := XmlNode( cDest, "CNPJ" )
-   ::aDest[ "CPF" ]     := XmlNode( cDest, "CPF" )
-   ::aDest[ "xNome" ]   := XmlToString( XmlNode( cDest, "xNome" ) )
-   ::aDest[ "xLgr" ]    := XmlNode( cDest, "xLgr" )
-   ::aDest[ "nro" ]     := XmlNode( cDest, "nro" )
-   ::aDest[ "xBairro" ] := XmlNode( cDest, "xBairro" )
-   ::aDest[ "cMun" ]    := XmlNode( cDest, "cMun" )
-   ::aDest[ "xMun" ]    := XmlNode( cDest, "xMun" )
-   ::aDest[ "UF" ]      := XmlNode( cDest, "UF" )
-   ::aDest[ "CEP" ]     := XmlNode( cDest, "CEP" )
-   ::aDest[ "fone" ]    := XmlNode( cDest, "fone" )
+   ::aDest := XmlToHash( XmlNode( ::cXmlDocumento, "dest" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "fone", "IE" } )
+   ::aDest[ "xNome" ] := XmlToString( ::aDest[ "xNome" ] )
    IF Len( ::aDest[ "fone" ] ) <= 8
       ::aDest[ "fone" ] := "00" + ::aDest[ "fone" ]
    ENDIF
-   ::aDest[ "IE" ] := XmlNode( cDest, "IE" )
 
    RETURN .T.
 

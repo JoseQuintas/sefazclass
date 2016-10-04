@@ -154,18 +154,14 @@ METHOD Execute( cXml, cFilePDF ) CLASS hbnfeDaCte
 
 METHOD BuscaDadosXML() CLASS hbnfeDaCte
 
-   LOCAL cIde, cCompl, cEmit, cRem, cinfNF, cinfNFe, cinfOutros, cDest, cLocEnt, cPrest, cComp, cImp, cText, oElement
-   LOCAL cIcms00, cIcms20, cIcms45, cIcms60, cIcms90, cIcmsUF, cIcmsSN
-   LOCAL cinfCTeNorm, cInfCarga, cSeg, cRodo, cVeiculo, cProtocolo, cExped
-   LOCAL cReceb, cInfQ, cValePed, cMoto, cProp
+   LOCAL cIde, cCompl, cEmit, cinfNF, cinfNFe, cinfOutros, cDest, cPrest, cComp, cImp, cText, oElement
+   LOCAL cinfCTeNorm, cInfCarga, cRodo, cVeiculo, cExped
+   LOCAL cReceb, cInfQ
 
    cIde := XmlNode( ::cXml, "ide" )
-   ::aIde := hb_Hash()
-   FOR EACH oElement IN { "cUF", "cCT", "CFOP", "natOp", "forPag", "mod", "serie", "nCT", "dhEmi", "tpImp", "tpEmis", "cDV", "tpAmb", ;
-         "tpCTe", "procEmi", "verProc", "cMunEnv", "xMunEnv", "UFEnv", "modal", "tpServ", "cMunIni", "xMunIni", "UFIni", "cMunFim", "xMunFim", "UFFim", ;
-         "retira", "xDetRetira" }
-      ::aIde[ oElement ] := XmlNode( cIde, oElement )
-   NEXT
+   ::aIde := XmlToHash( cIde, { "cUF", "cCT", "CFOP", "natOp", "forPag", "mod", "serie", "nCT", "dhEmi", "tpImp", "tpEmis", ;
+             "cDV", "tpAmb", "tpCTe", "procEmi", "verProc", "cMunEnv", "xMunEnv", "UFEnv", "modal", "tpServ", "cMunIni", ;
+             "xMunIni", "UFIni", "cMunFim", "xMunFim", "UFFim", "retira", "xDetRetira" } )
    cIde := XmlNode( cIde, "toma03" )
    ::aIde[ "toma" ] := XmlNode( cIde, "toma" )
 
@@ -176,12 +172,9 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    ::aObsCont[ "xTexto" ] := XmlNode( cCompl, "xTexto" )
 
    cEmit := XmlNode( ::cXml, "emit" )
-   ::aEmit := hb_Hash()
-   FOR EACH oELement IN { "CNPJ", "IE", "xNome", "xFant", "fone" }
-      ::aEmit[ oElement ] := XmlNode( cEmit, oElement )
-   NEXT
+   ::aEmit := XmlToHash( cEmit, { "CNPJ", "IE", "xNome", "xFant", "fone" } )
    ::aEmit[ "xNome" ] := XmlToSTring( ::aEmit[ "xNome" ] )
-   ::cTelefoneEmitente  := SoNumeros( XmlNode( cEmit, "fone" ) )
+   ::cTelefoneEmitente  := SoNumeros( ::aEmit[ "fone" ] )
    IF ! Empty( ::cTelefoneEmitente )
       ::cTelefoneEmitente := Transform( ::cTelefoneEmitente, "@E (99) 9999-9999" )
    ENDIF
@@ -190,15 +183,11 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
       ::aEmit[ oElement ] := XmlNode( cEmit, oElement )
    NEXT
 
-   cRem := XmlNode( ::cXml, "rem" )
-   ::aRem := hb_Hash()
-   FOR EACH oElement IN { "CNPJ", "CPF", "IE", "xNome", "xFant", "fone", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "CEP", "UF", "cPais", "xPais" }
-      ::aRem[ oElement ] := XmlNode( cRem, oElement )
-   NEXT
+   ::aRem            := XmlToHash( XmlNode( ::cXml, "rem" ), { "CNPJ", "CPF", "IE", "xNome", "xFant", "fone", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "CEP", "UF", "cPais", "xPais" } )
    ::aRem[ "xNome" ] := XmlToString( ::aRem[ "xNome" ] )
-   cRem := XmlNode( ::cXml, "infDoc" )
+
+   cText := XmlNode( ::cXml, "infDoc" )
    ::ainfNF := {}
-   cText := cRem
    DO WHILE "<infNF" $ cText .AND. "</infNF" $ cText
       cinfNF := XmlNode( cText, "infNF" )
       cText  := SubStr( cText, At( "</infNF", cText ) + 8 )
@@ -244,10 +233,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    ENDDO
 
    cDest := XmlNode( ::cXml, "dest" )
-   ::aDest := hb_Hash()
-   FOR EACH oElement IN { "CNPJ", "CPF", "IE", "xNome", "fone", "ISUF", "email" }
-      ::aDest[ oElement ] := XmlNode( cDest, oElement )
-   NEXT
+   ::aDest := XmlToHash( cDest, { "CNPJ", "CPF", "IE", "xNome", "fone", "ISUF", "email" } )
    ::aDest[ "xNome" ] := XmlToString( ::aDest[ "xNome" ] )
    ::aDest[ "email" ] := XmlToString( ::aDest[ "email" ] )
 
@@ -256,17 +242,10 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
       ::aDest[ oElement ] := XmlNode( cDest, oElement )
    NEXT
 
-   clocEnt := XmlNode( cDest, "locEnt" )
-   ::alocEnt := hb_Hash()
-   FOR EACH oElement IN { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "xMun", "UF" }
-      ::aLocEnt[ oElement ] := XmlNode( cLocEnt, oElement )
-   NEXT
+   ::alocEnt := XmlToHash( XmlNode( cDest, "locEnt" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "xMun", "UF" } )
 
    cExped := XmlNode( ::cXml, "exped" )
-   ::aExped := hb_Hash()
-   FOR EACH oElement IN { "CNPJ", "CPF", "IE", "xNome", "fone", "email" }
-      ::aExped[ oElement ] := XmlNode( cExped, oElement )
-   NEXT
+   ::aExped := XmlToHash( cExped, { "CNPJ", "CPF", "IE", "xNome", "fone", "email" } )
    ::aExped[ "xNome" ] := XmlToString( ::aExped[ "xNome" ] )
    ::aExped[ "email" ] := XmlToString( ::aExped[ "email" ] )
 
@@ -276,10 +255,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    NEXT
 
    cReceb := XmlNode( ::cXml, "receb" )
-   ::aReceb := hb_Hash()
-   FOR EACH oElement IN { "CNPJ", "CPF", "IE", "xNome", "fone", "email" }
-      ::aReceb[ oElement ] := XmlNode( cReceb, oElement )
-   NEXT
+   ::aReceb := XmlToHash( cReceb, { "CNPJ", "CPF", "IE", "xNome", "fone", "email" } )
    ::aReceb[ "xNome" ] := XmlToString( ::aReceb[ "xNome" ] )
    ::aReceb[ "email" ] := XmlToString( ::aReceb[ "email" ] )
 
@@ -288,11 +264,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
       ::aReceb[ oElement ] := XmlNode( cReceb, oElement )
    NEXT
 
-   cPrest := XmlNode( ::cXml, "vPrest" )
-   ::aPrest := hb_Hash()
-   FOR EACH oElement IN { "vTPrest", "vRec" }
-      ::aPrest[ oElement ] := XmlNOde( cPrest, oElement )
-   NEXT
+   ::aPrest := XmlToHash( XmlNode( ::cXml, "vPrest" ), { "vTPrest", "vRec" } )
 
    ::aComp := {}
    cPrest  := XmlNode( ::cXml, "vPrest" )
@@ -305,49 +277,16 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
          XmlNode( "vComp" ) } )
    ENDDO
 
-   cImp := XmlNode( ::cXml, "imp" )
-
-   cIcms00 := XmlNode( cImp, "ICMS00" )
-   ::aIcms00 := hb_Hash()
-   FOR EACH oElement IN { "CST", "vBC", "pICMS", "vICMS" }
-      ::aIcms00[ oElement ] := XmlNode( cIcms00, oElement )
-   NEXT
-
-   cIcms20 := XmlNode( cImp, "ICMS20" )
-   ::aIcms20 := hb_Hash()
-   FOR EACH oElement IN { "CST", "vBC", "pRedBC", "pICMS", "vICMS" }
-      ::aIcms20[ oElement ] := XmlNode( cIcms20, oElement )
-   NEXT
-
-   cIcms45 := XmlNode( cImp, "ICMS45" )
-   ::aIcms45 := hb_Hash()
-   ::aIcms45[ "CST" ] := XmlNode( cIcms45, "CST" ) // NFE 2.0
-
-   cIcms60 := XmlNode( cImp, "ICMS60" )
-   ::aIcms60 := hb_Hash()
-   FOR EACH oElement IN { "CST", "vBCSTRet", "vICMSSTRet", "pICMSSTRet", "vCred" }
-      ::aIcms60[ oElement ]  := XmlNode( cIcms60, oElement )
-   NEXT
-
-   cIcms90 := XmlNode( cImp, "ICMS90" )
-   ::aIcms90 := hb_Hash()
-   FOR EACH oElement IN { "CST", "pRedBC", "vBC", "pICMS", "vICMS", "vCred" }
-      ::aIcms90[ oElement ] := XmlNode( cICms90, oElement )
-   NEXT
-
-   cIcmsUF := XmlNode( cImp, "ICMSOutraUF" )
-   ::aIcmsUF := hb_Hash()
-   FOR EACH oElement IN { "CST", "pRedBCOutraUF", "vBCOutraUF", "pICMSOutraUF", "vICMSOutraUF" }
-      ::aIcmsUF[ oElement ] := XmlNode( cIcmsUF, oElement )
-   NEXT
-
-   cIcmsSN := XmlNode( cImp, "ICMSSN" )
-   ::aIcmsSN := hb_Hash()
-   ::aIcmsSN[ "indSN" ] := XmlNode( cIcmsSN, "indSN" ) // NFE 2.0
-   ::cAdFisco := XmlNode( cImp, "infAdFisco" )
-
+   cImp        := XmlNode( ::cXml, "imp" )
+   ::aIcms00   := XmlToHash( XmlNode( cImp, "ICMS00" ), { "CST", "vBC", "pICMS", "vICMS" } )
+   ::aIcms20   := XmlToHash( XmlNode( cImp, "ICMS20" ), { "CST", "vBC", "pRedBC", "pICMS", "vICMS" } )
+   ::aIcms45   := XmlToHash( XmlNode( cImp, "ICMS45" ), { "CST" } )
+   ::aIcms60   := XmlToHash( XmlNode( cImp, "ICMS60" ), { "CST", "vBCSTRet", "vICMSSTRet", "pICMSSTRet", "vCred" } )
+   ::aIcms90   := XmlToHash( XmlNode( cImp, "ICMS90" ), { "CST", "pRedBC", "vBC", "pICMS", "vICMS", "vCred" } )
+   ::aIcmsUF   := XmlToHash( XmlNode( cImp, "ICMSOutraUF" ), { "CST", "pRedBCOutraUF", "vBCOutraUF", "pICMSOutraUF", "vICMSOutraUF" } )
+   ::aIcmsSN   := XmlToHash( XmlNode( cImp, "ICMSSN" ), { "indSN" } )
+   ::cAdFisco  := XmlNode( cImp, "infAdFisco" )
    ::vTotTrib  := XmlNode( ::cXml, "vTotTrib" )
-
    cinfCTeNorm := XmlNode( ::cXml, "infCTeNorm" )
    cinfCarga   := XmlNode( cInfCteNorm, "infCarga" )
    ::aInfCarga := hb_Hash()
@@ -366,35 +305,12 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
          XmlNode( cInfQ, "qCarga" ) } )
    ENDDO
 
-   cSeg := XmlNode( cInfCTeNorm, "seg" )
-   ::aSeg := hb_Hash()
-   FOR EACH oElement IN { "respSeg", "xSeg", "nApol", "nAver", "vCarga" }
-      ::aSeg[ oElement ] := XmlNode( cSeg, oElement )
-   NEXT
-
-   cRodo := XmlNode( cInfCteNorm, "rodo" )
-   ::aRodo := hb_Hash()
-   FOR EACH oElement IN { "RNTRC", "dPrev", "lota", "CIOT", "nLacre" }
-      ::aRodo[ oElement ] := XmlNode( oElement, cRodo )
-   NEXT
-
-   cMoto := XmlNode( cInfCteNorm, "moto" )
-   ::aMoto := hb_Hash()
-   FOR EACH oElement IN { "xNome", "CPF" }
-      ::aMoto[ oElement ] := XmlNode( cMoto, oElement )
-   NEXT
-
-   cValePed := XmlNode( cRodo, "valePed" )
-   ::aValePed := hb_Hash()
-   FOR EACH oElement IN { "CNPJForn", "nCompra", "CNPJPg" }
-      ::aValePed[ oElement ] := XmlNode( cValePed, oElement )
-   NEXT
-
-   cProp := XmlNode( cRodo, "prop" )
-   ::aProp := hb_Hash()
-   FOR EACH oElement IN { "CPF", "CNPJ", "RNTRC", "xNome", "IE", "UF", "tpProp" }
-      ::aProp[ oElement ] := XmlNode( cProp, oElement )
-   NEXT
+   ::aSeg     := XmlToHash( XmlNode( cInfCteNorm, "seg" ), { "respSeg", "xSeg", "nApol", "nAver", "vCarga" } )
+   ::aMoto    := XmlToHash( XmlNode( cInfCteNorm, "moto" ), { "xNome", "CPF" } )
+   cRodo      := XmlNode( cInfCteNorm, "rodo" )
+   ::aRodo    := XmlToHash( cRodo, { "RNTRC", "dPrev", "lota", "CIOT", "nLacre" } )
+   ::aValePed := XmlToHash( XmlNode( cRodo, "valePed" ), { "CNPJForn", "nCompra", "CNPJPg" } )
+   ::aProp    := XmlToHash( XmlNode( cRodo, "prop" ), { "CPF", "CNPJ", "RNTRC", "xNome", "IE", "UF", "tpProp" } )
 
    ::aVeiculo := {}
    cText := XmlNode( cinfCteNorm, "rodo" )
@@ -415,11 +331,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
          XmlNode( cVeiculo, "UF" ) } )
    ENDDO
 
-   cProtocolo := XmlNode( ::cXml, "infProt" )
-   ::aProtocolo := hb_Hash()
-   FOR EACH oElement IN { "nProt", "dhRecbto" }
-      ::aProtocolo[ oElement ] := XmlNode( cProtocolo, oElement )
-   NEXT
+   ::aProtocolo := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto" } )
 
    DO CASE
    CASE ::aIde[ 'toma' ] = '0' ; ::aToma := ::aRem

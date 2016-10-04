@@ -169,62 +169,15 @@ METHOD execute( cXml, cFilePDF ) CLASS hbnfeDaMdfe
 
 METHOD buscaDadosXML() CLASS hbnfeDaMdfe
 
-   LOCAL cIde, cEmit, cinfNF, cinfNFe, cText
-   LOCAL cchCT, cchNFe
-   LOCAL cRodo, cVeiculo, cProtocolo, cNF
-   LOCAL cValePed, cProp, cMunCarreg, cModal, cMunDescarga, cTot
-   LOCAL cCondutor, cReboque
+   LOCAL cinfNF, cinfNFe, cText, cNF, cchCT, cchNFe
 
-   cIde := XmlNode( ::cXml, "ide" )
-   ::aIde := hb_Hash()
-   ::aIde[ "cUF" ]     := XmlNode( cIde, "cUF" )
-   ::aIde[ "tpAmb" ]   := XmlNode( cIde, "tpAmb" )
-   ::aIde[ "tpEmis" ]  := XmlNode( cIde, "tpEmis" )
-   ::aIde[ "mod" ]     := XmlNode( cIde, "mod" )
-   ::aIde[ "serie" ]   := XmlNode( cIde, "serie" )
-   ::aIde[ "nMDF" ]    := XmlNode( cIde, "nMDF" )
-   ::aIde[ "cMDF" ]    := XmlNode( cIde, "cMDF" )
-   ::aIde[ "cDV" ]     := XmlNode( cIde, "cDV" )
-   ::aIde[ "modal" ]   := XmlNode( cIde, "modal" )
-   ::aIde[ "dhEmi" ]   := XmlNode( cIde, "dhEmi" )
-   ::aIde[ "tpEmis" ]  := XmlNode( cIde, "tpEmis" )
-   ::aIde[ "procEmi" ] := XmlNode( cIde, "procEmi" )
-   ::aIde[ "verProc" ] := XmlNode( cIde, "verProc" )
-   ::aIde[ "UFIni" ]   := XmlNode( cIde, "UFIni" )
-   ::aIde[ "UFFim" ]   := XmlNode( cIde, "UFFim" )
-
-   cMunCarreg := XmlNode( ::cXml, "infMunCarrega" )
-   ::aMunCarreg := hb_Hash()
-   ::aMunCarreg[ "cMunCarrega" ] := XmlNode( cMunCarreg, "cMunCarrega" )
-
-   cEmit := XmlNode( ::cXml, "emit" )
-   ::aEmit := hb_Hash()
-   ::aEmit[ "CNPJ" ]  := XmlNode( cEmit, "CNPJ" )
-   ::aEmit[ "IE" ]    := XmlNode( cEmit, "IE" )
-   ::aEmit[ "xNome" ] := XmlNode( cEmit, "xNome" )
-   ::aEmit[ "xFant" ] := XmlNode( cEmit, "xFant" )
-   ::aEmit[ "fone" ]  := XmlNOde( cEmit, "fone" )
-
-   cEmit := XmlNode( cEmit, "enderEmit" )
-   ::aEmit[ "xLgr" ]    := XmlNode( cEmit, "xLgr" )
-   ::aEmit[ "nro" ]     := XmlNode( cEmit, "nro" )
-   ::aEmit[ "xCpl" ]    := XmlNode( cEmit, "xCpl" )
-   ::aEmit[ "xBairro" ] := XmlNode( cEmit, "xBairro" )
-   ::aEmit[ "cMun" ]    := XmlNode( cEmit, "cMun" )
-   ::aEmit[ "xMun" ]    := XmlNode( cEmit, "xMun" )
-   ::aEmit[ "CEP" ]     := XmlNode( cEmit, "CEP" )
-   ::aEmit[ "UF" ]      := XmlNode( cEmit, "UF" )
-
-   cModal := XmlNode( ::cXml, "rem" )
-   ::aModal := hb_Hash()
-   ::aModal[ "versaoModal" ] := XmlNode( cModal, "versaoModal" )
-
-   cMunDescarga := XmlNode( ::cXml, "infMunDescarga" )
-   ::aMunDescarga := hb_Hash()
-   ::aMunDescarga[ "cMunDescarga" ] := XmlNode( cMunDescarga, "cMunDescarga" )
-   ::aMunDescarga[ "xMunDescarga" ] := XmlNode( cMunDescarga, "xMunDescarga" )
-
-   // cte
+   ::aIde         := XmlToHash( XmlNode( ::cXml, "ide" ), { "cUF", "tpAmb", "tpEmis", "mod", "serie", "nMDF", "cMDF", "cDV", "modal", ;
+                     "dhEmi", "tpEmis", "procEmi", "verProc", "UFIni", "UFFim" } )
+   ::aMunCarreg   := XmlToHash( XmlNode( ::cXml, "infMunCarrega" ), { "cMunCarrega" } )
+   ::aEmit        := XmlToHash( XmlNode( ::cXml, "emit" ), { "CNPJ", "IE", "xNome", "xFant", "fone" } )
+   ::aEmit        := XmlToHash( XmlNode( XmlNode( ::cXml, "emit" ), "enderEmit" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "CEP", "UF" }, ::aEmit )
+   ::aModal       := XmlNode( XmlNode( ::cXml, "rem" ), "versaoModal" )
+   ::aMunDescarga := XmlToHash( XmlNode( ::cXml, "infMunDescarga" ), { "cMunDescarga", "xMunDescarga" } )
 
    ::ainfCTe := {}
    cText     := XmlNode( ::cXml, "infCTe" )
@@ -258,55 +211,17 @@ METHOD buscaDadosXML() CLASS hbnfeDaMdfe
       AAdd( ::ainfNFe, XmlNode( cchNFe, "chNFe" ) )
    ENDDO
 
-   cTot := XmlNode( ::cXml, "tot" )
-   ::aTot := hb_Hash()
-   ::aTot[ "qCTe" ]   := XmlNode( cTot, "qCTe" )
-   ::aTot[ "qCT" ]    := XmlNode( cTot, "qCT" )
-   ::aTot[ "qNFe" ]   := XmlNode( cTot, "qNFe" )
-   ::aTot[ "qNF" ]    := XmlNode( cTot, "qNF" )
-   ::aTot[ "vCarga" ] := XmlNode( cTot, "vCarga" )
-   ::aTot[ "cUnid" ]  := XmlNode( cTot, "cUnid" )
-   ::aTot[ "qCarga" ] := XmlNode( cTot, "qCarga" )
-
-   ::cLacre := XmlNode( ::cXml, "nLacre" )
-
-   ::cInfCpl := XmlNode( ::cXml, "infCpl" )
-
-   cRodo := XmlNode( ::cXml, "rodo" )
-   ::cRntrcEmit := XmlNode( cRodo, "RNTRC" )
-   ::cCiot      := XmlNode( cRodo, "CIOT" )
-
-   cVeiculo := XmlNode( ::cXml, "veicTracao" )
-   ::aVeiculo := hb_Hash()
-   ::aVeiculo[ "placa" ] := XmlNode( cVeiculo, "placa" )
-   ::aVeiculo[ "tara" ]  := XmlNode( cVeiculo, "tara" )
-
-   cProp := XmlNode( ::cXml, "prop" )
-   ::aProp := hb_Hash()
-   ::aProp[ "RNTRC" ] := XmlNode( cProp, "RNTRC" )
-
-   cCondutor := XmlNode( ::cXml, "condutor" )
-   ::aCondutor := hb_Hash()
-   ::aCondutor[ "xNome" ] := XmlNode( cCondutor, "xNome" )
-   ::aCondutor[ "CPF" ]   := XmlNode( cCondutor, "CPF" )
-
-   cReboque := XmlNode( ::cXml, "veicReboque" )
-   ::aReboque := hb_Hash()
-   ::aReboque[ "placa" ] := XmlNode( cReboque, "placa" )
-   ::aReboque[ "tara" ]  := XmlNode( cReboque, "tara" )
-   ::aReboque[ "capKG" ] := XmlNode( cReboque, "capKG" )
-   ::aReboque[ "RNTRC" ] := XmlNode( cReboque, "RNTRC" )
-
-   cValePed := XmlNode( ::cXml, "valePed" )
-   ::aValePed := hb_Hash()
-   ::aValePed[ "CNPJForn" ] := XmlNode( cValePed, "CNPJForn" )
-   ::aValePed[ "CNPJPg" ]   := XmlNode( cValePed, "CNPJPg" )
-   ::aValePed[ "nCompra" ]  := XmlNode( cValePed, "nCompra" )
-
-   cProtocolo := XmlNode( ::cXml, "infProt" )
-   ::aProtocolo := hb_Hash()
-   ::aProtocolo[ "nProt" ]    := XmlNode( cProtocolo, "nProt" ) // NFE 2.0
-   ::aProtocolo[ "dhRecbto" ] := XmlNode( cProtocolo, "dhRecbto" ) // NFE 2.0
+   ::aTot       := XmlToHash( XmlNode( ::cXml, "tot" ), { "qCTe", "qCT", "qNFe", "qNF", "vCarga", "cUnid", "qCarga" } )
+   ::cLacre     := XmlNode( ::cXml, "nLacre" )
+   ::cInfCpl    := XmlNode( ::cXml, "infCpl" )
+   ::cRntrcEmit := XmlNode( XmlNode( ::cXml, "rodo" ), "RNTRC" )
+   ::cCiot      := XmlNode( XmlNode( ::cXml, "rodo" ), "CIOT" )
+   ::aVeiculo   := XmlToHash( XmlNode( ::cXml, "veicTracao" ), { "placa", "tara" } )
+   ::aProp      := XmlToHash( XmlNode( ::cXml, "prop" ), { "RNTRC" } )
+   ::aCondutor  := XmlToHash( XmlNode( ::cXml, "condutor" ), { "xNome", "CPF" } )
+   ::aReboque   := XmlToHash( XmlNode( ::cXml, "veicReboque" ), { "placa", "tara", "capKG", "RNTRC" } )
+   ::aValePed   := XmlToHash( XmlNode( ::cXml, "valePed" ), { "CNPJForn", "CNPJPg", "nCompra" } )
+   ::aProtocolo := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto" } )
 
    RETURN .T.
 

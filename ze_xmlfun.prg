@@ -362,3 +362,16 @@ FUNCTION StringToXml( cTexto )
    cTexto := StrTran( cTexto, "ª", "&#170;" )
 
    RETURN cTexto
+
+
+FUNCTION XmlToHash( cXml, aTagList, oVar )
+
+   LOCAL oElement
+
+   oVar := iif( oVar == NIL, hb_Hash(), oVar )
+
+   FOR EACH oElement IN aTagList
+      oVar[ oElement ] := XmlNode( cXml, oElement )
+   NEXT
+
+   RETURN oVar
