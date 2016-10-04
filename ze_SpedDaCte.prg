@@ -274,7 +274,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
       cText := SubStr( cText, At( "</Comp", cText ) + 7 )
       AAdd( ::aComp, { ;
          XmlNode( cComp, "xNome" ), ;
-         XmlNode( "vComp" ) } )
+         XmlNode( cComp, "vComp" ) } )
    ENDDO
 
    cImp        := XmlNode( ::cXml, "imp" )
