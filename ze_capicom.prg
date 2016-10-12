@@ -16,6 +16,8 @@ FUNCTION CapicomEscolheCertificado()
    oColecao := oCapicomStore:Certificates()
    oCertificado := oColecao:Select( "Selecione o certificado para uso da Nfe","Selecione o certificado", .F. )
    IF oCertificado:Count() > 0
+   	oSefaz:ValidFromDate := oCertificado:Item(1):ValidFromDate // runner
+   	oSefaz:ValidToDate := oCertificado:Item(1):ValidToDate // runner
       cNomeCertificado := oCertificado:Item( 1 ):SubjectName
    ENDIF
    IF "CN=" $ cNomeCertificado

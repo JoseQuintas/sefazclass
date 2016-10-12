@@ -127,7 +127,7 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
       DSIGNS = [xmlns:ds="http://www.w3.org/2000/09/xmldsig#"]
       oDOMDoc:setProperty( "SelectionNamespaces", DSIGNS )
 
-      IF ! "</Signature>" $ cTxtXml
+      IF .NOT. "</Signature>" $ cTxtXml
          cRetorno := "Erro Assinatura: Bloco Assinatura não encontrado"
       ENDIF
       xmldsig:signature := oDOMDoc:selectSingleNode(".//ds:Signature")

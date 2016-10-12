@@ -35,7 +35,8 @@ CLASS hbnfeDaEvento
    VAR cXmlEvento
    VAR cChaveNFe
    VAR cChaveEvento
-
+   
+	VAR aCorrecoes  // runner
    VAR aInfEvento
    VAR aIde
    VAR aEmit
@@ -99,16 +100,23 @@ METHOD Execute( cXmlEvento, cXmlDocumento, cFilePDF ) CLASS hbnfeDaEvento
 
 METHOD BuscaDadosXML() CLASS hbnfeDaEvento
 
+	::aCorrecoes := XmlNode( ::cXmlEvento, "infEvento" )
+	::aCorrecoes := XmlNode( ::aCorrecoes , "evCCeCTe" )
+	::aCorrecoes := MultipleNodeToArray(::aCorrecoes,'infCorrecao')
+	
    ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "infEvento" ), { "tpEvento", "nSeqEvento", "verEvento", "xCorrecao" } )
    ::aInfEvento[ "cOrgao" ] := Left( ::cChaveEvento, 2 )
 
-   ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "retEvento" ), { "cStat", "xMotivo", "dhRegEvento", "nProt" }, ::aInfEvento )
-
+	IF At("retEventoCTe",::cXmlEvento) > 0  // runner
+	   ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "retEventoCTe" ), { "cStat", "xMotivo", "dhRegEvento", "nProt" }, ::aInfEvento )
+	ELSE
+	   ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "retEvento" ), { "cStat", "xMotivo", "dhRegEvento", "nProt" }, ::aInfEvento )
+	ENDIF
    ::aIde := hb_Hash()
    ::aIde[ "mod" ]   := SubStr( ::cChaveEvento, 21, 2 ) // XmlNode( cIde, "mod" )
    ::aIde[ "serie" ] := SubStr( ::cChaveEvento, 23, 3 ) // XmlNode( cIde, "serie" )
    ::aIde[ "nNF" ]   := SubStr( ::cChaveEvento, 26, 9 ) // XmlNode( cIde, "nNF" )
-   ::aIde[ "dhEmi" ] := XmlNode( XmlNode( ::cXmlDocumento, "ide" ), "dhEmi" )
+	::aIde[ "dhEmi" ] := XmlNode( XmlNode( ::cXmlDocumento, "ide" ), "dhEmi" )
 
    ::aEmit := XmlToHash( XmlNode( ::cXmlDocumento, "emit" ), { "xNome", "xFant", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "fone", "IE" } )
    ::aEmit[ "CNPJ" ] := SubStr( ::cChaveEvento, 7, 14 )
@@ -323,10 +331,15 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
    hbNFe_Texto_hpdf( ::oPdfPage, 341, ::nLinhaPdf,     390, Nil, "SERIE", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 6 )
    hbNFe_Texto_hpdf( ::oPdfPage, 341, ::nLinhaPDF -6,   390, Nil, ::aIde[ "serie" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 11 )
 
-   // NUMERO NFE
-   hbNFe_Texto_hpdf( ::oPdfPage, 391, ::nLinhaPdf,     480, Nil, "NUMERO DA NF-e", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 6 )
-   hbNFe_Texto_hpdf( ::oPdfPage, 391, ::nLinhaPDF -6,   480, Nil, SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 11 )
-
+	IF At("retEventoCTe",::cXmlEvento) > 0  // runner
+	   // NUMERO CTE
+	   hbNFe_Texto_hpdf( ::oPdfPage, 391, ::nLinhaPdf,     480, Nil, "NUMERO DO CT-e", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 6 )
+	   hbNFe_Texto_hpdf( ::oPdfPage, 391, ::nLinhaPDF -6,   480, Nil, SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 11 )
+	ELSE
+	   // NUMERO NFE
+	   hbNFe_Texto_hpdf( ::oPdfPage, 391, ::nLinhaPdf,     480, Nil, "NUMERO DA NF-e", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 6 )
+	   hbNFe_Texto_hpdf( ::oPdfPage, 391, ::nLinhaPDF -6,   480, Nil, SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 11 )
+	ENDIF
    // DATA DE EMISSAO DA NFE
    hbNFe_Box_Hpdf( ::oPdfPage,  480, ::nLinhaPDF -20,   85,  20, ::nLarguraBox )
    hbNFe_Texto_hpdf( ::oPdfPage, 481, ::nLinhaPdf,     565, Nil, "DATA DE EMISSÃO", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 6 )
@@ -340,8 +353,11 @@ METHOD Destinatario() CLASS hbnfeDaEvento
 
    ::nLinhaPdf -= 24
 
-   hbNFe_Texto_hpdf( ::oPdfPage, 30, ::nLinhaPdf, 565, Nil, "DESTINATÁRIO/REMETENTE", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 6 )
-
+	IF At("retEventoCTe",::cXmlEvento) > 0  // runner
+	   hbNFe_Texto_hpdf( ::oPdfPage, 30, ::nLinhaPdf, 565, Nil, "DESTINATÁRIO", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 6 )
+	ELSE
+	   hbNFe_Texto_hpdf( ::oPdfPage, 30, ::nLinhaPdf, 565, Nil, "DESTINATÁRIO/REMETENTE", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 6 )
+	ENDIF
    ::nLinhaPdf -= 9
    // RAZAO SOCIAL
    hbNFe_Box_Hpdf( ::oPdfPage,  30, ::nLinhaPDF -20, 425, 20, ::nLarguraBox )
@@ -458,23 +474,38 @@ METHOD Eventos() CLASS hbnfeDaEvento
 
    ::nLinhaPdf -= 12
 
-   cMemo := ::aInfEvento[ "xCorrecao" ]
+	IF At("retEventoCTe",::cXmlEvento) > 0  // runner
 
-   cMemo := StrTran( cMemo, ";", Chr( 13 ) + Chr( 10 ) )
-   nCompLinha := 77
-   IF ::cFonteCorrecoes == "Helvetica"
-      nCompLinha := 75
-   ENDIF
-
-   FOR nI = 1 TO MLCount( cMemo, nCompLinha )
-      hbNFe_Texto_hpdf( ::oPdfPage, 38, ::nLinhaPdf,564, Nil, Upper( Trim( MemoLine( cMemo, nCompLinha, nI ) ) ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCorrecoes, 11 )
-      ::nLinhaPdf -= 12
-   NEXT
-
-   FOR nI = ( MLCount( cMemo, nCompLinha ) + 1 ) TO 14
-      ::nLinhaPdf -= 12
-   NEXT
-
+	   FOR nI = 1 TO Len(::aCorrecoes)
+	   	cGrupo := XmlNode( ::aCorrecoes[nI] , 'grupoAlterado' )
+	   	cCampo := XmlNode( ::aCorrecoes[nI] , 'campoAlterado' )
+	   	cValor := XmlNode( ::aCorrecoes[nI] , 'valorAlterado' )
+	      hbNFe_Texto_hpdf( ::oPdfPage, 38, ::nLinhaPdf,564, Nil, 'Alterado = Grupo : '+cGrupo+' - Campo : '+cCampo+' - Valor : '+cValor , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCorrecoes, 11 )
+	      ::nLinhaPdf -= 12
+	   NEXT
+	   FOR nI = ( Len(::aCorrecoes)+1 ) TO 14
+	      ::nLinhaPdf -= 12
+	   NEXT
+			
+	ELSE
+	
+	   cMemo := ::aInfEvento[ "xCorrecao" ]
+	
+	   cMemo := StrTran( cMemo, ";", Chr( 13 ) + Chr( 10 ) )
+	   nCompLinha := 77
+	   IF ::cFonteCorrecoes == "Helvetica"
+	      nCompLinha := 75
+	   ENDIF
+	
+	   FOR nI = 1 TO MLCount( cMemo, nCompLinha )
+	      hbNFe_Texto_hpdf( ::oPdfPage, 38, ::nLinhaPdf,564, Nil, Upper( Trim( MemoLine( cMemo, nCompLinha, nI ) ) ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCorrecoes, 11 )
+	      ::nLinhaPdf -= 12
+	   NEXT
+	
+	   FOR nI = ( MLCount( cMemo, nCompLinha ) + 1 ) TO 14
+	      ::nLinhaPdf -= 12
+	   NEXT
+	ENDIF
    RETURN NIL
 
 METHOD Rodape() CLASS hbnfeDaEvento
@@ -494,28 +525,49 @@ METHOD Rodape() CLASS hbnfeDaEvento
    ENDIF
 
    // Condição de USO
-
    hbNFe_Texto_hpdf( ::oPdfPage, 30, ::nLinhaPdf, 535, Nil, "CONDIÇÃO DE USO", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 6 )
-   hbNFe_Box_Hpdf( ::oPdfPage,  30, ::nLinhaPDF -102,   535,  94, ::nLarguraBox )
-   cTextoCond := 'A Carta de Correção é disciplinada pelo § 1º-A do art. 7º do Convênio S/N, de 15 de dezembro de'
-   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -12,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
-   cTextoCond := '1970,  e pode ser utilizada para regularização de erro ocorrido na emissão de documento fiscal,'
-   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -24,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
-   cTextoCond := 'desde que o erro não esteja relacionado com:'
-   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -36,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
-   cTextoCond := 'I   - As variáveis que determinam o valor do imposto tais como:  Base de cálculo, alíquota,'
-   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -48,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
-   cTextoCond := '      diferença de preço, quantidade, valor da operação ou da prestação;'
-   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -60,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
-   cTextoCond := 'II  - A correção de dados cadastrais que implique mudança do remetente ou do destinatário;'
-   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -72,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
-   cTextoCond := 'III - A data de emissão ou de saída.'
-   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -84,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
-
-   // Observações:
-
-   ::nLinhaPdf -= 100
-
+	IF At("retEventoCTe",::cXmlEvento) > 0  // runner
+	   hbNFe_Box_Hpdf( ::oPdfPage,  30, ::nLinhaPDF -126 ,   535, 118 , ::nLarguraBox )
+	   cTextoCond := 'A Carta de Correção é disciplinada pelo Art. 58-B do CONVÊNIO/SINIEF 06/89: Fica permitida a'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -12,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := 'utilização  de carta  de  correção, para  regularização  de  erro  ocorrido  na  emissão  de'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -24,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := 'documentos  fiscais  relativos à prestação de serviço  de  transporte, desde  que o erro não'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -36,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := 'esteja relacionado com :'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -48,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := 'I   - As variáveis que determinam o valor  do imposto  tais como: base de cálculo, alíquota,'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -60,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := '      diferença de preço, quantidade, da prestação;'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -72,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+		cTextoCond := 'II  - A correção de dados cadastrais que  implique mudança do emitente,  tomador,  remetente'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -84,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+		cTextoCond := '      ou do destinatário;'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -96,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := 'III - A data de emissão ou de saída.'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -108,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   // Observações:
+   	::nLinhaPdf -= 124
+	ELSE
+	   hbNFe_Box_Hpdf( ::oPdfPage,  30, ::nLinhaPDF -102,   535,  94, ::nLarguraBox )
+	   cTextoCond := 'A Carta de Correção é disciplinada pelo § 1º-A do art. 7º do Convênio S/N, de 15 de dezembro de'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -12,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := '1970,  e pode ser utilizada para regularização de erro ocorrido na emissão de documento fiscal,'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -24,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := 'desde que o erro não esteja relacionado com:'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -36,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := 'I   - As variáveis que determinam o valor do imposto tais como:  Base de cálculo, alíquota,'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -48,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := '      diferença de preço, quantidade, valor da operação ou da prestação;'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -60,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := 'II  - A correção de dados cadastrais que implique mudança do remetente ou do destinatário;'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -72,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   cTextoCond := 'III - A data de emissão ou de saída.'
+	   hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -84,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
+	   // Observações:
+   	::nLinhaPdf -= 100
+ 	ENDIF
+	
    IF ::cFonteEvento == "Times"
       cTextoCond := 'Para evitar-se  qualquer  sansão fiscal, solicitamos acusarem o recebimento  desta,  na'
       hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPDF -12, 564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 15 )

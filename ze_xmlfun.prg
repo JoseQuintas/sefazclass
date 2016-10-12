@@ -174,7 +174,6 @@ FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC )
 
    lHorarioVerao := ( dDate >= HorarioVeraoInicio( Year( dDate ) ) .AND. dDate <= HorarioVeraoTermino( Year( dDate - 1 ) ) )
    cText := Transform( Dtos( dDate ), "@R 9999-99-99" ) + "T" + cTime
-
    DO CASE
    CASE ! lUTC ; cText += "" // no UTC
    CASE cUF $ "AC"                                             ; cText += "-05:00"
@@ -375,3 +374,11 @@ FUNCTION XmlToHash( cXml, aTagList, oVar )
    NEXT
 
    RETURN oVar
+
+FUNCTION MultipleNodeToArray(cXml,cNode) // runner
+	LOCAL aNodes :={}
+	DO WHILE '<'+cNode $ cXml
+	   Aadd( aNodes , XmlNode(cXml , cNode) )
+	   cXml := Subs(cXml,At('<'+cNode+'>',cXml)+Len('<'+cNode+'>'))
+	ENDDO
+	RETURN aNodes
