@@ -352,6 +352,16 @@ METHOD NovaPagina() CLASS hbNFeDanfe
    ENDIF
 
    IF ::aIde[ "tpAmb" ] = "2"
+
+      IF ::aInfProt[ "cStat" ] = '101' // Runner 
+	      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
+   	   HPDF_Page_BeginText(::oPdfPage)
+	      HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 150)
+      	HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
+	      HPDF_Page_ShowText(::oPdfPage, ::aInfProt[ "xMotivo" ])
+      	HPDF_Page_EndText(::oPdfPage)
+		ENDIF
+
       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
       HPDF_Page_BeginText( ::oPdfPage )
       HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 100 )
@@ -369,6 +379,32 @@ METHOD NovaPagina() CLASS hbNFeDanfe
       HPDF_Page_SetRGBStroke( ::oPdfPage, 0, 0, 0 ) // reseta cor linhas
 
       HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
+   ENDIF
+
+   IF ::aIde[ "tpAmb" ] = "1"  // runner
+   
+      IF ::aInfProt[ "cStat" ] $ "101,135" 
+
+	      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
+   	   HPDF_Page_BeginText(::oPdfPage)
+	      HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 100)
+      	HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
+	      HPDF_Page_ShowText(::oPdfPage, ::aInfProt[ "xMotivo" ])
+      	HPDF_Page_EndText(::oPdfPage)
+		
+	      HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
+   	   IF ::lPaisagem = .T. // paisagem
+      	   hbNFe_Line_Hpdf( ::oPdfPage, 15, 95, 675, 475, 2.0)
+	      ELSE
+   	      hbNFe_Line_Hpdf( ::oPdfPage, 15, 95, 550, 630, 2.0)
+      	ENDIF
+
+	      HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
+   	
+      	HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
+
+		ENDIF
+
    ENDIF
 
    RETURN NIL

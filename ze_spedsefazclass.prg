@@ -177,7 +177,7 @@ METHOD CTeEventoCCE( cChave, nSequencia, aCorrecao, cCertificado, cAmbiente ) CL
    cXml +=          			"A Carta de Correcao e disciplinada pelo Art. 58-B "
    cXml +=          			"do CONVENIO/SINIEF 06/89: Fica permitida a utilizacao de carta "
    cXml +=          			"de correcao, para regularizacao de erro ocorrido na emissao de "
-   cXml +=          			"documentos fiscais relativos a prestação de serviço de transporte,"
+   cXml +=          			"documentos fiscais relativos a prestacao de servico de transporte, "
    cXml +=          			"desde que o erro nao esteja relacionado com: I - as variaveis que "
    cXml +=          			"determinam o valor do imposto tais como: base de calculo, aliquota, "
    cXml +=          			"diferenca de preco, quantidade, valor da prestacao;II - a correcao "
