@@ -96,6 +96,7 @@ CREATE CLASS SefazClass
    METHOD CTeStatusServico( cUF, cCertificado, cAmbiente )
    METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente )
 
+   METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
    METHOD CTeEventoEnvia( cChave, cXml, cCertificado, cAmbiente )
    METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
