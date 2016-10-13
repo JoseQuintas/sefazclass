@@ -100,6 +100,7 @@ CREATE CLASS SefazClass
    METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
    METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
+   METHOD CTeAddCancelamento( cXmlAssinado , cXmlRetorno )
 
    METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
    METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
@@ -119,6 +120,7 @@ CREATE CLASS SefazClass
    METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
    METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente )
+   METHOD NFeAddCancelamento( cXmlAssinado , cXmlRetorno )
 
    METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente )
 
@@ -1925,3 +1927,97 @@ METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    RETURN ::cXmlAutorizado
 
+METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente ) CLASS SefazClass
+
+   IF cUF != NIL
+      ::cUF := cUF
+   ENDIF
+   IF cCertificado != NIL
+      ::cCertificado := cCertificado
+   ENDIF
+   IF cAmbiente != NIL
+      ::cAmbiente := cAmbiente
+   ENDIF
+   ::cVersaoXml  := "2.00"
+   ::cServico    := "http://www.portalfiscal.inf.br/cte/wsdl/CTeInutilizacao2"
+   ::cSoapAction := "CteInutilizacaoNF2"
+   ::cWebService := ::GetWebService( ::cUF, WS_NFE_INUTILIZACAO, ::cAmbiente, WS_PROJETO_NFE )
+   ::cXmlDados   := [<inutCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
+   ::cXmlDados   +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + Right( cAno, 2 ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
+   ::cXmlDados   +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
+   ::cXmlDados   +=       XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDados   +=       XmlTag( "xServ", "INUTILIZAR" )
+   ::cXmlDados   +=       XmlTag( "cUF", ::UFCodigo( ::cUF ) )
+   ::cXmlDados   +=       XmlTag( "ano", cAno )
+   ::cXmlDados   +=       XmlTag( "CNPJ", SoNumeros( cCnpj ) )
+   ::cXmlDados   +=       XmlTag( "mod", cMod )
+   ::cXmlDados   +=       XmlTag( "serie", cSerie )
+   ::cXmlDados   +=       XmlTag( "nNFIni", cNumIni )
+   ::cXmlDados   +=       XmlTag( "nNFFin", cNumFim )
+   ::cXmlDados   +=       XmlTag( "xJust", cJustificativa )
+   ::cXmlDados   +=    [</infInut>]
+   ::cXmlDados   += [</inutCTe>]
+
+   AssinaXml( @::cXmlDados, ::cCertificado )
+   ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_NFE )
+
+   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+	IF ::cStatus == "102"
+      ::cXmlAutorizado := [<ProcInutCTe versao="2.00" xmlns="http://www.portalfiscal.inf.br/cte">]
+      ::cXmlAutorizado += ::cXmlDados
+      ::cXmlAutorizado += XmlNode( ::cXmlRetorno, "retInutCTe", .T. )
+      ::cXmlAutorizado += [</ProcInutCTe>]
+      //::cXmlRetorno := ::cXmlAutorizado
+   ENDIF
+   RETURN ::cXmlRetorno
+
+METHOD NFeAddCancelamento(cXmlAssinado,cXmlRetorno) CLASS SefazClass
+	cDigVal := XmlNode( cXmlAssinado , "Signature" ) 
+	cDigVal := XmlNode( cDigVal , "SignedInfo" )
+	cDigVal := XmlNode( cDigVal , "Reference" ) 
+	cDigVal := XmlNode( cDigVal , "DigestValue" ) 
+
+   cXmlAutorizado := [<?xml version="1.0"?>]
+   cXmlAutorizado += [<nfeProc versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   cXmlAutorizado +=    cXmlAssinado
+   cXmlAutorizado += 	[<protNFe versao="3.10">]
+   cXmlAutorizado += 		[<infProt>]
+	cXmlAutorizado += 	   	XmlTag( "tpAmb" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "tpAmb" ) ) // runner
+	cXmlAutorizado += 	   	XmlTag( "verAplic", 'SP_NFE_PL_008i2')
+	cXmlAutorizado += 	   	XmlTag( "chNFe" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "chNFe" ) ) // runner
+	cXmlAutorizado += 	   	XmlTag( "dhRecbto" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "dhRegEvento" ) ) // runner
+	cXmlAutorizado += 	   	XmlTag( "nProt" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "nProt" ) ) // runner
+	cXmlAutorizado += 	   	XmlTag( "digVal", cDigVal)
+	cXmlAutorizado += 	   	XmlTag( "cStat", '101')
+	cXmlAutorizado += 	   	XmlTag( "xMotivo", 'Cancelamento da NFe homologado')
+   cXmlAutorizado += 		[</infProt>]
+   cXmlAutorizado += 	[</protNFe>]
+   cXmlAutorizado += [</nfeProc>]
+
+	Return(cXmlAutorizado)
+	
+METHOD CTeAddCancelamento(cXmlAssinado,cXmlRetorno) CLASS SefazClass
+	cDigVal := XmlNode( cXmlAssinado , "Signature" ) 
+	cDigVal := XmlNode( cDigVal , "SignedInfo" ) 
+	cDigVal := XmlNode( cDigVal , "Reference" ) 
+	cDigVal := XmlNode( cDigVal , "DigestValue" ) 
+	
+	cXmlAutorizado := [<?xml version="1.0"?>]
+	cXmlAutorizado += [<cteProc versao="2.00" xmlns="http://www.portalfiscal.inf.br/cte">]
+	cXmlAutorizado +=    cXmlAssinado
+	cXmlAutorizado += 	[<protCTe versao="2.00">]
+	cXmlAutorizado += 		[<infProt>]
+	cXmlAutorizado += 	   	XmlTag( "tpAmb" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "tpAmb" ) ) // runner
+	cXmlAutorizado += 	   	XmlTag( "verAplic", XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "verAplic" ) )
+	cXmlAutorizado += 	   	XmlTag( "chCTe" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "chCTe" ) ) // runner
+	cXmlAutorizado += 	   	XmlTag( "dhRecbto" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "dhRegEvento" ) ) // runner
+	cXmlAutorizado += 	   	XmlTag( "nProt" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "nProt" ) ) // runner
+	cXmlAutorizado += 	   	XmlTag( "digVal", cDigVal)
+	cXmlAutorizado += 	   	XmlTag( "cStat", XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "cStat" ) )
+	cXmlAutorizado += 	   	XmlTag( "xMotivo", 'Cancelamento do CTe homologado')
+	cXmlAutorizado += 		[</infProt>]
+	cXmlAutorizado += 	[</protNFe>]
+	cXmlAutorizado += [</cteProc>]
+
+Return(cXmlAutorizado)
