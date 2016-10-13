@@ -86,18 +86,21 @@ CREATE CLASS SefazClass
    METHOD NFeStatus( ... )     INLINE  ::NFeStatusServico( ... )        // Não usar, apenas compatibilidade
    METHOD MDFeStatus( ... )    INLINE  ::MDFeStatusServico( ... )       // Não usar, apenas compatibilidade
    METHOD NFeCadastro( ... )   INLINE  ::NFeConsultaCadastro( ... )     // Não usar, apenas compatibilidade
+   METHOD NFeEventoCCE( ... )  INLINE  ::NfeEventoCarta( ... )          // Não usar, apenas compatibilidade
 
    METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
    METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeStatusServico( cUF, cCertificado, cAmbiente )
    METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente )
+   METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente )
 
    METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
    METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente )
    METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
+   METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
 
    METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
    METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc )
@@ -105,16 +108,12 @@ CREATE CLASS SefazClass
    METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeStatusServico( cUF, cCertificado, cAmbiente )
    METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
-
    METHOD NFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente )
    METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
-   METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
+   METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
    METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente )
-
    METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente )
-
-   METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente )
    METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    /* Uso interno */
@@ -129,39 +128,50 @@ CREATE CLASS SefazClass
 
    ENDCLASS
 
-// Apenas anotado
+METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente ) CLASS SefazClass
 
-//METHOD CTEEventoCCE( cChave, nSequencia, cTexto, cCertificado ) CLASS SefazClass
-//
-//   ::cVersaoXml   := "2.00"
-//   cProjeto    := WS_PROJETO_CTE
-//   ::cUF         := UFNome( Substr( cChave, 1, 2 ) )
-//   ::cXmlDados := ""
-//   ::cXmlDados += [<eventoCTe versao="] + ::cVersaoXml + [" xmlns="http://portalfiscal.inf.br/cte">]
-//   ::cXmlDados += [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
-//   ::cXmlDados += [<cOrgao>] + ::UFSigla( ::cUF ) + [</cOrgao><tpAmb>] + ::cAmbiente + [</tpAmb><CNPJ>] + Substr( cChave, 7, 14 ) + [</CNPJ>]
-//   ::cXmlDados += [<chCTe>] + cChave + [</chCTe>]
-//   ::cXmlDados += [<dhEvento>] + ::DateTimeXml( , , , .F. ) + [</dhEvento><tpEvento>110110</tpEvento>]
-//   ::cXmlDados += [<nSeqEvento>] + Ltrim( Str( nSequencia ) ) + [</nSeqEvento><detEvento versaoEvento="] + ::cVersaoXml + [">]
-//   ::cXmlDados += [<evCCeCTe><descEvento>Carta de Correcao</descEvento>]
-//   ::cXmlDados += [<infCorrecao><grupoAlterado>xobs</grupoAlterado>]
-//   ::cXmlDados += [<campoAlterado>obs</campoAlterado>]
-//   ::cXmlDados += [<valorAlterado>teste de correcao</valorAlterado></infCorrecao>]
-//   Isto é se for igual NFE: cXml += [<xCorrecao>] + cTexto + [</xCorrecao>]
-//   ::cXmlDados += [<xCondUso>A Carta de Correcao e disciplinada pelo Art. 58-B ]
-//   ::cXmlDados += [do CONVENIO/SINIEF 06/89: Fica permitida a utilizacao de carta ]
-//   ::cXmlDados += [de correcao, para regularizacao de erro ocorrido na emissao de ]
-//   ::cXmlDados += [documentos fiscais relativos a prestacao de servico de transporte, ]
-//   ::cXmlDados += [desde que o erro nao esteja relacionado com: I - as variaveis que ]
-//   ::cXmlDados += [determinam o valor do imposto tais como: base de calculo, aliquota, ]
-//   ::cXmlDados += [diferenca de preco, quantidade, valor da prestacao;II - a correcao ]
-//   ::cXmlDados += [de dados cadastrais que implique mudanca do emitente, tomador, ]
-//   ::cXmlDados += [remetente ou do destinatario;III - a data de emissao ou de saida.]
-//   ::cXmlDados += [</xCondUso></evCCeCTe></detEvento></infEvento></eventoCTe>]
-//   AssinaXml( cXmlDados )
+   LOCAL oElement
+
+   IF cCertificado != NIL
+      ::cCertificado := cCertificado
+   ENDIF
+   IF cAmbiente != NIL
+      ::cAmbiente := cAmbiente
+   ENDIF
+   ::cVersaoXml  := "2.00"
+   ::cProjeto    := WS_PROJETO_CTE
+   ::cUF         := ::UFSigla( Substr( cChave, 1, 2 ) )
+   ::cServico    := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento"
+   ::cSoapAction := "cteRecepcaoEvento"
+   ::cXmlDados   := ""
+   ::cXmlDados   += [<eventoCTe versao="] + ::cVersaoXml + [" xmlns="http://portalfiscal.inf.br/cte">]
+   ::cXmlDados   +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDados   +=       [<cOrgao>] + ::UFSigla( ::cUF ) + [</cOrgao><tpAmb>] + ::cAmbiente + [</tpAmb><CNPJ>] + Substr( cChave, 7, 14 ) + [</CNPJ>]
+   ::cXmlDados   +=       [<chCTe>] + cChave + [</chCTe>]
+   ::cXmlDados   +=       [<dhEvento>] + ::DateTimeXml( , , , .F. ) + [</dhEvento><tpEvento>110110</tpEvento>]
+   ::cXmlDados   +=       [<nSeqEvento>] + Ltrim( Str( nSequencia ) ) + [</nSeqEvento><detEvento versaoEvento="] + ::cVersaoXml + [">]
+   ::cXmlDados   +=       [<detEvento versaoEvento="] + ::cVersaoXml + [">]
+   FOR EACH oElement IN aAlteracoes
+   //
+   // Falta parte das alterações, não é igual NFe
+   //
+   NEXT
+   ::cXmlDados  +=       [</detEvento>]
+   ::cXmlDados  +=       [<xCondUso>]
+   ::cXmlDados  +=          [A Carta de Correcao e disciplinada pelo Art. 58-B do CONVENIO/SINIEF 06/89: ]
+   ::cXmlDados  +=          [Fica permitida a utilizacao de carta de correcao, para regularizacao de erro ]
+   ::cXmlDados  +=          [ocorrido na emissao de documentos fiscais relativos a prestacao de servico ]
+   ::cXmlDados  +=          [de transporte, desde que o erro nao esteja relacionado com: I - as variaveis ]
+   ::cXmlDados  +=          [que determinam o valor do imposto tais como: base de calculo, aliquota, ]
+   ::cXmlDados  +=          [diferenca de preco, quantidade, valor da prestacao;II - a correcao de dados ]
+   ::cXmlDados  +=          [cadastrais que implique mudanca do emitente, tomador, remetente ou do ]
+   ::cXmlDados  +=          [destinatario;III - a data de emissao ou de saida.]
+   ::cXmlDados  +=    [</infEvento>]
+   ::cXmlDados  += [</eventoCTe>]
+
+   ::cXmlRetorno := AssinaXml( @::cXmlDados, ::cCertificado )
 //   ::XmlSoapPost( ::cUF, ::cCertificado, cProjeto )
-//
-//   RETURN NIL
+   RETURN NIL
 
 METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -593,7 +603,7 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
 
    RETURN NIL
 
-METHOD NFeEventoCCE( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS SefazClass
 
    LOCAL cXml
 
