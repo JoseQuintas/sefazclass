@@ -402,25 +402,25 @@ METHOD NovaPagina() CLASS hbnfeDaCte
 
    IF .NOT. Empty( ::aInfCanc[ "nProt" ] ) .AND. ::aInfCanc[ "cStat" ] $ "101,135,302" // 302=denegada
 
-	    HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
-	    HPDF_Page_BeginText(::oPdfPage)
-	    HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 150)
-	    HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
-	    HPDF_Page_ShowText(::oPdfPage, ::aInfCanc[ "xMotivo" ])
-	    HPDF_Page_EndText(::oPdfPage)
+       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
+       HPDF_Page_BeginText(::oPdfPage)
+       HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 150)
+       HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
+       HPDF_Page_ShowText(::oPdfPage, ::aInfCanc[ "xMotivo" ])
+       HPDF_Page_EndText(::oPdfPage)
 
-	    HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
-	    IF ::lPaisagem = .T. // paisagem
-	       hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 675, 475, 2.0)
-	    ELSE
-	       hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 550, 630, 2.0)
-	    ENDIF
+       HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
+       IF ::lPaisagem = .T. // paisagem
+          hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 675, 475, 2.0)
+       ELSE
+          hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 550, 630, 2.0)
+       ENDIF
 
-	    HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
+       HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
 
-	    HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
+       HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
 
-	ENDIF
+   ENDIF
 
    RETURN NIL
 

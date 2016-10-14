@@ -474,38 +474,38 @@ METHOD Eventos() CLASS hbnfeDaEvento
 
    ::nLinhaPdf -= 12
 
-	IF Len( ::aCorrecoes )
+   IF Len( ::aCorrecoes )
 
       FOR EACH oElement IN ::aCorrecoes
          cGrupo := XmlNode( oElement, 'grupoAlterado' )
          cCampo := XmlNode( oElement, 'campoAlterado' )
          cValor := XmlNode( oElement, 'valorAlterado' )
          hbNFe_Texto_hpdf( ::oPdfPage, 38, ::nLinhaPdf,564, Nil, 'Alterado = Grupo : '+cGrupo+' - Campo : '+cCampo+' - Valor : '+cValor , HPDF_TALIGN_LEFT, Nil, ::oPdfFontCorrecoes, 11 )
-	      ::nLinhaPdf -= 12
+         ::nLinhaPdf -= 12
       NEXT
       FOR nI = ( Len( ::aCorrecoes ) + 1 ) TO 14
          ::nLinhaPdf -= 12
       NEXT
 
-	ELSE
+   ELSE
 
-	   cMemo := ::aInfEvento[ "xCorrecao" ]
+      cMemo := ::aInfEvento[ "xCorrecao" ]
 
-	   cMemo := StrTran( cMemo, ";", Chr( 13 ) + Chr( 10 ) )
-	   nCompLinha := 77
-	   IF ::cFonteCorrecoes == "Helvetica"
-	      nCompLinha := 75
-	   ENDIF
+      cMemo := StrTran( cMemo, ";", Chr( 13 ) + Chr( 10 ) )
+      nCompLinha := 77
+      IF ::cFonteCorrecoes == "Helvetica"
+         nCompLinha := 75
+      ENDIF
 
-	   FOR nI = 1 TO MLCount( cMemo, nCompLinha )
-	      hbNFe_Texto_hpdf( ::oPdfPage, 38, ::nLinhaPdf,564, Nil, Upper( Trim( MemoLine( cMemo, nCompLinha, nI ) ) ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCorrecoes, 11 )
-	      ::nLinhaPdf -= 12
-	   NEXT
+      FOR nI = 1 TO MLCount( cMemo, nCompLinha )
+         hbNFe_Texto_hpdf( ::oPdfPage, 38, ::nLinhaPdf,564, Nil, Upper( Trim( MemoLine( cMemo, nCompLinha, nI ) ) ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCorrecoes, 11 )
+         ::nLinhaPdf -= 12
+      NEXT
 
-	   FOR nI = ( MLCount( cMemo, nCompLinha ) + 1 ) TO 14
-	      ::nLinhaPdf -= 12
-	   NEXT
-	ENDIF
+      FOR nI = ( MLCount( cMemo, nCompLinha ) + 1 ) TO 14
+         ::nLinhaPdf -= 12
+      NEXT
+   ENDIF
    RETURN NIL
 
 METHOD Rodape() CLASS hbnfeDaEvento
@@ -540,14 +540,14 @@ METHOD Rodape() CLASS hbnfeDaEvento
       hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -60,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
       cTextoCond := '      diferença de preço, quantidade, da prestação;'
       hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -72,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
-	   cTextoCond := 'II  - A correção de dados cadastrais que  implique mudança do emitente,  tomador,  remetente'
+      cTextoCond := 'II  - A correção de dados cadastrais que  implique mudança do emitente,  tomador,  remetente'
       hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -84,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
-	   cTextoCond := '      ou do destinatário;'
+      cTextoCond := '      ou do destinatário;'
       hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -96,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
       cTextoCond := 'III - A data de emissão ou de saída.'
       hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -108,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
       // Observações:
-  	   ::nLinhaPdf -= 124
+        ::nLinhaPdf -= 124
    ELSE
       hbNFe_Box_Hpdf( ::oPdfPage,  30, ::nLinhaPDF -102,   535,  94, ::nLarguraBox )
       cTextoCond := 'A Carta de Correção é disciplinada pelo § 1º-A do art. 7º do Convênio S/N, de 15 de dezembro de'
@@ -565,7 +565,7 @@ METHOD Rodape() CLASS hbnfeDaEvento
       cTextoCond := 'III - A data de emissão ou de saída.'
       hbNFe_Texto_hpdf( ::oPdfPage, 34, ::nLinhaPdf -84,564, Nil, cTextoCond, HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, nTamFonte )
       // Observações:
-  	   ::nLinhaPdf -= 100
+        ::nLinhaPdf -= 100
    ENDIF
 
    IF ::cFonteEvento == "Times"

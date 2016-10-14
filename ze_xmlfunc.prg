@@ -268,9 +268,9 @@ FUNCTION XmlToHash( cXml, aTagList, oVar )
    RETURN oVar
 
 FUNCTION MultipleNodeToArray(cXml,cNode) // runner
-	LOCAL aNodes :={}
-	DO WHILE '<'+cNode $ cXml
-	   Aadd( aNodes , XmlNode(cXml , cNode) )
-	   cXml := Subs(cXml,At('<'+cNode+'>',cXml)+Len('<'+cNode+'>'))
-	ENDDO
-	RETURN aNodes
+   LOCAL aNodes :={}
+   DO WHILE '<'+cNode $ cXml
+      Aadd( aNodes , XmlNode(cXml , cNode) )
+      cXml := Subs(cXml,At('<'+cNode+'>',cXml)+Len('<'+cNode+'>'))
+   ENDDO
+   RETURN aNodes

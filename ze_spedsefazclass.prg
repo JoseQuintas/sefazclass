@@ -153,7 +153,7 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
       ::cAmbiente := cAmbiente
    ENDIF
 
-	hb_Default( @nSequencia, 1 )
+   hb_Default( @nSequencia, 1 )
 
    ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
 
@@ -167,26 +167,26 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
    cXml +=       XmlTag( "tpEvento", "110110" )
    cXml +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia ) ) )
    cXml +=       [<detEvento versaoEvento="2.00">]
-   cXml +=       	  [<evCCeCTe>]
-   cXml +=          	   XmlTag( "descEvento", "Carta de Correcao" )
+   cXml +=            [<evCCeCTe>]
+   cXml +=                XmlTag( "descEvento", "Carta de Correcao" )
                         FOR EACH oElement IN aAlteracoes
-   cXml +=       	  			[<infCorrecao>]
-   cXml +=          				XmlTag( "grupoAlterado", oElement[ 1 ] )
-   cXml +=          				XmlTag( "campoAlterado", oElement[ 2 ] )
-   cXml +=          				XmlTag( "valorAlterado", oElement[ 3 ] )
-   cXml +=       	  			[</infCorrecao>]
+   cXml +=                     [<infCorrecao>]
+   cXml +=                      XmlTag( "grupoAlterado", oElement[ 1 ] )
+   cXml +=                      XmlTag( "campoAlterado", oElement[ 2 ] )
+   cXml +=                      XmlTag( "valorAlterado", oElement[ 3 ] )
+   cXml +=                     [</infCorrecao>]
                         NEXT
-   cXml +=          	   [<xCondUso>]
-   cXml +=          		   "A Carta de Correcao e disciplinada pelo Art. 58-B "
-   cXml +=          		   "do CONVENIO/SINIEF 06/89: Fica permitida a utilizacao de carta "
-   cXml +=          		   "de correcao, para regularizacao de erro ocorrido na emissao de "
-   cXml +=          		   "documentos fiscais relativos a prestacao de servico de transporte, "
-   cXml +=          		   "desde que o erro nao esteja relacionado com: I - as variaveis que "
-   cXml +=          		   "determinam o valor do imposto tais como: base de calculo, aliquota, "
-   cXml +=          		   "diferenca de preco, quantidade, valor da prestacao;II - a correcao "
-   cXml +=          		   "de dados cadastrais que implique mudanca do emitente, tomador, "
-   cXml +=          		   "remetente ou do destinatario;III - a data de emissao ou de saida."
-   cXml +=          		[</xCondUso>]
+   cXml +=                [<xCondUso>]
+   cXml +=                   "A Carta de Correcao e disciplinada pelo Art. 58-B "
+   cXml +=                   "do CONVENIO/SINIEF 06/89: Fica permitida a utilizacao de carta "
+   cXml +=                   "de correcao, para regularizacao de erro ocorrido na emissao de "
+   cXml +=                   "documentos fiscais relativos a prestacao de servico de transporte, "
+   cXml +=                   "desde que o erro nao esteja relacionado com: I - as variaveis que "
+   cXml +=                   "determinam o valor do imposto tais como: base de calculo, aliquota, "
+   cXml +=                   "diferenca de preco, quantidade, valor da prestacao;II - a correcao "
+   cXml +=                   "de dados cadastrais que implique mudanca do emitente, tomador, "
+   cXml +=                   "remetente ou do destinatario;III - a data de emissao ou de saida."
+   cXml +=                [</xCondUso>]
    cXml +=          [</evCCeCTe>]
    cXml +=       [</detEvento>]
    cXml +=    [</infEvento>]
@@ -223,11 +223,11 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    cXml +=       XmlTag( "tpEvento", "110111" )
    cXml +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
    cXml +=       [<detEvento versaoEvento="2.00">]
-   cXml +=       	  [<evCancCTe>]
-   cXml +=          		XmlTag( "descEvento", "Cancelamento" )
-   cXml +=          		XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   cXml +=          		XmlTag( "xJust", xJust )
-   cXml +=       	  [</evCancCTe>]
+   cXml +=            [<evCancCTe>]
+   cXml +=                XmlTag( "descEvento", "Cancelamento" )
+   cXml +=                XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   cXml +=                XmlTag( "xJust", xJust )
+   cXml +=            [</evCancCTe>]
    cXml +=       [</detEvento>]
    cXml +=    [</infEvento>]
    cXml += [</eventoCTe>]
@@ -267,21 +267,21 @@ METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD CTeEventoEnvia( cChave, cXml, cCertificado, cAmbiente ) CLASS SefazClass
 
-	IF cCertificado != NIL
-	   ::cCertificado := cCertificado
-	ENDIF
-	IF cAmbiente != NIL
-	   ::cAmbiente := cAmbiente
-	ENDIF
-	::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
-	::cVersaoXml   := "2.00"
-	::cServico     := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento"
-	::cSoapAction  := "cteRecepcaoEvento"
-	::cWebService  := ::GetWebService( ::cUF, WS_CTE_RECEPCAOEVENTO, ::cAmbiente, WS_PROJETO_CTE )
-	::cXmlDados    :=    cXml
-	::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_CTE )
+   IF cCertificado != NIL
+      ::cCertificado := cCertificado
+   ENDIF
+   IF cAmbiente != NIL
+      ::cAmbiente := cAmbiente
+   ENDIF
+   ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
+   ::cVersaoXml   := "2.00"
+   ::cServico     := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento"
+   ::cSoapAction  := "cteRecepcaoEvento"
+   ::cWebService  := ::GetWebService( ::cUF, WS_CTE_RECEPCAOEVENTO, ::cAmbiente, WS_PROJETO_CTE )
+   ::cXmlDados    :=    cXml
+   ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_CTE )
 
-	RETURN ::cXmlRetorno
+   RETURN ::cXmlRetorno
 
 
 METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass
@@ -688,7 +688,7 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
       ::cAmbiente := cAmbiente
    ENDIF
 
-	hb_Default( @nSequencia, 1 )
+   hb_Default( @nSequencia, 1 )
 
    ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
 
@@ -855,15 +855,15 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    ::cXmlRetorno := AssinaXml( @::cXmlDados, ::cCertificado )
    IF ::cXmlRetorno == "OK"
-	   ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_NFE )
-	   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
-	   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
-		IF ::cStatus == "102"
-	      ::cXmlAutorizado := [<ProcInutNFe versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">]
-	      ::cXmlAutorizado += ::cXmlDados
-	      ::cXmlAutorizado += XmlNode( ::cXmlRetorno, "retInutNFe", .T. )
-	      ::cXmlAutorizado += [</ProcInutNFe>]
-	   ENDIF
+      ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_NFE )
+      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+      IF ::cStatus == "102"
+         ::cXmlAutorizado := [<ProcInutNFe versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">]
+         ::cXmlAutorizado += ::cXmlDados
+         ::cXmlAutorizado += XmlNode( ::cXmlRetorno, "retInutNFe", .T. )
+         ::cXmlAutorizado += [</ProcInutNFe>]
+      ENDIF
    ENDIF
    RETURN ::cXmlRetorno
 
@@ -1959,15 +1959,15 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    ::cXmlDados   += [</inutCTe>]
    ::cXmlRetorno := AssinaXml( @::cXmlDados, ::cCertificado )
    IF ::cXmlRetorno == "OK"
-	   ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_CTE )
-	   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
-	   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
-		IF ::cStatus == "102"
-	      ::cXmlAutorizado := [<ProcInutCTe versao="2.00" xmlns="http://www.portalfiscal.inf.br/cte">]
-	      ::cXmlAutorizado += ::cXmlDados
-	      ::cXmlAutorizado += XmlNode( ::cXmlRetorno , "retInutCTe", .T. )
-	      ::cXmlAutorizado += [</ProcInutCTe>]
-	   ENDIF
+      ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_CTE )
+      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+      IF ::cStatus == "102"
+         ::cXmlAutorizado := [<ProcInutCTe versao="2.00" xmlns="http://www.portalfiscal.inf.br/cte">]
+         ::cXmlAutorizado += ::cXmlDados
+         ::cXmlAutorizado += XmlNode( ::cXmlRetorno , "retInutCTe", .T. )
+         ::cXmlAutorizado += [</ProcInutCTe>]
+      ENDIF
    ENDIF
    RETURN ::cXmlRetorno
 
@@ -1975,54 +1975,54 @@ METHOD NFeAddCancelamento(cXmlAssinado,cXmlRetorno) CLASS SefazClass
 
    LOCAL cDigVal, cXmlAutorizado
 
-	cDigVal := XmlNode( cXmlAssinado , "Signature" )
-	cDigVal := XmlNode( cDigVal , "SignedInfo" )
-	cDigVal := XmlNode( cDigVal , "Reference" )
-	cDigVal := XmlNode( cDigVal , "DigestValue" )
+   cDigVal := XmlNode( cXmlAssinado , "Signature" )
+   cDigVal := XmlNode( cDigVal , "SignedInfo" )
+   cDigVal := XmlNode( cDigVal , "Reference" )
+   cDigVal := XmlNode( cDigVal , "DigestValue" )
 
    cXmlAutorizado := [<?xml version="1.0"?>]
    cXmlAutorizado += [<nfeProc versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">]
    cXmlAutorizado +=    cXmlAssinado
-   cXmlAutorizado += 	[<protNFe versao="3.10">]
-   cXmlAutorizado += 		[<infProt>]
-	cXmlAutorizado += 	   	XmlTag( "tpAmb" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "tpAmb" ) ) // runner
-	cXmlAutorizado += 	   	XmlTag( "verAplic", 'SP_NFE_PL_008i2')
-	cXmlAutorizado += 	   	XmlTag( "chNFe" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "chNFe" ) ) // runner
-	cXmlAutorizado += 	   	XmlTag( "dhRecbto" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "dhRegEvento" ) ) // runner
-	cXmlAutorizado += 	   	XmlTag( "nProt" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "nProt" ) ) // runner
-	cXmlAutorizado += 	   	XmlTag( "digVal", cDigVal)
-	cXmlAutorizado += 	   	XmlTag( "cStat", '101')
-	cXmlAutorizado += 	   	XmlTag( "xMotivo", 'Cancelamento da NFe homologado')
-   cXmlAutorizado += 		[</infProt>]
-   cXmlAutorizado += 	[</protNFe>]
+   cXmlAutorizado +=    [<protNFe versao="3.10">]
+   cXmlAutorizado +=       [<infProt>]
+   cXmlAutorizado +=          XmlTag( "tpAmb" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "tpAmb" ) ) // runner
+   cXmlAutorizado +=          XmlTag( "verAplic", 'SP_NFE_PL_008i2')
+   cXmlAutorizado +=          XmlTag( "chNFe" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "chNFe" ) ) // runner
+   cXmlAutorizado +=          XmlTag( "dhRecbto" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "dhRegEvento" ) ) // runner
+   cXmlAutorizado +=          XmlTag( "nProt" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEvento" ) , "infEvento" ), "nProt" ) ) // runner
+   cXmlAutorizado +=          XmlTag( "digVal", cDigVal)
+   cXmlAutorizado +=          XmlTag( "cStat", '101')
+   cXmlAutorizado +=          XmlTag( "xMotivo", 'Cancelamento da NFe homologado')
+   cXmlAutorizado +=       [</infProt>]
+   cXmlAutorizado +=    [</protNFe>]
    cXmlAutorizado += [</nfeProc>]
 
-	RETURN cXmlAutorizado
+   RETURN cXmlAutorizado
 
 METHOD CTeAddCancelamento( cXmlAssinado,cXmlRetorno ) CLASS SefazClass
 
    LOCAL cDigVal, cXmlAutorizado
 
-	cDigVal := XmlNode( cXmlAssinado , "Signature" )
-	cDigVal := XmlNode( cDigVal , "SignedInfo" )
-	cDigVal := XmlNode( cDigVal , "Reference" )
-	cDigVal := XmlNode( cDigVal , "DigestValue" )
+   cDigVal := XmlNode( cXmlAssinado , "Signature" )
+   cDigVal := XmlNode( cDigVal , "SignedInfo" )
+   cDigVal := XmlNode( cDigVal , "Reference" )
+   cDigVal := XmlNode( cDigVal , "DigestValue" )
 
-	cXmlAutorizado := [<?xml version="1.0"?>]
-	cXmlAutorizado += [<cteProc versao="2.00" xmlns="http://www.portalfiscal.inf.br/cte">]
-	cXmlAutorizado +=    cXmlAssinado
-	cXmlAutorizado += 	[<protCTe versao="2.00">]
-	cXmlAutorizado += 		[<infProt>]
-	cXmlAutorizado += 	   	XmlTag( "tpAmb" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "tpAmb" ) ) // runner
-	cXmlAutorizado += 	   	XmlTag( "verAplic", XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "verAplic" ) )
-	cXmlAutorizado += 	   	XmlTag( "chCTe" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "chCTe" ) ) // runner
-	cXmlAutorizado += 	   	XmlTag( "dhRecbto" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "dhRegEvento" ) ) // runner
-	cXmlAutorizado += 	   	XmlTag( "nProt" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "nProt" ) ) // runner
-	cXmlAutorizado += 	   	XmlTag( "digVal", cDigVal)
-	cXmlAutorizado += 	   	XmlTag( "cStat", XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "cStat" ) )
-	cXmlAutorizado += 	   	XmlTag( "xMotivo", 'Cancelamento do CTe homologado')
-	cXmlAutorizado += 		[</infProt>]
-	cXmlAutorizado += 	[</protNFe>]
-	cXmlAutorizado += [</cteProc>]
+   cXmlAutorizado := [<?xml version="1.0"?>]
+   cXmlAutorizado += [<cteProc versao="2.00" xmlns="http://www.portalfiscal.inf.br/cte">]
+   cXmlAutorizado +=    cXmlAssinado
+   cXmlAutorizado +=    [<protCTe versao="2.00">]
+   cXmlAutorizado +=       [<infProt>]
+   cXmlAutorizado +=          XmlTag( "tpAmb" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "tpAmb" ) ) // runner
+   cXmlAutorizado +=          XmlTag( "verAplic", XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "verAplic" ) )
+   cXmlAutorizado +=          XmlTag( "chCTe" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "chCTe" ) ) // runner
+   cXmlAutorizado +=          XmlTag( "dhRecbto" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "dhRegEvento" ) ) // runner
+   cXmlAutorizado +=          XmlTag( "nProt" , XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "nProt" ) ) // runner
+   cXmlAutorizado +=          XmlTag( "digVal", cDigVal)
+   cXmlAutorizado +=          XmlTag( "cStat", XmlNode( XmlNode( XmlNode( cXmlRetorno , "retEventoCTe" ) , "infEvento" ), "cStat" ) )
+   cXmlAutorizado +=          XmlTag( "xMotivo", 'Cancelamento do CTe homologado')
+   cXmlAutorizado +=       [</infProt>]
+   cXmlAutorizado +=    [</protNFe>]
+   cXmlAutorizado += [</cteProc>]
 
    RETURN cXmlAutorizado
