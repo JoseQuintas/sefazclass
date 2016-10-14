@@ -10,6 +10,7 @@ ze_spedsefazclass.prg
 ze_spedxmlclass.prg
 ze_spedxmlvalida.prg
 ze_xmlfunc.prg
+ze_miscfunc.prg
 ze_xharbour.prg
 
 hbwin.hbc

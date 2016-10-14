@@ -5,10 +5,7 @@ ze_xmlfun - Funções pra trabalhar com XML
 ...
 2016.07.20.1620 - Fuso horário correto SP
 2016.08.12.1740 - Parâmetro ref UTC (da forma anterior confunde)
-2016
 */
-
-#define DOW_DOMINGO   1
 
 FUNCTION XmlTransform( cXml )
 
@@ -16,7 +13,8 @@ FUNCTION XmlTransform( cXml )
 
    cRemoveTag := { ;
       [<?xml version="1.0" encoding="utf-8"?>], ; // Petrobras inventou de usar assim
-      [<?xml version="1.0" encoding="UTF-8"?>] }  // Alguns usam assim
+      [<?xml version="1.0" encoding="UTF-8"?>], ; // o mais correto
+      [<?xml version="1.00"?>] }
 
    FOR nCont = 1 TO Len( cRemoveTag )
       cXml := StrTran( cXml, cRemoveTag[ nCont ], "" )
@@ -135,23 +133,27 @@ FUNCTION XmlDate( cData )
 
    RETURN dDate
 
-FUNCTION XmlTag( cTag, cConteudo )
+FUNCTION XmlTag( cTag, cValue, lXmlValue )
 
-   LOCAL cTexto := ""
+   LOCAL cXml, oChange
+   LOCAL aChangeList := { { "&", "&amp;" }, { "<", "&lt;" } , { ">", "&gt;" }, { ["], "&quot;" }, { ['], "&#39;" } }
 
-   hb_Default( @cConteudo, "" )
-   cConteudo := AllTrim( cConteudo )
-   IF Len( Trim( cConteudo ) ) = 0
-      cTexto := [<]+ cTag + [/>]
+   hb_Default( @cValue, "" )
+   hb_Default( @lXmlValue, .F. )
+
+   cValue := AllTrim( cValue )
+   IF ! lXmlValue
+      FOR EACH oChange IN aChangeList
+         cValue := StrTran( cValue, oChange[ 1 ], oChange[ 2 ] )
+      NEXT
+   ENDIF
+   IF Len( cValue ) = 0
+      cXml := [<]+ cTag + [/>]
    ELSE
-      cConteudo := AllTrim( cConteudo )
-      IF Len( cConteudo ) == 0
-         cConteudo := " "
-      ENDIF
-      cTexto := cTexto + [<] + cTag + [>] + cConteudo + [</] + cTag + [>]
+      cXml := [<] + cTag + [>] + cValue + [</] + cTag + [>]
    ENDIF
 
-   RETURN cTexto
+   RETURN cXml
 
 FUNCTION DateXml( dDate )
 
@@ -234,30 +236,40 @@ FUNCTION HorarioVeraoTermino( iAno )
 
    RETURN dTerceiroDomingoDeFevereiro
 
-FUNCTION XmlToString( cTexto )
+FUNCTION XmlToString( cValue )
 
-   cTexto := Strtran( cTexto, "&amp;", "&" )
-   cTexto := StrTran( cTexto, "&quot;", ["] )
-   cTexto := StrTran( cTexto, "&#39;", "'" )
-   cTexto := StrTran( cTexto, "&lt;", "<" )
-   cTexto := StrTran( cTexto, "&gt;", ">" )
-   cTexto := StrTran( cTexto, "&#176;", "º" )
-   cTexto := StrTran( cTexto, "&#170;", "ª" )
+   cValue := Strtran( cValue, "&amp;", "&" )
+   cValue := StrTran( cValue, "&quot;", ["] )
+   cValue := StrTran( cValue, "&#39;", "'" )
+   cValue := StrTran( cValue, "&lt;", "<" )
+   cValue := StrTran( cValue, "&gt;", ">" )
+   cValue := StrTran( cValue, "&#176;", "º" )
+   cValue := StrTran( cValue, "&#170;", "ª" )
 
-   RETURN cTexto
+   RETURN cValue
 
-FUNCTION StringToXml( cTexto )
+FUNCTION StringToXml( cValue )
 
-   cTexto := StrTran( cTexto, "&", "&amp;" )
-   cTexto := StrTran( cTexto, ["], "&quot;" )
-   cTexto := StrTran( cTexto, "'", "&#39;" )
-   cTexto := StrTran( cTexto, "<", "&lt;" )
-   cTexto := StrTran( cTexto, ">", "&gt;" )
-   cTexto := StrTran( cTexto, "º", "&#176;" )
-   cTexto := StrTran( cTexto, "ª", "&#170;" )
+   cValue := StrTran( cValue, "&", "&amp;" )
+   cValue := StrTran( cValue, ["], "&quot;" )
+   cValue := StrTran( cValue, "'", "&#39;" )
+   cValue := StrTran( cValue, "<", "&lt;" )
+   cValue := StrTran( cValue, ">", "&gt;" )
+   cValue := StrTran( cValue, "º", "&#176;" )
+   cValue := StrTran( cValue, "ª", "&#170;" )
 
-   RETURN cTexto
+   RETURN cValue
 
+FUNCTION MultipleNodeToArray( cXml, cNode )
+
+   LOCAL aNodes := {}
+
+   DO WHILE "<" + cNode $ cXml .AND. "</" + cNode $ cXml
+      AAdd( aNodes, XmlNode( cXml, cNode ) )
+      cXml := Substr( cXml, At( "</" + cNode, cXml ) + Len( cNode ) + 3  )
+   ENDDO
+
+   RETURN aNodes
 
 FUNCTION XmlToHash( cXml, aTagList, oVar )
 
