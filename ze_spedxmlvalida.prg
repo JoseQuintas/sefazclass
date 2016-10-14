@@ -16,6 +16,15 @@ FUNCTION ValidaXml( cXml, cFileXsd )
       RETURN cRetorno
    ENDIF
 
+   IF Empty( cFileXsd )
+      cRetorno := "OK"
+      BREAK
+   ENDIF
+   IF ! File( cFileXSD )
+      cRetorno := "Erro não encontrado arquivo " + cFileXSD
+      BREAK
+   ENDIF
+
    BEGIN SEQUENCE WITH __BreakBlock()
 
       cRetorno   := "Erro Carregando MSXML2.DomDocument.6.0"
@@ -37,15 +46,6 @@ FUNCTION ValidaXml( cXml, cFileXsd )
 
       cRetorno   := "Erro Carregando MSXML2.XMLSchemaCache.6.0"
       oXmlSchema := win_OleCreateObject( "MSXML2.XMLSchemaCache.6.0" )
-
-      IF Empty( cFileXsd )
-         cRetorno := "OK"
-         BREAK
-      ENDIF
-      IF ! File( cFileXSD )
-         cRetorno := "Erro não encontrado arquivo " + cFileXSD
-         BREAK
-      ENDIF
 
       cRetorno := "Erro Carregando " + cFileXSD
       oXmlSchema:Add( "http://www.portalfiscal.inf.br/nfe", cFileXSD )
