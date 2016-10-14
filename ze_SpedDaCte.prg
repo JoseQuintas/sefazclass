@@ -76,8 +76,7 @@ CREATE CLASS hbnfeDacte
    VAR aObsFisco
    VAR aExporta
    VAR aCompra
-   VAR aInfProt
-   VAR aInfCanc //
+   VAR aInfCanc
 
    VAR aItem
    VAR aItemDI
@@ -274,7 +273,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
       cText := SubStr( cText, At( "</Comp", cText ) + 7 )
       AAdd( ::aComp, { ;
          XmlNode( cComp, "xNome" ), ;
-         XmlNode( cComp, "vComp" ) } )
+         XmlNode( cComp, "vComp" ) } ) // runner
    ENDDO
 
    cImp        := XmlNode( ::cXml, "imp" )
@@ -332,6 +331,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    ENDDO
 
    ::aProtocolo := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto" } )
+   ::aInfCanc   := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto", "digVal", "cStat", "xMotivo" } )
 
    DO CASE
    CASE ::aIde[ 'toma' ] = '0' ; ::aToma := ::aRem
@@ -399,31 +399,27 @@ METHOD NovaPagina() CLASS hbnfeDaCte
 
    ENDIF
 
-   IF ::aIde[ "tpAmb" ] = "1"
-/*
-      IF ::aInfCanc[ "nProt" ] <> Nil
+   IF .NOT. Empty(::aInfCanc[ "nProt" ]) .AND. ::aInfCanc[ "cStat" ] $ "101,135,302" // 302=denegada
 
-       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
-       HPDF_Page_BeginText(::oPdfPage)
-       HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 100)
-       HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
-       HPDF_Page_ShowText(::oPdfPage, ::aInfCanc[ "xEvento" ])
-       HPDF_Page_EndText(::oPdfPage)
+	    HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
+	    HPDF_Page_BeginText(::oPdfPage)
+	    HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 150)
+	    HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
+	    HPDF_Page_ShowText(::oPdfPage, ::aInfCanc[ "xMotivo" ])
+	    HPDF_Page_EndText(::oPdfPage)
 
-       HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
-       IF ::lPaisagem = .T. // paisagem
-          hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 675, 475, 2.0)
-       ELSE
-          hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 550, 630, 2.0)
-       ENDIF
+	    HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
+	    IF ::lPaisagem = .T. // paisagem
+	       hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 675, 475, 2.0)
+	    ELSE
+	       hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 550, 630, 2.0)
+	    ENDIF
 
-       HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
+	    HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
 
-       HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
+	    HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
 
-  ENDIF
-*/
-   ENDIF
+	ENDIF
 
    RETURN NIL
 
