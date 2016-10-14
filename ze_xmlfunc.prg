@@ -1,11 +1,7 @@
 /*
 ze_xmlfun - Funções pra trabalhar com XML
-2012.02.11 - José Quintas
-
-...
-2016.07.20.1620 - Fuso horário correto SP
-2016.08.12.1740 - Parâmetro ref UTC (da forma anterior confunde)
 */
+
 #ifndef DOW_DOMINGO
    #define DOW_DOMINGO 1
 #endif
@@ -17,7 +13,8 @@ FUNCTION XmlTransform( cXml )
    cRemoveTag := { ;
       [<?xml version="1.0" encoding="utf-8"?>], ; // Petrobras inventou de usar assim
       [<?xml version="1.0" encoding="UTF-8"?>], ; // o mais correto
-      [<?xml version="1.00"?>] }
+      [<?xml version="1.00"?>], ;
+      [<?xml version="1.0"?>] }
 
    FOR nCont = 1 TO Len( cRemoveTag )
       cXml := StrTran( cXml, cRemoveTag[ nCont ], "" )
@@ -83,48 +80,6 @@ FUNCTION XmlTransform( cXml )
 
    RETURN cXml
 
-FUNCTION XmlDate( cData )
-
-   LOCAL dDate
-
-   dDate := Ctod( Substr( cData, 9, 2 ) + "/" + Substr( cData, 6, 2 ) + "/" + Substr( cData, 1, 4 ) )
-
-   RETURN dDate
-
-FUNCTION DateXml( dDate )
-
-   RETURN Transform( Dtos( dDate ), "@R 9999-99-99" )
-
-FUNCTION NumberXml( nValue, nDecimals )
-
-   hb_Default( @nDecimals, 0 )
-
-   RETURN Ltrim( Str( nValue, 16, nDecimals ) )
-
-FUNCTION StringToXml( cValue )
-
-   cValue := StrTran( cValue, "&", "&amp;" )
-   cValue := StrTran( cValue, ["], "&quot;" )
-   cValue := StrTran( cValue, "'", "&#39;" )
-   cValue := StrTran( cValue, "<", "&lt;" )
-   cValue := StrTran( cValue, ">", "&gt;" )
-   cValue := StrTran( cValue, "º", "&#176;" )
-   cValue := StrTran( cValue, "ª", "&#170;" )
-
-   RETURN cValue
-
-FUNCTION XmlToString( cValue )
-
-   cValue := Strtran( cValue, "&amp;", "&" )
-   cValue := StrTran( cValue, "&quot;", ["] )
-   cValue := StrTran( cValue, "&#39;", "'" )
-   cValue := StrTran( cValue, "&lt;", "<" )
-   cValue := StrTran( cValue, "&gt;", ">" )
-   cValue := StrTran( cValue, "&#176;", "º" )
-   cValue := StrTran( cValue, "&#170;", "ª" )
-
-   RETURN cValue
-
 FUNCTION XmlNode( cXml, cNode, lComTag )
 
    LOCAL nInicio, nFim, cResultado := ""
@@ -170,27 +125,40 @@ FUNCTION XmlElement( cXml, cElement )
 
    RETURN cResultado
 
-FUNCTION XmlTag( cTag, cValue, lXmlValue )
+FUNCTION XmlDate( cData )
 
-   LOCAL cXml, oChange
-   LOCAL aChangeList := { { "&", "&amp;" }, { "<", "&lt;" } , { ">", "&gt;" }, { ["], "&quot;" }, { ['], "&#39;" } }
+   LOCAL dDate
+
+   dDate := Ctod( Substr( cData, 9, 2 ) + "/" + Substr( cData, 6, 2 ) + "/" + Substr( cData, 1, 4 ) )
+
+   RETURN dDate
+
+FUNCTION XmlTag( cTag, cValue )
+
+   LOCAL cXml
 
    hb_Default( @cValue, "" )
-   hb_Default( @lXmlValue, .F. )
-
    cValue := AllTrim( cValue )
-   IF ! lXmlValue
-      FOR EACH oChange IN aChangeList
-         cValue := StrTran( cValue, oChange[ 1 ], oChange[ 2 ] )
-      NEXT
-   ENDIF
-   IF Len( cValue ) = 0
+   IF Len( Trim( cValue ) ) = 0
       cXml := [<]+ cTag + [/>]
    ELSE
+      IF Len( cValue ) == 0
+         cValue := " "
+      ENDIF
       cXml := [<] + cTag + [>] + cValue + [</] + cTag + [>]
    ENDIF
 
    RETURN cXml
+
+FUNCTION DateXml( dDate )
+
+   RETURN Transform( Dtos( dDate ), "@R 9999-99-99" )
+
+FUNCTION NumberXml( nValue, nDecimals )
+
+   hb_Default( @nDecimals, 0 )
+
+   RETURN Ltrim( Str( nValue, 16, nDecimals ) )
 
 FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC )
 
@@ -203,7 +171,6 @@ FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC )
 
    lHorarioVerao := ( dDate >= HorarioVeraoInicio( Year( dDate ) ) .AND. dDate <= HorarioVeraoTermino( Year( dDate - 1 ) ) )
    cText := Transform( Dtos( dDate ), "@R 9999-99-99" ) + "T" + cTime
-
    DO CASE
    CASE ! lUTC ; cText += "" // no UTC
    CASE cUF $ "AC"                                             ; cText += "-05:00"
@@ -263,16 +230,30 @@ FUNCTION HorarioVeraoTermino( iAno )
 
    RETURN dTerceiroDomingoDeFevereiro
 
-FUNCTION MultipleNodeToArray( cXml, cNode )
+FUNCTION XmlToString( cTexto )
 
-   LOCAL aNodes := {}
+   cTexto := Strtran( cTexto, "&amp;", "&" )
+   cTexto := StrTran( cTexto, "&quot;", ["] )
+   cTexto := StrTran( cTexto, "&#39;", "'" )
+   cTexto := StrTran( cTexto, "&lt;", "<" )
+   cTexto := StrTran( cTexto, "&gt;", ">" )
+   cTexto := StrTran( cTexto, "&#176;", "º" )
+   cTexto := StrTran( cTexto, "&#170;", "ª" )
 
-   DO WHILE "<" + cNode $ cXml .AND. "</" + cNode $ cXml
-      AAdd( aNodes, XmlNode( cXml, cNode ) )
-      cXml := Substr( cXml, At( "</" + cNode, cXml ) + Len( cNode ) + 3  )
-   ENDDO
+   RETURN cTexto
 
-   RETURN aNodes
+FUNCTION StringToXml( cTexto )
+
+   cTexto := StrTran( cTexto, "&", "&amp;" )
+   cTexto := StrTran( cTexto, ["], "&quot;" )
+   cTexto := StrTran( cTexto, "'", "&#39;" )
+   cTexto := StrTran( cTexto, "<", "&lt;" )
+   cTexto := StrTran( cTexto, ">", "&gt;" )
+   cTexto := StrTran( cTexto, "º", "&#176;" )
+   cTexto := StrTran( cTexto, "ª", "&#170;" )
+
+   RETURN cTexto
+
 
 FUNCTION XmlToHash( cXml, aTagList, oVar )
 
@@ -286,3 +267,10 @@ FUNCTION XmlToHash( cXml, aTagList, oVar )
 
    RETURN oVar
 
+FUNCTION MultipleNodeToArray(cXml,cNode) // runner
+	LOCAL aNodes :={}
+	DO WHILE '<'+cNode $ cXml
+	   Aadd( aNodes , XmlNode(cXml , cNode) )
+	   cXml := Subs(cXml,At('<'+cNode+'>',cXml)+Len('<'+cNode+'>'))
+	ENDDO
+	RETURN aNodes
