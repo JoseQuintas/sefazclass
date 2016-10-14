@@ -17,7 +17,7 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 
 CREATE CLASS hbnfeDacte
 
-   METHOD Execute( cXml, cFilePDF )
+   METHOD Execute( cXml, cFilePDF, cXmlCancel )
    METHOD BuscaDadosXML()
    METHOD GeraPDF( cFilePDF )
    METHOD NovaPagina()
@@ -30,6 +30,7 @@ CREATE CLASS hbnfeDacte
    VAR cEmailEmitente    INIT ""
    VAR cDesenvolvedor    INIT ""
    VAR cXML
+   VAR cXmlCancel        INIT ""
    VAR cChave
    VAR aIde
    VAR aCompl
@@ -60,7 +61,7 @@ CREATE CLASS hbnfeDacte
    VAR aProp
    VAR aValePed
    VAR aVeiculo
-   VAR aProtocolo
+   VAR aInfProt
    VAR aExped
    VAR aReceb
    VAR aToma
@@ -124,12 +125,13 @@ CREATE CLASS hbnfeDacte
 
    ENDCLASS
 
-METHOD Execute( cXml, cFilePDF ) CLASS hbnfeDaCte
+METHOD Execute( cXml, cFilePDF, cXmlCancel ) CLASS hbnfeDaCte
 
    IF cXml == NIL
       ::cRetorno := "Não informado texto do XML"
       RETURN ::cRetorno
    ENDIF
+   ::cXmlCancel := iif( cXmlCancel == NIL, "", cXmlCancel )
 
    ::cXML   := cXml
    ::cChave := SubStr( ::cXML, At( 'Id=', ::cXML ) + 3 + 4, 44 )
@@ -330,8 +332,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
          XmlNode( cVeiculo, "UF" ) } )
    ENDDO
 
-   ::aProtocolo := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto" } )
-   ::aInfCanc   := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto", "digVal", "cStat", "xMotivo" } )
+   ::aInfCanc   := XmlToHash( XmlNode( iif( Empty( ::cXmlCancel ), ::cXml, ::cXmlCancel ), "infProt" ), { "nProt", "dhRecbto", "digVal", "cStat", "xMotivo" } )
 
    DO CASE
    CASE ::aIde[ 'toma' ] = '0' ; ::aToma := ::aRem
@@ -381,7 +382,7 @@ METHOD NovaPagina() CLASS hbnfeDaCte
 
    nRadiano := nAngulo / 180 * 3.141592 /* Calcurate the radian value. */
 
-   IF ::aIde[ "tpAmb" ] = "2" .OR. Empty( ::aProtocolo[ "nProt" ] )
+   IF ::aIde[ "tpAmb" ] = "2" .OR. Empty( ::ainfProt[ "nProt" ] )
 
       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
       HPDF_Page_BeginText( ::oPdfPage )
@@ -399,7 +400,7 @@ METHOD NovaPagina() CLASS hbnfeDaCte
 
    ENDIF
 
-   IF .NOT. Empty(::aInfCanc[ "nProt" ]) .AND. ::aInfCanc[ "cStat" ] $ "101,135,302" // 302=denegada
+   IF .NOT. Empty( ::aInfCanc[ "nProt" ] ) .AND. ::aInfCanc[ "cStat" ] $ "101,135,302" // 302=denegada
 
 	    HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
 	    HPDF_Page_BeginText(::oPdfPage)
@@ -539,8 +540,8 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    // box do No. do Protocolo
    hbnfe_Box_hpdf( ::oPdfPage, 303, ::nLinhaPdf - 154, 165, 022, ::nLarguraBox )
    hbnfe_Texto_hpdf( ::oPdfPage, 303, ::nLinhaPdf - 135, 468, Nil, "No. PROTOCOLO", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
-   IF ! Empty( ::aProtocolo[ "nProt" ] )
-      hbnfe_Texto_hpdf( ::oPdfPage, 303, ::nLinhaPdf - 143, 468, Nil, ::aProtocolo[ "nProt" ] + ' - ' + SubStr( ::aProtocolo[ "dhRecbto" ], 9, 2 ) + "/" + SubStr( ::aProtocolo[ "dhRecbto" ], 6, 2 ) + "/" + SubStr( ::aProtocolo[ "dhRecbto" ], 1, 4 ) + ' ' + SubStr( ::aProtocolo[ "dhRecbto" ], 12 ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 9 )
+   IF ! Empty( ::aInfProt[ "nProt" ] )
+      hbnfe_Texto_hpdf( ::oPdfPage, 303, ::nLinhaPdf - 143, 468, Nil, ::aInfProt[ "nProt" ] + ' - ' + SubStr( ::aInfProt[ "dhRecbto" ], 9, 2 ) + "/" + SubStr( ::aInfProt[ "dhRecbto" ], 6, 2 ) + "/" + SubStr( ::aInfProt[ "dhRecbto" ], 1, 4 ) + ' ' + SubStr( ::aInfProt[ "dhRecbto" ], 12 ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 9 )
    ENDIF
 
    // box da Insc. da Suframa
