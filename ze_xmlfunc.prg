@@ -6,6 +6,9 @@ ze_xmlfun - Funções pra trabalhar com XML
 2016.07.20.1620 - Fuso horário correto SP
 2016.08.12.1740 - Parâmetro ref UTC (da forma anterior confunde)
 */
+#ifndef DOW_DOMINGO
+   #define DOW_DOMINGO 1
+#endif
 
 FUNCTION XmlTransform( cXml )
 

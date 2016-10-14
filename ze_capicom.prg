@@ -1,8 +1,8 @@
-*----------------------------------------------------------------
-* ZE_CAPICOM - ROTINAS PRA USO DA CAPICOM
-*----------------------------------------------------------------
+/*
+ZE_CAPICOM - ROTINAS PRA USO DA CAPICOM
+2015 - José Quintas
 
-*-----------------------------------------------------------------
+*/
 
 #define _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED           2
 #define _CAPICOM_CURRENT_USER_STORE                   2
@@ -25,8 +25,8 @@ FUNCTION CapicomEscolheCertificado()
       ENDIF
    ENDIF
    // oCapicomStore:Close()
-   RETURN cNomeCertificado
 
+   RETURN cNomeCertificado
 
 FUNCTION CapicomCertificado( cNomeCertificado )
 
@@ -42,4 +42,5 @@ FUNCTION CapicomCertificado( cNomeCertificado )
       ENDIF
    NEXT
    // oCapicomStore:Close()
+
    RETURN oCertificado
