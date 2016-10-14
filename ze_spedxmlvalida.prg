@@ -1,8 +1,6 @@
 /*
 ze_spedxmlvalida - Validação de XML
 2016.07.28.1620 - José Quintas
-2016.09.26.1850 - Arquivo XSD como parâmetro
-2016.10.04.0930 - Validações simples acrescentadas
 */
 
 FUNCTION ValidaXml( cXml, cFileXsd )
@@ -47,7 +45,7 @@ FUNCTION ValidaXml( cXml, cFileXsd )
       cRetorno   := "Erro Carregando MSXML2.XMLSchemaCache.6.0"
       oXmlSchema := win_OleCreateObject( "MSXML2.XMLSchemaCache.6.0" )
 
-      cRetorno := "Erro Carregando " + cFileXSD
+      cRetorno   := "Erro carregando " + cFileXSD
       oXmlSchema:Add( "http://www.portalfiscal.inf.br/nfe", cFileXSD )
 
       oXmlDomDoc:Schemas := oXmlSchema
