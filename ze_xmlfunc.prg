@@ -7,6 +7,8 @@ ze_xmlfun - Funções pra trabalhar com XML
 2016.08.12.1740 - Parâmetro ref UTC (da forma anterior confunde)
 */
 
+#include "jpa.ch"
+
 FUNCTION XmlTransform( cXml )
 
    LOCAL nCont, cRemoveTag, lUtf8
@@ -80,6 +82,48 @@ FUNCTION XmlTransform( cXml )
 
    RETURN cXml
 
+FUNCTION XmlDate( cData )
+
+   LOCAL dDate
+
+   dDate := Ctod( Substr( cData, 9, 2 ) + "/" + Substr( cData, 6, 2 ) + "/" + Substr( cData, 1, 4 ) )
+
+   RETURN dDate
+
+FUNCTION DateXml( dDate )
+
+   RETURN Transform( Dtos( dDate ), "@R 9999-99-99" )
+
+FUNCTION NumberXml( nValue, nDecimals )
+
+   hb_Default( @nDecimals, 0 )
+
+   RETURN Ltrim( Str( nValue, 16, nDecimals ) )
+
+FUNCTION StringToXml( cValue )
+
+   cValue := StrTran( cValue, "&", "&amp;" )
+   cValue := StrTran( cValue, ["], "&quot;" )
+   cValue := StrTran( cValue, "'", "&#39;" )
+   cValue := StrTran( cValue, "<", "&lt;" )
+   cValue := StrTran( cValue, ">", "&gt;" )
+   cValue := StrTran( cValue, "º", "&#176;" )
+   cValue := StrTran( cValue, "ª", "&#170;" )
+
+   RETURN cValue
+
+FUNCTION XmlToString( cValue )
+
+   cValue := Strtran( cValue, "&amp;", "&" )
+   cValue := StrTran( cValue, "&quot;", ["] )
+   cValue := StrTran( cValue, "&#39;", "'" )
+   cValue := StrTran( cValue, "&lt;", "<" )
+   cValue := StrTran( cValue, "&gt;", ">" )
+   cValue := StrTran( cValue, "&#176;", "º" )
+   cValue := StrTran( cValue, "&#170;", "ª" )
+
+   RETURN cValue
+
 FUNCTION XmlNode( cXml, cNode, lComTag )
 
    LOCAL nInicio, nFim, cResultado := ""
@@ -125,14 +169,6 @@ FUNCTION XmlElement( cXml, cElement )
 
    RETURN cResultado
 
-FUNCTION XmlDate( cData )
-
-   LOCAL dDate
-
-   dDate := Ctod( Substr( cData, 9, 2 ) + "/" + Substr( cData, 6, 2 ) + "/" + Substr( cData, 1, 4 ) )
-
-   RETURN dDate
-
 FUNCTION XmlTag( cTag, cValue, lXmlValue )
 
    LOCAL cXml, oChange
@@ -154,16 +190,6 @@ FUNCTION XmlTag( cTag, cValue, lXmlValue )
    ENDIF
 
    RETURN cXml
-
-FUNCTION DateXml( dDate )
-
-   RETURN Transform( Dtos( dDate ), "@R 9999-99-99" )
-
-FUNCTION NumberXml( nValue, nDecimals )
-
-   hb_Default( @nDecimals, 0 )
-
-   RETURN Ltrim( Str( nValue, 16, nDecimals ) )
 
 FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC )
 
@@ -236,30 +262,6 @@ FUNCTION HorarioVeraoTermino( iAno )
 
    RETURN dTerceiroDomingoDeFevereiro
 
-FUNCTION XmlToString( cValue )
-
-   cValue := Strtran( cValue, "&amp;", "&" )
-   cValue := StrTran( cValue, "&quot;", ["] )
-   cValue := StrTran( cValue, "&#39;", "'" )
-   cValue := StrTran( cValue, "&lt;", "<" )
-   cValue := StrTran( cValue, "&gt;", ">" )
-   cValue := StrTran( cValue, "&#176;", "º" )
-   cValue := StrTran( cValue, "&#170;", "ª" )
-
-   RETURN cValue
-
-FUNCTION StringToXml( cValue )
-
-   cValue := StrTran( cValue, "&", "&amp;" )
-   cValue := StrTran( cValue, ["], "&quot;" )
-   cValue := StrTran( cValue, "'", "&#39;" )
-   cValue := StrTran( cValue, "<", "&lt;" )
-   cValue := StrTran( cValue, ">", "&gt;" )
-   cValue := StrTran( cValue, "º", "&#176;" )
-   cValue := StrTran( cValue, "ª", "&#170;" )
-
-   RETURN cValue
-
 FUNCTION MultipleNodeToArray( cXml, cNode )
 
    LOCAL aNodes := {}
@@ -282,3 +284,4 @@ FUNCTION XmlToHash( cXml, aTagList, oVar )
    NEXT
 
    RETURN oVar
+
