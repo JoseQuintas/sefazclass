@@ -1,6 +1,5 @@
 /*
-ze_spedxmlvalida - Validação de XML
-2016.07.28.1620 - José Quintas
+ZE_SPEDXMLVALIDA - Validação de XML
 */
 
 FUNCTION ValidaXml( cXml, cFileXsd )

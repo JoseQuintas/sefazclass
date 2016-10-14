@@ -1,5 +1,3 @@
-// test of fork
-
 REQUEST HB_CODEPAGE_PTISO
 
 #include "inkey.ch"
