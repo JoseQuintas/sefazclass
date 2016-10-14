@@ -7,8 +7,6 @@ ze_xmlfun - Funções pra trabalhar com XML
 2016.08.12.1740 - Parâmetro ref UTC (da forma anterior confunde)
 */
 
-#include "jpa.ch"
-
 FUNCTION XmlTransform( cXml )
 
    LOCAL nCont, cRemoveTag, lUtf8
