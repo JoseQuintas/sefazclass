@@ -1,13 +1,13 @@
-/*
-ZE_CAPICOM - ROTINAS PRA USO DA CAPICOM
-2015 - José Quintas
+*----------------------------------------------------------------
+* ZE_CAPICOM - ROTINAS PRA USO DA CAPICOM
+*----------------------------------------------------------------
 
-*/
+*-----------------------------------------------------------------
 
 #define _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED           2
 #define _CAPICOM_CURRENT_USER_STORE                   2
 
-FUNCTION CapicomEscolheCertificado()
+FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
 
    LOCAL oCertificado, oCapicomStore, cNomeCertificado := "NENHUM", oColecao
 
@@ -16,6 +16,8 @@ FUNCTION CapicomEscolheCertificado()
    oColecao := oCapicomStore:Certificates()
    oCertificado := oColecao:Select( "Selecione o certificado para uso da Nfe","Selecione o certificado", .F. )
    IF oCertificado:Count() > 0
+   	dValidFrom := oCertificado:Item(1):ValidFromDate
+   	dValidTo   := oCertificado:Item(1):ValidToDate
       cNomeCertificado := oCertificado:Item( 1 ):SubjectName
    ENDIF
    IF "CN=" $ cNomeCertificado
@@ -25,8 +27,8 @@ FUNCTION CapicomEscolheCertificado()
       ENDIF
    ENDIF
    // oCapicomStore:Close()
-
    RETURN cNomeCertificado
+
 
 FUNCTION CapicomCertificado( cNomeCertificado )
 
@@ -42,5 +44,4 @@ FUNCTION CapicomCertificado( cNomeCertificado )
       ENDIF
    NEXT
    // oCapicomStore:Close()
-
    RETURN oCertificado
