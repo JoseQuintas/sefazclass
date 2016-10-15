@@ -1,5 +1,5 @@
 /*
-ZE_SPEDSEFASCLASS - Rotinas pra comunicação com SEFAZ
+ZE_SPEDSEFAZCLASS - Rotinas pra comunicação com SEFAZ
 
 2016.09.14.1400 - Correção SOAP Action de consultar recibo MDFe
 2016.09.15.1230 - Motivo correto, do protocolo e não da consulta

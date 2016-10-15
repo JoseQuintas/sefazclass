@@ -1,5 +1,5 @@
 /*
-ZE_SPEDASSINA - ASSINATURA SPED
+ZE_SPEDASSINA - Assinatura SPED
 
 2016.07.07.1230 - Apenas formatação
 */

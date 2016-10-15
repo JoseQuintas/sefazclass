@@ -1,5 +1,5 @@
 /*
-ZE_SPEDDANFE - Documento Auxiliar da NFE
+ZE_SPEDDANFE - Documento Auxiliar da Nota Fiscal Eletrônica
 Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 */
 

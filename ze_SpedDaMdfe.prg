@@ -1,10 +1,6 @@
 /*
-ZE_SPEDDAMDFE - DOCUMENTO AUXILIAR DO MDFE
+ZE_SPEDDAMDFE - Documento Auxiliar de Manifesto Eletrônico de Documentos Fiscais
 Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
-
-2016.09.24.1100 - Incluso, faltam alterações
-2016.09.25.0940 - Ainda não houve geração de PDF
-2016.09.26.1200 - Como é obrigatório fonte Times, fixado este fonte
 */
 
 #include "common.ch"

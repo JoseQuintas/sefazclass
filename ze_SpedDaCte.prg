@@ -1,10 +1,6 @@
 /*
-ZE_SPEDDOCAUXCTE - DOCUMENTO AUXILIAR DO CTE
+ZE_SPEDDACTE - Documento Auxiliar de Conhecimento Eletrônico
 Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
-
-2016.09.24.1100 - Incluso, faltam alterações
-2016.09.25.0940 - Ainda não houve geração de PDF
-2016.09.26.1200 - Como é obrigatório fonte Times, fixado este fonte
 */
 
 #include "common.ch"

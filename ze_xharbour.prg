@@ -1,5 +1,8 @@
-// compatibilidade xHarbour
-// inclusa aqui w32ole.prg da hbnfe
+/*
+ZE_XHARBOUR - compatibilidade xHarbour
+
+inclusa aqui w32ole.prg da hbnfe
+*/
 
 #ifdef __XHARBOUR__
 FUNCTION win_OleCreateObject( cObject )
@@ -42,19 +45,14 @@ STATIC bOleInitialized:=.F.
 #include "vt.ch"
 #include "oleerr.ch"
 
-//----------------------------------------------------------------------------//
 FUNCTION xhb_CreateObject( cString, cLicense )
-//----------------------------------------------------------------------------//
 
-RETURN TOleAutoX():New( cString, , cLicense )
+   RETURN TOleAutoX():New( cString, , cLicense )
 
-//----------------------------------------------------------------------------//
 FUNCTION xhb_GetActiveObject( cString )
-//----------------------------------------------------------------------------//
 
-RETURN TOleAutoX():GetActiveObject( cString )
+   RETURN TOleAutoX():GetActiveObject( cString )
 
-//----------------------------------------------------------------------------//
 CLASS TOleAutoX
 
    DATA hObj
@@ -76,9 +74,7 @@ CLASS TOleAutoX
 
    DESTRUCTOR Release()
 
-ENDCLASS
-
-//--------------------------------------------------------------------
+   ENDCLASS
 
 METHOD New( uObj, cClass ) CLASS TOleAutoX
 
@@ -145,9 +141,7 @@ METHOD New( uObj, cClass ) CLASS TOleAutoX
       ::hObj := 0
    ENDIF
 
-RETURN Self
-
-//--------------------------------------------------------------------
+   RETURN SELF
 
 // Destructor!
 PROCEDURE Release() CLASS TOleAutoX
@@ -156,11 +150,9 @@ PROCEDURE Release() CLASS TOleAutoX
        OleReleaseObject( ::hObj )
    ENDIF
 
-RETURN
+   RETURN
 
-//--------------------------------------------------------------------
 METHOD GetActiveObject( cClass ) CLASS TOleAutoX
-//--------------------------------------------------------------------
 
    LOCAL oErr
 
@@ -207,18 +199,16 @@ METHOD GetActiveObject( cClass ) CLASS TOleAutoX
       ::hObj := 0
    ENDIF
 
-RETURN Self
+   RETURN SELF
 
-//--------------------------------------------------------------------
 METHOD Invoke( ... ) CLASS TOleAutoX
-//--------------------------------------------------------------------
+
    LOCAL cMethod := HB_aParams()[1]
 
-RETURN HB_ExecFromArray( Self, cMethod, aDel( HB_aParams(), 1, .T. ) )
+   RETURN HB_ExecFromArray( Self, cMethod, aDel( HB_aParams(), 1, .T. ) )
 
-//--------------------------------------------------------------------
 METHOD Collection( xIndex, xValue ) CLASS TOleAutoX
-//--------------------------------------------------------------------
+
    LOCAL xRet
 
    IF PCount() == 1
@@ -232,7 +222,7 @@ METHOD Collection( xIndex, xValue ) CLASS TOleAutoX
       xRet := ::SetItem( xIndex, xValue )
    END
 
-RETURN xRet
+   RETURN xRet
 
 #pragma BEGINDUMP
 
@@ -1441,33 +1431,27 @@ RETURN xRet
 #pragma ENDDUMP
 
 
-//----------------------------------------------------------------------------//
 INIT PROCEDURE Initialize_Ole
-//----------------------------------------------------------------------------//
 
    IF ! bOleInitialized
       bOleInitialized := .T.
       Ole_Initialize()
    ENDIF
 
-RETURN
+   RETURN
 
-//----------------------------------------------------------------------------//
 EXIT PROCEDURE __DEACTIVATE__OLE
-//----------------------------------------------------------------------------//
 
    UnInitialize_ole()
 
-Return
+   RETURN
 
-//----------------------------------------------------------------------------//
 PROCEDURE UnInitialize_Ole
-//----------------------------------------------------------------------------//
 
    IF bOleInitialized
       bOleInitialized := .F.
       Ole_UnInitialize()
    ENDIF
 
-RETURN
+   RETURN
 #endif

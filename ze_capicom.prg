@@ -1,8 +1,6 @@
-*----------------------------------------------------------------
-* ZE_CAPICOM - ROTINAS PRA USO DA CAPICOM
-*----------------------------------------------------------------
-
-*-----------------------------------------------------------------
+/*
+ZE_CAPICOM - ROTINAS PRA USO DA CAPICOM
+*/
 
 #define _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED           2
 #define _CAPICOM_CURRENT_USER_STORE                   2

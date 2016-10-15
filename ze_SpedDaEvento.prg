@@ -1,8 +1,6 @@
 /*
-ZE_SPEDDAEVENTO - DOCUMENTO AUXILIAR DO EVENTO
+ZE_SPEDDAEVENTO - Documento auxiliar de Eventos
 Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
-
-2016.09.24.1100 - Início de alterações pra qualquer documento
 */
 
 #include "common.ch"

@@ -1,5 +1,5 @@
 /*
-ze_xmlfun - Funções pra trabalhar com XML
+ZE_XMLFUNC - Funções pra trabalhar com XML
 */
 
 #ifndef DOW_DOMINGO
