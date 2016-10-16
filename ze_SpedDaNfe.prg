@@ -178,7 +178,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDanfe
    ::aObsFisco   := XmlToHash( XmlNode( XmlNode( ::cXml, "infAdic" ), "obsFisco" ), { "xCampo", "xTexto" } )
    ::aExporta    := XmlToHash( XmlNode( XmlNode( ::cXml, "exporta" ), "infCpl" ), { "UFEmbarq", "xLocEmbarq" } )
    ::aCompra     := XmlToHash( XmlNode( ::cXml, "compra" ), { "xNEmp", "xPed", "xCont" } )
-   ::aInfProt    := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto", "digVal", "cStat", "xMotivo" } )
+   ::aInfProt    := XmlToHash( XmlNode( iif( Empty( ::cXmlCancel ), ::cXml, ::cXmlCancel ), "infProt" ), { "nProt", "dhRecbto", "digVal", "cStat", "xMotivo" } )
 
    ::aEmit[ "xNome" ]     := XmlToString( ::aEmit[ "xNome" ] )
    ::aDest[ "xNome" ]     := XmlToString( ::aDest[ "xNome" ] )
@@ -608,7 +608,7 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
    hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -5, 524, NIL, ::aIde[ "natOp" ], HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 10 )
    // PROTOCOLO
    hbNFe_Box_Hpdf( ::oPdfPage, 525, ::nLinhaPdf -16, 305, 16, ::nLarguraBox )
-   hbNFe_Texto_hpdf( ::oPdfPage, 526, ::nLinhaPdf -1, 829, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
+   //hbNFe_Texto_hpdf( ::oPdfPage, 526, ::nLinhaPdf -1, 829, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
    IF ! Empty( ::aInfProt[ "nProt" ] )
       IF ::aInfProt[ "cStat" ] = '100'
          hbNFe_Texto_hpdf( ::oPdfPage, 526, ::nLinhaPdf -1, 829, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
