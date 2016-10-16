@@ -519,39 +519,37 @@ FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
 
 FUNCTION XmlToDocNfeCancel( cXmlInput, oNFe )
 
-   LOCAL mChave, mProtocolo, mXmlInfComTag, mXmlInf
+   LOCAL mXmlInfComTag, mXmlInf
 
-   IF "<infEvento" $ cXmlInput // Evento
-      mChave := XmlNode( cXmlInput, "chNFe" )
-      mProtocolo := XmlNode( XmlNode( cXmlInput, "retEvento" ), "nProt" )
+   DO CASE
+   CASE "<infEvento" $ cXmlInput // Evento
+      oNFe:ChaveAcesso := XmlNode( cXmlInput, "chNFe" )
+      oNFe:Protocolo   := XmlNode( XmlNode( cXmlInput, "retEvento" ), "nProt" )
       // tem o protocolo enviado para cancelamento, e o de retorno
-   ELSE
-      IF "retCancNFe" $ cXmlInput // Tem que ser antes do outro
-         mXmlInf := XmlNode( cXmlInput, "infCanc" )
-         mChave := XmlNode( mXmlInf, "chNFe" )
-         mProtocolo := XmlNode( mXmlInf, "nProt" )
-      ELSEIF "CancNFe" $ cXmlInput
-         mXmlInfComTag := XmlNode( cXmlInput, "infCanc",.T. )
-         mChave := XmlElement( mXmlInfComTag, "Id" )
-         IF Substr( mChave,1, 2 ) == "ID"
-            mChave := Substr( mChave, 3 )
-         ENDIF
-         mProtocolo := XmlNode( mXmlInfComTag, "nProt" )
-      ELSE
-         SayScroll( "Formato do arquivo de cancelamento diferente. Avise JPA" )
-         mChave := ""
-         mProtocolo := ""
-      End If
-   ENDIF
-   IF Len( AllTrim( mChave ) ) == 0
+   CASE "retCancNFe" $ cXmlInput // Tem que ser antes do outro
+      mXmlInf := XmlNode( cXmlInput, "infCanc" )
+      oNFe:ChaveAcesso := XmlNode( mXmlInf, "chNFe" )
+      oNFe:Protocolo   := XmlNode( mXmlInf, "nProt" )
+   CASE "CancNFe" $ cXmlInput
+      mXmlInfComTag := XmlNode( cXmlInput, "infCanc",.T. )
+      oNFe:ChaveAcesso := XmlElement( mXmlInfComTag, "Id" )
+      IF Substr( oNFe:ChaveAcesso, 1, 2 ) == "ID"
+         oNFe:ChaveAcesso := Substr( oNFe:ChaveAcesso, 3 )
+      ENDIF
+      oNFe:Protocolo := XmlNode( mXmlInfComTag, "nProt" )
+   OTHERWISE
+      oNFe:cErro       := "Formato do arquivo de cancelamento diferente. Avise desenvolvedor"
+      oNFe:ChaveAcesso := ""
+      oNFe:Protocolo   := ""
+      RETURN .F.
+   ENDCASE
+   IF Len( AllTrim( oNFe:Chave ) ) == 0
       oNfe:cErro := "Sem chave de acesso"
       RETURN .F.
    ELSE
-      oNfe:ChaveAcesso   := mChave
-      oNfe:Protocolo     := mProtocolo
       oNFE:cAmbiente     := XmlNode( cXmlInput, "tpAmb" )
-      oNfe:Emitente:Cnpj := Transform( Substr( mChave, 7, 14 ), "@R 99.999.999/9999-99" )
-      oNfe:cNumDoc       := Substr( mChave, 26, 9 )
+      oNfe:Emitente:Cnpj := Transform( Substr( oNFe:cChave, 7, 14 ), "@R 99.999.999/9999-99" )
+      oNfe:cNumDoc       := Substr( oNFe:cChave, 26, 9 )
       oNfe:cAssinatura   := XmlNode( cXmlInput, "Signature" )
       oNfe:Status        := "111"
    ENDIF

@@ -82,12 +82,6 @@ FUNCTION CalculaDigito( cNumero, cModulo )
 
    RETURN cCalculo
 
-// só pra não aparecer erro
-
-FUNCTION SayScroll( ... )
-
-   RETURN NIL
-
 FUNCTION FormatNumber( nValor, nTamanho, nDecimais )
 
    LOCAL cPicture
