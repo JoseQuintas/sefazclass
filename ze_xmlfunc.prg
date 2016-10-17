@@ -176,9 +176,8 @@ FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC )
    CASE cUF $ "AC"                                             ; cText += "-05:00"
    CASE cUF $ "MT,MS" .AND. lHorarioVerao                      ; cText += "-03:00"
    CASE cUF $ "DF,ES,GO,MG,PR,RJ,RS,SC,SP" .AND. lHorarioVerao ; cText += "-02:00"
-   CASE cUF $ "DF,ES,GO,MG,PR,RJ,RS,SC,SP"                     ; cText += "-03:00"
    CASE cUF $ "AM,MT,MS,RO,RR"                                 ; cText += "-04:00"
-   OTHERWISE                                                   ; cText += "-03:00"
+   OTHERWISE                                                   ; cText += "-03:00" // demais casos
    ENDCASE
 
    RETURN cText
