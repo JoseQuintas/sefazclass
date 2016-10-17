@@ -472,7 +472,7 @@ METHOD Eventos() CLASS hbnfeDaEvento
 
    ::nLinhaPdf -= 12
 
-   IF Len( ::aCorrecoes )
+   IF Len( ::aCorrecoes ) > 0
 
       FOR EACH oElement IN ::aCorrecoes
          cGrupo := XmlNode( oElement, 'grupoAlterado' )
