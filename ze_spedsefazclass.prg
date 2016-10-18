@@ -110,6 +110,11 @@ CREATE CLASS SefazClass
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente )
    METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
+   METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega , cCertificado, cAmbiente )
+   METHOD MDFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente )
+   METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
+   METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
+   METHOD MDFeConsNaoEnc( cCNPJ , cCertificado, cAmbiente )
 
    METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
    METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc )
@@ -1859,47 +1864,6 @@ STATIC FUNCTION UrlWebService( cUF, cAmbiente, nWsServico, cVersao )
 
    RETURN cUrlWs
 
-#ifdef LIBCURL // pra nao compilar, apenas anotado
-//
-// Pode ser usada a LibCurl pra comunicação
-
-METHOD CurlSoapPost() CLASS SefazClass
-
-   LOCAL aHeader := Array(3)
-
-   aHeader[ 1 ] := [Content-Type: application/soap+xml;charset=utf-8;action="] + ::cServico + ["]
-   aHeader[ 2 ] := [SOAPAction: "] + ::cSoapAction + ["]
-   aHeader[ 3 ] := [Content-length: ] + AllTrim( Str( Len( ::cXml ) ) )
-   curl_global_init()
-   oCurl = curl_easy_init()
-   curl_easy_setopt( oCurl, HB_CURLOPT_URL, ::cWebService )
-   curl_easy_setopt( oCurl, HB_CURLOPT_PORT , 443 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_VERBOSE, .F. ) // 1
-   curl_easy_setopt( oCurl, HB_CURLOPT_HEADER, 1 ) //retorna o cabecalho de resposta
-   curl_easy_setopt( oCurl, HB_CURLOPT_SSLVERSION, 3 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_SSL_VERIFYHOST, 0 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_SSL_VERIFYPEER, 0 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_SSLCERT, ::cCertificadoPublicKeyFile ) // Falta na classe
-   curl_easy_setopt( oCurl, HB_CURLOPT_KEYPASSWD, ::cCertificadoPassword )    // Falta na classe
-   curl_easy_setopt( oCurl, HB_CURLOPT_SSLKEY, ::cCertificadoPrivateKeyFile ) // Falta na classe
-   curl_easy_setopt( oCurl, HB_CURLOPT_POST, 1 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_POSTFIELDS, ::cXml )
-   curl_easy_setopt( oCurl, HB_CURLOPT_WRITEFUNCTION, 1 )
-   curl_easy_setopt( oCurl, HB_CURLOPT_DL_BUFF_SETUP )
-   curl_easy_setopt( oCurl, HB_CURLOPT_HTTPHEADER, aHeader )
-   curl_easy_perform( oCurl )
-   retHTTP := curl_easy_getinfo( oCurl, HB_CURLINFO_RESPONSE_CODE )
-   ::cXmlRetorno := ""
-   IF retHTTP = 200 // OK
-      curl_easy_setopt( ocurl, HB_CURLOPT_DL_BUFF_GET, @::cXmlRetorno )
-      cXMLResp := Substr( cXMLResp, AT( '<?xml', ::cXmlRetorno ) )
-   ENDIF
-   curl_easy_cleanup( oCurl )
-   curl_global_cleanup()
-
-   RETURN NIL
-#endif
-
 METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    hb_Default( @cXmlAssinado, "" )
@@ -1965,6 +1929,7 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
          ::cXmlAutorizado += [</ProcInutCTe>]
       ENDIF
    ENDIF
+
    RETURN ::cXmlRetorno
 
 METHOD NFeAddCancelamento(cXmlAssinado,cXmlRetorno) CLASS SefazClass
@@ -2022,3 +1987,191 @@ METHOD CTeAddCancelamento( cXmlAssinado,cXmlRetorno ) CLASS SefazClass
    cXmlAutorizado += [</cteProc>]
 
    RETURN cXmlAutorizado
+
+METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega , cCertificado, cAmbiente ) CLASS SefazClass
+
+   LOCAL cXml
+
+   IF cCertificado != NIL
+      ::cCertificado := cCertificado
+   ENDIF
+   IF cAmbiente != NIL
+      ::cAmbiente := cAmbiente
+   ENDIF
+   hb_Default( @nSequencia, 1 )
+
+   ::cProjeto     := WS_PROJETO_MDFE
+   ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
+   cXml := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
+   cXml +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
+   cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
+   cXml +=       XmlTag( "tpAmb", ::cAmbiente )
+   cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
+   cXml +=       XmlTag( "chMDFe", cChave )
+   cXml +=       XmlTag( "dhEvento", ::DateTimeXml( , , ,.F.) )
+   cXml +=       XmlTag( "tpEvento", "110112" )
+   cXml +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
+   cXml +=       [<detEvento versaoEvento="1.00">]
+   cXml +=       	  [<evEncMDFe>]
+   cXml +=          		XmlTag( "descEvento", "Encerramento" )
+   cXml +=          		XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   cXml +=          		XmlTag( "dtEnc", DateXml( Date() ) )
+   cXml +=          		XmlTag( "cUF", ::UFCodigo( cUFFim ) )
+   cXml +=          		XmlTag( "cMun", cMunCarrega )
+   cXml +=       	  [</evEncMDFe>]
+   cXml +=       [</detEvento>]
+   cXml +=    [</infEvento>]
+   cXml += [</eventoMDFe>]
+   ::cXmlRetorno := AssinaXml( @cXml, ::cCertificado )
+   IF ::cXmlRetorno == "OK"
+      ::MDFeEventoEnvia( cChave, cXml, ::cCertificado, ::cAmbiente )
+      ::MDFeGeraEventoAutorizado( @cXml, hb_Utf8ToStr(::cXmlRetorno) )
+   ENDIF
+
+   RETURN ::cXmlRetorno
+
+METHOD MDFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente ) CLASS SefazClass
+
+	IF cCertificado != NIL
+	   ::cCertificado := cCertificado
+	ENDIF
+	IF cAmbiente != NIL
+	   ::cAmbiente := cAmbiente
+	ENDIF
+   ::cProjeto     := WS_PROJETO_MDFE
+	::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
+	::cVersaoXml   := "1.00"
+	::cServico     := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento"
+	::cSoapAction  := "mdfeRecepcaoEvento"
+	::cWebService  := ::GetWebService( ::cUF, WS_MDFE_RECEPCAOEVENTO, ::cAmbiente, WS_PROJETO_MDFE )
+	::cXmlDados    :=    cXml
+	::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_MDFE )
+
+	RETURN ::cXmlRetorno
+
+METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
+
+   hb_Default( @cXmlAssinado, "" )
+   hb_Default( @cXmlProtocolo, "" )
+   ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "cStat" ), 3 )
+   ::cMotivo := hb_Utf8ToStr( XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "xMotivo" ) )
+   IF ! ::cStatus $ "135,136"
+      RETURN ::cXmlRetorno
+   ENDIF
+   ::cXmlAutorizado := [<?xml version="1.00"?>]
+   ::cXmlAutorizado += [<procEvento versao="1.00" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cXmlAutorizado +=    cXmlAssinado
+   ::cXmlAutorizado += [<retEventoMDFe versao="1.00">]
+   ::cXmlAutorizado +=    hb_Utf8ToStr(XmlNode( cXmlProtocolo, "retEventoMDFe" ))
+   ::cXmlAutorizado += [</retEventoMDFe>]
+   ::cXmlAutorizado += [</procEvento>]
+   ::cXmlDados := cXmlAssinado
+   ::cMotivo := hb_Utf8ToStr(XmlNode( XmlNode( cXmlProtocolo, "infEvento" ), "xMotivo" ))
+
+   RETURN ::cXmlAutorizado
+
+METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
+
+   LOCAL cXml
+
+   IF cCertificado != NIL
+      ::cCertificado := cCertificado
+   ENDIF
+   IF cAmbiente != NIL
+      ::cAmbiente := cAmbiente
+   ENDIF
+   hb_Default( @nSequencia, 1 )
+
+   ::cProjeto     := WS_PROJETO_MDFE
+   ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
+   cXml := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
+   cXml +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
+   cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
+   cXml +=       XmlTag( "tpAmb", ::cAmbiente )
+   cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
+   cXml +=       XmlTag( "chMDFe", cChave )
+   cXml +=       XmlTag( "dhEvento", ::DateTimeXml( , , ,.F.) )
+   cXml +=       XmlTag( "tpEvento", "110111" )
+   cXml +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
+   cXml +=       [<detEvento versaoEvento="1.00">]
+   cXml +=       	  [<evCancMDFe>]
+   cXml +=          		XmlTag( "descEvento", "Cancelamento" )
+   cXml +=          		XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   cXml +=          		XmlTag( "xJust", xJust )
+   cXml +=       	  [</evCancMDFe>]
+   cXml +=       [</detEvento>]
+   cXml +=    [</infEvento>]
+   cXml += [</eventoMDFe>]
+   ::cXmlRetorno := AssinaXml( @cXml, ::cCertificado )
+   IF ::cXmlRetorno == "OK"
+      ::MDFeEventoEnvia( cChave, cXml, ::cCertificado, ::cAmbiente )
+      ::MDFeGeraEventoAutorizado( @cXml, hb_Utf8ToStr(::cXmlRetorno) )
+   ENDIF
+
+   RETURN ::cXmlRetorno
+
+METHOD MDFeConsNaoEnc( cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
+
+   IF cCertificado != NIL
+      ::cCertificado := cCertificado
+   ENDIF
+   IF cAmbiente != NIL
+      ::cAmbiente := cAmbiente
+   ENDIF
+   ::cProjeto     := WS_PROJETO_MDFE
+   ::cVersaoXml   := "1.00"
+   ::cServico     := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc"
+   ::cSoapAction  := "mdfeConsNaoEnc"
+   ::cWebService  := ::GetWebService( ::cUF, WS_MDFE_CONSNAOENC , ::cAmbiente, WS_PROJETO_MDFE )
+   ::cXmlDados    := [<consMDFeNaoEnc versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cXmlDados    +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDados    +=    XmlTag( "xServ", "CONSULTAR NÃO ENCERRADOS" )
+   ::cXmlDados    +=    XmlTag( "CNPJ", cCNPJ )
+   ::cXmlDados    += [</consMDFeNaoEnc>]
+   ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_MDFE )
+   ::cStatus := Pad( XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "cStat" ), 3 )
+   ::cMotivo := XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "xMotivo" )
+
+   RETURN ::cXmlRetorno
+
+#ifdef LIBCURL // pra nao compilar, apenas anotado
+//
+// Pode ser usada a LibCurl pra comunicação
+
+METHOD CurlSoapPost() CLASS SefazClass
+
+   LOCAL aHeader := Array(3)
+
+   aHeader[ 1 ] := [Content-Type: application/soap+xml;charset=utf-8;action="] + ::cServico + ["]
+   aHeader[ 2 ] := [SOAPAction: "] + ::cSoapAction + ["]
+   aHeader[ 3 ] := [Content-length: ] + AllTrim( Str( Len( ::cXml ) ) )
+   curl_global_init()
+   oCurl = curl_easy_init()
+   curl_easy_setopt( oCurl, HB_CURLOPT_URL, ::cWebService )
+   curl_easy_setopt( oCurl, HB_CURLOPT_PORT , 443 )
+   curl_easy_setopt( oCurl, HB_CURLOPT_VERBOSE, .F. ) // 1
+   curl_easy_setopt( oCurl, HB_CURLOPT_HEADER, 1 ) //retorna o cabecalho de resposta
+   curl_easy_setopt( oCurl, HB_CURLOPT_SSLVERSION, 3 ) // Algumas UFs começaram a usar versão 4
+   curl_easy_setopt( oCurl, HB_CURLOPT_SSL_VERIFYHOST, 0 )
+   curl_easy_setopt( oCurl, HB_CURLOPT_SSL_VERIFYPEER, 0 )
+   curl_easy_setopt( oCurl, HB_CURLOPT_SSLCERT, ::cCertificadoPublicKeyFile ) // Falta na classe
+   curl_easy_setopt( oCurl, HB_CURLOPT_KEYPASSWD, ::cCertificadoPassword )    // Falta na classe
+   curl_easy_setopt( oCurl, HB_CURLOPT_SSLKEY, ::cCertificadoPrivateKeyFile ) // Falta na classe
+   curl_easy_setopt( oCurl, HB_CURLOPT_POST, 1 )
+   curl_easy_setopt( oCurl, HB_CURLOPT_POSTFIELDS, ::cXml )
+   curl_easy_setopt( oCurl, HB_CURLOPT_WRITEFUNCTION, 1 )
+   curl_easy_setopt( oCurl, HB_CURLOPT_DL_BUFF_SETUP )
+   curl_easy_setopt( oCurl, HB_CURLOPT_HTTPHEADER, aHeader )
+   curl_easy_perform( oCurl )
+   retHTTP := curl_easy_getinfo( oCurl, HB_CURLINFO_RESPONSE_CODE )
+   ::cXmlRetorno := ""
+   IF retHTTP = 200 // OK
+      curl_easy_setopt( ocurl, HB_CURLOPT_DL_BUFF_GET, @::cXmlRetorno )
+      cXMLResp := Substr( cXMLResp, AT( '<?xml', ::cXmlRetorno ) )
+   ENDIF
+   curl_easy_cleanup( oCurl )
+   curl_global_cleanup()
+
+   RETURN NIL
+#endif
+
