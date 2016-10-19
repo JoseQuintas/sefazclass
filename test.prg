@@ -20,7 +20,6 @@ PROCEDURE Main
 
    DO WHILE .T.
       CLS
-      @ 0,0 SAY ""
       @ Row() + 1, 5 PROMPT "Sair"
       @ Row() + 1, 5 PROMPT "Teste Danfe"
       @ Row() + 1, 5 PROMPT "Seleciona certificado"

@@ -139,7 +139,7 @@ FUNCTION XmlTag( cTag, cValue )
 
    hb_Default( @cValue, "" )
    cValue := AllTrim( cValue )
-   IF Len( Trim( cValue ) ) = 0
+   IF Len( cValue ) = 0
       cXml := [<]+ cTag + [/>]
    ELSE
       IF Len( cValue ) == 0
@@ -267,10 +267,13 @@ FUNCTION XmlToHash( cXml, aTagList, oVar )
 
    RETURN oVar
 
-FUNCTION MultipleNodeToArray(cXml,cNode) // runner
+FUNCTION MultipleNodeToArray( cXml, cNode )
+
    LOCAL aNodes :={}
-   DO WHILE '<'+cNode $ cXml
-      Aadd( aNodes , XmlNode(cXml , cNode) )
-      cXml := Subs(cXml,At('<'+cNode+'>',cXml)+Len('<'+cNode+'>'))
+
+   DO WHILE "<" + cNode + " " $ cXml .OR. "<" + cNode + ">" $ cXml
+      Aadd( aNodes , XmlNode( cXml , cNode ) )
+      cXml := Substr( cXml, At( "</" + cNode + ">", cXml ) + Len( "</" + cNode + ">" ) )
    ENDDO
+
    RETURN aNodes
