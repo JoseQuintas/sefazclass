@@ -62,12 +62,12 @@ CREATE CLASS SefazClass
    VAR    cCertificado   INIT ""                      /* Nome do certificado */
    VAR    ValidFromDate  INIT ""                      /* Validade do certificado */ // runner
    VAR    ValidToDate    INIT ""                      /* Validade do certificado */ // runner
-   VAR    cPastaSchemas  INIT ""                      /* Pasta dos Schemas, caso não esteja na pasta padrão do executavel  */ // runner
    VAR    cIndSinc       INIT INDSINC_RETORNA_RECIBO  /* Poucas UFs opção de protocolo */
    VAR    nTempoEspera   INIT 7                       /* intervalo entre envia lote e consulta recibo */
    VAR    cUFTimeZone    INIT "SP"                    /* Para DateTimeXml() Obrigatório definir UF default */
    /* XMLs de cada etapa */
    VAR    cXmlDados      INIT ""                      /* usado pra criar/complementar XML do documento */
+   VAR    cXmlSoap       INIT ""                      /* XML completo enviado pra Sefaz, incluindo informações do envelope */
    VAR    cXmlRetorno    INIT "Erro Desconhecido"     /* Retorno do webservice e/ou rotina */
    VAR    cXmlRecibo     INIT ""                      /* XML recibo (obtido no envio do lote) */
    VAR    cXmlProtocolo  INIT ""                      /* XML protocolo (obtido no consulta recibo e/ou envio de outros docs) */
@@ -77,10 +77,9 @@ CREATE CLASS SefazClass
    VAR    cMotivo        INIT ""                      /* Motivo constante no Recibo */
    /* uso interno */
    VAR    cVersaoXml     INIT ""                      /* Apenas versão usada no XML */
-   VAR    cServico       INIT ""                      /* Operação existente no webservice */
+   VAR    cSoapService   INIT ""                      /* Operação existente no webservice */
    VAR    cSoapAction    INIT ""                      /* Ação solicitada ao webservice */
-   VAR    cWebService    INIT ""                      /* Endereço de webservice */
-   VAR    cXmlSoap       INIT ""                      /* XML completo enviado pra Sefaz, incluindo informações do envelope */
+   VAR    cSoapURL       INIT ""                      /* Endereço de webservice */
 
    METHOD CTeConsulta( ... )   INLINE  ::CTeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
    METHOD NFeConsulta( ... )   INLINE  ::NFeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
@@ -90,26 +89,24 @@ CREATE CLASS SefazClass
    METHOD MDFeStatus( ... )    INLINE  ::MDFeStatusServico( ... )       // Não usar, apenas compatibilidade
    METHOD NFeCadastro( ... )   INLINE  ::NFeConsultaCadastro( ... )     // Não usar, apenas compatibilidade
    METHOD NFeEventoCCE( ... )  INLINE  ::NFeEventoCarta( ... )          // Não usar, apenas compatibilidade
-   METHOD CTeEventoCCE( ... )  INLINE  ::CteEventoCarta( ... )
+   METHOD CTeEventoCCE( ... )  INLINE  ::CTeEventoCarta( ... )
 
    METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente )
-   METHOD CTeEventoEnvia( cChave, cXml, cCertificado, cAmbiente )
    METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
    METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
    METHOD CTeStatusServico( cUF, cCertificado, cAmbiente )
 
-   METHOD MDFeConsNaoEnc( cCNPJ , cCertificado, cAmbiente )
+   METHOD MDFeConsNaoEnc( CUF, cCNPJ , cCertificado, cAmbiente )
    METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega , cCertificado, cAmbiente )
-   METHOD MDFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente )
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
@@ -123,7 +120,7 @@ CREATE CLASS SefazClass
    METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
-   METHOD NFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente )
+   METHOD NFeEventoEnvia( cChave, cXml )
    METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente )
    METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
@@ -135,7 +132,7 @@ CREATE CLASS SefazClass
    METHOD NFeAddCancelamento( cXmlAssinado, cXmlRetorno ) INLINE NFeAddCancelamento( cXmlAssinado, cXmlRetorno )
 
    /* Uso interno */
-   METHOD GetWebService( nWsServico )
+   METHOD SetSoapURL( nWsServico )
    METHOD XmlSoapEnvelope()
    METHOD XmlSoapPost()
    METHOD MicrosoftXmlSoapPost()
@@ -151,20 +148,23 @@ CREATE CLASS SefazClass
    METHOD SetAmbiente( cValue )             INLINE ::cAmbiente    := iif( cValue != NIL, cValue, ::cAmbiente )
    METHOD SetUF( cValue )                   INLINE ::cUF          := iif( cValue != NIL, cValue, ::cUF )
    METHOD SetProjeto( cValue )              INLINE ::cProjeto     := cValue
+   METHOD SetSoapService( cValue )          INLINE ::cSoapService := cValue
+   METHOD SetSoapAction( cValue )           INLINE ::cSoapAction  := cValue
 
    ENDCLASS
 
 METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_CTE )
+   ::SetProjeto(     WS_PROJETO_CTE )
+   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
 
-   ::cUF          := ::UFSigla( Substr( cChave, 1, 2 ) )
+   ::SetSoapAction(  "cteConsultaCT" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta" )
+   ::SetSoapURL(     WS_CTE_CONSULTAPROTOCOLO )
+
    ::cVersaoXml   := "2.00"
-   ::cServico     := "http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta"
-   ::cSoapAction  := "cteConsultaCT"
-   ::cWebService  := ::GetWebService( WS_CTE_CONSULTAPROTOCOLO )
    ::cXmlDados    := [<consSitCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlDados    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados    +=    XmlTag( "xServ", "CONSULTAR" )
@@ -184,15 +184,16 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
       ::cRecibo := cRecibo
    ENDIF
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_CTE )
+   ::SetProjeto(     WS_PROJETO_CTE )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction( "cteRetRecepcao" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao" )
+   ::SetSoapURL(     WS_CTE_RETRECEPCAO )
 
    ::cVersaoXml  := "2.00"
-   ::cServico    := "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao"
-   ::cSoapAction := "cteRetRecepcao"
-   ::cWebService := ::GetWebService( WS_CTE_RETRECEPCAO )
    ::cXmlDados   := [<consReciCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados   +=    XmlTag( "nRec",  ::cRecibo )
@@ -205,108 +206,99 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
 METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL cXml
-
    hb_Default( @nSequencia, 1 )
 
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_CTE )
+   ::SetProjeto(     WS_PROJETO_CTE )
+   ::SetUF( ::UFSigla( Substr( cChave, 1, 2 ) ) )
 
-   ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
-   cXml := [<eventoCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="2.00">]
-   cXml +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
-   cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   cXml +=       XmlTag( "tpAmb", ::cAmbiente )
-   cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
-   cXml +=       XmlTag( "chCTe", cChave )
-   cXml +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
-   cXml +=       XmlTag( "tpEvento", "110111" )
-   cXml +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
-   cXml +=       [<detEvento versaoEvento="2.00">]
-   cXml +=            [<evCancCTe>]
-   cXml +=                XmlTag( "descEvento", "Cancelamento" )
-   cXml +=                XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   cXml +=                XmlTag( "xJust", xJust )
-   cXml +=            [</evCancCTe>]
-   cXml +=       [</detEvento>]
-   cXml +=    [</infEvento>]
-   cXml += [</eventoCTe>]
-   ::cXmlRetorno := ::AssinaXml( @cXml )
+   ::SetSoapAction( "cteRecepcaoEvento" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento" )
+   ::SetSoapURL( WS_CTE_RECEPCAOEVENTO )
+
+   ::cVersaoXml   := "2.00"
+   ::cXmlDados := [<eventoCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="2.00">]
+   ::cXmlDados +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDados +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
+   ::cXmlDados +=       XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDados +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
+   ::cXmlDados +=       XmlTag( "chCTe", cChave )
+   ::cXmlDados +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
+   ::cXmlDados +=       XmlTag( "tpEvento", "110111" )
+   ::cXmlDados +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
+   ::cXmlDados +=       [<detEvento versaoEvento="2.00">]
+   ::cXmlDados +=            [<evCancCTe>]
+   ::cXmlDados +=                XmlTag( "descEvento", "Cancelamento" )
+   ::cXmlDados +=                XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   ::cXmlDados +=                XmlTag( "xJust", xJust )
+   ::cXmlDados +=            [</evCancCTe>]
+   ::cXmlDados +=       [</detEvento>]
+   ::cXmlDados +=    [</infEvento>]
+   ::cXmlDados += [</eventoCTe>]
+   ::cXmlRetorno := ::AssinaXml( @::cXmlDados )
    IF ::cXmlRetorno == "OK"
-      ::CTeEventoEnvia( cChave, cXml )
-      ::CTeGeraEventoAutorizado( @cXml, ::cXmlRetorno )
+      ::XmlSoapPost()
+      ::CTeGeraEventoAutorizado( ::cXmlDados, ::cXmlRetorno )
    ENDIF
 
    RETURN ::cXmlRetorno
 
 METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL cXml
    LOCAL oElement
 
    hb_Default( @nSequencia, 1 )
 
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_CTE )
+   ::SetProjeto(     WS_PROJETO_CTE )
+   ::SetUF( ::UFSigla( Substr( cChave, 1, 2 ) ) )
 
-   ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
-   cXml := [<eventoCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="2.00">]
-   cXml +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
-   cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   cXml +=       XmlTag( "tpAmb", ::cAmbiente )
-   cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
-   cXml +=       XmlTag( "chCTe", cChave )
-   cXml +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
-   cXml +=       XmlTag( "tpEvento", "110110" )
-   cXml +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia ) ) )
-   cXml +=       [<detEvento versaoEvento="2.00">]
-   cXml +=            [<evCCeCTe>]
-   cXml +=                XmlTag( "descEvento", "Carta de Correcao" )
-                        FOR EACH oElement IN aAlteracoes
-   cXml +=                     [<infCorrecao>]
-   cXml +=                      XmlTag( "grupoAlterado", oElement[ 1 ] )
-   cXml +=                      XmlTag( "campoAlterado", oElement[ 2 ] )
-   cXml +=                      XmlTag( "valorAlterado", oElement[ 3 ] )
-   cXml +=                     [</infCorrecao>]
-                        NEXT
-   cXml +=                [<xCondUso>]
-   cXml +=                   "A Carta de Correcao e disciplinada pelo Art. 58-B "
-   cXml +=                   "do CONVENIO/SINIEF 06/89: Fica permitida a utilizacao de carta "
-   cXml +=                   "de correcao, para regularizacao de erro ocorrido na emissao de "
-   cXml +=                   "documentos fiscais relativos a prestacao de servico de transporte, "
-   cXml +=                   "desde que o erro nao esteja relacionado com: I - as variaveis que "
-   cXml +=                   "determinam o valor do imposto tais como: base de calculo, aliquota, "
-   cXml +=                   "diferenca de preco, quantidade, valor da prestacao;II - a correcao "
-   cXml +=                   "de dados cadastrais que implique mudanca do emitente, tomador, "
-   cXml +=                   "remetente ou do destinatario;III - a data de emissao ou de saida."
-   cXml +=                [</xCondUso>]
-   cXml +=          [</evCCeCTe>]
-   cXml +=       [</detEvento>]
-   cXml +=    [</infEvento>]
-   cXml += [</eventoCTe>]
-   ::cXmlRetorno := ::AssinaXml( @cXml )
-   IF ::cXmlRetorno == "OK"
-      ::CTeEventoEnvia( cChave, cXml )
-      ::CTeGeraEventoAutorizado( cXml, ::cXmlRetorno )
-   ENDIF
+   ::SetSoapAction( "cteRecepcaoEvento" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento" )
+   ::SetSoapURL( WS_CTE_RECEPCAOEVENTO )
 
-   RETURN ::cXmlRetorno
-
-METHOD CTeEventoEnvia( cChave, cXml, cCertificado, cAmbiente ) CLASS SefazClass
-
-   ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_CTE )
-
-   ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
    ::cVersaoXml   := "2.00"
-   ::cServico     := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento"
-   ::cSoapAction  := "cteRecepcaoEvento"
-   ::cWebService  := ::GetWebService( WS_CTE_RECEPCAOEVENTO )
-   ::cXmlDados    :=    cXml
-   ::XmlSoapPost()
+   ::cXmlDados := [<eventoCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="2.00">]
+   ::cXmlDados +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDados +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
+   ::cXmlDados +=       XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDados +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
+   ::cXmlDados +=       XmlTag( "chCTe", cChave )
+   ::cXmlDados +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
+   ::cXmlDados +=       XmlTag( "tpEvento", "110110" )
+   ::cXmlDados +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia ) ) )
+   ::cXmlDados +=       [<detEvento versaoEvento="2.00">]
+   ::cXmlDados +=            [<evCCeCTe>]
+   ::cXmlDados +=                XmlTag( "descEvento", "Carta de Correcao" )
+                        FOR EACH oElement IN aAlteracoes
+   ::cXmlDados +=                     [<infCorrecao>]
+   ::cXmlDados +=                      XmlTag( "grupoAlterado", oElement[ 1 ] )
+   ::cXmlDados +=                      XmlTag( "campoAlterado", oElement[ 2 ] )
+   ::cXmlDados +=                      XmlTag( "valorAlterado", oElement[ 3 ] )
+   ::cXmlDados +=                     [</infCorrecao>]
+                        NEXT
+   ::cXmlDados +=                [<xCondUso>]
+   ::cXmlDados +=                   "A Carta de Correcao e disciplinada pelo Art. 58-B "
+   ::cXmlDados +=                   "do CONVENIO/SINIEF 06/89: Fica permitida a utilizacao de carta "
+   ::cXmlDados +=                   "de correcao, para regularizacao de erro ocorrido na emissao de "
+   ::cXmlDados +=                   "documentos fiscais relativos a prestacao de servico de transporte, "
+   ::cXmlDados +=                   "desde que o erro nao esteja relacionado com: I - as variaveis que "
+   ::cXmlDados +=                   "determinam o valor do imposto tais como: base de calculo, aliquota, "
+   ::cXmlDados +=                   "diferenca de preco, quantidade, valor da prestacao;II - a correcao "
+   ::cXmlDados +=                   "de dados cadastrais que implique mudanca do emitente, tomador, "
+   ::cXmlDados +=                   "remetente ou do destinatario;III - a data de emissao ou de saida."
+   ::cXmlDados +=                [</xCondUso>]
+   ::cXmlDados +=          [</evCCeCTe>]
+   ::cXmlDados +=       [</detEvento>]
+   ::cXmlDados +=    [</infEvento>]
+   ::cXmlDados += [</eventoCTe>]
+   ::cXmlRetorno := ::AssinaXml( @::cXmlDados )
+   IF ::cXmlRetorno == "OK"
+      ::XmlSoapPost()
+      ::CTeGeraEventoAutorizado( ::cXmlDados, ::cXmlRetorno )
+   ENDIF
 
    RETURN ::cXmlRetorno
 
@@ -318,16 +310,15 @@ METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protCTe" ), "cStat" ), 3 )
    IF ! ::cStatus $ "100,101,150,301,302"
       ::cXmlRetorno := [<Erro text="Não autorizado" />] + cXmlProtocolo
-      RETURN ::cXmlRetorno
+      RETURN NIL
    ENDIF
    ::cXmlAutorizado := [<?xml version="1.00"?>]
    ::cXmlAutorizado += [<cteProc versao="2.00" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protCTe", .T. ) // ?hb_Utf8ToStr()
    ::cXmlAutorizado += [</cteProc>]
-   ::cXmlRetorno    := ::cXmlAutorizado
 
-   RETURN ::cXmlAutorizado
+   RETURN NIL
 
 METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
@@ -338,7 +329,7 @@ METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "retEventoCTe" ), "xMotivo" ) // runner
    IF ! ::cStatus $ "135,155"
       ::cXmlRetorno := [<Erro text="Não autorizado" />] + cXmlProtocolo
-      RETURN ::cXmlRetorno
+      RETURN NIL
    ENDIF
    ::cXmlAutorizado := [<?xml version="1.00"?>]
    ::cXmlAutorizado += [<procEventoCTe versao="2.00" xmlns="http://www.portalfiscal.inf.br/cte">]
@@ -348,21 +339,21 @@ METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cXmlAutorizado += [</retEventoCTe>]
    ::cXmlAutorizado += [</procEventoCTe>]
    ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "infEvento" ), "xMotivo" ) // hb_UTF8ToStr()
-   ::cXmlRetorno := ::cXmlAutorizado
 
-   RETURN ::cXmlAutorizado
+   RETURN NIL
 
 METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_CTE )
+   ::SetProjeto(     WS_PROJETO_CTE )
+   ::SetUF( cUF )
+
+   ::SetSoapAction(  "cteInutilizacaoCT" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao" )
+   ::SetSoapURL(     WS_CTE_INUTILIZACAO )
 
    ::cVersaoXml  := "2.00"
-   ::cServico    := "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao"
-   ::cSoapAction := "cteInutilizacaoCT"
-   ::cWebService := ::GetWebService( ::cUF, WS_CTE_INUTILIZACAO, ::cAmbiente, WS_PROJETO_CTE )
    ::cXmlDados   := [<inutCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlDados   +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
    ::cXmlDados   +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
@@ -399,15 +390,16 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
       cLote := "1"
    ENDIF
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_CTE )
+   ::SetProjeto(     WS_PROJETO_CTE )
+   ::SetUF( cUF )
+
+   ::SetSoapAction(  "cteRecepcaoLote" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao" )
+   ::SetSoapURL(     WS_CTE_RECEPCAO )
 
    ::cVersaoXml   := "2.00"
-   ::cServico     := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao"
-   ::cSoapAction  := "cteRecepcaoLote"
-   ::cWebService  := ::GetWebService( WS_CTE_RECEPCAO )
    ::cXmlDados    := [<enviCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlDados    +=    XmlTag( "idLote", cLote )
    ::cXmlDados    +=    cXml
@@ -425,15 +417,16 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
 
 METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_CTE )
+   ::SetProjeto(     WS_PROJETO_CTE )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "cteStatusServicoCT" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico" )
+   ::SetSoapURL(     WS_CTE_STATUSSERVICO )
 
    ::cVersaoXml   := "2.00"
-   ::cServico     := "http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico"
-   ::cSoapAction  := "cteStatusServicoCT"
-   ::cWebService  := ::GetWebService( WS_CTE_STATUSSERVICO )
    ::cXmlDados    := [<consStatServCte versao="]  + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlDados    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados    +=    XmlTag( "xServ", "STATUS" )
@@ -442,22 +435,24 @@ METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-METHOD MDFeConsNaoEnc( cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
+METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
 
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_MDFE )
+   ::SetProjeto(     WS_PROJETO_MDFE )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "mdfeConsNaoEnc" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc" )
+   ::SetSoapURL(     ::cUF, WS_MDFE_CONSNAOENC , ::cAmbiente, WS_PROJETO_MDFE )
 
    ::cVersaoXml   := "1.00"
-   ::cServico     := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc"
-   ::cSoapAction  := "mdfeConsNaoEnc"
-   ::cWebService  := ::GetWebService( ::cUF, WS_MDFE_CONSNAOENC , ::cAmbiente, WS_PROJETO_MDFE )
    ::cXmlDados    := [<consMDFeNaoEnc versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlDados    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados    +=    XmlTag( "xServ", "CONSULTAR NÃO ENCERRADOS" )
    ::cXmlDados    +=    XmlTag( "CNPJ", cCNPJ )
    ::cXmlDados    += [</consMDFeNaoEnc>]
-   ::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_MDFE )
+   ::XmlSoapPost()
    ::cStatus := Pad( XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "cStat" ), 3 )
    ::cMotivo := XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "xMotivo" )
 
@@ -466,14 +461,15 @@ METHOD MDFeConsNaoEnc( cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
 METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_MDFE )
+   ::SetAmbiente(    cAmbiente )
+   ::SetProjeto(     WS_PROJETO_MDFE )
+   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
 
-   ::cUF         := ::UFSigla( Substr( cChave, 1, 2 ) )
+   ::SetSoapAction(  "mdfeConsultaMDF" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta" )
+   ::SetSoapURL(     WS_MDFE_CONSULTA )
+
    ::cVersaoXml  := "1.00"
-   ::cServico    := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta"
-   ::cSoapAction := "mdfeConsultaMDF"
-   ::cWebService := ::GetWebService( WS_MDFE_CONSULTA )
    ::cXmlDados   := [<consSitMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados   +=    XmlTag( "xServ", "CONSULTAR" )
@@ -493,15 +489,16 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
       ::cRecibo := cRecibo
    ENDIF
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_MDFE )
+   ::SetProjeto(     WS_PROJETO_MDFE )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "mdfeRetRecepcao" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao" )
+   ::SetSoapURL(     WS_MDFE_RETRECEPCAO )
 
    ::cVersaoXml   := "1.00"
-   ::cServico     := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao"
-   ::cSoapAction  := "mdfeRetRecepcao"
-   ::cWebService  := ::GetWebService( WS_MDFE_RETRECEPCAO )
    ::cXmlDados    := [<consReciMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlDados    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados    +=    XmlTag( "nRec", ::cRecibo )
@@ -518,14 +515,16 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cNSU, "" )
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( "??????" )
+   ::SetProjeto(     "??????" )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "mdfeDistDFeInteresse" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe" )
+   ::SetSoapURL(     WS_MDFE_DISTRIBUICAODFE )
 
    ::cVersaoXml  := "1.00"
-   ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe"
-   ::cSoapAction := "mdfeDistDFeInteresse"
    ::cXmlDados   := [<distDFeInt versao="] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados   +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
@@ -540,102 +539,91 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
       ::cXmlDados +=   [</consNSU>]
    ENDIF
    ::cXmlDados   += [</distDFeInt>]
-   ::cWebService := ::GetWebService( WS_MDFE_DISTRIBUICAODFE )
    ::XmlSoapPost()
 
    RETURN NIL
 
 METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL cXml
-
    hb_Default( @nSequencia, 1 )
 
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_MDFE )
+   ::SetProjeto(     WS_PROJETO_MDFE )
+   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
 
-   ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
-   cXml := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
-   cXml +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
-   cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   cXml +=       XmlTag( "tpAmb", ::cAmbiente )
-   cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
-   cXml +=       XmlTag( "chMDFe", cChave )
-   cXml +=       XmlTag( "dhEvento", ::DateTimeXml( , , ,.F.) )
-   cXml +=       XmlTag( "tpEvento", "110111" )
-   cXml +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
-   cXml +=       [<detEvento versaoEvento="1.00">]
-   cXml +=       	  [<evCancMDFe>]
-   cXml +=          		XmlTag( "descEvento", "Cancelamento" )
-   cXml +=          		XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   cXml +=          		XmlTag( "xJust", xJust )
-   cXml +=       	  [</evCancMDFe>]
-   cXml +=       [</detEvento>]
-   cXml +=    [</infEvento>]
-   cXml += [</eventoMDFe>]
-   ::cXmlRetorno := AssinaXml( @cXml, ::cCertificado )
+	::SetSoapAction(  "mdfeRecepcaoEvento" )
+	::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento" )
+	::SetSoapURL(     WS_MDFE_RECEPCAOEVENTO )
+
+	::cVersaoXml   := "1.00"
+   ::cXmlDados := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
+   ::cXmlDados +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDados +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
+   ::cXmlDados +=       XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDados +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
+   ::cXmlDados +=       XmlTag( "chMDFe", cChave )
+   ::cXmlDados +=       XmlTag( "dhEvento", ::DateTimeXml( , , ,.F.) )
+   ::cXmlDados +=       XmlTag( "tpEvento", "110111" )
+   ::cXmlDados +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
+   ::cXmlDados +=       [<detEvento versaoEvento="1.00">]
+   ::cXmlDados +=       	  [<evCancMDFe>]
+   ::cXmlDados +=          		XmlTag( "descEvento", "Cancelamento" )
+   ::cXmlDados +=          		XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   ::cXmlDados +=          		XmlTag( "xJust", xJust )
+   ::cXmlDados +=       	  [</evCancMDFe>]
+   ::cXmlDados +=       [</detEvento>]
+   ::cXmlDados +=    [</infEvento>]
+   ::cXmlDados += [</eventoMDFe>]
+   ::cXmlRetorno := AssinaXml( @::cXmlDados, ::cCertificado )
    IF ::cXmlRetorno == "OK"
-      ::MDFeEventoEnvia( cChave, cXml, ::cCertificado, ::cAmbiente )
-      ::MDFeGeraEventoAutorizado( @cXml, hb_Utf8ToStr(::cXmlRetorno) )
+      ::MDFeEventoEnvia( cChave, ::cXmlDados, ::cCertificado, ::cAmbiente )
+      ::MDFeGeraEventoAutorizado( ::cXlDados, ::cXmlRetorno ) // hb_Utf8ToStr(
    ENDIF
 
    RETURN ::cXmlRetorno
 
 METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega , cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL cXml
-
    hb_Default( @nSequencia, 1 )
 
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_MDFE )
+   ::SetProjeto(     WS_PROJETO_MDFE )
+   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
 
-   ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
-   cXml := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
-   cXml +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
-   cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   cXml +=       XmlTag( "tpAmb", ::cAmbiente )
-   cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
-   cXml +=       XmlTag( "chMDFe", cChave )
-   cXml +=       XmlTag( "dhEvento", ::DateTimeXml( , , ,.F.) )
-   cXml +=       XmlTag( "tpEvento", "110112" )
-   cXml +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
-   cXml +=       [<detEvento versaoEvento="1.00">]
-   cXml +=       	  [<evEncMDFe>]
-   cXml +=          		XmlTag( "descEvento", "Encerramento" )
-   cXml +=          		XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   cXml +=          		XmlTag( "dtEnc", DateXml( Date() ) )
-   cXml +=          		XmlTag( "cUF", ::UFCodigo( cUFFim ) )
-   cXml +=          		XmlTag( "cMun", cMunCarrega )
-   cXml +=       	  [</evEncMDFe>]
-   cXml +=       [</detEvento>]
-   cXml +=    [</infEvento>]
-   cXml += [</eventoMDFe>]
-   ::cXmlRetorno := AssinaXml( @cXml, ::cCertificado )
+	::SetSoapAction(  "mdfeRecepcaoEvento" )
+	::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento" )
+	::SetSoapURL(     WS_MDFE_RECEPCAOEVENTO )
+
+	::cVersaoXml   := "1.00"
+   ::cXmlDados := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
+   ::cXmlDados +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDados +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
+   ::cXmlDados +=       XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDados +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
+   ::cXmlDados +=       XmlTag( "chMDFe", cChave )
+   ::cXmlDados +=       XmlTag( "dhEvento", ::DateTimeXml( , , ,.F.) )
+   ::cXmlDados +=       XmlTag( "tpEvento", "110112" )
+   ::cXmlDados +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
+   ::cXmlDados +=       [<detEvento versaoEvento="1.00">]
+   ::cXmlDados +=       	  [<evEncMDFe>]
+   ::cXmlDados +=          		XmlTag( "descEvento", "Encerramento" )
+   ::cXmlDados +=          		XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   ::cXmlDados +=          		XmlTag( "dtEnc", DateXml( Date() ) )
+   ::cXmlDados +=          		XmlTag( "cUF", ::UFCodigo( cUFFim ) )
+   ::cXmlDados +=          		XmlTag( "cMun", cMunCarrega )
+   ::cXmlDados +=       	  [</evEncMDFe>]
+   ::cXmlDados +=       [</detEvento>]
+   ::cXmlDados +=    [</infEvento>]
+   ::cXmlDados += [</eventoMDFe>]
+   ::cXmlRetorno := AssinaXml( @::cXmlDados, ::cCertificado )
    IF ::cXmlRetorno == "OK"
-      ::MDFeEventoEnvia( cChave, cXml, ::cCertificado, ::cAmbiente )
-      ::MDFeGeraEventoAutorizado( @cXml, hb_Utf8ToStr(::cXmlRetorno) )
+      ::XmlSoapPost()
+      ::MDFeGeraEventoAutorizado( ::cXmlDados, ::cXmlRetorno ) // hb_Utf8ToStr(
    ENDIF
 
    RETURN ::cXmlRetorno
-
-METHOD MDFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente ) CLASS SefazClass
-
-	::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_MDFE )
-
-	::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
-	::cVersaoXml   := "1.00"
-	::cServico     := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento"
-	::cSoapAction  := "mdfeRecepcaoEvento"
-	::cWebService  := ::GetWebService( ::cUF, WS_MDFE_RECEPCAOEVENTO, ::cAmbiente, WS_PROJETO_MDFE )
-	::cXmlDados    :=    cXml
-	::XmlSoapPost( ::cUF, ::cCertificado, WS_PROJETO_MDFE )
-
-	RETURN ::cXmlRetorno
 
 METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
@@ -652,9 +640,8 @@ METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cXmlAUtorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protMDFe", .T. )
    ::cXmlAutorizado += [</mdfeProc>]
-   ::cXmlRetorno    := ::cXmlAutorizado
 
-   RETURN ::cXmlAutorizado
+   RETURN NIL
 
 METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
@@ -664,7 +651,8 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "cStat" ), 3 )
    ::cMotivo := hb_Utf8ToStr( XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "xMotivo" ) )
    IF ! ::cStatus $ "135,136"
-      RETURN ::cXmlRetorno
+      ::cXmlRetorno := [<Erro Text="Status inválido" />] + ::cXmlRetorno
+      RETURN NIL
    ENDIF
    ::cXmlAutorizado := [<?xml version="1.00"?>]
    ::cXmlAutorizado += [<procEvento versao="1.00" xmlns="http://www.portalfiscal.inf.br/mdfe">]
@@ -674,21 +662,22 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cXmlAutorizado += [</retEventoMDFe>]
    ::cXmlAutorizado += [</procEvento>]
    ::cXmlDados := cXmlAssinado
-   ::cMotivo := hb_Utf8ToStr(XmlNode( XmlNode( cXmlProtocolo, "infEvento" ), "xMotivo" ))
+   ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "infEvento" ), "xMotivo" ) // hb_Utf8ToStr
 
-   RETURN ::cXmlAutorizado
+   RETURN NIL
 
 METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_MDFE )
+   ::SetProjeto(     WS_PROJETO_MDFE )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "MDFeRecepcao" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao" )
+   ::SetSoapURL(     WS_MDFE_RECEPCAO )
 
    ::cVersaoXml   := "1.00"
-   ::cServico     := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao"
-   ::cSoapAction  := "MDFeRecepcao"
-   ::cWebService  := ::GetWebService( WS_MDFE_RECEPCAO )
    ::cXmlDados    := [<enviMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlDados    +=    XmlTag( "idLote", cLote )
    ::cXmlDados    +=    cXml
@@ -699,22 +688,23 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF ! Empty( ::cRecibo )
       Inkey( ::nTempoEspera )
       ::MDFeConsultaRecibo()
-      ::cXmlRetorno := ::MDFeGeraAutorizado( cXml, ::cXmlProtocolo )
+      ::MDFeGeraAutorizado( cXml, ::cXmlProtocolo )
    ENDIF
 
    RETURN ::cXmlRetorno
 
 METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_MDFE )
+   ::SetProjeto(     WS_PROJETO_MDFE )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "MDFeStatusServico" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF" )
+   ::SetSoapURL(     WS_MDFE_STATUSSERVICO )
 
    ::cVersaoXml   := "1.00"
-   ::cServico     := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF"
-   ::cSoapAction  := "MDFeStatusServico"
-   ::cWebService  := ::GetWebService( WS_MDFE_STATUSSERVICO )
    ::cXmlDados    := [<consStatServMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlDados    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados    +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
@@ -726,15 +716,16 @@ METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_NFE )
+   ::SetProjeto(     WS_PROJETO_NFE )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "CadConsultaCadastro2" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2" )
+   ::SetSoapURL(     WS_NFE_CONSULTACADASTRO )
 
    ::cVersaoXml   := "2.00"
-   ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2"
-   ::cSoapAction  := "CadConsultaCadastro2"
-   ::cWebService  := ::GetWebService( WS_NFE_CONSULTACADASTRO )
    ::cXmlDados    := [<ConsCad versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados    +=    [<infCons>]
    ::cXmlDados    +=       XmlTag( "xServ", "CONS-CAD" )
@@ -753,15 +744,16 @@ METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAm
    hb_Default( @cIndNFe, "0" )
    hb_Default( @cIndEmi, "0" )
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_NFE )
+   ::SetProjeto(     WS_PROJETO_NFE )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "nfeConsultaNFDest" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest" )
+   ::SetSoapURL(     WS_NFE_CONSULTADEST )
 
    ::cVersaoXml  := "3.10"
-   ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest"
-   ::cSoapAction := "nfeConsultaNFDest"
-   ::cWebService := ::GetWebService( WS_NFE_CONSULTADEST )
    ::cXmlDados   := [<consNFeDest versao="] + ::cVersaoXml + [">]
    ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados   +=    XmlTag( "xServ", "CONSULTAR NFE DEST" )
@@ -777,24 +769,25 @@ METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAm
 
 METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_NFE )
+   ::SetProjeto(     WS_PROJETO_NFE )
+   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
 
-   ::cUF         := ::UFSigla( Substr( cChave, 1, 2 ) )
+   ::SetSoapURL(     WS_NFE_CONSULTAPROTOCOLO )
+
    ::cVersaoXml  := "3.10"
    DO CASE
    CASE ::cUF $ "BA"
-      ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta"
-      ::cSoapAction := "nfeConsultaNF"
+      ::SetSoapAction( "nfeConsultaNF" )
+      ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" )
    CASE ::cUF $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO"
-      ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2"
-      ::cSoapAction := "nfeConsultaNF2"
+      ::SetSoapAction( "nfeConsultaNF2" )
+      ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" )
    OTHERWISE
-      ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2"
-      ::cSoapAction := "NfeConsulta2"
+      ::SetSoapAction( "NfeConsulta2" )
+      ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" )
    ENDCASE
-   ::cWebService := ::GetWebService( WS_NFE_CONSULTAPROTOCOLO )
    ::cXmlDados   := [<consSitNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados   +=    XmlTag( "xServ", "CONSULTAR" )
@@ -814,14 +807,16 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cNSU, "" )
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( "???" )
+   ::SetProjeto(     "???" )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "nfeDistDFeInteresse" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe" )
+   ::SetSoapURL(     WS_NFE_DISTRIBUICAODFE )
 
    ::cVersaoXml  := "1.00"
-   ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe"
-   ::cSoapAction := "nfeDistDFeInteresse"
    ::cXmlDados   := [<distDFeInt versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados   +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados   +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
@@ -836,7 +831,6 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
       ::cXmlDados +=   [</consNSU>]
    ENDIF
    ::cXmlDados   += [</distDFeInt>]
-   ::cWebService := ::GetWebService( WS_NFE_DISTRIBUICAODFE )
    ::XmlSoapPost()
 
    RETURN NIL
@@ -847,13 +841,18 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
 
    hb_Default( @nSequencia, 1 )
 
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_NFE )
+   ::SetProjeto(     WS_PROJETO_NFE )
+   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
 
-   ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
-   cXml := [<evento xmlns="http://www.portalfiscal.inf.br/nfe" versao="1.00">]
-   cXml +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::SetSoapAction(  "nfeRecepcaoEvento" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" )
+   ::SetSoapURL(     WS_NFE_RECEPCAOEVENTO )
+
+   ::cVersaoXml := "1.00"
+   cXml         := [<evento xmlns="http://www.portalfiscal.inf.br/nfe" versao="1.00">]
+   cXml         +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
    cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    cXml +=       XmlTag( "tpAmb", ::cAmbiente )
    cXml +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
@@ -880,7 +879,7 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
    ::cXmlRetorno := ::AssinaXml( @cXml )
    IF ::cXmlRetorno == "OK"
       ::NFeEventoEnvia( cChave, cXml )
-      ::NfeGeraEventoAutorizado( @cXml, ::cXmlRetorno )
+      ::NfeGeraEventoAutorizado( cXml, ::cXmlRetorno )
    ENDIF
 
    RETURN ::cXmlRetorno
@@ -891,11 +890,16 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    hb_Default( @nSequencia, 1 )
 
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_NFE )
+   ::SetProjeto(     WS_PROJETO_NFE )
+   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
 
-   ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
+   ::SetSoapAction(  "nfeRecepcaoEvento" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" )
+   ::SetSoapURL(     WS_NFE_RECEPCAOEVENTO )
+
+   ::cVersaoXml   := "1.00"
    cXml := [<evento versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
    cXml +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -915,8 +919,8 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    cXml += [</evento>]
    ::cXmlRetorno := ::AssinaXml( @cXml )
    IF ::cXmlRetorno == "OK"
-      ::NFEEventoEnvia( cChave, cXml )
-      ::NfeGeraEventoAutorizado( @cXml, ::cXmlRetorno )
+      ::NFeEventoEnvia( cChave, cXml )
+      ::NFeGeraEventoAutorizado( cXml, ::cXmlRetorno )
    ENDIF
 
    RETURN ::cXmlRetorno
@@ -927,11 +931,16 @@ METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente
 
    hb_Default( @nSequencia, 1 )
 
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_NFE )
+   ::SetProjeto(     WS_PROJETO_NFE )
+   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
 
-   ::cUf := ::UFSigla( Substr( cChave, 1, 2 ) )
+   ::SetSoapAction(  "nfeRecepcaoEvento" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" )
+   ::SetSoapURL(     WS_NFE_RECEPCAOEVENTO )
+
+   cXml := "1.00"
    cXml := [<evento versao="1.00" xmlns="http://www.portal.inf.br/nfe" >]
    cXml +=    [<infEvento Id="ID210240] + cChave + StrZero( nSequencia, 2 ) + [">]
    cXml +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -947,24 +956,16 @@ METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente
    cXml +=       [</detEvento>]
    cXml +=    [</infEvento>]
    cXml += [</evento>]
-   ::cXmlRetorno := ::AssinaXml( @cXml )
+   cXml := ::AssinaXml( @cXml )
    IF ::cXmlRetorno == "OK"
-      ::NFEEventoEnvia( cChave, cXml )
+      ::NFeEventoEnvia( cChave, cXml )
+      ::NFeGeraEventoAutorizado( cXml, ::cXmlRetorno )
    ENDIF
 
    RETURN ::cXmlRetorno
 
-METHOD NFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD NFeEventoEnvia( cChave, cXml ) CLASS SefazClass
 
-   ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_NFE )
-
-   ::cUf          := ::UFSigla( Substr( cChave, 1, 2 ) )
-   ::cVersaoXml   := "1.00"
-   ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"
-   ::cSoapAction  := "nfeRecepcaoEvento"
-   ::cWebService  := ::GetWebService( WS_NFE_RECEPCAOEVENTO )
    ::cXmlDados    := [<envEvento versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados    +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
    ::cXmlDados    +=    cXml
@@ -975,15 +976,16 @@ METHOD NFeEventoEnvia( cChave, cXml, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_NFE )
+   ::SetProjeto(     WS_PROJETO_NFE )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "NfeInutilizacaoNF2" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2" )
+   ::SetSoapURL(     WS_NFE_INUTILIZACAO )
 
    ::cVersaoXml  := "3.10"
-   ::cServico    := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2"
-   ::cSoapAction := "NfeInutilizacaoNF2"
-   ::cWebService := ::GetWebService( WS_NFE_INUTILIZACAO )
    ::cXmlDados   := [<inutNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados   +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + Right( cAno, 2 ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
    ::cXmlDados   +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
@@ -1018,19 +1020,20 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
 
    hb_Default( @cIndSinc, ::cIndSinc )
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_NFE )
+   ::SetProjeto(     WS_PROJETO_NFE )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "NfeAutorizacao" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" )
+   ::SetSoapURL(     WS_NFE_AUTORIZACAO )
 
    IF Empty( cLote )
       cLote := "1"
    ENDIF
 
    ::cVersaoXml   := "3.10"
-   ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao"
-   ::cSoapAction  := "NfeAutorizacao"
-   ::cWebService  := ::GetWebService( WS_NFE_AUTORIZACAO )
    ::cXmlDados    := [<enviNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    // FOR EACH cXmlNota IN aXmlNotas
    ::cXmlDados    += XmlTag( "idLote", cLote )
@@ -1045,7 +1048,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       IF ! Empty( ::cRecibo )
          Inkey( ::nTempoEspera )
          ::NfeConsultaRecibo()
-         ::cXmlRetorno := ::NfeGeraAutorizado( cXml, ::cXmlProtocolo )
+         ::NfeGeraAutorizado( ::cXmlDados, ::cXmlProtocolo )
       ENDIF
    ELSE
       ::cXmlRecibo    := ::cXmlRetorno
@@ -1064,15 +1067,16 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
       ::cRecibo := cRecibo
    ENDIF
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_NFE )
+   ::SetProjeto(     WS_PROJETO_NFE )
+   ::SetUF(          cUF )
+
+   ::SetSoapAction(  "NfeRetAutorizacao" )
+   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" )
+   ::SetSoapURL(     WS_NFE_RETAUTORIZACAO )
 
    ::cVersaoXml    := "3.10"
-   ::cServico      := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
-   ::cSoapAction   := "NfeRetAutorizacao"
-   ::cWebService   := ::GetWebService( WS_NFE_RETAUTORIZACAO )
    ::cXmlDados     := [<consReciNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados     +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados     +=    XmlTag( "nRec", ::cRecibo )
@@ -1085,20 +1089,21 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
 METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetUF( cUF )
+   ::SetAmbiente(    cAmbiente )
    ::SetCertificado( cCertificado )
-   ::SetAmbiente( cAmbiente )
-   ::SetProjeto( WS_PROJETO_NFE )
+   ::SetProjeto(     WS_PROJETO_NFE )
+   ::SetUF(          cUF )
+
+   ::SetSoapURL(     WS_NFE_STATUSSERVICO )
 
    ::cVersaoXml   := "3.10"
    IF ::cUF == "BA"
-      ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico"
-      ::cSoapAction  := "nfeStatusServicoNF"
+      ::SetSoapAction(  "nfeStatusServicoNF" )
+      ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" )
    ELSE
-      ::cServico     := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2"
-      ::cSoapAction  := "nfeStatusServicoNF2"
+      ::SetSoapAction(  "nfeStatusServicoNF2" )
+      ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2" )
    ENDIF
-   ::cWebService     := ::GetWebService( WS_NFE_STATUSSERVICO )
    ::cXmlDados       := [<consStatServ versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDados       +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDados       +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
@@ -1116,7 +1121,7 @@ METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protNFe" ), "cStat" ), 3 ) // Pad() garante 3 caracteres
    IF ! ::cStatus $ "100,101,150,301,302"
       ::cXmlRetorno := [<Erro text="Não autorizado" />] + ::cXmlProtocolo
-      RETURN ::cXmlRetorno
+      RETURN NIL
    ENDIF
    ::cXmlAutorizado := [<?xml version="1.0"?>]
    ::cXmlAutorizado += [<nfeProc versao="3.10" xmlns="http://www.portalfiscal.inf.br/nfe">]
@@ -1124,7 +1129,7 @@ METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protNFe", .T. ) // hb_UTF8ToStr()
    ::cXmlAutorizado += [</nfeProc>]
 
-   RETURN ::cXmlAutorizado
+   RETURN NIL
 
 METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass // runner
 
@@ -1134,76 +1139,96 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "cStat" ), 3 )
    ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "xMotivo" ) // runner
    IF ! ::cStatus $ "135,155"
-      //::cXmlRetorno := "Erro: Status do protocolo não serve como autorização" // runner
-      RETURN ::cXmlRetorno
+      ::cXmlRetorno := [<Erro text="Status inválido pra autorização" />] + ::cXmlRetorno
+      RETURN NIL
    ENDIF
    ::cXmlAutorizado := [<?xml version="1.00"?>]
    ::cXmlAutorizado += [<procEventoNFe versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlAutorizado +=    cXmlAssinado
-   ::cXmlAutorizado += [<retEvento versao="1.00">] // runner
+   ::cXmlAutorizado += [<retEvento versao="1.00">]
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEvento" ) // hb_UTF8ToStr()
    ::cXmlAutorizado += [</retEvento>] // runner
    ::cXmlAutorizado += [</procEventoNFe>]
    ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "infEvento" ), "xMotivo" ) // hb_UTF8ToStr()
 
-   RETURN ::cXmlAutorizado
+   RETURN NIL
 
-METHOD GetWebService( nWsServico ) CLASS SefazClass
-   // NFE SVAN: MA,PA,PI
-   // NFE SVRS: AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO
-   // NFE Autorizadores: AM,BA,CE,GO,MA,MG,MS,MT,PE,PR,RS,SP,SVCAN,SVCRS,AN
+METHOD SetSoapURL( nWsServico ) CLASS SefazClass
 
-   LOCAL cTexto
+   ::cSoapURL := ""
+   DO CASE
+   CASE nWsServico == WS_NFE_CONSULTACADASTRO .AND. ::cUF $ "AC,RN,PB,SC" ;  ::cSoapUrl := SoapURL_SVRS( ::cAmbiente, nWsServico, ::cVersao )
+   CASE nWsServico == WS_NFE_CONSULTACADASTRO .AND. ::cUF == "ES" ; ::cSoapURL := "https://app.sefaz.es.gov.br/ConsultaCadastroService/CadConsultaCadastro2.asmx"
+   CASE nWsServico == WS_NFE_CONSULTACADASTRO .AND. ::cUF == "MA" ; ::cSoapURL := "https://sistemas.sefaz.ma.gov.br/wscadastro/CadConsultaCadastro2?wsdl"
 
-   IF ::cProjeto == WS_PROJETO_MDFE
-      cTexto := UrlWebService( "RS", ::cAmbiente, nWsServico, ::cVersao )
-   ELSEIF ::cScan == "SCAN"
-      cTexto := UrlWebService( "SCAN", ::cAmbiente, nWsServico, ::cVersao )
-   ELSEIF ::cScan == "SVCAN"
-      IF ::cProjeto == WS_PROJETO_NFE
-         IF ::cUF $ "AM,BA,CE,GO,MA,MS,MT,PA,PE,PI,PR"
-            cTexto := UrlWebService( "SVCRS", ::cAmbiente, nWsServico, ::cVersao )
-         ELSE
-            cTexto := UrlWebService( "SVCAN", ::cAmbiente, nWsServico, ::cVersao )
-         ENDIF
-      ELSEIF ::cProjeto == WS_PROJETO_CTE
-         IF ::cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,SC,SE,TO"
-            cTexto := UrlWebService( "SVCSP", ::cAmbiente, nWsServico, ::cVersao )
-         ELSEIF ::cUF $ "MS,MT,SP," + "AP,PE,RR"
-            cTexto := UrlWebService( "SVCRS", ::cAmbiente, nWsServico, ::cVersao )
-         ENDIF
+   CASE ::cProjeto == WS_PROJETO_CTE .AND. ::cScan == "SVCAN"
+      IF ::cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,SC,SE,TO"
+         ::cSoapURL := SoapURL_SVSP( ::cAmbiente, nWsServico, ::cVersao ) // SVC-SP não existe
+      ELSEIF ::cUF $ "MS,MT,SP," + "AP,PE,RR"
+         ::cSoapURL := SoapURL_SVRS( ::cAmbiente, nWsServico, ::cVersao ) // SVC_RS não existe
       ENDIF
-   ELSE
-      cTexto := UrlWebService( ::cUf, ::cAmbiente, nWsServico, ::cVersao )
-   ENDIF
-   IF Empty( cTexto ) // UFs sem Webservice próprio
-      IF ::cProjeto == WS_PROJETO_NFE
-         IF ::cUf $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO" // Sefaz Virtual RS
-            cTexto := UrlWebService( "SVRS", ::cAmbiente, nWsServico, ::cVersao )
-         ELSEIF ::cUf $ "MA,PA,PI" // Sefaz Virtual
-            cTexto := UrlWebService( "SVAN", ::cAmbiente, nWsServico, ::cVersao )
-         ENDIF
-         IF Empty( cTexto ) // Não tem específico
-            cTexto := UrlWebService( "AN", ::cAmbiente, nWsServico, ::cVersao )
-         ENDIF
-      ELSEIF ::cProjeto == WS_PROJETO_CTE
-         IF ::cUF $ "AP,PE,RR"
-            cTexto := UrlWebService( "SVSP", ::cAmbiente, nWsServico, ::cVersao )
-         ELSEIF ::cUF $ "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,SC,SE,TO"
-            cTexto := UrlWebService( "SVRS", ::cAmbiente, nWsServico, ::cVersao )
-         ENDIF
+
+   CASE ::cProjeto == WS_PROJETO_CTE
+      IF ::cUF $ "AP,PE,RR"
+         ::cSoapURL := SoapURL_SVSP( ::cAmbiente, nWsServico, ::cVersao )
+      ELSEIF ::cUF $ "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,SC,SE,TO"
+         ::cSoapURL := SoapURL_SVRS( ::cAmbiente, nWsServico, ::cVersao )
       ENDIF
+
+   CASE ::cProjeto == WS_PROJETO_MDFE
+      ::cSoapURL = SoapURL_RS( ::cAmbiente, nWsServico, ::cVersao )
+
+   CASE ::cProjeto == WS_PROJETO_NFE .AND. ::cScan == "SCAN"
+      ::cSoapURL := SoapURL_SCAN( ::cAmbiente, nWsServico, ::cVersao )
+
+   CASE ::cProjeto == WS_PROJETO_NFE .AND. ::cScan == "SVAN"
+      ::cSoapUrl := SoapURL_SVAN( ::cAmbiente, nWsServico, ::cVersao )
+
+   CASE ::cProjeto == WS_PROJETO_NFE .AND. ::cScan == "SVCAN"
+      IF ::cUF $ "AM,BA,CE,GO,MA,MS,MT,PA,PE,PI,PR"
+         ::cSoapURL := SoapURL_SVRS( ::cAmbiente, nWsServico, ::cVersao ) // svc-rs não existe
+      ELSE
+         ::cSoapURL := SoapURL_SVAN( ::cAmbiente, nWsServico, ::cVersao ) // svc-an não existe
+      ENDIF
+
+   CASE ::cProjeto == WS_PROJETO_NFE
+      IF ::cUf $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO"
+         ::cSoapURL := SoapURL_SVRS( ::cAmbiente, nWsServico, ::cVersao )
+      ELSEIF ::cUf $ "MA,PA,PI"
+         ::cSoapURL := SoapURL_SVAN( ::cAmbiente, nWsServico, ::cVersao )
+      ENDIF
+
+   ENDCASE
+
+   IF Empty( ::cSoapURL )
+      DO CASE
+      CASE ::cUF == "AM" ;  ::cSoapURL := SoapURL_AM( ::cAmbiente, nWsServico, ::cVersao )
+      CASE ::cUF == "BA" ;  ::cSoapURL := SoapURL_BA( ::cAmbiente, nWsServico, ::cVersao )
+      CASE ::cUF == "CE" ;  ::cSoapURL := SoapURL_CE( ::cAmbiente, nWsServico, ::cVersao )
+      CASE ::cUF == "GO" ;  ::cSoapURL := SOAPURL_GO( ::cAmbiente, nWsServico, ::cVersao )
+      CASE ::cUF == "MG" ;  ::cSoapURL := SoapURL_MG( ::cAmbiente, nWsServico, ::cVersao )
+      CASE ::cUF == "MS" ;  ::cSoapURL := SoapURL_MS( ::cAmbiente, nWsServico, ::cVersao )
+      CASE ::cUF == "MT" ;  ::cSoapURL := SoapURL_MT( ::cAmbiente, nWsServico, ::cVersao )
+      CASE ::cUF == "PE" ;  ::cSoapURL := SoapURL_PE( ::cAmbiente, nWsServico, ::cVersao )
+      CASE ::cUF == "PR" ;  ::cSoapURL := SoapURL_PR( ::cAmbiente, nWsServico, ::cVersao )
+      CASE ::cUF == "RS" ;  ::cSoapURL := SoapURL_RS( ::cAmbiente, nWsServico, ::cVersao )
+      CASE ::cUF == "SP" ;  ::cSoapURL := SoapURL_SP( ::cAmbiente, nWsServico, ::cVersao )
+      ENDCASE
    ENDIF
 
-   RETURN cTexto
+   IF ::cProjeto == WS_PROJETO_NFE .AND. Empty( ::cSoapURL ) // Não tem específico
+      ::cSoapURL := SoapURL_AN( ::cAmbiente, nWsServico, ::cVersao )
+   ENDIF
+
+   RETURN NIL
 
 METHOD XmlSoapPost() CLASS SefazClass
 
    DO CASE
-   CASE Empty( ::cWebService )
+   CASE Empty( ::cSoapURL )
       ::cXmlRetorno := "Erro SOAP: Não há endereço de webservice"
       RETURN NIL
-   CASE Empty( ::cServico )
+   CASE Empty( ::cSoapService )
       ::cXmlRetorno := "Erro SOAP: Não há nome do serviço"
       RETURN NIL
    CASE Empty( ::cSoapAction )
@@ -1233,7 +1258,7 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ::cXmlSoap    +=    [xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">]
    IF ::cSoapAction != "nfeDistDFeInteresse"
       ::cXmlSoap +=    [<soap12:Header>]
-      ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cServico + [">]
+      ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
       ::cXmlSoap +=          [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
       ::cXmlSoap +=          [<versaoDados>] + ::cVersaoXml + [</versaoDados>]
       ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
@@ -1241,10 +1266,10 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ENDIF
    ::cXmlSoap    +=    [<soap12:Body>]
    IF ::cSoapAction == "nfeDistDFeInteresse"
-      ::cXmlSoap += [<nfeDistDFeInteresse xmlns="] + ::cServico + [">]
+      ::cXmlSoap += [<nfeDistDFeInteresse xmlns="] + ::cSoapService + [">]
       ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
    ELSE
-      ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg xmlns="] + ::cServico + [">]
+      ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg xmlns="] + ::cSoapService + [">]
    ENDIF
    ::cXmlSoap    += ::cXmlDados
    ::cXmlSoap    +=    [</] + ::cProjeto + [DadosMsg>]
@@ -1254,7 +1279,7 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ::cXmlSoap    +=    [</soap12:Body>]
    ::cXmlSoap    += [</soap12:Envelope>]
 
-   RETURN ::cXmlSoap
+   RETURN NIL
 
 METHOD MicrosoftXmlSoapPost() CLASS SefazClass
 
@@ -1262,7 +1287,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    LOCAL cSoapAction
 
    //IF ::cSoapAction == "nfeDistDFeInteresse" .OR. ::cSoapAction == "nfeConsultaNFDest"
-      //cSoapAction := ::cServico + "/" + ::cSoapAction
+      //cSoapAction := ::cSoapService + "/" + ::cSoapAction
    //ELSE
       cSoapAction := ::cSoapAction
    //ENDIF
@@ -1283,8 +1308,8 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       IF ::cCertificado != NIL
          oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
       ENDIF
-      ::cXmlRetorno := "Erro: Na conexão com webservice " + ::cWebService
-      oServer:Open( "POST", ::cWebService, .F. )
+      ::cXmlRetorno := "Erro: Na conexão com webservice " + ::cSoapURL
+      oServer:Open( "POST", ::cSoapURL, .F. )
       oServer:SetRequestHeader( "SOAPAction", cSoapAction )
       oServer:SetRequestHeader( "Content-Type", "application/soap+xml; charset=utf-8" )
       oServer:Send( ::cXmlSoap )
@@ -1435,613 +1460,6 @@ STATIC FUNCTION NFeAddCancelamento( cXmlAssinado, cXmlRetorno )
 
    RETURN cXmlAutorizado
 
-STATIC FUNCTION UrlWebService( cUF, cAmbiente, nWsServico, cVersao )
-
-   LOCAL cUrlWs := ""
-
-   hb_Default( @cVersao, "3.10" )
-
-   DO CASE
-   CASE cUF == "AC"
-      cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-
-   CASE cUF == "AL"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "AM"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO;          cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeAutorizacao"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeCancelamento2"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := UrlWebService( "AM", WS_AMBIENTE_HOMOLOGACAO, nWsServico )
-            // restrito a contribuintes // cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/CadConsultaCadastro2"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeConsulta2"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeInutilizacao2"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeRecepcao2"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/RecepcaoEvento"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO;       cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeRetAutorizacao"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeRetRecepcao2"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeStatusServico2"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeCancelamento2"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/CadConsultaCadastro2"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeConsulta2"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeInutilizacao2"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeRecepcao2"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/RecepcaoEvento"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeRetRecepcao2"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeStatusServico2"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "AP"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "BA"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/NfeAutorizacao/NfeAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeCancelamento2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/NfeConsulta/NfeConsulta.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/NfeInutilizacao/NfeInutilizacao.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/NfeRetAutorizacao/NfeRetAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeRetRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeCancelamento2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeInutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeRetRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "CE"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeAutorizacao?wsdl"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeCancelamento2"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeConsulta2?wsdl"
-         CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeDownloadNF?wsdl"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeInutilizacao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento?wsdl"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeRetRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2?wsdl"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeRetAutorizacao?wsdl"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeCancelamento2"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeConsulta2"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeInutilizacao2"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRecepcao2"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRetRecepcao2"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "DF"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "ES"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;       cUrlWs := "https://app.sefaz.es.gov.br/ConsultaCadastroService/CadConsultaCadastro2.asmx"
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "GO"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeAutorizacao?wsdl"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeCancelamento2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2?wsdl"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/RecepcaoEvento?wsdl"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRetAutorizacao?wsdl"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2?wsdl"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeCancelamento2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2?wsdl"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcaoEvento?wsdl"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2?wsdl"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "MA"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;       cUrlWs := "https://sistemas.sefaz.ma.gov.br/wscadastro/CadConsultaCadastro2?wsdl"
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVAN", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "MG"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao"
-         CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao"
-         CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao"
-         CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/CteConsulta"
-         CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico"
-         CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/RecepcaoEvento"
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeCancelamento2"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeCancelamento2"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatusServico2"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "MS"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://producao.cte.ms.gov.br/ws/CteRecepcao"
-         CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://producao.cte.ms.gov.br/ws/CteRetRecepcao"
-         CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://producao.cte.ms.gov.br/ws/CteInutilizacao"
-         CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://producao.cte.ms.gov.br/ws/CteConsulta"
-         CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://producao.cte.ms.gov.br/ws/CteStatusServico"
-         CASE nWsServico == WS_CTE_CONSULTACADASTRO ;    cUrlWs := "https://producao.cte.ms.gov.br/ws/CadConsultaCadastro"
-         CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://producao.cte.ms.gov.br/ws/CteRecepcaoEvento"
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeAutorizacao"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeCancelamento2"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/CadConsultaCadastro2"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeConsulta2"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeInutilizacao2"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeRecepcao2"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/RecepcaoEvento"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeRetAutorizacao"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeRetRecepcao2"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeStatusServico2"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeCancelamento2"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/CadConsultaCadastro2"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeConsulta2"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeInutilizacao2"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRecepcao2"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/RecepcaoEvento"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRetRecepcao2"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeStatusServico2"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "MT"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao"
-         CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao"
-         CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao"
-         CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta"
-         CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico"
-         CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://cte.sefaz.mt.gov.br/ctews2/services/CteRecepcaoEvento?wsdl"
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeAutorizacao?wsdl"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeCancelamento2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta2?wsdl"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento?wsdl"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRetAutorizacao?wsdl"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRetRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico2?wsdl"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeCancelamento2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta2?wsdl"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento?wsdl"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeRetRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico2?wsdl"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "PA"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVAN", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "PB"
-      cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-
-   CASE cUF == "PE"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeAutorizacao?wsdl"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento2"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro2"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao2"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetAutorizacao?wsdl"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao2"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := UrlWebService( "PE", WS_AMBIENTE_PRODUCAO, nWsServico )
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento2"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao2"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao2"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "PI"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVAN", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "PR"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl"
-         CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao?wsdl"
-         CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao?wsdl"
-         CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl"
-         CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl"
-         CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteRecepcaoEvento?wsdl"
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/NFeAutorizacao3?wsdl"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe2.fazenda.pr.gov.br/nfe/NFeCancelamento2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/CadConsultaCadastro2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/NFeConsulta3?wsdl"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/NFeInutilizacao3?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe2.fazenda.pr.gov.br/nfe/NFeRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe2.fazenda.pr.gov.br/nfe-evento/NFeRecepcaoEvento?wsdl"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/NFeRetAutorizacao3?wsdl"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe2.fazenda.pr.gov.br/nfe/NFeRetRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/NFeStatusServico3?wsdl"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeAutorizacao3?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/CadConsultaCadastro2?wsdl"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeConsulta3?wsdl"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeInutilizacao3?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeRecepcaoEvento?wsdl"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRetRecepcao2?wsdl"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeStatusServico3?wsdl"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeRetAutorizacao3?wsdl"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "RJ"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "RN" .AND. cAmbiente == WS_AMBIENTE_PRODUCAO
-      //DO CASE
-      //CASE nWsServico == WS_NFE_CONSULTACADASTRO ;     cUrlWs := "https://webservice.set.rn.gov.br/projetonfeprod/set_nfe/servicos/CadConsultaCadastroWS.asmx"
-      //OTHERWISE
-         cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-      //ENDCASE
-
-   CASE cUF == "RN" .AND. cAmbiente == WS_AMBIENTE_HOMOLOGACAO
-      //DO CASE
-      //CASE nWsServico == WS_NFE_CONSULTACADASTRO ;     cUrlWs := "https://webservice.set.rn.gov.br/projetonfehomolog/set_nfe/servicos/CadConsultaCadastroWS.asmx"
-      //OTHERWISE
-         cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-      //ENDCASE
-
-   CASE cUF == "RO"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "RR"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "RS"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx"
-         CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx"
-         CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx"
-         CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx"
-         CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx"
-         CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx"
-         CASE nWsServico == WS_MDFE_DISTRIBUICAODFE ;    cUrlWs := "https://mdfe.svrs.rs.gov.br/WS/MDFeDistribuicaoDFe/MDFeDistribuicaoDFe.asmx"
-         CASE nWsServico == WS_MDFE_CONSULTA ;           cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx"
-         CASE nWsServico == WS_MDFE_RECEPCAO ;           cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx"
-         CASE nWsServico == WS_MDFE_RECEPCAOEVENTO ;     cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx"
-         CASE nWsServico == WS_MDFE_RETRECEPCAO ;        cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx"
-         CASE nWsServico == WS_MDFE_STATUSSERVICO ;      cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx"
-         CASE nWsServico == WS_MDFE_CONSNAOENC ;         cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/mdfeconsnaoenc/mdfeconsnaoenc.asmx"
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://cad.sefazrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTADEST ;        cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/nfeDownloadNF/nfeDownloadNF.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_MDFE_CONSULTA ;           cUrlWs := "https://mdfe-hml.sefaz.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx"
-         CASE nWsServico == WS_MDFE_CONSNAOENC ;         cUrlWs := "https://mdfe-hml.sefaz.rs.gov.br/ws/mdfeconsnaoenc/mdfeconsnaoenc.asmx"
-         CASE nWsServico == WS_MDFE_RECEPCAO ;           cUrlWs := "https://mdfe-hml.sefaz.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx"
-         CASE nWsServico == WS_MDFE_RECEPCAOEVENTO ;     cUrlWs := "https://mdfe-hml.sefaz.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx"
-         CASE nWsServico == WS_MDFE_RETRECEPCAO ;        cUrlWs := "https://mdfe-hml.sefaz.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx"
-         CASE nWsServico == WS_MDFE_STATUSSERVICO ;      cUrlWs := "https://mdfe-hml.sefaz.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx"
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://cad.sefazrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTADEST ;        cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeDownloadNF/nfeDownloadNF.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "SC"
-      cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-
-   CASE cUF == "SE"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "SP"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx"
-         CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx"
-         CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx"
-         CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx"
-         CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx"
-         CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx"
-         CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "http://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx"
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.fazenda.sp.gov.br/nfeweb/services/nfecancelamento2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx"
-         CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx"
-         CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx"
-         CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx"
-         CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx"
-         CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx"
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/nfeweb/services/NfeCancelamento2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/recepcaoEvento.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "TO"
-      DO CASE
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO
-      OTHERWISE
-         cUrlWs := UrlWebService( "SVRS", cAmbiente, nWsServico, cVersao )
-      ENDCASE
-
-   CASE cUF == "SVAN"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeCancelamento2/NfeCancelamento2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeCancelamento2/NfeCancelamento2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "SVRS"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx"
-         CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx"
-         CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx"
-         CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx"
-         CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx"
-         CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx"
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.svrs.rs.gov.br/ws/nfeStatusServico/NfeStatusServico2.asmx"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "SVSP"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx"
-         CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteRetRecepcao.asmx"
-         CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteConsulta.asmx"
-         CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteStatusServico.asmx"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "SCAN"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://www.scan.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://www.scan.fazenda.gov.br/NfeCancelamento2/NfeCancelamento2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://www.scan.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://www.scan.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://www.scan.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://www.scan.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://www.scan.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://www.scan.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://www.scan.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeCancelamento2/NfeCancelamento2.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeConsulta2/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeInutilizacao2/NfeInutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeRecepcao2/NfeRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeRetRecepcao2/NfeRetRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeStatusServico2/NfeStatusServico2.asmx"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "SVCAN"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://www.svc.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO;    cUrlWs := "https://www.svc.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://www.svc.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://www.svc.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://www.svc.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://www.svc.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://www.svc.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "SVCRS"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
-         ENDCASE
-      ELSE
-         DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
-         CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
-         CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
-         CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
-         ENDCASE
-      ENDIF
-
-   CASE cUF == "AN"
-      IF cAmbiente == WS_AMBIENTE_PRODUCAO
-         DO CASE
-         CASE nWsServico == WS_NFE_CONSULTADEST ;        cUrlWs := "https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx"
-         CASE nWsServico == WS_NFE_DISTRIBUICAODFE;      cUrlWs := "https://www1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx"
-         CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://www.nfe.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx"
-         CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://www.nfe.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx"
-         ENDCASE
-      ENDIF
-
-   ENDCASE
-
-   RETURN cUrlWs
-
 STATIC FUNCTION ValidaXml( cXml, cFileXsd )
 
    LOCAL oXmlDomDoc, oXmlSchema, oXmlErro, cRetorno := "ERRO"
@@ -2108,12 +1526,12 @@ METHOD CurlSoapPost() CLASS SefazClass
 
    LOCAL aHeader := Array(3)
 
-   aHeader[ 1 ] := [Content-Type: application/soap+xml;charset=utf-8;action="] + ::cServico + ["]
+   aHeader[ 1 ] := [Content-Type: application/soap+xml;charset=utf-8;action="] + ::cSoapService + ["]
    aHeader[ 2 ] := [SOAPAction: "] + ::cSoapAction + ["]
    aHeader[ 3 ] := [Content-length: ] + AllTrim( Str( Len( ::cXml ) ) )
    curl_global_init()
    oCurl = curl_easy_init()
-   curl_easy_setopt( oCurl, HB_CURLOPT_URL, ::cWebService )
+   curl_easy_setopt( oCurl, HB_CURLOPT_URL, ::cSoapURL )
    curl_easy_setopt( oCurl, HB_CURLOPT_PORT , 443 )
    curl_easy_setopt( oCurl, HB_CURLOPT_VERBOSE, .F. ) // 1
    curl_easy_setopt( oCurl, HB_CURLOPT_HEADER, 1 ) //retorna o cabecalho de resposta
@@ -2140,3 +1558,556 @@ METHOD CurlSoapPost() CLASS SefazClass
 
    RETURN NIL
 #endif
+
+FUNCTION SoapURL_AM( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_NFE_AUTORIZACAO;          cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeAutorizacao"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeCancelamento2"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := SoapURL_AM( WS_AMBIENTE_HOMOLOGACAO, nWsServico, ... )
+            // restrito a contribuintes // cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/CadConsultaCadastro2"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeConsulta2"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeInutilizacao2"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeRecepcao2"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/RecepcaoEvento"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO;       cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeRetAutorizacao"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeRetRecepcao2"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.am.gov.br/services2/services/NfeStatusServico2"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeCancelamento2"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/CadConsultaCadastro2"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeConsulta2"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeInutilizacao2"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeRecepcao2"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/RecepcaoEvento"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeRetRecepcao2"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homnfe.sefaz.am.gov.br/services2/services/NfeStatusServico2"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_BA( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/NfeAutorizacao/NfeAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeCancelamento2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/NfeConsulta/NfeConsulta.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/NfeInutilizacao/NfeInutilizacao.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/NfeRetAutorizacao/NfeRetAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeRetRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeCancelamento2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeConsulta2.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeInutilizacao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeRetRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://hnfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_CE( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeAutorizacao?wsdl"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeCancelamento2"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeConsulta2?wsdl"
+      CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeDownloadNF?wsdl"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeInutilizacao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento?wsdl"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeRetRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2?wsdl"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeRetAutorizacao?wsdl"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeCancelamento2"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeConsulta2"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeInutilizacao2"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRecepcao2"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRetRecepcao2"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_GO( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeAutorizacao?wsdl"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeCancelamento2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2?wsdl"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/RecepcaoEvento?wsdl"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRetAutorizacao?wsdl"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2?wsdl"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeCancelamento2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2?wsdl"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcaoEvento?wsdl"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2?wsdl"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_MG( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao"
+      CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao"
+      CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao"
+      CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/CteConsulta"
+      CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico"
+      CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://cte.fazenda.mg.gov.br/cte/services/RecepcaoEvento"
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeCancelamento2"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeCancelamento2"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatusServico2"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_MS( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://producao.cte.ms.gov.br/ws/CteRecepcao"
+      CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://producao.cte.ms.gov.br/ws/CteRetRecepcao"
+      CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://producao.cte.ms.gov.br/ws/CteInutilizacao"
+      CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://producao.cte.ms.gov.br/ws/CteConsulta"
+      CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://producao.cte.ms.gov.br/ws/CteStatusServico"
+      CASE nWsServico == WS_CTE_CONSULTACADASTRO ;    cUrlWs := "https://producao.cte.ms.gov.br/ws/CadConsultaCadastro"
+      CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://producao.cte.ms.gov.br/ws/CteRecepcaoEvento"
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeAutorizacao"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeCancelamento2"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/CadConsultaCadastro2"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeConsulta2"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeInutilizacao2"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeRecepcao2"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/RecepcaoEvento"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeRetAutorizacao"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeRetRecepcao2"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.ms.gov.br/producao/services2/NfeStatusServico2"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeCancelamento2"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/CadConsultaCadastro2"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeConsulta2"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeInutilizacao2"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRecepcao2"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/RecepcaoEvento"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRetRecepcao2"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeStatusServico2"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_MT( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao"
+      CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao"
+      CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao"
+      CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta"
+      CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico"
+      CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://cte.sefaz.mt.gov.br/ctews2/services/CteRecepcaoEvento?wsdl"
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeAutorizacao?wsdl"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeCancelamento2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta2?wsdl"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento?wsdl"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRetAutorizacao?wsdl"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRetRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico2?wsdl"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeCancelamento2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta2?wsdl"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento?wsdl"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeRetRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico2?wsdl"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_PE( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeAutorizacao?wsdl"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento2"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro2"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao2"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetAutorizacao?wsdl"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao2"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := SoapURL_PE( WS_AMBIENTE_PRODUCAO, nWsServico, ... )
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento2"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao2"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao2"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_PR( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl"
+      CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao?wsdl"
+      CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao?wsdl"
+      CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl"
+      CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl"
+      CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://cte.fazenda.pr.gov.br/cte/CteRecepcaoEvento?wsdl"
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/NFeAutorizacao3?wsdl"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe2.fazenda.pr.gov.br/nfe/NFeCancelamento2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/CadConsultaCadastro2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/NFeConsulta3?wsdl"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/NFeInutilizacao3?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfe2.fazenda.pr.gov.br/nfe/NFeRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe2.fazenda.pr.gov.br/nfe-evento/NFeRecepcaoEvento?wsdl"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/NFeRetAutorizacao3?wsdl"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfe2.fazenda.pr.gov.br/nfe/NFeRetRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.pr.gov.br/nfe/NFeStatusServico3?wsdl"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeAutorizacao3?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/CadConsultaCadastro2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeConsulta3?wsdl"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeInutilizacao3?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeRecepcaoEvento?wsdl"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRetRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeStatusServico3?wsdl"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeRetAutorizacao3?wsdl"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_RS( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx"
+      CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx"
+      CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx"
+      CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx"
+      CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx"
+      CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx"
+      CASE nWsServico == WS_MDFE_DISTRIBUICAODFE ;    cUrlWs := "https://mdfe.svrs.rs.gov.br/WS/MDFeDistribuicaoDFe/MDFeDistribuicaoDFe.asmx"
+      CASE nWsServico == WS_MDFE_CONSULTA ;           cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx"
+      CASE nWsServico == WS_MDFE_RECEPCAO ;           cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx"
+      CASE nWsServico == WS_MDFE_RECEPCAOEVENTO ;     cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx"
+      CASE nWsServico == WS_MDFE_RETRECEPCAO ;        cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx"
+      CASE nWsServico == WS_MDFE_STATUSSERVICO ;      cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx"
+      CASE nWsServico == WS_MDFE_CONSNAOENC ;         cUrlWs := "https://mdfe.svrs.rs.gov.br/ws/mdfeConsNaoEnc/mdfeConsNaoenc.asmx"
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://cad.sefazrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTADEST ;        cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
+      CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/nfeDownloadNF/nfeDownloadNF.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.sefazrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_MDFE_CONSULTA ;           cUrlWs := "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx"
+      CASE nWsServico == WS_MDFE_CONSNAOENC ;         cUrlWs := "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsNaoEnc/MDFeConsNaoEnc.asmx"
+      CASE nWsServico == WS_MDFE_RECEPCAO ;           cUrlWs := "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx"
+      CASE nWsServico == WS_MDFE_RECEPCAOEVENTO ;     cUrlWs := "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx"
+      CASE nWsServico == WS_MDFE_RETRECEPCAO ;        cUrlWs := "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx"
+      CASE nWsServico == WS_MDFE_STATUSSERVICO ;      cUrlWs := "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx"
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://cad.sefazrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTADEST ;        cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
+      CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeDownloadNF/nfeDownloadNF.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_SP( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx"
+      CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx"
+      CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx"
+      CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx"
+      CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx"
+      CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx"
+      CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "http://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx"
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfe.fazenda.sp.gov.br/nfeweb/services/nfecancelamento2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx"
+      CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx"
+      CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx"
+      CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx"
+      CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx"
+      CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx"
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/nfeweb/services/NfeCancelamento2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao2.asmx"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/recepcaoEvento.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_SVRS( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx"
+      CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx"
+      CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx"
+      CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx"
+      CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx"
+      CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx"
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe.svrs.rs.gov.br/ws/nfeStatusServico/NfeStatusServico2.asmx"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_SVSP( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx"
+      CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteRetRecepcao.asmx"
+      CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteConsulta.asmx"
+      CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteStatusServico.asmx"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_SCAN( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://www.scan.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://www.scan.fazenda.gov.br/NfeCancelamento2/NfeCancelamento2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://www.scan.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://www.scan.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://www.scan.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://www.scan.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://www.scan.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://www.scan.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://www.scan.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeCancelamento2/NfeCancelamento2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeConsulta2/NfeConsulta2.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeInutilizacao2/NfeInutilizacao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeRecepcao2/NfeRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeRetRecepcao2/NfeRetRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://hom.nfe.fazenda.gov.br/SCAN/NfeStatusServico2/NfeStatusServico2.asmx"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_SCVAN( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://www.svc.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO;    cUrlWs := "https://www.svc.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://www.svc.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://www.svc.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://www.svc.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://www.svc.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://www.svc.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_SVAN( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeCancelamento2/NfeCancelamento2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx"
+      CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://www.sefazvirtual.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx"
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeCancelamento2/NfeCancelamento2.asmx"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx"
+      CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://hom.sefazvirtual.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
+
+FUNCTION SoapURL_AN( cAmbiente, nWsServico, ... )
+
+   LOCAL cUrlWs := ""
+
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE nWsServico == WS_NFE_CONSULTADEST ;        cUrlWs := "https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx"
+      CASE nWsServico == WS_NFE_DISTRIBUICAODFE;      cUrlWs := "https://www1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx"
+      CASE nWsServico == WS_NFE_DOWNLOADNF ;          cUrlWs := "https://www.nfe.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://www.nfe.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx"
+      ENDCASE
+   ENDIF
+
+   RETURN cUrlWs
