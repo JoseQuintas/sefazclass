@@ -54,7 +54,11 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
 
    // Define Tipo de Documento
 
-   IF AT( [<Signature], cTxtXml ) <= 0
+   IF "<Signature" $ cTxtXml .AND. "</Signature>" $ cTxtXml
+      nPosIni := At( "<Signature", cTxtXml ) + 1
+      nPosFim := At( "</Signature>", cTxtXml ) + 12
+      cTxtXml := Substr( cTxtXml, 1, nPosIni ) + Substr( cTxtXml, nPosFim )
+   ENDIF
       cXmlTagInicial := ""
       cXmlTagFinal := ""
       FOR nCont = 1 TO Len( aDelimitadores )
@@ -90,7 +94,6 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
       IF cXmlTagFinal $ cTxtXml
          cTxtXml := Substr( cTxtXml, 1, At( cXmlTagFinal, cTxtXml ) - 1 ) + SignatureNode( cURI ) + cXmlTagFinal
       ENDIF
-   ENDIF
 
    //   HB_MemoWrit( "NFE\Ultimo-1.XML", cTxtXml )
    // Lendo Header antes de assinar //
