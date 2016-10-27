@@ -55,7 +55,7 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
    // Define Tipo de Documento
 
    IF "<Signature" $ cTxtXml .AND. "</Signature>" $ cTxtXml
-      nPosIni := At( "<Signature", cTxtXml ) + 1
+      nPosIni := At( "<Signature", cTxtXml ) - 1
       nPosFim := At( "</Signature>", cTxtXml ) + 12
       cTxtXml := Substr( cTxtXml, 1, nPosIni ) + Substr( cTxtXml, nPosFim )
    ENDIF
