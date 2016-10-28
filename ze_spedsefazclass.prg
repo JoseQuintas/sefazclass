@@ -972,7 +972,7 @@ METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente
    IF ::AssinaXml() == "OK"
       ::cXmlEnvio    := [<envEvento versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
       ::cXmlEnvio    +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
-      ::cXmlEnvio    +=    cXml
+      ::cXmlEnvio    +=    ::cXmlEnvio
       ::cXmlEnvio    += [</envEvento>]
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
