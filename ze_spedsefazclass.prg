@@ -657,7 +657,7 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "cStat" ), 3 )
-   ::cMotivo := hb_Utf8ToStr( XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "xMotivo" ) )
+   ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "xMotivo" ) // hb_utf8tostr()
    IF ! ::cStatus $ "135,136"
       ::cXmlRetorno := [<Erro Text="Status inválido" />] + ::cXmlRetorno
       RETURN NIL
@@ -666,7 +666,7 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cXmlAutorizado += [<procEvento versao="1.00" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado += [<retEventoMDFe versao="1.00">]
-   ::cXmlAutorizado +=    hb_Utf8ToStr(XmlNode( cXmlProtocolo, "retEventoMDFe" ))
+   ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEventoMDFe" ) // hb_Utf8ToStr(
    ::cXmlAutorizado += [</retEventoMDFe>]
    ::cXmlAutorizado += [</procEvento>]
    ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "infEvento" ), "xMotivo" ) // hb_Utf8ToStr
