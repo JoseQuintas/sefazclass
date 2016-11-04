@@ -400,7 +400,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao" )
    ::SetSoapURL(     WS_CTE_RECEPCAO )
 
-   ::XmlDocumento := cXml
+   ::cXmlDocumento := cXml
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
