@@ -190,6 +190,12 @@ FUNCTION TestDanfe()
       ? "DANFe " + oDanfe:cRetorno
       PDFOpen( "pdfnfe.pdf" )
    ENDIF
+   IF File( "xmlnotagrande.xml" )
+      oDanfe := hbnfeDaNfe():New()
+      oDanfe:Execute( MemoRead( "xmlnotagrande.xml" ), "pdfnfegrande.pdf" )
+      ? "Danfe " + oDanfe:cRetorno
+      PDFOpen( "pdfnfegrande.pdf" )
+   ENDIF
    IF File( "xmlcte.xml" )
       oDanfe := hbnfeDaCte():New()
       oDanfe:Execute( MemoRead( "xmlcte.xml" ),  "pdfcte.pdf" )

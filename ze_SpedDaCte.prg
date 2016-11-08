@@ -328,6 +328,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
          XmlNode( cVeiculo, "UF" ) } )
    ENDDO
 
+   ::aInfProt   := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto", "digVal", "cStat", "xMotivo" } )
    ::aInfCanc   := XmlToHash( XmlNode( iif( Empty( ::cXmlCancel ), ::cXml, ::cXmlCancel ), "infProt" ), { "nProt", "dhRecbto", "digVal", "cStat", "xMotivo" } )
 
    DO CASE
