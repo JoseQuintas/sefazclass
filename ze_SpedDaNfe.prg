@@ -14,7 +14,7 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #define _LOGO_DIREITA         2
 #define _LOGO_EXPANDIDO       3
 
-CLASS hbNFeDanfe
+CREATE CLASS hbNFeDanfe
 
    METHOD Execute( cXmlNota, cFilePDF, cXmlCancel )
    METHOD BuscaDadosXML()
@@ -113,7 +113,7 @@ CLASS hbNFeDanfe
    VAR nCasasVUn  INIT 2
    VAR cRetorno
 
-ENDCLASS
+   ENDCLASS
 
 METHOD Execute( cXmlNota, cFilePDF, cXmlCancel ) CLASS hbNFeDanfe
 
@@ -182,8 +182,8 @@ METHOD BuscaDadosXML() CLASS hbNFeDanfe
 
    ::aEmit[ "xNome" ]     := XmlToString( ::aEmit[ "xNome" ] )
    ::aDest[ "xNome" ]     := XmlToString( ::aDest[ "xNome" ] )
-   ::cTelefoneEmitente    := iif( Empty( ::aEmit[ "fone" ] ), "", Transform( SoNumeros( ::aEmit[ "fone" ] ), "@R (99) 99999-9999" ) )
-   ::aDest[ "fone" ]      := iif( Empty( ::aDest[ "fone" ] ), "", "00" + ::aDest[ "fone" ] )
+   ::cTelefoneEmitente    := FormatTelefone( ::aEmit[ "fone" ] )
+   ::aDest[ "fone" ]      := FormatTelefone( ::aDest[ "fone" ] )
    ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";", Chr(13) + Chr(10) )
 
    RETURN .T.
@@ -519,7 +519,7 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
       hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -30, 399, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -38, 399, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -46, 399, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-      hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -54, 399, NIL, Trim( iif( ! Empty( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+      hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -54, 399, NIL, iif( Empty( ::cTelefoneEmitente ), "", "FONE: " + ::cTelefoneEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -62, 399, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -70, 399, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
    ELSE
@@ -534,7 +534,7 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -30, 399, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -38, 399, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -46, 399, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-         hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -54, 399, NIL, Trim( IF( ! Empty( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+         hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -54, 399, NIL, IF( Empty( ::cTelefoneEmitente ), "", "FONE: " + ::cTelefoneEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -62, 399, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -70, 399, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       ELSEIF ::nLogoStyle = _LOGO_DIREITA
@@ -545,7 +545,7 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
          hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -30, 335, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -38, 335, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -46, 335, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-         hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -54, 335, NIL, Trim( iif( ! Empty( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+         hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -54, 335, NIL, iif( Empty( ::cTelefoneEmitente ), "", "FONE: " + ::cTelefoneEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -62, 335, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -70, 335, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       ENDIF
@@ -655,7 +655,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
       hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -30, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -38, 244, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -46, 244, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-      hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -54, 244, NIL, Trim( iif( ! Empty( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+      hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -54, 244, NIL, iif( Empty( ::cTelefoneEmitente ), "", "FONE: " + ::cTelefoneEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -62, 244, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -70, 244, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
    ELSE
@@ -671,7 +671,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -30, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -38, 244, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -46, 244, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-         hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -54, 244, NIL, Trim( iif( ! Empty( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+         hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -54, 244, NIL, iif( Empty( ::cTelefoneEmitente ), "", "FONE: " + ::cTelefoneEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -62, 244, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -70, 244, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       ELSEIF ::nLogoStyle = _LOGO_DIREITA
@@ -682,7 +682,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
          hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf - 30, 180, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf - 38, 180, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf - 46, 180, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-         hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf - 54, 180, NIL, Trim( iif( ! Empty( ::cTelefoneEmitente ), "FONE: " + ::cTelefoneEmitente, "" ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
+         hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf - 54, 180, NIL, iif( Empty( ::cTelefoneEmitente ), "", "FONE: " + ::cTelefoneEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf - 62, 180, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf - 70, 180, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       ENDIF
@@ -838,11 +838,7 @@ METHOD Destinatario() CLASS hbNFeDanfe
       // FONE/FAX
       hbNFe_Box_Hpdf( ::oPdfPage, 480, ::nLinhaPdf - 16, 150, 16, ::nLarguraBox )
       hbNFe_Texto_hpdf( ::oPdfPage, 481, ::nLinhaPdf -1,  629, NIL, "FONE/FAX", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
-      IF Len( ::aDest[ "fone" ] ) = 10
-         hbNFe_Texto_hpdf( ::oPdfPage, 481, ::nLinhaPdf - 5, 629, NIL, Transform( ::aDest[ "fone" ], "@R (99) 99999-9999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
-      ELSEIF Len( ::aDest[ "fone" ] ) > 10
-         hbNFe_Texto_hpdf( ::oPdfPage, 481, ::nLinhaPdf - 5, 629, NIL, Transform( ::aDest[ "fone" ], "@R +99 (99) 99999-9999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
-      ENDIF
+      hbNFe_Texto_hpdf( ::oPdfPage, 481, ::nLinhaPdf - 5, 629, NIL, FormatTelefone( ::aDest[ "fone" ] ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
       // ESTADO
       hbNFe_Box_Hpdf( ::oPdfPage, 630, ::nLinhaPdf - 16, 30, 16, ::nLarguraBox )
       hbNFe_Texto_hpdf( ::oPdfPage, 631, ::nLinhaPdf -1,  659, NIL, "ESTADO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
@@ -909,11 +905,7 @@ METHOD Destinatario() CLASS hbNFeDanfe
       // FONE/FAX
       hbNFe_Box_Hpdf( ::oPdfPage, 250, ::nLinhaPdf - 16, 150, 16, ::nLarguraBox )
       hbNFe_Texto_hpdf( ::oPdfPage, 251, ::nLinhaPdf -1,  399, NIL, "FONE/FAX", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
-      IF Len( ::aDest[ "fone" ] ) = 10
-         hbNFe_Texto_hpdf( ::oPdfPage, 251, ::nLinhaPdf - 5, 399, NIL, Transform( ::aDest[ "fone" ], "@R (99) 99999-9999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
-      ELSEIF Len( ::aDest[ "fone" ] ) > 10
-         hbNFe_Texto_hpdf( ::oPdfPage, 251, ::nLinhaPdf - 5, 399, NIL, Transform( ::aDest[ "fone" ], "@R +99 (99) 99999-9999" ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
-      ENDIF
+      hbNFe_Texto_hpdf( ::oPdfPage, 251, ::nLinhaPdf - 5, 399, NIL, FormatTelefone( ::aDest[ "fone" ] ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 10 )
       // ESTADO
       hbNFe_Box_Hpdf( ::oPdfPage, 400, ::nLinhaPdf - 16, 30, 16, ::nLarguraBox )
       hbNFe_Texto_hpdf( ::oPdfPage, 401, ::nLinhaPdf -1,  429, NIL, "ESTADO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
@@ -2229,3 +2221,20 @@ STATIC FUNCTION hbNFe_Box_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen )
    HPDF_Page_Stroke( oPdfPage2 )
 
    RETURN NIL
+
+STATIC FUNCTION FormatTelefone( cTelefone )
+
+   LOCAL cPicture := ""
+
+   cTelefone := iif( ValType( cTelefone ) == "N", iif( cTelefone > 100, Ltrim( Str( cTelefone ) ), "" ), cTelefone )
+   cTelefone := SoNumeros( cTelefone )
+   DO CASE
+   CASE Len( cTelefone ) == 8  ; cPicture := "@R 9999-9999"
+   CASE Len( cTelefone ) == 9  ; cPicture := "@R 99999-9999"
+   CASE Len( cTelefone ) == 10 ; cPicture := "@R (99) 9999-9999"
+   CASE Len( cTelefone ) == 11 ; cPicture := "@R (99) 99999-9999"
+   CASE Len( cTelefone ) == 12 ; cPicture := "@R +99 (99) 9999-9999"
+   CASE Len( cTelefone ) == 13 ; cPicture := "@R +99 (99) 99999-9999"
+   ENDCASE
+
+   RETURN Transform( cTelefone, cPicture )

@@ -10,6 +10,7 @@ PROCEDURE Main
    LOCAL cCnpj := Space(14), cChave := Space(44), cCertificado := "", cUF := "SP", cXmlRetorno
    LOCAL oSefaz
 
+   SET DATE BRITISH
    SetupHarbour()
    SetMode( 33, 80 )
    // Set( _SET_CODEPAGE, "PTISO" )

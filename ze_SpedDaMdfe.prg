@@ -326,7 +326,7 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -084, 560, Nil, "No.: " + ::aEmit[ "nro" ] + " " + ::aEmit[ "xCpl" ], HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -096, 560, Nil, 'Bairro: ' + ::aEmit[ "xBairro" ] + " - CEP: " + TRANSF( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -108, 560, Nil, 'Município: ' + ::aEmit[ "xMun" ] + " - Estado: " + ::aEmit[ "UF" ], HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
-   hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -120, 560, Nil, 'Fone/Fax:(' + SubStr( ::aEmit[ "fone" ], 1, 2 ) + ')' + SubStr( ::aEmit[ "fone" ], 3, 4 ) + '-' + SubStr( ::aEmit[ "fone" ], 7, 4 ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
+   hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -120, 560, Nil, 'Fone/Fax:' + FormatTelefone( ::aEmit[ "fone" ] ), HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 10 )
 
    // box do nome do documento
    hbnfe_Box_hpdf( ::oPdfPage, 020, ::nLinhaPdf - 180, 555, 025, ::nLarguraBox )
@@ -611,3 +611,20 @@ STATIC FUNCTION hbNFe_Box_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen )
    HPDF_Page_Stroke( oPdfPage2 )
 
    RETURN NIL
+
+STATIC FUNCTION FormatTelefone( cTelefone )
+
+   LOCAL cPicture := ""
+
+   cTelefone := iif( ValType( cTelefone ) == "N", Ltrim( Str( cTelefone ) ), cTelefone )
+   cTelefone := SoNumeros( cTelefone )
+   DO CASE
+   CASE Len( cTelefone ) == 8  ; cPicture := "@R 9999-9999"
+   CASE Len( cTelefone ) == 9  ; cPicture := "@R 99999-9999"
+   CASE Len( cTelefone ) == 10 ; cPicture := "@R (99) 9999-9999"
+   CASE Len( cTelefone ) == 11 ; cPicture := "@R (99) 99999-9999"
+   CASE Len( cTelefone ) == 12 ; cPicture := "@R +99 (99) 9999-9999"
+   CASE Len( cTelefone ) == 13 ; cPicture := "@R +99 (99) 99999-9999"
+   ENDCASE
+
+   RETURN Transform( cTelefone, cPicture )

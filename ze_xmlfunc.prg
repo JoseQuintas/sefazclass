@@ -273,7 +273,11 @@ FUNCTION MultipleNodeToArray( cXml, cNode )
 
    DO WHILE "<" + cNode + " " $ cXml .OR. "<" + cNode + ">" $ cXml
       Aadd( aNodes , XmlNode( cXml , cNode ) )
-      cXml := Substr( cXml, At( "</" + cNode + ">", cXml ) + Len( "</" + cNode + ">" ) )
+      IF ! "</" + cNode $ cXml
+         cXml := ""
+      ELSE
+         cXml := Substr( cXml, At( "</" + cNode + ">", cXml ) + Len( "</" + cNode + ">" ) )
+      ENDIF
    ENDDO
 
    RETURN aNodes
