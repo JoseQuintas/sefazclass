@@ -860,8 +860,8 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
    ::SetSoapURL(     WS_NFE_RECEPCAOEVENTO )
 
    ::cVersaoXml := "1.00"
-   ::cXmlDocumento         := [<evento xmlns="http://www.portalfiscal.inf.br/nfe" versao="1.00">]
-   ::cXmlDocumento         +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDocumento := [<evento xmlns="http://www.portalfiscal.inf.br/nfe" versao="1.00">]
+   ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
