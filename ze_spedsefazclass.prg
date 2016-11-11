@@ -1000,7 +1000,7 @@ METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
    IF nWsServico == NIL
       RETURN NIL
    ENDIF
-   IF ( nPos := AScan( aSoapList, { | oElement | oElement[ 1 ] == ::cUF .AND. oElement[ 2 ] == nWsServico } ) ) != 0
+   IF ( nPos := AScan( aSoapList, { | oElement | ::cUF $ oElement[ 1 ] .AND. oElement[ 2 ] == nWsServico } ) ) != 0
       ::cProjeto     := aSoapList[ nPos, 3 ]
       ::cSoapAction  := aSoapList[ nPos, 4 ]
       ::cSoapService := aSoapList[ nPos, 5 ]
