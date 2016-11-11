@@ -55,7 +55,7 @@ CREATE CLASS SefazClass
    /* configuração */
    VAR    cProjeto       INIT WS_PROJETO_NFE          // Modificada conforme método
    VAR    cAmbiente      INIT WS_AMBIENTE_PRODUCAO
-   VAR    cVersao        INIT "3.10"                  // Modificada conforme método
+   VAR    cVersao        INIT "3.10"                  // Uso intermediário entre troca de versões dos projetos
    VAR    cScan          INIT "N"                     // Indicar se for SCAN/SVAN, ainda não testado
    VAR    cUF            INIT "SP"                    // Modificada conforme método
    VAR    cCertificado   INIT ""                      // Nome do certificado
@@ -143,25 +143,13 @@ CREATE CLASS SefazClass
    METHOD UFSigla( cCodigo )                INLINE UFSigla( cCodigo )
    METHOD DateTimeXml( dDate, cTime, lUTC ) INLINE DateTimeXml( dDate, cTime, iif( ::cUFTimeZone == NIL, ::cUF, ::cUFTimeZone ), lUTC )
    METHOD ValidaXml( cXml, cFileXsd )       INLINE ValidaXml( cXml, cFileXsd )
-   METHOD SetCertificado( cValue )          INLINE ::cCertificado := iif( cValue != NIL, cValue, ::cCertificado )
-   METHOD SetAmbiente( cValue )             INLINE ::cAmbiente    := iif( cValue != NIL, cValue, ::cAmbiente )
-   METHOD SetUF( cValue )                   INLINE ::cUF          := iif( cValue != NIL, cValue, ::cUF )
-   METHOD SetProjeto( cValue )              INLINE ::cProjeto     := cValue
-   METHOD SetSoapService( cValue )          INLINE ::cSoapService := cValue
-   METHOD SetSoapAction( cValue )           INLINE ::cSoapAction  := cValue
+   METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico )
 
    ENDCLASS
 
 METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_CTE )
-   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
-
-   ::SetSoapAction(  "cteConsultaCT" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta" )
-   ::SetSoapURL(     WS_CTE_CONSULTAPROTOCOLO )
+   ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_CTE_CONSULTAPROTOCOLO )
 
    ::cVersaoXml   := "2.00"
    ::cXmlEnvio    := [<consSitCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
@@ -169,7 +157,7 @@ METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR" )
    ::cXmlEnvio    +=    XmlTag( "chCTe", cChave )
    ::cXmlEnvio    += [</consSitCTe>]
-   IF Substr( cChave, 21, 2 ) != "57"
+   IF ! Substr( cChave, 21, 2 ) $ "57,67"
       ::cXmlRetorno := "*ERRO* Chave não se refere a CTE"
    ELSE
       ::XmlSoapPost()
@@ -183,14 +171,7 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
       ::cRecibo := cRecibo
    ENDIF
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_CTE )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction( "cteRetRecepcao" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao" )
-   ::SetSoapURL(     WS_CTE_RETRECEPCAO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_RETRECEPCAO )
 
    ::cVersaoXml  := "2.00"
    ::cXmlEnvio   := [<consReciCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
@@ -207,14 +188,7 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    hb_Default( @nSequencia, 1 )
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_CTE )
-   ::SetUF( ::UFSigla( Substr( cChave, 1, 2 ) ) )
-
-   ::SetSoapAction( "cteRecepcaoEvento" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento" )
-   ::SetSoapURL( WS_CTE_RECEPCAOEVENTO )
+   ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_CTE_RECEPCAOEVENTO )
 
    ::cVersaoXml   := "2.00"
    ::cXmlDocumento := [<eventoCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="2.00">]
@@ -250,14 +224,7 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
 
    hb_Default( @nSequencia, 1 )
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_CTE )
-   ::SetUF( ::UFSigla( Substr( cChave, 1, 2 ) ) )
-
-   ::SetSoapAction( "cteRecepcaoEvento" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento" )
-   ::SetSoapURL( WS_CTE_RECEPCAOEVENTO )
+   ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_CTE_RECEPCAOEVENTO )
 
    ::cVersaoXml    := "2.00"
    ::cXmlDocumento := [<eventoCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="2.00">]
@@ -345,14 +312,7 @@ METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
 METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_CTE )
-   ::SetUF( cUF )
-
-   ::SetSoapAction(  "cteInutilizacaoCT" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao" )
-   ::SetSoapURL(     WS_CTE_INUTILIZACAO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_INUTILIZACAO )
 
    ::cVersaoXml  := "2.00"
    ::cXmlDocumento   := [<inutCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
@@ -391,14 +351,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
       cLote := "1"
    ENDIF
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_CTE )
-   ::SetUF( cUF )
-
-   ::SetSoapAction(  "cteRecepcaoLote" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao" )
-   ::SetSoapURL(     WS_CTE_RECEPCAO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_RECEPCAO )
 
    ::cXmlDocumento := cXml
    IF ::AssinaXml() != "OK"
@@ -422,14 +375,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
 
 METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_CTE )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "cteStatusServicoCT" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico" )
-   ::SetSoapURL(     WS_CTE_STATUSSERVICO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_STATUSSERVICO )
 
    ::cVersaoXml   := "2.00"
    ::cXmlEnvio    := [<consStatServCte versao="]  + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
@@ -442,14 +388,7 @@ METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_MDFE )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "mdfeConsNaoEnc" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc" )
-   ::SetSoapURL(     ::cUF, WS_MDFE_CONSNAOENC , ::cAmbiente, WS_PROJETO_MDFE )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_CONSNAOENC )
 
    ::cVersaoXml   := "1.00"
    ::cXmlEnvio    := [<consMDFeNaoEnc versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
@@ -465,14 +404,7 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetCertificado( cCertificado )
-   ::SetAmbiente(    cAmbiente )
-   ::SetProjeto(     WS_PROJETO_MDFE )
-   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
-
-   ::SetSoapAction(  "mdfeConsultaMDF" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta" )
-   ::SetSoapURL(     WS_MDFE_CONSULTA )
+   ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_CONSULTA )
 
    ::cVersaoXml  := "1.00"
    ::cXmlEnvio   := [<consSitMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
@@ -495,14 +427,7 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
       ::cRecibo := cRecibo
    ENDIF
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_MDFE )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "mdfeRetRecepcao" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao" )
-   ::SetSoapURL(     WS_MDFE_RETRECEPCAO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_RETRECEPCAO )
 
    ::cVersaoXml   := "1.00"
    ::cXmlEnvio    := [<consReciMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
@@ -521,14 +446,7 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cNSU, "" )
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     "??????" )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "mdfeDistDFeInteresse" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe" )
-   ::SetSoapURL(     WS_MDFE_DISTRIBUICAODFE )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_DISTRIBUICAODFE )
 
    ::cVersaoXml  := "1.00"
    ::cXmlEnvio   := [<distDFeInt versao="] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
@@ -553,14 +471,7 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
 
    hb_Default( @nSequencia, 1 )
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_MDFE )
-   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
-
-	::SetSoapAction(  "mdfeRecepcaoEvento" )
-	::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento" )
-	::SetSoapURL(     WS_MDFE_RECEPCAOEVENTO )
+   ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
 
 	::cVersaoXml   := "1.00"
    ::cXmlDocumento := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
@@ -594,14 +505,7 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
 
    hb_Default( @nSequencia, 1 )
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_MDFE )
-   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
-
-	::SetSoapAction(  "mdfeRecepcaoEvento" )
-	::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento" )
-	::SetSoapURL(     WS_MDFE_RECEPCAOEVENTO )
+   ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
 
 	::cVersaoXml   := "1.00"
    ::cXmlDocumento := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
@@ -675,14 +579,7 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
 METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_MDFE )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "MDFeRecepcao" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao" )
-   ::SetSoapURL(     WS_MDFE_RECEPCAO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_RECEPCAO )
 
    ::cXmlDocumento := cXml
    IF ::AssinaXml() != "OK"
@@ -706,14 +603,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
 METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_MDFE )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "MDFeStatusServico" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF" )
-   ::SetSoapURL(     WS_MDFE_STATUSSERVICO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_STATUSSERVICO )
 
    ::cVersaoXml   := "1.00"
    ::cXmlEnvio    := [<consStatServMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
@@ -727,14 +617,7 @@ METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_NFE )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "CadConsultaCadastro2" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2" )
-   ::SetSoapURL(     WS_NFE_CONSULTACADASTRO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_CONSULTACADASTRO )
 
    ::cVersaoXml   := "2.00"
    ::cXmlEnvio    := [<ConsCad versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
@@ -755,14 +638,7 @@ METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAm
    hb_Default( @cIndNFe, "0" )
    hb_Default( @cIndEmi, "0" )
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_NFE )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "nfeConsultaNFDest" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest" )
-   ::SetSoapURL(     WS_NFE_CONSULTADEST )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_CONSULTADEST )
 
    ::cVersaoXml  := "3.10"
    ::cXmlEnvio   := [<consNFeDest versao="] + ::cVersaoXml + [">]
@@ -780,25 +656,9 @@ METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAm
 
 METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_NFE )
-   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
-
-   ::SetSoapURL(     WS_NFE_CONSULTAPROTOCOLO )
+   ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_NFE_CONSULTAPROTOCOLO )
 
    ::cVersaoXml  := "3.10"
-   DO CASE
-   CASE ::cUF $ "BA"
-      ::SetSoapAction( "nfeConsultaNF" )
-      ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" )
-   CASE ::cUF $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO"
-      ::SetSoapAction( "nfeConsultaNF2" )
-      ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" )
-   OTHERWISE
-      ::SetSoapAction( "NfeConsulta2" )
-      ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" )
-   ENDCASE
    ::cXmlEnvio   := [<consSitNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlEnvio   +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio   +=    XmlTag( "xServ", "CONSULTAR" )
@@ -818,14 +678,7 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cNSU, "" )
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     "???" )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "nfeDistDFeInteresse" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe" )
-   ::SetSoapURL(     WS_NFE_DISTRIBUICAODFE )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_DISTRIBUICAODFE )
 
    ::cVersaoXml  := "1.00"
    ::cXmlEnvio   := [<distDFeInt versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
@@ -850,14 +703,7 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
 
    hb_Default( @nSequencia, 1 )
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_NFE )
-   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
-
-   ::SetSoapAction(  "nfeRecepcaoEvento" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" )
-   ::SetSoapURL(     WS_NFE_RECEPCAOEVENTO )
+   ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_NFE_RECEPCAOEVENTO )
 
    ::cVersaoXml := "1.00"
    ::cXmlDocumento := [<evento xmlns="http://www.portalfiscal.inf.br/nfe" versao="1.00">]
@@ -901,14 +747,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    hb_Default( @nSequencia, 1 )
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_NFE )
-   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
-
-   ::SetSoapAction(  "nfeRecepcaoEvento" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" )
-   ::SetSoapURL(     WS_NFE_RECEPCAOEVENTO )
+   ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_NFE_RECEPCAOEVENTO )
 
    ::cVersaoXml   := "1.00"
    ::cXmlDocumento := [<evento versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
@@ -944,14 +783,7 @@ METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente
 
    hb_Default( @nSequencia, 1 )
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_NFE )
-   ::SetUF(          ::UFSigla( Substr( cChave, 1, 2 ) ) )
-
-   ::SetSoapAction(  "nfeRecepcaoEvento" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" )
-   ::SetSoapURL(     WS_NFE_RECEPCAOEVENTO )
+   ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_NFE_RECEPCAOEVENTO )
 
    ::cVersaoXml := "1.00"
    ::cXmlDocumento := [<evento versao="1.00" xmlns="http://www.portal.inf.br/nfe" >]
@@ -983,14 +815,7 @@ METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente
 
 METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_NFE )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "NfeInutilizacaoNF2" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2" )
-   ::SetSoapURL(     WS_NFE_INUTILIZACAO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_INUTILIZACAO )
 
    ::cVersaoXml  := "3.10"
    ::cXmlDocumento := [<inutNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
@@ -1027,14 +852,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
 
    hb_Default( @cIndSinc, ::cIndSinc )
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_NFE )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "NfeAutorizacao" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" )
-   ::SetSoapURL(     WS_NFE_AUTORIZACAO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_AUTORIZACAO )
 
    IF Empty( cLote )
       cLote := "1"
@@ -1078,14 +896,7 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
       ::cRecibo := cRecibo
    ENDIF
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_NFE )
-   ::SetUF(          cUF )
-
-   ::SetSoapAction(  "NfeRetAutorizacao" )
-   ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" )
-   ::SetSoapURL(     WS_NFE_RETAUTORIZACAO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_RETAUTORIZACAO )
 
    ::cVersaoXml    := "3.10"
    ::cXmlEnvio     := [<consReciNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
@@ -1100,21 +911,9 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
 METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::SetAmbiente(    cAmbiente )
-   ::SetCertificado( cCertificado )
-   ::SetProjeto(     WS_PROJETO_NFE )
-   ::SetUF(          cUF )
-
-   ::SetSoapURL(     WS_NFE_STATUSSERVICO )
+   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_STATUSSERVICO )
 
    ::cVersaoXml   := "3.10"
-   IF ::cUF == "BA"
-      ::SetSoapAction(  "nfeStatusServicoNF" )
-      ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" )
-   ELSE
-      ::SetSoapAction(  "nfeStatusServicoNF2" )
-      ::SetSoapService( "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2" )
-   ENDIF
    ::cXmlEnvio       := [<consStatServ versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlEnvio       +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio       +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
@@ -1161,6 +960,56 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
    ::cXmlAutorizado += [</retEvento>] // runner
    ::cXmlAutorizado += [</procEventoNFe>]
    ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "infEvento" ), "xMotivo" ) // hb_UTF8ToStr()
+
+   RETURN NIL
+
+METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
+
+   LOCAL nPos, aSoapList := { ;
+      { "**", WS_CTE_CONSULTAPROTOCOLO, WS_PROJETO_CTE,  "cteConsultaCT",        "http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta" }, ;
+      { "**", WS_CTE_RETRECEPCAO,       WS_PROJETO_CTE,  "cteRetRecepcao",       "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao" }, ;
+      { "**", WS_CTE_RECEPCAOEVENTO,    WS_PROJETO_CTE,  "cteRecepcaoEvento",    "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento" }, ;
+      { "**", WS_CTE_INUTILIZACAO,      WS_PROJETO_CTE,  "cteInutilizacaoCT",    "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao" }, ;
+      { "**", WS_CTE_RECEPCAO,          WS_PROJETO_CTE,  "cteRecepcaoLote",      "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao" }, ;
+      { "**", WS_CTE_STATUSSERVICO,     WS_PROJETO_CTE,  "cteStatusServicoCT",   "http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico" }, ;
+      { "**", WS_MDFE_CONSNAOENC,       WS_PROJETO_MDFE, "mdfeConsNaoEnc",       "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc" }, ;
+      { "**", WS_MDFE_CONSULTA,         WS_PROJETO_MDFE, "mdfeConsultaMDF",      "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta" }, ;
+      { "**", WS_MDFE_RETRECEPCAO,      WS_PROJETO_MDFE, "mdfeRetRecepcao",      "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao" }, ;
+      { "**", WS_MDFE_DISTRIBUICAODFE,  "??????",        "mdfeDistDFeInteresse", "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe" }, ;
+      { "**", WS_MDFE_RECEPCAOEVENTO,   WS_PROJETO_MDFE, "mdfeRecepcaoEvento",   "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento" }, ;
+      { "**", WS_MDFE_RECEPCAO,         WS_PROJETO_MDFE, "MDFeRecepcao",         "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao" }, ;
+      { "**", WS_MDFE_STATUSSERVICO,    WS_PROJETO_MDFE, "MDFeStatusServico",    "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF" }, ;
+      { "**", WS_NFE_CONSULTACADASTRO,  WS_PROJETO_NFE,  "CadConsultaCadastro2", "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2" }, ;
+      { "**", WS_NFE_CONSULTADEST,      WS_PROJETO_NFE,  "nfeConsultaNFDest",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest" }, ;
+      { "**", WS_NFE_DISTRIBUICAODFE,   "???",           "nfeDistDFeInteresse",  "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe" }, ;
+      { "**", WS_NFE_RECEPCAOEVENTO,    WS_PROJETO_NFE,  "nfeRecepcaoEvento",    "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" }, ;
+      { "**", WS_NFE_INUTILIZACAO,      WS_PROJETO_NFE,  "NfeInutilizacaoNF2",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2" }, ;
+      { "**", WS_NFE_AUTORIZACAO,       WS_PROJETO_NFE,  "NfeAutorizacao",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
+      { "**", WS_NFE_RETAUTORIZACAO,    WS_PROJETO_NFE,  "NfeRetAutorizacao",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" }, ;
+      { "**", WS_NFE_STATUSSERVICO,     WS_PROJETO_NFE,  "nfeStatusServicoNF2",  "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2" }, ;
+      { "BA", WS_NFE_STATUSSERVICO,     WS_PROJETO_NFE,  "nfeStatusServicoNF",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" }, ;
+      { "**", WS_NFE_CONSULTAPROTOCOLO, WS_PROJETO_NFE,  "NfeConsulta2",         "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" }, ;
+      { "BA", WS_NFE_CONSULTAPROTOCOLO, WS_PROJETO_NFE,  "nfeConsultaNF",        "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" }, ;
+      { "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO", ;
+              WS_NFE_CONSULTAPROTOCOLO, WS_PROJETO_NFE,  "nfeConsultaNF2",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" } }
+
+   ::cUF          := iif( cUF == NIL, ::cUF, cUF )
+   ::cCertificado := iif( cCertificado == NIL, ::cCertificado, cCertificado )
+   ::cAmbiente    := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
+
+   IF nWsServico == NIL
+      RETURN NIL
+   ENDIF
+   IF ( nPos := AScan( aSoapList, { | oElement | oElement[ 1 ] == ::cUF .AND. oElement[ 2 ] == nWsServico } ) ) != 0
+      ::cProjeto     := aSoapList[ nPos, 3 ]
+      ::cSoapAction  := aSoapList[ nPos, 4 ]
+      ::cSoapService := aSoapList[ nPos, 5 ]
+   ELSEIF ( nPos := AScan( aSoapList, { | oElement | oElement[ 1 ] == "**" .AND. oElement[ 2 ] == nWsServico } ) ) != 0
+      ::cProjeto     := aSoapList[ nPos, 3 ]
+      ::cSoapAction  := aSoapList[ nPos, 4 ]
+      ::cSoapService := aSoapList[ nPos, 5 ]
+   ENDIF
+   ::SetSoapURL( nWsServico )
 
    RETURN NIL
 
