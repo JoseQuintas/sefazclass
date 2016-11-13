@@ -3,6 +3,7 @@ ZE_SPEDSEFAZCLASS - Rotinas pra comunicação com SEFAZ
 
 2016.10.26 - Criado ::cXmlDocumento, e alterado ::cXmlDados para ::cXmlEnvio
 2016.10.26 - Agora são assinados também CTE, MDFE e NFE
+2016.11.13 - Manifestação
 
 Nota: CTE 2.00 vale até 06/2017 e CTE 3.00 começa em 12/2016
 */
@@ -120,7 +121,7 @@ CREATE CLASS SefazClass
    METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
-   METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente )
+   METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertificado, cAmbiente )
    METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
@@ -190,7 +191,7 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_CTE_RECEPCAOEVENTO )
 
-   ::cVersaoXml   := "2.00"
+   ::cVersaoXml    := "2.00"
    ::cXmlDocumento := [<eventoCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="2.00">]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -779,25 +780,37 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    RETURN ::cXmlRetorno
 
-METHOD NFeEventoNaoRealizada( cChave, nSequencia, xJust, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertificado, cAmbiente ) CLASS SefazClass
+
+   LOCAL cDescEvento
 
    hb_Default( @nSequencia, 1 )
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_NFE_RECEPCAOEVENTO )
 
+   DO CASE
+   CASE cCodigoEvento == "210200" ; cDescEvento := "Confirmacao da Operacao"
+   CASE cCodigoEvento == "210210" ; cDescEvento := "Ciencia da Operacao"
+   CASE cCodigoEvento == "210220" ; cDescEvento := "Desconhecimento da Operacao"
+   CASE cCodigoEvento == "210240" ; cDescEvento := "Operacao Nao Realizada"
+   ENDCASE
+
    ::cVersaoXml := "1.00"
    ::cXmlDocumento := [<evento versao="1.00" xmlns="http://www.portal.inf.br/nfe" >]
-   ::cXmlDocumento +=    [<infEvento Id="ID210240] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDocumento +=    [<infEvento Id="ID] + cCodigoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "210240" )
+   ::cXmlDocumento +=       XmlTag( "tpEvento", cCodigoEvento )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", StrZero( 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "verEvento", "1.00" )
    ::cXmlDocumento +=       [<detEvento versao="1.00">]
-   ::cXmlDocumento +=          XmlTag( "xJust", xJust )
+   ::cXmlDocumento +=          XmlTag( "descEvento", cDescEvento )
+   IF cCodigoEvento == "210240"
+      ::cXmlDocumento +=          XmlTag( "xJust", xJust )
+   ENDIF
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
