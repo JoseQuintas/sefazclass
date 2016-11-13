@@ -10,6 +10,9 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #include "hbwin.ch"
 #include "hbzebra.ch"
 #endif
+#define _LOGO_ESQUERDA        1      /* apenas anotado, mas não usado */
+#define _LOGO_DIREITA         2
+#define _LOGO_EXPANDIDO       3
 
 CREATE CLASS hbnfeDacte
 
@@ -106,8 +109,8 @@ CREATE CLASS hbnfeDacte
    VAR nLarguraBox INIT 0.5
    VAR lLaser INIT .T.
    VAR lPaisagem
-   VAR cLogoFile
-   VAR nLogoStyle // 1-esquerda, 2-direita, 3-expandido
+   VAR cLogoFile  INIT ""
+   VAR nLogoStyle INIT _LOGO_ESQUERDA // 1-esquerda, 2-direita, 3-expandido
 
    VAR nItensFolha
    VAR nLinhaFolha
@@ -446,7 +449,11 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    hbnfe_Box_hpdf( ::oPdfPage,  003, ::nLinhaPdf - 119, 295, 119, ::nLarguraBox )
 
    IF ! Empty( ::cLogoFile )
-      oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
+      IF Len( ::cLogoFile ) < 100
+         oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
+      ELSE
+         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, ::cLogoFile, Len( ::cLogoFile ) )
+      ENDIF
       HPDF_Page_DrawImage( ::oPdfPage, oImage, 115, ::nLinhaPdf - ( 52 + 1 ), 100, 052 )
    ENDIF
    IF Len( ::aEmit[ "xNome" ] ) <= 25

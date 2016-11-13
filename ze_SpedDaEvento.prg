@@ -54,8 +54,8 @@ CLASS hbnfeDaEvento
    VAR nLarguraBox INIT 0.7
    VAR lLaser      INIT .T.
    VAR lPaisagem
-   VAR cLogoFile
-   VAR nLogoStyle // 1-esquerda, 2-direita, 3-expandido
+   VAR cLogoFile  INIT ""
+   VAR nLogoStyle INIT _LOGO_ESQUERDA // 1-esquerda, 2-direita, 3-expandido
 
    VAR cRetorno
 
@@ -210,11 +210,14 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
       hbNFe_Texto_hpdf( ::oPdfPage,  30, ::nLinhaPDF -82,  289, Nil, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
       hbNFe_Texto_hpdf( ::oPdfPage,  30, ::nLinhaPDF -92,  289, Nil, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
    ELSE
-      IF ::nLogoStyle = _LOGO_EXPANDIDO
+      IF Len( ::cLogoFile ) < 100
          oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
+      ELSE
+         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, ::cLogoFile, Len( ::cLogoFile ) )
+      ENDIF
+      IF ::nLogoStyle = _LOGO_EXPANDIDO
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 55, ::nLinhaPdf - ( 82 + 18 ), 218, 92 )
       ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
-         oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 36, ::nLinhaPdf - ( 62 + 18 ), 62, 62 )
          hbNFe_Texto_hpdf( ::oPdfPage,  100, ::nLinhaPDF -6,  289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
          hbNFe_Texto_hpdf( ::oPdfPage,  100, ::nLinhaPDF -20, 289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
@@ -226,7 +229,6 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
          hbNFe_Texto_hpdf( ::oPdfPage,  100, ::nLinhaPDF -92,  289, Nil, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
 
       ELSEIF ::nLogoStyle = _LOGO_DIREITA
-         oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 220, ::nLinhaPdf - ( 62 + 18 ), 62, 62 )
          hbNFe_Texto_hpdf( ::oPdfPage,  30, ::nLinhaPDF -6,  218, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
          hbNFe_Texto_hpdf( ::oPdfPage,  30, ::nLinhaPDF -20, 218, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )

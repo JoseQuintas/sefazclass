@@ -100,8 +100,8 @@ CREATE CLASS hbNFeDanfe
    VAR nLarguraBox INIT 0.2
    VAR lLaser      INIT .T.
    VAR lPaisagem
-   VAR cLogoFile
-   VAR nLogoStyle // 1-esquerda, 2-direita, 3-expandido
+   VAR cLogoFile  INIT ""
+   VAR nLogoStyle INIT _LOGO_ESQUERDA // 1-esquerda, 2-direita, 3-expandido
 
    VAR nItensFolha
    VAR nLinhaFolha
@@ -523,11 +523,14 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
       hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -62, 399, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -70, 399, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
    ELSE
-      IF ::nLogoStyle = _LOGO_EXPANDIDO
+      IF Len( ::cLogoFile ) < 100
          oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
+      ELSE
+         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, ::cLogoFile, Len( ::cLogoFile ) )
+      ENDIF
+      IF ::nLogoStyle = _LOGO_EXPANDIDO
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - ( 72 + 6 ), 328, 72 )
       ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
-         oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 71, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -6, 399, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -18, 399, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
@@ -538,7 +541,6 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -62, 399, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -70, 399, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       ELSEIF ::nLogoStyle = _LOGO_DIREITA
-         oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 337, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -6, 335, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
          hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -18, 335, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
@@ -659,11 +661,14 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
       hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -62, 244, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -70, 244, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
    ELSE
-      IF ::nLogoStyle = _LOGO_EXPANDIDO
+      IF Len( ::cLogoFile ) < 100
          oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
+      ELSE
+         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, ::cLogoFile, Len( ::cLogoFile ) )
+      ENDIF
+      IF ::nLogoStyle = _LOGO_EXPANDIDO
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - ( 72 + 6 ), 238, 72 )
       ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
-         oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -6, 244, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
          // Anderson camilo   30/12/2011  Comentei esta linha porque a razão social estava saindo um nome sobre o outro
@@ -675,7 +680,6 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -62, 244, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -70, 244, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       ELSEIF ::nLogoStyle = _LOGO_DIREITA
-         oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 182, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf - 6, 180, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
          hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf - 18, 180, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )

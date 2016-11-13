@@ -10,6 +10,9 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #include "hbwin.ch"
 #include "hbzebra.ch"
 #endif
+#define _LOGO_ESQUERDA        1      /* apenas anotado, mas não usado */
+#define _LOGO_DIREITA         2
+#define _LOGO_EXPANDIDO       3
 
 CLASS hbnfeDaMdfe
 
@@ -118,8 +121,8 @@ CLASS hbnfeDaMdfe
    VAR nLarguraBox INIT 0.5
    VAR lLaser INIT .T.
    VAR lPaisagem
-   VAR cLogoFile
-   VAR nLogoStyle // 1-esquerda, 2-direita, 3-expandido
+   VAR cLogoFile  INIT ""
+   VAR nLogoStyle INIT _LOGO_ESQUERDA // 1-esquerda, 2-direita, 3-expandido
 
    VAR nItensFolha
    VAR nLinhaFolha
@@ -317,7 +320,11 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
 
    hbnfe_Box_hpdf( ::oPdfPage,  020, ::nLinhaPdf - 150, 555, 150, ::nLarguraBox )
    IF ! Empty( ::cLogoFile )
-      oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
+      IF Len( ::cLogoFile ) < 100
+         oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
+      ELSE
+         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, ::cLogoFile, Len( ::cLogoFile ) )
+      ENDIF
       HPDF_Page_DrawImage( ::oPdfPage, oImage, 025, ::nLinhaPdf - ( 142 + 1 ), 200, 132 )
    ENDIF
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -018, 560, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 16 )
