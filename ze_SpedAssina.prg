@@ -2,6 +2,8 @@
 ZE_SPEDASSINA - Assinatura SPED
 
 2016.07.07.1230 - Apenas formatação
+2016.11.12.1700 - Otimizado teste de tags inicial/final
+2016.11.12.1700 - Não precisa tag inicial, apenas testar se existe
 */
 
 #define _CAPICOM_STORE_OPEN_READ_ONLY                 0           // Somente Smart Card em Modo de Leitura
@@ -33,7 +35,7 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
 
    LOCAL oDOMDoc, nPosIni, nPosFim, xmlHeaderAntes, xmldsig, dsigns, oCert, oCapicomStore, xmlHeaderDepois
    LOCAL XMLAssinado, SIGNEDKEY, DSIGKEY, SCONTAINER, SPROVIDER, ETYPE, cURI, nP, nResult
-   LOCAL aDelimitadores, nCont, cXmlTagInicial, cXmlTagFinal, cRetorno := "Erro: Problemas pra assinar XML"
+   LOCAL aDelimitadores, nPos, cXmlTagFinal, cRetorno := "Erro: Problemas pra assinar XML"
 
    aDelimitadores := { ;
       { "<enviMDFe",              "</MDFe></enviMDFe>" }, ;
@@ -59,41 +61,33 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
       nPosFim := At( "</Signature>", cTxtXml ) + 12
       cTxtXml := Substr( cTxtXml, 1, nPosIni ) + Substr( cTxtXml, nPosFim )
    ENDIF
-      cXmlTagInicial := ""
-      cXmlTagFinal := ""
-      FOR nCont = 1 TO Len( aDelimitadores )
-         IF aDelimitadores[ nCont, 1 ] $ cTxtXml .AND. aDelimitadores[ nCont, 2 ] $ cTxtXml
-            cXmlTagInicial := aDelimitadores[ nCont, 1 ]
-            cXmlTagFinal := aDelimitadores[ nCont, 2 ]
-            EXIT
-         ENDIF
-      NEXT
-      IF Empty( cXmlTagInicial ) .OR. Empty( cXmlTagFinal )
-         cRetorno := "Erro Assinatura: Não identificado documento"
-         RETURN cRetorno
-      ENDIF
-      // Pega URI
-      nPosIni := At( [Id=], cTxtXml )
-      IF nPosIni = 0
-         cRetorno := "Erro Assinatura: Não encontrado início do URI: Id="
-         RETURN cRetorno
-      ENDIF
-      nPosIni := hb_At( ["], cTxtXml, nPosIni + 2 )
-      IF nPosIni = 0
-         cRetorno := "Erro Assinatura: Não encontrado início do URI: aspas inicial"
-         RETURN cRetorno
-      ENDIF
-      nPosFim := hb_At( ["], cTxtXml, nPosIni + 1 )
-      IF nPosFim = 0
-         cRetorno := "Erro Assinatura: Não encontrado início do URI: aspas final"
-         RETURN cRetorno
-      ENDIF
-      cURI := Substr( cTxtXml, nPosIni + 1, nPosFim - nPosIni - 1 )
+   IF ( nPos := AScan( aDelimitadores, { | oElement | oElement[ 1 ] $ cTxtXml .AND. oElement[ 2 ] $ cTxtXml } ) ) == 0
+      cRetorno := "Erro Assinatura: Não identificado documento"
+      RETURN cRetorno
+   ENDIF
+   cXmlTagFinal   := aDelimitadores[ nPos, 2 ]
+   // Pega URI
+   nPosIni := At( [Id=], cTxtXml )
+   IF nPosIni = 0
+      cRetorno := "Erro Assinatura: Não encontrado início do URI: Id="
+      RETURN cRetorno
+   ENDIF
+   nPosIni := hb_At( ["], cTxtXml, nPosIni + 2 )
+   IF nPosIni = 0
+      cRetorno := "Erro Assinatura: Não encontrado início do URI: aspas inicial"
+      RETURN cRetorno
+   ENDIF
+   nPosFim := hb_At( ["], cTxtXml, nPosIni + 1 )
+   IF nPosFim = 0
+      cRetorno := "Erro Assinatura: Não encontrado início do URI: aspas final"
+      RETURN cRetorno
+   ENDIF
+   cURI := Substr( cTxtXml, nPosIni + 1, nPosFim - nPosIni - 1 )
 
-      // Adiciona bloco de assinatura no local apropriado
-      IF cXmlTagFinal $ cTxtXml
-         cTxtXml := Substr( cTxtXml, 1, At( cXmlTagFinal, cTxtXml ) - 1 ) + SignatureNode( cURI ) + cXmlTagFinal
-      ENDIF
+   // Adiciona bloco de assinatura no local apropriado
+   IF cXmlTagFinal $ cTxtXml
+      cTxtXml := Substr( cTxtXml, 1, At( cXmlTagFinal, cTxtXml ) - 1 ) + SignatureNode( cURI ) + cXmlTagFinal
+   ENDIF
 
    //   HB_MemoWrit( "NFE\Ultimo-1.XML", cTxtXml )
    // Lendo Header antes de assinar //
