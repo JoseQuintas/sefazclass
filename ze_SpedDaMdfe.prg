@@ -14,7 +14,7 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #define _LOGO_DIREITA         2
 #define _LOGO_EXPANDIDO       3
 
-CLASS hbnfeDaMdfe
+CREATE CLASS hbnfeDaMDFe
 
    METHOD execute( cXml, cFilePDF )
    METHOD buscaDadosXML()

@@ -7,8 +7,8 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #include "hbclass.ch"
 #include "harupdf.ch"
 #ifndef __XHARBOUR__
-#include "hbwin.ch"
-#include "hbzebra.ch"
+   #include "hbwin.ch"
+   #include "hbzebra.ch"
 #endif
 #define _LOGO_ESQUERDA        1
 #define _LOGO_DIREITA         2
@@ -251,7 +251,7 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDanfe
    ENDIF
    // fim
 
-   ::novaPagina()
+   ::NovaPagina()
 
    ::canhoto()
    IF ::lPaisagem
@@ -259,17 +259,17 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDanfe
    ELSE
       ::CabecalhoRetrato()
    ENDIF
-   ::destinatario()
-   ::duplicatas()
-   ::dadosImposto()
-   ::dadosTransporte()
-   ::cabecalhoProdutos()
+   ::Destinatario()
+   ::Duplicatas()
+   ::DadosImposto()
+   ::DadosTransporte()
+   ::CabecalhoProdutos()
 
-   ::produtos()
+   ::Produtos()
 
-   ::totalServico()
-   ::dadosAdicionais()
-   ::rodape()
+   ::TotalServico()
+   ::DadosAdicionais()
+   ::Rodape()
 
    HPDF_SaveToFile( ::oPdf, cFilePDF )
    HPDF_Free( ::oPdf )
@@ -278,7 +278,7 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDanfe
 
 METHOD calculaItens1Folha( nItensInicial ) CLASS hbNFeDanfe
 
-   IF ::lLaser = .T. // LASER
+   IF ::lLaser
       nItensInicial += 9
    ENDIF
    IF Empty( ::cCobranca )
@@ -732,7 +732,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
    ENDIF
    // mensagem sistema sefaz
    hbNFe_Box_Hpdf( ::oPdfPage, 370, ::nLinhaPdf - 80, 220, 80, ::nLarguraBox )
-   IF ::aInfProt[ "nProt" ] = NIL .OR. Empty( ::aInfProt[ "nProt" ] )
+   IF Empty( ::aInfProt[ "nProt" ] )
       hbNFe_Texto_hpdf( ::oPdfPage, 371, ::nLinhaPdf -55, 589, NIL, "N F E   A I N D A   N Ã O   F O I", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage, 371, ::nLinhaPdf -63, 589, NIL, "A U T O R I Z A D A   P E L A", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage, 371, ::nLinhaPdf -71, 589, NIL, "S E F A Z   (SEM VALIDADE FISCAL)", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 8 )
@@ -753,7 +753,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
 
    // Alterado por Anderson Camilo em 06/08/2013
    // hbNFe_Texto_hpdf( ::oPdfPage,371, ::nLinhaPdf-1, 589, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
-   IF ::aInfProt[ "nProt" ] <> NIL
+   IF ! Empty( ::aInfProt[ "nProt" ] )
 
       IF ::aInfProt[ "cStat" ] = '100'
          hbNFe_Texto_hpdf( ::oPdfPage, 371, ::nLinhaPdf -1, 589, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
@@ -983,8 +983,8 @@ METHOD Duplicatas() CLASS hbNFeDanfe
             nItensCob := Int( nIcob / 3 ) + IF( ( nIcob / 3 ) -Int( ( nICob / 3 ) ) > 0, 1, 0 ) + 1
             nLinhaFinalCob := ::nLinhaPdf - ( nItensCob * 7 ) -2
             nTamanhoCob := ( nItensCob * 7 ) + 2
-            ::cabecalhoCobranca( nLinhaFinalCob, nTamanhoCob )
-            ::faturas()
+            ::CabecalhoCobranca( nLinhaFinalCob, nTamanhoCob )
+            ::Faturas()
             ::nLinhaPdf -= 4 // ESPAÇO
          ENDIF
       ENDIF
@@ -2195,7 +2195,7 @@ STATIC FUNCTION hbNFe_Zebra_Draw_Hpdf( hZebra, page, ... )
       RETURN HB_ZEBRA_ERROR_INVALIDZEBRA
    ENDIF
 
-   hb_zebra_draw( hZebra, {| x, y, w, h | HPDF_Page_Rectangle( page, x, y, w, h ) }, ... )
+   hb_zebra_draw( hZebra, { | x, y, w, h | HPDF_Page_Rectangle( page, x, y, w, h ) }, ... )
 
    HPDF_Page_Fill( page )
 

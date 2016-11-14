@@ -77,10 +77,10 @@ CREATE CLASS SefazClass
    VAR    cRecibo        INIT ""                      // Número do recibo
    VAR    cMotivo        INIT ""                      // Motivo constante no Recibo
    /* uso interno */
-   VAR    cVersaoXml     INIT ""                      // Apenas versão usada no XML
-   VAR    cSoapService   INIT ""                      // Operação existente no webservice
-   VAR    cSoapAction    INIT ""                      // Ação solicitada ao webservice
-   VAR    cSoapURL       INIT ""                      // Endereço de webservice
+   VAR    cSoapVersion   INIT ""                      // webservice versão XML e comunicação
+   VAR    cSoapService   INIT ""                      // webservice Serviço
+   VAR    cSoapAction    INIT ""                      // webservice Action
+   VAR    cSoapURL       INIT ""                      // webservice Endereço
 
    METHOD CTeConsulta( ... )   INLINE  ::CTeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
    METHOD NFeConsulta( ... )   INLINE  ::NFeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
@@ -152,8 +152,8 @@ METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_CTE_CONSULTAPROTOCOLO )
 
-   ::cVersaoXml   := "2.00"
-   ::cXmlEnvio    := [<consSitCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
+   ::cSoapVersion := "2.00"
+   ::cXmlEnvio    := [<consSitCTe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR" )
    ::cXmlEnvio    +=    XmlTag( "chCTe", cChave )
@@ -174,11 +174,11 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_RETRECEPCAO )
 
-   ::cVersaoXml  := "2.00"
-   ::cXmlEnvio   := [<consReciCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
-   ::cXmlEnvio   +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio   +=    XmlTag( "nRec",  ::cRecibo )
-   ::cXmlEnvio   += [</consReciCTe>]
+   ::cSoapVersion  := "2.00"
+   ::cXmlEnvio     := [<consReciCTe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/cte">]
+   ::cXmlEnvio     +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio     +=    XmlTag( "nRec",  ::cRecibo )
+   ::cXmlEnvio     += [</consReciCTe>]
    ::XmlSoapPost()
    ::cXmlProtocolo := ::cXmlRetorno                                           // ? hb_Utf8ToStr()
    ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" ) // ? hb_Utf8ToStr()
@@ -191,7 +191,7 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_CTE_RECEPCAOEVENTO )
 
-   ::cVersaoXml    := "2.00"
+   ::cSoapVersion  := "2.00"
    ::cXmlDocumento := [<eventoCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="2.00">]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -227,7 +227,7 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_CTE_RECEPCAOEVENTO )
 
-   ::cVersaoXml    := "2.00"
+   ::cSoapVersion  := "2.00"
    ::cXmlDocumento := [<eventoCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="2.00">]
    ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -315,8 +315,8 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_INUTILIZACAO )
 
-   ::cVersaoXml  := "2.00"
-   ::cXmlDocumento   := [<inutCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
+   ::cSoapVersion    := "2.00"
+   ::cXmlDocumento   := [<inutCTe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlDocumento   +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
    ::cXmlDocumento   +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
    ::cXmlDocumento   +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -358,8 +358,8 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
-   ::cVersaoXml   := "2.00"
-   ::cXmlEnvio    := [<enviCTe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
+   ::cSoapVersion := "2.00"
+   ::cXmlEnvio    := [<enviCTe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlEnvio    +=    XmlTag( "idLote", cLote )
    ::cXmlEnvio    +=    ::cXmlDocumento
    ::cXmlEnvio    += [</enviCTe>]
@@ -378,8 +378,8 @@ METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_STATUSSERVICO )
 
-   ::cVersaoXml   := "2.00"
-   ::cXmlEnvio    := [<consStatServCte versao="]  + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/cte">]
+   ::cSoapVersion := "2.00"
+   ::cXmlEnvio    := [<consStatServCte versao="]  + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
    ::cXmlEnvio    += [</consStatServCte>]
@@ -391,8 +391,8 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_CONSNAOENC )
 
-   ::cVersaoXml   := "1.00"
-   ::cXmlEnvio    := [<consMDFeNaoEnc versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cSoapVersion := "1.00"
+   ::cXmlEnvio    := [<consMDFeNaoEnc versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR NÃO ENCERRADOS" )
    ::cXmlEnvio    +=    XmlTag( "CNPJ", cCNPJ )
@@ -407,12 +407,12 @@ METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_CONSULTA )
 
-   ::cVersaoXml  := "1.00"
-   ::cXmlEnvio   := [<consSitMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
-   ::cXmlEnvio   +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio   +=    XmlTag( "xServ", "CONSULTAR" )
-   ::cXmlEnvio   +=    XmlTag( "chMDFe", cChave )
-   ::cXmlEnvio   += [</consSitMDFe>]
+   ::cSoapVersion := "1.00"
+   ::cXmlEnvio    := [<consSitMDFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR" )
+   ::cXmlEnvio    +=    XmlTag( "chMDFe", cChave )
+   ::cXmlEnvio    += [</consSitMDFe>]
    IF Substr( cChave, 21, 2 ) != "58"
       ::cXmlRetorno := "*ERRO* Chave não se refere a MDFE"
    ELSE
@@ -430,8 +430,8 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_RETRECEPCAO )
 
-   ::cVersaoXml   := "1.00"
-   ::cXmlEnvio    := [<consReciMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cSoapVersion := "1.00"
+   ::cXmlEnvio    := [<consReciMDFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "nRec", ::cRecibo )
    ::cXmlEnvio    += [</consReciMDFe>]
@@ -449,11 +449,11 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_DISTRIBUICAODFE )
 
-   ::cVersaoXml  := "1.00"
-   ::cXmlEnvio   := [<distDFeInt versao="] + ::cVersaoXml + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
-   ::cXmlEnvio   +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio   +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
-   ::cXmlEnvio   +=    XmlTag( "CNPJ", cCnpj )
+   ::cSoapVersion := "1.00"
+   ::cXmlEnvio    := [<distDFeInt versao="] + ::cSoapVersion + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio    +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
+   ::cXmlEnvio    +=    XmlTag( "CNPJ", cCnpj )
    IF Empty( cNSU )
       ::cXmlEnvio +=   [<distNSU>]
       ::cXmlEnvio +=      XmlTag( "ultNSU", cUltNSU )
@@ -463,7 +463,7 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
       ::cXmlEnvio +=      XmlTag( "NSU", cNSU )
       ::cXmlEnvio +=   [</consNSU>]
    ENDIF
-   ::cXmlEnvio   += [</distDFeInt>]
+   ::cXmlEnvio    += [</distDFeInt>]
    ::XmlSoapPost()
 
    RETURN NIL
@@ -474,7 +474,7 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
 
-	::cVersaoXml   := "1.00"
+	::cSoapVersion  := "1.00"
    ::cXmlDocumento := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -508,7 +508,7 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
 
-	::cVersaoXml   := "1.00"
+	::cSoapVersion  := "1.00"
    ::cXmlDocumento := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
    ::cXmlDocumento +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -586,8 +586,8 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
-   ::cVersaoXml   := "1.00"
-   ::cXmlEnvio    := [<enviMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cSoapVersion := "1.00"
+   ::cXmlEnvio    := [<enviMDFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlEnvio    +=    XmlTag( "idLote", cLote )
    ::cXmlEnvio    +=    cXml
    ::cXmlEnvio    += [</enviMDFe>]
@@ -606,8 +606,8 @@ METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_STATUSSERVICO )
 
-   ::cVersaoXml   := "1.00"
-   ::cXmlEnvio    := [<consStatServMDFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cSoapVersion := "1.00"
+   ::cXmlEnvio    := [<consStatServMDFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
    ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
@@ -620,8 +620,8 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_CONSULTACADASTRO )
 
-   ::cVersaoXml   := "2.00"
-   ::cXmlEnvio    := [<ConsCad versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cSoapVersion := "2.00"
+   ::cXmlEnvio    := [<ConsCad versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlEnvio    +=    [<infCons>]
    ::cXmlEnvio    +=       XmlTag( "xServ", "CONS-CAD" )
    ::cXmlEnvio    +=       XmlTag( "UF", ::cUF )
@@ -641,15 +641,15 @@ METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAm
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_CONSULTADEST )
 
-   ::cVersaoXml  := "3.10"
-   ::cXmlEnvio   := [<consNFeDest versao="] + ::cVersaoXml + [">]
-   ::cXmlEnvio   +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio   +=    XmlTag( "xServ", "CONSULTAR NFE DEST" )
-   ::cXmlEnvio   +=    XmlTag( "CNPJ", SoNumeros( cCnpj ) )
-   ::cXmlEnvio   +=    XmlTag( "indNFe", "0" ) // 0=todas,1=sem manif,2=sem nada
-   ::cXmlEnvio   +=    XmlTag( "indEmi", "0" ) // 0=todas, 1=sem cnpj raiz(sem matriz/filial)
-   ::cXmlEnvio   +=    XmlTag( "ultNSU", cUltNsu )
-   ::cXmlEnvio   += [</consNFeDest>]
+   ::cSoapVersion := "3.10"
+   ::cXmlEnvio    := [<consNFeDest versao="] + ::cSoapVersion + [">]
+   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR NFE DEST" )
+   ::cXmlEnvio    +=    XmlTag( "CNPJ", SoNumeros( cCnpj ) )
+   ::cXmlEnvio    +=    XmlTag( "indNFe", "0" ) // 0=todas,1=sem manif,2=sem nada
+   ::cXmlEnvio    +=    XmlTag( "indEmi", "0" ) // 0=todas, 1=sem cnpj raiz(sem matriz/filial)
+   ::cXmlEnvio    +=    XmlTag( "ultNSU", cUltNsu )
+   ::cXmlEnvio    += [</consNFeDest>]
 
    ::XmlSoapPost()
 
@@ -659,12 +659,12 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_NFE_CONSULTAPROTOCOLO )
 
-   ::cVersaoXml  := "3.10"
-   ::cXmlEnvio   := [<consSitNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
-   ::cXmlEnvio   +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio   +=    XmlTag( "xServ", "CONSULTAR" )
-   ::cXmlEnvio   +=    XmlTag( "chNFe", cChave )
-   ::cXmlEnvio   += [</consSitNFe>]
+   ::cSoapVersion := "3.10"
+   ::cXmlEnvio    := [<consSitNFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR" )
+   ::cXmlEnvio    +=    XmlTag( "chNFe", cChave )
+   ::cXmlEnvio    += [</consSitNFe>]
    IF ! Substr( cChave, 21, 2 ) $ "55,65"
       ::cXmlRetorno := "*ERRO* Chave não se refere a NFE"
    ELSE
@@ -681,11 +681,11 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_DISTRIBUICAODFE )
 
-   ::cVersaoXml  := "1.00"
-   ::cXmlEnvio   := [<distDFeInt versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
-   ::cXmlEnvio   +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio   +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
-   ::cXmlEnvio   +=    XmlTag( "CNPJ", cCnpj )
+   ::cSoapVersion := "1.00"
+   ::cXmlEnvio    := [<distDFeInt versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio    +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
+   ::cXmlEnvio    +=    XmlTag( "CNPJ", cCnpj )
    IF Empty( cNSU )
       ::cXmlEnvio +=   [<distNSU>]
       ::cXmlEnvio +=      XmlTag( "ultNSU", cUltNSU )
@@ -706,7 +706,7 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_NFE_RECEPCAOEVENTO )
 
-   ::cVersaoXml := "1.00"
+   ::cSoapVersion  := "1.00"
    ::cXmlDocumento := [<evento xmlns="http://www.portalfiscal.inf.br/nfe" versao="1.00">]
    ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -733,7 +733,7 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
-      ::cXmlEnvio    := [<envEvento versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+      ::cXmlEnvio    := [<envEvento versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
       ::cXmlEnvio    +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
       ::cXmlEnvio    +=    ::cXmlDocumento
       ::cXmlEnvio    += [</envEvento>]
@@ -750,7 +750,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_NFE_RECEPCAOEVENTO )
 
-   ::cVersaoXml   := "1.00"
+   ::cSoapVersion  := "1.00"
    ::cXmlDocumento := [<evento versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -769,7 +769,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
-      ::cXmlEnvio    := [<envEvento versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+      ::cXmlEnvio    := [<envEvento versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
       ::cXmlEnvio    +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
       ::cXmlEnvio    +=    ::cXmlDocumento
       ::cXmlEnvio    += [</envEvento>]
@@ -795,7 +795,7 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
    CASE cCodigoEvento == "210240" ; cDescEvento := "Operacao Nao Realizada"
    ENDCASE
 
-   ::cVersaoXml := "1.00"
+   ::cSoapVersion  := "1.00"
    ::cXmlDocumento := [<evento versao="1.00" xmlns="http://www.portal.inf.br/nfe" >]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cCodigoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -815,7 +815,7 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
-      ::cXmlEnvio    := [<envEvento versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+      ::cXmlEnvio    := [<envEvento versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
       ::cXmlEnvio    +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
       ::cXmlEnvio    +=    ::cXmlDocumento
       ::cXmlEnvio    += [</envEvento>]
@@ -830,8 +830,8 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_INUTILIZACAO )
 
-   ::cVersaoXml  := "3.10"
-   ::cXmlDocumento := [<inutNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cSoapVersion  := "3.10"
+   ::cXmlDocumento := [<inutNFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlDocumento   +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + Right( cAno, 2 ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
    ::cXmlDocumento   +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
    ::cXmlDocumento   +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -875,8 +875,8 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
-   ::cVersaoXml   := "3.10"
-   ::cXmlEnvio    := [<enviNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cSoapVersion := "3.10"
+   ::cXmlEnvio    := [<enviNFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    // FOR EACH cXmlNota IN aXmlNotas
    ::cXmlEnvio    += XmlTag( "idLote", cLote )
    ::cXmlEnvio    += XmlTag( "indSinc", cIndSinc )
@@ -911,8 +911,8 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_RETAUTORIZACAO )
 
-   ::cVersaoXml    := "3.10"
-   ::cXmlEnvio     := [<consReciNFe versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cSoapVersion  := "3.10"
+   ::cXmlEnvio     := [<consReciNFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlEnvio     +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio     +=    XmlTag( "nRec", ::cRecibo )
    ::cXmlEnvio     += [</consReciNFe>]
@@ -926,8 +926,8 @@ METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_STATUSSERVICO )
 
-   ::cVersaoXml   := "3.10"
-   ::cXmlEnvio       := [<consStatServ versao="] + ::cVersaoXml + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cSoapVersion    := "3.10"
+   ::cXmlEnvio       := [<consStatServ versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlEnvio       +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio       +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
    ::cXmlEnvio       +=    XmlTag( "xServ", "STATUS" )
@@ -1129,7 +1129,7 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
       ::cXmlSoap +=    [<soap12:Header>]
       ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
       ::cXmlSoap +=          [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
-      ::cXmlSoap +=          [<versaoDados>] + ::cVersaoXml + [</versaoDados>]
+      ::cXmlSoap +=          [<versaoDados>] + ::cSoapVersion + [</versaoDados>]
       ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
       ::cXmlSoap +=    [</soap12:Header>]
    ENDIF

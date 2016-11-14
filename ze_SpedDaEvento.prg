@@ -16,7 +16,7 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #define _LOGO_DIREITA         2
 #define _LOGO_EXPANDIDO       3
 
-CLASS hbnfeDaEvento
+CREATE CLASS hbnfeDaEvento
 
    METHOD Execute( cXmlEvento, cXmlDocumento, cFilePDF )
    METHOD BuscaDadosXML()
