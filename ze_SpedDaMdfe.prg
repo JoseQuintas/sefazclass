@@ -21,6 +21,7 @@ CREATE CLASS hbnfeDaMDFe
    METHOD geraPDF( cFilePDF )
    METHOD novaPagina()
    METHOD cabecalho()
+   METHOD LoadJPEGImage( xValue )
 
    VAR nItens1Folha
    VAR nItensDemaisFolhas
@@ -227,28 +228,28 @@ METHOD buscaDadosXML() CLASS hbnfeDaMdfe
 METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
 
    // criacao objeto pdf
-   ::oPdf := HPDF_New()
-   If ::oPdf == NIL
+   ::oPDF := HPDF_New()
+   If ::oPDF == NIL
       ::cRetorno := "Falha da criação do objeto PDF !"
       RETURN .F.
    ENDIF
    /* set compression mode */
-   HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
+   HPDF_SetCompressionMode( ::oPDF, HPDF_COMP_ALL )
    /* setando fonte */
-   ::oPdfFontCabecalho     := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
-   ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Times-Bold", "CP1252" )
+   ::oPdfFontCabecalho     := HPDF_GetFont( ::oPDF, "Times-Roman", "CP1252" )
+   ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPDF, "Times-Bold", "CP1252" )
 
 #ifdef __XHARBOUR__
    // Inserido por Anderson Camilo em 04/04/2012
-   ::cFonteCode128  := HPDF_LoadType1FontFromFile( ::oPdf, 'fontes\Code128bWinLarge.afm', 'fontes\Code128bWinLarge.pfb' )   // Code 128
-   ::cFonteCode128F := HPDF_GetFont( ::oPdf, ::cFonteCode128, "WinAnsiEncoding" )
+   ::cFonteCode128  := HPDF_LoadType1FontFromFile( ::oPDF, 'fontes\Code128bWinLarge.afm', 'fontes\Code128bWinLarge.pfb' )   // Code 128
+   ::cFonteCode128F := HPDF_GetFont( ::oPDF, ::cFonteCode128, "WinAnsiEncoding" )
 #endif
    // final da criacao e definicao do objeto pdf
 
    ::nFolha := 1
    ::novaPagina()
    ::cabecalho()
-   HPDF_SaveToFile( ::oPdf, cFilePDF )
+   HPDF_SaveToFile( ::oPDF, cFilePDF )
    HPDF_Free( ::oPdf )
 
    RETURN .T.
@@ -296,7 +297,7 @@ METHOD NovaPagina() CLASS hbnfeDaMdfe
        HPDF_Page_EndText(::oPdfPage)
 
        HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
-       IF ::lPaisagem = .T. // paisagem
+       IF ::lPaisagem
           hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 675, 475, 2.0)
        ELSE
           hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 550, 630, 2.0)
@@ -319,12 +320,8 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    // box do logotipo e dados do emitente
 
    hbnfe_Box_hpdf( ::oPdfPage,  020, ::nLinhaPdf - 150, 555, 150, ::nLarguraBox )
-   IF ! Empty( ::cLogoFile )
-      IF Len( ::cLogoFile ) < 100
-         oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
-      ELSE
-         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, ::cLogoFile, Len( ::cLogoFile ) )
-      ENDIF
+   IF ::cLogoFile != NIL .AND. ! Empty( ::cLogoFile )
+      oImage := ::LoadJPEGImage( ::cLogoFile )
       HPDF_Page_DrawImage( ::oPdfPage, oImage, 025, ::nLinhaPdf - ( 142 + 1 ), 200, 132 )
    ENDIF
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -018, 560, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 16 )
@@ -474,6 +471,20 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    hbnfe_Texto_hpdf( ::oPdfPage, 400, ::nLinhaPdf - 800, 560, NIL, ::cDesenvolvedor, HPDF_TALIGN_RIGHT, Nil, ::oPdfFontCabecalhoBold, 6 )
 
    RETURN NIL
+
+METHOD LoadJPEGImage( xValue ) CLASS hbNFeDaMDFe
+
+   LOCAL oImage
+
+   IF xValue != NIL
+      IF Len( xValue ) < 100
+         oImage := HPDF_LoadJpegImageFromFile( ::oPDF, xValue )
+      ELSE
+         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, xValue, Len( xValue ) )
+      ENDIF
+   ENDIF
+
+   RETURN oImage
 
 STATIC FUNCTION FormatIE( cIE, cUF )
 

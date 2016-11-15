@@ -25,6 +25,7 @@ CREATE CLASS hbnfeDaEvento
    METHOD Destinatario()
    METHOD Eventos()
    METHOD Rodape()
+   METHOD LoadJPEGImage( xValue )
 
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
@@ -200,7 +201,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
    hbNFe_Box_Hpdf( ::oPdfPage, 290, ::nLinhaPDF -106,  275,  110, ::nLarguraBox )    // Quadro CC-e, Chave de Acesso e Codigo de Barras
    hbNFe_Texto_hpdf( ::oPdfPage, 30, ::nLinhaPdf + 2,     274, Nil, "IDENTIFICAÇÃO DO EMITENTE", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 6 )
    // alert('nLogoStyle: ' + ::nLogoStyle +';_LOGO_ESQUERDA: ' + _LOGO_ESQUERDA)
-   IF Empty( ::cLogoFile )
+   IF ::cLogoFile == NIL .OR. Empty( ::cLogoFile )
       hbNFe_Texto_hpdf( ::oPdfPage,  30, ::nLinhaPDF -6,  289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 14 )
       hbNFe_Texto_hpdf( ::oPdfPage,  30, ::nLinhaPDF -20,  289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 14 )
       hbNFe_Texto_hpdf( ::oPdfPage,  30, ::nLinhaPDF -42,  289, Nil, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
@@ -210,11 +211,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
       hbNFe_Texto_hpdf( ::oPdfPage,  30, ::nLinhaPDF -82,  289, Nil, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
       hbNFe_Texto_hpdf( ::oPdfPage,  30, ::nLinhaPDF -92,  289, Nil, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
    ELSE
-      IF Len( ::cLogoFile ) < 100
-         oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
-      ELSE
-         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, ::cLogoFile, Len( ::cLogoFile ) )
-      ENDIF
+      oImage := ::LoadJPEGImage( ::cLogoFile )
       IF ::nLogoStyle = _LOGO_EXPANDIDO
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 55, ::nLinhaPdf - ( 82 + 18 ), 218, 92 )
       ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
@@ -598,6 +595,21 @@ METHOD Rodape() CLASS hbnfeDaEvento
    hbNFe_Texto_hpdf( ::oPdfPage, 300, ::nLinhaPDF -108, 574, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 40, 2 ) ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 9 )
 
    RETURN NIL
+
+METHOD LoadJPEGImage( xValue ) CLASS hbNFeDaEvento
+
+   LOCAL oImage
+
+   IF xValue != NIL
+      IF Len( xValue ) < 100
+         oImage := HPDF_LoadJpegImageFromFile( ::oPDF, xValue )
+      ELSE
+         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, xValue, Len( xValue ) )
+      ENDIF
+   ENDIF
+
+   RETURN oImage
+
 // Funções repetidas em NFE, CTE, MDFE e EVENTO
 // STATIC pra permitir uso simultâneo com outras rotinas
 

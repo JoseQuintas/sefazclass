@@ -21,6 +21,7 @@ CREATE CLASS hbnfeDacte
    METHOD GeraPDF( cFilePDF )
    METHOD NovaPagina()
    METHOD Cabecalho()
+   METHOD LoadJPEGImage( xValue )
 
    VAR nLarguraDescricao
    VAR nLarguraCodigo
@@ -407,7 +408,7 @@ METHOD NovaPagina() CLASS hbnfeDaCte
        HPDF_Page_EndText(::oPdfPage)
 
        HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
-       IF ::lPaisagem = .T. // paisagem
+       IF ::lPaisagem
           hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 675, 475, 2.0)
        ELSE
           hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 550, 630, 2.0)
@@ -448,12 +449,8 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    // box do logotipo e dados do emitente
    hbnfe_Box_hpdf( ::oPdfPage,  003, ::nLinhaPdf - 119, 295, 119, ::nLarguraBox )
 
-   IF ! Empty( ::cLogoFile )
-      IF Len( ::cLogoFile ) < 100
-         oImage := HPDF_LoadJpegImageFromFile( ::oPdf, ::cLogoFile )
-      ELSE
-         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, ::cLogoFile, Len( ::cLogoFile ) )
-      ENDIF
+   IF ::cLogoFile != NIL .AND. ! Empty( ::cLogoFile )
+      oImage := ::LoadJPEGImage( ::cLogoFile )
       HPDF_Page_DrawImage( ::oPdfPage, oImage, 115, ::nLinhaPdf - ( 52 + 1 ), 100, 052 )
    ENDIF
    IF Len( ::aEmit[ "xNome" ] ) <= 25
@@ -1175,6 +1172,20 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ENDIF
 
    RETURN NIL
+
+METHOD LoadJPEGImage( xValue ) CLASS hbNFeDaCTe
+
+   LOCAL oImage
+
+   IF xValue != NIL
+      IF Len( xValue ) < 100
+         oImage := HPDF_LoadJpegImageFromFile( ::oPDF, xValue )
+      ELSE
+         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, xValue, Len( xValue ) )
+      ENDIF
+   ENDIF
+
+   RETURN oImage
 
 STATIC FUNCTION FormatIE( cIE, cUF )
 
