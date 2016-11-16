@@ -8,7 +8,6 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #include "harupdf.ch"
 #ifndef __XHARBOUR__
 #include "hbwin.ch"
-#include "hbzebra.ch"
 // #include "hbcompat.ch"
 #endif
 // #include "hbnfe.ch"
@@ -16,7 +15,7 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #define _LOGO_DIREITA         2
 #define _LOGO_EXPANDIDO       3
 
-CREATE CLASS hbnfeDaEvento
+CREATE CLASS hbnfeDaEvento INHERIT hbNFeDaGeral
 
    METHOD Execute( cXmlEvento, cXmlDocumento, cFilePDF )
    METHOD BuscaDadosXML()
@@ -25,7 +24,6 @@ CREATE CLASS hbnfeDaEvento
    METHOD Destinatario()
    METHOD Eventos()
    METHOD Rodape()
-   METHOD LoadJPEGImage( xValue )
 
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
@@ -192,7 +190,7 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNfeDaEvento
 
 METHOD Cabecalho() CLASS hbnfeDaEvento
 
-   LOCAL oImage, hZebra
+   LOCAL oImage
 
    hbNFe_Box_Hpdf( ::oPdfPage, 30, ::nLinhaPDF -106,   535,  110, ::nLarguraBox )    // Quadro Cabeçalho
 
@@ -211,7 +209,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
       hbNFe_Texto_hpdf( ::oPdfPage,  30, ::nLinhaPDF -82,  289, Nil, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
       hbNFe_Texto_hpdf( ::oPdfPage,  30, ::nLinhaPDF -92,  289, Nil, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 10 )
    ELSE
-      oImage := ::LoadJPEGImage( ::cLogoFile )
+      oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
       IF ::nLogoStyle = _LOGO_EXPANDIDO
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 55, ::nLinhaPdf - ( 82 + 18 ), 218, 92 )
       ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
@@ -251,10 +249,10 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
           hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPDF - 70, 399, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
        ELSE
           IF ::nLogoStyle = _LOGO_EXPANDIDO
-             oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
+             oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
              HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - (72+6), 328, 72 )
           ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
-             oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
+             oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
              HPDF_Page_DrawImage( ::oPdfPage, oImage,71, ::nLinhaPdf - (72+6), 62, 72 )
               hbNFe_Texto_hpdf( ::oPdfPage,135, ::nLinhaPDF - 6 , 399, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
               hbNFe_Texto_hpdf( ::oPdfPage,135, ::nLinhaPDF - 18, 399, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
@@ -265,7 +263,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
               hbNFe_Texto_hpdf( ::oPdfPage,135, ::nLinhaPDF - 62, 399, Nil, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
               hbNFe_Texto_hpdf( ::oPdfPage,135, ::nLinhaPDF - 70, 399, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
           ELSEIF ::nLogoStyle = _LOGO_DIREITA
-             oImage := HPDF_LoadJPEGImageFromFile( ::oPdf, ::cLogoFile )
+             oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
              HPDF_Page_DrawImage( ::oPdfPage, oImage,337, ::nLinhaPdf - (72+6), 62, 72 )
             hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPDF - 6 , 335, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
             hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPDF - 18, 335, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 12 )
@@ -279,8 +277,18 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
       ENDIF
 */
 
-   hbNFe_Texto_hpdf( ::oPdfPage, 292, ::nLinhaPDF -2, 554, Nil, "CC-e", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 18 )
-   hbNFe_Texto_hpdf( ::oPdfPage, 296, ::nLinhaPDF -22, 554, Nil, "CARTA DE CORREÇÃO ELETRÔNICA", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 14 )
+   IF ::aInfEvento[ "tpEvento" ] == "110110"
+      hbNFe_Texto_hpdf( ::oPdfPage, 292, ::nLinhaPDF -2, 554, Nil, "CC-e", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 18 )
+      hbNFe_Texto_hpdf( ::oPdfPage, 296, ::nLinhaPDF -22, 554, Nil, "CARTA DE CORREÇÃO ELETRÔNICA", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 14 )
+   ELSE
+      hbNFe_Texto_hpdf( ::oPdfPage, 292, ::nLinhaPDF -2, 554, Nil, "EVENTO", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 18 )
+      DO CASE
+      CASE ::aInfEvento[ "tpEvento" ] == "110111"
+         hbNFe_Texto_hpdf( ::oPdfPage, 296, ::nLinhaPDF -22, 554, Nil, "CANCELAMENTO", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 14 )
+      OTHERWISE
+         hbNFe_Texto_hpdf( ::oPdfPage, 296, ::nLinhaPDF -22, 554, Nil, "EVENTO " + ::aInfEvento[ "tpEvento" ], HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 14 )
+      ENDCASE
+   ENDIF
 
    // chave de acesso
    hbNFe_Box_Hpdf( ::oPdfPage, 290, ::nLinhaPDF -61,  275,  20, ::nLarguraBox )
@@ -295,8 +303,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
 #ifdef __XHARBOUR__
    hbNFe_Texto_hpdf( ::oPdfPage, 291, ::nLinhaPDF -65, 555, Nil, hbnfe_CodificaCode128c( ::cChaveNFe ), HPDF_TALIGN_CENTER, Nil, ::cFonteCode128F, 18 )
 #else
-   hZebra := hb_zebra_create_code128( ::cChaveEvento, Nil )
-   hbNFe_Zebra_Draw_Hpdf( hZebra, ::oPdfPage, 300, ::nLinhaPDF -100, 0.9, 30 )
+   ::DrawBarcode( ::cChaveEvento, ::oPdfPage, 300, ::nLinhaPDF -100, 0.9, 30 )
 #endif
 
    ::nLinhaPdf -= 106
@@ -596,20 +603,6 @@ METHOD Rodape() CLASS hbnfeDaEvento
 
    RETURN NIL
 
-METHOD LoadJPEGImage( xValue ) CLASS hbNFeDaEvento
-
-   LOCAL oImage
-
-   IF xValue != NIL
-      IF Len( xValue ) < 100
-         oImage := HPDF_LoadJpegImageFromFile( ::oPDF, xValue )
-      ELSE
-         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, xValue, Len( xValue ) )
-      ENDIF
-   ENDIF
-
-   RETURN oImage
-
 // Funções repetidas em NFE, CTE, MDFE e EVENTO
 // STATIC pra permitir uso simultâneo com outras rotinas
 
@@ -704,20 +697,6 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
    ENDIF
 
    RETURN cCode128
-#else
-
-STATIC FUNCTION hbNFe_Zebra_Draw_Hpdf( hZebra, page, ... )
-
-   IF hb_zebra_geterror( hZebra ) != 0
-      RETURN HB_ZEBRA_ERROR_INVALIDZEBRA
-   ENDIF
-
-   hb_zebra_draw( hZebra, {| x, y, w, h | HPDF_Page_Rectangle( page, x, y, w, h ) }, ... )
-
-   HPDF_Page_Fill( page )
-
-   RETURN 0
-
 #endif
 
 STATIC FUNCTION hbNFe_Line_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen, FLAG )

@@ -8,13 +8,12 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #include "harupdf.ch"
 #ifndef __XHARBOUR__
    #include "hbwin.ch"
-   #include "hbzebra.ch"
 #endif
 #define _LOGO_ESQUERDA        1
 #define _LOGO_DIREITA         2
 #define _LOGO_EXPANDIDO       3
 
-CREATE CLASS hbNFeDanfe
+CREATE CLASS hbNFeDanfe INHERIT hbNFeDaGeral
 
    METHOD Execute( cXmlNota, cFilePDF, cXmlCancel )
    METHOD BuscaDadosXML()
@@ -38,7 +37,6 @@ CREATE CLASS hbNFeDanfe
    METHOD Rodape()
    METHOD ProcessaItens( cXml, nItem )
    METHOD calculaItens1Folha( nItensInicial )
-   METHOD LoadJPEGImage( xValue )
 
    VAR nItens1Folha
    VAR nItensDemaisFolhas
@@ -180,7 +178,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDanfe
    ::aObsFisco   := XmlToHash( XmlNode( XmlNode( ::cXml, "infAdic" ), "obsFisco" ), { "xCampo", "xTexto" } )
    ::aExporta    := XmlToHash( XmlNode( XmlNode( ::cXml, "exporta" ), "infCpl" ), { "UFEmbarq", "xLocEmbarq" } )
    ::aCompra     := XmlToHash( XmlNode( ::cXml, "compra" ), { "xNEmp", "xPed", "xCont" } )
-   ::aInfProt    := XmlToHash( XmlNode( iif( Empty( ::cXmlCancel ), ::cXml, ::cXmlCancel ), "infProt" ), { "nProt", "dhRecbto", "digVal", "cStat", "xMotivo" } )
+   ::aInfProt    := XmlToHash( iif( Empty( ::cXmlCancel ), ::cXml, ::cXmlCancel ), { "nProt", "dhRecbto", "digVal", "cStat", "xMotivo" } )
 
    ::aEmit[ "xNome" ]     := XmlToString( ::aEmit[ "xNome" ] )
    ::aDest[ "xNome" ]     := XmlToString( ::aDest[ "xNome" ] )
@@ -331,7 +329,7 @@ METHOD NovaPagina() CLASS hbNFeDanfe
       HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
    ENDIF
 
-   IF ::aIde[ "tpEmis" ] = "4" // DEPEC
+   IF ::aIde[ "tpEmis" ] == "4" // DEPEC
       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
       HPDF_Page_BeginText( ::oPdfPage )
       HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 190 )
@@ -356,9 +354,9 @@ METHOD NovaPagina() CLASS hbNFeDanfe
       HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
    ENDIF
 
-   IF ::aIde[ "tpAmb" ] = "2"
+   IF ::aIde[ "tpAmb" ] == "2"
 
-      IF ::aInfProt[ "cStat" ] = '101'
+      IF ::aInfProt[ "cStat" ] == '101'
          HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
          HPDF_Page_BeginText(::oPdfPage)
          HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 150)
@@ -386,7 +384,7 @@ METHOD NovaPagina() CLASS hbNFeDanfe
       HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
    ENDIF
 
-   IF ::aIde[ "tpAmb" ] = "1"
+   IF ::aIde[ "tpAmb" ] == "1"
 
       IF ::aInfProt[ "cStat" ] $ "101,135,302"
 
@@ -443,7 +441,7 @@ METHOD SaltaPagina() CLASS hbNFeDanfe
 
 METHOD Canhoto() CLASS hbNFeDanfe
 
-   IF ::nFolha = 1
+   IF ::nFolha == 1
       IF ::lPaisagem
          hbNFe_Box_Hpdf( ::oPdfPage,   5, 20, 50, 565, ::nLarguraBox )
          // recebemos
@@ -508,7 +506,7 @@ METHOD Canhoto() CLASS hbNFeDanfe
 
 METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
 
-   LOCAL oImage, hZebra
+   LOCAL oImage
 
    hbNFe_Box_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 80, 760, 80, ::nLarguraBox )
    // logo/dados empresa
@@ -524,10 +522,10 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
       hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -62, 399, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -70, 399, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
    ELSE
-      oImage := ::LoadJPEGImage( ::cLogoFile )
-      IF ::nLogoStyle = _LOGO_EXPANDIDO
+      oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
+      IF ::nLogoStyle == _LOGO_EXPANDIDO
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - ( 72 + 6 ), 328, 72 )
-      ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
+      ELSEIF ::nLogoStyle == _LOGO_ESQUERDA
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 71, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -6, 399, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -18, 399, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
@@ -537,7 +535,7 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -54, 399, NIL, IF( Empty( ::cTelefoneEmitente ), "", "FONE: " + ::cTelefoneEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -62, 399, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 135, ::nLinhaPdf -70, 399, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-      ELSEIF ::nLogoStyle = _LOGO_DIREITA
+      ELSEIF ::nLogoStyle == _LOGO_DIREITA
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 337, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -6, 335, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
          hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -18, 335, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
@@ -568,7 +566,7 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
    // codigo barras
    hbNFe_Box_Hpdf( ::oPdfPage, 525, ::nLinhaPdf - 35, 305, 35, ::nLarguraBox )
 #ifdef __XHARBOUR__
-   // oCode128 = HPDF_LoadType1FontFromFile(::oPdf, 'fontes\Code128bWin.afm', 'fontes\Code128bWin.pfb')
+   // oCode128 := HPDF_LoadType1FontFromFile(::oPdf, 'fontes\Code128bWin.afm', 'fontes\Code128bWin.pfb')
    // oCode128F := HPDF_GetFont( ::oPdf, oCode128, "FontSpecific" )
    // hbNFe_Texto_hpdf( ::oPdfPage,540, ::nLinhaPdf-4.5, 815, NIL, "{"+::cChave+"~", HPDF_TALIGN_CENTER, NIL, oCode128F, 11 )
    // hbNFe_Texto_hpdf( ::oPdfPage,540, ::nLinhaPdf-19, 815, NIL, "{"+::cChave+"~", HPDF_TALIGN_CENTER, NIL, oCode128F,11 )
@@ -576,8 +574,7 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
    // Modificado por Anderson Camilo em 04/04/2012
    hbNFe_Texto_hpdf( ::oPdfPage, 540, ::nLinhaPdf -1.5, 815, NIL, hbnfe_CodificaCode128c( ::cChave ), HPDF_TALIGN_CENTER, NIL, ::cFonteCode128F, 15 )
 #else
-   hZebra := hb_zebra_create_code128( ::cChave, NIL )
-   hbNFe_Zebra_Draw_Hpdf( hZebra, ::oPdfPage, 540, ::nLinhaPdf -32, 1.0, 30 )
+   ::DrawBarcode( ::cChave, ::oPdfPage, 540, ::nLinhaPdf - 32, 1.0, 30 )
 #endif
    // chave de acesso
    hbNFe_Box_Hpdf( ::oPdfPage, 525, ::nLinhaPdf -55, 305, 55, ::nLarguraBox )
@@ -609,9 +606,9 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
    hbNFe_Box_Hpdf( ::oPdfPage, 525, ::nLinhaPdf -16, 305, 16, ::nLarguraBox )
    //hbNFe_Texto_hpdf( ::oPdfPage, 526, ::nLinhaPdf -1, 829, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
    IF ! Empty( ::aInfProt[ "nProt" ] )
-      IF ::aInfProt[ "cStat" ] = '100'
+      IF ::aInfProt[ "cStat" ] == '100'
          hbNFe_Texto_hpdf( ::oPdfPage, 526, ::nLinhaPdf -1, 829, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
-      ELSEIF ::aInfProt[ "cStat" ] = '101' .OR. ::aInfProt[ "cStat" ] = '135'
+      ELSEIF ::aInfProt[ "cStat" ] == '101' .OR. ::aInfProt[ "cStat" ] == '135'
          hbNFe_Texto_hpdf( ::oPdfPage, 526, ::nLinhaPdf -1, 829, NIL, "PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
       ENDIF
       IF ::cFonteNFe == "Times"
@@ -642,7 +639,7 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
 
 METHOD CabecalhoRetrato() CLASS hbNFeDanfe
 
-   LOCAL oImage, hZebra
+   LOCAL oImage
 
    hbNFe_Box_Hpdf( ::oPdfPage,  5, ::nLinhaPdf -80, 585, 80, ::nLarguraBox )
    // logo/dados empresa
@@ -658,10 +655,10 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
       hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -62, 244, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
       hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -70, 244, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
    ELSE
-      oImage := ::LoadJPEGImage( ::cLogoFile )
-      IF ::nLogoStyle = _LOGO_EXPANDIDO
+      oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
+      IF ::nLogoStyle == _LOGO_EXPANDIDO
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - ( 72 + 6 ), 238, 72 )
-      ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
+      ELSEIF ::nLogoStyle == _LOGO_ESQUERDA
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -6, 244, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
          // Anderson camilo   30/12/2011  Comentei esta linha porque a razão social estava saindo um nome sobre o outro
@@ -672,7 +669,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -54, 244, NIL, iif( Empty( ::cTelefoneEmitente ), "", "FONE: " + ::cTelefoneEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -62, 244, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf -70, 244, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 8 )
-      ELSEIF ::nLogoStyle = _LOGO_DIREITA
+      ELSEIF ::nLogoStyle == _LOGO_DIREITA
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 182, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf - 6, 180, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
          hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf - 18, 180, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalhoBold, 12 )
@@ -703,7 +700,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
    hbNFe_Box_Hpdf( ::oPdfPage, 370, ::nLinhaPdf - 35, 220, 35, ::nLarguraBox )
 #ifdef __XHARBOUR__
    // Modificado por Anderson Camilo em 04/04/2012
-   // oCode128 = HPDF_LoadType1FontFromFile(::oPdf, 'fontes\Code128bWin.afm', 'fontes\Code128bWin.pfb')
+   // oCode128 := HPDF_LoadType1FontFromFile(::oPdf, 'fontes\Code128bWin.afm', 'fontes\Code128bWin.pfb')
    // oCode128F := HPDF_GetFont( ::oPdf, oCode128, "FontSpecific" )
    // hbNFe_Texto_hpdf( ::oPdfPage,380, ::nLinhaPdf-8, 585, NIL, "{"+::cChave+"~", HPDF_TALIGN_CENTER, NIL, oCode128F, 8 )
    // hbNFe_Texto_hpdf( ::oPdfPage,380, ::nLinhaPdf-18.2, 585, NIL, "{"+::cChave+"~", HPDF_TALIGN_CENTER, NIL, oCode128F, 8 )
@@ -711,8 +708,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
    hbNFe_Texto_hpdf( ::oPdfPage, 380, ::nLinhaPdf - 2, 585, NIL, hbnfe_CodificaCode128c( ::cChave ), HPDF_TALIGN_CENTER, NIL, ::cFonteCode128F, 15 )
 
 #else
-   hZebra := hb_zebra_create_code128( ::cChave, NIL )
-   hbNFe_Zebra_Draw_Hpdf( hZebra, ::oPdfPage, 385, ::nLinhaPdf - 32, 0.7, 30 )
+   ::DrawBarcode( ::cChave, ::oPdfPage, 385, ::nLinhaPdf - 32, 0.7, 30 )
 #endif
 
    // chave de acesso
@@ -748,9 +744,9 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
    // hbNFe_Texto_hpdf( ::oPdfPage,371, ::nLinhaPdf-1, 589, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
    IF ! Empty( ::aInfProt[ "nProt" ] )
 
-      IF ::aInfProt[ "cStat" ] = '100'
+      IF ::aInfProt[ "cStat" ] == '100'
          hbNFe_Texto_hpdf( ::oPdfPage, 371, ::nLinhaPdf -1, 589, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
-      ELSEIF ::aInfProt[ "cStat" ] = '101' .OR. ::aInfProt[ "cStat" ] = '135'
+      ELSEIF ::aInfProt[ "cStat" ] == '101' .OR. ::aInfProt[ "cStat" ] == '135'
          hbNFe_Texto_hpdf( ::oPdfPage, 371, ::nLinhaPdf -1, 589, NIL, "PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 5 )
       ENDIF
 
@@ -925,7 +921,7 @@ METHOD Duplicatas() CLASS hbNFeDanfe
 
    LOCAL nICob, nItensCob, nLinhaFinalCob, nTamanhoCob
 
-   IF ::nFolha = 1
+   IF ::nFolha == 1
       IF ::lPaisagem
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf, 760, NIL, "FATURA/DUPLICATAS", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalhoBold, 5 )
          ::nLinhaPdf -= 6
@@ -989,7 +985,7 @@ METHOD CabecalhoCobranca( nLinhaFinalCob, nTamanhoCob ) CLASS hbNFeDanfe
 
    LOCAL nTamForm
 
-   IF ::nFolha = 1
+   IF ::nFolha == 1
       IF ::lPaisagem
          nTamForm := 830 -70
 
@@ -1076,7 +1072,7 @@ METHOD Faturas() CLASS hbNFeDanfe
 
    LOCAL nTamForm, cDups, nColuna, cDup, cNumero, cVencimento, cValor // ////////////////////////// nI
 
-   IF ::nFolha = 1
+   IF ::nFolha == 1
       IF ::lPaisagem
          nTamForm := 830 -70
 
@@ -1095,19 +1091,19 @@ METHOD Faturas() CLASS hbNFeDanfe
                nColuna--
                EXIT
             ENDIF
-            IF nColuna = 1
+            IF nColuna == 1
                hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -1,  126, NIL, cNumero, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                hbNFe_Texto_hpdf( ::oPdfPage, 128, ::nLinhaPdf -1,  183, NIL, cVencimento, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 7 )
                hbNFe_Texto_hpdf( ::oPdfPage, 185, ::nLinhaPdf -1,  259, NIL, cValor, HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 7 )
-            ELSEIF nColuna = 2
+            ELSEIF nColuna == 2
                hbNFe_Texto_hpdf( ::oPdfPage, 71 + ( ( nTamForm ) / 4 ), ::nLinhaPdf -1, 126 + ( ( nTamForm ) / 4 ), NIL, cNumero, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                hbNFe_Texto_hpdf( ::oPdfPage, 128 + ( ( nTamForm ) / 4 ), ::nLinhaPdf -1, 183 + ( ( nTamForm ) / 4 ), NIL, cVencimento, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 7 )
                hbNFe_Texto_hpdf( ::oPdfPage, 185 + ( ( nTamForm ) / 4 ), ::nLinhaPdf -1, 259 + ( ( nTamForm ) / 4 ), NIL, cValor, HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 7 )
-            ELSEIF nColuna = 3
+            ELSEIF nColuna == 3
                hbNFe_Texto_hpdf( ::oPdfPage, 71 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf -1, 126 + ( ( ( nTamForm ) / 4 ) * 2 ), NIL, cNumero, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                hbNFe_Texto_hpdf( ::oPdfPage, 128 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf -1, 183 + ( ( ( nTamForm ) / 4 ) * 2 ), NIL, cVencimento, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 7 )
                hbNFe_Texto_hpdf( ::oPdfPage, 185 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf -1, 259 + ( ( ( nTamForm ) / 4 ) * 2 ), NIL, cValor, HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 7 )
-            ELSEIF nColuna = 4
+            ELSEIF nColuna == 4
                hbNFe_Texto_hpdf( ::oPdfPage, 71 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf -1, 126 + ( ( ( nTamForm ) / 4 ) * 3 ), NIL, cNumero, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                hbNFe_Texto_hpdf( ::oPdfPage, 128 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf -1, 183 + ( ( ( nTamForm ) / 4 ) * 3 ), NIL, cVencimento, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 7 )
                hbNFe_Texto_hpdf( ::oPdfPage, 185 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf -1, 259 + ( ( ( nTamForm ) / 4 ) * 3 ), NIL, cValor, HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 7 )
@@ -1138,15 +1134,15 @@ METHOD Faturas() CLASS hbNFeDanfe
                nColuna--
                EXIT
             ENDIF
-            IF nColuna = 1
+            IF nColuna == 1
                hbNFe_Texto_hpdf( ::oPdfPage,  6, ::nLinhaPdf -1,   61, NIL, cNumero, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                hbNFe_Texto_hpdf( ::oPdfPage, 63, ::nLinhaPdf -1,  118, NIL, cVencimento, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 7 )
                hbNFe_Texto_hpdf( ::oPdfPage, 120, ::nLinhaPdf -1,  195, NIL, cValor, HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 7 )
-            ELSEIF nColuna = 2
+            ELSEIF nColuna == 2
                hbNFe_Texto_hpdf( ::oPdfPage,  6 + ( ( nTamForm ) / 3 ), ::nLinhaPdf -1,  61 + ( ( nTamForm ) / 3 ), NIL, cNumero, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                hbNFe_Texto_hpdf( ::oPdfPage, 63 + ( ( nTamForm ) / 3 ), ::nLinhaPdf -1, 118 + ( ( nTamForm ) / 3 ), NIL, cVencimento, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 7 )
                hbNFe_Texto_hpdf( ::oPdfPage, 120 + ( ( nTamForm ) / 3 ), ::nLinhaPdf -1, 195 + ( ( nTamForm ) / 3 ), NIL, cValor, HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 7 )
-            ELSEIF nColuna = 3
+            ELSEIF nColuna == 3
                hbNFe_Texto_hpdf( ::oPdfPage,  6 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf -1,  61 + ( ( ( nTamForm ) / 3 ) * 2 ), NIL, cNumero, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
                hbNFe_Texto_hpdf( ::oPdfPage, 63 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf -1, 118 + ( ( ( nTamForm ) / 3 ) * 2 ), NIL, cVencimento, HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 7 )
                hbNFe_Texto_hpdf( ::oPdfPage, 120 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf -1, 195 + ( ( ( nTamForm ) / 3 ) * 2 ), NIL, cValor, HPDF_TALIGN_RIGHT, NIL, ::oPdfFontCabecalho, 7 )
@@ -1166,7 +1162,7 @@ METHOD Faturas() CLASS hbNFeDanfe
 
 METHOD DadosImposto() CLASS hbNFeDanfe
 
-   IF ::nFolha = 1
+   IF ::nFolha == 1
       IF ::lPaisagem
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf, 830, NIL, "CÁLCULO DO IMPOSTO", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalhoBold, 5 )
 
@@ -1282,7 +1278,7 @@ METHOD DadosImposto() CLASS hbNFeDanfe
 
 METHOD DadosTransporte() CLASS hbNFeDanfe
 
-   IF ::nFolha = 1
+   IF ::nFolha == 1
       IF ::lPaisagem
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf, 830, NIL, "TRANSPORTADOR / VOLUMES TRANSPORTADOS", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalhoBold, 5 )
 
@@ -1490,7 +1486,7 @@ METHOD CabecalhoProdutos() CLASS hbNFeDanfe
       hbNFe_Box_Hpdf( ::oPdfPage, 360, ::nLinhaPdf - 13, 35, 13, ::nLarguraBox )
       hbNFe_Texto_hpdf( ::oPdfPage, 361, ::nLinhaPdf -1,  394, NIL, "NCM/SH", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
       hbNFe_Texto_hpdf( ::oPdfPage, 361, ::nLinhaPdf - 6, 394, NIL, "", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
-      IF ::aEmit[ "CRT" ] = "1" // CSOSN
+      IF ::aEmit[ "CRT" ] == "1" // CSOSN
          // CSOSN
          hbNFe_Box_Hpdf( ::oPdfPage, 395, ::nLinhaPdf - 13, 15, 13, ::nLarguraBox )
          hbNFe_Texto_hpdf( ::oPdfPage, 396, ::nLinhaPdf -1,  409, NIL, "CSOSN", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 4 )
@@ -1553,7 +1549,7 @@ METHOD CabecalhoProdutos() CLASS hbNFeDanfe
 
       ::nLinhaPdf -= 13
    ELSE
-      IF ::lValorDesc = .F. // Layout Padrão
+      IF ! ::lValorDesc // Layout Padrão
          hbNFe_Texto_hpdf( ::oPdfPage, 5, ::nLinhaPdf, 589, NIL, "DADOS DOS PRODUTOS / SERVIÇOS", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalhoBold, 5 )
          ::nLinhaPdf -= 6
 
@@ -1569,7 +1565,7 @@ METHOD CabecalhoProdutos() CLASS hbNFeDanfe
          hbNFe_Box_Hpdf( ::oPdfPage, 205, ::nLinhaPdf - 13, 35, 13, ::nLarguraBox )
          hbNFe_Texto_hpdf( ::oPdfPage, 206, ::nLinhaPdf -1,  239, NIL, "NCM/SH", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
          hbNFe_Texto_hpdf( ::oPdfPage, 206, ::nLinhaPdf - 6, 239, NIL, "", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
-         IF ::aEmit[ "CRT" ] = "1" // CSOSN
+         IF ::aEmit[ "CRT" ] == "1" // CSOSN
             // CSOSN
             hbNFe_Box_Hpdf( ::oPdfPage, 240, ::nLinhaPdf - 13, 15, 13, ::nLarguraBox )
             hbNFe_Texto_hpdf( ::oPdfPage, 241, ::nLinhaPdf -1,  254, NIL, "CSOSN", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 4 )
@@ -1637,7 +1633,7 @@ METHOD CabecalhoProdutos() CLASS hbNFeDanfe
          hbNFe_Box_Hpdf( ::oPdfPage, 205, ::nLinhaPdf - 13, 35, 13, ::nLarguraBox )
          hbNFe_Texto_hpdf( ::oPdfPage, 206, ::nLinhaPdf -1,  239, NIL, "NCM/SH", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
          hbNFe_Texto_hpdf( ::oPdfPage, 206, ::nLinhaPdf - 6, 239, NIL, "", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
-         IF ::aEmit[ "CRT" ] = "1" // CSOSN
+         IF ::aEmit[ "CRT" ] == "1" // CSOSN
             // CSOSN
             hbNFe_Box_Hpdf( ::oPdfPage, 240, ::nLinhaPdf - 13, 15, 13, ::nLarguraBox )
             hbNFe_Texto_hpdf( ::oPdfPage, 241, ::nLinhaPdf -1,  254, NIL, "CSOSN", HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 4 )
@@ -1721,7 +1717,7 @@ METHOD DesenhaBoxProdutos( nLinhaFinalProd, nTamanhoProd ) CLASS hbNFeDanfe
       /* ALIQ IPI */    hbNFe_Box_Hpdf( ::oPdfPage,810, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
       ::nLinhaPdf -= 1
    ELSE
-      IF ::lValorDesc = .F. // Layout Padrão
+      IF ! ::lValorDesc // Layout Padrão
          /* CODIGO */      hbNFe_Box_Hpdf( ::oPdfPage,  5, nLinhaFinalProd, 55, nTamanhoProd, ::nLarguraBox )
          /* DESCRI */      hbNFe_Box_Hpdf( ::oPdfPage, 60, nLinhaFinalProd,145, nTamanhoProd, ::nLarguraBox )
          /* NCM */         hbNFe_Box_Hpdf( ::oPdfPage,205, nLinhaFinalProd, 35, nTamanhoProd, ::nLarguraBox )
@@ -1782,7 +1778,7 @@ METHOD Produtos() CLASS hbNFeDanfe
          /* CODIGO */ hbNFe_Texto_hpdf( ::oPdfPage,71, ::nLinhaPdf, 124, NIL, ::aItem[ "cProd" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
          /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLarguraDescricao,1)), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
          /* NCM    */ hbNFe_Texto_hpdf( ::oPdfPage,361, ::nLinhaPdf, 394, NIL, ::aItem[ "NCM" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
-         IF ::aEmit[ "CRT" ] = "1" // CSOSN
+         IF ::aEmit[ "CRT" ] == "1" // CSOSN
             /* CST/CSOSN */ hbNFe_Texto_hpdf( ::oPdfPage,396, ::nLinhaPdf, 409, NIL, ::aItemICMS[ "orig" ]+::aItemICMS[ "CSOSN" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 5 )
          ELSE
             /* CST */ hbNFe_Texto_hpdf( ::oPdfPage,396, ::nLinhaPdf, 409, NIL, ::aItemICMS[ "orig" ]+::aItemICMS[ "CST" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
@@ -1823,11 +1819,11 @@ METHOD Produtos() CLASS hbNFeDanfe
             hbNFe_Line_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 0.5, 830, ::nLinhaPdf - 0.5, ::nLarguraBox )
          ENDIF
       ELSE
-         IF ::lValorDesc = .F. // Layout Padrão
+         IF ! ::lValorDesc // Layout Padrão
             /* CODIGO */ hbNFe_Texto_hpdf( ::oPdfPage, 6, ::nLinhaPdf, 59, NIL, ::aItem[ "cProd" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
             /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLarguraDescricao,1)), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
             /* NCM */ hbNFe_Texto_hpdf( ::oPdfPage, 206, ::nLinhaPdf, 239, NIL, ::aItem[ "NCM" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
-            IF ::aEmit[ "CRT" ] = "1" // CSOSN
+            IF ::aEmit[ "CRT" ] == "1" // CSOSN
                /* CSOSN */ hbNFe_Texto_hpdf( ::oPdfPage, 241, ::nLinhaPdf, 254, NIL, ::aItemICMS[ "orig" ]+::aItemICMS[ "CSOSN" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 5 )
             ELSE
                /* CST */ hbNFe_Texto_hpdf( ::oPdfPage, 241, ::nLinhaPdf, 254, NIL, ::aItemICMS[ "orig" ]+::aItemICMS[ "CST" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
@@ -1866,7 +1862,7 @@ METHOD Produtos() CLASS hbNFeDanfe
             /* CODIGO */ hbNFe_Texto_hpdf( ::oPdfPage, 6, ::nLinhaPdf, 59, NIL, ::aItem[ "cProd" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
             /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "xProd" ], ::nLarguraDescricao, 1 ) ), HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalho, 6 )
             /* NCM */    hbNFe_Texto_hpdf( ::oPdfPage, 206, ::nLinhaPdf, 239, NIL, ::aItem[ "NCM" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
-            IF ::aEmit[ "CRT" ] = "1" // CSOSN
+            IF ::aEmit[ "CRT" ] == "1" // CSOSN
                /* CSOSN */ hbNFe_Texto_hpdf( ::oPdfPage, 241, ::nLinhaPdf, 254, NIL, ::aItemICMS[ "orig" ] + ::aItemICMS[ "CSOSN" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 5 )
             ELSE
                /* CST */   hbNFe_Texto_hpdf( ::oPdfPage, 241, ::nLinhaPdf, 254, NIL, ::aItemICMS[ "orig" ] + ::aItemICMS[ "CST" ], HPDF_TALIGN_CENTER, NIL, ::oPdfFontCabecalho, 6 )
@@ -1916,7 +1912,7 @@ METHOD Produtos() CLASS hbNFeDanfe
 
 METHOD TotalServico() CLASS hbNFeDanfe
 
-   IF ::nFolha = 1
+   IF ::nFolha == 1
       IF Val( IF( ::aISSTotal[ "vServ" ] <> NIL, ::aISSTotal[ "vServ" ], "0" ) ) > 0 // com servico
          IF ::lPaisagem
             hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf, 830, NIL, "CALCULO DO ISSQN", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalhoBold, 5 )
@@ -1974,7 +1970,7 @@ METHOD DadosAdicionais() CLASS hbNFeDanfe
 
    LOCAL cMemo, nI
 
-   IF ::nFolha = 1
+   IF ::nFolha == 1
       cMemo := StrTran( ::aInfAdic[ "infCpl" ], ";", Chr( 13 ) + Chr( 10 ) )
       IF ::lPaisagem
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf, 830, NIL, "DADOS ADICIONAIS", HPDF_TALIGN_LEFT, NIL, ::oPdfFontCabecalhoBold, 5 )
@@ -2070,20 +2066,6 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDanfe
 
    RETURN .T.
 
-METHOD LoadJPEGImage( xValue ) CLASS hbNFeDANFe
-
-   LOCAL oImage
-
-   IF xValue != NIL
-      IF Len( xValue ) < 100
-         oImage := HPDF_LoadJpegImageFromFile( ::oPDF, xValue )
-      ELSE
-         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, xValue, Len( xValue ) )
-      ENDIF
-   ENDIF
-
-   RETURN oImage
-
 STATIC FUNCTION Quoted2( cText )
 
    RETURN["] + cText + ["]
@@ -2098,7 +2080,7 @@ STATIC FUNCTION hbNFe_Texto_Hpdf( oPdfPage2, x1, y1, x2, y2, cText, align, desco
    IF oFontePDF <> NIL
       HPDF_Page_SetFontAndSize( oPdfPage2, oFontePDF, nTamFonte )
    ENDIF
-   IF x2 = NIL
+   IF x2 == NIL
       x2 := x1 - nTamFonte
    ENDIF
    HPDF_Page_BeginText( oPdfPage2 )
@@ -2128,22 +2110,22 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
 
    LOCAL nI := 0, checksum := 0, nValorCar, cCode128 := '', cCodigoBarra
 
-   cCodigoBarra = pcCodigoBarra
+   cCodigoBarra == pcCodigoBarra
    IF Len( cCodigoBarra ) > 0    // Verifica se os caracteres são válidos (somente números)
-      IF Int( Len( cCodigoBarra ) / 2 ) = Len( cCodigoBarra ) / 2    // Tem ser par o tamanho do código de barras
+      IF Int( Len( cCodigoBarra ) / 2 ) == Len( cCodigoBarra ) / 2    // Tem ser par o tamanho do código de barras
          FOR nI = 1 TO Len( cCodigoBarra )
             IF ( Asc( SubStr( cCodigoBarra, nI, 1 ) ) < 48 .OR. Asc( SubStr( cCodigoBarra, nI, 1 ) ) > 57 )
-               nI = 0
+               nI := 0
                EXIT
             ENDIF
          NEXT
       ENDIF
       IF nI > 0
-         nI = 1 // nI é o índice da cadeia
-         cCode128 = Chr( 155 )
+         nI := 1 // nI é o índice da cadeia
+         cCode128 := Chr( 155 )
          DO WHILE nI <= Len( cCodigoBarra )
-            nValorCar = Val( SubStr( cCodigoBarra, nI, 2 ) )
-            IF nValorCar = 0
+            nValorCar := Val( SubStr( cCodigoBarra, nI, 2 ) )
+            IF nValorCar == 0
                nValorCar += 128
             ELSEIF nValorCar < 95
                nValorCar += 32
@@ -2151,25 +2133,25 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
                nValorCar +=  50
             ENDIF
             cCode128 += Chr( nValorCar )
-            nI = nI + 2
+            nI += 2
          ENDDO
          // Calcula o checksum
          FOR nI = 1 TO Len( cCode128 )
-            nValorCar = Asc ( SubStr( cCode128, nI, 1 ) )
-            IF nValorCar = 128
-               nValorCar = 0
+            nValorCar := Asc ( SubStr( cCode128, nI, 1 ) )
+            IF nValorCar == 128
+               nValorCar := 0
             ELSEIF nValorCar < 127
                nValorCar -= 32
             ELSE
                nValorCar -=  50
             ENDIF
-            IF nI = 1
-               checksum = nValorCar
+            IF nI == 1
+               checksum := nValorCar
             ENDIF
-            checksum = Mod( ( checksum + ( nI -1 ) * nValorCar ), 103 )
+            checksum := Mod( ( checksum + ( nI - 1 ) * nValorCar ), 103 )
          NEXT
          // Cálculo código ASCII do checkSum
-         IF checksum = 0
+         IF checksum == 0
             checksum += 128
          ELSEIF checksum < 95
             checksum += 32
@@ -2177,25 +2159,11 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
             checksum +=  50
          ENDIF
          // Adiciona o checksum e STOP
-         cCode128 = cCode128 + Chr( checksum ) +  Chr( 156 )
+         cCode128 := cCode128 + Chr( checksum ) +  Chr( 156 )
       ENDIF
    ENDIF
 
    RETURN cCode128
-#else
-
-STATIC FUNCTION hbNFe_Zebra_Draw_Hpdf( hZebra, page, ... )
-
-   IF hb_zebra_geterror( hZebra ) != 0
-      RETURN HB_ZEBRA_ERROR_INVALIDZEBRA
-   ENDIF
-
-   hb_zebra_draw( hZebra, { | x, y, w, h | HPDF_Page_Rectangle( page, x, y, w, h ) }, ... )
-
-   HPDF_Page_Fill( page )
-
-   RETURN 0
-
 #endif
 
 STATIC FUNCTION hbNFe_Line_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen, FLAG )

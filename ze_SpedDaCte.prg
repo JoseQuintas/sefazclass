@@ -8,20 +8,18 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #include "harupdf.ch"
 #ifndef __XHARBOUR__
 #include "hbwin.ch"
-#include "hbzebra.ch"
 #endif
 #define _LOGO_ESQUERDA        1      /* apenas anotado, mas não usado */
 #define _LOGO_DIREITA         2
 #define _LOGO_EXPANDIDO       3
 
-CREATE CLASS hbnfeDacte
+CREATE CLASS hbnfeDacte INHERIT hbNFeDaGeral
 
    METHOD Execute( cXml, cFilePDF, cXmlCancel )
    METHOD BuscaDadosXML()
    METHOD GeraPDF( cFilePDF )
    METHOD NovaPagina()
    METHOD Cabecalho()
-   METHOD LoadJPEGImage( xValue )
 
    VAR nLarguraDescricao
    VAR nLarguraCodigo
@@ -444,13 +442,13 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    LOCAL nReduc     := ''
    LOCAL nST        := ''
    LOCAL DASH_MODE3 := { 8, 7, 2, 7 }
-   LOCAL I, oElement, hZebra
+   LOCAL I, oElement
 
    // box do logotipo e dados do emitente
    hbnfe_Box_hpdf( ::oPdfPage,  003, ::nLinhaPdf - 119, 295, 119, ::nLarguraBox )
 
    IF ::cLogoFile != NIL .AND. ! Empty( ::cLogoFile )
-      oImage := ::LoadJPEGImage( ::cLogoFile )
+      oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
       HPDF_Page_DrawImage( ::oPdfPage, oImage, 115, ::nLinhaPdf - ( 52 + 1 ), 100, 052 )
    ENDIF
    IF Len( ::aEmit[ "xNome" ] ) <= 25
@@ -508,8 +506,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    hbnfe_Texto_hpdf( ::oPdfPage, 303, ::nLinhaPdf - 075, 588, Nil, hbnfe_Codifica_Code128c( ::cChave ), HPDF_TALIGN_CENTER, Nil, ::cFonteCode128F, 17 )
 #else
    // atenção - chute inicial
-   hZebra := hb_zebra_create_code128( ::cChave, Nil )
-   hbNFe_Zebra_Draw_Hpdf( hZebra, ::oPdfPage, 320, ::nLinhaPDF -110, 0.9, 30 )
+   ::DrawBarcode( ::cChave, ::oPdfPage, 320, ::nLinhaPDF -110, 0.9, 30 )
 #endif
    hbnfe_Texto_hpdf( ::oPdfPage, 303, ::nLinhaPdf - 110, 588, Nil, "Chave de acesso para consulta de autenticidade no site www.cte.fazenda.gov.br", HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalho, 8 )
    hbnfe_Texto_hpdf( ::oPdfPage, 303, ::nLinhaPdf - 119, 588, Nil, TRANSF( ::cChave, "@R 99.9999.99.999.999/9999-99-99-999-999.999.999-999.999.999-9" ), HPDF_TALIGN_CENTER, Nil, ::oPdfFontCabecalhoBold, 8 )
@@ -1173,20 +1170,6 @@ METHOD Cabecalho() CLASS hbnfeDaCte
 
    RETURN NIL
 
-METHOD LoadJPEGImage( xValue ) CLASS hbNFeDaCTe
-
-   LOCAL oImage
-
-   IF xValue != NIL
-      IF Len( xValue ) < 100
-         oImage := HPDF_LoadJpegImageFromFile( ::oPDF, xValue )
-      ELSE
-         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, xValue, Len( xValue ) )
-      ENDIF
-   ENDIF
-
-   RETURN oImage
-
 STATIC FUNCTION FormatIE( cIE, cUF )
 
    cIE := AllTrim( cIE )
@@ -1292,20 +1275,6 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
    ENDIF
 
    RETURN cCode128
-#else
-
-STATIC FUNCTION hbNFe_Zebra_Draw_Hpdf( hZebra, page, ... )
-
-   IF hb_zebra_geterror( hZebra ) != 0
-      RETURN HB_ZEBRA_ERROR_INVALIDZEBRA
-   ENDIF
-
-   hb_zebra_draw( hZebra, {| x, y, w, h | HPDF_Page_Rectangle( page, x, y, w, h ) }, ... )
-
-   HPDF_Page_Fill( page )
-
-   RETURN 0
-
 #endif
 
 STATIC FUNCTION hbNFe_Line_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen, FLAG )

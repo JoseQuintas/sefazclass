@@ -1045,7 +1045,7 @@ METHOD SetSoapURL( nWsServico ) CLASS SefazClass
          ENDIF
       ENDIF
    CASE ::cProjeto == WS_PROJETO_MDFE
-      ::cSoapURL = SoapURL_RS( ::cAmbiente, nWsServico, ::cVersao )
+      ::cSoapURL := SoapURL_RS( ::cAmbiente, nWsServico, ::cVersao )
    CASE ::cProjeto == WS_PROJETO_NFE
       DO CASE
       CASE nWsServico == WS_NFE_CONSULTACADASTRO .AND. ::cUF $ "AC,RN,PB,SC" ;  ::cSoapUrl := SoapURL_SVRS( ::cAmbiente, nWsServico, ::cVersao )
@@ -1208,10 +1208,10 @@ STATIC FUNCTION UFCodigo( cSigla )
    IF Val( cSigla ) > 0
       RETURN cSigla
    ENDIF
-   cUFs = "AC,12,AL,27,AM,13,AP,16,BA,29,CE,23,DF,53,ES,32,GO,52,MG,31,MS,50,MT,51,MA,21,PA,15,PB,25,PE,26,PI,22,PR,41,RJ,33,RO,11,RN,24,RR,14,RS,43,SC,42,SE,28,SP,35,TO,17,"
-   nPosicao = At( cSigla, cUfs )
+   cUFs := "AC,12,AL,27,AM,13,AP,16,BA,29,CE,23,DF,53,ES,32,GO,52,MG,31,MS,50,MT,51,MA,21,PA,15,PB,25,PE,26,PI,22,PR,41,RJ,33,RO,11,RN,24,RR,14,RS,43,SC,42,SE,28,SP,35,TO,17,"
+   nPosicao := At( cSigla, cUfs )
    IF nPosicao < 1
-      cCodigo = "99"
+      cCodigo := "99"
    ELSE
       cCodigo := Substr( cUFs, nPosicao + 3, 2 )
    ENDIF
@@ -1226,12 +1226,12 @@ STATIC FUNCTION UFSigla( cCodigo )
    IF Val( cCodigo ) == 0 // não é número
       RETURN cCodigo
    ENDIF
-   cUFs = "AC,12,AL,27,AM,13,AP,16,BA,29,CE,23,DF,53,ES,32,GO,52,MG,31,MS,50,MT,51,MA,21,PA,15,PB,25,PE,26,PI,22,PR,41,RJ,33,RO,11,RN,24,RR,14,RS,43,SC,42,SE,28,SP,35,TO,17,"
-   nPosicao = At( cCodigo, cUfs )
+   cUFs := "AC,12,AL,27,AM,13,AP,16,BA,29,CE,23,DF,53,ES,32,GO,52,MG,31,MS,50,MT,51,MA,21,PA,15,PB,25,PE,26,PI,22,PR,41,RJ,33,RO,11,RN,24,RR,14,RS,43,SC,42,SE,28,SP,35,TO,17,"
+   nPosicao := At( cCodigo, cUfs )
    IF nPosicao < 1
-      cSigla = "XX"
+      cSigla := "XX"
    ELSE
-      cSigla:= Substr( cUFs, nPosicao - 3, 2 )
+      cSigla := Substr( cUFs, nPosicao - 3, 2 )
    ENDIF
 
    RETURN cSigla
@@ -1399,7 +1399,7 @@ METHOD CurlSoapPost() CLASS SefazClass
    aHeader[ 2 ] := [SOAPAction: "] + ::cSoapAction + ["]
    aHeader[ 3 ] := [Content-length: ] + AllTrim( Str( Len( ::cXml ) ) )
    curl_global_init()
-   oCurl = curl_easy_init()
+   oCurl := curl_easy_init()
    curl_easy_setopt( oCurl, HB_CURLOPT_URL, ::cSoapURL )
    curl_easy_setopt( oCurl, HB_CURLOPT_PORT , 443 )
    curl_easy_setopt( oCurl, HB_CURLOPT_VERBOSE, .F. ) // 1
@@ -1418,7 +1418,7 @@ METHOD CurlSoapPost() CLASS SefazClass
    curl_easy_perform( oCurl )
    retHTTP := curl_easy_getinfo( oCurl, HB_CURLINFO_RESPONSE_CODE )
    ::cXmlRetorno := ""
-   IF retHTTP = 200 // OK
+   IF retHTTP == 200 // OK
       curl_easy_setopt( ocurl, HB_CURLOPT_DL_BUFF_GET, @::cXmlRetorno )
       cXMLResp := Substr( cXMLResp, AT( '<?xml', ::cXmlRetorno ) )
    ENDIF

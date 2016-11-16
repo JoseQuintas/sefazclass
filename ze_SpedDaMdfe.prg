@@ -8,20 +8,18 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #include "harupdf.ch"
 #ifndef __XHARBOUR__
 #include "hbwin.ch"
-#include "hbzebra.ch"
 #endif
 #define _LOGO_ESQUERDA        1      /* apenas anotado, mas não usado */
 #define _LOGO_DIREITA         2
 #define _LOGO_EXPANDIDO       3
 
-CREATE CLASS hbnfeDaMDFe
+CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
 
    METHOD execute( cXml, cFilePDF )
    METHOD buscaDadosXML()
    METHOD geraPDF( cFilePDF )
    METHOD novaPagina()
    METHOD cabecalho()
-   METHOD LoadJPEGImage( xValue )
 
    VAR nItens1Folha
    VAR nItensDemaisFolhas
@@ -315,13 +313,13 @@ METHOD NovaPagina() CLASS hbnfeDaMdfe
 
 METHOD cabecalho() CLASS hbnfeDaMdfe
 
-   LOCAL oImage, hZebra
+   LOCAL oImage
 
    // box do logotipo e dados do emitente
 
    hbnfe_Box_hpdf( ::oPdfPage,  020, ::nLinhaPdf - 150, 555, 150, ::nLarguraBox )
    IF ::cLogoFile != NIL .AND. ! Empty( ::cLogoFile )
-      oImage := ::LoadJPEGImage( ::cLogoFile )
+      oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
       HPDF_Page_DrawImage( ::oPdfPage, oImage, 025, ::nLinhaPdf - ( 142 + 1 ), 200, 132 )
    ENDIF
    hbnfe_Texto_hpdf( ::oPdfPage, 240, ::nLinhaPdf -018, 560, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalhoBold, 16 )
@@ -344,8 +342,7 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    hbnfe_Texto_hpdf( ::oPdfPage, 020, ::nLinhaPdf - 197, 575, Nil, hbnfe_Codifica_Code128c( ::cChave ), HPDF_TALIGN_CENTER, Nil, ::cFonteCode128F, 35 )
 #else
    // atenção - chute inicial
-   hZebra := hb_zebra_create_code128( ::cChave, Nil )
-   hbNFe_Zebra_Draw_Hpdf( hZebra, ::oPdfPage, 150, ::nLinhaPDF - 232, 0.9, 30 )
+   ::DrawBarcode( ::cChave, ::oPdfPage, 150, ::nLinhaPDF - 232, 0.9, 30 )
 #endif
    hbnfe_Line_hpdf( ::oPdfPage, 020, ::nLinhaPdf - 277, 575, ::nLinhaPdf - 277, ::nLarguraBox )
    hbnfe_Texto_hpdf( ::oPdfPage, 025, ::nLinhaPdf - 278, 575, Nil, "Chave de acesso para consulta de autenticidade no site www.mdfe.fazenda.gov.br", HPDF_TALIGN_LEFT, Nil, ::oPdfFontCabecalho, 12 )
@@ -472,20 +469,6 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
 
    RETURN NIL
 
-METHOD LoadJPEGImage( xValue ) CLASS hbNFeDaMDFe
-
-   LOCAL oImage
-
-   IF xValue != NIL
-      IF Len( xValue ) < 100
-         oImage := HPDF_LoadJpegImageFromFile( ::oPDF, xValue )
-      ELSE
-         oImage := HPDF_LoadJpegImageFromMem( ::oPDF, xValue, Len( xValue ) )
-      ENDIF
-   ENDIF
-
-   RETURN oImage
-
 STATIC FUNCTION FormatIE( cIE, cUF )
 
    cIE := AllTrim( cIE )
@@ -537,22 +520,22 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
 
    LOCAL nI := 0, checksum := 0, nValorCar, cCode128 := '', cCodigoBarra
 
-   cCodigoBarra = pcCodigoBarra
+   cCodigoBarra := pcCodigoBarra
    IF Len( cCodigoBarra ) > 0    // Verifica se os caracteres são válidos (somente números)
       IF Int( Len( cCodigoBarra ) / 2 ) = Len( cCodigoBarra ) / 2    // Tem ser par o tamanho do código de barras
          FOR nI = 1 TO Len( cCodigoBarra )
             IF ( Asc( SubStr( cCodigoBarra, nI, 1 ) ) < 48 .OR. Asc( SubStr( cCodigoBarra, nI, 1 ) ) > 57 )
-               nI = 0
+               nI := 0
                EXIT
             ENDIF
          NEXT
       ENDIF
       IF nI > 0
-         nI = 1 // nI é o índice da cadeia
+         nI := 1 // nI é o índice da cadeia
          cCode128 = Chr( 155 )
          DO WHILE nI <= Len( cCodigoBarra )
-            nValorCar = Val( SubStr( cCodigoBarra, nI, 2 ) )
-            IF nValorCar = 0
+            nValorCar := Val( SubStr( cCodigoBarra, nI, 2 ) )
+            IF nValorCar == 0
                nValorCar += 128
             ELSEIF nValorCar < 95
                nValorCar += 32
@@ -560,25 +543,25 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
                nValorCar +=  50
             ENDIF
             cCode128 += Chr( nValorCar )
-            nI = nI + 2
+            nI += 2
          ENDDO
          // Calcula o checksum
          FOR nI = 1 TO Len( cCode128 )
-            nValorCar = Asc ( SubStr( cCode128, nI, 1 ) )
-            IF nValorCar = 128
-               nValorCar = 0
+            nValorCar := Asc ( SubStr( cCode128, nI, 1 ) )
+            IF nValorCar := 128
+               nValorCar := 0
             ELSEIF nValorCar < 127
                nValorCar -= 32
             ELSE
                nValorCar -=  50
             ENDIF
-            IF nI = 1
-               checksum = nValorCar
+            IF nI == 1
+               checksum := nValorCar
             ENDIF
-            checksum = Mod( ( checksum + ( nI -1 ) * nValorCar ), 103 )
+            checksum := Mod( ( checksum + ( nI -1 ) * nValorCar ), 103 )
          NEXT
          // Cálculo código ASCII do checkSum
-         IF checksum = 0
+         IF checksum == 0
             checksum += 128
          ELSEIF checksum < 95
             checksum += 32
@@ -586,31 +569,17 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
             checksum +=  50
          ENDIF
          // Adiciona o checksum e STOP
-         cCode128 = cCode128 + Chr( checksum ) +  Chr( 156 )
+         cCode128 := cCode128 + Chr( checksum ) +  Chr( 156 )
       ENDIF
    ENDIF
 
    RETURN cCode128
-#else
-
-STATIC FUNCTION hbNFe_Zebra_Draw_Hpdf( hZebra, page, ... )
-
-   IF hb_zebra_geterror( hZebra ) != 0
-      RETURN HB_ZEBRA_ERROR_INVALIDZEBRA
-   ENDIF
-
-   hb_zebra_draw( hZebra, {| x, y, w, h | HPDF_Page_Rectangle( page, x, y, w, h ) }, ... )
-
-   HPDF_Page_Fill( page )
-
-   RETURN 0
-
 #endif
 
 STATIC FUNCTION hbNFe_Line_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen, FLAG )
 
    HPDF_Page_SetLineWidth( oPdfPage2, nPen )
-   IF FLAG <> NIL
+   IF FLAG != NIL
       HPDF_Page_SetLineCap( oPdfPage2, FLAG )
    ENDIF
    HPDF_Page_MoveTo( oPdfPage2, x1, y1 )

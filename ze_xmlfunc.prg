@@ -97,7 +97,7 @@ FUNCTION XmlNode( cXml, cNode, lComTag )
             nInicio := hb_At( ">", cXml, nInicio ) + 1
          ENDIF
       ENDIF
-      nFim = hb_At( "</" + cNode + ">", cXml, nInicio )
+      nFim := hb_At( "</" + cNode + ">", cXml, nInicio )
       IF nFim != 0
          nFim -=1
          IF lComTag
@@ -120,7 +120,7 @@ FUNCTION XmlElement( cXml, cElement )
    ENDIF
    nFim    := hb_At( ["], cXml, nInicio ) - 1
    IF nInicio > 0 .AND. nFim > 0 .AND. nFim > nInicio
-      cResultado = Substr( cXml, nInicio, nFim - nInicio + 1 )
+      cResultado := Substr( cXml, nInicio, nFim - nInicio + 1 )
    ENDIF
 
    RETURN cResultado
@@ -139,7 +139,7 @@ FUNCTION XmlTag( cTag, cValue )
 
    hb_Default( @cValue, "" )
    cValue := AllTrim( cValue )
-   IF Len( cValue ) = 0
+   IF Len( cValue ) == 0
       cXml := [<]+ cTag + [/>]
    ELSE
       IF Len( cValue ) == 0
