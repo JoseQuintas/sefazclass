@@ -99,20 +99,16 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
 
    BEGIN SEQUENCE WITH __BreakBlock()
 
+      cRetorno := "Erro Assinatura: Não carregado MSXML2.DOMDocument.5.0"
       oDOMDoc := Win_OleCreateObject( "MSXML2.DOMDocument.5.0" )
-      //RECOVER
-      //   cRetorno := "Erro Assinatura: Não carregado MSXML2.DOMDocument.5.0"
-      //   RETURN cRetorno
 
       oDOMDoc:async              := .F.
       oDOMDoc:resolveExternals   := .F.
       oDOMDoc:validateOnParse    := .T.
       oDOMDoc:preserveWhiteSpace := .T.
 
+      cRetorno := "Erro Assinatura: Não carregado MSXML2.MXDigitalSignature.5.0"
       xmldsig := Win_OleCreateObject( "MSXML2.MXDigitalSignature.5.0" )
-      //RECOVER
-      //   cRetorno := "Erro Assinatura: Não carregado MSXML2.MXDigitalSignature.5.0"
-      //   RETURN cRetorno
       oDOMDoc:LoadXML( cTxtXml )
       IF oDOMDoc:parseError:errorCode <> 0 // XML não carregado
          cRetorno := "Erro Assinatura: Não foi possivel carregar o documento pois ele não corresponde ao seu Schema" + HB_EOL()
@@ -127,34 +123,23 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
 
       IF .NOT. "</Signature>" $ cTxtXml
          cRetorno := "Erro Assinatura: Bloco Assinatura não encontrado"
+         BREAK
       ENDIF
+      cRetorno := "Erro Assinatura: Template de assinatura não encontrado"
       xmldsig:signature := oDOMDoc:selectSingleNode(".//ds:Signature")
-      //RECOVER
-      //   cRetorno := "Erro Assinatura: Template de assinatura não encontrado"
 
       oCert:= CapicomCertificado( cCertCn )
       IF oCert == NIL
          cRetorno := "Erro Assinatura: Certificado não encontrado ou vencido"
+         BREAK
       ENDIF
 
+      cRetorno := "Erro assinatura: Acessando estoque de certificados"
       oCapicomStore := Win_OleCreateObject( "CAPICOM.Store" )
       oCapicomStore:open( _CAPICOM_MEMORY_STORE, 'Memoria', _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
-      //RECOVER USING oError
-      //   cRetorno := "Erro Assinatura: Ao criar espaço certificado na memória " + HB_EOL()
-      //   cRetorno += "Error: "     + Transform( oError:GenCode, NIL )   + ";"   + HB_EOL()
-      //   cRetorno += "SubC: "      + Transform( oError:SubCode, NIL )   + ";"   + HB_EOL()
-      //   cRetorno += "OSCode: "    + Transform( oError:OsCode,  NIL )   + ";"   + HB_EOL()
-      //   cRetorno += "SubSystem: " + Transform( oError:SubSystem, NIL ) + ";"   + HB_EOL()
-      //   cRetorno += "Mensagem: "  + oError:Description
 
+      cRetorno := "Erro assinatura: Adicionando certificado na memória"
       oCapicomStore:Add( oCert )
-      //RECOVER USING oError
-      //   cRetorno := "Erro Assinatura: Ao adicionar certificado na memória " + HB_EOL()
-      //   cRetorno += "Error: "     + Transform( oError:GenCode, NIL) + ";"   + HB_EOL()
-      //   cRetorno += "SubC: "      + Transform( oError:SubCode, NIL) + ";"   + HB_EOL()
-      //   cRetorno += "OSCode: "    + Transform( oError:OsCode,  NIL) + ";"   + HB_EOL()
-      //   cRetorno += "SubSystem: " + Transform( oError:SubSystem, NIL) + ";" + HB_EOL()
-      //   cRetorno += "Mensagem: "  + oError:Description
 
       xmldsig:store := oCapicomStore
 
@@ -165,6 +150,7 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
       dsigKey    := xmldsig:CreateKeyFromCSP( eType, sProvider, sContainer, 0 )
       IF ( dsigKey = NIL )
          cRetorno := "Erro Assinatura: Ao criar a chave do CSP."
+         BREAK
       ENDIF
 
       SignedKey := XmlDSig:Sign( DSigKey, 2 )
@@ -186,6 +172,7 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
          XMLAssinado := Substr( XMLAssinado, 1, nPosIni ) + Substr( XMLAssinado, nPosFim, Len( XMLAssinado ) )
       ELSE
          cRetorno := "Erro Assinatura: Assinatura Falhou."
+         BREAK
       ENDIF
 
       IF xmlHeaderAntes <> ""
@@ -201,7 +188,7 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
          ENDIF
       ENDIF
       cRetorno := "OK"
-      cTxtXml    := XmlAssinado
+      cTxtXml  := XmlAssinado
 
    END SEQUENCE
 
