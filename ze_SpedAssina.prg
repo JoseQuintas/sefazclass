@@ -109,6 +109,7 @@ FUNCTION AssinaXml( cTxtXml, cCertCN )
 
       cRetorno := "Erro Assinatura: Não carregado MSXML2.MXDigitalSignature.5.0"
       xmldsig := Win_OleCreateObject( "MSXML2.MXDigitalSignature.5.0" )
+      cRetorno := "Erro Assinatura: Ao carregar XML"
       oDOMDoc:LoadXML( cTxtXml )
       IF oDOMDoc:parseError:errorCode <> 0 // XML não carregado
          cRetorno := "Erro Assinatura: Não foi possivel carregar o documento pois ele não corresponde ao seu Schema" + HB_EOL()
