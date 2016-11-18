@@ -127,8 +127,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaEvento
 
 METHOD GeraPDF( cFilePDF ) CLASS hbNfeDaEvento
 
-   // /////////////////////////////////////// LOCAL nItem, nIdes, nItensNF, nItens1Folha
-   LOCAL nAltura // ///////////////////////// nRadiano, nLargura, nAngulo
+   LOCAL nAltura
 
    // criacao objeto pdf
    ::oPdf := HPDF_New()

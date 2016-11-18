@@ -21,10 +21,6 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
    METHOD novaPagina()
    METHOD cabecalho()
 
-   VAR nItens1Folha
-   VAR nItensDemaisFolhas
-   VAR nLarguraDescricao
-   VAR nLarguraCodigo
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
    VAR cEmailEmitente    INIT ""
@@ -54,19 +50,8 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
    VAR aLocEnt
    VAR aPrest
    VAR aComp
-   VAR aIcms00
-   VAR aIcms20
-   VAR aIcms45
-   VAR aIcms60
-   VAR aIcms90
-   VAR aIcmsUF
-   VAR aIcmsSN
    VAR cAdfisco
    VAR aInfCarga
-   VAR aInfQ
-   VAR aSeg
-   VAR aRodo
-   VAR aMoto
    VAR aProp
    VAR aVeiculo
    VAR aProtocolo
@@ -74,40 +59,10 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
    VAR aReceb
    VAR aToma
 
-   VAR aICMSTotal
-   VAR aISSTotal
-   VAR aRetTrib
-   VAR aTransp
-   VAR aVeicTransp
    VAR aReboque
-   VAR cCobranca
    VAR aInfAdic
-   VAR aObsCont
-   VAR aObsFisco
-   VAR aExporta
-   VAR aCompra
    VAR aInfProt
    VAR aInfCanc
-
-   VAR aItem
-   VAR aItemDI
-   VAR aItemAdi
-   VAR aItemICMS
-   VAR aItemICMSPart
-   VAR aItemICMSST
-   VAR aItemICMSSN101
-   VAR aItemICMSSN102
-   VAR aItemICMSSN201
-   VAR aItemICMSSN202
-   VAR aItemICMSSN500
-   VAR aItemICMSSN900
-   VAR aItemIPI
-   VAR aItemII
-   VAR aItemPIS
-   VAR aItemPISST
-   VAR aItemCOFINS
-   VAR aItemCOFINSST
-   VAR aItemISSQN
 
    VAR cFonteNFe     INIT "Times"
    VAR cFonteCode128            // Inserido por Anderson Camilo em 04/04/2012
@@ -123,14 +78,10 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
    VAR cLogoFile  INIT ""
    VAR nLogoStyle INIT _LOGO_ESQUERDA // 1-esquerda, 2-direita, 3-expandido
 
-   VAR nItensFolha
    VAR nLinhaFolha
    VAR nFolhas
    VAR nFolha
 
-   VAR lValorDesc INIT .F.
-   VAR nCasasQtd INIT 2
-   VAR nCasasVUn INIT 2
    VAR cRetorno
    VAR PastaPdf
 
@@ -151,10 +102,6 @@ METHOD execute( cXml, cFilePDF ) CLASS hbnfeDaMdfe
    ENDIF
 
    ::lPaisagem := .F.
-   ::nItens1Folha := 45 // 48 inicial pode aumentar variante a servicos etc...   && anderson camilo diminuiu o numero de itens o original era 48
-   ::nItensDemaisFolhas := 105
-   ::nLarguraDescricao := 39
-   ::nLarguraCodigo := 13
 
    IF ! ::GeraPdf( cFilePDF )
       ::cRetorno := "Problema ao gerar o PDF !"
