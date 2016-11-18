@@ -36,11 +36,7 @@ CREATE CLASS hbNFeDanfe INHERIT hbNFeDaGeral
    METHOD DadosAdicionais()
    METHOD Rodape()
    METHOD ProcessaItens( cXml, nItem )
-   METHOD calculaItens1Folha( nItensInicial )
-
-   VAR nItens1Folha
-   VAR nItensDemaisFolhas
-   VAR nLarguraDescricao
+   METHOD CalculaTotalFolhas()
 
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
@@ -99,17 +95,20 @@ CREATE CLASS hbNFeDanfe INHERIT hbNFeDaGeral
    VAR nLarguraBox INIT 0.2
    VAR lLaser      INIT .T.
    VAR lPaisagem
-   VAR cLogoFile  INIT ""
-   VAR nLogoStyle INIT _LOGO_ESQUERDA // 1-esquerda, 2-direita, 3-expandido
+   VAR cLogoFile   INIT ""
+   VAR nLogoStyle  INIT _LOGO_ESQUERDA // 1-esquerda, 2-direita, 3-expandido
 
    VAR nItensFolha
    VAR nLinhaFolha
-   VAR nFolhas
+   VAR nTotalFolhas
+   VAR nItens1Folha
+   VAR nItensDemaisFolhas
+   VAR nLarguraDescricao
    VAR nFolha
 
-   VAR lValorDesc INIT .F.
-   VAR nCasasQtd  INIT 2
-   VAR nCasasVUn  INIT 2
+   VAR lColunaDesconto INIT .F.
+   VAR nCasasQtd       INIT 2
+   VAR nCasasVUn       INIT 2
    VAR cRetorno
 
    ENDCLASS
@@ -134,13 +133,9 @@ METHOD Execute( cXmlNota, cFilePDF, cXmlCancel ) CLASS hbNFeDanfe
    ::lPaisagem := ::aIde[ "tpImp" ] == "2"
    IF ::lPaisagem
       ::lPaisagem          := .T.
-      ::nItens1Folha       := 16 // inicial pode aumentar variante a servicos etc...
-      ::nItensDemaisFolhas := 72
       ::nLarguraDescricao  := 45
    ELSE
       ::lPaisagem          := .F.
-      ::nItens1Folha       := 45 // 48 inicial pode aumentar variante a servicos etc...   // anderson camilo diminuiu o numero de itens o original era 48
-      ::nItensDemaisFolhas := 105
       ::nLarguraDescricao  := 39
    ENDIF
    IF ! ::geraPDF( cFilePDF )
@@ -189,17 +184,12 @@ METHOD BuscaDadosXML() CLASS hbNFeDanfe
 
 METHOD GeraPDF( cFilePDF ) CLASS hbNFeDanfe
 
-   LOCAL nItem, nIdes, nItensNF, nItens1Folha
-
-   // criacao objeto pdf
    ::oPdf := HPDF_New()
    IF ::oPdf == NIL
       ::cRetorno := "Falha da criação do objeto PDF"
       RETURN .F.
    ENDIF
-   /* set compression mode */
    HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
-   /* setando fonte */
    IF ::cFonteNFe == "Times"
       ::oPdfFontCabecalho     := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
       ::oPdfFontCabecalhoBold := HPDF_GetFont( ::oPdf, "Times-Bold", "CP1252" )
@@ -215,41 +205,13 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDanfe
       ::cRetorno := "Arquivos fontes\Code128bWinLarge, nao encontrados...!"
       RETURN .F.
    ENDIF
-
-   // Inserido por Anderson Camilo em 04/04/2012
-
    ::cFonteCode128  := HPDF_LoadType1FontFromFile( ::oPdf, "fontes\Code128bWinLarge.afm", "fontes\Code128bWinLarge.pfb" )   // Code 128
    ::cFonteCode128F := HPDF_GetFont( ::oPdf, ::cFonteCode128, "WinAnsiEncoding" )
 #endif
-   // final da criacao e definicao do objeto pdf
+
+   ::CalculaTotalFolhas()
 
    ::nFolha := 1
-
-   // calculando quantidade de itens
-   nItem := 1
-   DO WHILE .T.
-      IF ! ::ProcessaItens( ::cXml, nItem )
-         EXIT
-      ENDIF
-      nItem++
-      FOR nIdes = 2 TO MLCount( ::aItem[ "xProd" ], ::nLarguraDescricao )
-         nItem++
-      NEXT
-   ENDDO
-   nItensNF := nItem
-   // calcula itens 1a Folha
-   nItens1Folha := ::calculaItens1Folha( ::nItens1Folha )
-   // calcula itens demais folhas
-   nItensNF -= nItens1Folha
-   ::nFolhas := 1
-   IF nItensNF > 0
-      ::nFolhas += Int( nItensNF / ::nItensDemaisFolhas )
-      IF ! Int( nItensNF / ::nItensDemaisFolhas ) == nItensNF / ::nItensDemaisFolhas
-         ::nFolhas++
-      ENDIF
-   ENDIF
-   // fim
-
    ::NovaPagina()
 
    ::canhoto()
@@ -274,20 +236,6 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDanfe
    HPDF_Free( ::oPdf )
 
    RETURN .T.
-
-METHOD calculaItens1Folha( nItensInicial ) CLASS hbNFeDanfe
-
-   IF ::lLaser
-      nItensInicial += 9
-   ENDIF
-   IF Empty( ::cCobranca )
-      nItensInicial += 2
-   ENDIF
-   IF Val( ::aISSTotal[ "vServ" ] ) <= 0 // sem servico
-      nItensInicial += 4
-   ENDIF
-
-   RETURN nItensInicial
 
 METHOD NovaPagina() CLASS hbNFeDanfe
 
@@ -561,7 +509,7 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
    hbNFe_Texto_hpdf( ::oPdfPage, 496, ::nLinhaPdf -40, 514, NIL, ::aIde[ "tpNF" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
 
    hbNFe_Texto_hpdf( ::oPdfPage, 401, ::nLinhaPdf -56, 524, NIL, "Nº: " + Transform( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), "@R 999.999.999" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
-   hbNFe_Texto_hpdf( ::oPdfPage, 401, ::nLinhaPdf -66, 524, NIL, "SÉRIE: " + ::aIde[ "serie" ] + " - FOLHA " + AllTrim( Str( ::nFolha ) ) + "/" + AllTrim( Str( ::nFolhas ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
+   hbNFe_Texto_hpdf( ::oPdfPage, 401, ::nLinhaPdf -66, 524, NIL, "SÉRIE: " + ::aIde[ "serie" ] + " - FOLHA " + AllTrim( Str( ::nFolha ) ) + "/" + AllTrim( Str( ::nTotalFolhas ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
    // codigo barras
    hbNFe_Box_Hpdf( ::oPdfPage, 525, ::nLinhaPdf - 35, 305, 35, ::nLarguraBox )
@@ -694,7 +642,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
    hbNFe_Texto_hpdf( ::oPdfPage, 341, ::nLinhaPdf - 40, 359, NIL, ::aIde[ "tpNF" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
 
    hbNFe_Texto_hpdf( ::oPdfPage, 246, ::nLinhaPdf - 56, 369, NIL, "Nº: " + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
-   hbNFe_Texto_hpdf( ::oPdfPage, 246, ::nLinhaPdf - 66, 369, NIL, "SÉRIE: " + ::aIde[ "serie" ] + " - FOLHA " + AllTrim( Str( ::nFolha ) ) + "/" + AllTrim( Str( ::nFolhas ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 9 )
+   hbNFe_Texto_hpdf( ::oPdfPage, 246, ::nLinhaPdf - 66, 369, NIL, "SÉRIE: " + ::aIde[ "serie" ] + " - FOLHA " + AllTrim( Str( ::nFolha ) ) + "/" + AllTrim( Str( ::nTotalFolhas ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 9 )
 
    // codigo barras
    hbNFe_Box_Hpdf( ::oPdfPage, 370, ::nLinhaPdf - 35, 220, 35, ::nLarguraBox )
@@ -1549,7 +1497,7 @@ METHOD CabecalhoProdutos() CLASS hbNFeDanfe
 
       ::nLinhaPdf -= 13
    ELSE
-      IF ! ::lValorDesc // Layout Padrão
+      IF ! ::lColunaDesconto // Layout Padrão
          hbNFe_Texto_hpdf( ::oPdfPage, 5, ::nLinhaPdf, 589, NIL, "DADOS DOS PRODUTOS / SERVIÇOS", HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 5 )
          ::nLinhaPdf -= 6
 
@@ -1717,7 +1665,7 @@ METHOD DesenhaBoxProdutos( nLinhaFinalProd, nTamanhoProd ) CLASS hbNFeDanfe
       /* ALIQ IPI */    hbNFe_Box_Hpdf( ::oPdfPage,810, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
       ::nLinhaPdf -= 1
    ELSE
-      IF ! ::lValorDesc // Layout Padrão
+      IF ! ::lColunaDesconto // Layout Padrão
          /* CODIGO */      hbNFe_Box_Hpdf( ::oPdfPage,  5, nLinhaFinalProd, 55, nTamanhoProd, ::nLarguraBox )
          /* DESCRI */      hbNFe_Box_Hpdf( ::oPdfPage, 60, nLinhaFinalProd,145, nTamanhoProd, ::nLarguraBox )
          /* NCM */         hbNFe_Box_Hpdf( ::oPdfPage,205, nLinhaFinalProd, 35, nTamanhoProd, ::nLarguraBox )
@@ -1757,8 +1705,6 @@ METHOD DesenhaBoxProdutos( nLinhaFinalProd, nTamanhoProd ) CLASS hbNFeDanfe
 METHOD Produtos() CLASS hbNFeDanfe
 
    LOCAL nLinhaFinalProd, nTamanhoProd, nItem, nIdes
-
-   ::nItensFolha := ::calculaItens1Folha( ::nItens1Folha )
 
    nLinhaFinalProd := ::nLinhaPdf - ( ::nItensFolha * 6 ) -2
    nTamanhoProd := ( ::nItensFolha * 6 ) + 2
@@ -1819,7 +1765,7 @@ METHOD Produtos() CLASS hbNFeDanfe
             hbNFe_Line_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 0.5, 830, ::nLinhaPdf - 0.5, ::nLarguraBox )
          ENDIF
       ELSE
-         IF ! ::lValorDesc // Layout Padrão
+         IF ! ::lColunaDesconto // Layout Padrão
             /* CODIGO */ hbNFe_Texto_hpdf( ::oPdfPage, 6, ::nLinhaPdf, 59, NIL, ::aItem[ "cProd" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
             /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLarguraDescricao,1)), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
             /* NCM */ hbNFe_Texto_hpdf( ::oPdfPage, 206, ::nLinhaPdf, 239, NIL, ::aItem[ "NCM" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
@@ -2065,6 +2011,31 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDanfe
    ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ], ";", Chr( 13 ) + Chr( 10 ) )
 
    RETURN .T.
+
+METHOD CalculaTotalFolhas()
+
+   LOCAL nItem, nItensNF, nIdes
+
+   ::nItens1Folha := ;
+      iif( ::lPaisagem, 16, 45 ) + ;
+      iif( ::lLaser, 9, 0 ) + ;
+      iif( Empty( ::cCobranca ), 2, 0 ) + ;
+      iif( Val( ::aIssTotal[ "vServ" ] ) <= 0, 4, 0 )
+   ::nItensDemaisFolhas := iif( ::lPaisagem, 72, 105 )
+   nItem := 1
+   DO WHILE .T.
+      IF ! ::ProcessaItens( ::cXml, nItem )
+         EXIT
+      ENDIF
+      nItem++
+      FOR nIdes = 2 TO MLCount( ::aItem[ "xProd" ], ::nLarguraDescricao )
+         nItem++
+      NEXT
+   ENDDO
+   nItensNF := Max( 0, nItem - ::nItens1Folha )
+   ::nTotalFolhas := 1 + Int( ( nItensNF - 1 + ::nItensDemaisFolhas ) / ::nItensDemaisFolhas )
+   ::nItensFolha := ::nItens1Folha // default primeira folha
+   RETURN NIL
 
 // Funções repetidas em NFE, CTE, MDFE e EVENTO
 // STATIC pra permitir uso simultâneo com outras rotinas
