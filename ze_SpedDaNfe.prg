@@ -158,7 +158,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDanfe
    ENDIF
    ::aEmit       := XmlToHash( XmlNode( ::cXml, "emit" ), { "CNPJ", "CPF", "xNome", "xFant", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", ;
                     "fone", "IE", "IEST", "IM", "CNAE", "CRT", "fone" } )
-   ::aDest       := XmlToHash( XmlNode( ::cXml, "dest" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", "fone", "IE", "ISUF", "email" } )
+   ::aDest       := XmlToHash( XmlNode( ::cXml, "dest" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", "fone", "IE", "ISUF", "email" } )
    ::aRetirada   := XmlToHash( XmlNode( ::cXml, "retirada" ), { "CNPJ", "CPF", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF" } )
    ::aEntrega    := XmlToHash( XmlNode( ::cXml, "entrega" ), { "CNPJ", "CPF", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF" } )
    ::aICMSTotal  := XmlToHash( XmlNode( ::cXml, "ICMSTot" ), { "vBC", "vICMS", "vBCST", "vST", "vProd", "vFrete", "vSeg", "vDesc", "vII", "vIPI", "vPIS", "vCOFINS", "vOutro", "vNF" } )
@@ -755,7 +755,7 @@ METHOD Destinatario() CLASS hbNFeDanfe
       // ENDEREÇO
       hbNFe_Box_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 16, 440, 16, ::nLarguraBox )
       hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf -1,  509, NIL, "ENDEREÇO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-      hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf - 5, 509, NIL, ::aDest[ "xLgr" ] + " " + ::aDest[ "nro" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
+      hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf - 5, 509, NIL, ::aDest[ "xLgr" ] + " " + ::aDest[ "nro" ] + " " + ::aDest[ "xCpl" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
       // BAIRRO
       hbNFe_Box_Hpdf( ::oPdfPage, 510, ::nLinhaPdf - 16, 190, 16, ::nLarguraBox )
       hbNFe_Texto_hpdf( ::oPdfPage, 511, ::nLinhaPdf -1,  699, NIL, "BAIRRO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
