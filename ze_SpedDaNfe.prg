@@ -30,13 +30,14 @@ CREATE CLASS hbNFeDanfe INHERIT hbNFeDaGeral
    METHOD DadosImposto()
    METHOD DadosTransporte()
    METHOD CabecalhoProdutos()
-   METHOD DesenhaBoxProdutos( nLinhaFinalProd, nTamanhoProd )
+   METHOD DesenhaBoxProdutos( nLinhaFinalProd, nAlturaQuadroProdutos )
    METHOD Produtos()
    METHOD TotalServico()
    METHOD DadosAdicionais()
    METHOD Rodape()
    METHOD ProcessaItens( cXml, nItem )
-   METHOD CalculaTotalFolhas()
+   METHOD CalculaLayout()
+   METHOD DefineDecimais( xValue, nDecimais )
 
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
@@ -97,19 +98,18 @@ CREATE CLASS hbNFeDanfe INHERIT hbNFeDaGeral
    VAR lPaisagem
    VAR cLogoFile   INIT ""
    VAR nLogoStyle  INIT _LOGO_ESQUERDA // 1-esquerda, 2-direita, 3-expandido
+   VAR nFolha
+   VAR cRetorno
 
    VAR nItensFolha
    VAR nLinhaFolha
-   VAR nTotalFolhas
-   VAR nItens1Folha
-   VAR nItensDemaisFolhas
-   VAR nLarguraDescricao
-   VAR nFolha
-
-   VAR lColunaDesconto INIT .F.
-   VAR nCasasQtd       INIT 2
-   VAR nCasasVUn       INIT 2
-   VAR cRetorno
+   VAR nLayoutTotalFolhas
+   VAR nLayoutItens1Folha
+   VAR nLayoutItensDemaisFolhas
+   VAR nLayoutLarguraDescricao
+   VAR lLayoutColunaDesconto    INIT .F.
+   VAR nLayoutDecimaisQtd       INIT 2
+   VAR nLayoutDecimaisVlUnit    INIT 2
 
    ENDCLASS
 
@@ -133,10 +133,10 @@ METHOD Execute( cXmlNota, cFilePDF, cXmlCancel ) CLASS hbNFeDanfe
    ::lPaisagem := ::aIde[ "tpImp" ] == "2"
    IF ::lPaisagem
       ::lPaisagem          := .T.
-      ::nLarguraDescricao  := 45
+      ::nLayoutLarguraDescricao  := 45
    ELSE
       ::lPaisagem          := .F.
-      ::nLarguraDescricao  := 39
+      ::nLayoutLarguraDescricao  := 39
    ENDIF
    IF ! ::geraPDF( cFilePDF )
       ::cRetorno := "Problema ao gerar o PDF"
@@ -209,7 +209,7 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDanfe
    ::cFonteCode128F := HPDF_GetFont( ::oPdf, ::cFonteCode128, "WinAnsiEncoding" )
 #endif
 
-   ::CalculaTotalFolhas()
+   ::CalculaLayout()
 
    ::nFolha := 1
    ::NovaPagina()
@@ -362,7 +362,7 @@ METHOD NovaPagina() CLASS hbNFeDanfe
 
 METHOD SaltaPagina() CLASS hbNFeDanfe
 
-   LOCAL nLinhaFinalProd, nTamanhoProd
+   LOCAL nLinhaFinalProd, nAlturaQuadroProdutos
 
    // IF ::nLinhaFolha > ::nItensFolha
    ::nLinhaPdf -= 2
@@ -372,7 +372,7 @@ METHOD SaltaPagina() CLASS hbNFeDanfe
    ::novaPagina()
    ::nFolha++
    ::nLinhaFolha := 1
-   ::nItensFolha := ::nItensDemaisFolhas
+   ::nItensFolha := ::nLayoutItensDemaisFolhas
    ::canhoto()
    IF ::lPaisagem
       ::CabecalhoPaisagem()
@@ -381,8 +381,8 @@ METHOD SaltaPagina() CLASS hbNFeDanfe
    ENDIF
    ::cabecalhoProdutos()
    nLinhaFinalProd := ::nLinhaPdf - ( ::nItensFolha * 6 ) -2
-   nTamanhoProd := ( ::nItensFolha * 6 ) + 2
-   ::desenhaBoxProdutos( nLinhaFinalProd, nTamanhoProd )
+   nAlturaQuadroProdutos := ( ::nItensFolha * 6 ) + 2
+   ::desenhaBoxProdutos( nLinhaFinalProd, nAlturaQuadroProdutos )
    // ENDIF
 
    RETURN NIL
@@ -509,7 +509,7 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDanfe
    hbNFe_Texto_hpdf( ::oPdfPage, 496, ::nLinhaPdf -40, 514, NIL, ::aIde[ "tpNF" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
 
    hbNFe_Texto_hpdf( ::oPdfPage, 401, ::nLinhaPdf -56, 524, NIL, "Nº: " + Transform( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), "@R 999.999.999" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
-   hbNFe_Texto_hpdf( ::oPdfPage, 401, ::nLinhaPdf -66, 524, NIL, "SÉRIE: " + ::aIde[ "serie" ] + " - FOLHA " + AllTrim( Str( ::nFolha ) ) + "/" + AllTrim( Str( ::nTotalFolhas ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
+   hbNFe_Texto_hpdf( ::oPdfPage, 401, ::nLinhaPdf -66, 524, NIL, "SÉRIE: " + ::aIde[ "serie" ] + " - FOLHA " + AllTrim( Str( ::nFolha ) ) + "/" + AllTrim( Str( ::nLayoutTotalFolhas ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
    // codigo barras
    hbNFe_Box_Hpdf( ::oPdfPage, 525, ::nLinhaPdf - 35, 305, 35, ::nLarguraBox )
@@ -642,7 +642,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDanfe
    hbNFe_Texto_hpdf( ::oPdfPage, 341, ::nLinhaPdf - 40, 359, NIL, ::aIde[ "tpNF" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
 
    hbNFe_Texto_hpdf( ::oPdfPage, 246, ::nLinhaPdf - 56, 369, NIL, "Nº: " + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
-   hbNFe_Texto_hpdf( ::oPdfPage, 246, ::nLinhaPdf - 66, 369, NIL, "SÉRIE: " + ::aIde[ "serie" ] + " - FOLHA " + AllTrim( Str( ::nFolha ) ) + "/" + AllTrim( Str( ::nTotalFolhas ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 9 )
+   hbNFe_Texto_hpdf( ::oPdfPage, 246, ::nLinhaPdf - 66, 369, NIL, "SÉRIE: " + ::aIde[ "serie" ] + " - FOLHA " + AllTrim( Str( ::nFolha ) ) + "/" + AllTrim( Str( ::nLayoutTotalFolhas ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 9 )
 
    // codigo barras
    hbNFe_Box_Hpdf( ::oPdfPage, 370, ::nLinhaPdf - 35, 220, 35, ::nLarguraBox )
@@ -1497,7 +1497,7 @@ METHOD CabecalhoProdutos() CLASS hbNFeDanfe
 
       ::nLinhaPdf -= 13
    ELSE
-      IF ! ::lColunaDesconto // Layout Padrão
+      IF ! ::lLayoutColunaDesconto // Layout Padrão
          hbNFe_Texto_hpdf( ::oPdfPage, 5, ::nLinhaPdf, 589, NIL, "DADOS DOS PRODUTOS / SERVIÇOS", HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 5 )
          ::nLinhaPdf -= 6
 
@@ -1644,58 +1644,58 @@ METHOD CabecalhoProdutos() CLASS hbNFeDanfe
 
    RETURN NIL
 
-METHOD DesenhaBoxProdutos( nLinhaFinalProd, nTamanhoProd ) CLASS hbNFeDanfe
+METHOD DesenhaBoxProdutos( nLinhaFinalProd, nAlturaQuadroProdutos ) CLASS hbNFeDanfe
 
    IF ::lPaisagem
-      /* CODIGO */      hbNFe_Box_Hpdf( ::oPdfPage, 70, nLinhaFinalProd, 55, nTamanhoProd, ::nLarguraBox )
-      /* DESCRI */      hbNFe_Box_Hpdf( ::oPdfPage,125, nLinhaFinalProd,235, nTamanhoProd, ::nLarguraBox )
-      /* NCM    */      hbNFe_Box_Hpdf( ::oPdfPage,360, nLinhaFinalProd, 35, nTamanhoProd, ::nLarguraBox )
-      /* CST/CSOSN */   hbNFe_Box_Hpdf( ::oPdfPage,395, nLinhaFinalProd, 15, nTamanhoProd, ::nLarguraBox )
-      /* CFOP */        hbNFe_Box_Hpdf( ::oPdfPage,410, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
-      /* UNID */        hbNFe_Box_Hpdf( ::oPdfPage,430, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
-      /* QUANT. */      hbNFe_Box_Hpdf( ::oPdfPage,450, nLinhaFinalProd, 40, nTamanhoProd, ::nLarguraBox )
-      /* VL UNITARIO */ hbNFe_Box_Hpdf( ::oPdfPage,490, nLinhaFinalProd, 45, nTamanhoProd, ::nLarguraBox )
-      /* VL LÍQUIDO */  hbNFe_Box_Hpdf( ::oPdfPage,535, nLinhaFinalProd, 45, nTamanhoProd, ::nLarguraBox )
-      /* BC ICMS */     hbNFe_Box_Hpdf( ::oPdfPage,580, nLinhaFinalProd, 45, nTamanhoProd, ::nLarguraBox )
-      /* VALOR ICMS */  hbNFe_Box_Hpdf( ::oPdfPage,625, nLinhaFinalProd, 40, nTamanhoProd, ::nLarguraBox )
-      /* BC ICMS ST */  hbNFe_Box_Hpdf( ::oPdfPage,665, nLinhaFinalProd, 45, nTamanhoProd, ::nLarguraBox )
-      /* VL ICMS ST */  hbNFe_Box_Hpdf( ::oPdfPage,710, nLinhaFinalProd, 40, nTamanhoProd, ::nLarguraBox )
-      /* VL IPI */      hbNFe_Box_Hpdf( ::oPdfPage,750, nLinhaFinalProd, 40, nTamanhoProd, ::nLarguraBox )
-      /* ALIQ ICMS */   hbNFe_Box_Hpdf( ::oPdfPage,790, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
-      /* ALIQ IPI */    hbNFe_Box_Hpdf( ::oPdfPage,810, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
+      /* CODIGO */      hbNFe_Box_Hpdf( ::oPdfPage, 70, nLinhaFinalProd, 55, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* DESCRI */      hbNFe_Box_Hpdf( ::oPdfPage,125, nLinhaFinalProd,235, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* NCM    */      hbNFe_Box_Hpdf( ::oPdfPage,360, nLinhaFinalProd, 35, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* CST/CSOSN */   hbNFe_Box_Hpdf( ::oPdfPage,395, nLinhaFinalProd, 15, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* CFOP */        hbNFe_Box_Hpdf( ::oPdfPage,410, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* UNID */        hbNFe_Box_Hpdf( ::oPdfPage,430, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* QUANT. */      hbNFe_Box_Hpdf( ::oPdfPage,450, nLinhaFinalProd, 40, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* VL UNITARIO */ hbNFe_Box_Hpdf( ::oPdfPage,490, nLinhaFinalProd, 45, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* VL LÍQUIDO */  hbNFe_Box_Hpdf( ::oPdfPage,535, nLinhaFinalProd, 45, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* BC ICMS */     hbNFe_Box_Hpdf( ::oPdfPage,580, nLinhaFinalProd, 45, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* VALOR ICMS */  hbNFe_Box_Hpdf( ::oPdfPage,625, nLinhaFinalProd, 40, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* BC ICMS ST */  hbNFe_Box_Hpdf( ::oPdfPage,665, nLinhaFinalProd, 45, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* VL ICMS ST */  hbNFe_Box_Hpdf( ::oPdfPage,710, nLinhaFinalProd, 40, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* VL IPI */      hbNFe_Box_Hpdf( ::oPdfPage,750, nLinhaFinalProd, 40, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* ALIQ ICMS */   hbNFe_Box_Hpdf( ::oPdfPage,790, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
+      /* ALIQ IPI */    hbNFe_Box_Hpdf( ::oPdfPage,810, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
       ::nLinhaPdf -= 1
    ELSE
-      IF ! ::lColunaDesconto // Layout Padrão
-         /* CODIGO */      hbNFe_Box_Hpdf( ::oPdfPage,  5, nLinhaFinalProd, 55, nTamanhoProd, ::nLarguraBox )
-         /* DESCRI */      hbNFe_Box_Hpdf( ::oPdfPage, 60, nLinhaFinalProd,145, nTamanhoProd, ::nLarguraBox )
-         /* NCM */         hbNFe_Box_Hpdf( ::oPdfPage,205, nLinhaFinalProd, 35, nTamanhoProd, ::nLarguraBox )
-         /* CST/CSOSN */   hbNFe_Box_Hpdf( ::oPdfPage,240, nLinhaFinalProd, 15, nTamanhoProd, ::nLarguraBox )
-         /* CFOP */        hbNFe_Box_Hpdf( ::oPdfPage,255, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
-         /* UNID */        hbNFe_Box_Hpdf( ::oPdfPage,275, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
-         /* QUANT. */      hbNFe_Box_Hpdf( ::oPdfPage,295, nLinhaFinalProd, 40, nTamanhoProd, ::nLarguraBox )
-         /* VL UNITARIO */ hbNFe_Box_Hpdf( ::oPdfPage,335, nLinhaFinalProd, 45, nTamanhoProd, ::nLarguraBox )
-         /* VL LÍQUIDO */  hbNFe_Box_Hpdf( ::oPdfPage,380, nLinhaFinalProd, 45, nTamanhoProd, ::nLarguraBox )
-         /* BC ICMS */     hbNFe_Box_Hpdf( ::oPdfPage,425, nLinhaFinalProd, 45, nTamanhoProd, ::nLarguraBox )
-         /* VL ICMS */     hbNFe_Box_Hpdf( ::oPdfPage,470, nLinhaFinalProd, 40, nTamanhoProd, ::nLarguraBox )
-         /* VL IPI */      hbNFe_Box_Hpdf( ::oPdfPage,510, nLinhaFinalProd, 40, nTamanhoProd, ::nLarguraBox )
-         /* ALIQ ICMS */   hbNFe_Box_Hpdf( ::oPdfPage,550, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
-         /* ALIQ IPI */    hbNFe_Box_Hpdf( ::oPdfPage,570, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
+      IF ! ::lLayoutColunaDesconto // Layout Padrão
+         /* CODIGO */      hbNFe_Box_Hpdf( ::oPdfPage,  5, nLinhaFinalProd, 55, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* DESCRI */      hbNFe_Box_Hpdf( ::oPdfPage, 60, nLinhaFinalProd,145, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* NCM */         hbNFe_Box_Hpdf( ::oPdfPage,205, nLinhaFinalProd, 35, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* CST/CSOSN */   hbNFe_Box_Hpdf( ::oPdfPage,240, nLinhaFinalProd, 15, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* CFOP */        hbNFe_Box_Hpdf( ::oPdfPage,255, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* UNID */        hbNFe_Box_Hpdf( ::oPdfPage,275, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* QUANT. */      hbNFe_Box_Hpdf( ::oPdfPage,295, nLinhaFinalProd, 40, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* VL UNITARIO */ hbNFe_Box_Hpdf( ::oPdfPage,335, nLinhaFinalProd, 45, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* VL LÍQUIDO */  hbNFe_Box_Hpdf( ::oPdfPage,380, nLinhaFinalProd, 45, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* BC ICMS */     hbNFe_Box_Hpdf( ::oPdfPage,425, nLinhaFinalProd, 45, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* VL ICMS */     hbNFe_Box_Hpdf( ::oPdfPage,470, nLinhaFinalProd, 40, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* VL IPI */      hbNFe_Box_Hpdf( ::oPdfPage,510, nLinhaFinalProd, 40, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* ALIQ ICMS */   hbNFe_Box_Hpdf( ::oPdfPage,550, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* ALIQ IPI */    hbNFe_Box_Hpdf( ::oPdfPage,570, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
       ELSE
-         /* CODIGO */      hbNFe_Box_Hpdf( ::oPdfPage,  5, nLinhaFinalProd, 55, nTamanhoProd, ::nLarguraBox )
-         /* DESCRI */      hbNFe_Box_Hpdf( ::oPdfPage, 60, nLinhaFinalProd,145, nTamanhoProd, ::nLarguraBox )
-         /* NCM */         hbNFe_Box_Hpdf( ::oPdfPage,205, nLinhaFinalProd, 35, nTamanhoProd, ::nLarguraBox )
-         /* CST/CSOSN */   hbNFe_Box_Hpdf( ::oPdfPage,240, nLinhaFinalProd, 15, nTamanhoProd, ::nLarguraBox )
-         /* CFOP */        hbNFe_Box_Hpdf( ::oPdfPage,255, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
-         /* UNID */        hbNFe_Box_Hpdf( ::oPdfPage,275, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
-         /* QUANT. */      hbNFe_Box_Hpdf( ::oPdfPage,295, nLinhaFinalProd, 35, nTamanhoProd, ::nLarguraBox )
-         /* VL UNITARIO */ hbNFe_Box_Hpdf( ::oPdfPage,330, nLinhaFinalProd, 40, nTamanhoProd, ::nLarguraBox )
-         /* VL LÍQUIDO */  hbNFe_Box_Hpdf( ::oPdfPage,370, nLinhaFinalProd, 40, nTamanhoProd, ::nLarguraBox )
-         /* VL DESCONTO */ hbNFe_Box_Hpdf( ::oPdfPage,410, nLinhaFinalProd, 35, nTamanhoProd, ::nLarguraBox )
-         /* BC ICMS */     hbNFe_Box_Hpdf( ::oPdfPage,445, nLinhaFinalProd, 40, nTamanhoProd, ::nLarguraBox )
-         /* VL ICMS */     hbNFe_Box_Hpdf( ::oPdfPage,485, nLinhaFinalProd, 35, nTamanhoProd, ::nLarguraBox )
-         /* VL IPI */      hbNFe_Box_Hpdf( ::oPdfPage,520, nLinhaFinalProd, 30, nTamanhoProd, ::nLarguraBox )
-         /* ALIQ ICMS */   hbNFe_Box_Hpdf( ::oPdfPage,550, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
-         /* ALIQ IPI */    hbNFe_Box_Hpdf( ::oPdfPage,570, nLinhaFinalProd, 20, nTamanhoProd, ::nLarguraBox )
+         /* CODIGO */      hbNFe_Box_Hpdf( ::oPdfPage,  5, nLinhaFinalProd, 55, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* DESCRI */      hbNFe_Box_Hpdf( ::oPdfPage, 60, nLinhaFinalProd,145, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* NCM */         hbNFe_Box_Hpdf( ::oPdfPage,205, nLinhaFinalProd, 35, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* CST/CSOSN */   hbNFe_Box_Hpdf( ::oPdfPage,240, nLinhaFinalProd, 15, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* CFOP */        hbNFe_Box_Hpdf( ::oPdfPage,255, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* UNID */        hbNFe_Box_Hpdf( ::oPdfPage,275, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* QUANT. */      hbNFe_Box_Hpdf( ::oPdfPage,295, nLinhaFinalProd, 35, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* VL UNITARIO */ hbNFe_Box_Hpdf( ::oPdfPage,330, nLinhaFinalProd, 40, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* VL LÍQUIDO */  hbNFe_Box_Hpdf( ::oPdfPage,370, nLinhaFinalProd, 40, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* VL DESCONTO */ hbNFe_Box_Hpdf( ::oPdfPage,410, nLinhaFinalProd, 35, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* BC ICMS */     hbNFe_Box_Hpdf( ::oPdfPage,445, nLinhaFinalProd, 40, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* VL ICMS */     hbNFe_Box_Hpdf( ::oPdfPage,485, nLinhaFinalProd, 35, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* VL IPI */      hbNFe_Box_Hpdf( ::oPdfPage,520, nLinhaFinalProd, 30, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* ALIQ ICMS */   hbNFe_Box_Hpdf( ::oPdfPage,550, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
+         /* ALIQ IPI */    hbNFe_Box_Hpdf( ::oPdfPage,570, nLinhaFinalProd, 20, nAlturaQuadroProdutos, ::nLarguraBox )
       ENDIF
       ::nLinhaPdf -= 1
    ENDIF
@@ -1704,11 +1704,11 @@ METHOD DesenhaBoxProdutos( nLinhaFinalProd, nTamanhoProd ) CLASS hbNFeDanfe
 
 METHOD Produtos() CLASS hbNFeDanfe
 
-   LOCAL nLinhaFinalProd, nTamanhoProd, nItem, nIdes
+   LOCAL nLinhaFinalProd, nAlturaQuadroProdutos, nItem, nIdes
 
    nLinhaFinalProd := ::nLinhaPdf - ( ::nItensFolha * 6 ) -2
-   nTamanhoProd := ( ::nItensFolha * 6 ) + 2
-   ::desenhaBoxProdutos( nLinhaFinalProd, nTamanhoProd )
+   nAlturaQuadroProdutos := ( ::nItensFolha * 6 ) + 2
+   ::desenhaBoxProdutos( nLinhaFinalProd, nAlturaQuadroProdutos )
 
    // DADOS PRODUTOS
    nItem := 1
@@ -1722,7 +1722,7 @@ METHOD Produtos() CLASS hbNFeDanfe
       ENDIF
       IF ::lPaisagem
          /* CODIGO */ hbNFe_Texto_hpdf( ::oPdfPage,71, ::nLinhaPdf, 124, NIL, ::aItem[ "cProd" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
-         /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLarguraDescricao,1)), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+         /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLayoutLarguraDescricao,1)), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
          /* NCM    */ hbNFe_Texto_hpdf( ::oPdfPage,361, ::nLinhaPdf, 394, NIL, ::aItem[ "NCM" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
          IF ::aEmit[ "CRT" ] == "1" // CSOSN
             /* CST/CSOSN */ hbNFe_Texto_hpdf( ::oPdfPage,396, ::nLinhaPdf, 409, NIL, ::aItemICMS[ "orig" ]+::aItemICMS[ "CSOSN" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 5 )
@@ -1731,8 +1731,8 @@ METHOD Produtos() CLASS hbNFeDanfe
          ENDIF
          /* CFOP */        hbNFe_Texto_hpdf( ::oPdfPage,411, ::nLinhaPdf, 429, NIL, ::aItem[ "CFOP" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
          /* UNID */        hbNFe_Texto_hpdf( ::oPdfPage,431, ::nLinhaPdf, 449, NIL, ::aItem[ "uCom" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
-         /* QUANT. */      hbNFe_Texto_hpdf( ::oPdfPage,451, ::nLinhaPdf, 489, NIL, AllTrim( FormatNumber( Val( ::aItem[ "qCom" ] ), 15, ::nCasasQtd ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
-         /* VAL UNIT */    hbNFe_Texto_hpdf( ::oPdfPage,491, ::nLinhaPdf, 534, NIL, AllTrim( FormatNumber( Val( ::aItem[ "vUnCom" ] ), 15, ::nCasasVUn ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
+         /* QUANT. */      hbNFe_Texto_hpdf( ::oPdfPage,451, ::nLinhaPdf, 489, NIL, AllTrim( FormatNumber( Val( ::aItem[ "qCom" ] ), 15, ::nLayoutDecimaisQtd ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
+         /* VAL UNIT */    hbNFe_Texto_hpdf( ::oPdfPage,491, ::nLinhaPdf, 534, NIL, AllTrim( FormatNumber( Val( ::aItem[ "vUnCom" ] ), 15, ::nLayoutDecimaisVlUnit ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
          /* VAL LIQ */     hbNFe_Texto_hpdf( ::oPdfPage,536, ::nLinhaPdf, 579, NIL, AllTrim( FormatNumber( Val( ::aItem[ "vProd" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
          /* BC ICMS */     hbNFe_Texto_hpdf( ::oPdfPage,581, ::nLinhaPdf, 624, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "vBC" ] <> NIL, ::aItemICMS[ "vBC" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
          /* VAL ICMS */    hbNFe_Texto_hpdf( ::oPdfPage,626, ::nLinhaPdf, 664, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "vICMS" ] <> NIL, ::aItemICMS[ "vICMS" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
@@ -1745,19 +1745,19 @@ METHOD Produtos() CLASS hbNFeDanfe
 
          nItem++
          ::nLinhaFolha++
-         FOR nIdes = 2 TO MLCount( ::aItem[ "xProd" ], ::nLarguraDescricao )
+         FOR nIdes = 2 TO MLCount( ::aItem[ "xProd" ], ::nLayoutLarguraDescricao )
             IF ::nLinhaFolha > ::nItensFolha
                ::saltaPagina()
             ENDIF
-            /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLarguraDescricao,nIdes)), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+            /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLayoutLarguraDescricao,nIdes)), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
             ::nLinhaFolha++
             ::nLinhaPdf -= 6
          NEXT
-         FOR nIDes = 1 TO MLCount( ::aItem[ "infAdProd" ], ::nLarguraDescricao )
+         FOR nIDes = 1 TO MLCount( ::aItem[ "infAdProd" ], ::nLayoutLarguraDescricao )
             IF ::nLinhaFolha > ::nItensFolha
                ::saltaPagina()
             ENDIF
-            /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM( MEMOLINE( ::aItem[ "infAdProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+            /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage,126, ::nLinhaPdf, 359, NIL, TRIM( MEMOLINE( ::aItem[ "infAdProd" ], ::nLayoutLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
             ::nLinhaFolha++
             ::nLinhaPdf -= 6
          NEXT
@@ -1765,9 +1765,9 @@ METHOD Produtos() CLASS hbNFeDanfe
             hbNFe_Line_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 0.5, 830, ::nLinhaPdf - 0.5, ::nLarguraBox )
          ENDIF
       ELSE
-         IF ! ::lColunaDesconto // Layout Padrão
+         IF ! ::lLayoutColunaDesconto // Layout Padrão
             /* CODIGO */ hbNFe_Texto_hpdf( ::oPdfPage, 6, ::nLinhaPdf, 59, NIL, ::aItem[ "cProd" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
-            /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLarguraDescricao,1)), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+            /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, TRIM(MEMOLINE(::aItem[ "xProd" ],::nLayoutLarguraDescricao,1)), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
             /* NCM */ hbNFe_Texto_hpdf( ::oPdfPage, 206, ::nLinhaPdf, 239, NIL, ::aItem[ "NCM" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
             IF ::aEmit[ "CRT" ] == "1" // CSOSN
                /* CSOSN */ hbNFe_Texto_hpdf( ::oPdfPage, 241, ::nLinhaPdf, 254, NIL, ::aItemICMS[ "orig" ]+::aItemICMS[ "CSOSN" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 5 )
@@ -1776,8 +1776,8 @@ METHOD Produtos() CLASS hbNFeDanfe
             ENDIF
             /* CFOP */           hbNFe_Texto_hpdf( ::oPdfPage, 256, ::nLinhaPdf, 274, NIL, ::aItem[ "CFOP" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
             /* UNID */           hbNFe_Texto_hpdf( ::oPdfPage, 276, ::nLinhaPdf, 294, NIL, ::aItem[ "uCom" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
-            /* QUANT */          hbNFe_Texto_hpdf( ::oPdfPage, 296, ::nLinhaPdf, 334, NIL, AllTrim( FormatNumber( Val( ::aItem[ "qCom" ] ), 15, ::nCasasQtd ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 5 )
-            /* VALOR UNITARIO */ hbNFe_Texto_hpdf( ::oPdfPage, 336, ::nLinhaPdf, 379, NIL, AllTrim( FormatNumber( Val( ::aItem[ "vUnCom" ] ), 15, ::nCasasVUn ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
+            /* QUANT */          hbNFe_Texto_hpdf( ::oPdfPage, 296, ::nLinhaPdf, 334, NIL, AllTrim( FormatNumber( Val( ::aItem[ "qCom" ] ), 15, ::nLayoutDecimaisQtd ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 5 )
+            /* VALOR UNITARIO */ hbNFe_Texto_hpdf( ::oPdfPage, 336, ::nLinhaPdf, 379, NIL, AllTrim( FormatNumber( Val( ::aItem[ "vUnCom" ] ), 15, ::nLayoutDecimaisVlUnit ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
             /* VALOR LÍQUIDO */  hbNFe_Texto_hpdf( ::oPdfPage, 381, ::nLinhaPdf, 424, NIL, AllTrim( FormatNumber( Val( ::aItem[ "vProd" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
             /* BC ICMS */        hbNFe_Texto_hpdf( ::oPdfPage, 426, ::nLinhaPdf, 469, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "vBC" ] <> NIL, ::aItemICMS[ "vBC" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
             /* VALOR ICMS */     hbNFe_Texto_hpdf( ::oPdfPage, 471, ::nLinhaPdf, 509, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "vICMS" ] <> NIL, ::aItemICMS[ "vICMS" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
@@ -1785,28 +1785,27 @@ METHOD Produtos() CLASS hbNFeDanfe
             /* ALIQ ICMS */      hbNFe_Texto_hpdf( ::oPdfPage, 551, ::nLinhaPdf, 569, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "pICMS" ] <> NIL, ::aItemICMS[ "pICMS" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
             /* ALIQ IPI */       hbNFe_Texto_hpdf( ::oPdfPage, 571, ::nLinhaPdf, 589, NIL, AllTrim( FormatNumber( Val( iif( ::aItemIPI[ "pIPI" ] <> NIL, ::aItemIPI[ "pIPI" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
             ::nLinhaPdf -= 6
-
             nItem++
             ::nLinhaFolha++
-            FOR nIdes = 2 TO MLCount( ::aItem[ "xProd" ], ::nLarguraDescricao )
+            FOR nIdes = 2 TO MLCount( ::aItem[ "xProd" ], ::nLayoutLarguraDescricao )
                IF ::nLinhaFolha > ::nItensFolha
                   ::saltaPagina()
                ENDIF
-               /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "xProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+               /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "xProd" ], ::nLayoutLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
                ::nLinhaFolha++
                ::nLinhaPdf -= 6
             NEXT
-            FOR nIDes = 1 TO MLCount( ::aItem[ "infAdProd" ], ::nLarguraDescricao )
+            FOR nIDes = 1 TO MLCount( ::aItem[ "infAdProd" ], ::nLayoutLarguraDescricao )
                IF ::nLinhaFolha > ::nItensFolha
                   ::saltaPagina()
                ENDIF
-               /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "infAdProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+               /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "infAdProd" ], ::nLayoutLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
                ::nLinhaFolha++
                ::nLinhaPdf -= 6
             NEXT
          ELSE
             /* CODIGO */ hbNFe_Texto_hpdf( ::oPdfPage, 6, ::nLinhaPdf, 59, NIL, ::aItem[ "cProd" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
-            /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "xProd" ], ::nLarguraDescricao, 1 ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+            /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, Trim( MemoLine( ::aItem[ "xProd" ], ::nLayoutLarguraDescricao, 1 ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
             /* NCM */    hbNFe_Texto_hpdf( ::oPdfPage, 206, ::nLinhaPdf, 239, NIL, ::aItem[ "NCM" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
             IF ::aEmit[ "CRT" ] == "1" // CSOSN
                /* CSOSN */ hbNFe_Texto_hpdf( ::oPdfPage, 241, ::nLinhaPdf, 254, NIL, ::aItemICMS[ "orig" ] + ::aItemICMS[ "CSOSN" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 5 )
@@ -1815,8 +1814,8 @@ METHOD Produtos() CLASS hbNFeDanfe
             ENDIF
             /* CFOP */           hbNFe_Texto_hpdf( ::oPdfPage, 256, ::nLinhaPdf, 274, NIL, ::aItem[ "CFOP" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
             /* UNID */           hbNFe_Texto_hpdf( ::oPdfPage, 276, ::nLinhaPdf, 294, NIL, ::aItem[ "uCom" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
-            /* QUANT. */         hbNFe_Texto_hpdf( ::oPdfPage, 296, ::nLinhaPdf, 329, NIL, AllTrim( FormatNumber( Val(::aItem[ "qCom" ] ), 15, ::nCasasQtd)), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 5 )
-            /* VALOR UNITARIO */ hbNFe_Texto_hpdf( ::oPdfPage, 331, ::nLinhaPdf, 369, NIL, AllTrim( FormatNumber( Val(::aItem[ "vUnCom" ] ), 15, ::nCasasVUn ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
+            /* QUANT. */         hbNFe_Texto_hpdf( ::oPdfPage, 296, ::nLinhaPdf, 329, NIL, AllTrim( FormatNumber( Val(::aItem[ "qCom" ] ), 15, ::nLayoutDecimaisQtd)), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 5 )
+            /* VALOR UNITARIO */ hbNFe_Texto_hpdf( ::oPdfPage, 331, ::nLinhaPdf, 369, NIL, AllTrim( FormatNumber( Val(::aItem[ "vUnCom" ] ), 15, ::nLayoutDecimaisVlUnit ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
             /* VALOR LÍQUIDO */  hbNFe_Texto_hpdf( ::oPdfPage, 371, ::nLinhaPdf, 409, NIL, AllTrim( FormatNumber( Val(::aItem[ "vProd" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
             /* VALOR DESCONTO */ hbNFe_Texto_hpdf( ::oPdfPage, 411, ::nLinhaPdf, 444, NIL, AllTrim( FormatNumber( Val( ::aItem[ "vDesc" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
             /* BC ICMS */        hbNFe_Texto_hpdf( ::oPdfPage, 446, ::nLinhaPdf, 484, NIL, AllTrim( FormatNumber( Val( iif( ::aItemICMS[ "vBC" ] <> NIL,::aItemICMS[ "vBC" ], "0" ) ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 6 )
@@ -1828,19 +1827,19 @@ METHOD Produtos() CLASS hbNFeDanfe
 
             nItem++
             ::nLinhaFolha++
-            FOR nIdes = 2 TO MLCount( ::aItem[ "xProd" ], ::nLarguraDescricao )
+            FOR nIdes = 2 TO MLCount( ::aItem[ "xProd" ], ::nLayoutLarguraDescricao )
                IF ::nLinhaFolha > ::nItensFolha
                   ::saltaPagina()
                ENDIF
-               /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, TRIM( MEMOLINE( ::aItem[ "xProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+               /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, TRIM( MEMOLINE( ::aItem[ "xProd" ], ::nLayoutLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
                ::nLinhaFolha++
                ::nLinhaPdf -= 6
             NEXT
-            FOR nIDes = 1 TO MLCount( ::aItem[ "infAdProd" ], ::nLarguraDescricao )
+            FOR nIDes = 1 TO MLCount( ::aItem[ "infAdProd" ], ::nLayoutLarguraDescricao )
                IF ::nLinhaFolha > ::nItensFolha
                   ::saltaPagina()
                ENDIF
-               /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, TRIM( MEMOLINE( ::aItem[ "infAdProd" ], ::nLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+               /* DESCRI */ hbNFe_Texto_hpdf( ::oPdfPage, 61, ::nLinhaPdf, 204, NIL, TRIM( MEMOLINE( ::aItem[ "infAdProd" ], ::nLayoutLarguraDescricao, nIdes ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
                ::nLinhaFolha++
                ::nLinhaPdf -= 6
             NEXT
@@ -2012,30 +2011,48 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDanfe
 
    RETURN .T.
 
-METHOD CalculaTotalFolhas()
+METHOD CalculaLayout() CLASS hbNFeDanfe
 
    LOCAL nItem, nItensNF, nIdes
 
-   ::nItens1Folha := ;
+   ::nLayoutItens1Folha := ;
       iif( ::lPaisagem, 16, 45 ) + ;
       iif( ::lLaser, 9, 0 ) + ;
       iif( Empty( ::cCobranca ), 2, 0 ) + ;
       iif( Val( ::aIssTotal[ "vServ" ] ) <= 0, 4, 0 )
-   ::nItensDemaisFolhas := iif( ::lPaisagem, 72, 105 )
+   ::nLayoutItensDemaisFolhas := iif( ::lPaisagem, 72, 105 )
    nItem := 1
    DO WHILE .T.
       IF ! ::ProcessaItens( ::cXml, nItem )
          EXIT
       ENDIF
       nItem++
-      FOR nIdes = 2 TO MLCount( ::aItem[ "xProd" ], ::nLarguraDescricao )
+      FOR nIdes = 2 TO MLCount( ::aItem[ "xProd" ], ::nLayoutLarguraDescricao )
          nItem++
       NEXT
+      ::nLayoutDecimaisQtd    := ::DefineDecimais( ::aItem[ "qCom" ], 2 )
+      ::nLayoutDecimaisVlUnit := ::DefineDecimais( ::aItem[ "vUnCom" ], 0 )
    ENDDO
-   nItensNF := Max( 0, nItem - ::nItens1Folha )
-   ::nTotalFolhas := 1 + Int( ( nItensNF - 1 + ::nItensDemaisFolhas ) / ::nItensDemaisFolhas )
-   ::nItensFolha := ::nItens1Folha // default primeira folha
+   nItensNF := Max( 0, nItem - ::nLayoutItens1Folha )
+   ::nLayoutTotalFolhas := 1 + Int( ( nItensNF - 1 + ::nLayoutItensDemaisFolhas ) / ::nLayoutItensDemaisFolhas )
+   ::nItensFolha := ::nLayoutItens1Folha // default primeira folha
    RETURN NIL
+
+METHOD DefineDecimais( xValue, nDecimais ) CLASS hbNFeDanfe
+
+   LOCAL cTemp
+
+   IF ValType( cTemp ) != "N"
+      cTemp := Ltrim( Str( Val( xValue ) ) )
+   ENDIF
+   IF "." $ cTemp
+      cTemp := Substr( cTemp, At( ".", cTemp ) + 1 )
+      DO WHILE Right( cTemp, 1 ) == "0"                 // Necessário porque o Harbour não é o Clipper
+         cTemp := Substr( cTemp, 1, Len( cTemp ) - 1 )
+      ENDDO
+      nDecimais := Max( nDecimais, Len( cTemp ) )
+   ENDIF
+   RETURN nDecimais
 
 // Funções repetidas em NFE, CTE, MDFE e EVENTO
 // STATIC pra permitir uso simultâneo com outras rotinas
