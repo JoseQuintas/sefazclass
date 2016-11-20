@@ -1805,9 +1805,9 @@ METHOD Produtos() CLASS hbNFeDanfe
          ::nLinhaFolha++
          ::nLinhaPdf -= 6
       NEXT
-      //IF ::nLinhaFolha <= ::ItensDaFolha()
-      //   hbNFe_Line_Hpdf( ::oPdfPage, iif( ::lPaisagem, 70, 5 ), ::nLinhaPdf - 0.5, iif( ::lPaisagem, 830, 590 ), ::nLinhaPdf - 0.5, ::nLarguraBox )
-      //ENDIF
+      IF ::nLinhaFolha <= ::ItensDaFolha()
+         hbNFe_Line_Hpdf( ::oPdfPage, iif( ::lPaisagem, 70, 5 ), ::nLinhaPdf - 0.5, iif( ::lPaisagem, 830, 590 ), ::nLinhaPdf - 0.5, ::nLarguraBox )
+      ENDIF
    ENDDO
    ::nLinhaPdf -= ( ( ::ItensDaFolha() - ::nLinhaFolha + 1 ) * 6 )
    ::nLinhaPdf -= 2
