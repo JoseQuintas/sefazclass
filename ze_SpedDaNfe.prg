@@ -2035,17 +2035,13 @@ METHOD CalculaLayout() CLASS hbNFeDanfe
 
 METHOD DefineDecimais( xValue, nDecimais ) CLASS hbNFeDanfe
 
-   LOCAL cTemp
-
-   IF ValType( cTemp ) != "N"
-      cTemp := Ltrim( Str( Val( xValue ) ) )
-   ENDIF
-   IF "." $ cTemp
-      cTemp := Substr( cTemp, At( ".", cTemp ) + 1 )
-      DO WHILE Right( cTemp, 1 ) == "0"                 // Necessário porque o Harbour não é o Clipper
-         cTemp := Substr( cTemp, 1, Len( cTemp ) - 1 )
+   xValue := Ltrim( Str( Val( xValue ) ) )
+   IF "." $ xValue
+      xValue := Substr( xValue, At( ".", xValue ) + 1 )
+      DO WHILE Right( xValue, 1 ) == "0"                 // Necessário porque o Harbour não é o Clipper
+         xValue := Substr( xValue, 1, Len( xValue ) - 1 )
       ENDDO
-      nDecimais := Max( nDecimais, Len( cTemp ) )
+      nDecimais := Max( nDecimais, Len( xValue ) )
    ENDIF
 
    RETURN nDecimais
