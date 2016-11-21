@@ -186,42 +186,49 @@ FUNCTION TestDanfe()
    LOCAL oDanfe
 
    IF File( "xmlnota.xml" )
+      fErase( "pdfnfe.pdf" )
       oDanfe := hbnfeDaNfe():New()
       oDanfe:Execute( MemoRead( "xmlnota.xml" ), "pdfnfe.pdf" )
       ? "DANFe " + oDanfe:cRetorno
       PDFOpen( "pdfnfe.pdf" )
    ENDIF
    IF File( "xmlnotagrande.xml" )
+      fErase( "pdfnfegrande.pdf" )
       oDanfe := hbnfeDaNfe():New()
       oDanfe:Execute( MemoRead( "xmlnotagrande.xml" ), "pdfnfegrande.pdf" )
       ? "Danfe " + oDanfe:cRetorno
       PDFOpen( "pdfnfegrande.pdf" )
    ENDIF
+   /*
    IF File( "xmlcte.xml" )
+      fErase( "pdfcte.pdf" )
       oDanfe := hbnfeDaCte():New()
       oDanfe:Execute( MemoRead( "xmlcte.xml" ),  "pdfcte.pdf" )
       ? "DACTe " + oDanfe:cRetorno
       PDFOpen( "pdfcte.pdf" )
    ENDIF
    IF File( "xmlmdfe.xml" )
+      fErase( "pdfmdfe.pdf" )
       oDanfe := hbnfeDaMdfe():New()
       oDanfe:Execute( MemoRead( "xmlmdfe.xml" ), "pdfmdfe.pdf" )
       ? "DAMDFe " + oDanfe:cRetorno
       PDFOpen( "pdfmdfe.pdf" )
    ENDIF
    IF File( "xmleventonfe.xml" ) .AND. File( "xmlnota.xml" )
+      fErase( "pdfeventonfe.pdf" )
       oDanfe := hbnfeDaEvento():New()
       oDanfe:Execute( MemoRead( "xmleventonfe.xml" ), MemoRead( "xmlnota.xml" ), "pdfeventonfe.pdf" )
       ? "DAEvento NFe " + oDanfe:cRetorno
       PDFOpen( "pdfeventonfe.pdf" )
    ENDIF
    IF File( "xmleventocte.xml" )
+      fErase( "pdfeventocte.pdf" )
       oDanfe := hbnfeDaEvento():New()
       oDanfe:Execute( MemoRead( "xmleventocte.xml" ), "", "pdfeventocte.pdf" )
       ? "DAEvento CTe " + oDanfe:cRetorno
       PDFOpen( "pdfeventocte.pdf" )
    ENDIF
-
+   */
    Inkey(0)
 
    RETURN NIL
