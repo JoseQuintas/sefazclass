@@ -211,6 +211,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDanfe
    ::aDest[ "xNome" ]  := XmlToString( ::aDest[ "xNome" ] )
    ::cTelefoneEmitente := FormatTelefone( ::aEmit[ "fone" ] )
    ::aDest[ "fone" ]   := FormatTelefone( ::aDest[ "fone" ] )
+   ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";", Chr(13) + Chr(10) )
 
    RETURN .T.
 
@@ -1502,7 +1503,7 @@ METHOD DesenhaBoxProdutos( nLinhaFinalProd, nAlturaQuadroProdutos ) CLASS hbNFeD
 
 METHOD Produtos() CLASS hbNFeDanfe
 
-   LOCAL nLinhaFinalProd, nAlturaQuadroProdutos, nItem, nNumLinha
+   LOCAL nLinhaFinalProd, nAlturaQuadroProdutos, nItem, nNumLinha, nCont
 
    nLinhaFinalProd := ::nLinhaPdf - ( ::ItensDaFolha() * 6 ) - 2
    nAlturaQuadroProdutos := ( ::ItensDaFolha() * 6 ) + 2
@@ -1562,6 +1563,19 @@ METHOD Produtos() CLASS hbNFeDanfe
          hbNFe_Line_Hpdf( ::oPdfPage, iif( ::lPaisagem, 70, 5 ), ::nLinhaPdf - 0.5, iif( ::lPaisagem, 830, 590 ), ::nLinhaPdf - 0.5, ::nLarguraBox )
       ENDIF
    ENDDO
+   IF MLCount( ::aInfAdic[ "infCpl" ], 100 ) > iif( ::lPaisagem, 11, 13 )
+      hbNFe_Texto_hpdf( ::oPdfPage, iif( ::lPaisagem, 70, 5 ), ::nLinhaPdf, iif( ::lPaisagem, 830, 589 ), NIL, "*CONTINUACAO INFORMAÇÕES COMPLEMENTARES*", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+      ::nLinhaFolha++
+      ::nLinhaPdf -= 6
+      FOR nCont = iif( ::lPaisagem, 12, 14 ) TO MLCount( ::aInfAdic[ "infCpl" ], 100 )
+         IF ::nLinhaFolha > ::ItensDaFolha()
+            ::SaltaPagina()
+         ENDIF
+         hbNFe_Texto_hpdf( ::oPdfPage, iif( ::lPaisagem, 70, 5 ), ::nLinhaPdf, iif( ::lPaisagem, 830, 589 ), NIL, MemoLine( ::aInfAdic[ "infCpl" ], 100, nCont ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+         ::nLinhaFolha++
+         ::nLinhaPdf -= 6
+      NEXT
+   ENDIF
    ::nLinhaPdf -= ( ( ::ItensDaFolha() - ::nLinhaFolha + 1 ) * 6 )
    ::nLinhaPdf -= 2
 
@@ -1628,7 +1642,7 @@ METHOD DadosAdicionais() CLASS hbNFeDanfe
    LOCAL cMemo, nI
 
    IF ::nFolha == 1
-      cMemo := StrTran( ::aInfAdic[ "infCpl" ], ";", Chr( 13 ) + Chr( 10 ) )
+      cMemo := ::aInfAdic[ "infCpl" ]
       IF ::lPaisagem
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf, 830, NIL, "DADOS ADICIONAIS", HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 5 )
          ::nLinhaPdf -= 6
@@ -1640,7 +1654,7 @@ METHOD DadosAdicionais() CLASS hbNFeDanfe
          hbNFe_Texto_hpdf( ::oPdfPage, 566, ::nLinhaPdf - 1, 829, NIL, "RESERVADO AO FISCO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
          ::nLinhaPdf -= 7
          ::nLinhaPdf -= 4 // ESPAÇO
-         FOR nI = 1 TO MLCount( cMemo, 100 )
+         FOR nI = 1 TO Min( MLCount( cMemo, 100 ), 11 )
             hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf,564, NIL, Trim( MemoLine( cMemo, 100, nI ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
             ::nLinhaPdf -= 6
          NEXT
@@ -1660,7 +1674,7 @@ METHOD DadosAdicionais() CLASS hbNFeDanfe
          hbNFe_Texto_hpdf( ::oPdfPage, 401, ::nLinhaPdf - 1, 589, NIL, "RESERVADO AO FISCO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
          ::nLinhaPdf -= 7    //
          ::nLinhaPdf -= 4 // ESPAÇO
-         FOR nI = 1 TO MLCount( cMemo, 100 )
+         FOR nI = 1 TO Min( MLCount( cMemo, 100 ), 13 )
             hbNFe_Texto_hpdf( ::oPdfPage, 6, ::nLinhaPdf, 399, NIL, Trim( MemoLine( cMemo, 100, nI ) ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
             ::nLinhaPdf -= 6
          NEXT
@@ -1722,14 +1736,14 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDanfe
 
 METHOD CalculaLayout() CLASS hbNFeDanfe
 
-   LOCAL nItem, nQtdLinhas, nColunaFinal
+   LOCAL nItem, nQtdLinhas, nColunaFinal, nCont
 
    // Define o que sai, conforme retrato/paisagem
    ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := ::lPaisagem
    ::aLayout[ LAYOUT_SUBBAS,   LAYOUT_IMPRIME ] := ::lPaisagem
    ::aLayout[ LAYOUT_SUBVAL,   LAYOUT_IMPRIME ] := ::lPaisagem
-   ::aLayout[ LAYOUT_IPIVAL,   LAYOUT_IMPRIME ] := .F.
-   ::aLayout[ LAYOUT_IPIALI,   LAYOUT_IMPRIME ] := .F.
+   ::aLayout[ LAYOUT_IPIVAL,   LAYOUT_IMPRIME ] := .T.
+   ::aLayout[ LAYOUT_IPIALI,   LAYOUT_IMPRIME ] := .T.
    // Define decimais default, mas será ajustado conforme conteúdo do XML
    ::aLayout[ LAYOUT_QTD, LAYOUT_DECIMAIS ]     := 0
    ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ]  := 2
@@ -1739,7 +1753,7 @@ METHOD CalculaLayout() CLASS hbNFeDanfe
          EXIT
       ENDIF
       nItem += 1
-      ::aLayout[ LAYOUT_QTD,    LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "qCom" ],   ::aLayout[ LAYOUT_QTD,    LAYOUT_DECIMAIS ] )
+      ::aLayout[ LAYOUT_QTD,    LAYOUT_DECIMAIS ]   := ::DefineDecimais( ::aItem[ "qCom" ],   ::aLayout[ LAYOUT_QTD,    LAYOUT_DECIMAIS ] )
       ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "vUnCom" ], ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] )
       IF Val( ::aItemIPI[ "pIPI" ]  ) > 0 .OR. Val( ::aItemIPI[ "vIPI" ] ) > 0
          ::aLayout[ LAYOUT_IPIVAL, LAYOUT_IMPRIME ] := .T.
@@ -1764,30 +1778,24 @@ METHOD CalculaLayout() CLASS hbNFeDanfe
    ::aLayout[ LAYOUT_IPIVAL,    LAYOUT_LARGURAPDF ] := 40
    ::aLayout[ LAYOUT_ICMALI,    LAYOUT_LARGURAPDF ] := 20
    ::aLayout[ LAYOUT_IPIALI,    LAYOUT_LARGURAPDF ] := 20
+
    // Desativa colunas não impressas
    AEval( ::aLayout, { | oElement | oElement[ LAYOUT_LARGURAPDF ] := iif( oElement[ LAYOUT_IMPRIME ], oElement[ LAYOUT_LARGURAPDF ], 0 ) } )
+
    // Calcula posição das colunas
    nColunaFinal := iif( ::lPaisagem, 832, 592 )
-   ::aLayout[ LAYOUT_IPIALI,    LAYOUT_COLUNAPDF ]  := nColunaFinal                                   - ::aLayout[ LAYOUT_IPIALI,   LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_ICMALI,    LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_IPIALI,   LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_ICMALI,   LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_IPIVAL,    LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_ICMALI,   LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_IPIVAL,   LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_SUBVAL,    LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_IPIVAL,   LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_SUBVAL,   LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_SUBBAS,    LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_SUBVAL,   LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_SUBBAS,   LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_ICMVAL,    LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_IPIVAL,   LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_ICMVAL,   LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_ICMBAS,    LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_ICMVAL,   LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_ICMBAS,   LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_DESCONTO,  LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_ICMBAS,   LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_DESCONTO, LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_TOTAL,     LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_DESCONTO, LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_TOTAL,    LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_UNITARIO,  LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_TOTAL,    LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_UNITARIO, LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_QTD,       LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_UNITARIO, LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_QTD,      LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_UNIDADE,   LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_QTD,      LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_UNIDADE,  LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_CFOP,      LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_UNIDADE,  LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_CFOP,     LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_CST,       LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_CFOP,     LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_CST,      LAYOUT_LARGURAPDF ]
-   ::aLayout[ LAYOUT_NCM,       LAYOUT_COLUNAPDF ]  := ::aLayout[ LAYOUT_CST,      LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_NCM,      LAYOUT_LARGURAPDF ]
+   ::aLayout[ LAYOUT_IPIALI,    LAYOUT_COLUNAPDF ]  := nColunaFinal - ::aLayout[ LAYOUT_IPIALI,   LAYOUT_LARGURAPDF ]
+   FOR nCont = Len( ::aLayout ) - 1 TO 3 STEP -1
+      ::aLayout[ nCont, LAYOUT_COLUNAPDF ] := ::aLayout[ nCont + 1, LAYOUT_COLUNAPDF ] - ::aLayout[ nCont, LAYOUT_LARGURAPDF ]
+   NEXT
    ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_COLUNAPDF ]  := 61
    ::aLayout[ LAYOUT_CODIGO,    LAYOUT_COLUNAPDF ]  := 6
+
    // Define largura da descrição conforme espaço que sobra
    ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] := ::aLayout[ LAYOUT_NCM, LAYOUT_COLUNAPDF ] - ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_COLUNAPDF ]
    ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURA ]    := Int( ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] / ::nLayoutLarguraFonte ) // iif( ::lPaisagem, 45, 37 ) //
+
+   // Linhas necessárias pra imprimir ítens
    nQtdLinhas := 1
    nItem      := 1
    DO WHILE .T.
@@ -1800,6 +1808,13 @@ METHOD CalculaLayout() CLASS hbNFeDanfe
       ENDIF
       nItem += 1
    ENDDO
+
+   // Linhas extras pra informações adicionais
+   IF MLCount( ::ainfAdic[ "infCpl" ], 100 ) > iif( ::lPaisagem, 11, 13 )
+      nQtdLinhas += 1 + MLCount( ::ainfAdic[ "infCpl" ], 100 ) - iif( ::lPaisagem, 11, 13 ) // precisaria saber a largura
+   ENDIF
+
+   // Total de folhas necessárias
    ::nLayoutTotalFolhas := 1
    IF nQtdLinhas > ::ItensDaFolha( 1 )
       ::nLayoutTotalFolhas += Int( ( nQtdLinhas - ::ItensDaFolha( 1 ) + ::ItensDaFolha( 9 ) - 1 ) / ::ItensDaFolha( 9 ) )
