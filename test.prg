@@ -188,21 +188,34 @@ FUNCTION TestDanfe()
    IF File( "xmlnota.xml" )
       fErase( "pdfnfe.pdf" )
       oDanfe := hbnfeDaNfe():New()
+      oDanfe:cLogoFile := JPEGImage()
+      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:Execute( MemoRead( "xmlnota.xml" ), "pdfnfe.pdf" )
       ? "DANFe " + oDanfe:cRetorno
       PDFOpen( "pdfnfe.pdf" )
+      oDanfe := hbNfeDanfe():New()
+      oDanfe:lPaisagem := .T.
+      oDanfe:Execute( MemoRead( "xmlnota.xml" ), "pdfnfep.pdf" )
+      PDFOpen( "pdfnfep.pdf" )
    ENDIF
    IF File( "xmlnotagrande.xml" )
       fErase( "pdfnfegrande.pdf" )
       oDanfe := hbnfeDaNfe():New()
+      oDanfe:cLogoFile := JPEGImage()
+      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:Execute( MemoRead( "xmlnotagrande.xml" ), "pdfnfegrande.pdf" )
       ? "Danfe " + oDanfe:cRetorno
       PDFOpen( "pdfnfegrande.pdf" )
+      oDanfe := hbnfeDanfe():New()
+      oDanfe:lPaisagem := .T.
+      oDanfe:Execute( MemoRead( "xmlnotagrande.xml" ), "pdfnfegrandep.pdf" )
+      PDFOpen( "pdfnfegrandep.pdf" )
    ENDIF
-   /*
    IF File( "xmlcte.xml" )
       fErase( "pdfcte.pdf" )
       oDanfe := hbnfeDaCte():New()
+      oDanfe:cLogoFile := JPEGImage()
+      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:Execute( MemoRead( "xmlcte.xml" ),  "pdfcte.pdf" )
       ? "DACTe " + oDanfe:cRetorno
       PDFOpen( "pdfcte.pdf" )
@@ -210,6 +223,8 @@ FUNCTION TestDanfe()
    IF File( "xmlmdfe.xml" )
       fErase( "pdfmdfe.pdf" )
       oDanfe := hbnfeDaMdfe():New()
+      oDanfe:cLogoFile := JPEGImage()
+      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:Execute( MemoRead( "xmlmdfe.xml" ), "pdfmdfe.pdf" )
       ? "DAMDFe " + oDanfe:cRetorno
       PDFOpen( "pdfmdfe.pdf" )
@@ -217,6 +232,8 @@ FUNCTION TestDanfe()
    IF File( "xmleventonfe.xml" ) .AND. File( "xmlnota.xml" )
       fErase( "pdfeventonfe.pdf" )
       oDanfe := hbnfeDaEvento():New()
+      oDanfe:cLogoFile := JPEGImage()
+      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:Execute( MemoRead( "xmleventonfe.xml" ), MemoRead( "xmlnota.xml" ), "pdfeventonfe.pdf" )
       ? "DAEvento NFe " + oDanfe:cRetorno
       PDFOpen( "pdfeventonfe.pdf" )
@@ -224,11 +241,12 @@ FUNCTION TestDanfe()
    IF File( "xmleventocte.xml" )
       fErase( "pdfeventocte.pdf" )
       oDanfe := hbnfeDaEvento():New()
+      oDanfe:cLogoFile := JPEGImage()
+      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:Execute( MemoRead( "xmleventocte.xml" ), "", "pdfeventocte.pdf" )
       ? "DAEvento CTe " + oDanfe:cRetorno
       PDFOpen( "pdfeventocte.pdf" )
    ENDIF
-   */
    Inkey(0)
 
    RETURN NIL
@@ -236,7 +254,11 @@ FUNCTION TestDanfe()
 FUNCTION PDFOpen( cFile )
 
    IF File( cFile )
-      RUN ( "cmd /c start " + cFile )
+      WAPI_ShellExecute( NIL, "open", cFile, "",, WIN_SW_SHOWNORMAL )
    ENDIF
 
    RETURN NIL
+
+FUNCTION JPEGImage()
+
+   #pragma __binarystreaminclude "jpatecnologia.jpg"        | RETURN %s
