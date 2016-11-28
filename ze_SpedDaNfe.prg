@@ -147,7 +147,6 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    VAR nItensFolha
    VAR nLinhaFolha
    VAR nLayoutTotalFolhas
-   VAR nLayoutFonteLargura
    VAR nLayoutFonteAltura  INIT 7
    VAR lLayoutEspacoDuplo  INIT .T.
    VAR aLayout
@@ -167,7 +166,6 @@ METHOD Init() CLASS hbNFeDaNFe
       oElement[ LAYOUT_CONTEUDO ] := { || "" }
       oElement[ LAYOUT_LARGURAPDF ] := 1
    NEXT
-   ::nLayoutFonteLargura := ::nLayoutFonteAltura * 0.6
 
    RETURN SELF
 
@@ -1881,9 +1879,9 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_IPIALI,    LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemIPI[ "pIPI" ] ), 15, 2 ) ) }
 
    // Define o que sai, conforme retrato/paisagem
-   ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := .F. // ::lPaisagem // Se .F., decide baseado no XML
-   ::aLayout[ LAYOUT_SUBBAS,   LAYOUT_IMPRIME ] := .F. // ::lPaisagem // Se .F., decide baseado no XML
-   ::aLayout[ LAYOUT_SUBVAL,   LAYOUT_IMPRIME ] := .F. // ::lPaisagem // Se .F., decide baseado no XML
+   ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := ::lPaisagem
+   ::aLayout[ LAYOUT_SUBBAS,   LAYOUT_IMPRIME ] := ::lPaisagem
+   ::aLayout[ LAYOUT_SUBVAL,   LAYOUT_IMPRIME ] := ::lPaisagem
    ::aLayout[ LAYOUT_IPIVAL,   LAYOUT_IMPRIME ] := .T. // Se .F., decide baseado no XML
    ::aLayout[ LAYOUT_IPIALI,   LAYOUT_IMPRIME ] := .T. // Se .F., decide baseado no XML
    // Define decimais default, mas será ajustado conforme conteúdo do XML
@@ -1921,7 +1919,7 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
    // Define tamanho de colunas
    FOR EACH oElement IN ::aLayout
       oElement[ LAYOUT_LARGURA ] += 1
-      oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( oElement[ LAYOUT_TITULO1 ] ) ) // Int( oElement[ LAYOUT_LARGURA ] * ::nLayoutFonteLargura ) + 2
+      oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( oElement[ LAYOUT_TITULO1 ] ) )
       oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( oELement[ LAYOUT_TITULO2 ] ) )
       oElement[ LAYOUT_LARGURAPDF ] += 4
    NEXT
