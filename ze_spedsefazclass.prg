@@ -4,6 +4,11 @@ ZE_SPEDSEFAZCLASS - Rotinas pra comunicação com SEFAZ
 2016.10.26 - Criado ::cXmlDocumento, e alterado ::cXmlDados para ::cXmlEnvio
 2016.10.26 - Agora são assinados também CTE, MDFE e NFE
 2016.11.13 - Manifestação
+2016.11.25.1530 - Correção ref. usar método ::AssinaXml() e não direto a função de assinatura
+2016.11.25.1540 - Correção ref. vírgula a mais no DateTimeXml() para manifesto
+2016.11.25.1600 - Se colocar XML version="1.00" o explorer não abre o XML
+2016.11.25.2300 - ::AssinaXml() e CapicomAssinaXml() pra evitar confusão no uso
+2016.11.25.2300 - ::ValidaXml() e DomDocValidaXml() pra evitar confusão no uso
 
 Nota: CTE 2.00 vale até 06/2017 e CTE 3.00 começa em 12/2016
 */
@@ -107,7 +112,7 @@ CREATE CLASS SefazClass
    METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
-   METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega , cCertificado, cAmbiente )
+   METHOD MDFeEventoEncerramento( cChave, nSequencia, nProt, cUFFim, cMunCarrega, cCertificado, cAmbiente )
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
@@ -138,12 +143,12 @@ CREATE CLASS SefazClass
    METHOD MicrosoftXmlSoapPost()
 
    /* Apenas redirecionamento */
-   METHOD AssinaXml()                       INLINE ::cXmlRetorno := AssinaXml( @::cXmlDocumento, ::cCertificado )
+   METHOD AssinaXml()                       INLINE ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado )
    METHOD TipoXml( cXml )                   INLINE TipoXml( cXml )
    METHOD UFCodigo( cSigla )                INLINE UFCodigo( cSigla )
    METHOD UFSigla( cCodigo )                INLINE UFSigla( cCodigo )
    METHOD DateTimeXml( dDate, cTime, lUTC ) INLINE DateTimeXml( dDate, cTime, iif( ::cUFTimeZone == NIL, ::cUF, ::cUFTimeZone ), lUTC )
-   METHOD ValidaXml( cXml, cFileXsd )       INLINE ValidaXml( cXml, cFileXsd )
+   METHOD ValidaXml( cXml, cFileXsd )       INLINE DomDocValidaXml( cXml, cFileXsd )
    METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico )
 
    ENDCLASS
@@ -281,7 +286,7 @@ METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       ::cXmlRetorno := [<Erro text="Não autorizado" />] + cXmlProtocolo
       RETURN NIL
    ENDIF
-   ::cXmlAutorizado := [<?xml version="1.00"?>]
+   ::cXmlAutorizado := "" // [<?xml version="1.00"?>]
    ::cXmlAutorizado += [<cteProc versao="2.00" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protCTe", .T. ) // ?hb_Utf8ToStr()
@@ -300,7 +305,7 @@ METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       ::cXmlRetorno := [<Erro text="Não autorizado" />] + cXmlProtocolo
       RETURN NIL
    ENDIF
-   ::cXmlAutorizado := [<?xml version="1.00"?>]
+   ::cXmlAutorizado := "" // [<?xml version="1.00"?>]
    ::cXmlAutorizado += [<procEventoCTe versao="2.00" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado += [<retEventoCTe versao="2.00">]
@@ -481,7 +486,7 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , , ,.F.) )
+   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="1.00">]
@@ -515,7 +520,7 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , , ,.F.) )
+   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110112" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="1.00">]
@@ -529,7 +534,7 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</eventoMDFe>]
-   IF AssinaXml() == "OK"
+   IF ::AssinaXml() == "OK"
       ::cXmlEnvio := ::cXmlDocumento
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
@@ -548,7 +553,7 @@ METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       ::cXmlRetorno := [<Erro text="Não autorizado" />] + ::cXmlProtocolo
       RETURN ::cXmlRetorno
    ENDIF
-   // ::cXmlAutorizado := [<?xml version="1.00"?>] // colocando isto, emissor gratuito e explorer rejeitam
+   ::cXmlAutorizado := "" // [<?xml version="1.00"?>] // colocando isto, emissor gratuito e explorer rejeitam
    ::cXmlAutorizado += [<mdfeProc versao="1.00" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlAUtorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protMDFe", .T. )
@@ -567,7 +572,7 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       ::cXmlRetorno := [<Erro Text="Status inválido" />] + ::cXmlRetorno
       RETURN NIL
    ENDIF
-   ::cXmlAutorizado := [<?xml version="1.00"?>]
+   ::cXmlAutorizado := "" // [<?xml version="1.00"?>]
    ::cXmlAutorizado += [<procEvento versao="1.00" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado += [<retEventoMDFe versao="1.00">]
@@ -965,7 +970,7 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
       ::cXmlRetorno := [<Erro text="Status inválido pra autorização" />] + ::cXmlRetorno
       RETURN NIL
    ENDIF
-   ::cXmlAutorizado := [<?xml version="1.00"?>]
+   ::cXmlAutorizado := "" // [<?xml version="1.00"?>]
    ::cXmlAutorizado += [<procEventoNFe versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado += [<retEvento versao="1.00">]
@@ -1329,7 +1334,7 @@ STATIC FUNCTION NFeAddCancelamento( cXmlAssinado, cXmlCancelamento )
 
    RETURN cXmlAutorizado
 
-STATIC FUNCTION ValidaXml( cXml, cFileXsd )
+STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
 
    LOCAL oXmlDomDoc, oXmlSchema, oXmlErro, cRetorno := "ERRO"
 
