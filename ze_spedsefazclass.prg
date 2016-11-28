@@ -594,7 +594,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ::cSoapVersion := "1.00"
    ::cXmlEnvio    := [<enviMDFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlEnvio    +=    XmlTag( "idLote", cLote )
-   ::cXmlEnvio    +=    cXml
+   ::cXmlEnvio    +=    ::cXmlDocumento
    ::cXmlEnvio    += [</enviMDFe>]
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno
