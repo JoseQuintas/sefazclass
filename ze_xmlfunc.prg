@@ -244,6 +244,8 @@ FUNCTION XmlToString( cTexto )
 
 FUNCTION StringToXml( cTexto )
 
+   cTexto := AllTrim( cTexto )
+   cTexto := StrTran( cTexto, Space(2), Space(1) )
    cTexto := StrTran( cTexto, "&", "&amp;" )
    cTexto := StrTran( cTexto, ["], "&quot;" )
    cTexto := StrTran( cTexto, "'", "&#39;" )
@@ -269,7 +271,7 @@ FUNCTION XmlToHash( cXml, aTagList, oVar )
 
 FUNCTION MultipleNodeToArray( cXml, cNode )
 
-   LOCAL aNodes :={}
+   LOCAL aNodes := {}
 
    DO WHILE "<" + cNode + " " $ cXml .OR. "<" + cNode + ">" $ cXml
       Aadd( aNodes , XmlNode( cXml , cNode ) )
