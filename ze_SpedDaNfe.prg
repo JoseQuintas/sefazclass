@@ -1951,7 +1951,8 @@ METHOD FormataMemo( cMemo, nLarguraPDF ) CLASS hbNFeDaNFe
       DO WHILE .T.
          nPos       := HPDF_Page_MeasureText( ::oPDFPage, cTexto, nLarguraPDF, .T. )
          IF nPos == 0
-            nPos := Max( Int( nLarguraPDF / ::nLayoutFonteAltura ), 2 )
+            nPos := HPDF_Page_MeasureText( ::oPDFPage, cTexto, nLarguraPDF, .F. )
+            nPos := Max( nPos, 2 )
          ENDIF
          cNovoTexto += Substr( cTexto, 1, nPos ) + Chr(13) + Chr(10)
          cTexto     := AllTrim( Substr( cTexto, nPos + 1 ) )
