@@ -1281,25 +1281,25 @@ METHOD DadosTransporte() CLASS hbNFeDaNFe
 
          // NOME/RAZAO SOCIAL
          hbNFe_Box_Hpdf( ::oPdfPage, 70, ::nLinhaPdf - 16, 410, 16, ::nLarguraBox )
-         hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf - 1,  409, NIL, "NOME/RAZÃO SOCIAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf - 7, 409, NIL, ::aTransp[ "xNome" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
+         hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf - 1,  429, NIL, "NOME/RAZÃO SOCIAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+         hbNFe_Texto_hpdf( ::oPdfPage, 71, ::nLinhaPdf - 7, 429, NIL, ::aTransp[ "xNome" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
          // TIPO FRETE
-         hbNFe_Box_Hpdf( ::oPdfPage, 480, ::nLinhaPdf - 16, 100, 16, ::nLarguraBox )
-         hbNFe_Texto_hpdf( ::oPdfPage, 481, ::nLinhaPdf - 1,  579, NIL, "FRETE POR CONTA", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
+         hbNFe_Box_Hpdf( ::oPdfPage, 430, ::nLinhaPdf - 16, 100, 16, ::nLarguraBox )
+         hbNFe_Texto_hpdf( ::oPdfPage, 431, ::nLinhaPdf - 1,  529, NIL, "FRETE POR CONTA", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
          // Modificado por Anderson Camilo em 19/03/2012
          IF ::aTransp[ "modFrete" ] == "0"
-            hbNFe_Texto_hpdf( ::oPdfPage, 481, ::nLinhaPdf - 5, 579, NIL, "0-EMITENTE", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
+            hbNFe_Texto_hpdf( ::oPdfPage, 431, ::nLinhaPdf - 5, 529, NIL, "0-EMITENTE", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
          ELSEIF ::aTransp[ "modFrete" ] == "1"
-            hbNFe_Texto_hpdf( ::oPdfPage, 481, ::nLinhaPdf - 5, 579, NIL, "1-DESTINATARIO", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
+            hbNFe_Texto_hpdf( ::oPdfPage, 431, ::nLinhaPdf - 5, 529, NIL, "1-DESTINATARIO", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
          ELSEIF ::aTransp[ "modFrete" ] == "2"
-            hbNFe_Texto_hpdf( ::oPdfPage, 481, ::nLinhaPdf - 5, 579, NIL, "2-TERCEIROS", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
+            hbNFe_Texto_hpdf( ::oPdfPage, 431, ::nLinhaPdf - 5, 529, NIL, "2-TERCEIROS", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
          ELSEIF ::aTransp[ "modFrete" ] == "9"
-            hbNFe_Texto_hpdf( ::oPdfPage, 481, ::nLinhaPdf - 5, 579, NIL, "9-SEM FRETE", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
+            hbNFe_Texto_hpdf( ::oPdfPage, 431, ::nLinhaPdf - 5, 529, NIL, "9-SEM FRETE", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
          ENDIF
          // ANTT
-         hbNFe_Box_Hpdf( ::oPdfPage, 580, ::nLinhaPdf - 16, 80, 16, ::nLarguraBox )
-         hbNFe_Texto_hpdf( ::oPdfPage, 581, ::nLinhaPdf - 1,  659, NIL, "CÓDIGO ANTT", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-         hbNFe_Texto_hpdf( ::oPdfPage, 581, ::nLinhaPdf - 5, 659, NIL, ::aVeicTransp[ "RNTC" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
+         hbNFe_Box_Hpdf( ::oPdfPage, 530, ::nLinhaPdf - 16, 130, 16, ::nLarguraBox )
+         hbNFe_Texto_hpdf( ::oPdfPage, 531, ::nLinhaPdf - 1,  659, NIL, "CÓDIGO ANTT", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
+         hbNFe_Texto_hpdf( ::oPdfPage, 531, ::nLinhaPdf - 5, 659, NIL, ::aVeicTransp[ "RNTC" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
          // PLACA
          hbNFe_Box_Hpdf( ::oPdfPage, 660, ::nLinhaPdf - 16, 60, 16, ::nLarguraBox )
          hbNFe_Texto_hpdf( ::oPdfPage, 661, ::nLinhaPdf - 1,  719, NIL, "PLACA DO VEÍCULO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
@@ -1372,26 +1372,26 @@ METHOD DadosTransporte() CLASS hbNFeDaNFe
          ::nLinhaPdf -= 6
 
          // NOME/RAZAO SOCIAL
-         hbNFe_Box_Hpdf( ::oPdfPage,  5, ::nLinhaPdf - 16, 265, 16, ::nLarguraBox )
-         hbNFe_Texto_hpdf( ::oPdfPage, 6, ::nLinhaPdf - 1,  269, NIL, "NOME/RAZÃO SOCIAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         hbNFe_Texto_hpdf( ::oPdfPage, 6, ::nLinhaPdf - 5, 269, NIL, ::aTransp[ "xNome" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
+         hbNFe_Box_Hpdf( ::oPdfPage,  5, ::nLinhaPdf - 16, 215, 16, ::nLarguraBox )
+         hbNFe_Texto_hpdf( ::oPdfPage, 6, ::nLinhaPdf - 1,  219, NIL, "NOME/RAZÃO SOCIAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+         hbNFe_Texto_hpdf( ::oPdfPage, 6, ::nLinhaPdf - 5, 219, NIL, ::aTransp[ "xNome" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
          // TIPO FRETE
-         hbNFe_Box_Hpdf( ::oPdfPage, 270, ::nLinhaPdf - 16, 90, 16, ::nLarguraBox )
-         hbNFe_Texto_hpdf( ::oPdfPage, 271, ::nLinhaPdf - 1,  359, NIL, "FRETE POR CONTA", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
+         hbNFe_Box_Hpdf( ::oPdfPage, 220, ::nLinhaPdf - 16, 90, 16, ::nLarguraBox )
+         hbNFe_Texto_hpdf( ::oPdfPage, 221, ::nLinhaPdf - 1,  309, NIL, "FRETE POR CONTA", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
          // Modificado por Anderson Camilo em 19/03/2012
          IF ::aTransp[ "modFrete" ] == "0"
-            hbNFe_Texto_hpdf( ::oPdfPage, 271, ::nLinhaPdf - 5, 359, NIL, "0-EMITENTE", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
+            hbNFe_Texto_hpdf( ::oPdfPage, 221, ::nLinhaPdf - 5, 309, NIL, "0-EMITENTE", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
          ELSEIF ::aTransp[ "modFrete" ] == "1"
-            hbNFe_Texto_hpdf( ::oPdfPage, 271, ::nLinhaPdf - 5, 359, NIL, "1-DESTINATARIO", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
+            hbNFe_Texto_hpdf( ::oPdfPage, 221, ::nLinhaPdf - 5, 309, NIL, "1-DESTINATARIO", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
          ELSEIF ::aTransp[ "modFrete" ] == "2"
-            hbNFe_Texto_hpdf( ::oPdfPage, 271, ::nLinhaPdf - 5, 359, NIL, "2-TERCEIROS", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
+            hbNFe_Texto_hpdf( ::oPdfPage, 221, ::nLinhaPdf - 5, 309, NIL, "2-TERCEIROS", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
          ELSEIF ::aTransp[ "modFrete" ] == "9"
-            hbNFe_Texto_hpdf( ::oPdfPage, 271, ::nLinhaPdf - 5, 359, NIL, "9-SEM FRETE", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
+            hbNFe_Texto_hpdf( ::oPdfPage, 221, ::nLinhaPdf - 5, 309, NIL, "9-SEM FRETE", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
          ENDIF
          // ANTT
-         hbNFe_Box_Hpdf( ::oPdfPage, 360, ::nLinhaPdf - 16, 60, 16, ::nLarguraBox )
-         hbNFe_Texto_hpdf( ::oPdfPage, 361, ::nLinhaPdf - 1,  419, NIL, "CÓDIGO ANTT", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-         hbNFe_Texto_hpdf( ::oPdfPage, 361, ::nLinhaPdf - 5, 419, NIL, ::aVeicTransp[ "RNTC" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
+         hbNFe_Box_Hpdf( ::oPdfPage, 310, ::nLinhaPdf - 16, 110, 16, ::nLarguraBox )
+         hbNFe_Texto_hpdf( ::oPdfPage, 311, ::nLinhaPdf - 1,  419, NIL, "CÓDIGO ANTT", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
+         hbNFe_Texto_hpdf( ::oPdfPage, 311, ::nLinhaPdf - 5, 419, NIL, ::aVeicTransp[ "RNTC" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
          // PLACA
          hbNFe_Box_Hpdf( ::oPdfPage, 420, ::nLinhaPdf - 16, 60, 16, ::nLarguraBox )
          hbNFe_Texto_hpdf( ::oPdfPage, 421, ::nLinhaPdf - 1,  479, NIL, "PLACA DO VEÍCULO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
@@ -1742,10 +1742,10 @@ METHOD CalculaLayout() CLASS hbNFeDaNFe
       IF ! ::ProcessaItens( ::cXml, nItem )
          EXIT
       ENDIF
-      ::aItem[ "xProd" ] := ::FormataMemo( ::aItem[ "xProd" ], ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURA ] - 2 )
+      ::aItem[ "xProd" ] := ::FormataMemo( ::aItem[ "xProd" ], ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] - 2 )
       nQtdLinhas += MLCount( ::aItem[ "xProd" ], 1000 )
       IF Len( ::aItem[ "infAdProd" ] ) > 0
-         ::aItem[ "infAdProd" ] := ::FormataMemo( ::aItem[ "infAdProd" ], ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURA ] - 2 )
+         ::aItem[ "infAdProd" ] := ::FormataMemo( ::aItem[ "infAdProd" ], ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] - 2 )
          nQtdLinhas += MLCount( ::aItem[ "infAdProd" ], 1000 )
       ENDIF
       IF ::lLayoutEspacoDuplo
