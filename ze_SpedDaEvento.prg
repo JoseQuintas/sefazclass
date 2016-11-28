@@ -32,6 +32,7 @@ CREATE CLASS hbnfeDaEvento INHERIT hbNFeDaGeral
    VAR cXmlEvento
    VAR cChaveNFe
    VAR cChaveEvento
+   VAR cDesenvolvedor    INIT ""
 
    VAR aCorrecoes
    VAR aInfEvento
