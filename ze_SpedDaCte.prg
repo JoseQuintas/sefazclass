@@ -172,7 +172,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
 
    cEmit := XmlNode( ::cXml, "emit" )
    ::aEmit := XmlToHash( cEmit, { "CNPJ", "IE", "xNome", "xFant", "fone" } )
-   ::aEmit[ "xNome" ] := XmlToSTring( ::aEmit[ "xNome" ] )
+   ::aEmit[ "xNome" ] := XmlToString( ::aEmit[ "xNome" ] )
    ::cTelefoneEmitente  := FormatTelefone( ::aEmit[ "fone" ] )
    cEmit := XmlNode( cEmit, "enderEmit" )
    FOR EACH oElement IN { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "CEP", "UF" }
@@ -396,7 +396,7 @@ METHOD NovaPagina() CLASS hbnfeDaCte
 
    ENDIF
 
-   IF .NOT. Empty( ::aInfCanc[ "nProt" ] ) .AND. ::aInfCanc[ "cStat" ] $ "101,135,302" // 302=denegada
+   IF ! Empty( ::aInfCanc[ "nProt" ] ) .AND. ::aInfCanc[ "cStat" ] $ "101,135,302" // 302=denegada
 
        HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
        HPDF_Page_BeginText(::oPdfPage)
