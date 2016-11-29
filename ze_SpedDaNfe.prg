@@ -1311,10 +1311,10 @@ METHOD DadosTransporte() CLASS hbNFeDaNFe
          // CNPJ/CPF
          hbNFe_Box_Hpdf( ::oPdfPage, 740, ::nLinhaPdf - 16, 90, 16, ::nLarguraBox )
          hbNFe_Texto_hpdf( ::oPdfPage, 741, ::nLinhaPdf - 1,  829, NIL, "CNPJ / CPF", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-         IF !Empty( ::aTransp[ "CNPJ" ] )
+         IF ! Empty( ::aTransp[ "CNPJ" ] )
             hbNFe_Texto_hpdf( ::oPdfPage, 741, ::nLinhaPdf - 7, 829, NIL, Transform( ::aTransp[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
          ELSE
-            IF ::aTransp[ "CPF" ] <> NIL
+            IF ! Empty( ::aTransp[ "CPF" ] )
                hbNFe_Texto_hpdf( ::oPdfPage, 741, ::nLinhaPdf - 5, 829, NIL, Transform( ::aTransp[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
             ENDIF
          ENDIF
@@ -1403,10 +1403,10 @@ METHOD DadosTransporte() CLASS hbNFeDaNFe
          // CNPJ/CPF
          hbNFe_Box_Hpdf( ::oPdfPage, 500, ::nLinhaPdf - 16, 90, 16, ::nLarguraBox )
          hbNFe_Texto_hpdf( ::oPdfPage, 501, ::nLinhaPdf - 1,  589, NIL, "CNPJ / CPF", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-         IF !Empty( ::aTransp[ "CNPJ" ] )
-            hbNFe_Texto_hpdf( ::oPdfPage, 501, ::nLinhaPdf - 5, 589, NIL, Transform( ::aTransp[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
+         IF ! Empty( ::aTransp[ "CNPJ" ] )
+            hbNFe_Texto_hpdf( ::oPdfPage, 501, ::nLinhaPdf - 5, 589, NIL, Transform( ::aTransp[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
          ELSE
-            IF ::aTransp[ "CPF" ] <> NIL
+            IF ! Empty( ::aTransp[ "CPF" ] )
                hbNFe_Texto_hpdf( ::oPdfPage, 501, ::nLinhaPdf - 5, 589, NIL, Transform( ::aTransp[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
             ENDIF
          ENDIF
@@ -1734,7 +1734,7 @@ METHOD CalculaLayout() CLASS hbNFeDaNFe
    LOCAL nItem, nQtdLinhas
 
    ::DefineColunasProdutos()
-   ::aInfAdic[ "infCpl" ] := ::FormataMemo( ::aInfAdic[ "infCpl" ], 393 + iif( ::lPaisagem, 100, 0 ) )
+   ::aInfAdic[ "infCpl" ] := ::FormataMemo( ::aInfAdic[ "infCpl" ], 392 + iif( ::lPaisagem, 100, 0 ) )
    // Linhas necessárias pra imprimir ítens
    nQtdLinhas := 1
    nItem      := 1
@@ -1808,7 +1808,7 @@ METHOD DrawTextoProduto( nCampo, nRow, nConteudo, nAlign ) CLASS hbNFeDaNFe
       IF ValType( nConteudo ) == "C"
          cTexto := nConteudo
       ELSE
-         cTexto         := ::aLayout[ nCampo, nConteudo ]
+         cTexto := ::aLayout[ nCampo, nConteudo ]
          IF nConteudo == LAYOUT_CONTEUDO
             cTexto := Eval( cTexto )
          ENDIF
