@@ -1130,14 +1130,14 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ::cXmlSoap    += [<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ]
    ::cXmlSoap    +=    [xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">]
    IF ::cSoapAction != "nfeDistDFeInteresse"
-      ::cXmlSoap +=    [<soap12:Header>]
-      ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
       IF ! ( ::cProjeto == WS_PROJETO_NFE .AND. ::cVersao == "4.00" )
+         ::cXmlSoap +=    [<soap12:Header>]
+         ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
          ::cXmlSoap +=          [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
          ::cXmlSoap +=          [<versaoDados>] + ::cSoapVersion + [</versaoDados>]
+         ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
+         ::cXmlSoap +=    [</soap12:Header>]
       ENDIF
-      ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
-      ::cXmlSoap +=    [</soap12:Header>]
    ENDIF
    ::cXmlSoap    +=    [<soap12:Body>]
    IF ::cSoapAction == "nfeDistDFeInteresse"
