@@ -774,15 +774,6 @@ FUNCTION XmlToDocCteCancel( cXmlInput, oCTE )
 
    RETURN oCte
 
-FUNCTION TrimXml( cTexto )
-
-   cTexto := AllTrim( cTexto )
-   cTexto := StrTran( cTexto, "  ", " " )
-   cTexto := StrTran( cTexto, "  ", " " )
-   cTexto := StrTran( cTexto, "  ", " " )
-
-   RETURN cTexto
-
 FUNCTION PicNfe( cChave )
 
    RETURN Transform( cChave, "@R 99-99/99-99.999.999/9999-99.99.999.999999999.9.99999999.9" )

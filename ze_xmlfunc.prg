@@ -283,3 +283,13 @@ FUNCTION MultipleNodeToArray( cXml, cNode )
    ENDDO
 
    RETURN aNodes
+
+FUNCTION TrimXml( cTexto )
+
+   cTexto := AllTrim( cTexto )
+   DO WHILE Space(2) $ cTexto
+      cTexto := StrTran( cTexto, Space(2), Space(1) )
+   ENDDO
+
+   RETURN cTexto
+
