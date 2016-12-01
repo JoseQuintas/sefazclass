@@ -327,7 +327,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
    hbNFe_Texto_hpdf( ::oPdfPage, 341, ::nLinhaPdf,     390, Nil, "SERIE", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
    hbNFe_Texto_hpdf( ::oPdfPage, 341, ::nLinhaPDF -6,   390, Nil, ::aIde[ "serie" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 11 )
 
-   IF At( "retEventoCTe",::cXmlEvento) > 0
+   IF Substr( ::cChaveEvento, 21, 2 ) == "57" // At( "retEventoCTe",::cXmlEvento) > 0
       // NUMERO CTE
       hbNFe_Texto_hpdf( ::oPdfPage, 391, ::nLinhaPdf,     480, Nil, "NUMERO DO CT-e", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
       hbNFe_Texto_hpdf( ::oPdfPage, 391, ::nLinhaPDF -6,   480, Nil, SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 11 )

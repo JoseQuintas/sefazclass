@@ -1,10 +1,5 @@
 /*
 ZE_SPEDASSINA - Assinatura SPED
-
-2016.07.07.1230 - Apenas formatação
-2016.11.12.1700 - Otimizado teste de tags inicial/final
-2016.11.12.1700 - Não precisa tag inicial, apenas testar se existe
-2016.11.25.2300 - Nome da rotina pra evitar erros dentro da classe
 */
 
 #define _CAPICOM_STORE_OPEN_READ_ONLY                 0           // Somente Smart Card em Modo de Leitura
@@ -130,7 +125,7 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN )
       cRetorno := "Erro Assinatura: Template de assinatura não encontrado"
       xmldsig:signature := oDOMDoc:selectSingleNode(".//ds:Signature")
 
-      oCert:= CapicomCertificado( cCertCn )
+      oCert := CapicomCertificado( cCertCn )
       IF oCert == NIL
          cRetorno := "Erro Assinatura: Certificado não encontrado ou vencido"
          BREAK

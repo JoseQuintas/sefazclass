@@ -1,13 +1,6 @@
 /*
 ZE_SPEDDANFE - Documento Auxiliar da Nota Fiscal Eletrônica
 Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
-
-Atenção:
-Nem todas as variações vão estar disponíveis no futuro.
-Algumas estão sendo mantidas para o caso de eventual problema.
-
-2016.11.26.1900 - Experimental: Uso de HPDF_Page_TextWidth() pra definir largura das colunas
-2016.11.26.1900 - Correção: data/hora de saída em formato paisagem
 */
 
 #include "common.ch"
@@ -228,6 +221,14 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    ::aDest[ "xNome" ]  := XmlToString( ::aDest[ "xNome" ] )
    ::cTelefoneEmitente := FormatTelefone( ::aEmit[ "fone" ] )
    ::aDest[ "fone" ]   := FormatTelefone( ::aDest[ "fone" ] )
+   IF ! Empty( ::aEntrega[ "xLgr" ] )
+      ::aInfAdic[ "infCpl" ] += ";" + TrimXml( "LOCAL DE ENTREGA: " + ::aEntrega[ "xLgr" ] + " " + ::aEntrega[ "nro" ] + " " + ;
+         ::aEntrega[ "xBairro" ] + " " + ::aEntrega[ "xMun" ] + " " + ::aEntrega[ "UF" ] )
+   ENDIF
+   IF ! Empty( ::aRetirada[ "xLgr" ] )
+      ::aInfAdic[ "infCpl" ] += ";" + TrimXml( "LOCAL DE RETIRADA: " + ::aRetirada[ "xLgr" ] + " " + ::aRetirada[ "nro" ] + " " + ;
+         ::aRetirada[ "xBairro" ] + " " + ::aRetirada[ "xMun" ] + " " + ::aRetirada[ "UF" ] )
+   ENDIF
    ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";;", ";" )
    ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";", Chr(13) + Chr(10) )
 
@@ -490,8 +491,7 @@ METHOD Canhoto() CLASS hbNFeDaNFe
          ::nLinhaPdf -= 10
       ENDIF
    ELSE
-      IF ::lPaisagem
-      ELSE // retrato
+      IF ! ::lPaisagem
          ::nLinhaPdf -= 18
          ::nLinhaPdf -= 24
          ::nLinhaPdf -= 10
@@ -657,8 +657,6 @@ METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
       ELSEIF ::nLogoStyle == _LOGO_ESQUERDA
          HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf - 6, 244, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
-         // Anderson camilo   30/12/2011  Comentei esta linha porque a razão social estava saindo um nome sobre o outro
-         // hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf - 18, 244, NIL, TRIM(MEMOLINE(::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf - 30, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf - 38, 244, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
          hbNFe_Texto_hpdf( ::oPdfPage, 70, ::nLinhaPdf - 46, 244, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
@@ -785,10 +783,10 @@ METHOD Destinatario() CLASS hbNFeDaNFe
       // CNPJ/CPF
       hbNFe_Box_Hpdf( ::oPdfPage, 660, ::nLinhaPdf - 16, 100, 16, ::nLarguraBox )
       hbNFe_Texto_hpdf( ::oPdfPage, 661, ::nLinhaPdf - 1,  759, NIL, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-      IF !Empty( ::aDest[ "CNPJ" ] )
+      IF ! Empty( ::aDest[ "CNPJ" ] )
          hbNFe_Texto_hpdf( ::oPdfPage, 661, ::nLinhaPdf - 5, 759, NIL, Transform( ::aDest[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 9 )
       ELSE
-         IF ::aDest[ "CPF" ] <> NIL
+         IF ! Empty( ::aDest[ "CPF" ] )
             hbNFe_Texto_hpdf( ::oPdfPage, 661, ::nLinhaPdf - 5, 759, NIL, Transform( ::aDest[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
          ENDIF
       ENDIF
