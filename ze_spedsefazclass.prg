@@ -1383,7 +1383,7 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
       oXmlDomDoc:Schemas := oXmlSchema
       oXmlErro := oXmlDomDoc:Validate()
       IF oXmlErro:ErrorCode <> 0
-         cRetorno := "Erro: " + AllTrim( Transform( oXmlErro:ErrorCode, "" ) ) + " " + AllTrim( Transform( oXmlErro:Reason, "" ) )
+         cRetorno := "Erro: " + AllTrim( Transform( oXmlErro:ErrorCode, "" ) ) + " " + ConverteXmlErro( oXmlErro:Reason, "" )
          BREAK
       ENDIF
       cRetorno := "OK"
@@ -1392,6 +1392,24 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
 
    RETURN cRetorno
 
+STATIC FUNCTION ConverteXmlErro( cTexto )
+
+   LOCAL nPosIni, nPosFim
+
+   cTexto := AllTrim( Transform( cTexto, "" ) )
+   DO WHILE .T.
+      IF ! "{" $ cTexto .OR. ! "}" $ cTexto
+         EXIT
+      ENDIF
+      nPosIni := At( "{", cTexto ) - 1
+      nPosFim := At( "}", cTexto ) + 1
+      IF nPosIni > nPosFim
+         EXIT
+      ENDIF
+      cTexto := Substr( cTexto, 1, nPosIni ) + Substr( cTexto, nPosFim )
+   ENDDO
+
+   RETURN cTexto
 
 #ifdef LIBCURL // pra nao compilar, apenas anotado
 //
