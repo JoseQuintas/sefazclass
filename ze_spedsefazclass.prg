@@ -1342,17 +1342,14 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
    hb_Default( @cFileXsd, "" )
 
    IF " <" $ cXml .OR. "> " $ cXml
-      cRetorno := "Espaços inválidos no XML entre as tags"
-      RETURN cRetorno
+      RETURN "Espaços inválidos no XML entre as tags"
    ENDIF
 
    IF Empty( cFileXsd )
-      cRetorno := "OK"
-      BREAK
+      RETURN "OK"
    ENDIF
    IF ! File( cFileXSD )
-      cRetorno := "Erro não encontrado arquivo " + cFileXSD
-      BREAK
+      RETURN "Erro não encontrado arquivo " + cFileXSD
    ENDIF
 
    BEGIN SEQUENCE WITH __BreakBlock()
