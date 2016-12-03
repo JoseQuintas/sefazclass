@@ -10,32 +10,32 @@ CREATE CLASS hbNFeDaGeral
 
    VAR    oPDFPage
 
-   METHOD LoadJPEGImage( oPDF, xValue )
-   METHOD DrawBarcode( cBarCode, oPDFPage, nAreaX, nAreaY, nBarWidth, nAreaHeight )
+   METHOD DrawBarcode( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
    METHOD FormataMemo( cMemo, nLarguraPDF )
    METHOD DefineDecimais( xValue, nDecimais )
    METHOD DrawTexto( x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo ) INLINE hbNFe_Texto_Hpdf( ::oPDFPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
    METHOD DrawLine( x1, y1, x2, y2, nPen, FLAG )                                   INLINE hbNFe_Line_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen, FLAG )
    METHOD DrawBox( x1, y1, x2, y2, nPen )                                          INLINE hbNFe_Box_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen )
    METHOD LarguraTexto( cText )                                                    INLINE HPDF_Page_TextWidth( ::oPDFPage, cText )
+   METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 )
 
    END CLASS
 
-METHOD LoadJPEGImage( oPDF, xValue ) CLASS hbNFeDaGeral
+METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 ) CLASS hbNFeDaGeral
 
-   LOCAL oImage
-
-   IF xValue != NIL
-      IF Len( xValue ) < 100
-         oImage := HPDF_LoadJpegImageFromFile( oPDF, xValue )
-      ELSE
-         oImage := HPDF_LoadJpegImageFromMem( oPDF, xValue, Len( xValue ) )
-      ENDIF
+   IF cJPEGImage == NIL .OR. Empty( cJPEGImage )
+      RETURN NIL
    ENDIF
+   IF Len( cJPEGImage ) < 100
+      cJPEGImage := HPDF_LoadJpegImageFromFile( ::oPDF, cJPEGImage )
+   ELSE
+      cJPEGImage := HPDF_LoadJpegImageFromMem( ::oPDF, cJPEGImage, Len( cJPEGImage ) )
+   ENDIF
+   HPDF_Page_DrawImage( ::oPDFPage, cJPEGImage, x1, y1, x2, y2 )
 
-   RETURN oImage
+   RETURN NIL
 
-METHOD DrawBarcode( cBarCode, oPDFPage, nAreaX, nAreaY, nBarWidth, nAreaHeight ) CLASS hbNFeDaGeral
+METHOD DrawBarcode( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight ) CLASS hbNFeDaGeral
 
    LOCAL hZebra
 
@@ -43,8 +43,8 @@ METHOD DrawBarcode( cBarCode, oPDFPage, nAreaX, nAreaY, nBarWidth, nAreaHeight )
    IF hb_zebra_geterror( hZebra ) != 0
       RETURN HB_ZEBRA_ERROR_INVALIDZEBRA
    ENDIF
-   hb_zebra_draw( hZebra, { | x, y, w, h | HPDF_Page_Rectangle( oPDFPage, x, y, w, h ) }, nAreaX, nAreaY, nBarWidth, nAreaHeight )
-   HPDF_Page_Fill( oPDFPage )
+   hb_zebra_draw( hZebra, { | x, y, w, h | HPDF_Page_Rectangle( ::oPDFPage, x, y, w, h ) }, nAreaX, nAreaY, nBarWidth, nAreaHeight )
+   HPDF_Page_Fill( ::oPDFPage )
 
    RETURN 0
 
@@ -130,3 +130,4 @@ STATIC FUNCTION hbNFe_Box_Hpdf( oPage, x1, y1, x2, y2, nPen )
    HPDF_Page_Stroke( oPage )
 
    RETURN NIL
+
