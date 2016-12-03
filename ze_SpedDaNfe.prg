@@ -193,7 +193,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
       ::aIde[ "dhEmi" ] := XmlNode( XmlNode( ::cXml, "ide" ), "dEmi" )
    ENDIF
    //IF Empty( ::aIde[ "dhSaiEnt" ] ) // NFE 2.0
-   //   ::aIde[ "dhSaiEnt" ] := XmlNode( XmlNode( ::cXml, "ide" ), "dSaiEnt" ) + "T" + Time()
+   //   ::aIde[ "dhSaiEnt" ] := XmlNode( XmlNode( ::cXml, "ide" ), "dSaiEnt" )
    //ENDIF
    ::aEmit       := XmlToHash( XmlNode( ::cXml, "emit" ), { "CNPJ", "CPF", "xNome", "xFant", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", ;
                     "fone", "IE", "IEST", "IM", "CNAE", "CRT", "fone" } )
@@ -298,15 +298,9 @@ METHOD NovaPagina() CLASS hbNFeDaNFe
    ENDIF
    nAltura := HPDF_Page_GetHeight( ::oPdfPage )
 
-   IF ::lPaisagem
-      ::nLinhaPdf := nAltura - 10     // Margem Superior
-      nAngulo := 30                   /* A rotation of 45 degrees. */
-   ELSE
-      ::nLinhaPdf := nAltura - 8 // Margem Superior
-      nAngulo := 45                   /* A rotation of 45 degrees. */
-   ENDIF
-
-   nRadiano := nAngulo / 180 * 3.141592 /* Calcurate the radian value. */
+   ::nLinhaPdf := nAltura - iif( ::lPaisagem, 10, 8 )     // Margem Superior
+   nAngulo     := iif( ::lPaisagem, 30, 45 )              // A rotation of 45 degrees
+   nRadiano    := nAngulo / 180 * 3.141592                // Calcurate the radian value
 
    IF ::aIde[ "tpEmis" ] = "5" // Contingencia
       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPdfFontCabecalhoBold, 30 )
@@ -438,18 +432,17 @@ METHOD Canhoto() CLASS hbNFeDaNFe
    IF ::nFolha == 1
       IF ::lPaisagem
          ::DrawBox(   5, 20, 50, 565, ::nLarguraBox )
-         // recebemos
+
          ::DrawTexto(  14, 21, 14 + 8, ::nLinhaPdf, "Recebemos de " + Trim( ::aEmit[ "xNome" ] ) + " os produtos constantes da Nota Fiscal indicada ao lado", HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 7, 90 )
-         // quadro numero da NF
+
          ::DrawBox(   5, 505, 50, 80, ::nLarguraBox )
          ::DrawTexto(  14, 506, 14 + 8, NIL, "NOTA FISCAL", HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8, 90 )
          ::DrawTexto(  30, 506, 30 + 8, NIL, "Nº: " + Transform( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), "@R 999.999.999" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8, 90 )
          ::DrawTexto(  46, 506, 46 + 8, NIL, "SÉRIE " + ::aIde[ "serie" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8, 90 )
 
-         // data recebimento
          ::DrawBox(  20, 20, 35, 120, ::nLarguraBox )
          ::DrawTexto( 26, 21, 26 + 8, NIL, "DATA DE RECEBIMENTO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6, 90 )
-         // identificacao
+
          ::DrawBox(  20, 140, 35, 365, ::nLarguraBox )
          ::DrawTexto(  26, 141, 26 + 8, NIL, "IDENTIFICAÇÃO E ASSINATURA DO RECEBEDOR", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6, 90 )
 
@@ -459,22 +452,21 @@ METHOD Canhoto() CLASS hbNFeDaNFe
          ELSE
             ::DrawTexto( 65, 20, 65 + 6, NIL, Replicate( "- ", 78 ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6, 90 )
          ENDIF
-      ELSE // retrato
+      ELSE
          ::DrawBox( 5, ::nLinhaPdf - 44, 585, 44, ::nLarguraBox )
-         // recebemos
+
          ::DrawTexto( 6, ::nLinhaPdf, 490, NIL, "Recebemos de " + ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8 )
          ::DrawTexto( 6, ::nLinhaPdf - 7, 490, NIL, "os produtos constantes da Nota Fiscal indicada ao lado", HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8 )
-         // quadro numero da NF
+
          ::DrawBox( 505, ::nLinhaPdf - 44, 85, 44, ::nLarguraBox )
          ::DrawTexto( 506, ::nLinhaPdf - 8, 589, NIL, "NF-e", HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8 )
          ::DrawTexto( 506, ::nLinhaPdf - 20, 589, NIL, "Nº: " + Transform( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), "@R 999.999.999" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8 )
          ::DrawTexto( 506, ::nLinhaPdf - 32, 589, NIL, "SÉRIE " + ::aIde[ "serie" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8 )
          ::nLinhaPdf -= 18
 
-         // data recebimento
          ::DrawBox(   5, ::nLinhaPdf - 26, 130, 26, ::nLarguraBox )
          ::DrawTexto( 6, ::nLinhaPdf, 134, NIL, "DATA DE RECEBIMENTO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         // identificacao
+
          ::DrawBox( 135, ::nLinhaPdf - 26, 370, 26, ::nLarguraBox )
          ::DrawTexto( 136, ::nLinhaPdf, 470, NIL, "IDENTIFICAÇÃO E ASSINATURA DO RECEBEDOR", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
          ::nLinhaPdf -= 24
@@ -586,7 +578,6 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDaNFe
 
    ::nLinhaPdf -= 80
 
-   // NATUREZA
    ::DrawBox( 70, ::nLinhaPdf - 16, 455, 16, ::nLarguraBox )
    ::DrawTexto( 71, ::nLinhaPdf - 1, 524, NIL, "NATUREZA DA OPERAÇÃO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
    ::DrawTexto( 71, ::nLinhaPdf - 5, 524, NIL, ::aIde[ "natOp" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
@@ -608,15 +599,14 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDaNFe
 
    ::nLinhaPdf -= 16
 
-   // I.E.
    ::DrawBox( 70, ::nLinhaPdf - 16, 240, 16, ::nLarguraBox )
    ::DrawTexto( 71, ::nLinhaPdf - 1, 309, NIL, "INSCRIÇÃO ESTADUAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
    ::DrawTexto( 71, ::nLinhaPdf - 5, 309, NIL, ::aEmit[ "IE" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
-   // I.E. SUBS. TRIB.
+
    ::DrawBox( 310, ::nLinhaPdf - 16, 400, 16, ::nLarguraBox )
    ::DrawTexto( 311, ::nLinhaPdf - 1, 709, NIL, "INSCRIÇÃO ESTADUAL DO SUBS. TRIBUTÁRIO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
    ::DrawTexto( 311, ::nLinhaPdf - 5, 709, NIL, "", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
-   // CNPJ
+
    ::DrawBox( 710, ::nLinhaPdf - 16, 120, 16, ::nLarguraBox )
    ::DrawTexto( 711, ::nLinhaPdf - 1,  829, NIL, "C.N.P.J.", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
    ::DrawTexto( 711, ::nLinhaPdf - 5, 829, NIL, Transform( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
@@ -664,7 +654,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
          ::DrawTexto(  6, ::nLinhaPdf - 70, 180, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
       ENDIF
    ENDIF
-   // numero nf tipo
+
    ::DrawBox( 245, ::nLinhaPdf - 80, 125, 80, ::nLarguraBox )
    ::DrawTexto( 246, ::nLinhaPdf - 4, 369, NIL, "DANFE", HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
    ::DrawTexto( 246, ::nLinhaPdf - 16, 369, NIL, "Documento Auxiliar da", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
@@ -716,7 +706,6 @@ METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
 
    ::nLinhaPdf -= 80
 
-   // NATUREZA
    ::DrawBox(  5, ::nLinhaPdf - 16, 365, 16, ::nLarguraBox )
    ::DrawTexto( 6, ::nLinhaPdf - 1,  369, NIL, "NATUREZA DA OPERAÇÃO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
    ::DrawTexto( 6, ::nLinhaPdf - 5, 369, NIL, ::aIde[ "natOp" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
@@ -741,15 +730,14 @@ METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
 
    ::nLinhaPdf -= 16
 
-   // I.E.
    ::DrawBox(  5, ::nLinhaPdf - 16, 240, 16, ::nLarguraBox )
    ::DrawTexto( 6, ::nLinhaPdf - 1,  244, NIL, "INSCRIÇÃO ESTADUAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
    ::DrawTexto( 6, ::nLinhaPdf - 5, 244, NIL, ::aEmit[ "IE" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
-   // I.E. SUBS. TRIB.
+
    ::DrawBox( 245, ::nLinhaPdf - 16, 225, 16, ::nLarguraBox )
    ::DrawTexto( 246, ::nLinhaPdf - 1,  419, NIL, "INSCRIÇÃO ESTADUAL DO SUBS. TRIBUTÁRIO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
    ::DrawTexto( 246, ::nLinhaPdf - 5, 419, NIL, "", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
-   // CNPJ
+
    ::DrawBox( 470, ::nLinhaPdf - 16, 120, 16, ::nLarguraBox )
    ::DrawTexto( 471, ::nLinhaPdf - 1,  589, NIL, "C.N.P.J.", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
    ::DrawTexto( 471, ::nLinhaPdf - 5, 589, NIL, Transform( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
@@ -765,11 +753,10 @@ METHOD Destinatario() CLASS hbNFeDaNFe
 
       ::nLinhaPdf -= 6
 
-      // RAZAO SOCIAL
       ::DrawBox( 70, ::nLinhaPdf - 16, 590, 16, ::nLarguraBox )
       ::DrawTexto( 71, ::nLinhaPdf - 1,  659, NIL, "NOME / RAZÃO SOCIAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 71, ::nLinhaPdf - 5, 659, NIL, ::aDest[ "xNome" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
-      // CNPJ/CPF
+
       ::DrawBox( 660, ::nLinhaPdf - 16, 100, 16, ::nLarguraBox )
       ::DrawTexto( 661, ::nLinhaPdf - 1,  759, NIL, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       IF ! Empty( ::aDest[ "CNPJ" ] )
@@ -779,50 +766,48 @@ METHOD Destinatario() CLASS hbNFeDaNFe
             ::DrawTexto( 661, ::nLinhaPdf - 5, 759, NIL, Transform( ::aDest[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
          ENDIF
       ENDIF
-      // DATA DE EMISSAO
+
       ::DrawBox( 760, ::nLinhaPdf - 16, 70, 16, ::nLarguraBox )
       ::DrawTexto( 761, ::nLinhaPdf - 1,  829, NIL, "DATA DE EMISSÃO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 761, ::nLinhaPdf - 5, 829, NIL, SubStr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 1, 4 ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
 
       ::nLinhaPdf -= 16
 
-      // ENDEREÇO
       ::DrawBox( 70, ::nLinhaPdf - 16, 440, 16, ::nLarguraBox )
       ::DrawTexto( 71, ::nLinhaPdf - 1,  509, NIL, "ENDEREÇO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 71, ::nLinhaPdf - 5, 509, NIL, ::aDest[ "xLgr" ] + " " + ::aDest[ "nro" ] + " " + ::aDest[ "xCpl" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
-      // BAIRRO
+
       ::DrawBox( 510, ::nLinhaPdf - 16, 190, 16, ::nLarguraBox )
       ::DrawTexto( 511, ::nLinhaPdf - 1,  699, NIL, "BAIRRO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 511, ::nLinhaPdf - 5, 699, NIL, ::aDest[ "xBairro" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
-      // CEP
+
       ::DrawBox( 700, ::nLinhaPdf - 16, 60, 16, ::nLarguraBox )
       ::DrawTexto( 701, ::nLinhaPdf - 1,  759, NIL, "C.E.P.", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
 
       ::DrawTexto( 704, ::nLinhaPdf - 5, 759, NIL, Transform( ::aDest[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
-      // DATA DE SAIDA/ENTRADA
+
       ::DrawBox( 760, ::nLinhaPdf - 16, 70, 16, ::nLarguraBox )
       ::DrawTexto( 761, ::nLinhaPdf - 1,  829, NIL, "DATA SAIDA/ENTRADA", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 761, ::nLinhaPdf - 5, 829, NIL, SubStr( ::aIde[ "dhSaiEnt" ], 9, 2 ) + "/" + SubStr( ::aIde[ "dhSaiEnt" ], 6, 2 ) + "/" + SubStr( ::aIde[ "dhSaiEnt" ], 1, 4 ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
 
       ::nLinhaPdf -= 16
 
-      // MUNICIPIO
       ::DrawBox( 70, ::nLinhaPdf - 16, 410, 16, ::nLarguraBox )
       ::DrawTexto( 71, ::nLinhaPdf - 1,  479, NIL, "MUNICIPIO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 71, ::nLinhaPdf - 5, 479, NIL, ::aDest[ "xMun" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
-      // FONE/FAX
+
       ::DrawBox( 480, ::nLinhaPdf - 16, 150, 16, ::nLarguraBox )
       ::DrawTexto( 481, ::nLinhaPdf - 1,  629, NIL, "FONE/FAX", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 481, ::nLinhaPdf - 5, 629, NIL, FormatTelefone( ::aDest[ "fone" ] ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
-      // ESTADO
+
       ::DrawBox( 630, ::nLinhaPdf - 16, 30, 16, ::nLarguraBox )
       ::DrawTexto( 631, ::nLinhaPdf - 1,  659, NIL, "ESTADO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 631, ::nLinhaPdf - 5, 659, NIL, ::aDest[ "UF" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
-      // INSC. EST.
+
       ::DrawBox( 660, ::nLinhaPdf - 16, 100, 16, ::nLarguraBox )
       ::DrawTexto( 661, ::nLinhaPdf - 1,  759, NIL, "INSCRIÇÃO ESTADUAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 661, ::nLinhaPdf - 5, 759, NIL, ::aDest[ "IE" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
-      // DATA DE SAIDA/ENTRADA
+
       ::DrawBox( 760, ::nLinhaPdf - 16, 70, 16, ::nLarguraBox )
       ::DrawTexto( 761, ::nLinhaPdf - 1,  829, NIL, "HORA DE SAIDA", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 761, ::nLinhaPdf - 5, 589, NIL, SubStr( ::aIde[ "dhSaiEnt" ], 9, 2 ) + "/" + SubStr( ::aIde[ "dhSaiEnt" ], 6, 2 ) + "/" + SubStr( ::aIde[ "dhSaiEnt" ], 1, 4 ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
@@ -833,63 +818,60 @@ METHOD Destinatario() CLASS hbNFeDaNFe
 
       ::nLinhaPdf -= 6
 
-      // RAZAO SOCIAL
       ::DrawBox(  5, ::nLinhaPdf - 16, 415, 16, ::nLarguraBox )
       ::DrawTexto( 6, ::nLinhaPdf - 1,  419, NIL, "NOME / RAZÃO SOCIAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 6, ::nLinhaPdf - 5, 419, NIL, ::aDest[ "xNome" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
-      // CNPJ/CPF
+
       ::DrawBox( 420, ::nLinhaPdf - 16, 100, 16, ::nLarguraBox )
       ::DrawTexto( 421, ::nLinhaPdf - 1,  519, NIL, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       IF !Empty( ::aDest[ "CNPJ" ] )
          ::DrawTexto( 421, ::nLinhaPdf - 5, 519, NIL, Transform( ::aDest[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 9 )
       ELSE
-         IF ::aDest[ "CPF" ] <> NIL
+         IF ! Empty( ::aDest[ "CPF" ] )
             ::DrawTexto( 421, ::nLinhaPdf - 5, 519, NIL, Transform( ::aDest[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
          ENDIF
       ENDIF
-      // DATA DE EMISSAO
+
       ::DrawBox( 520, ::nLinhaPdf - 16, 70, 16, ::nLarguraBox )
       ::DrawTexto( 521, ::nLinhaPdf - 1,  589, NIL, "DATA DE EMISSÃO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 521, ::nLinhaPdf - 5, 589, NIL, SubStr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 1, 4 ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
 
       ::nLinhaPdf -= 16
 
-      // ENDEREÇO
       ::DrawBox(  5, ::nLinhaPdf - 16, 265, 16, ::nLarguraBox )
       ::DrawTexto( 6, ::nLinhaPdf - 1,  269, NIL, "ENDEREÇO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 6, ::nLinhaPdf - 5, 269, NIL, ::aDest[ "xLgr" ] + " " + ::aDest[ "nro" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
-      // BAIRRO
+
       ::DrawBox( 270, ::nLinhaPdf - 16, 190, 16, ::nLarguraBox )
       ::DrawTexto( 271, ::nLinhaPdf - 1,  459, NIL, "BAIRRO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 271, ::nLinhaPdf - 5, 459, NIL, ::aDest[ "xBairro" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
-      // CEP
+
       ::DrawBox( 460, ::nLinhaPdf - 16, 60, 16, ::nLarguraBox )
       ::DrawTexto( 461, ::nLinhaPdf - 1,  519, NIL, "C.E.P.", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 461, ::nLinhaPdf - 5, 519, NIL, Transform( ::aDest[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
-      // DATA DE SAIDA/ENTRADA
+
       ::DrawBox( 520, ::nLinhaPdf - 16, 70, 16, ::nLarguraBox )
       ::DrawTexto( 521, ::nLinhaPdf - 1,  589, NIL, "DATA SAIDA/ENTRADA", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 521, ::nLinhaPdf - 5, 589, NIL, SubStr( ::aIde[ "dhSaiEnt" ], 9, 2 ) + "/" + SubStr( ::aIde[ "dhSaiEnt" ], 6, 2 ) + "/" + SubStr( ::aIde[ "dhSaiEnt" ], 1, 4 ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
 
       ::nLinhaPdf -= 16
 
-      // MUNICIPIO
       ::DrawBox(  5, ::nLinhaPdf - 16, 245, 16, ::nLarguraBox )
       ::DrawTexto( 6, ::nLinhaPdf - 1,  249, NIL, "MUNICIPIO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 6, ::nLinhaPdf - 5, 249, NIL, ::aDest[ "xMun" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
-      // FONE/FAX
+
       ::DrawBox( 250, ::nLinhaPdf - 16, 150, 16, ::nLarguraBox )
       ::DrawTexto( 251, ::nLinhaPdf - 1,  399, NIL, "FONE/FAX", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 251, ::nLinhaPdf - 5, 399, NIL, FormatTelefone( ::aDest[ "fone" ] ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
-      // ESTADO
+
       ::DrawBox( 400, ::nLinhaPdf - 16, 30, 16, ::nLarguraBox )
       ::DrawTexto( 401, ::nLinhaPdf - 1,  429, NIL, "ESTADO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 401, ::nLinhaPdf - 5, 429, NIL, ::aDest[ "UF" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
-      // INSC. EST.
+
       ::DrawBox( 430, ::nLinhaPdf - 16, 90, 16, ::nLarguraBox )
       ::DrawTexto( 431, ::nLinhaPdf - 1,  519, NIL, "INSCRIÇÃO ESTADUAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 431, ::nLinhaPdf - 5, 519, NIL, ::aDest[ "IE" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
-      // DATA DE SAIDA/ENTRADA
+
       ::DrawBox( 520, ::nLinhaPdf - 16, 70, 16, ::nLarguraBox )
       ::DrawTexto( 521, ::nLinhaPdf - 1,  589, NIL, "HORA DE SAIDA", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
       ::DrawTexto( 521, ::nLinhaPdf - 5, 589, NIL, SubStr( ::aIde[ "dhSaiEnt" ], 12, 8 ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
@@ -909,7 +891,6 @@ METHOD Duplicatas() CLASS hbNFeDaNFe
          ::nLinhaPdf -= 6
 
          IF Empty( ::cCobranca )
-            // FATURAS
             ::DrawBox( 70, ::nLinhaPdf - 12, 760, 12, ::nLarguraBox )
             IF ::aIde[ "indPag" ] == "0"
                ::DrawTexto( 71, ::nLinhaPdf - 1,  824, NIL, "PAGAMENTO À VISTA", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
@@ -936,7 +917,6 @@ METHOD Duplicatas() CLASS hbNFeDaNFe
          ::nLinhaPdf -= 6
 
          IF Empty( ::cCobranca )
-            // FATURAS
             ::DrawBox(  5, ::nLinhaPdf - 12, 585, 12, ::nLarguraBox )
             IF ::aIde[ "indPag" ] == "0"
                ::DrawTexto( 6, ::nLinhaPdf - 1,  589, NIL, "PAGAMENTO À VISTA", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
@@ -956,7 +936,7 @@ METHOD Duplicatas() CLASS hbNFeDaNFe
             nTamanhoCob := ( nItensCob * 7 ) + 2
             ::CabecalhoCobranca( nLinhaFinalCob, nTamanhoCob )
             ::Faturas()
-            ::nLinhaPdf -= 4 // ESPAÇO
+            ::nLinhaPdf -= 4
          ENDIF
       ENDIF
    ENDIF
@@ -965,86 +945,39 @@ METHOD Duplicatas() CLASS hbNFeDaNFe
 
 METHOD CabecalhoCobranca( nLinhaFinalCob, nTamanhoCob ) CLASS hbNFeDaNFe
 
-   LOCAL nTamForm
+   LOCAL nTamForm, nCont
 
    IF ::nFolha == 1
       IF ::lPaisagem
          nTamForm := 830 - 70
-
-         // COLUNA 1
-         ::DrawBox(  70, nLinhaFinalCob, ( ( nTamForm ) / 4 ), nTamanhoCob, ::nLarguraBox )
-         ::DrawTexto( 71, ::nLinhaPdf - 1,  126, NIL, "NÚMERO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 128, ::nLinhaPdf - 1,  183, NIL, "VENCIMENTO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 185, ::nLinhaPdf - 1,  259, NIL, "VALOR", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         // COLUNA 2
-         ::DrawBox( 70 + ( ( nTamForm ) / 4 ), nLinhaFinalCob, ( ( nTamForm ) / 4 ), nTamanhoCob, ::nLarguraBox )
-         ::DrawTexto( 71 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1, 126 + ( ( nTamForm ) / 4 ), NIL, "NÚMERO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 128 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1, 183 + ( ( nTamForm ) / 4 ), NIL, "VENCIMENTO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 185 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1, 259 + ( ( nTamForm ) / 4 ), NIL, "VALOR", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         // COLUNA 3
-         ::DrawBox( 70 + ( ( ( nTamForm ) / 4 ) * 2 ), nLinhaFinalCob, ( ( nTamForm ) / 4 ), nTamanhoCob, ::nLarguraBox )
-         ::DrawTexto( 71 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1, 126 + ( ( ( nTamForm ) / 4 ) * 2 ), NIL, "NÚMERO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 128 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1, 183 + ( ( ( nTamForm ) / 4 ) * 2 ), NIL, "VENCIMENTO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 185 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1, 259 + ( ( ( nTamForm ) / 4 ) * 2 ), NIL, "VALOR", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         // COLUNA 4
-         ::DrawBox( 70 + ( ( ( nTamForm ) / 4 ) * 3 ), nLinhaFinalCob, ( ( nTamForm ) / 4 ), nTamanhoCob, ::nLarguraBox )
-         ::DrawTexto( 71 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1, 126 + ( ( ( nTamForm ) / 4 ) * 3 ), NIL, "NÚMERO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 128 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1, 183 + ( ( ( nTamForm ) / 4 ) * 3 ), NIL, "VENCIMENTO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 185 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1, 259 + ( ( ( nTamForm ) / 4 ) * 3 ), NIL, "VALOR", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+         FOR nCont = 0 TO 3
+            ::DrawBox(    70 + ( ( ( nTamForm ) / 4 ) * nCont ), nLinhaFinalCob, ( ( nTamForm ) / 4 ), nTamanhoCob, ::nLarguraBox )
+            ::DrawTexto(  71 + ( ( ( nTamForm ) / 4 ) * nCont ), ::nLinhaPdf - 1, 126 + ( ( ( nTamForm ) / 4 ) * nCont ), NIL, "NÚMERO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+            ::DrawTexto( 128 + ( ( ( nTamForm ) / 4 ) * nCont ), ::nLinhaPdf - 1, 183 + ( ( ( nTamForm ) / 4 ) * nCont ), NIL, "VENCIMENTO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+            ::DrawTexto( 185 + ( ( ( nTamForm ) / 4 ) * nCont ), ::nLinhaPdf - 1, 259 + ( ( ( nTamForm ) / 4 ) * nCont ), NIL, "VALOR", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+         NEXT
          ::nLinhaPdf -= 6
-
-         // COLUNA 1
-         ::DrawLine(  71, ::nLinhaPdf - 1.5, 126, ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  128, ::nLinhaPdf - 1.5, 183, ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  185, ::nLinhaPdf - 1.5, 259, ::nLinhaPdf - 1.5, ::nLarguraBox )
-         // COLUNA 2
-         ::DrawLine(  71 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1.5, 126 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  128 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1.5, 183 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  185 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1.5, 259 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         // COLUNA 3
-         ::DrawLine(  71 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1.5, 126 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  128 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1.5, 183 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  185 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1.5, 259 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         // COLUNA 4
-         ::DrawLine(  71 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1.5, 126 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  128 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1.5, 183 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  185 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1.5, 259 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-
-         ::nLinhaPdf -= 2 // ESPAÇO
+         FOR nCont = 0 TO 3
+            ::DrawLine(  71 + ( ( ( nTamForm ) / 4 ) * nCont ), ::nLinhaPdf - 1.5, 126 + ( ( ( nTamForm ) / 4 ) * nCont ), ::nLinhaPdf - 1.5, ::nLarguraBox )
+            ::DrawLine(  128 + ( ( ( nTamForm ) / 4 ) * nCont ), ::nLinhaPdf - 1.5, 183 + ( ( ( nTamForm ) / 4 ) * nCont ), ::nLinhaPdf - 1.5, ::nLarguraBox )
+            ::DrawLine(  185 + ( ( ( nTamForm ) / 4 ) * nCont ), ::nLinhaPdf - 1.5, 259 + ( ( ( nTamForm ) / 4 ) * nCont ), ::nLinhaPdf - 1.5, ::nLarguraBox )
+         NEXT
+         ::nLinhaPdf -= 2
       ELSE
          nTamForm := 585
-
-         // COLUNA 1
-         ::DrawBox(  5, nLinhaFinalCob, ( ( nTamForm ) / 3 ), nTamanhoCob, ::nLarguraBox )
-         ::DrawTexto(  6, ::nLinhaPdf - 1,   61, NIL, "NÚMERO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 63, ::nLinhaPdf - 1,  118, NIL, "VENCIMENTO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 120, ::nLinhaPdf - 1,  195, NIL, "VALOR", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         // COLUNA 2
-         ::DrawBox( 5 + ( ( nTamForm ) / 3 ), nLinhaFinalCob, ( ( nTamForm ) / 3 ), nTamanhoCob, ::nLarguraBox )
-         ::DrawTexto(  6 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1,  61 + ( ( nTamForm ) / 3 ), NIL, "NÚMERO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 63 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1, 118 + ( ( nTamForm ) / 3 ), NIL, "VENCIMENTO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 120 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1, 195 + ( ( nTamForm ) / 3 ), NIL, "VALOR", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         // COLUNA 3
-         ::DrawBox( 5 + ( ( ( nTamForm ) / 3 ) * 2 ), nLinhaFinalCob, ( ( nTamForm ) / 3 ), nTamanhoCob, ::nLarguraBox )
-         ::DrawTexto(  6 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1,  61 + ( ( ( nTamForm ) / 3 ) * 2 ), NIL, "NÚMERO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 63 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1, 118 + ( ( ( nTamForm ) / 3 ) * 2 ), NIL, "VENCIMENTO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-         ::DrawTexto( 120 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1, 195 + ( ( ( nTamForm ) / 3 ) * 2 ), NIL, "VALOR", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+         FOR nCont = 0 TO 2
+            ::DrawBox( 5 + ( ( ( nTamForm ) / 3 ) * nCont ), nLinhaFinalCob, ( ( nTamForm ) / 3 ), nTamanhoCob, ::nLarguraBox )
+            ::DrawTexto(  6 + ( ( ( nTamForm ) / 3 ) * nCont ), ::nLinhaPdf - 1,  61 + ( ( ( nTamForm ) / 3 ) * nCont ), NIL, "NÚMERO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+            ::DrawTexto( 63 + ( ( ( nTamForm ) / 3 ) * nCont ), ::nLinhaPdf - 1, 118 + ( ( ( nTamForm ) / 3 ) * nCont ), NIL, "VENCIMENTO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+            ::DrawTexto( 120 + ( ( ( nTamForm ) / 3 ) * nCont ), ::nLinhaPdf - 1, 195 + ( ( ( nTamForm ) / 3 ) * nCont ), NIL, "VALOR", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+         NEXT
          ::nLinhaPdf -= 6
-
-         // COLUNA 1
-         ::DrawLine(  6, ::nLinhaPdf - 1.5,  61, ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  63, ::nLinhaPdf - 1.5, 118, ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  120, ::nLinhaPdf - 1.5, 195, ::nLinhaPdf - 1.5, ::nLarguraBox )
-         // COLUNA 2
-         ::DrawLine(  6 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1.5,  61 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  63 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1.5, 118 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  120 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1.5, 195 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         // COLUNA 3
-         ::DrawLine(  6 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1.5,  61 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::DrawLine(  63 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1.5, 118 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-         ::Drawline(  120 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1.5, 195 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1.5, ::nLarguraBox )
-
-         ::nLinhaPdf -= 2 // ESPAÇO
+         FOR nCont = 0 TO 2
+            ::DrawLine(  6 + ( ( ( nTamForm ) / 3 ) * nCont ), ::nLinhaPdf - 1.5,  61 + ( ( ( nTamForm ) / 3 ) * nCont ), ::nLinhaPdf - 1.5, ::nLarguraBox )
+            ::DrawLine(  63 + ( ( ( nTamForm ) / 3 ) * nCont ), ::nLinhaPdf - 1.5, 118 + ( ( ( nTamForm ) / 3 ) * nCont ), ::nLinhaPdf - 1.5, ::nLarguraBox )
+            ::Drawline(  120 + ( ( ( nTamForm ) / 3 ) * nCont ), ::nLinhaPdf - 1.5, 195 + ( ( ( nTamForm ) / 3 ) * nCont ), ::nLinhaPdf - 1.5, ::nLarguraBox )
+         NEXT
+         ::nLinhaPdf -= 2
       ENDIF
    ENDIF
 
@@ -1062,8 +995,7 @@ METHOD Faturas() CLASS hbNFeDaNFe
          nColuna := 0
          DO WHILE At( "<dup>", cDups ) > 0
             nColuna++
-            cDup := XmlNode( cDups, "dup" )
-
+            cDup    := XmlNode( cDups, "dup" )
             cNumero := XmlNode( cDup, "nDup" )
             IF ! Empty( cNumero )
                cVencimento := XmlNode( cDup, "dVenc" )
@@ -1073,22 +1005,10 @@ METHOD Faturas() CLASS hbNFeDaNFe
                nColuna--
                EXIT
             ENDIF
-            IF nColuna == 1
-               ::DrawTexto( 71, ::nLinhaPdf - 1,  126, NIL, cNumero, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-               ::DrawTexto( 128, ::nLinhaPdf - 1,  183, NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 7 )
-               ::DrawTexto( 185, ::nLinhaPdf - 1,  259, NIL, cValor, HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 7 )
-            ELSEIF nColuna == 2
-               ::DrawTexto( 71 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1, 126 + ( ( nTamForm ) / 4 ), NIL, cNumero, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-               ::DrawTexto( 128 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1, 183 + ( ( nTamForm ) / 4 ), NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 7 )
-               ::DrawTexto( 185 + ( ( nTamForm ) / 4 ), ::nLinhaPdf - 1, 259 + ( ( nTamForm ) / 4 ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 7 )
-            ELSEIF nColuna == 3
-               ::DrawTexto( 71 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1, 126 + ( ( ( nTamForm ) / 4 ) * 2 ), NIL, cNumero, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-               ::DrawTexto( 128 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1, 183 + ( ( ( nTamForm ) / 4 ) * 2 ), NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 7 )
-               ::DrawTexto( 185 + ( ( ( nTamForm ) / 4 ) * 2 ), ::nLinhaPdf - 1, 259 + ( ( ( nTamForm ) / 4 ) * 2 ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 7 )
-            ELSEIF nColuna == 4
-               ::DrawTexto( 71 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1, 126 + ( ( ( nTamForm ) / 4 ) * 3 ), NIL, cNumero, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-               ::DrawTexto( 128 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1, 183 + ( ( ( nTamForm ) / 4 ) * 3 ), NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 7 )
-               ::DrawTexto( 185 + ( ( ( nTamForm ) / 4 ) * 3 ), ::nLinhaPdf - 1, 259 + ( ( ( nTamForm ) / 4 ) * 3 ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 7 )
+            ::DrawTexto( 71 + ( ( ( nTamForm ) / 4 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 126 + ( ( ( nTamForm ) / 4 ) * ( nColuna - 1 ) ), NIL, cNumero, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+            ::DrawTexto( 128 + ( ( ( nTamForm ) / 4 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 183 + ( ( ( nTamForm ) / 4 ) * ( nColuna - 1 ) ), NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 7 )
+            ::DrawTexto( 185 + ( ( ( nTamForm ) / 4 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 259 + ( ( ( nTamForm ) / 4 ) * ( nColuna - 1 ) ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 7 )
+            IF nColuna == 4
                ::nLinhaPdf -= 7
                nColuna := 0
             ENDIF
@@ -1097,16 +1017,13 @@ METHOD Faturas() CLASS hbNFeDaNFe
          IF nColuna > 0
             ::nLinhaPdf -= 7
          ENDIF
-
       ELSE
          nTamForm := 585
-
-         cDups := ::cCobranca
-         nColuna := 0
+         cDups    := ::cCobranca
+         nColuna  := 0
          DO WHILE At( "<dup>", cDups ) > 0
             nColuna++
             cDup := XmlNode( cDups, "dup" )
-
             cNumero := XmlNode( cDup, "nDup" )
             IF ! Empty( cNumero )
                cVencimento := XmlNode( cDup, "dVenc" )
@@ -1116,18 +1033,10 @@ METHOD Faturas() CLASS hbNFeDaNFe
                nColuna--
                EXIT
             ENDIF
-            IF nColuna == 1
-               ::DrawTexto(  6, ::nLinhaPdf - 1,   61, NIL, cNumero, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-               ::DrawTexto( 63, ::nLinhaPdf - 1,  118, NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 7 )
-               ::DrawTexto( 120, ::nLinhaPdf - 1,  195, NIL, cValor, HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 7 )
-            ELSEIF nColuna == 2
-               ::DrawTexto(  6 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1,  61 + ( ( nTamForm ) / 3 ), NIL, cNumero, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-               ::DrawTexto( 63 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1, 118 + ( ( nTamForm ) / 3 ), NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 7 )
-               ::DrawTexto( 120 + ( ( nTamForm ) / 3 ), ::nLinhaPdf - 1, 195 + ( ( nTamForm ) / 3 ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 7 )
-            ELSEIF nColuna == 3
-               ::DrawTexto(  6 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1,  61 + ( ( ( nTamForm ) / 3 ) * 2 ), NIL, cNumero, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
-               ::DrawTexto( 63 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1, 118 + ( ( ( nTamForm ) / 3 ) * 2 ), NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 7 )
-               ::DrawTexto( 120 + ( ( ( nTamForm ) / 3 ) * 2 ), ::nLinhaPdf - 1, 195 + ( ( ( nTamForm ) / 3 ) * 2 ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 7 )
+            ::DrawTexto(  6 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1,  61 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cNumero, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 6 )
+            ::DrawTexto( 63 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 118 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 7 )
+            ::DrawTexto( 120 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 195 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 7 )
+            IF nColuna == 3
                ::nLinhaPdf -= 7
                nColuna := 0
             ENDIF
@@ -1566,7 +1475,7 @@ METHOD Produtos() CLASS hbNFeDaNFe
 METHOD TotalServico() CLASS hbNFeDaNFe
 
    IF ::nFolha == 1
-      IF Val( IF( ::aISSTotal[ "vServ" ] <> NIL, ::aISSTotal[ "vServ" ], "0" ) ) > 0 // com servico
+      IF Val( ::aISSTotal[ "vServ" ] ) > 0
          IF ::lPaisagem
             ::DrawTexto( 70, ::nLinhaPdf, 830, NIL, "CALCULO DO ISSQN", HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 5 )
 
@@ -1579,15 +1488,15 @@ METHOD TotalServico() CLASS hbNFeDaNFe
             // VALOR SERV.
             ::DrawBox( 270, ::nLinhaPdf - 16, 190, 16, ::nLarguraBox )
             ::DrawTexto( 271, ::nLinhaPdf - 1,  459, NIL, "VALOR TOTAL DOS SERVIÇOS", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-            ::DrawTexto( 271, ::nLinhaPdf - 5, 459, NIL, FormatNumber( Val( IF( ::aISSTotal[ "vServ" ] <> NIL, ::aISSTotal[ "vServ" ], "0" ) ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
+            ::DrawTexto( 271, ::nLinhaPdf - 5, 459, NIL, FormatNumber( Val( ::aISSTotal[ "vServ" ] ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
             // BASE DE CALC
             ::DrawBox( 460, ::nLinhaPdf - 16, 190, 16, ::nLarguraBox )
             ::DrawTexto( 461, ::nLinhaPdf - 1,  649, NIL, "BASE DE CÁLCULO DO ISSQN", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-            ::DrawTexto( 461, ::nLinhaPdf - 5, 649, NIL, FormatNumber( Val( IF( ::aISSTotal[ "vBC" ] <> NIL, ::aISSTotal[ "vBC" ], "0" ) ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
+            ::DrawTexto( 461, ::nLinhaPdf - 5, 649, NIL, FormatNumber( Val( ::aISSTotal[ "vBC" ] ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
             // VALOR DO ISSQN
             ::DrawBox( 650, ::nLinhaPdf - 16, 180, 16, ::nLarguraBox )
             ::DrawTexto( 651, ::nLinhaPdf - 1,  829, NIL, "VALOR DO ISSQN", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-            ::DrawTexto( 651, ::nLinhaPdf - 5, 829, NIL, FormatNumber( Val( IF( ::aISSTotal[ "vISS" ] <> NIL, ::aISSTotal[ "vISS" ], "0" ) ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
+            ::DrawTexto( 651, ::nLinhaPdf - 5, 829, NIL, FormatNumber( Val( ::aISSTotal[ "vISS" ] ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
 
             ::nLinhaPdf -= 17
          ELSE
@@ -1602,15 +1511,15 @@ METHOD TotalServico() CLASS hbNFeDaNFe
             // VALOR SERV.
             ::DrawBox( 155, ::nLinhaPdf - 16, 145, 16, ::nLarguraBox )
             ::DrawTexto( 156, ::nLinhaPdf - 1,  299, NIL, "VALOR TOTAL DOS SERVIÇOS", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-            ::DrawTexto( 156, ::nLinhaPdf - 5, 299, NIL, FormatNumber( Val( IF( ::aISSTotal[ "vServ" ] <> NIL, ::aISSTotal[ "vServ" ], "0" ) ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
+            ::DrawTexto( 156, ::nLinhaPdf - 5, 299, NIL, FormatNumber( Val( ::aISSTotal[ "vServ" ] ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
             // BASE DE CALC
             ::DrawBox( 300, ::nLinhaPdf - 16, 145, 16, ::nLarguraBox )
             ::DrawTexto( 301, ::nLinhaPdf - 1,  444, NIL, "BASE DE CÁLCULO DO ISSQN", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-            ::DrawTexto( 301, ::nLinhaPdf - 5, 444, NIL, FormatNumber( Val( IF( ::aISSTotal[ "vBC" ] <> NIL, ::aISSTotal[ "vBC" ], "0" ) ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
+            ::DrawTexto( 301, ::nLinhaPdf - 5, 444, NIL, FormatNumber( Val( ::aISSTotal[ "vBC" ] ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
             // VALOR DO ISSQN
             ::DrawBox( 445, ::nLinhaPdf - 16, 145, 16, ::nLarguraBox )
             ::DrawTexto( 446, ::nLinhaPdf - 1,  589, NIL, "VALOR DO ISSQN", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-            ::DrawTexto( 446, ::nLinhaPdf - 5, 589, NIL, FormatNumber( Val( IF( ::aISSTotal[ "vISS" ] <> NIL, ::aISSTotal[ "vISS" ], "0" ) ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
+            ::DrawTexto( 446, ::nLinhaPdf - 5, 589, NIL, FormatNumber( Val( ::aISSTotal[ "vISS" ] ), 15 ), HPDF_TALIGN_RIGHT, ::oPdfFontCabecalho, 10 )
 
             ::nLinhaPdf -= 17
          ENDIF
