@@ -260,14 +260,11 @@ METHOD NovaPagina() CLASS hbnfeDaMdfe
 
 METHOD cabecalho() CLASS hbnfeDaMdfe
 
-   LOCAL oImage
-
    // box do logotipo e dados do emitente
 
    ::DrawBox( 020, ::nLinhaPdf - 150, 555, 150, ::nLarguraBox )
    IF ::cLogoFile != NIL .AND. ! Empty( ::cLogoFile )
-      oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
-      HPDF_Page_DrawImage( ::oPdfPage, oImage, 025, ::nLinhaPdf - ( 142 + 1 ), 200, 132 )
+      ::DrawJPEGImage( ::cLogoFile, 025, ::nLinhaPdf - ( 142 + 1 ), 200, 132 )
    ENDIF
    ::DrawTexto( 240, ::nLinhaPdf -018, 560, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 16 )
    ::DrawTexto( 240, ::nLinhaPdf -060, 560, Nil, 'CNPJ: ' + TRANSF( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscrição Estadual: ' + FormatIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )

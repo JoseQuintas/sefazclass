@@ -10,30 +10,31 @@ CREATE CLASS hbNFeDaGeral
 
    VAR    oPDFPage
 
-   METHOD LoadJPEGImage( oPDF, xValue )
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
-   METHOD FormataMemo( cMemo, nLarguraPDF )
-   METHOD DefineDecimais( xValue, nDecimais )
-   METHOD DrawTexto( x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo ) INLINE hbNFe_Texto_Hpdf( ::oPDFPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
-   METHOD DrawLine( x1, y1, x2, y2, nPen, FLAG )                                   INLINE hbNFe_Line_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen, FLAG )
+   METHOD DrawBarcodeQRCode( nX, nY, nLineWidth, cCode, nFlags )
+   METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 )
    METHOD DrawBox( x1, y1, x2, y2, nPen )                                          INLINE hbNFe_Box_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen )
+   METHOD DrawLine( x1, y1, x2, y2, nPen, FLAG )                                   INLINE hbNFe_Line_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen, FLAG )
+   METHOD DrawTexto( x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo ) INLINE hbNFe_Texto_Hpdf( ::oPDFPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
+   METHOD DefineDecimais( xValue, nDecimais )
+   METHOD FormataMemo( cMemo, nLarguraPDF )
    METHOD LarguraTexto( cText )                                                    INLINE HPDF_Page_TextWidth( ::oPDFPage, cText )
 
    END CLASS
 
-METHOD LoadJPEGImage( oPDF, xValue ) CLASS hbNFeDaGeral
+METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 ) CLASS hbNFeDaGeral
 
-   LOCAL oImage
-
-   IF xValue != NIL
-      IF Len( xValue ) < 100
-         oImage := HPDF_LoadJpegImageFromFile( oPDF, xValue )
-      ELSE
-         oImage := HPDF_LoadJpegImageFromMem( oPDF, xValue, Len( xValue ) )
-      ENDIF
+   IF cJPEGImage == NIL .OR. Empty( cJPEGImage )
+      RETURN NIL
    ENDIF
+   IF Len( cJPEGImage ) < 100
+      cJPEGImage := HPDF_LoadJpegImageFromFile( ::oPDF, cJPEGImage )
+   ELSE
+      cJPEGImage := HPDF_LoadJpegImageFromMem( ::oPDF, cJPEGImage, Len( cJPEGImage ) )
+   ENDIF
+   HPDF_Page_DrawImage( ::oPDFPage, cJPEGImage, x1, y1, x2, y2 )
 
-   RETURN oImage
+   RETURN NIL
 
 METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight ) CLASS hbNFeDaGeral
 
@@ -46,7 +47,21 @@ METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight ) CLASS 
    hb_zebra_draw( hZebra, { | x, y, w, h | HPDF_Page_Rectangle( ::oPDFPage, x, y, w, h ) }, nAreaX, nAreaY, nBarWidth, nAreaHeight )
    HPDF_Page_Fill( ::oPDFPage )
 
-   RETURN 0
+   RETURN NIL
+
+METHOD DrawBarcodeQRCode( nX, nY, nLineWidth, cCode, nFlags )
+
+   LOCAL nLineHeight, hZebra
+
+   hZebra := hb_Zebra_Create_QRCode( cCode, nFlags )
+   nLineHeight := nLineWidth
+   IF hb_Zebra_GetError( hZebra ) == 0
+      hb_Zebra_Draw( hZebra, { | x, y, w, h | HPDF_Page_Rectangle( ::oPDFPage, x, y, w, h ) }, nX, nY, nLineWidth, -nLineHeight )
+      HPDF_Page_Fill( ::oPDFPage )
+      hb_Zebra_Destroy( hZebra )
+   ENDIF
+
+   RETURN NIL
 
 METHOD FormataMemo( cMemo, nLarguraPDF ) CLASS hbNFeDaGeral
 
@@ -130,3 +145,4 @@ STATIC FUNCTION hbNFe_Box_Hpdf( oPage, x1, y1, x2, y2, nPen )
    HPDF_Page_Stroke( oPage )
 
    RETURN NIL
+

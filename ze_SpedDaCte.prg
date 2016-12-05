@@ -422,7 +422,6 @@ METHOD NovaPagina() CLASS hbnfeDaCte
 
 METHOD Cabecalho() CLASS hbnfeDaCte
 
-   LOCAL oImage
    LOCAL aModal     := { 'Rodoviário', 'Aéreo', 'Aquaviário', 'Ferroviário', 'Dutoviário' }
    LOCAL aTipoCte   := { 'Normal', 'Compl.Val', 'Anul.Val.', 'Substituto' }
    LOCAL aTipoServ  := { 'Normal', 'Subcontratação', 'Redespacho', 'Redesp. Int.' }
@@ -447,10 +446,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    // box do logotipo e dados do emitente
    ::DrawBox( 003, ::nLinhaPdf - 119, 295, 119, ::nLarguraBox )
 
-   IF ::cLogoFile != NIL .AND. ! Empty( ::cLogoFile )
-      oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
-      HPDF_Page_DrawImage( ::oPdfPage, oImage, 115, ::nLinhaPdf - ( 52 + 1 ), 100, 052 )
-   ENDIF
+   ::DrawJPEGImage( ::cLogoFile, 115, ::nLinhaPdf - ( 52 + 1 ), 100, 052 )
    IF Len( ::aEmit[ "xNome" ] ) <= 25
       ::DrawTexto( 3, ::nLinhaPdf - 056, 295, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
    ELSE

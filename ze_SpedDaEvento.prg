@@ -190,8 +190,6 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNfeDaEvento
 
 METHOD Cabecalho() CLASS hbnfeDaEvento
 
-   LOCAL oImage
-
    ::DrawBox( 30, ::nLinhaPDF -106,   535,  110, ::nLarguraBox )    // Quadro Cabeçalho
 
    // logo/dados empresa
@@ -209,11 +207,10 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
       ::DrawTexto( 30, ::nLinhaPDF -82,  289, Nil, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
       ::DrawTexto( 30, ::nLinhaPDF -92,  289, Nil, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
    ELSE
-      oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
       IF ::nLogoStyle = _LOGO_EXPANDIDO
-         HPDF_Page_DrawImage( ::oPdfPage, oImage, 55, ::nLinhaPdf - ( 82 + 18 ), 218, 92 )
+         ::DrawJPEGImage( ::cLogoFile, 55, ::nLinhaPdf - ( 82 + 18 ), 218, 92 )
       ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
-         HPDF_Page_DrawImage( ::oPdfPage, oImage, 36, ::nLinhaPdf - ( 62 + 18 ), 62, 62 )
+         ::DrawJPEGImage( ::cLogoFile, 36, ::nLinhaPdf - ( 62 + 18 ), 62, 62 )
          ::DrawTexto( 100, ::nLinhaPDF -6,  289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
          ::DrawTexto( 100, ::nLinhaPDF -20, 289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
          ::DrawTexto( 100, ::nLinhaPDF -42,  289, Nil, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8 )
@@ -224,7 +221,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
          ::DrawTexto( 100, ::nLinhaPDF -92,  289, Nil, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8 )
 
       ELSEIF ::nLogoStyle = _LOGO_DIREITA
-         HPDF_Page_DrawImage( ::oPdfPage, oImage, 220, ::nLinhaPdf - ( 62 + 18 ), 62, 62 )
+         ::DrawJPEGImage( ::cLogoFile, 220, ::nLinhaPdf - ( 62 + 18 ), 62, 62 )
          ::DrawTexto( 30, ::nLinhaPDF -6,  218, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
          ::DrawTexto( 30, ::nLinhaPDF -20, 218, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
          ::DrawTexto( 30, ::nLinhaPDF -42,  218, Nil, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8 )
@@ -249,11 +246,9 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
           ::DrawTexto( 71, ::nLinhaPDF - 70, 399, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
        ELSE
           IF ::nLogoStyle = _LOGO_EXPANDIDO
-             oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
-             HPDF_Page_DrawImage( ::oPdfPage, oImage, 6, ::nLinhaPdf - (72+6), 328, 72 )
+             ::DrawJPEGImage( ::cLogoFile, 6, ::nLinhaPdf - (72+6), 328, 72 )
           ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
-             oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
-             HPDF_Page_DrawImage( ::oPdfPage, oImage,71, ::nLinhaPdf - (72+6), 62, 72 )
+             ::DrawJPEGImage( ::cLogoFile, 71, ::nLinhaPdf - (72+6), 62, 72 )
               ::DrawTexto( 135, ::nLinhaPDF - 6 , 399, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
               ::DrawTexto( 135, ::nLinhaPDF - 18, 399, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
               ::DrawTexto( 135, ::nLinhaPDF - 30, 399, Nil, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
@@ -263,8 +258,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
               ::DrawTexto( 135, ::nLinhaPDF - 62, 399, Nil, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
               ::DrawTexto( 135, ::nLinhaPDF - 70, 399, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
           ELSEIF ::nLogoStyle = _LOGO_DIREITA
-             oImage := ::LoadJPEGImage( ::oPDF, ::cLogoFile )
-             HPDF_Page_DrawImage( ::oPdfPage, oImage,337, ::nLinhaPdf - (72+6), 62, 72 )
+             ::DrawJPEGImage( ::cLogoFile, 337, ::nLinhaPdf - (72+6), 62, 72 )
             ::DrawTexto( 71, ::nLinhaPDF - 6 , 335, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
             ::DrawTexto( 71, ::nLinhaPDF - 18, 335, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
             ::DrawTexto( 71, ::nLinhaPDF - 30, 335, Nil, ::aEmit[ "xLgr" ]+" "+::aEmit[ "nro" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
