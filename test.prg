@@ -194,7 +194,7 @@ FUNCTION TestDanfe()
    IF File( "xmlnota.xml" )
       fErase( "pdfnfe.pdf" )
       oDanfe := hbnfeDaNfe():New()
-      //oDanfe:cLogoFile := JPEGImage()
+      oDanfe:cLogoFile := JPEGImage()
       oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:Execute( MemoRead( "xmlnota.xml" ), "pdfnfe.pdf" )
       ? "DANFe " + oDanfe:cRetorno
@@ -253,6 +253,9 @@ FUNCTION TestDanfe()
       ? "DAEvento CTe " + oDanfe:cRetorno
       PDFOpen( "pdfeventocte.pdf" )
    ENDIF
+   oDanfe := hbNFeDaNFCe():New()
+   oDanfe:Execute( "www.jpatecnologia.com.br", "pdfqrcode.pdf" )
+   PDFOpen( "pdfqrcode.pdf" )
    Inkey(0)
 
    RETURN NIL
