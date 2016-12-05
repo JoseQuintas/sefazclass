@@ -222,7 +222,7 @@ METHOD NovaPagina() CLASS hbnfeDaMdfe
       HPDF_Page_EndText( ::oPdfPage )
 
       HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
-      hbNFe_Line_Hpdf( ::oPdfPage, 15, 100, 550, 630, 2.0 )
+      ::DrawLine( 15, 100, 550, 630, 2.0 )
 
       HPDF_Page_SetRGBStroke( ::oPdfPage, 0, 0, 0 ) // reseta cor linhas
 
@@ -243,9 +243,9 @@ METHOD NovaPagina() CLASS hbnfeDaMdfe
 
        HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
        IF ::lPaisagem
-          hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 675, 475, 2.0)
+          ::DrawLine( 15, 95, 675, 475, 2.0)
        ELSE
-          hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 550, 630, 2.0)
+          ::DrawLine( 15, 95, 550, 630, 2.0)
        ENDIF
 
        HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
@@ -291,10 +291,10 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    // atenção - chute inicial
    ::DrawBarcode( ::cChave, ::oPdfPage, 150, ::nLinhaPDF - 232, 0.9, 30 )
 #endif
-   hbnfe_Line_hpdf( ::oPdfPage, 020, ::nLinhaPdf - 277, 575, ::nLinhaPdf - 277, ::nLarguraBox )
+   ::DrawLine( 020, ::nLinhaPdf - 277, 575, ::nLinhaPdf - 277, ::nLarguraBox )
    ::DrawTexto( 025, ::nLinhaPdf - 278, 575, Nil, "Chave de acesso para consulta de autenticidade no site www.mdfe.fazenda.gov.br", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 040, ::nLinhaPdf - 293, 575, Nil, TRANSF( ::cChave, "@R 99.9999.99.999.999/9999-99-99-999-999.999.999-999.999.999-9" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
-   hbnfe_Line_hpdf( ::oPdfPage, 020, ::nLinhaPdf - 310, 575, ::nLinhaPdf - 310, ::nLarguraBox )
+   ::DrawLine( 020, ::nLinhaPdf - 310, 575, ::nLinhaPdf - 310, ::nLarguraBox )
    // box do No. do Protocolo
    ::DrawTexto( 025, ::nLinhaPdf - 311, 575, Nil, "Protocolo de autorização de uso", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 12 )
    IF ! Empty( ::aProtocolo[ "nProt" ] )
@@ -309,27 +309,27 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    ::DrawTexto( 025, ::nLinhaPdf - 365, 100, Nil, ::aIde[ "mod" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
    // box da serie
-   hbnfe_Line_hpdf( ::oPdfPage, 100, ::nLinhaPdf - 385, 100, ::nLinhaPdf - 350, ::nLarguraBox )
+   ::DrawLine( 100, ::nLinhaPdf - 385, 100, ::nLinhaPdf - 350, ::nLarguraBox )
    ::DrawTexto( 105, ::nLinhaPdf - 350, 180, Nil, "Série", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 105, ::nLinhaPdf - 365, 180, Nil, ::aIde[ "serie" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
    // box do numero
-   hbnfe_Line_hpdf( ::oPdfPage, 180, ::nLinhaPdf - 385, 180, ::nLinhaPdf - 350, ::nLarguraBox )
+   ::DrawLine( 180, ::nLinhaPdf - 385, 180, ::nLinhaPdf - 350, ::nLarguraBox )
    ::DrawTexto( 185, ::nLinhaPdf - 350, 285, Nil, "Número", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 185, ::nLinhaPdf - 365, 285, Nil, StrZero( Val( ::aIde[ "nMDF" ] ), 6 ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
    // box do fl
-   hbnfe_Line_hpdf( ::oPdfPage, 285, ::nLinhaPdf - 385, 285, ::nLinhaPdf - 350, ::nLarguraBox )
+   ::DrawLine( 285, ::nLinhaPdf - 385, 285, ::nLinhaPdf - 350, ::nLarguraBox )
    ::DrawTexto( 290, ::nLinhaPdf - 350, 330, Nil, "FL", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 290, ::nLinhaPdf - 365, 330, Nil, "1/1", HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
    // box do data e hora
-   hbnfe_Line_hpdf( ::oPdfPage, 330, ::nLinhaPdf - 385, 330, ::nLinhaPdf - 350, ::nLarguraBox )
+   ::DrawLine( 330, ::nLinhaPdf - 385, 330, ::nLinhaPdf - 350, ::nLarguraBox )
    ::DrawTexto( 335, ::nLinhaPdf - 350, 500, Nil, "Data e Hora de Emissão", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 335, ::nLinhaPdf - 365, 500, Nil, SubStr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 1, 4 ) + ' ' + SubStr( ::aIde[ "dhEmi" ], 12 ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
    // UF de carregamento
-   hbnfe_Line_hpdf( ::oPdfPage, 500, ::nLinhaPdf - 385, 500, ::nLinhaPdf - 350, ::nLarguraBox )
+   ::DrawLine( 500, ::nLinhaPdf - 385, 500, ::nLinhaPdf - 350, ::nLarguraBox )
    ::DrawTexto( 505, ::nLinhaPdf - 350, 560, Nil, "UF Carreg.", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 505, ::nLinhaPdf - 365, 560, Nil, ::aIde[ "UFIni" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
@@ -340,35 +340,35 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    ::DrawTexto( 025, ::nLinhaPdf - 410, 140, Nil, "CIOT", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 025, ::nLinhaPdf - 425, 140, Nil, ::cCiot, HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
-   hbnfe_Line_hpdf( ::oPdfPage, 140, ::nLinhaPdf - 445, 140, ::nLinhaPdf - 410, ::nLarguraBox )
+   ::DrawLine( 140, ::nLinhaPdf - 445, 140, ::nLinhaPdf - 410, ::nLarguraBox )
    ::DrawTexto( 145, ::nLinhaPdf - 410, 210, Nil, "Qtd. CTe", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 145, ::nLinhaPdf - 425, 210, Nil, ::aTot[ "qCTe" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
-   hbnfe_Line_hpdf( ::oPdfPage, 210, ::nLinhaPdf - 445, 210, ::nLinhaPdf - 410, ::nLarguraBox )
+   ::DrawLine( 210, ::nLinhaPdf - 445, 210, ::nLinhaPdf - 410, ::nLarguraBox )
    ::DrawTexto( 215, ::nLinhaPdf - 410, 280, Nil, "Qtd. CTRC", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 215, ::nLinhaPdf - 425, 280, Nil, ::aTot[ "qCT" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
-   hbnfe_Line_hpdf( ::oPdfPage, 280, ::nLinhaPdf - 445, 280, ::nLinhaPdf - 410, ::nLarguraBox )
+   ::DrawLine( 280, ::nLinhaPdf - 445, 280, ::nLinhaPdf - 410, ::nLarguraBox )
    ::DrawTexto( 285, ::nLinhaPdf - 410, 350, Nil, "Qtd. NFe", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 285, ::nLinhaPdf - 425, 350, Nil, ::aTot[ "qNFe" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
-   hbnfe_Line_hpdf( ::oPdfPage, 350, ::nLinhaPdf - 445, 350, ::nLinhaPdf - 410, ::nLarguraBox )
+   ::DrawLine( 350, ::nLinhaPdf - 445, 350, ::nLinhaPdf - 410, ::nLarguraBox )
    ::DrawTexto( 355, ::nLinhaPdf - 410, 420, Nil, "Qtd. NF", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 355, ::nLinhaPdf - 425, 420, Nil, ::aTot[ "qNF" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
-   hbnfe_Line_hpdf( ::oPdfPage, 425, ::nLinhaPdf - 445, 425, ::nLinhaPdf - 410, ::nLarguraBox )
+   ::DrawLine( 425, ::nLinhaPdf - 445, 425, ::nLinhaPdf - 410, ::nLarguraBox )
    ::DrawTexto( 430, ::nLinhaPdf - 410, 560, Nil, "Peso Total (KG)", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 430, ::nLinhaPdf - 425, 560, Nil, AllTrim( Tran( Val( ::aTot[ "qCarga" ] ), '@E 9,999,999.9999' ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
 
    hbnfe_Box_hpdf( ::oPdfPage, 020, ::nLinhaPdf - 620, 555, 175, ::nLarguraBox )
-   hbnfe_Line_hpdf( ::oPdfPage, 240, ::nLinhaPdf - 460, 240, ::nLinhaPdf - 445, ::nLarguraBox )
+   ::DrawLine( 240, ::nLinhaPdf - 460, 240, ::nLinhaPdf - 445, ::nLarguraBox )
    ::DrawTexto( 025, ::nLinhaPdf - 445, 240, Nil, "Veiculo", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 245, ::nLinhaPdf - 445, 560, Nil, "Condutor", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 12 )
 
    hbnfe_Box_hpdf( ::oPdfPage, 020, ::nLinhaPdf - 475, 555, 015, ::nLarguraBox )
-   hbnfe_Line_hpdf( ::oPdfPage, 110, ::nLinhaPdf - 550, 110, ::nLinhaPdf - 460, ::nLarguraBox )
-   hbnfe_Line_hpdf( ::oPdfPage, 240, ::nLinhaPdf - 620, 240, ::nLinhaPdf - 460, ::nLarguraBox )
-   hbnfe_Line_hpdf( ::oPdfPage, 320, ::nLinhaPdf - 620, 320, ::nLinhaPdf - 460, ::nLarguraBox )
+   ::DrawLine( 110, ::nLinhaPdf - 550, 110, ::nLinhaPdf - 460, ::nLarguraBox )
+   ::DrawLine( 240, ::nLinhaPdf - 620, 240, ::nLinhaPdf - 460, ::nLarguraBox )
+   ::DrawLine( 320, ::nLinhaPdf - 620, 320, ::nLinhaPdf - 460, ::nLarguraBox )
    ::DrawTexto( 025, ::nLinhaPdf - 460, 110, Nil, "Placa", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
    ::DrawTexto( 115, ::nLinhaPdf - 460, 240, Nil, "RNTRC", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
    ::DrawTexto( 245, ::nLinhaPdf - 460, 320, Nil, "CPF", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
@@ -388,8 +388,8 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    ::DrawTexto( 115, ::nLinhaPdf - 490, 240, Nil, ::aReboque[ "RNTRC" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 10 )
 
    hbnfe_Box_hpdf( ::oPdfPage, 020, ::nLinhaPdf - 565, 220, 015, ::nLarguraBox )
-   hbnfe_Line_hpdf( ::oPdfPage, 100, ::nLinhaPdf - 620, 100, ::nLinhaPdf - 565, ::nLarguraBox )
-   hbnfe_Line_hpdf( ::oPdfPage, 170, ::nLinhaPdf - 620, 170, ::nLinhaPdf - 565, ::nLarguraBox )
+   ::DrawLine( 100, ::nLinhaPdf - 620, 100, ::nLinhaPdf - 565, ::nLarguraBox )
+   ::DrawLine( 170, ::nLinhaPdf - 620, 170, ::nLinhaPdf - 565, ::nLarguraBox )
    ::DrawTexto( 025, ::nLinhaPdf - 552, 110, Nil, "Vale Pedágio", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 12 )
    ::DrawTexto( 025, ::nLinhaPdf - 565, 095, Nil, "Responsável CNPJ", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 08 )
    ::DrawTexto( 100, ::nLinhaPdf - 565, 170, Nil, "Fornecedor CNPJ", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 08 )
@@ -495,21 +495,6 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
 
    RETURN cCode128
 #endif
-
-STATIC FUNCTION hbNFe_Line_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen, FLAG )
-
-   HPDF_Page_SetLineWidth( oPdfPage2, nPen )
-   IF FLAG != NIL
-      HPDF_Page_SetLineCap( oPdfPage2, FLAG )
-   ENDIF
-   HPDF_Page_MoveTo( oPdfPage2, x1, y1 )
-   HPDF_Page_LineTo( oPdfPage2, x2, y2 )
-   HPDF_Page_Stroke( oPdfPage2 )
-   IF FLAG <> NIL
-      HPDF_Page_SetLineCap( oPdfPage2, HPDF_BUTT_END )
-   ENDIF
-
-   RETURN NIL
 
 STATIC FUNCTION hbNFe_Box_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen )
 

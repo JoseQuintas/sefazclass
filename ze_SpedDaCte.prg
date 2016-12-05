@@ -388,7 +388,7 @@ METHOD NovaPagina() CLASS hbnfeDaCte
       HPDF_Page_EndText( ::oPdfPage )
 
       HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
-      hbNFe_Line_Hpdf( ::oPdfPage, 15, 100, 550, 630, 2.0 )
+      ::DrawLine( 15, 100, 550, 630, 2.0 )
 
       HPDF_Page_SetRGBStroke( ::oPdfPage, 0, 0, 0 ) // reseta cor linhas
 
@@ -407,9 +407,9 @@ METHOD NovaPagina() CLASS hbnfeDaCte
 
        HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
        IF ::lPaisagem
-          hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 675, 475, 2.0)
+          ::DrawLine( 15, 95, 675, 475, 2.0)
        ELSE
-          hbnfe_Line_hpdf( ::oPdfPage, 15, 95, 550, 630, 2.0)
+          ::DrawLine( 15, 95, 550, 630, 2.0)
        ENDIF
 
        HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
@@ -1249,21 +1249,6 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
 
    RETURN cCode128
 #endif
-
-STATIC FUNCTION hbNFe_Line_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen, FLAG )
-
-   HPDF_Page_SetLineWidth( oPdfPage2, nPen )
-   IF FLAG <> NIL
-      HPDF_Page_SetLineCap( oPdfPage2, FLAG )
-   ENDIF
-   HPDF_Page_MoveTo( oPdfPage2, x1, y1 )
-   HPDF_Page_LineTo( oPdfPage2, x2, y2 )
-   HPDF_Page_Stroke( oPdfPage2 )
-   IF FLAG <> NIL
-      HPDF_Page_SetLineCap( oPdfPage2, HPDF_BUTT_END )
-   ENDIF
-
-   RETURN NIL
 
 STATIC FUNCTION hbNFe_Box_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen )
 

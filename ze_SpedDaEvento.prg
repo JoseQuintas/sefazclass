@@ -587,14 +587,14 @@ METHOD Rodape() CLASS hbnfeDaEvento
 
    ::nLinhaPdf -= 100
 
-   hbNFe_Line_Hpdf( ::oPdfPage, 34, ::nLinhaPDF -12, 270, ::nLinhaPDF -12, ::nLarguraBox )
+   ::DrawLine( 34, ::nLinhaPDF -12, 270, ::nLinhaPDF -12, ::nLarguraBox )
 
    ::DrawTexto( 30,  ::nLinhaPDF -14, 284, Nil, 'Local e data', HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 9 )
    ::DrawTexto( 304, ::nLinhaPDF -14, 574, Nil, 'Sem outro motivo para o momento subscrevemos-nos.', HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 9 )
    ::DrawTexto( 304, ::nLinhaPDF -24, 574, Nil, 'Atenciosamente.', HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 9 )
 
-   hbNFe_Line_Hpdf( ::oPdfPage, 34,  ::nLinhaPDF -92, 270, ::nLinhaPDF -92, ::nLarguraBox )
-   hbNFe_Line_Hpdf( ::oPdfPage, 564, ::nLinhaPDF -92, 300, ::nLinhaPDF -92, ::nLarguraBox )
+   ::DrawLine( 34,  ::nLinhaPDF -92, 270, ::nLinhaPDF -92, ::nLarguraBox )
+   ::DrawLine( 564, ::nLinhaPDF -92, 300, ::nLinhaPDF -92, ::nLarguraBox )
 
    ::DrawTexto( 30,  ::nLinhaPDF -94, 284, Nil,  Trim( MemoLine( ::aDest[ "xNome" ], 40, 1 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 9 )
    ::DrawTexto( 30,  ::nLinhaPDF -108, 284, Nil, Trim( MemoLine( ::aDest[ "xNome" ], 40, 2 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 9 )
@@ -670,21 +670,6 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
 
    RETURN cCode128
 #endif
-
-STATIC FUNCTION hbNFe_Line_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen, FLAG )
-
-   HPDF_Page_SetLineWidth( oPdfPage2, nPen )
-   IF FLAG <> NIL
-      HPDF_Page_SetLineCap( oPdfPage2, FLAG )
-   ENDIF
-   HPDF_Page_MoveTo( oPdfPage2, x1, y1 )
-   HPDF_Page_LineTo( oPdfPage2, x2, y2 )
-   HPDF_Page_Stroke( oPdfPage2 )
-   IF FLAG <> NIL
-      HPDF_Page_SetLineCap( oPdfPage2, HPDF_BUTT_END )
-   ENDIF
-
-   RETURN NIL
 
 STATIC FUNCTION hbNFe_Box_Hpdf( oPdfPage2, x1, y1, x2, y2, nPen )
 
