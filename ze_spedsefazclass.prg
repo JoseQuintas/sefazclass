@@ -1380,7 +1380,7 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
       oXmlDomDoc:Schemas := oXmlSchema
       oXmlErro := oXmlDomDoc:Validate()
       IF oXmlErro:ErrorCode <> 0
-         cRetorno := "Erro: " + AllTrim( Transform( oXmlErro:ErrorCode, "" ) ) + " " + ConverteXmlErro( oXmlErro:Reason, "" )
+         cRetorno := "Erro: " + AllTrim( Transform( oXmlErro:ErrorCode, "" ) ) + " " + ConverteErroValidacao( oXmlErro:Reason, "" )
          BREAK
       ENDIF
       cRetorno := "OK"
@@ -1389,7 +1389,7 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
 
    RETURN cRetorno
 
-STATIC FUNCTION ConverteXmlErro( cTexto )
+STATIC FUNCTION ConverteErroValidacao( cTexto )
 
    LOCAL nPosIni, nPosFim
 
