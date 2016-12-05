@@ -11,7 +11,7 @@ CREATE CLASS hbNFeDaGeral
    VAR    oPDFPage
 
    METHOD LoadJPEGImage( oPDF, xValue )
-   METHOD DrawBarcode( cBarCode, oPDFPage, nAreaX, nAreaY, nBarWidth, nAreaHeight )
+   METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
    METHOD FormataMemo( cMemo, nLarguraPDF )
    METHOD DefineDecimais( xValue, nDecimais )
    METHOD DrawTexto( x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo ) INLINE hbNFe_Texto_Hpdf( ::oPDFPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
@@ -35,7 +35,7 @@ METHOD LoadJPEGImage( oPDF, xValue ) CLASS hbNFeDaGeral
 
    RETURN oImage
 
-METHOD DrawBarcode( cBarCode, oPDFPage, nAreaX, nAreaY, nBarWidth, nAreaHeight ) CLASS hbNFeDaGeral
+METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight ) CLASS hbNFeDaGeral
 
    LOCAL hZebra
 
@@ -43,8 +43,8 @@ METHOD DrawBarcode( cBarCode, oPDFPage, nAreaX, nAreaY, nBarWidth, nAreaHeight )
    IF hb_zebra_geterror( hZebra ) != 0
       RETURN HB_ZEBRA_ERROR_INVALIDZEBRA
    ENDIF
-   hb_zebra_draw( hZebra, { | x, y, w, h | HPDF_Page_Rectangle( oPDFPage, x, y, w, h ) }, nAreaX, nAreaY, nBarWidth, nAreaHeight )
-   HPDF_Page_Fill( oPDFPage )
+   hb_zebra_draw( hZebra, { | x, y, w, h | HPDF_Page_Rectangle( ::oPDFPage, x, y, w, h ) }, nAreaX, nAreaY, nBarWidth, nAreaHeight )
+   HPDF_Page_Fill( ::oPDFPage )
 
    RETURN 0
 

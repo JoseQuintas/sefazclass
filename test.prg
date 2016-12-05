@@ -8,12 +8,12 @@ PROCEDURE Main
 
    LOCAL nOpc := 1, GetList := {}, cTexto := "", nOpcTemp
    LOCAL cCnpj := Space(14), cChave := Space(44), cCertificado := "", cUF := "SP", cXmlRetorno
-   LOCAL oSefaz
+   LOCAL oSefaz, cXml
 
    SET DATE BRITISH
    SetupHarbour()
    SetMode( 33, 80 )
-   // Set( _SET_CODEPAGE, "PTISO" )
+   Set( _SET_CODEPAGE, "PTISO" )
    SetColor( "W/B,N/W,,,W/B" )
 
    oSefaz     := SefazClass():New()
@@ -21,7 +21,6 @@ PROCEDURE Main
 
    DO WHILE .T.
       CLS
-      @ Row() + 1, 5 PROMPT "Sair"
       @ Row() + 1, 5 PROMPT "Teste Danfe"
       @ Row() + 1, 5 PROMPT "Seleciona certificado"
       @ Row() + 1, 5 PROMPT "UF Default"
@@ -31,10 +30,11 @@ PROCEDURE Main
       @ Row() + 1, 5 PROMPT "Protocolo CTE"
       @ Row() + 1, 5 PROMPT "Protocolo MDFE"
       @ Row() + 1, 5 PROMPT "Consulta Destinadas"
+      @ Row() + 1, 5 PROMPT "Valida XML"
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
-      CASE LastKey() == K_ESC .OR. nOpc == nOpcTemp++
+      CASE LastKey() == K_ESC
          EXIT
 
       CASE nOpc == nOpcTemp++
@@ -146,6 +146,12 @@ PROCEDURE Main
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
+      CASE nOpc == 10
+         cXml := MemoRead( "d:\temp\valida.xml" )
+         // cXml := StrTran( cXml, "</NFe>", FakeSignature() + "</NFe>" )
+         ? oSefaz:ValidaXml( cXml, "d:\cdrom\fontes\integra\schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd" )
+         Inkey(0)
+
       CASE nOpc == nOpcTemp  // pra não esquecer o ++, último não tem
 
       ENDCASE
@@ -188,7 +194,7 @@ FUNCTION TestDanfe()
    IF File( "xmlnota.xml" )
       fErase( "pdfnfe.pdf" )
       oDanfe := hbnfeDaNfe():New()
-      oDanfe:cLogoFile := JPEGImage()
+      //oDanfe:cLogoFile := JPEGImage()
       oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:Execute( MemoRead( "xmlnota.xml" ), "pdfnfe.pdf" )
       ? "DANFe " + oDanfe:cRetorno
@@ -255,6 +261,7 @@ FUNCTION PDFOpen( cFile )
 
    IF File( cFile )
       WAPI_ShellExecute( NIL, "open", cFile, "",, WIN_SW_SHOWNORMAL )
+      Inkey(1)
    ENDIF
 
    RETURN NIL
