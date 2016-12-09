@@ -13,13 +13,18 @@ CREATE CLASS hbNFeDaGeral
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
    METHOD DrawBarcodeQRCode( nX, nY, nLineWidth, cCode, nFlags )
    METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 )
-   METHOD DrawBox( x1, y1, x2, y2, nPen )                                          INLINE hbNFe_Box_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen )
-   METHOD DrawLine( x1, y1, x2, y2, nPen, FLAG )                                   INLINE hbNFe_Line_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen, FLAG )
-   METHOD DrawTexto( x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo ) INLINE hbNFe_Texto_Hpdf( ::oPDFPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
+   METHOD DrawBox( x1, y1, x2, y2, nPen )                                           INLINE hbNFe_Box_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen )
+   METHOD DrawLine( x1, y1, x2, y2, nPen, FLAG )                                    INLINE hbNFe_Line_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen, FLAG )
+   METHOD DrawTexto( x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )  INLINE hbNFe_Texto_Hpdf( ::oPDFPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
    METHOD DefineDecimais( xValue, nDecimais )
    METHOD FormataMemo( cMemo, nLarguraPDF )
-   METHOD LarguraTexto( cText )                                                    INLINE HPDF_Page_TextWidth( ::oPDFPage, cText )
-
+   METHOD LarguraTexto( cText )                                                     INLINE HPDF_Page_TextWidth( ::oPDFPage, cText )
+   METHOD FormataTelefone( cText )                                                  INLINE hbNFe_FormataTelefone( cText )
+   METHOD FormataIE( cText )                                                        INLINE hbNFe_FormataIE( cText )
+#ifdef __XHARBOUR__
+   METHOD xHarbourCode128c( pcCodigoBarra )                                         INLINE hbNFe_Codifica_Code128c( pcCodigoBarra )
+#else
+#endif
    END CLASS
 
 METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 ) CLASS hbNFeDaGeral
@@ -146,3 +151,99 @@ STATIC FUNCTION hbNFe_Box_Hpdf( oPage, x1, y1, x2, y2, nPen )
 
    RETURN NIL
 
+STATIC FUNCTION hbNFe_FormataTelefone( cText )
+
+   LOCAL cPicture := ""
+
+   cText := iif( ValType( cText ) == "N", Ltrim( Str( cText ) ), cText )
+   cText := SoNumeros( cText )
+   DO CASE
+   CASE Len( cText ) == 8  ; cPicture := "@R 9999-9999"
+   CASE Len( cText ) == 9  ; cPicture := "@R 99999-9999"
+   CASE Len( cText ) == 10 ; cPicture := "@R (99) 9999-9999"
+   CASE Len( cText ) == 11 ; cPicture := "@R (99) 99999-9999"
+   CASE Len( cText ) == 12 ; cPicture := "@R +99 (99) 9999-9999"
+   CASE Len( cText ) == 13 ; cPicture := "@R +99 (99) 99999-9999"
+   ENDCASE
+
+   RETURN Transform( cText, cPicture )
+
+STATIC FUNCTION hbNFe_FormataIE( cIE, cUF )
+
+   cIE := AllTrim( cIE )
+   IF cIE == "ISENTO" .OR. Empty( cIE )
+      RETURN cIE
+   ENDIF
+   cIE := SoNumeros( cIE )
+
+   HB_SYMBOL_UNUSED( cUF )
+
+   RETURN cIE
+
+#ifdef __XHARBOUR__
+STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
+
+   // Parameters de entrada : O codigo de barras no formato Code128C "somente numeros" campo tipo caracter
+   // Retorno               : Retorna o código convertido e com o caracter de START e STOP mais o checksum
+   // : para impressão do código de barras utilizando a fonte Code128bWin, é necessário
+   // : para utilizar essa fonte os arquivos Code128bWin.ttf, Code128bWin.afm e Code128bWin.pfb
+   // Autor                  : Anderson Camilo
+   // Data                   : 19/03/2012
+
+   LOCAL nI := 0, checksum := 0, nValorCar, cCode128 := '', cCodigoBarra
+
+   cCodigoBarra == pcCodigoBarra
+   IF Len( cCodigoBarra ) > 0    // Verifica se os caracteres são válidos (somente números)
+      IF Int( Len( cCodigoBarra ) / 2 ) == Len( cCodigoBarra ) / 2    // Tem ser par o tamanho do código de barras
+         FOR nI = 1 TO Len( cCodigoBarra )
+            IF ( Asc( SubStr( cCodigoBarra, nI, 1 ) ) < 48 .OR. Asc( SubStr( cCodigoBarra, nI, 1 ) ) > 57 )
+               nI := 0
+               EXIT
+            ENDIF
+         NEXT
+      ENDIF
+      IF nI > 0
+         nI := 1 // nI é o índice da cadeia
+         cCode128 := Chr( 155 )
+         DO WHILE nI <= Len( cCodigoBarra )
+            nValorCar := Val( SubStr( cCodigoBarra, nI, 2 ) )
+            IF nValorCar == 0
+               nValorCar += 128
+            ELSEIF nValorCar < 95
+               nValorCar += 32
+            ELSE
+               nValorCar +=  50
+            ENDIF
+            cCode128 += Chr( nValorCar )
+            nI += 2
+         ENDDO
+         // Calcula o checksum
+         FOR nI = 1 TO Len( cCode128 )
+            nValorCar := Asc ( SubStr( cCode128, nI, 1 ) )
+            IF nValorCar == 128
+               nValorCar := 0
+            ELSEIF nValorCar < 127
+               nValorCar -= 32
+            ELSE
+               nValorCar -=  50
+            ENDIF
+            IF nI == 1
+               checksum := nValorCar
+            ENDIF
+            checksum := Mod( ( checksum + ( nI - 1 ) * nValorCar ), 103 )
+         NEXT
+         // Cálculo código ASCII do checkSum
+         IF checksum == 0
+            checksum += 128
+         ELSEIF checksum < 95
+            checksum += 32
+         ELSE
+            checksum +=  50
+         ENDIF
+         // Adiciona o checksum e STOP
+         cCode128 := cCode128 + Chr( checksum ) +  Chr( 156 )
+      ENDIF
+   ENDIF
+
+   RETURN cCode128
+#endif

@@ -267,12 +267,12 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
       ::DrawJPEGImage( ::cLogoFile, 025, ::nLinhaPdf - ( 142 + 1 ), 200, 132 )
    ENDIF
    ::DrawTexto( 240, ::nLinhaPdf -018, 560, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 16 )
-   ::DrawTexto( 240, ::nLinhaPdf -060, 560, Nil, 'CNPJ: ' + TRANSF( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscrição Estadual: ' + FormatIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
+   ::DrawTexto( 240, ::nLinhaPdf -060, 560, Nil, 'CNPJ: ' + TRANSF( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscrição Estadual: ' + ::FormataIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
    ::DrawTexto( 240, ::nLinhaPdf -072, 560, Nil, 'Logradouro: ' + ::aEmit[ "xLgr" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
    ::DrawTexto( 240, ::nLinhaPdf -084, 560, Nil, "No.: " + ::aEmit[ "nro" ] + " " + ::aEmit[ "xCpl" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
    ::DrawTexto( 240, ::nLinhaPdf -096, 560, Nil, 'Bairro: ' + ::aEmit[ "xBairro" ] + " - CEP: " + TRANSF( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
    ::DrawTexto( 240, ::nLinhaPdf -108, 560, Nil, 'Município: ' + ::aEmit[ "xMun" ] + " - Estado: " + ::aEmit[ "UF" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
-   ::DrawTexto( 240, ::nLinhaPdf -120, 560, Nil, 'Fone/Fax:' + FormatTelefone( ::aEmit[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
+   ::DrawTexto( 240, ::nLinhaPdf -120, 560, Nil, 'Fone/Fax:' + ::FormataTelefone( ::aEmit[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 10 )
 
    // box do nome do documento
    ::DrawBox( 020, ::nLinhaPdf - 180, 555, 025, ::nLarguraBox )
@@ -283,7 +283,7 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    ::DrawBox( 020, ::nLinhaPdf - 345, 555, 160, ::nLarguraBox )
    ::DrawTexto( 020, ::nLinhaPdf - 185, 560, Nil, "CONTROLE DO FISCO", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 09 )
 #ifdef __XHARBOUR__
-   ::DrawTexto( 020, ::nLinhaPdf - 197, 575, Nil, hbnfe_Codifica_Code128c( ::cChave ), HPDF_TALIGN_CENTER, Nil, ::cFonteCode128F, 35 )
+   ::DrawTexto( 020, ::nLinhaPdf - 197, 575, Nil, ::xHarbourCode128c( ::cChave ), HPDF_TALIGN_CENTER, Nil, ::cFonteCode128F, 35 )
 #else
    // atenção - chute inicial
    ::DrawBarcode128( ::cChave, 150, ::nLinhaPDF - 232, 0.9, 30 )
@@ -412,100 +412,3 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    ::DrawTexto( 400, ::nLinhaPdf - 800, 560, NIL, ::cDesenvolvedor, HPDF_TALIGN_RIGHT, ::oPdfFontCabecalhoBold, 6 )
 
    RETURN NIL
-
-STATIC FUNCTION FormatIE( cIE, cUF )
-
-   cIE := AllTrim( cIE )
-   IF cIE == "ISENTO" .OR. Empty( cIE )
-      RETURN cIE
-   ENDIF
-   cIE := SoNumeros( cIE )
-
-   HB_SYMBOL_UNUSED( cUF )
-
-   RETURN cIE
-
-#ifdef __XHARBOUR__
-STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
-
-   // Parameters de entrada : O codigo de barras no formato Code128C "somente numeros" campo tipo caracter
-   // Retorno               : Retorna o código convertido e com o caracter de START e STOP mais o checksum
-   // : para impressão do código de barras utilizando a fonte Code128bWin, é necessário
-   // : para utilizar essa fonte os arquivos Code128bWin.ttf, Code128bWin.afm e Code128bWin.pfb
-   // Autor                  : Anderson Camilo
-   // Data                   : 19/03/2012
-
-   LOCAL nI := 0, checksum := 0, nValorCar, cCode128 := '', cCodigoBarra
-
-   cCodigoBarra := pcCodigoBarra
-   IF Len( cCodigoBarra ) > 0    // Verifica se os caracteres são válidos (somente números)
-      IF Int( Len( cCodigoBarra ) / 2 ) = Len( cCodigoBarra ) / 2    // Tem ser par o tamanho do código de barras
-         FOR nI = 1 TO Len( cCodigoBarra )
-            IF ( Asc( SubStr( cCodigoBarra, nI, 1 ) ) < 48 .OR. Asc( SubStr( cCodigoBarra, nI, 1 ) ) > 57 )
-               nI := 0
-               EXIT
-            ENDIF
-         NEXT
-      ENDIF
-      IF nI > 0
-         nI := 1 // nI é o índice da cadeia
-         cCode128 = Chr( 155 )
-         DO WHILE nI <= Len( cCodigoBarra )
-            nValorCar := Val( SubStr( cCodigoBarra, nI, 2 ) )
-            IF nValorCar == 0
-               nValorCar += 128
-            ELSEIF nValorCar < 95
-               nValorCar += 32
-            ELSE
-               nValorCar +=  50
-            ENDIF
-            cCode128 += Chr( nValorCar )
-            nI += 2
-         ENDDO
-         // Calcula o checksum
-         FOR nI = 1 TO Len( cCode128 )
-            nValorCar := Asc ( SubStr( cCode128, nI, 1 ) )
-            IF nValorCar := 128
-               nValorCar := 0
-            ELSEIF nValorCar < 127
-               nValorCar -= 32
-            ELSE
-               nValorCar -=  50
-            ENDIF
-            IF nI == 1
-               checksum := nValorCar
-            ENDIF
-            checksum := Mod( ( checksum + ( nI -1 ) * nValorCar ), 103 )
-         NEXT
-         // Cálculo código ASCII do checkSum
-         IF checksum == 0
-            checksum += 128
-         ELSEIF checksum < 95
-            checksum += 32
-         ELSE
-            checksum +=  50
-         ENDIF
-         // Adiciona o checksum e STOP
-         cCode128 := cCode128 + Chr( checksum ) +  Chr( 156 )
-      ENDIF
-   ENDIF
-
-   RETURN cCode128
-#endif
-
-STATIC FUNCTION FormatTelefone( cTelefone )
-
-   LOCAL cPicture := ""
-
-   cTelefone := iif( ValType( cTelefone ) == "N", Ltrim( Str( cTelefone ) ), cTelefone )
-   cTelefone := SoNumeros( cTelefone )
-   DO CASE
-   CASE Len( cTelefone ) == 8  ; cPicture := "@R 9999-9999"
-   CASE Len( cTelefone ) == 9  ; cPicture := "@R 99999-9999"
-   CASE Len( cTelefone ) == 10 ; cPicture := "@R (99) 9999-9999"
-   CASE Len( cTelefone ) == 11 ; cPicture := "@R (99) 99999-9999"
-   CASE Len( cTelefone ) == 12 ; cPicture := "@R +99 (99) 9999-9999"
-   CASE Len( cTelefone ) == 13 ; cPicture := "@R +99 (99) 99999-9999"
-   ENDCASE
-
-   RETURN Transform( cTelefone, cPicture )

@@ -216,8 +216,8 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
 
    ::aEmit[ "xNome" ]  := XmlToString( ::aEmit[ "xNome" ] )
    ::aDest[ "xNome" ]  := XmlToString( ::aDest[ "xNome" ] )
-   ::cTelefoneEmitente := FormatTelefone( ::aEmit[ "fone" ] )
-   ::aDest[ "fone" ]   := FormatTelefone( ::aDest[ "fone" ] )
+   ::cTelefoneEmitente := ::FormataTelefone( ::aEmit[ "fone" ] )
+   ::aDest[ "fone" ]   := ::FormataTelefone( ::aDest[ "fone" ] )
    IF ! Empty( ::aEntrega[ "xLgr" ] )
       ::aInfAdic[ "infCpl" ] += ";" + TrimXml( "LOCAL DE ENTREGA: " + ::aEntrega[ "xLgr" ] + " " + ::aEntrega[ "nro" ] + " " + ;
          ::aEntrega[ "xBairro" ] + " " + ::aEntrega[ "xMun" ] + " " + ::aEntrega[ "UF" ] )
@@ -552,7 +552,7 @@ METHOD CabecalhoPaisagem() CLASS hbNFeDaNFe
    // oCode128F := HPDF_GetFont( ::oPdf, oCode128, "FontSpecific" )
    // ::DrawTexto( 540, ::nLinhaPdf - 4.5, 815, NIL, "{" + ::cChave + "~", HPDF_TALIGN_CENTER, NIL, oCode128F, 11 )
    // ::DrawTexto( 540, ::nLinhaPdf - 19, 815, NIL, "{" + ::cChave + "~", HPDF_TALIGN_CENTER, NIL, oCode128F, 11 )
-   ::DrawTexto( 540, ::nLinhaPdf - 1.5, 815, NIL, hbnfe_CodificaCode128c( ::cChave ), HPDF_TALIGN_CENTER, NIL, ::cFonteCode128F, 15 )
+   ::DrawTexto( 540, ::nLinhaPdf - 1.5, 815, NIL, ::xHarbourCode128c( ::cChave ), HPDF_TALIGN_CENTER, NIL, ::cFonteCode128F, 15 )
 #else
    ::DrawBarcode128( ::cChave, 540, ::nLinhaPdf - 32, 1.0, 30 )
 #endif
@@ -678,7 +678,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
    // ::DrawTexto( 380, ::nLinhaPdf - 8, 585, NIL, "{"+::cChave+"~", HPDF_TALIGN_CENTER, NIL, oCode128F, 8 )
    // ::DrawTexto( 380, ::nLinhaPdf - 18.2, 585, NIL, "{"+::cChave+"~", HPDF_TALIGN_CENTER, NIL, oCode128F, 8 )
 
-   ::DrawTexto( 380, ::nLinhaPdf - 2, 585, NIL, hbnfe_CodificaCode128c( ::cChave ), HPDF_TALIGN_CENTER, NIL, ::cFonteCode128F, 15 )
+   ::DrawTexto( 380, ::nLinhaPdf - 2, 585, NIL, ::xHarbourCode128c( ::cChave ), HPDF_TALIGN_CENTER, NIL, ::cFonteCode128F, 15 )
 
 #else
    ::DrawBarcode128( ::cChave, 385, ::nLinhaPdf - 32, 0.7, 30 )
@@ -798,7 +798,7 @@ METHOD Destinatario() CLASS hbNFeDaNFe
 
       ::DrawBox( 480, ::nLinhaPdf - 16, 150, 16, ::nLarguraBox )
       ::DrawTexto( 481, ::nLinhaPdf - 1,  629, NIL, "FONE/FAX", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-      ::DrawTexto( 481, ::nLinhaPdf - 5, 629, NIL, FormatTelefone( ::aDest[ "fone" ] ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
+      ::DrawTexto( 481, ::nLinhaPdf - 5, 629, NIL, ::FormataTelefone( ::aDest[ "fone" ] ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
 
       ::DrawBox( 630, ::nLinhaPdf - 16, 30, 16, ::nLarguraBox )
       ::DrawTexto( 631, ::nLinhaPdf - 1,  659, NIL, "ESTADO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
@@ -862,7 +862,7 @@ METHOD Destinatario() CLASS hbNFeDaNFe
 
       ::DrawBox( 250, ::nLinhaPdf - 16, 150, 16, ::nLarguraBox )
       ::DrawTexto( 251, ::nLinhaPdf - 1,  399, NIL, "FONE/FAX", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
-      ::DrawTexto( 251, ::nLinhaPdf - 5, 399, NIL, FormatTelefone( ::aDest[ "fone" ] ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
+      ::DrawTexto( 251, ::nLinhaPdf - 5, 399, NIL, ::FormataTelefone( ::aDest[ "fone" ] ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 10 )
 
       ::DrawBox( 400, ::nLinhaPdf - 16, 30, 16, ::nLarguraBox )
       ::DrawTexto( 401, ::nLinhaPdf - 1,  429, NIL, "ESTADO", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 5 )
@@ -1824,91 +1824,3 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURA ]    := 100 // tanto faz
 
    RETURN NIL
-
-// Funções repetidas em NFE, CTE, MDFE e EVENTO
-// STATIC pra permitir uso simultâneo com outras rotinas
-
-#ifdef __XHARBOUR__
-STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
-
-   // Parameters de entrada : O codigo de barras no formato Code128C "somente numeros" campo tipo caracter
-   // Retorno               : Retorna o código convertido e com o caracter de START e STOP mais o checksum
-   // : para impressão do código de barras utilizando a fonte Code128bWin, é necessário
-   // : para utilizar essa fonte os arquivos Code128bWin.ttf, Code128bWin.afm e Code128bWin.pfb
-   // Autor                  : Anderson Camilo
-   // Data                   : 19/03/2012
-
-   LOCAL nI := 0, checksum := 0, nValorCar, cCode128 := '', cCodigoBarra
-
-   cCodigoBarra == pcCodigoBarra
-   IF Len( cCodigoBarra ) > 0    // Verifica se os caracteres são válidos (somente números)
-      IF Int( Len( cCodigoBarra ) / 2 ) == Len( cCodigoBarra ) / 2    // Tem ser par o tamanho do código de barras
-         FOR nI = 1 TO Len( cCodigoBarra )
-            IF ( Asc( SubStr( cCodigoBarra, nI, 1 ) ) < 48 .OR. Asc( SubStr( cCodigoBarra, nI, 1 ) ) > 57 )
-               nI := 0
-               EXIT
-            ENDIF
-         NEXT
-      ENDIF
-      IF nI > 0
-         nI := 1 // nI é o índice da cadeia
-         cCode128 := Chr( 155 )
-         DO WHILE nI <= Len( cCodigoBarra )
-            nValorCar := Val( SubStr( cCodigoBarra, nI, 2 ) )
-            IF nValorCar == 0
-               nValorCar += 128
-            ELSEIF nValorCar < 95
-               nValorCar += 32
-            ELSE
-               nValorCar +=  50
-            ENDIF
-            cCode128 += Chr( nValorCar )
-            nI += 2
-         ENDDO
-         // Calcula o checksum
-         FOR nI = 1 TO Len( cCode128 )
-            nValorCar := Asc ( SubStr( cCode128, nI, 1 ) )
-            IF nValorCar == 128
-               nValorCar := 0
-            ELSEIF nValorCar < 127
-               nValorCar -= 32
-            ELSE
-               nValorCar -=  50
-            ENDIF
-            IF nI == 1
-               checksum := nValorCar
-            ENDIF
-            checksum := Mod( ( checksum + ( nI - 1 ) * nValorCar ), 103 )
-         NEXT
-         // Cálculo código ASCII do checkSum
-         IF checksum == 0
-            checksum += 128
-         ELSEIF checksum < 95
-            checksum += 32
-         ELSE
-            checksum +=  50
-         ENDIF
-         // Adiciona o checksum e STOP
-         cCode128 := cCode128 + Chr( checksum ) +  Chr( 156 )
-      ENDIF
-   ENDIF
-
-   RETURN cCode128
-#endif
-
-STATIC FUNCTION FormatTelefone( cTelefone )
-
-   LOCAL cPicture := ""
-
-   cTelefone := iif( ValType( cTelefone ) == "N", iif( cTelefone > 100, Ltrim( Str( cTelefone ) ), "" ), cTelefone )
-   cTelefone := SoNumeros( cTelefone )
-   DO CASE
-   CASE Len( cTelefone ) == 8  ; cPicture := "@R 9999-9999"
-   CASE Len( cTelefone ) == 9  ; cPicture := "@R 99999-9999"
-   CASE Len( cTelefone ) == 10 ; cPicture := "@R (99) 9999-9999"
-   CASE Len( cTelefone ) == 11 ; cPicture := "@R (99) 99999-9999"
-   CASE Len( cTelefone ) == 12 ; cPicture := "@R +99 (99) 9999-9999"
-   CASE Len( cTelefone ) == 13 ; cPicture := "@R +99 (99) 99999-9999"
-   ENDCASE
-
-   RETURN Transform( cTelefone, cPicture )

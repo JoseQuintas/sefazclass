@@ -173,7 +173,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    cEmit := XmlNode( ::cXml, "emit" )
    ::aEmit := XmlToHash( cEmit, { "CNPJ", "IE", "xNome", "xFant", "fone" } )
    ::aEmit[ "xNome" ] := XmlToString( ::aEmit[ "xNome" ] )
-   ::cTelefoneEmitente  := FormatTelefone( ::aEmit[ "fone" ] )
+   ::cTelefoneEmitente  := ::FormataTelefone( ::aEmit[ "fone" ] )
    cEmit := XmlNode( cEmit, "enderEmit" )
    FOR EACH oElement IN { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "CEP", "UF" }
       ::aEmit[ oElement ] := XmlNode( cEmit, oElement )
@@ -453,10 +453,10 @@ METHOD Cabecalho() CLASS hbnfeDaCte
       ::DrawTexto( 3, ::nLinhaPdf - 056, 295, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
    ENDIF
    ::DrawTexto( 6, ::nLinhaPdf - 070, 295, Nil, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ] + " " + ::aEmit[ "xCpl" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
-   ::DrawTexto( 6, ::nLinhaPdf - 078, 295, Nil, ::aEmit[ "xBairro" ] + " - " + TRANSF( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
+   ::DrawTexto( 6, ::nLinhaPdf - 078, 295, Nil, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
    ::DrawTexto( 6, ::nLinhaPdf - 086, 295, Nil, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
-   ::DrawTexto( 6, ::nLinhaPdf - 094, 295, Nil, iif( Empty( ::aEmit[ "fone" ] ), "", "Fone/Fax:" + FormatTelefone( ::aEmit[ "fone" ] ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
-   ::DrawTexto( 6, ::nLinhaPdf - 107, 295, Nil, 'CNPJ/CPF:' + TRANSF( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscr.Estadual:' + FormatIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
+   ::DrawTexto( 6, ::nLinhaPdf - 094, 295, Nil, iif( Empty( ::aEmit[ "fone" ] ), "", "Fone/Fax:" + ::FormataTelefone( ::aEmit[ "fone" ] ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
+   ::DrawTexto( 6, ::nLinhaPdf - 107, 295, Nil, 'CNPJ/CPF:' + Transform( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscr.Estadual:' + ::FormataIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
 
    // box do nome do documento
    ::DrawBox( 303, ::nLinhaPdf - 032, 145, 032, ::nLarguraBox )
@@ -499,7 +499,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ::DrawBox( 303, ::nLinhaPdf - 129, 290, 066, ::nLarguraBox )
    ::DrawTexto( 303, ::nLinhaPdf - 065, 588, Nil, "CONTROLE DO FISCO", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 09 )
 #ifdef __XHARBOUR__
-   ::DrawTexto( 303, ::nLinhaPdf - 075, 588, Nil, hbnfe_Codifica_Code128c( ::cChave ), HPDF_TALIGN_CENTER, ::cFonteCode128F, 17 )
+   ::DrawTexto( 303, ::nLinhaPdf - 075, 588, Nil, ::xHarbourCode128c( ::cChave ), HPDF_TALIGN_CENTER, ::cFonteCode128F, 17 )
 #else
    // atenção - chute inicial
    ::DrawBarcode128( ::cChave, 320, ::nLinhaPDF -110, 0.9, 30 )
@@ -573,11 +573,11 @@ METHOD Cabecalho() CLASS hbnfeDaCte
       ::DrawTexto( 042, ::nLinhaPdf - 241, 150, Nil, Transform( ::aRem[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
    ENDIF
    ::DrawTexto( 150, ::nLinhaPdf - 240, 250, Nil, "INSCRIÇÃO ESTADUAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
-   ::DrawTexto( 245, ::nLinhaPdf - 241, 295, Nil, FormatIE( ::aRem[ "IE" ], ::aRem[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
+   ::DrawTexto( 245, ::nLinhaPdf - 241, 295, Nil, ::FormataIE( ::aRem[ "IE" ], ::aRem[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
    ::DrawTexto( 005, ::nLinhaPdf - 248, 042, Nil, "Pais", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
    ::DrawTexto( 042, ::nLinhaPdf - 249, 150, Nil, ::aRem[ "xPais" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
    ::DrawTexto( 225, ::nLinhaPdf - 248, 250, Nil, "FONE", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
-   ::DrawTexto( 250, ::nLinhaPdf - 249, 295, Nil, FormatTelefone( ::aRem[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
+   ::DrawTexto( 250, ::nLinhaPdf - 249, 295, Nil, ::FormataTelefone( ::aRem[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
 
    // Box do Destinatario
    ::DrawBox( 303, ::nLinhaPdf - 261, 290, 054, ::nLarguraBox )
@@ -603,7 +603,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ::DrawTexto( 305, ::nLinhaPdf - 248, 342, Nil, "Pais", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
    ::DrawTexto( 342, ::nLinhaPdf - 249, 450, Nil, ::aDest[ "xPais" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
    ::DrawTexto( 520, ::nLinhaPdf - 248, 545, Nil, "FONE", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
-   ::DrawTexto( 545, ::nLinhaPdf - 249, 595, Nil, FormatTelefone( ::aDest[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
+   ::DrawTexto( 545, ::nLinhaPdf - 249, 595, Nil, ::FormataTelefone( ::aDest[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
    // Box do Expedidor
    ::DrawBox( 003, ::nLinhaPdf - 318, 295, 054, ::nLarguraBox )
 
@@ -640,7 +640,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
       ::DrawTexto( 042, ::nLinhaPdf - 305, 150, Nil, ::aExped[ "xPais" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
    ENDIF
    ::DrawTexto( 225, ::nLinhaPdf - 304, 250, Nil, "FONE", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
-   ::DrawTexto( 250, ::nLinhaPdf - 305, 295, Nil, FormatTelefone( ::aExped[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
+   ::DrawTexto( 250, ::nLinhaPdf - 305, 295, Nil, ::FormataTelefone( ::aExped[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
 
    // Box do Recebedor
    ::DrawBox( 303, ::nLinhaPdf - 318, 290, 054, ::nLarguraBox )
@@ -671,13 +671,13 @@ METHOD Cabecalho() CLASS hbnfeDaCte
       ::DrawTexto( 342, ::nLinhaPdf - 297, 450, Nil, TRANSF( ::aReceb[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
    ENDIF
    ::DrawTexto( 440, ::nLinhaPdf - 296, 540, Nil, "INSCRIÇÃO ESTADUAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
-   ::DrawTexto( 540, ::nLinhaPdf - 297, 590, Nil, FormatIE( ::aReceb[ "IE" ], ::aReceb[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
+   ::DrawTexto( 540, ::nLinhaPdf - 297, 590, Nil, ::FormataIE( ::aReceb[ "IE" ], ::aReceb[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
    ::DrawTexto( 305, ::nLinhaPdf - 304, 342, Nil, "Pais", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
    If ! Empty( ::aReceb[ "xPais" ] )
       ::DrawTexto( 342, ::nLinhaPdf - 305, 450, Nil, ::aReceb[ "xPais" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
    ENDIF
    ::DrawTexto( 520, ::nLinhaPdf - 304, 545, Nil, "FONE", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
-   ::DrawTexto( 545, ::nLinhaPdf - 305, 595, Nil, FormatTelefone( ::aReceb[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
+   ::DrawTexto( 545, ::nLinhaPdf - 305, 595, Nil, ::FormataTelefone( ::aReceb[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
 
    // Box do Tomador
    ::DrawBox( 003, ::nLinhaPdf - 347, 590, 026, ::nLarguraBox )
@@ -701,11 +701,11 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ENDIF
 
    ::DrawTexto( 150, ::nLinhaPdf - 337, 250, Nil, "INSCRIÇÃO ESTADUAL", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
-   ::DrawTexto( 245, ::nLinhaPdf - 338, 295, Nil, FormatIE( ::aToma[ "IE" ], ::aToma[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
+   ::DrawTexto( 245, ::nLinhaPdf - 338, 295, Nil, ::FormataIE( ::aToma[ "IE" ], ::aToma[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
    ::DrawTexto( 425, ::nLinhaPdf - 337, 465, Nil, "Pais", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
    ::DrawTexto( 442, ::nLinhaPdf - 338, 500, Nil, ::aToma[ "xPais" ], HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
    ::DrawTexto( 520, ::nLinhaPdf - 337, 560, Nil, "FONE", HPDF_TALIGN_LEFT, ::oPdfFontCabecalho, 8 )
-   ::DrawTexto( 542, ::nLinhaPdf - 338, 590, Nil, FormatTelefone( ::aToma[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
+   ::DrawTexto( 542, ::nLinhaPdf - 338, 590, Nil, ::FormataTelefone( ::aToma[ "fone" ] ), HPDF_TALIGN_LEFT, ::oPdfFontCabecalhoBold, 7 )
 
    // Box do Produto Predominante
    ::DrawBox( 003, ::nLinhaPdf - 373, 340, 023, ::nLarguraBox )
@@ -1166,99 +1166,3 @@ METHOD Cabecalho() CLASS hbnfeDaCte
 
    RETURN NIL
 
-STATIC FUNCTION FormatIE( cIE, cUF )
-
-   cIE := AllTrim( cIE )
-   IF cIE == "ISENTO" .OR. Empty( cIE )
-      RETURN cIE
-   ENDIF
-   cIE := SoNumeros( cIE )
-
-   HB_SYMBOL_UNUSED( cUF )
-
-   RETURN cIE
-
-#ifdef __XHARBOUR__
-STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
-
-   // Parameters de entrada : O codigo de barras no formato Code128C "somente numeros" campo tipo caracter
-   // Retorno               : Retorna o código convertido e com o caracter de START e STOP mais o checksum
-   // : para impressão do código de barras utilizando a fonte Code128bWin, é necessário
-   // : para utilizar essa fonte os arquivos Code128bWin.ttf, Code128bWin.afm e Code128bWin.pfb
-   // Autor                  : Anderson Camilo
-   // Data                   : 19/03/2012
-
-   LOCAL nI := 0, checksum := 0, nValorCar, cCode128 := '', cCodigoBarra
-
-   cCodigoBarra = pcCodigoBarra
-   IF Len( cCodigoBarra ) > 0    // Verifica se os caracteres são válidos (somente números)
-      IF Int( Len( cCodigoBarra ) / 2 ) = Len( cCodigoBarra ) / 2    // Tem ser par o tamanho do código de barras
-         FOR nI = 1 TO Len( cCodigoBarra )
-            IF ( Asc( SubStr( cCodigoBarra, nI, 1 ) ) < 48 .OR. Asc( SubStr( cCodigoBarra, nI, 1 ) ) > 57 )
-               nI = 0
-               EXIT
-            ENDIF
-         NEXT
-      ENDIF
-      IF nI > 0
-         nI = 1 // nI é o índice da cadeia
-         cCode128 = Chr( 155 )
-         DO WHILE nI <= Len( cCodigoBarra )
-            nValorCar = Val( SubStr( cCodigoBarra, nI, 2 ) )
-            IF nValorCar = 0
-               nValorCar += 128
-            ELSEIF nValorCar < 95
-               nValorCar += 32
-            ELSE
-               nValorCar +=  50
-            ENDIF
-            cCode128 += Chr( nValorCar )
-            nI = nI + 2
-         ENDDO
-         // Calcula o checksum
-         FOR nI = 1 TO Len( cCode128 )
-            nValorCar = Asc ( SubStr( cCode128, nI, 1 ) )
-            IF nValorCar = 128
-               nValorCar = 0
-            ELSEIF nValorCar < 127
-               nValorCar -= 32
-            ELSE
-               nValorCar -=  50
-            ENDIF
-            IF nI = 1
-               checksum = nValorCar
-            ENDIF
-            checksum = Mod( ( checksum + ( nI -1 ) * nValorCar ), 103 )
-         NEXT
-         // Cálculo código ASCII do checkSum
-         IF checksum = 0
-            checksum += 128
-         ELSEIF checksum < 95
-            checksum += 32
-         ELSE
-            checksum +=  50
-         ENDIF
-         // Adiciona o checksum e STOP
-         cCode128 = cCode128 + Chr( checksum ) +  Chr( 156 )
-      ENDIF
-   ENDIF
-
-   RETURN cCode128
-#endif
-
-STATIC FUNCTION FormatTelefone( cTelefone )
-
-   LOCAL cPicture := ""
-
-   cTelefone := iif( ValType( cTelefone ) == "N", Ltrim( Str( cTelefone ) ), cTelefone )
-   cTelefone := SoNumeros( cTelefone )
-   DO CASE
-   CASE Len( cTelefone ) == 8  ; cPicture := "@R 9999-9999"
-   CASE Len( cTelefone ) == 9  ; cPicture := "@R 99999-9999"
-   CASE Len( cTelefone ) == 10 ; cPicture := "@R (99) 9999-9999"
-   CASE Len( cTelefone ) == 11 ; cPicture := "@R (99) 99999-9999"
-   CASE Len( cTelefone ) == 12 ; cPicture := "@R +99 (99) 9999-9999"
-   CASE Len( cTelefone ) == 13 ; cPicture := "@R +99 (99) 99999-9999"
-   ENDCASE
-
-   RETURN Transform( cTelefone, cPicture )
