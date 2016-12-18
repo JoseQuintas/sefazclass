@@ -147,7 +147,7 @@ PROCEDURE Main
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
       CASE nOpc == 10
-         cXml := MemoRead( "d:\temp\valida.xml" )
+         cXml := MemoRead( "d:\temp\teste.xml" )
          // cXml := StrTran( cXml, "</NFe>", FakeSignature() + "</NFe>" )
          ? oSefaz:ValidaXml( cXml, "d:\cdrom\fontes\integra\schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd" )
          Inkey(0)
@@ -189,70 +189,31 @@ FUNCTION MyInkeyFilter( nKey )
 
 FUNCTION TestDanfe()
 
-   LOCAL oDanfe
+   LOCAL oDanfe, oFiles, cFileXml, cFilePdf
 
-   IF File( "xmlnota.xml" )
-      fErase( "pdfnfe.pdf" )
-      oDanfe := hbnfeDaNfe():New()
+   oFiles := { "ctecarbolub.xml", "eventoctealguem.xml", "eventoctecarbolub.xml", ;
+        "eventonfecordeiro.xml", "eventonfecordeiro2.xml", "mdfecordeiro.xml", ;
+        "mdfecordeiro2.xml", "nfecarbolub.xml", "nfecordeiro.xml", "nfemaringa.xml", ;
+        "nfeasper.xml", "nfeenzza.xml" }
+   FOR EACH cFileXml IN oFiles
+      DO CASE
+      CASE Left( cFileXml, 3 ) == "cte" ;       oDanfe := hbNFeDaCte():New()
+      CASE Left( cFileXml, 3 ) == "nfe" ;       oDanfe := hbNFeDaNfe():New()
+      CASE Left( cFileXml, 9 ) == "eventocte" ; oDanfe := hbNFeDaEvento():New()
+      CASE Left( cFileXml, 9 ) == "eventonfe" ; oDanfe := hbNFeDaEvento():New()
+      ENDCASE
+      cFilePdf := Substr( cFileXml, 1, At( ".", cFileXml ) ) + "pdf"
+      fErase( cFilePdf )
       oDanfe:cLogoFile := JPEGImage()
       oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
-      oDanfe:Execute( MemoRead( "xmlnota.xml" ), "pdfnfe.pdf" )
-      ? "DANFe " + oDanfe:cRetorno
-      PDFOpen( "pdfnfe.pdf" )
-      oDanfe := hbNfeDanfe():New()
-      oDanfe:lPaisagem := .T.
-      oDanfe:Execute( MemoRead( "xmlnota.xml" ), "pdfnfep.pdf" )
-      PDFOpen( "pdfnfep.pdf" )
-   ENDIF
-   IF File( "xmlnotagrande.xml" )
-      fErase( "pdfnfegrande.pdf" )
-      oDanfe := hbnfeDaNfe():New()
-      oDanfe:cLogoFile := JPEGImage()
-      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
-      oDanfe:Execute( MemoRead( "xmlnotagrande.xml" ), "pdfnfegrande.pdf" )
-      ? "Danfe " + oDanfe:cRetorno
-      PDFOpen( "pdfnfegrande.pdf" )
-      oDanfe := hbnfeDanfe():New()
-      oDanfe:lPaisagem := .T.
-      oDanfe:Execute( MemoRead( "xmlnotagrande.xml" ), "pdfnfegrandep.pdf" )
-      PDFOpen( "pdfnfegrandep.pdf" )
-   ENDIF
-   IF File( "xmlcte.xml" )
-      fErase( "pdfcte.pdf" )
-      oDanfe := hbnfeDaCte():New()
-      oDanfe:cLogoFile := JPEGImage()
-      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
-      oDanfe:Execute( MemoRead( "xmlcte.xml" ),  "pdfcte.pdf" )
-      ? "DACTe " + oDanfe:cRetorno
-      PDFOpen( "pdfcte.pdf" )
-   ENDIF
-   IF File( "xmlmdfe.xml" )
-      fErase( "pdfmdfe.pdf" )
-      oDanfe := hbnfeDaMdfe():New()
-      oDanfe:cLogoFile := JPEGImage()
-      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
-      oDanfe:Execute( MemoRead( "xmlmdfe.xml" ), "pdfmdfe.pdf" )
-      ? "DAMDFe " + oDanfe:cRetorno
-      PDFOpen( "pdfmdfe.pdf" )
-   ENDIF
-   IF File( "xmleventonfe.xml" ) .AND. File( "xmlnota.xml" )
-      fErase( "pdfeventonfe.pdf" )
-      oDanfe := hbnfeDaEvento():New()
-      oDanfe:cLogoFile := JPEGImage()
-      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
-      oDanfe:Execute( MemoRead( "xmleventonfe.xml" ), MemoRead( "xmlnota.xml" ), "pdfeventonfe.pdf" )
-      ? "DAEvento NFe " + oDanfe:cRetorno
-      PDFOpen( "pdfeventonfe.pdf" )
-   ENDIF
-   IF File( "xmleventocte.xml" )
-      fErase( "pdfeventocte.pdf" )
-      oDanfe := hbnfeDaEvento():New()
-      oDanfe:cLogoFile := JPEGImage()
-      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
-      oDanfe:Execute( MemoRead( "xmleventocte.xml" ), "", "pdfeventocte.pdf" )
-      ? "DAEvento CTe " + oDanfe:cRetorno
-      PDFOpen( "pdfeventocte.pdf" )
-   ENDIF
+      IF Left( cFileXml, 6 ) == "evento"
+         oDanfe:Execute( MemoRead( cFileXml ), iif( File( Substr( cFileXml, 7 ) ), MemoRead( Substr( cFileXml, 7 ) ), "" ), cFilePdf )
+      ELSE
+         oDanfe:Execute( MemoRead( cFileXml ), cFilePdf )
+      ENDIF
+      ? oDanfe:cRetorno
+      PDFOpen( cFilePdf )
+   NEXT
    oDanfe := hbNFeDaNFCe():New()
    oDanfe:Execute( "www.jpatecnologia.com.br", "pdfqrcode.pdf" )
    PDFOpen( "pdfqrcode.pdf" )
