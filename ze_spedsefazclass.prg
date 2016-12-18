@@ -4,7 +4,7 @@ ZE_SPEDSEFAZCLASS - Rotinas pra comunicação com SEFAZ
 2016.11.25.1600 - Se colocar XML version="1.00" o explorer não abre o XML
 2016.11.25.2300 - ::AssinaXml() e CapicomAssinaXml() pra evitar confusão no uso
 2016.11.25.2300 - ::ValidaXml() e DomDocValidaXml() pra evitar confusão no uso
-2016.12.01.0230 - NFE 4.00
+2016.12.01.0230 - NFE 4.00 início
 
 Nota: CTE 2.00 vale até 06/2017 e CTE 3.00 começa em 12/2016
 */
@@ -146,7 +146,7 @@ CREATE CLASS SefazClass
    METHOD UFCodigo( cSigla )                INLINE UFCodigo( cSigla )
    METHOD UFSigla( cCodigo )                INLINE UFSigla( cCodigo )
    METHOD DateTimeXml( dDate, cTime, lUTC ) INLINE DateTimeXml( dDate, cTime, iif( ::cUFTimeZone == NIL, ::cUF, ::cUFTimeZone ), lUTC )
-   METHOD ValidaXml( cXml, cFileXsd )       INLINE DomDocValidaXml( cXml, cFileXsd )
+   METHOD ValidaXml( cXml, cFileXsd )       INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd )
    METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico )
 
    ENDCLASS
@@ -1038,7 +1038,7 @@ METHOD SetSoapURL( nWsServico ) CLASS SefazClass
    CASE ::cProjeto == WS_PROJETO_CTE
       IF ::cScan == "SVCAN"
          IF ::cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,SC,SE,TO"
-            ::cSoapURL := SoapURL_SVSP( ::cAmbiente, nWsServico, ::cVersao ) // SVC-SP não existe
+            ::cSoapURL := SoapURL_SVSP( ::cAmbiente, nWsServico, ::cVersao ) // SVC_SP não existe
          ELSEIF ::cUF $ "MS,MT,SP," + "AP,PE,RR"
             ::cSoapURL := SoapURL_SVRS( ::cAmbiente, nWsServico, ::cVersao ) // SVC_RS não existe
          ENDIF
