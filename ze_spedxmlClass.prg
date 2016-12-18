@@ -1,12 +1,6 @@
 /*
 ZE_SPEDXMLCLASS - CLASSES PARA NFE/CTE/MDFE/CCE
 2010.07.19
-
-...
-2016.07.05.1200 - Formatação do fonte
-2016.07.10.1330 - Status do documento
-
-*** Sujeito a mudanças nos nomes em atualizações futuras, e novos campos
 */
 
 #include "hbclass.ch"
@@ -20,7 +14,7 @@ CREATE CLASS NfeCadastroClass
    VAR  CNAE                INIT ""
    VAR  Endereco            INIT ""
    VAR  Numero              INIT ""
-   VAR  Compl               INIT ""
+   VAR  Complemento         INIT ""
    VAR  Bairro              INIT ""
    VAR  Cidade              INIT ""
    VAR  CidadeIbge          INIT ""
@@ -389,7 +383,7 @@ FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
       cBlocoEndereco := XmlNode( cBlocoEmit, "enderEmit" )
          oNfe:Emitente:Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
          oNfe:Emitente:Numero     := XmlNode( cBlocoEndereco, "nro" )
-         oNfe:Emitente:Compl      := XmlNode( cBlocoEndereco, "xCpl" )
+         oNfe:Emitente:Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
          oNfe:Emitente:Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
          oNfe:Emitente:CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
          oNfe:Emitente:Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
@@ -410,7 +404,7 @@ FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
       cBlocoEndereco := XmlNode( cBlocoDest, "enderDest" )
          oNfe:Destinatario:Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
          oNfe:Destinatario:Numero     := XmlNode( cBlocoEndereco, "nro" )
-         oNfe:Destinatario:Compl      := XmlNode( cBlocoEndereco, "xCpl" )
+         oNfe:Destinatario:Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
          oNfe:Destinatario:Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
          oNfe:Destinatario:CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
          oNfe:Destinatario:Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
@@ -519,37 +513,39 @@ FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
 
 FUNCTION XmlToDocNfeCancel( cXmlInput, oNFe )
 
-   LOCAL mXmlInfComTag, mXmlInf
+   LOCAL mChave, mProtocolo, mXmlInfComTag, mXmlInf
 
-   DO CASE
-   CASE "<infEvento" $ cXmlInput // Evento
-      oNFe:ChaveAcesso := XmlNode( cXmlInput, "chNFe" )
-      oNFe:Protocolo   := XmlNode( XmlNode( cXmlInput, "retEvento" ), "nProt" )
+   IF "<infEvento" $ cXmlInput // Evento
+      mChave := XmlNode( cXmlInput, "chNFe" )
+      mProtocolo := XmlNode( XmlNode( cXmlInput, "retEvento" ), "nProt" )
       // tem o protocolo enviado para cancelamento, e o de retorno
-   CASE "retCancNFe" $ cXmlInput // Tem que ser antes do outro
-      mXmlInf := XmlNode( cXmlInput, "infCanc" )
-      oNFe:ChaveAcesso := XmlNode( mXmlInf, "chNFe" )
-      oNFe:Protocolo   := XmlNode( mXmlInf, "nProt" )
-   CASE "CancNFe" $ cXmlInput
-      mXmlInfComTag := XmlNode( cXmlInput, "infCanc",.T. )
-      oNFe:ChaveAcesso := XmlElement( mXmlInfComTag, "Id" )
-      IF Substr( oNFe:ChaveAcesso, 1, 2 ) == "ID"
-         oNFe:ChaveAcesso := Substr( oNFe:ChaveAcesso, 3 )
-      ENDIF
-      oNFe:Protocolo := XmlNode( mXmlInfComTag, "nProt" )
-   OTHERWISE
-      oNFe:cErro       := "Formato do arquivo de cancelamento diferente. Avise desenvolvedor"
-      oNFe:ChaveAcesso := ""
-      oNFe:Protocolo   := ""
-      RETURN .F.
-   ENDCASE
-   IF Len( AllTrim( oNFe:Chave ) ) == 0
+   ELSE
+      IF "retCancNFe" $ cXmlInput // Tem que ser antes do outro
+         mXmlInf := XmlNode( cXmlInput, "infCanc" )
+         mChave := XmlNode( mXmlInf, "chNFe" )
+         mProtocolo := XmlNode( mXmlInf, "nProt" )
+      ELSEIF "CancNFe" $ cXmlInput
+         mXmlInfComTag := XmlNode( cXmlInput, "infCanc",.T. )
+         mChave := XmlElement( mXmlInfComTag, "Id" )
+         IF Substr( mChave,1, 2 ) == "ID"
+            mChave := Substr( mChave, 3 )
+         ENDIF
+         mProtocolo := XmlNode( mXmlInfComTag, "nProt" )
+      ELSE
+         //SayScroll( "Formato do arquivo de cancelamento diferente. Avise JPA" )
+         mChave := ""
+         mProtocolo := ""
+      End If
+   ENDIF
+   IF Len( AllTrim( mChave ) ) == 0
       oNfe:cErro := "Sem chave de acesso"
       RETURN .F.
    ELSE
+      oNfe:ChaveAcesso   := mChave
+      oNfe:Protocolo     := mProtocolo
       oNFE:cAmbiente     := XmlNode( cXmlInput, "tpAmb" )
-      oNfe:Emitente:Cnpj := Transform( Substr( oNFe:cChave, 7, 14 ), "@R 99.999.999/9999-99" )
-      oNfe:cNumDoc       := Substr( oNFe:cChave, 26, 9 )
+      oNfe:Emitente:Cnpj := Transform( Substr( mChave, 7, 14 ), "@R 99.999.999/9999-99" )
+      oNfe:cNumDoc       := Substr( mChave, 26, 9 )
       oNfe:cAssinatura   := XmlNode( cXmlInput, "Signature" )
       oNfe:Status        := "111"
    ENDIF
@@ -617,7 +613,7 @@ FUNCTION XmlToDocMDFEEmi( cXmlInput, oMDFE )
       cBlocoEndereco := XmlNode( cBlocoEmit, "enderEmit" )
          oMDFE:Emitente:Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
          oMDFE:Emitente:Numero     := XmlNode( cBlocoEndereco, "nro" )
-         oMDFE:Emitente:Compl      := XmlNode( cBlocoEndereco, "xCpl" )
+         oMDFE:Emitente:Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
          oMDFE:Emitente:Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
          oMDFE:Emitente:CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
          oMDFE:Emitente:Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
@@ -746,8 +742,8 @@ FUNCTION XmlToDocCteCancel( cXmlInput, oCTE )
 
    LOCAL mXmlInfCanc, mXmlInfCancComTag, mChave, mProtocolo
 
-   mProtocolo = ""
-   mChave = ""
+   mProtocolo := ""
+   mChave     := ""
    IF "procEventoCTe" $ cXmlInput
       mChave := XmlNode( cXmlInput, "chCTe" )
       mProtocolo := XmlNode( XmlNode( cXmlInput, "retEventoCTe" ), "nProt" )
