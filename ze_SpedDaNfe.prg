@@ -10,9 +10,9 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
    #include "hbwin.ch"
 #endif
 
-#define _LOGO_ESQUERDA         1
-#define _LOGO_DIREITA          2
-#define _LOGO_EXPANDIDO        3
+#define LAYOUT_LOGO_ESQUERDA         1
+#define LAYOUT_LOGO_DIREITA          2
+#define LAYOUT_LOGO_EXPANDIDO        3
 
 #define LAYOUT_NAOIMPRIME      0
 #define LAYOUT_IMPRIMENORMAL   1
@@ -132,7 +132,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    VAR nLarguraBox INIT 0.2
    VAR lLaser      INIT .T.
    VAR cLogoFile   INIT ""
-   VAR nLogoStyle  INIT _LOGO_ESQUERDA
+   VAR nLogoStyle  INIT LAYOUT_LOGO_ESQUERDA
    VAR nFolha
    VAR cRetorno
 
@@ -460,9 +460,9 @@ METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
       ::DrawTexto( 6, ::nLinhaPdf - 62, 244, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
       ::DrawTexto( 6, ::nLinhaPdf - 70, 244, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
    ELSE
-      IF ::nLogoStyle == _LOGO_EXPANDIDO
+      IF ::nLogoStyle == LAYOUT_LOGO_EXPANDIDO
          ::DrawJPEGImage( ::cLogoFile, 6, ::nLinhaPdf - ( 72 + 6 ), 238, 72 )
-      ELSEIF ::nLogoStyle == _LOGO_ESQUERDA
+      ELSEIF ::nLogoStyle == LAYOUT_LOGO_ESQUERDA
          ::DrawJPEGImage( ::cLogoFile, 6, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          ::DrawTexto( 70, ::nLinhaPdf - 6, 244, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
          ::DrawTexto( 70, ::nLinhaPdf - 30, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
@@ -471,7 +471,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
          ::DrawTexto( 70, ::nLinhaPdf - 54, 244, NIL, iif( Empty( ::cTelefoneEmitente ), "", "FONE: " + ::cTelefoneEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
          ::DrawTexto( 70, ::nLinhaPdf - 62, 244, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
          ::DrawTexto( 70, ::nLinhaPdf - 70, 244, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
-      ELSEIF ::nLogoStyle == _LOGO_DIREITA
+      ELSEIF ::nLogoStyle == LAYOUT_LOGO_DIREITA
          ::DrawJPEGImage( ::cLogoFile, 182, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          ::DrawTexto( 6, ::nLinhaPdf - 6, 180, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
          ::DrawTexto( 6, ::nLinhaPdf - 18, 180, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )

@@ -11,9 +11,9 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 // #include "hbcompat.ch"
 #endif
 // #include "hbnfe.ch"
-#define _LOGO_ESQUERDA        1
-#define _LOGO_DIREITA         2
-#define _LOGO_EXPANDIDO       3
+#define LAYOUT_LOGO_ESQUERDA        1
+#define LAYOUT_LOGO_DIREITA         2
+#define LAYOUT_LOGO_EXPANDIDO       3
 
 CREATE CLASS hbnfeDaEvento INHERIT hbNFeDaGeral
 
@@ -55,7 +55,7 @@ CREATE CLASS hbnfeDaEvento INHERIT hbNFeDaGeral
    VAR lLaser      INIT .T.
    VAR lPaisagem
    VAR cLogoFile  INIT ""
-   VAR nLogoStyle INIT _LOGO_ESQUERDA // 1-esquerda, 2-direita, 3-expandido
+   VAR nLogoStyle INIT LAYOUT_LOGO_ESQUERDA
 
    VAR cRetorno
 
@@ -196,7 +196,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
 
    ::DrawBox( 290, ::nLinhaPDF -106,  275,  110, ::nLarguraBox )    // Quadro CC-e, Chave de Acesso e Codigo de Barras
    ::DrawTexto( 30, ::nLinhaPdf + 2,     274, Nil, "IDENTIFICAÇÃO DO EMITENTE", HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 6 )
-   // alert('nLogoStyle: ' + ::nLogoStyle +';_LOGO_ESQUERDA: ' + _LOGO_ESQUERDA)
+   // alert( 'nLogoStyle: ' + ::nLogoStyle +'; LAYOUT_LOGO_ESQUERDA: ' + LAYOUT_LOGO_ESQUERDA )
    IF ::cLogoFile == NIL .OR. Empty( ::cLogoFile )
       ::DrawTexto( 30, ::nLinhaPDF -6,  289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 14 )
       ::DrawTexto( 30, ::nLinhaPDF -20,  289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 14 )
@@ -207,9 +207,9 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
       ::DrawTexto( 30, ::nLinhaPDF -82,  289, Nil, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
       ::DrawTexto( 30, ::nLinhaPDF -92,  289, Nil, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
    ELSE
-      IF ::nLogoStyle = _LOGO_EXPANDIDO
+      IF ::nLogoStyle = LAYOUT_LOGO_EXPANDIDO
          ::DrawJPEGImage( ::cLogoFile, 55, ::nLinhaPdf - ( 82 + 18 ), 218, 92 )
-      ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
+      ELSEIF ::nLogoStyle = LAYOUT_LOGO_ESQUERDA
          ::DrawJPEGImage( ::cLogoFile, 36, ::nLinhaPdf - ( 62 + 18 ), 62, 62 )
          ::DrawTexto( 100, ::nLinhaPDF -6,  289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
          ::DrawTexto( 100, ::nLinhaPDF -20, 289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
@@ -220,7 +220,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
          ::DrawTexto( 100, ::nLinhaPDF -82,  289, Nil, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8 )
          ::DrawTexto( 100, ::nLinhaPDF -92,  289, Nil, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 8 )
 
-      ELSEIF ::nLogoStyle = _LOGO_DIREITA
+      ELSEIF ::nLogoStyle = LAYOUT_LOGO_DIREITA
          ::DrawJPEGImage( ::cLogoFile, 220, ::nLinhaPdf - ( 62 + 18 ), 62, 62 )
          ::DrawTexto( 30, ::nLinhaPDF -6,  218, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
          ::DrawTexto( 30, ::nLinhaPDF -20, 218, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 10 )
@@ -245,9 +245,9 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
           ::DrawTexto( 71, ::nLinhaPDF - 62, 399, Nil, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
           ::DrawTexto( 71, ::nLinhaPDF - 70, 399, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
        ELSE
-          IF ::nLogoStyle = _LOGO_EXPANDIDO
+          IF ::nLogoStyle = LAYOUT_LOGO_EXPANDIDO
              ::DrawJPEGImage( ::cLogoFile, 6, ::nLinhaPdf - (72+6), 328, 72 )
-          ELSEIF ::nLogoStyle = _LOGO_ESQUERDA
+          ELSEIF ::nLogoStyle = LAYOUT_LOGO_ESQUERDA
              ::DrawJPEGImage( ::cLogoFile, 71, ::nLinhaPdf - (72+6), 62, 72 )
               ::DrawTexto( 135, ::nLinhaPDF - 6 , 399, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
               ::DrawTexto( 135, ::nLinhaPDF - 18, 399, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
@@ -257,7 +257,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
               ::DrawTexto( 135, ::nLinhaPDF - 54, 399, Nil, IF( Empty(::cTelefoneEmitente),"","FONE: "+::cTelefoneEmitente), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
               ::DrawTexto( 135, ::nLinhaPDF - 62, 399, Nil, TRIM(::cSiteEmitente), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
               ::DrawTexto( 135, ::nLinhaPDF - 70, 399, Nil, TRIM(::cEmailEmitente), HPDF_TALIGN_CENTER, ::oPdfFontCabecalho, 8 )
-          ELSEIF ::nLogoStyle = _LOGO_DIREITA
+          ELSEIF ::nLogoStyle = LAYOUT_LOGO_DIREITA
              ::DrawJPEGImage( ::cLogoFile, 337, ::nLinhaPdf - (72+6), 62, 72 )
             ::DrawTexto( 71, ::nLinhaPDF - 6 , 335, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )
             ::DrawTexto( 71, ::nLinhaPDF - 18, 335, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, ::oPdfFontCabecalhoBold, 12 )

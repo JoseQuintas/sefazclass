@@ -9,9 +9,9 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 #ifndef __XHARBOUR__
 #include "hbwin.ch"
 #endif
-#define _LOGO_ESQUERDA        1      /* apenas anotado, mas não usado */
-#define _LOGO_DIREITA         2
-#define _LOGO_EXPANDIDO       3
+#define LAYOUT_LOGO_ESQUERDA        1      /* apenas anotado, mas não usado */
+#define LAYOUT_LOGO_DIREITA         2
+#define LAYOUT_LOGO_EXPANDIDO       3
 
 CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
 
@@ -64,7 +64,7 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
    VAR aInfProt
    VAR aInfCanc
 
-   VAR cFonteNFe     INIT "Times"
+   VAR cFonteNFe        INIT "Times"
    VAR cFonteCode128            // Inserido por Anderson Camilo em 04/04/2012
    VAR cFonteCode128F           // Inserido por Anderson Camilo em 04/04/2012
    VAR oPdf
@@ -76,7 +76,7 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
    VAR lLaser INIT .T.
    VAR lPaisagem
    VAR cLogoFile  INIT ""
-   VAR nLogoStyle INIT _LOGO_ESQUERDA // 1-esquerda, 2-direita, 3-expandido
+   VAR nLogoStyle INIT LAYOUT_LOGO_ESQUERDA
 
    VAR nLinhaFolha
    VAR nFolhas
