@@ -27,11 +27,14 @@ ZE_SPEDASSINA - Assinatura SPED
 #include "common.ch"
 #include "hbclass.ch"
 
-FUNCTION CapicomAssinaXml( cTxtXml, cCertCN )
+FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior )
 
    LOCAL oDOMDoc, nPosIni, nPosFim, xmlHeaderAntes, xmldsig, dsigns, oCert, oCapicomStore, xmlHeaderDepois
    LOCAL XMLAssinado, SIGNEDKEY, DSIGKEY, SCONTAINER, SPROVIDER, ETYPE, cURI, nP, nResult
    LOCAL aDelimitadores, nPos, cXmlTagFinal, cRetorno := "Erro: Problemas pra assinar XML"
+   LOCAL cDllFile, acDllList := { "msxml5.dll", "msxml5r.dll", "capicom.dll" }
+
+   hb_Default( @lRemoveAnterior, .T. )
 
    aDelimitadores := { ;
       { "<enviMDFe",              "</MDFe></enviMDFe>" }, ;
@@ -50,13 +53,16 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN )
       { "<LoteRps",               "</EnviarLoteRpsEnvio>" }, ;   // NFSE ABRASF Lote
       { "<infRps",                "</Rps>" } }                   // NFSE ABRASF RPS
 
-   // Define Tipo de Documento
-
-   IF "<Signature" $ cTxtXml .AND. "</Signature>" $ cTxtXml
-      nPosIni := At( "<Signature", cTxtXml ) - 1
-      nPosFim := At( "</Signature>", cTxtXml ) + 12
-      cTxtXml := Substr( cTxtXml, 1, nPosIni ) + Substr( cTxtXml, nPosFim )
+   // Remove assinatura anterior - atenção pra NFS que usa multiplas assinaturas
+   IF lRemoveAnterior
+      DO WHILE "<Signature" $ cTxtXml .AND. "</Signature>" $ cTxtXml
+         nPosIni := At( "<Signature", cTxtXml ) - 1
+         nPosFim := At( "</Signature>", cTxtXml ) + 12
+         cTxtXml := Substr( cTxtXml, 1, nPosIni ) + Substr( cTxtXml, nPosFim )
+      ENDDO
    ENDIF
+
+   // Define Tipo de Documento
    IF ( nPos := AScan( aDelimitadores, { | oElement | oElement[ 1 ] $ cTxtXml .AND. oElement[ 2 ] $ cTxtXml } ) ) == 0
       cRetorno := "Erro Assinatura: Não identificado documento"
       RETURN cRetorno
@@ -87,7 +93,7 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN )
 
    //   HB_MemoWrit( "NFE\Ultimo-1.XML", cTxtXml )
    // Lendo Header antes de assinar //
-   xmlHeaderAntes := ''
+   xmlHeaderAntes := ""
    nPosIni        := AT( [?>], cTxtXml )
    IF nPosIni > 0
       xmlHeaderAntes := Substr( cTxtXml, 1, nPosIni + 1 )
@@ -113,6 +119,7 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN )
          cRetorno += " Caractere na linha: " + Str( oDOMDoc:parseError:linepos ) + HB_EOL()
          cRetorno += " Causa do erro: "      + oDOMDoc:parseError:reason         + HB_EOL()
          cRetorno += "code: "                + Str( oDOMDoc:parseError:errorCode )
+         BREAK
       ENDIF
 
       DSIGNS = [xmlns:ds="http://www.w3.org/2000/09/xmldsig#"]
@@ -152,25 +159,24 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN )
 
       SignedKey := XmlDSig:Sign( DSigKey, 2 )
 
-      IF ( signedKey <> NIL )
-         XMLAssinado := oDOMDoc:xml
-         XMLAssinado := StrTran( XMLAssinado, Chr(10), "" )
-         XMLAssinado := StrTran( XMLAssinado, Chr(13), "" )
-         nPosIni     := At( [<SignatureValue>], XMLAssinado ) + Len( [<SignatureValue>] )
-         XMLAssinado := Substr( XMLAssinado, 1, nPosIni - 1 ) + StrTran( Substr( XMLAssinado, nPosIni, Len( XMLAssinado ) ), " ", "" )
-         nPosIni     := At( [<X509Certificate>], XMLAssinado ) - 1
-         nP          := At( [<X509Certificate>], XMLAssinado )
-         nResult     := 0
-         DO WHILE nP <> 0
-            nResult := nP
-            nP      := hb_At( [<X509Certificate>], XMLAssinado, nP + 1 )
-         ENDDO
-         nPosFim     := nResult
-         XMLAssinado := Substr( XMLAssinado, 1, nPosIni ) + Substr( XMLAssinado, nPosFim, Len( XMLAssinado ) )
-      ELSE
+      IF signedKey == NIL
          cRetorno := "Erro Assinatura: Assinatura Falhou."
          BREAK
       ENDIF
+      XMLAssinado := oDOMDoc:xml
+      XMLAssinado := StrTran( XMLAssinado, Chr(10), "" )
+      XMLAssinado := StrTran( XMLAssinado, Chr(13), "" )
+      nPosIni     := At( [<SignatureValue>], XMLAssinado ) + Len( [<SignatureValue>] )
+      XMLAssinado := Substr( XMLAssinado, 1, nPosIni - 1 ) + StrTran( Substr( XMLAssinado, nPosIni, Len( XMLAssinado ) ), " ", "" )
+      nPosIni     := At( [<X509Certificate>], XMLAssinado ) - 1
+      nP          := At( [<X509Certificate>], XMLAssinado )
+      nResult     := 0
+      DO WHILE nP <> 0
+         nResult := nP
+         nP      := hb_At( [<X509Certificate>], XMLAssinado, nP + 1 )
+      ENDDO
+      nPosFim     := nResult
+      XMLAssinado := Substr( XMLAssinado, 1, nPosIni ) + Substr( XMLAssinado, nPosFim, Len( XMLAssinado ) )
 
       IF xmlHeaderAntes <> ""
          nPosIni := At( XMLAssinado, [?>] )
@@ -188,6 +194,17 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN )
       cTxtXml  := XmlAssinado
 
    END SEQUENCE
+
+   IF cRetorno != "OK"
+      IF Empty( cRetorno )
+         cRetorno := "Erro Assinatura "
+      ENDIF
+      FOR EACH cDllFile IN acDllList
+         IF ! File( "c:\windows\system32\" + cDllFile ) .AND. ! File( "c:\windows\syswow64\" + cDllFile )
+            cRetorno += ", verifique " + cDllFile
+         ENDIF
+      NEXT
+   ENDIF
 
    RETURN cRetorno
 
