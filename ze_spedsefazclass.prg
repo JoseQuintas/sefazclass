@@ -1114,13 +1114,6 @@ METHOD XmlSoapPost() CLASS SefazClass
    IF Upper( Left( ::cXmlRetorno, 4 ) )  == "ERRO"
       RETURN NIL
    ENDIF
-   IF "<soap:Body>" $ ::cXmlRetorno .AND. "</soap:Body>" $ ::cXmlRetorno
-      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" ) // hb_UTF8ToStr()
-   ELSEIF "<soapenv:Body>" $ ::cXmlRetorno .AND. "</soapenv:Body>" $ ::cXmlRetorno
-      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soapenv:Body" ) // hb_UTF8ToStr()
-   ELSE
-      ::cXmlRetorno := "Erro SOAP: XML retorno não está no padrão " + ::cXmlRetorno
-   ENDIF
 
    RETURN NIL
 
@@ -1129,15 +1122,13 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ::cXmlSoap    := XML_UTF8
    ::cXmlSoap    += [<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ]
    ::cXmlSoap    +=    [xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">]
-   IF ::cSoapAction != "nfeDistDFeInteresse"
-      IF ! ( ::cProjeto == WS_PROJETO_NFE .AND. ::cVersao == "4.00" )
-         ::cXmlSoap +=    [<soap12:Header>]
-         ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
-         ::cXmlSoap +=          [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
-         ::cXmlSoap +=          [<versaoDados>] + ::cSoapVersion + [</versaoDados>]
-         ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
-         ::cXmlSoap +=    [</soap12:Header>]
-      ENDIF
+   IF ::cSoapAction != "nfeDistDFeInteresse" .AND. ! ( ::cProjeto == WS_PROJETO_NFE .AND. ::cVersao == "4.00" )
+      ::cXmlSoap +=    [<soap12:Header>]
+      ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=          [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
+      ::cXmlSoap +=          [<versaoDados>] + ::cSoapVersion + [</versaoDados>]
+      ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
+      ::cXmlSoap +=    [</soap12:Header>]
    ENDIF
    ::cXmlSoap    +=    [<soap12:Body>]
    IF ::cSoapAction == "nfeDistDFeInteresse"
@@ -1201,9 +1192,13 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
          NEXT
       ENDIF
    END SEQUENCE
-   // IF ! "<cStat>" $ cRetorno
-   //   cRetorno := "<cStat>ERRO NO RETORNO</cStat>" + cRetorno
-   // ENDIF
+   IF "<soap:Body>" $ ::cXmlRetorno .AND. "</soap:Body>" $ ::cXmlRetorno
+      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" ) // hb_UTF8ToStr()
+   ELSEIF "<soapenv:Body>" $ ::cXmlRetorno .AND. "</soapenv:Body>" $ ::cXmlRetorno
+      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soapenv:Body" ) // hb_UTF8ToStr()
+   ELSE
+      ::cXmlRetorno := "Erro SOAP: XML retorno não contém soapenv:Body " + ::cXmlRetorno
+   ENDIF
 
    RETURN NIL
 
