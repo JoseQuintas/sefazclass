@@ -3,7 +3,8 @@
 
 CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
 
-   METHOD Execute( cXml, cFilePDF )
+   METHOD ToPDF( cXmlNFCe, cFilePDF, ... )
+   METHOD Execute( cXmlNFCe, cFilePDF, ... ) INLINE ::ToPDF( cXmlNFce, cFilePDF, ... )
    METHOD GeraPDF()
    METHOD NovaPagina()
 
@@ -14,10 +15,10 @@ CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
 
    END CLASS
 
-METHOD Execute( cXml, cFilePDF ) CLASS hbNFeDaNFCe
+METHOD ToPDF( cXmlNFCe, cFilePDF, ... ) CLASS hbNFeDaNFCe
 
    ::cFilePDF := cFilePDF
-   ::cXml     := cXml
+   ::cXml     := cXmlNFCe
    ::GeraPDF()
 
    RETURN NIL
