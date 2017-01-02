@@ -1,5 +1,8 @@
 /*
 ZE_XMLFUNC - Funções pra trabalhar com XML
+
+2016.12.27.1320 - StringToXml() eliminando espaço duplo
+2017.01.020800 - Correção horário de verão
 */
 
 #ifndef DOW_DOMINGO
@@ -169,7 +172,7 @@ FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC )
    hb_Default( @cUF, "SP" )
    hb_Default( @lUTC, .T. )
 
-   lHorarioVerao := ( dDate >= HorarioVeraoInicio( Year( dDate ) ) .AND. dDate <= HorarioVeraoTermino( Year( dDate - 1 ) ) )
+   lHorarioVerao := ( dDate >= HorarioVeraoInicio( Year( dDate ) ) .OR. dDate <= HorarioVeraoTermino( Year( dDate ) - 1 ) )
    cText := Transform( Dtos( dDate ), "@R 9999-99-99" ) + "T" + cTime
    DO CASE
    CASE ! lUTC ; cText += "" // no UTC
@@ -245,7 +248,9 @@ FUNCTION XmlToString( cTexto )
 FUNCTION StringToXml( cTexto )
 
    cTexto := AllTrim( cTexto )
-   cTexto := StrTran( cTexto, Space(2), Space(1) )
+   DO WHILE Space(2) $ cTexto
+      cTexto := StrTran( cTexto, Space(2), Space(1) )
+   ENDDO
    cTexto := StrTran( cTexto, "&", "&amp;" )
    cTexto := StrTran( cTexto, ["], "&quot;" )
    cTexto := StrTran( cTexto, "'", "&#39;" )
@@ -287,6 +292,8 @@ FUNCTION MultipleNodeToArray( cXml, cNode )
 FUNCTION TrimXml( cTexto )
 
    cTexto := AllTrim( cTexto )
-   cTexto := StrTran( cTexto, Space(2), Space(1) )
+   DO WHILE Space(2) $ cTexto
+      cTexto := StrTran( cTexto, Space(2), Space(1) )
+   ENDDO
 
    RETURN cTexto
