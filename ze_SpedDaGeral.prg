@@ -9,6 +9,7 @@ ZE_SPEDDAGERAL - Rotinas comuns de Documento Auxiliar
 CREATE CLASS hbNFeDaGeral
 
    VAR    oPDFPage
+   VAR    cDesenvolvedor INIT ""
 
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
    METHOD DrawBarcodeQRCode( nX, nY, nLineWidth, cCode, nFlags )
@@ -21,6 +22,8 @@ CREATE CLASS hbNFeDaGeral
    METHOD LarguraTexto( cText )                                                     INLINE HPDF_Page_TextWidth( ::oPDFPage, cText )
    METHOD FormataTelefone( cText )                                                  INLINE hbNFe_FormataTelefone( cText )
    METHOD FormataIE( cText )                                                        INLINE hbNFe_FormataIE( cText )
+   METHOD Desenvolvedor( nLinhaPDF )
+   METHOD DrawBoxTituloTexto( x, y, w, h, cTitle, cText, nAlign, oPDFFont, nFontSize, nAngle )
 #ifdef __XHARBOUR__
    METHOD xHarbourCode128c( pcCodigoBarra )                                         INLINE hbNFe_Codifica_Code128c( pcCodigoBarra )
 #else
@@ -105,6 +108,24 @@ METHOD DefineDecimais( xValue, nDecimais ) CLASS hbNFeDaGeral
    ENDIF
 
    RETURN nDecimais
+
+METHOD Desenvolvedor( nLinhaPDF ) CLASS hbNFeDaGeral
+
+   hb_Default( @nLinhaPDF, 10 )
+   ::DrawTexto( 300, nLinhaPDF, 585, NIL, ::cDesenvolvedor, HPDF_TALIGN_RIGHT, ::oPdfFontBold, 6 )
+   IF .F.
+      ::DrawTexto( 20, nLinhaPDF, 300, NIL, "DATA DA IMPRESSÃO: " + DToC( Date() ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
+   ENDIF
+
+   RETURN NIL
+
+METHOD DrawBoxTituloTexto( x, y, w, h, cTitle, cText, nAlign, oPDFFont, nFontSize, nAngle ) CLASS hbNFeDaGeral
+
+   ::DrawBox( x, y - 16, w, h, ::nLarguraBox )
+   ::DrawTexto( x + 1, y - 1,  x + w - 1, NIL, cTitle, HPDF_TALIGN_LEFT, oPDFFont, 5 )
+   ::DrawTexto( x + 1, y - 5,  x + w - 1, NIL, cText, nAlign, oPDFFont, nFontSize, nAngle )
+
+   RETURN NIL
 
 STATIC FUNCTION hbNFe_Texto_Hpdf( oPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
 
