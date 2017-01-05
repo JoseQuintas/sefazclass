@@ -379,7 +379,7 @@ METHOD NovaPagina() CLASS hbNFeDaNFe
          HPDF_Page_BeginText( ::oPdfPage )
          HPDF_Page_SetTextMatrix( ::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 100)
          HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
-         HPDF_Page_ShowText( ::oPdfPage, ::aInfProt[ "xEvento" ] + " " + ::aInfProt[ "dhRegEvento" ] ) // + " " + ::aInfProt[ "xMotivo" ] )
+         HPDF_Page_ShowText( ::oPdfPage, ::aInfProt[ "xEvento" ] + " " + /* ::aInfProt[ "dhRegEvento" ] ) + " " + */ ::aInfProt[ "xMotivo" ] )
          HPDF_Page_EndText( ::oPdfPage)
 
          HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
@@ -457,6 +457,8 @@ METHOD Canhoto() CLASS hbNFeDaNFe
 
 METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
 
+   LOCAL cTexto
+
    ::DrawBox( 5, ::nLinhaPdf - 80, 585, 80, ::nLarguraBox )
    // logo/dados empresa
    ::DrawBox( 5, ::nLinhaPdf - 80, 240, 80, ::nLarguraBox )
@@ -474,14 +476,18 @@ METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
       IF ::nLogoStyle == LAYOUT_LOGO_EXPANDIDO
          ::DrawJPEGImage( ::cLogoFile, 6, ::nLinhaPdf - ( 72 + 6 ), 238, 72 )
       ELSEIF ::nLogoStyle == LAYOUT_LOGO_ESQUERDA
-         ::DrawJPEGImage( ::cLogoFile, 6, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
-         ::DrawTexto( 70, ::nLinhaPdf - 6, 244, NIL,  ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
-         ::DrawTexto( 70, ::nLinhaPdf - 30, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-         ::DrawTexto( 70, ::nLinhaPdf - 38, 244, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-         ::DrawTexto( 70, ::nLinhaPdf - 46, 244, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-         ::DrawTexto( 70, ::nLinhaPdf - 54, 244, NIL, iif( Empty( ::cTelefoneEmitente ), "", "FONE: " + ::cTelefoneEmitente ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-         ::DrawTexto( 70, ::nLinhaPdf - 62, 244, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-         ::DrawTexto( 70, ::nLinhaPdf - 70, 244, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+         ::DrawJPEGImage( ::cLogoFile, 6, ::nLinhaPdf - ( 60 + 6 ), 54, 48 )
+         HPDF_Page_SetFontAndSize( ::oPDFPage, ::oPDFFontBold, 12 )
+         cTexto := ::FormataMemo( ::aEmit[ "xNome" ], 180 )
+         ::DrawTexto( 64, ::nLinhaPdf - 6, 244, NIL,  MemoLine( cTexto, 1000, 1 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+         ::DrawTexto( 64, ::nLinhaPDF - 18, 244, NIL, MemoLine( cTexto, 1000, 2 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+         ::DrawTexto( 64, ::nLinhaPDF - 30, 244, NIL, MemoLine( cTexto, 1000, 3 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+         ::DrawTexto( 64, ::nLinhaPdf - 42, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+         ::DrawTexto( 64, ::nLinhaPdf - 50, 244, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+         ::DrawTexto( 64, ::nLinhaPdf - 58, 244, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+         ::DrawTexto( 64, ::nLinhaPdf - 66, 244, NIL, iif( Empty( ::cTelefoneEmitente ), "", "FONE: " + ::cTelefoneEmitente ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+         //::DrawTexto( 50, ::nLinhaPdf - 74, 244, NIL, Trim( ::cSiteEmitente ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+         //::DrawTexto( 50, ::nLinhaPdf - 82, 244, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
       ELSEIF ::nLogoStyle == LAYOUT_LOGO_DIREITA
          ::DrawJPEGImage( ::cLogoFile, 182, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
          ::DrawTexto( 6, ::nLinhaPdf - 6, 180, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
