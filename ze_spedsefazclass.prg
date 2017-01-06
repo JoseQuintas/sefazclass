@@ -76,7 +76,7 @@ CREATE CLASS SefazClass
    VAR    cXmlRecibo     INIT ""                      // XML recibo (obtido no envio do lote)
    VAR    cXmlProtocolo  INIT ""                      // XML protocolo (obtido no consulta recibo e/ou envio de outros docs)
    VAR    cXmlAutorizado INIT ""                      // XML autorizado, caso tudo ocorra sem problemas
-   VAR    cStatus        INIT ""                      // Status obtido da resposta final da Fazenda
+   VAR    cStatus        INIT Space(3)                // Status obtido da resposta final da Fazenda
    VAR    cRecibo        INIT ""                      // Número do recibo
    VAR    cMotivo        INIT ""                      // Motivo constante no Recibo
    /* uso interno */
@@ -337,7 +337,7 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    IF ::AssinaXml() == "OK"
       ::cXmlEnvio := ::cXmlDocumento
       ::XmlSoapPost()
-      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+      ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
       ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
       IF ::cStatus == "102"
          ::cXmlAutorizado := XML_UTF8
@@ -363,7 +363,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
       RETURN ::cXmlRetorno
    ENDIF
    ::cSoapVersion := ::cVersao
-   ::cXmlEnvio    := [<enviCTe versao="] + ::Versao + [" xmlns="http://www.portalfiscal.inf.br/cte">]
+   ::cXmlEnvio    := [<enviCTe versao="] + ::cVersao + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlEnvio    +=    XmlTag( "idLote", cLote )
    ::cXmlEnvio    +=    ::cXmlDocumento
    ::cXmlEnvio    += [</enviCTe>]
@@ -854,7 +854,7 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    IF ::AssinaXml() == "OK"
       ::cXmlEnvio := ::cXmlDocumento
       ::XmlSoapPost()
-      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+      ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
       ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
       IF ::cStatus == "102"
          ::cXmlAutorizado := XML_UTF8

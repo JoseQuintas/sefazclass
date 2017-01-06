@@ -11,6 +11,7 @@ CREATE CLASS hbNFeDaGeral
    VAR    oPDFPage
    VAR    cDesenvolvedor INIT ""
 
+   METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar )
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
    METHOD DrawBarcodeQRCode( nX, nY, nLineWidth, cCode, nFlags )
    METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 )
@@ -126,6 +127,27 @@ METHOD DrawBoxTituloTexto( x, y, w, h, cTitle, cText, nAlign, oPDFFont, nFontSiz
    ::DrawTexto( x + 1, y - 5,  x + w - 1, NIL, cText, nAlign, oPDFFont, nFontSize, nAngle )
 
    RETURN NIL
+
+METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar ) CLASS hbNFeDaGeral
+
+   LOCAL oDanfe
+
+   IF cXmlDocumento == NIL .OR. Empty( cXmlDocumento )
+      RETURN "XML inválido"
+   ENDIF
+
+   DO CASE
+   CASE "<infCTe " $ cXmlDocumento                                  ; oDanfe := hbNFeDaCte():New()
+   CASE "<infNFe " $ cXmlDocumento .AND. "<NFe " $ cXmlDocumento    ; oDanfe := hbNFeDaNFe():New()
+   CASE "<infMDFe " $ cXmlDocumento .AND. "<MDFe " $ cXmlDocumento  ; oDanfe := hbNFeDaMDFe():New()
+   CASE "<infEvento " $ cXmlDocumento                               ; oDanfe := hbNFeDaEvento():New()
+   OTHERWISE
+      RETURN "XML inválido"
+   ENDCASE
+   oDanfe:cLogoFile := ::cLogoFile
+   oDanfe:cDesenvolvedor := ::cDesenvolvedor
+
+   RETURN oDanfe:ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar )
 
 STATIC FUNCTION hbNFe_Texto_Hpdf( oPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
 

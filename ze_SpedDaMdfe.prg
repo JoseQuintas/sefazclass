@@ -414,10 +414,10 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    ::DrawTexto( 432, ::nLinhaPDF - 618, 550, NIL, "TIPO IDENTIFICAÇÃO", HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
 
    FOR nCont = 1 TO Min( Len( ::aInfNFe ), 15 )
-      ::DrawTexto( 22, ::nLinhaPDF - 622 - ( nCont * 6 ), 550, NIL, "NF-e", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ::DrawTexto( 42, ::nLinhaPDF - 622 - ( nCont * 6 ), 550, NIL, XmlNode( ::aInfNFe[ nCont ], "chNFe" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ::DrawTexto( 322, ::nLinhaPDF - 622 - ( nCont * 6 ), 550, NIL, XmlNode( ::aInfNFe[ nCont ], "tpUnidTransp" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ::DrawTexto( 332, ::nLinhaPDF - 622 - ( nCont * 6 ), 550, NIL, XmlNode( ::aInfNFe[ nCont ], "idUnidTransp" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 22, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, "NF-e", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 42, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, XmlNode( ::aInfNFe[ nCont ], "chNFe" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 322, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, XmlNode( ::aInfNFe[ nCont ], "tpUnidTransp" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 332, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, XmlNode( ::aInfNFe[ nCont ], "idUnidTransp" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
    NEXT
 
    ::DrawBox( 020, ::nLinhaPdf - 775, 555, 50, ::nLarguraBox )

@@ -4,17 +4,41 @@ REQUEST HB_CODEPAGE_PTISO
 #include "set.ch"
 #include "hbgtinfo.ch"
 
-PROCEDURE Main
+FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    LOCAL nOpc := 1, GetList := {}, cTexto := "", nOpcTemp
    LOCAL cCnpj := Space(14), cChave := Space(44), cCertificado := "", cUF := "SP", cXmlRetorno
-   LOCAL oSefaz, cXml
+   LOCAL oSefaz, cXml, oDanfe, cTempFile, nHandle
 
    SET DATE BRITISH
    SetupHarbour()
    SetMode( 33, 80 )
    Set( _SET_CODEPAGE, "PTISO" )
    SetColor( "W/B,N/W,,,W/B" )
+
+   IF cXmlDocumento != NIL
+      IF File( cXmlDocumento )
+         cXmlDocumento := MemoRead( cXmlDocumento )
+      ENDIF
+      IF cXmlAuxiliar != NIL
+         IF File( cXmlAuxiliar )
+            cXmlAuxiliar := MemoRead( cXmlAuxiliar )
+         ENDIF
+      ENDIF
+      IF cLogoFile != NIL
+         IF File( cLogoFile )
+            cLogoFile := MemoRead( cLogoFile )
+         ENDIF
+      ENDIF
+      nHandle := hb_FTempCreateEx( @cTempFile, hb_DirTemp(), "", ".PDF" )
+      fClose( nHandle )
+      oDanfe := hbNFeDaGeral():New()
+      oDanfe:cDesenvolvedor := "José Quintas"
+      oDanfe:cLogoFile      := cLogoFile
+      oDanfe:ToPDF( cXmlDocumento, cTempFile, cXmlAuxiliar )
+      PDFOpen( cTempFile )
+      RETURN NIL
+   ENDIF
 
    oSefaz     := SefazClass():New()
    oSefaz:cUF := "SP"
@@ -157,7 +181,7 @@ PROCEDURE Main
       ENDCASE
    ENDDO
 
-   RETURN
+   RETURN NIL
 
 FUNCTION SetupHarbour()
 
@@ -191,9 +215,9 @@ FUNCTION TestDanfe()
 
    LOCAL oDanfe, oFiles, cFileXml, cFilePdf, lGera
 
-   oFiles := { "ctecarbolub.xml", "eventoctealguem.xml", "eventoctecarbolub.xml", ;
-        "eventonfecordeiro.xml", "eventonfecordeiro2.xml", "mdfecordeiro.xml", ;
-        "mdfecordeiro2.xml", "nfecarbolub.xml", "nfecordeiro.xml", "nfemaringa.xml", ;
+   oFiles := { "ctecarbolub.xml", "eventoctecarbolub.xml", ;
+        "eventonfecordeiro.xml", "mdfecordeiro.xml", ;
+        "nfecarbolub.xml", "nfecordeiro.xml", "nfemaringa.xml", ;
         "nfeasper.xml", "nfeenzza.xml" }
    FOR EACH cFileXml IN oFiles
       lGera := .T.

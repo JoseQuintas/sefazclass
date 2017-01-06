@@ -348,16 +348,6 @@ METHOD NovaPagina() CLASS hbNFeDaNFe
    ENDIF
 
    IF ::aIde[ "tpAmb" ] == "2"
-
-      IF ::aInfProt[ "cStat" ] == '101'
-         HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-         HPDF_Page_BeginText( ::oPdfPage )
-         HPDF_Page_SetTextMatrix( ::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 150 )
-         HPDF_Page_SetRGBFill( ::oPdfPage, 1, 0, 0 )
-         HPDF_Page_ShowText( ::oPdfPage, ::aInfProt[ "xEvento" ] + " " + ::aInfProt[ "dhRegEvento" ] ) // + " " + ::aInfProt[ "xMotivo" ] )
-         HPDF_Page_EndText( ::oPdfPage )
-      ENDIF
-
       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
       HPDF_Page_BeginText( ::oPdfPage )
       HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 100 )
@@ -371,25 +361,17 @@ METHOD NovaPagina() CLASS hbNFeDaNFe
       HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
    ENDIF
 
-   IF ::aIde[ "tpAmb" ] == "1"
-
-      IF ::aInfProt[ "cStat" ] $ "101,135,302"
-
-         HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-         HPDF_Page_BeginText( ::oPdfPage )
-         HPDF_Page_SetTextMatrix( ::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 100)
-         HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
-         HPDF_Page_ShowText( ::oPdfPage, ::aInfProt[ "xEvento" ] + " " + /* ::aInfProt[ "dhRegEvento" ] ) + " " + */ ::aInfProt[ "xMotivo" ] )
-         HPDF_Page_EndText( ::oPdfPage)
-
-         HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
-         ::DrawLine( 15, 95, 550, 630, 2.0 )
-
-         HPDF_Page_SetRGBStroke( ::oPdfPage, 0, 0, 0 ) // reseta cor linhas
-         HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0) // reseta cor fontes
-
-      ENDIF
-
+   IF ::aInfProt[ "cStat" ] $ "101,135,302" .OR. ! Empty( ::cXmlCancel )
+      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
+      HPDF_Page_BeginText( ::oPdfPage )
+      HPDF_Page_SetTextMatrix( ::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 100)
+      HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
+      HPDF_Page_ShowText( ::oPdfPage, ::aInfProt[ "xEvento" ] + " " + /* ::aInfProt[ "dhRegEvento" ] ) + " " + */ ::aInfProt[ "xMotivo" ] )
+      HPDF_Page_EndText( ::oPdfPage)
+      HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
+      ::DrawLine( 15, 95, 550, 630, 2.0 )
+      HPDF_Page_SetRGBStroke( ::oPdfPage, 0, 0, 0 ) // reseta cor linhas
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0) // reseta cor fontes
    ENDIF
 
    RETURN NIL
