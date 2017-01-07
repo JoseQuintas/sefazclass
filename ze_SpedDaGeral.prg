@@ -10,6 +10,8 @@ CREATE CLASS hbNFeDaGeral
 
    VAR    oPDFPage
    VAR    cDesenvolvedor INIT ""
+   VAR    cLogoFile      INIT ""
+   VAR    cRetorno       INIT ""
 
    METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar )
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )

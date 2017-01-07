@@ -213,36 +213,25 @@ FUNCTION MyInkeyFilter( nKey )
 
 FUNCTION TestDanfe()
 
-   LOCAL oDanfe, oFiles, cFileXml, cFilePdf, lGera
+   LOCAL oDanfe, oFiles, cFileXml, cFilePdf
 
    oFiles := { "ctecarbolub.xml", "eventoctecarbolub.xml", ;
         "eventonfecordeiro.xml", "mdfecordeiro.xml", ;
         "nfecarbolub.xml", "nfecordeiro.xml", "nfemaringa.xml", ;
         "nfeasper.xml", "nfeenzza.xml" }
    FOR EACH cFileXml IN oFiles
-      lGera := .T.
-      DO CASE
-      CASE Left( cFileXml, 3 ) == "cte" ;       oDanfe := hbNFeDaCte():New()
-      CASE Left( cFileXml, 3 ) == "nfe" ;       oDanfe := hbNFeDaNfe():New()
-      CASE Left( cFileXml, 4 ) == "mdfe" ;      oDanfe := hbNFeDaMDFe():New()
-      CASE Left( cFileXml, 9 ) == "eventocte" ; oDanfe := hbNFeDaEvento():New()
-      CASE Left( cFileXml, 9 ) == "eventonfe" ; oDanfe := hbNFeDaEvento():New()
-      OTHERWISE
-         lGera := .F.
-      ENDCASE
-      IF lGera
-         cFilePdf := Substr( cFileXml, 1, At( ".", cFileXml ) ) + "pdf"
-         fErase( cFilePdf )
-         oDanfe:cLogoFile := JPEGImage()
-         oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
-         IF Left( cFileXml, 6 ) == "evento"
-            oDanfe:Execute( MemoRead( cFileXml ), iif( File( Substr( cFileXml, 7 ) ), MemoRead( Substr( cFileXml, 7 ) ), "" ), cFilePdf )
-         ELSE
-            oDanfe:Execute( MemoRead( cFileXml ), cFilePdf )
-         ENDIF
-         ? oDanfe:cRetorno
-         PDFOpen( cFilePdf )
+      oDanfe := hbNfeDaGeral():New()
+      cFilePdf := Substr( cFileXml, 1, At( ".", cFileXml ) ) + "pdf"
+      fErase( cFilePdf )
+      oDanfe:cLogoFile := JPEGImage()
+      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
+      IF Left( cFileXml, 6 ) == "evento"
+         oDanfe:ToPDF( MemoRead( cFileXml ), iif( File( Substr( cFileXml, 7 ) ), MemoRead( Substr( cFileXml, 7 ) ), "" ), cFilePdf )
+      ELSE
+         oDanfe:ToPDF( MemoRead( cFileXml ), cFilePdf )
       ENDIF
+      ? oDanfe:cRetorno
+      PDFOpen( cFilePdf )
    NEXT
    oDanfe := hbNFeDaNFCe():New()
    oDanfe:Execute( "www.jpatecnologia.com.br", "pdfqrcode.pdf" )
