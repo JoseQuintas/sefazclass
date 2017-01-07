@@ -219,7 +219,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    ::aVeicTransp := XmlToHash( XmlNode( XmlNode( ::cXml, "transp" ), "veicTransp" ), { "placa", "UF", "RNTC" } )
    ::aReboque    := XmlToHash( XmlNode( XmlNode( ::cXml, "reboque" ), "veicTransp" ), { "placa", "UF", "RNTC" } )
    ::cCobranca   := XmlNode( ::cXml, "cobr" )
-   ::aInfAdic    := XmlToHash( XmlNode( ::cXml, "infAdic" ), { "infCpl" } )
+   ::aInfAdic    := XmlToHash( XmlNode( ::cXml, "infAdic" ), { "infAdFisco", "infCpl" } )
    ::aObsCont    := XmlToHash( XmlNode( XmlNode( ::cXml, "infAdic" ), "obsCont" ), { "xCampo", "xTexto" } )
    ::aObsFisco   := XmlToHash( XmlNode( XmlNode( ::cXml, "infAdic" ), "obsFisco" ), { "xCampo", "xTexto" } )
    ::aExporta    := XmlToHash( XmlNode( XmlNode( ::cXml, "exporta" ), "infCpl" ), { "UFEmbarq", "xLocEmbarq" } )
@@ -240,6 +240,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    ENDIF
    ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";;", ";" )
    ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";", Chr(13) + Chr(10) )
+   ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], ";", Chr(13) + Chr(10) )
 
    RETURN .T.
 
@@ -685,11 +686,11 @@ METHOD DadosTransporte() CLASS hbNFeDaNFe
       ::DrawBoxTituloTexto( 420, ::nLinhaPdf, 60, 16, "PLACA DO VEÍCULO", ::aVeicTransp[ "placa" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
       ::DrawBoxTituloTexto( 480, ::nLinhaPdf, 20, 16, "UF", ::aVeicTransp[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
       IF ! Empty( ::aTransp[ "CNPJ" ] )
-         ::DrawBox( 500, ::nLinhaPdf, 90, 16, "CNPJ / CPF", Transform( ::aTransp[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+         ::DrawBoxTituloTexto( 500, ::nLinhaPdf, 90, 16, "CNPJ / CPF", Transform( ::aTransp[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
       ELSEIF ! Empty( ::aTransp[ "CPF" ] )
-         ::DrawBox( 500, ::nLinhaPdf, 90, 16, "CNPJ / CPF", Transform( ::aTransp[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+         ::DrawBoxTituloTexto( 500, ::nLinhaPdf, 90, 16, "CNPJ / CPF", Transform( ::aTransp[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
       ELSE
-         ::DrawBox( 500, ::nLinhaPdf, 90, 16, "CNPJ / CPF", "", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+         ::DrawBoxTituloTexto( 500, ::nLinhaPdf, 90, 16, "CNPJ / CPF", "", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
       ENDIF
       ::nLinhaPdf -= 16
       ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 265, 16, "ENDEREÇO", ::aTransp[ "xEnder" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
@@ -845,7 +846,9 @@ METHOD TotalServico() CLASS hbNFeDaNFe
 
 METHOD DadosAdicionais() CLASS hbNFeDaNFe
 
-   LOCAL cMemo, nI
+   LOCAL cMemo, nCont, nLinhaInicial
+
+   // inf adic.fisco
 
    IF ::nFolha == 1
       cMemo := ::aInfAdic[ "infCpl" ]
@@ -859,14 +862,16 @@ METHOD DadosAdicionais() CLASS hbNFeDaNFe
       ::DrawTexto( 401, ::nLinhaPdf - 1, 589, NIL, "RESERVADO AO FISCO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
       ::nLinhaPdf -= 7    //
       ::nLinhaPdf -= 4 // ESPAÇO
-      FOR nI = 1 TO Min( MLCount( cMemo, 1000 ), Int( 13 * 6 / LAYOUT_FONTSIZE ) )
-         ::DrawTexto( 6, ::nLinhaPdf, 399, NIL, Trim( MemoLine( cMemo, 1000, nI ) ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
+      nLinhaInicial := ::nLinhaPdf
+      FOR nCont = 1 TO Min( MLCount( cMemo, 1000 ), Int( 13 * 6 / LAYOUT_FONTSIZE ) )
+         ::DrawTexto( 6, ( nLinhaInicial - ( ( nCont - 1 ) * LAYOUT_FONTSIZE ) ), 399, NIL, Trim( MemoLine( cMemo, 1000, nCont ) ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
          ::nLinhaPdf -= LAYOUT_FONTSIZE
       NEXT
-      FOR nI = ( MLCount( cMemo, 1000 ) + 1 ) TO Int( 13 * 6 / LAYOUT_FONTSIZE )
-         ::nLinhaPdf -= LAYOUT_FONTSIZE
+      cMemo := ::FormataMemo( ::aInfAdic[ "infAdFisco" ], 186 )
+      FOR nCont = 1 TO Min( MLCount( cMemo, 1000 ), Int( 13 * 6 / LAYOUT_FONTSIZE ) )
+         ::DrawTexto( 6, nLinhaInicial - ( ( nCont - 1 ) * LAYOUT_FONTSIZE ), 399, NIL, Trim( MemoLine( cMemo, 1000, nCont ) ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
       NEXT
-      ::nLinhaPdf -= 4
+      ::nLinhaPDF -= Int( 13 * 6 / LAYOUT_FONTSIZE ) * LAYOUT_FONTSIZE + 4
    ENDIF
 
    RETURN NIL
