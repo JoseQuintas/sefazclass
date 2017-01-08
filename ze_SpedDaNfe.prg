@@ -242,6 +242,11 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";", Chr(13) + Chr(10) )
    ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], ";", Chr(13) + Chr(10) )
 
+   IF ! Empty( ::aInfAdic[ "infAdFisco" ] )
+      ::aInfAdic[ "infCpl" ]     := ::aInfAdic[ "infAdFisco" ] + Chr(13) + Chr(10) + ::aInfAdic[ "infCpl" ]
+      ::aInfAdic[ "infAdFisco" ] := ""
+   ENDIF
+
    RETURN .T.
 
 METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFe
@@ -799,13 +804,13 @@ METHOD Produtos() CLASS hbNFeDaNFe
          ::DrawLine( 5, ::nLinhaPdf - 0.5, 590, ::nLinhaPdf - 0.5, ::nLarguraBox )
       ENDIF
    ENDDO
-   IF MLCount( ::aInfAdic[ "infCpl" ], 1000 ) > Int( 13 * 6 / LAYOUT_FONTSIZE )
+   IF MLCount( ::aInfAdic[ "infCpl" ], 1000 ) > Int( 78 / LAYOUT_FONTSIZE )
       ::nLinhaFolha++
       ::nLinhaPdf -= LAYOUT_FONTSIZE
       ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "*CONTINUACAO INFORMAÇÕES COMPLEMENTARES*", HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
       ::nLinhaFolha++
       ::nLinhaPdf -= LAYOUT_FONTSIZE
-      FOR nCont = Int( 13 * 6 / LAYOUT_FONTSIZE ) + 1 TO MLCount( ::aInfAdic[ "infCpl" ], 1000 )
+      FOR nCont = Int( 78 / LAYOUT_FONTSIZE ) + 1 TO MLCount( ::aInfAdic[ "infCpl" ], 1000 )
          IF ::nLinhaFolha > ::ItensDaFolha()
             ::SaltaPagina()
             ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "*CONTINUACAO INFORMAÇÕES COMPLEMENTARES*", HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
@@ -848,8 +853,6 @@ METHOD DadosAdicionais() CLASS hbNFeDaNFe
 
    LOCAL cMemo, nCont
 
-   // inf adic.fisco
-
    IF ::nFolha == 1
       cMemo := ::aInfAdic[ "infCpl" ]
       ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "DADOS ADICIONAIS", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
@@ -862,14 +865,14 @@ METHOD DadosAdicionais() CLASS hbNFeDaNFe
       ::DrawTexto( 401, ::nLinhaPdf - 1, 589, NIL, "RESERVADO AO FISCO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
       ::nLinhaPdf -= 7    //
       ::nLinhaPdf -= 4 // ESPAÇO
-      FOR nCont = 1 TO Min( MLCount( cMemo, 1000 ), Int( 13 * 6 / LAYOUT_FONTSIZE ) )
+      FOR nCont = 1 TO Min( MLCount( cMemo, 1000 ), Int( 78 / LAYOUT_FONTSIZE ) )
          ::DrawTexto( 6, ::nLinhaPDF - ( ( nCont - 1 ) * LAYOUT_FONTSIZE ), 399, NIL, Trim( MemoLine( cMemo, 1000, nCont ) ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
       NEXT
-      cMemo := ::FormataMemo( ::aInfAdic[ "infAdFisco" ], 186 )
-      FOR nCont = 1 TO Min( MLCount( cMemo, 1000 ), Int( 13 * 6 / LAYOUT_FONTSIZE ) )
-         ::DrawTexto( 401, ::nLinhaPDF - ( ( nCont - 1 ) * LAYOUT_FONTSIZE ), 588, NIL, Trim( MemoLine( cMemo, 1000, nCont ) ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
-      NEXT
-      ::nLinhaPDF -= Int( 13 * 6 / LAYOUT_FONTSIZE ) * LAYOUT_FONTSIZE + 4
+      //cMemo := ::FormataMemo( ::aInfAdic[ "infAdFisco" ], 186 )
+      //FOR nCont = 1 TO Min( MLCount( cMemo, 1000 ), Int( 78 / LAYOUT_FONTSIZE ) )
+      //   ::DrawTexto( 401, ::nLinhaPDF - ( ( nCont - 1 ) * LAYOUT_FONTSIZE ), 588, NIL, Trim( MemoLine( cMemo, 1000, nCont ) ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
+      //NEXT
+      ::nLinhaPDF -= 78 + 4
    ENDIF
 
    RETURN NIL
@@ -935,8 +938,8 @@ METHOD CalculaLayout() CLASS hbNFeDaNFe
    ENDDO
 
    // Linhas extras pra informações adicionais
-   IF MLCount( ::ainfAdic[ "infCpl" ], 1000 ) > Int( 13 * 6 / LAYOUT_FONTSIZE )
-      nQtdLinhas += 2 + MLCount( ::ainfAdic[ "infCpl" ], 1000 ) - Int( 13 * 6 / LAYOUT_FONTSIZE )
+   IF MLCount( ::ainfAdic[ "infCpl" ], 1000 ) > Int( 78 / LAYOUT_FONTSIZE )
+      nQtdLinhas += 2 + MLCount( ::ainfAdic[ "infCpl" ], 1000 ) - Int( 78 / LAYOUT_FONTSIZE )
    ENDIF
 
    // Total de folhas necessárias
