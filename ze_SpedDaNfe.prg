@@ -846,7 +846,7 @@ METHOD TotalServico() CLASS hbNFeDaNFe
 
 METHOD DadosAdicionais() CLASS hbNFeDaNFe
 
-   LOCAL cMemo, nCont, nLinhaInicial
+   LOCAL cMemo, nCont
 
    // inf adic.fisco
 
@@ -862,14 +862,12 @@ METHOD DadosAdicionais() CLASS hbNFeDaNFe
       ::DrawTexto( 401, ::nLinhaPdf - 1, 589, NIL, "RESERVADO AO FISCO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
       ::nLinhaPdf -= 7    //
       ::nLinhaPdf -= 4 // ESPAÇO
-      nLinhaInicial := ::nLinhaPdf
       FOR nCont = 1 TO Min( MLCount( cMemo, 1000 ), Int( 13 * 6 / LAYOUT_FONTSIZE ) )
-         ::DrawTexto( 6, ( nLinhaInicial - ( ( nCont - 1 ) * LAYOUT_FONTSIZE ) ), 399, NIL, Trim( MemoLine( cMemo, 1000, nCont ) ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
-         ::nLinhaPdf -= LAYOUT_FONTSIZE
+         ::DrawTexto( 6, ::nLinhaPDF - ( ( nCont - 1 ) * LAYOUT_FONTSIZE ), 399, NIL, Trim( MemoLine( cMemo, 1000, nCont ) ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
       NEXT
       cMemo := ::FormataMemo( ::aInfAdic[ "infAdFisco" ], 186 )
       FOR nCont = 1 TO Min( MLCount( cMemo, 1000 ), Int( 13 * 6 / LAYOUT_FONTSIZE ) )
-         ::DrawTexto( 6, nLinhaInicial - ( ( nCont - 1 ) * LAYOUT_FONTSIZE ), 399, NIL, Trim( MemoLine( cMemo, 1000, nCont ) ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
+         ::DrawTexto( 401, ::nLinhaPDF - ( ( nCont - 1 ) * LAYOUT_FONTSIZE ), 588, NIL, Trim( MemoLine( cMemo, 1000, nCont ) ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
       NEXT
       ::nLinhaPDF -= Int( 13 * 6 / LAYOUT_FONTSIZE ) * LAYOUT_FONTSIZE + 4
    ENDIF
