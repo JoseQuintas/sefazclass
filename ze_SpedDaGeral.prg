@@ -139,7 +139,7 @@ METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar ) CLASS hbNFeDaGeral
    ENDIF
 
    DO CASE
-   CASE "<infCTe " $ cXmlDocumento                                  ; oDanfe := hbNFeDaCte():New()
+   CASE "<infCte " $ cXmlDocumento                                  ; oDanfe := hbNFeDaCte():New()
    CASE "<infNFe " $ cXmlDocumento .AND. "<NFe " $ cXmlDocumento    ; oDanfe := hbNFeDaNFe():New()
    CASE "<infMDFe " $ cXmlDocumento .AND. "<MDFe " $ cXmlDocumento  ; oDanfe := hbNFeDaMDFe():New()
    CASE "<infEvento " $ cXmlDocumento                               ; oDanfe := hbNFeDaEvento():New()
