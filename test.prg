@@ -33,7 +33,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       nHandle := hb_FTempCreateEx( @cTempFile, hb_DirTemp(), "", ".PDF" )
       fClose( nHandle )
       oDanfe := hbNFeDaGeral():New()
-      oDanfe:cDesenvolvedor := "José Quintas"
+      oDanfe:cDesenvolvedor := "JoséQuintas"
       oDanfe:cLogoFile      := cLogoFile
       oDanfe:ToPDF( cXmlDocumento, cTempFile, cXmlAuxiliar )
       PDFOpen( cTempFile )
