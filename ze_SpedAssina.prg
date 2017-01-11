@@ -3,6 +3,7 @@ ZE_SPEDASSINA - Assinatura SPED
 
 2017.01.09.1730 - Teste adicional de assinatura
 2017.01.11.1200 - Nota de serviço usando id ao invés de Id
+2017.01.11.2020 - Errado acima, obrigatório Id com i maiúsculo
 */
 
 #define _CAPICOM_STORE_OPEN_READ_ONLY                 0           // Somente Smart Card em Modo de Leitura
@@ -74,7 +75,7 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior )
    // Pega URI
    nPosIni := At( [Id=], cTxtXml )
    IF nPosIni = 0
-      cRetorno := "Erro Assinatura: Não encontrado início do URI: Id="
+      cRetorno := "Erro Assinatura: Não encontrado início do URI: Id= (com I maiúsculo)"
       RETURN cRetorno
    ENDIF
    nPosIni := hb_At( ["], cTxtXml, nPosIni + 2 )
