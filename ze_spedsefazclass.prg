@@ -318,6 +318,9 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_INUTILIZACAO )
 
+   IF Len( cAno ) != 2
+      cAno := Right( cAno, 2 )
+   ENDIF
    ::cSoapVersion    := ::cVersao
    ::cXmlDocumento   := [<inutCTe versao="] + ::cVersao + [" xmlns="http://www.portalfiscal.inf.br/cte">]
    ::cXmlDocumento   +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
