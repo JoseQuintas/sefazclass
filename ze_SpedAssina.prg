@@ -148,9 +148,10 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior )
       oCapicomStore := Win_OleCreateObject( "CAPICOM.Store" )
       oCapicomStore:open( _CAPICOM_MEMORY_STORE, 'Memoria', _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
 
-      cRetorno := "Erro assinatura: Adicionando certificado na memória"
+      cRetorno := "Erro assinatura: Adicionando certificado na memória CapicomStore:Add()"
       oCapicomStore:Add( oCert )
 
+      cRetorno := "Erro assinatura: Certificado pra assinar XmlDSig:Store"
       xmldsig:store := oCapicomStore
 
       //---> Dados necessários para gerar a assinatura
@@ -159,10 +160,10 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior )
       sContainer := oCert:PrivateKey:ContainerName
       dsigKey    := xmldsig:CreateKeyFromCSP( eType, sProvider, sContainer, 0 )
       IF ( dsigKey = NIL )
-         cRetorno := "Erro Assinatura: Ao criar a chave do CSP."
+         cRetorno := "Erro assinatura: Ao criar a chave do CSP."
          BREAK
       ENDIF
-
+      cRetorno := "Erro assinatura: assinar XmlDSig:Sign()"
       SignedKey := XmlDSig:Sign( DSigKey, 2 )
 
       IF signedKey == NIL

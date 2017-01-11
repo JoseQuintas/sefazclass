@@ -5,6 +5,7 @@ ZE_SPEDDAGERAL - Rotinas comuns de Documento Auxiliar
 
 #include "hbzebra.ch"
 #include "hbclass.ch"
+#include "harupdf.ch"
 
 CREATE CLASS hbNFeDaGeral
 
