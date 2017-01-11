@@ -73,9 +73,6 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior )
    cXmlTagFinal   := aDelimitadores[ nPos, 2 ]
    // Pega URI
    nPosIni := At( [Id=], cTxtXml )
-   IF nPosIni == 0
-      nPosIni := At( [id=], cTxtXml ) // nota de serviço
-   ENDIF
    IF nPosIni = 0
       cRetorno := "Erro Assinatura: Não encontrado início do URI: Id="
       RETURN cRetorno
