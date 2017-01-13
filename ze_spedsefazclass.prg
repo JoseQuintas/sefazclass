@@ -5,6 +5,7 @@ ZE_SPEDSEFAZCLASS - Rotinas pra comunicação com SEFAZ
 2016.11.25.2300 - ::AssinaXml() e CapicomAssinaXml() pra evitar confusão no uso
 2016.11.25.2300 - ::ValidaXml() e DomDocValidaXml() pra evitar confusão no uso
 2016.12.01.0230 - NFE 4.00 início
+2017.01.13.1120 - Endereços RS CTE homologação
 
 Nota: CTE 2.00 vale até 06/2017 e CTE 3.00 começa em 12/2016
 */
@@ -1800,6 +1801,12 @@ FUNCTION SoapURL_RS( cAmbiente, nWsServico, ... )
       ENDCASE
    ELSE
       DO CASE
+      CASE nWsServico == WS_CTE_RECEPCAO ;            cUrlWs := "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx"
+      CASE nWsServico == WS_CTE_RETRECEPCAO ;         cUrlWs := "https://cte-homologacao.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx"
+      CASE nWsServico == WS_CTE_INUTILIZACAO ;        cUrlWs := "https://cte-homologacao.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx"
+      CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO ;   cUrlWs := "https://cte-homologacao.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx"
+      CASE nWsServico == WS_CTE_STATUSSERVICO ;       cUrlWs := "https://cte-homologacao.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx"
+      CASE nWsServico == WS_CTE_RECEPCAOEVENTO ;      cUrlWs := "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx"
       CASE nWsServico == WS_MDFE_CONSULTA ;           cUrlWs := "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx"
       CASE nWsServico == WS_MDFE_CONSNAOENC ;         cUrlWs := "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsNaoEnc/MDFeConsNaoEnc.asmx"
       CASE nWsServico == WS_MDFE_RECEPCAO ;           cUrlWs := "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx"
