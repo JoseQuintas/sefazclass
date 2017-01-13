@@ -194,33 +194,12 @@ METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
 
 METHOD NovaPagina() CLASS hbnfeDaMdfe
 
-   LOCAL nRadiano, nAngulo
-
    ::oPdfPage := HPDF_AddPage( ::oPdf )
-
    HPDF_Page_SetSize( ::oPdfPage, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT )
-
    ::nLinhaPdf := HPDF_Page_GetHeight( ::oPDFPage ) - 20    // Margem Superior
-   nAngulo := 45                   /* A rotation of 45 degrees. */
-
-   nRadiano := nAngulo / 180 * 3.141592 /* Calcurate the radian value. */
 
    IF ::aIde[ "tpAmb" ] = "2" .OR. ::aProtocolo[ "nProt" ] = Nil
-
-      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-      HPDF_Page_BeginText( ::oPdfPage )
-      HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 100 )
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
-      HPDF_Page_ShowText( ::oPdfPage, "AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL" )
-      HPDF_Page_EndText( ::oPdfPage )
-
-      HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
-      ::DrawLine( 15, 100, 550, 630, 2.0 )
-
-      HPDF_Page_SetRGBStroke( ::oPdfPage, 0, 0, 0 ) // reseta cor linhas
-
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
-
+      ::DrawHomologacao()
    ENDIF
 
    IF ::aIde[ "tpAmb" ] = "1"

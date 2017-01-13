@@ -310,60 +310,15 @@ METHOD NovaPagina() CLASS hbNFeDaNFe
    nRadiano    := nAngulo / 180 * 3.141592       // Calcurate the radian value
 
    IF ::aIde[ "tpEmis" ] = "5" // Contingencia
-      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-      HPDF_Page_BeginText( ::oPdfPage )
-      HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 160 )
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
-      HPDF_Page_ShowText( ::oPdfPage, "DANFE EM CONTINGÊNCIA. IMPRESSO EM" )
-      HPDF_Page_EndText( ::oPdfPage )
-
-      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-      HPDF_Page_BeginText( ::oPdfPage )
-      HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 130 )
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
-      HPDF_Page_ShowText( ::oPdfPage, "DECORRÊNCIA DE PROBLEMAS TÉCNICOS." )
-      HPDF_Page_EndText( ::oPdfPage )
-
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
+      ::DrawContingencia( "", "DANFE EM CONTINGÊNCIA. IMPRESSO EM", "DECORRÊNCIA DE PROBLEMAS TÉCNICOS" )
    ENDIF
 
    IF ::aIde[ "tpEmis" ] == "4" // DEPEC
-      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-      HPDF_Page_BeginText( ::oPdfPage )
-      HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 190 )
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
-      HPDF_Page_ShowText( ::oPdfPage, "DANFE IMPRESSO EM CONTINGÊNCIA - DEPEC" )
-      HPDF_Page_EndText( ::oPdfPage )
-
-      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-      HPDF_Page_BeginText( ::oPdfPage )
-      HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 160 )
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
-      HPDF_Page_ShowText( ::oPdfPage, "REGULARMENTE RECEBIDO PELA RECEITA" )
-      HPDF_Page_EndText( ::oPdfPage )
-
-      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-      HPDF_Page_BeginText( ::oPdfPage )
-      HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 130 )
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
-      HPDF_Page_ShowText( ::oPdfPage, "FEDERAL DO BRASIL." )
-      HPDF_Page_EndText( ::oPdfPage )
-
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
+      ::DrawContingencia( "DANFE IMPRESSO EM CONTINGÊNCIA - DPEC", "REGULARMENTE RECEBIDO PELA RECEITA", "FEDERAL" )
    ENDIF
 
    IF ::aIde[ "tpAmb" ] == "2"
-      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-      HPDF_Page_BeginText( ::oPdfPage )
-      HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 100 )
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
-      HPDF_Page_ShowText( ::oPdfPage, "AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL" )
-      HPDF_Page_EndText( ::oPdfPage )
-
-      HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
-      ::DrawLine( 15, 95, 550, 630, 2.0 )
-      HPDF_Page_SetRGBStroke( ::oPdfPage, 0, 0, 0 ) // reseta cor linhas
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
+      ::DrawHomologacao()
    ENDIF
 
    IF ::aInfProt[ "cStat" ] $ "101,135,302" .OR. ! Empty( ::cXmlCancel )

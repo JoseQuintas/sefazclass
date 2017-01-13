@@ -30,6 +30,8 @@ CREATE CLASS hbNFeDaGeral
    METHOD FormataIE( cText )                                                        INLINE hbNFe_FormataIE( cText )
    METHOD Desenvolvedor( nLinhaPDF )
    METHOD DrawBoxTituloTexto( x, y, w, h, cTitle, cText, nAlign, oPDFFont, nFontSize, nAngle )
+   METHOD DrawHomologacao()
+   METHOD DrawContingencia( cTexto1, cTexto2, cTexto3 )
 #ifdef __XHARBOUR__
    METHOD xHarbourCode128c( pcCodigoBarra )                                         INLINE hbNFe_Codifica_Code128c( pcCodigoBarra )
 #else
@@ -162,6 +164,55 @@ METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar ) CLASS hbNFeDaGeral
    oDanfe:cDesenvolvedor := ::cDesenvolvedor
 
    RETURN oDanfe:ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar )
+
+METHOD DrawHomologacao() CLASS hbNFeDaGeral
+
+   LOCAL nRadiano := 45 / 180 * 3.141592 // rotation 45 degrees
+
+   HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
+   HPDF_Page_BeginText( ::oPdfPage )
+   HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 100 )
+   HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
+   HPDF_Page_ShowText( ::oPdfPage, "AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL" )
+   HPDF_Page_EndText( ::oPdfPage )
+   HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
+   ::DrawLine( 15, 100, 550, 630, 2.0 )
+   HPDF_Page_SetRGBStroke( ::oPdfPage, 0, 0, 0 ) // reseta cor linhas
+   HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
+
+   RETURN NIL
+
+METHOD DrawContingencia( cTexto1, cTexto2, cTexto3 ) CLASS hbNFeDaGeral
+
+   LOCAL nRadiano := 45 / 180 * 3.141592 // rotation 45 degrees
+
+   IF ! Empty( cTexto1  )
+      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
+      HPDF_Page_BeginText( ::oPdfPage )
+      HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 190 )
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
+      HPDF_Page_ShowText( ::oPdfPage, cTexto1 )
+      HPDF_Page_EndText( ::oPdfPage )
+   ENDIF
+   IF ! Empty( cTexto2 )
+      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
+      HPDF_Page_BeginText( ::oPdfPage )
+      HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 160 )
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
+      HPDF_Page_ShowText( ::oPdfPage, cTexto2 )
+      HPDF_Page_EndText( ::oPdfPage )
+   ENDIF
+   IF ! Empty( cTexto3 )
+      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
+      HPDF_Page_BeginText( ::oPdfPage )
+      HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 130 )
+      HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
+      HPDF_Page_ShowText( ::oPdfPage, cTexto3 )
+      HPDF_Page_EndText( ::oPdfPage )
+   ENDIF
+   HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
+
+   RETURN NIL
 
 STATIC FUNCTION hbNFe_Texto_Hpdf( oPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
 
