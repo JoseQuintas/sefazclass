@@ -1,6 +1,8 @@
 /*
 ZE_SPEDDAGERAL - Rotinas comuns de Documento Auxiliar
 2016.11.15
+
+2017.01.13.1310 - Aceita arquivo como parâmetro
 */
 
 #include "hbzebra.ch"
@@ -40,7 +42,9 @@ METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 ) CLASS hbNFeDaGeral
       RETURN NIL
    ENDIF
    IF Len( cJPEGImage ) < 100
-      cJPEGImage := HPDF_LoadJpegImageFromFile( ::oPDF, cJPEGImage )
+      IF File( cJPEGImage )
+         cJPEGImage := HPDF_LoadJpegImageFromFile( ::oPDF, cJPEGImage )
+      ENDIF
    ELSE
       cJPEGImage := HPDF_LoadJpegImageFromMem( ::oPDF, cJPEGImage, Len( cJPEGImage ) )
    ENDIF
@@ -138,7 +142,14 @@ METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar ) CLASS hbNFeDaGeral
    IF cXmlDocumento == NIL .OR. Empty( cXmlDocumento )
       RETURN "XML inválido"
    ENDIF
-
+   IF Len( cXmlDocumento ) < 100
+      IF File( cXmlDocumento )
+         cXmlDocumento := MemoRead( cXmlDocumento )
+      ENDIF
+   ENDIF
+   IF cXmlAuxiliar != NIL .AND. ! Empty( cXmlAuxiliar ) .AND. Len( cXmlAuxiliar ) < 100
+      cXmlAuxiliar := MemoRead( cXmlAuxiliar )
+   ENDIF
    DO CASE
    CASE "<infCte " $ cXmlDocumento                                  ; oDanfe := hbNFeDaCte():New()
    CASE "<infNFe " $ cXmlDocumento .AND. "<NFe " $ cXmlDocumento    ; oDanfe := hbNFeDaNFe():New()

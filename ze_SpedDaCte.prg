@@ -16,7 +16,6 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 CREATE CLASS hbnfeDacte INHERIT hbNFeDaGeral
 
    METHOD ToPDF( cXmlCTE, cFilePDF, cXmlCancel )
-   METHOD Execute( cXmlCTE, cFilePDF, cXmlCancel )    INLINE   ::ToPDF( cXmlCTE, cFilePDF, cXmlCancel )  // compatibilidade
    METHOD BuscaDadosXML()
    METHOD GeraPDF( cFilePDF )
    METHOD NovaPagina()

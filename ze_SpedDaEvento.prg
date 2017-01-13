@@ -18,7 +18,6 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 CREATE CLASS hbnfeDaEvento INHERIT hbNFeDaGeral
 
    METHOD ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar )
-   METHOD Execute( cXmlEvento, cXmlAuxiliar, cFilePDF )   INLINE  ::ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar )  // compatibilidade
    METHOD BuscaDadosXML()
    METHOD GeraPDF( cFilePDF )
    METHOD Cabecalho()

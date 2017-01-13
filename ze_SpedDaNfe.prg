@@ -64,7 +64,6 @@ Os campos que podem ser colocados na mesma coluna são:
 CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
 
    METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel )
-   METHOD Execute( cXmlNFE, cFilePDF, cXmlCancel )    INLINE ::ToPDF( cXmlNFE, cFilePDF, cXmlCancel )  // compatibilidade
    METHOD BuscaDadosXML()
    METHOD GeraPDF( cFilePDF )
    METHOD NovaPagina()

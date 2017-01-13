@@ -15,8 +15,7 @@ Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 
 CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
 
-   METHOD ToPDF( cXmlMDFE, cFilePDF, ... )
-   METHOD execute( cXml, cFilePDF, cXmlCancel )    INLINE ::ToPDF( cXml, cFilePDF, cXmlCancel ) // compatibilidade
+   METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel )
    METHOD buscaDadosXML()
    METHOD geraPDF( cFilePDF )
    METHOD novaPagina()
@@ -26,6 +25,7 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
    VAR cSiteEmitente     INIT ""
    VAR cEmailEmitente    INIT ""
    VAR cXml
+   VAR cXmlCancel        INIT ""
    VAR cChave
    VAR aIde
    VAR aCompl
@@ -87,15 +87,16 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
 
 ENDCLASS
 
-METHOD ToPDF( cXmlMDFE, cFilePDF, ... ) CLASS hbnfeDaMdfe
+METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel ) CLASS hbnfeDaMdfe
 
    IF cXmlMDFE == NIL .OR. Empty( cXmlMDFE )
       ::cRetorno := "Sem conteúdo XML pra gerar PDF"
       RETURN ::cRetorno
    ENDIF
 
-   ::cXML := cXmlMDFE
-   ::cChave := SubStr( ::cXml, At( 'Id=', ::cXml ) + 8, 44 )
+   ::cXML       := cXmlMDFE
+   ::cXmlCancel := cXmlCancel
+   ::cChave     := SubStr( ::cXml, At( 'Id=', ::cXml ) + 8, 44 )
 
    IF !::buscaDadosXML()
       RETURN ::cRetorno
