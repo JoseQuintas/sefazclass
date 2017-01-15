@@ -373,7 +373,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    LOCAL nReduc     := ''
    LOCAL nST        := ''
    LOCAL DASH_MODE3 := { 8, 7, 2, 7 }
-   LOCAL I, oElement
+   LOCAL nCont, oElement, cTexto
 
    // box do logotipo e dados do emitente
    ::DrawBox( 003, ::nLinhaPdf - 119, 295, 119, ::nLarguraBox )
@@ -471,20 +471,11 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    // ::DrawTexto( 468 , ::nLinhaPdf-145 , 568, Nil, ::aDest[ "ISUF" ] , HPDF_TALIGN_CENTER, ::oPDFFontBold, 6 )
    ::DrawTexto( 468, ::nLinhaPdf - 143, 588, Nil, 'xxxxx xxxxxxxxxxxxxxx', HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
 
-   // box da Natureza da Prestacao
-   ::DrawBox( 003, ::nLinhaPdf - 179, 590, 022, ::nLarguraBox )
-   ::DrawTexto( 005, ::nLinhaPdf - 160, 588, Nil, "CFOP - Natureza da Prestação", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 005, ::nLinhaPdf - 168, 588, Nil, ::aIde[ "CFOP" ] + ' - ' + ::aIde[ "natOp" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 003, ::nLinhaPdf - 157, 590, 022, "CFOP - Natureza da Prestação", ::aIde[ "CFOP" ] + ' - ' + ::aIde[ "natOp" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
 
-   // Box da Origem da Prestação
-   ::DrawBox( 003, ::nLinhaPdf - 204, 295, 022, ::nLarguraBox )
-   ::DrawTexto( 005, ::nLinhaPdf - 185, 295, Nil, "Origem da Prestação", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 005, ::nLinhaPdf - 193, 295, Nil, ::aIde[ "xMunIni" ] + ' - ' + ::aIde[ "UFIni" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 003, ::nLinhaPdf - 182, 295, 022, "Origem da Prestação", ::aIde[ "xMunIni" ] + ' - ' + ::aIde[ "UFIni" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
 
-   // Box do Destino da Prestação
-   ::DrawBox( 303, ::nLinhaPdf - 204, 290, 022, ::nLarguraBox )
-   ::DrawTexto( 308, ::nLinhaPdf - 185, 588, Nil, "Destino da Prestação", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 308, ::nLinhaPdf - 193, 588, Nil, ::aIde[ "xMunFim" ] + ' - ' + ::aIde[ "UFFim" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 303, ::nLinhaPdf - 182, 290, 022, "Destino da Prestação", ::aIde[ "xMunFim" ] + ' - ' + ::aIde[ "UFFim" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
 
    // Box do Remetente
    ::DrawBox( 003, ::nLinhaPdf - 261, 295, 054, ::nLarguraBox )
@@ -524,10 +515,10 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ::DrawTexto( 555, ::nLinhaPdf - 233, 588, Nil, SubStr( ::aDest[ "CEP" ], 1, 5 ) + '-' + SubStr( ::aDest[ "CEP" ], 6, 3 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ::DrawTexto( 305, ::nLinhaPdf - 240, 342, Nil, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
    IF ! Empty( ::aDest[ "CNPJ" ] )
-      ::DrawTexto( 342, ::nLinhaPdf - 241, 450, Nil, TRANS( ::aDest[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
+      ::DrawTexto( 342, ::nLinhaPdf - 241, 450, Nil, Transform( ::aDest[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    IF ! Empty( ::aDest[ "CPF" ] )
-      ::DrawTexto( 342, ::nLinhaPdf - 241, 450, Nil, TRANS( ::aDest[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
+      ::DrawTexto( 342, ::nLinhaPdf - 241, 450, Nil, Transform( ::aDest[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 430, ::nLinhaPdf - 240, 530, Nil, "INSCRIÇÃO ESTADUAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
 
@@ -648,24 +639,15 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ::DrawTexto( 348, ::nLinhaPdf - 360, 470, Nil, ::aInfCarga[ "xOutCat" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 10 )
    ::DrawBox( 468, ::nLinhaPdf - 373, 125, 023, ::nLarguraBox )
    ::DrawTexto( 473, ::nLinhaPdf - 350, 590, Nil, "Valot Total da Mercadoria", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 473, ::nLinhaPdf - 358, 580, Nil, Trans( Val( ::aInfCarga[ "vCarga" ] ), '@E 9,999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 12 )
+   ::DrawTexto( 473, ::nLinhaPdf - 358, 580, Nil, Transform( Val( ::aInfCarga[ "vCarga" ] ), '@E 9,999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 12 )
 
    // Box das Quantidades
-   ::DrawBox( 003, ::nLinhaPdf - 398, 090, 025, ::nLarguraBox )
-   ::DrawBox( 093, ::nLinhaPdf - 398, 090, 025, ::nLarguraBox )
-   ::DrawBox( 183, ::nLinhaPdf - 398, 090, 025, ::nLarguraBox )
-   ::DrawTexto( 005, ::nLinhaPdf - 373, 090, Nil, "QT./UN./Medida", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   IF Len( ::aInfQ ) > 0
-      ::DrawTexto( 005, ::nLinhaPdf - 383, 098, Nil, AllTrim( Tran( Val( ::aInfQ[ 1, 3 ] ), '@E 999,999.999' ) ) + '/' + aUnid[ Val( ::aInfQ[ 1, 1 ] ) + 1 ] + '/' + ::aInfQ[ 1, 2 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-   ENDIF
-   ::DrawTexto( 098, ::nLinhaPdf - 373, 190, Nil, "QT./UN./Medida", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   IF Len( ::aInfQ ) > 1
-      ::DrawTexto( 098, ::nLinhaPdf - 383, 188, Nil, AllTrim( Tran( Val( ::aInfQ[ 2, 3 ] ), '@E 999,999.999' ) ) + '/' + aUnid[ Val( ::aInfQ[ 2, 1 ] ) + 1 ] + '/' + ::aInfQ[ 2, 2 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-   ENDIF
-   ::DrawTexto( 188, ::nLinhaPdf - 373, 250, Nil, "QT./UN./Medida", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   IF Len( ::aInfQ ) > 2
-      ::DrawTexto( 188, ::nLinhaPdf - 383, 273, Nil, AllTrim( Tran( Val( ::aInfQ[ 3, 3 ] ), '@E 999,999.999' ) ) + '/' + aUnid[ Val( ::aInfQ[ 3, 1 ] ) + 1 ] + '/' + ::aInfQ[ 3, 2 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-   ENDIF
+   cTexto := iif( ! Len( ::aInfQ ) > 0, "", AllTrim( Transform( Val( ::aInfQ[ 1, 3 ] ), '@E 999,999.999' ) ) + '/' + aUnid[ Val( ::aInfQ[ 1, 1 ] ) + 1 ] + '/' + ::aInfQ[ 1, 2 ] )
+   ::DrawBoxTituloTexto( 003, ::nLinhaPdf - 373, 090, 025, "QT./UN./Medida", cTexto, HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
+   cTexto := iif( ! Len( ::aInfQ ) > 1, "", AllTrim( Transform( Val( ::aInfQ[ 2, 3 ] ), '@E 999,999.999' ) ) + '/' + aUnid[ Val( ::aInfQ[ 2, 1 ] ) + 1 ] + '/' + ::aInfQ[ 2, 2 ] )
+   ::DrawBoxTituloTexto( 093, ::nLinhaPdf - 373, 090, 025, "QT./UN./Medida", cTexto, HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
+   cTexto := iif( ! Len( ::aInfQ ) > 2, "", AllTrim( Transform( Val( ::aInfQ[ 3, 3 ] ), '@E 999,999.999' ) ) + '/' + aUnid[ Val( ::aInfQ[ 3, 1 ] ) + 1 ] + '/' + ::aInfQ[ 3, 2 ] )
+   ::DrawBoxTituloTexto( 183, ::nLinhaPdf - 373, 090, 025, "QT./UN./Medida", cTexto, HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
 
    // Box da Seguradora
    ::DrawBox( 273, ::nLinhaPdf - 383, 320, 010, ::nLarguraBox )
@@ -696,99 +678,82 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ::DrawTexto( 418, ::nLinhaPdf - 413, 495, Nil, "Valor", HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 8 )
    ::DrawBox( 498, ::nLinhaPdf - 444, 095, 031, ::nLarguraBox )
    ::DrawTexto( 498, ::nLinhaPdf - 417, 590, Nil, "Valor Total do Serviço", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 498, ::nLinhaPdf - 427, 580, Nil, Trans( Val( ::aPrest[ "vTPrest" ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 12 )
+   ::DrawTexto( 498, ::nLinhaPdf - 427, 580, Nil, Transform( Val( ::aPrest[ "vTPrest" ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 12 )
    ::DrawBox( 498, ::nLinhaPdf - 475, 095, 031, ::nLarguraBox )
    ::DrawTexto( 498, ::nLinhaPdf - 447, 590, Nil, "Valor a Receber", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 498, ::nLinhaPdf - 457, 580, Nil, Trans( Val( ::aPrest[ "vRec" ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 12 )
+   ::DrawTexto( 498, ::nLinhaPdf - 457, 580, Nil, Transform( Val( ::aPrest[ "vRec" ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 12 )
 
    nLinha := 423
-   FOR I = 1 TO Len( ::aComp ) STEP 3
-      ::DrawTexto( 005, ::nLinhaPdf - nLinha, 165, Nil, ::aComp[ I, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ::DrawTexto( 085, ::nLinhaPdf - nlinha, 165, Nil, Trans( Val( ::aComp[ I, 2 ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 8 )
+   FOR nCont = 1 TO Len( ::aComp ) STEP 3
+      ::DrawTexto( 005, ::nLinhaPdf - nLinha, 165, Nil, ::aComp[ nCont, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 085, ::nLinhaPdf - nlinha, 165, Nil, Transform( Val( ::aComp[ nCont, 2 ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 8 )
 
-      ::DrawTexto( 171, ::nLinhaPdf - nLinha, 251, Nil, ::aComp[ I + 1,1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ::DrawTexto( 251, ::nLinhaPdf - nLinha, 330, Nil, Trans( Val( ::aComp[ I + 1, 2 ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 171, ::nLinhaPdf - nLinha, 251, Nil, ::aComp[ nCont + 1, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 251, ::nLinhaPdf - nLinha, 330, Nil, Transform( Val( ::aComp[ nCont + 1, 2 ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 8 )
 
-      ::DrawTexto( 338, ::nLinhaPdf - nLinha, 418, Nil, ::aComp[ I + 2,1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ::DrawTexto( 418, ::nLinhaPdf - nLinha, 495, Nil, Trans( Val( ::aComp[ I + 2, 2 ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 338, ::nLinhaPdf - nLinha, 418, Nil, ::aComp[ nCont + 2, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 418, ::nLinhaPdf - nLinha, 495, Nil, Transform( Val( ::aComp[ nCont + 2, 2 ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 8 )
       nLinha += 10
    NEXT
 
    // Box das Informações Relativas ao Imposto
    ::DrawBox( 003, ::nLinhaPdf - 487, 590, 009, ::nLarguraBox )
    ::DrawTexto( 003, ::nLinhaPdf - 478, 590, Nil, "Informações Relativas ao Imposto", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   // Box da Situação Tributária
-   ::DrawBox( 003, ::nLinhaPdf - 514, 155, 027, ::nLarguraBox )
-   ::DrawTexto( 005, ::nLinhaPdf - 488, 155, Nil, "Situação Tributária", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aIcmsSN[ "indSN" ] )
-      ::DrawTexto( 005, ::nLinhaPdf - 500, 155, Nil, "SIMPLES NACIONAL", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-   ElseIf ! Empty( ::aIcms00[ "CST" ] )
-      ::DrawTexto( 005, ::nLinhaPdf - 500, 155, Nil, "00 - Tributação normal do ICMS", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   DO CASE
+   CASE ! Empty( ::aIcmsSN[ "indSN" ] )
+      cTexto := "SIMPLES NACIONAL"
+   CASE ! Empty( ::aIcms00[ "CST" ] )
+      cTexto := "00 - Tributação normal do ICMS"
       nBase := ::aIcms00[ "vBC" ]
       nAliq := ::aIcms00[ "pICMS" ]
       nValor := ::aIcms00[ "vICMS" ]
       nReduc := ''
       nST := ''
-   ElseIf ! Empty( ::aIcms20[ "CST" ] )
-      ::DrawTexto( 005, ::nLinhaPdf - 500, 155, Nil, "20 - Tributação com BC reduzida do ICMS", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   CASE ! Empty( ::aIcms20[ "CST" ] )
+      cTexto := "20 - Tributação com BC reduzida do ICMS"
       nBase := ::aIcms20[ "vBC" ]
       nAliq := ::aIcms20[ "pICMS" ]
       nValor := ::aIcms20[ "vICMS" ]
       nReduc := ::aIcms20[ "pRedBC" ]
       nST := ''
-   ElseIf ! Empty( ::aIcms45[ "CST" ] )
-      If ::aIcms45[ "CST" ] = '40'
-         ::DrawTexto( 005, ::nLinhaPdf - 500, 155, Nil, "40 - ICMS isenção", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ElseIf ::aIcms45[ "CST" ] = '41'
-         ::DrawTexto( 005, ::nLinhaPdf - 500, 155, Nil, "41 - ICMS não tributada", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ElseIf ::aIcms45[ "CST" ] = '51'
-         ::DrawTexto( 005, ::nLinhaPdf - 500, 155, Nil, "51 - ICMS diferido", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   CASE ! Empty( ::aIcms45[ "CST" ] )
+      IF ::aIcms45[ "CST" ] = '40'
+         cTexto := "40 - ICMS isenção"
+      ELSEIF ::aIcms45[ "CST" ] = '41'
+         cTexto := "41 - ICMS não tributada"
+      ELSEIF ::aIcms45[ "CST" ] = '51'
+         cTexto := "51 - ICMS diferido"
       ENDIF
-   ElseIf ! Empty( ::aIcms60[ "CST" ] )
-      ::DrawTexto( 005, ::nLinhaPdf - 500, 155, Nil, "60 - ICMS cobrado anteriormente por substituição tributária", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   CASE ! Empty( ::aIcms60[ "CST" ] )
+      cTexto := "60 - ICMS cobrado anteriormente por substituição tributária"
       nBase := ::aIcms60[ "vBCSTRet" ]
       nAliq := ::aIcms60[ "pICMSSTRet" ]
       nValor := ::aIcms60[ "vICMSSTRet" ]
       nReduc := ''
       nST := ::aIcms60[ "vCred" ]
-   ElseIf ! Empty( ::aIcms90[ "CST" ] )
-      ::DrawTexto( 005, ::nLinhaPdf - 500, 155, Nil, "90 - ICMS Outros", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   CASE ! Empty( ::aIcms90[ "CST" ] )
+      cTexto := "90 - ICMS Outros"
       nBase := ::aIcms60[ "vBC" ]
       nAliq := ::aIcms60[ "pICMS" ]
       nValor := ::aIcms60[ "vICMS" ]
       nReduc := ::aIcms90[ "pRedBC" ]
       nST := ::aIcms60[ "vCred" ]
-   ElseIf ! Empty( ::aIcmsUF[ "CST" ] )
-      ::DrawTexto( 005, ::nLinhaPdf - 500, 155, Nil, "90 - ICMS Outros", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   CASE ! Empty( ::aIcmsUF[ "CST" ] )
+      cTexto := "90 - ICMS Outros"
       nBase := ::aIcmsUF[ "vBCOutraUF" ]
       nAliq := ::aIcmsUF[ "pICMSOutraUF" ]
       nValor := ::aIcmsUF[ "vICMSOutraUF" ]
       nReduc := ::aIcmsUF[ "pRedBCOutraUF" ]
       nST := ''
-   ELSE
-      ::DrawTexto( 005, ::nLinhaPdf - 500, 155, Nil, "Sem Imposto de ICMS", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-   ENDIF
-
-   // Box da Base De Calculo
-   ::DrawBox( 158, ::nLinhaPdf - 514, 080, 027, ::nLarguraBox )
-   ::DrawTexto( 160, ::nLinhaPdf - 488, 238, Nil, "Base De Calculo", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 160, ::nLinhaPdf - 498, 238, Nil, Trans( Val( nBase ), '@E 999,999.99' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-   // Box da Alíq ICMS
-   ::DrawBox( 238, ::nLinhaPdf - 514, 080, 027, ::nLarguraBox )
-   ::DrawTexto( 240, ::nLinhaPdf - 488, 318, Nil, "Alíq ICMS", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 240, ::nLinhaPdf - 498, 318, Nil, Trans( Val( nAliq ), '@E 999,999.99' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-   // Box do Valor ICMS
-   ::DrawBox( 318, ::nLinhaPdf - 514, 080, 027, ::nLarguraBox )
-   ::DrawTexto( 320, ::nLinhaPdf - 488, 398, Nil, "Valor ICMS", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 320, ::nLinhaPdf - 498, 398, Nil, Trans( Val( nValor ), '@E 999,999.99' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-   // Box da % Red. BC ICMS
-   ::DrawBox( 398, ::nLinhaPdf - 514, 080, 027, ::nLarguraBox )
-   ::DrawTexto( 400, ::nLinhaPdf - 488, 478, Nil, "% Red. BC ICMS", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 400, ::nLinhaPdf - 498, 478, Nil, Trans( Val( nReduc ), '@E 999,999.99' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-   // Box do ICMS ST
-   ::DrawBox( 478, ::nLinhaPdf - 514, 115, 027, ::nLarguraBox )
-   ::DrawTexto( 480, ::nLinhaPdf - 488, 590, Nil, "ICMS ST", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 480, ::nLinhaPdf - 498, 590, Nil, Trans( Val( nSt ), '@E 999,999.99' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   OTHERWISE
+      cTexto := "Sem Imposto de ICMS"
+   ENDCASE
+   ::DrawBoxTituloTexto( 003, ::nLinhaPdf - 487, 155, 027, "Situação Tributária", cTexto, HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 158, ::nLinhaPdf - 487, 080, 027, "Base De Calculo", Transform( Val( nBase ), '@E 999,999.99' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 238, ::nLinhaPdf - 487, 080, 027, "Alíq ICMS", Transform( Val( nAliq ), '@E 999,999.99' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 318, ::nLinhaPdf - 487, 080, 027, "Valor ICMS", Transform( Val( nValor ), '@E 999,999.99' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 398, ::nLinhaPdf - 487, 080, 027, "% Red. BC ICMS", Transform( Val( nReduc ), '@E 999,999.99' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 478, ::nLinhaPdf - 487, 115, 027, "ICMS ST", Transform( Val( nSt ), '@E 999,999.99' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
 
    // Box dos Documentos Originários
    ::DrawBox( 003, ::nLinhaPdf - 526, 590, 009, ::nLarguraBox )
@@ -823,16 +788,16 @@ METHOD Cabecalho() CLASS hbnfeDaCte
 
    IF Len( ::aInfNFe ) > 0
       nLinha := 536
-      FOR I = 1 TO Len( ::aInfNFe ) STEP 2
-         IF ! Empty( ::aInfNFe[ I, 1 ] )
+      FOR nCont = 1 TO Len( ::aInfNFe ) STEP 2
+         IF ! Empty( ::aInfNFe[ nCont, 1 ] )
             ::DrawTexto( 005, ::nLinhaPdf - nLinha, 353, Nil, "NF-E", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-            ::DrawTexto( 050, ::nLinhaPdf - nLinha, 240, Nil, ::aInfNFe[ I, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-            ::DrawTexto( 240, ::nLinhaPdf - nLinha, 295, Nil, SubStr( ::aInfNFe[ I, 1 ], 23, 3 ) + '/' + SubStr( ::aInfNFe[ I, 1 ], 26, 9 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+            ::DrawTexto( 050, ::nLinhaPdf - nLinha, 240, Nil, ::aInfNFe[ nCont, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+            ::DrawTexto( 240, ::nLinhaPdf - nLinha, 295, Nil, SubStr( ::aInfNFe[ nCont, 1 ], 23, 3 ) + '/' + SubStr( ::aInfNFe[ nCont, 1 ], 26, 9 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
          ENDIF
-         IF I + 1 <= Len( ::aInfNFe )
+         IF nCont + 1 <= Len( ::aInfNFe )
             ::DrawTexto( 300, ::nLinhaPdf - nLinha, 353, Nil, "NF-E", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-            ::DrawTexto( 345, ::nLinhaPdf - nLinha, 535, Nil, ::aInfNFe[ I + 1, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-            ::DrawTexto( 535, ::nLinhaPdf - nLinha, 590, Nil, SubStr( ::aInfNFe[ I + 1, 1 ], 23, 3 ) + '/' + SubStr( ::aInfNFe[ I + 1, 1 ], 26, 9 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+            ::DrawTexto( 345, ::nLinhaPdf - nLinha, 535, Nil, ::aInfNFe[ nCont + 1, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+            ::DrawTexto( 535, ::nLinhaPdf - nLinha, 590, Nil, SubStr( ::aInfNFe[ nCont + 1, 1 ], 23, 3 ) + '/' + SubStr( ::aInfNFe[ nCont + 1, 1 ], 26, 9 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
          ENDIF
          nLinha += 10
       NEXT
@@ -840,8 +805,8 @@ METHOD Cabecalho() CLASS hbnfeDaCte
 
    IF Len( ::aInfNF ) > 0
       nLinha := 536
-      FOR I = 1 TO Len( ::aInfNF ) STEP 2
-         IF !Empty( ::aInfNF[ I, 4 ] )
+      FOR nCont = 1 TO Len( ::aInfNF ) STEP 2
+         IF !Empty( ::aInfNF[ nCont, 4 ] )
             ::DrawTexto( 005, ::nLinhaPdf - nLinha - 2, 353, Nil, "NOTA FISCAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
             IF Val( ::aRem[ "CNPJ" ] ) > 0
                ::DrawTexto( 050, ::nLinhaPdf - nLinha, 240, Nil, TRANSF( ::aRem[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
@@ -849,9 +814,9 @@ METHOD Cabecalho() CLASS hbnfeDaCte
             IF Val( ::aRem[ "CPF" ] ) > 0
                ::DrawTexto( 050, ::nLinhaPdf - nLinha, 240, Nil, TRANSF( ::aRem[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             ENDIF
-            ::DrawTexto( 240, ::nLinhaPdf - nLinha, 295, Nil, ::aInfNF[ I, 4 ] + '/' + ::aInfNF[ I, 5 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+            ::DrawTexto( 240, ::nLinhaPdf - nLinha, 295, Nil, ::aInfNF[ nCont, 4 ] + '/' + ::aInfNF[ nCont, 5 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
          ENDIF
-         IF I + 1 <= Len( ::aINfNF )
+         IF nCont + 1 <= Len( ::aINfNF )
             ::DrawTexto( 300, ::nLinhaPdf - nLinha - 2, 353, Nil, "NOTA FISCAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
             IF Val( ::aRem[ "CNPJ" ] ) > 0
                ::DrawTexto( 345, ::nLinhaPdf - nLinha, 535, Nil, TRANSF( ::aRem[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
@@ -859,20 +824,20 @@ METHOD Cabecalho() CLASS hbnfeDaCte
             IF Val( ::aRem[ "CPF" ] ) > 0
                ::DrawTexto( 345, ::nLinhaPdf - nLinha, 535, Nil, TRANSF( ::aRem[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             ENDIF
-            ::DrawTexto( 535, ::nLinhaPdf - nLinha, 590, Nil, ::aInfNF[ I + 1, 4 ] + '/' + ::aInfNF[ I + 1, 5 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+            ::DrawTexto( 535, ::nLinhaPdf - nLinha, 590, Nil, ::aInfNF[ nCont + 1, 4 ] + '/' + ::aInfNF[ nCont + 1, 5 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
          ENDIF
          nLinha += 10
       NEXT
    ENDIF
    IF Len( ::aInfOutros ) > 0
       nLinha := 536
-      FOR I = 1 TO Len( ::aInfOutros ) STEP 2
-         If ::aInfOutros[ I, 1 ] = '00'
+      FOR nCont = 1 TO Len( ::aInfOutros ) STEP 2
+         If ::aInfOutros[ nCont, 1 ] = '00'
             cOutros := 'DECLARAÇÃO'
-         ElseIf ::aInfOutros[ I, 1 ] = '10'
+         ElseIf ::aInfOutros[ nCont, 1 ] = '10'
             cOutros := 'DUTOVIÁRIO'
-         ElseIf ::aInfOutros[ I, 1 ] = '99'
-            cOutros := ::aInfOutros[ I, 2 ]
+         ElseIf ::aInfOutros[ nCont, 1 ] = '99'
+            cOutros := ::aInfOutros[ nCont, 2 ]
          ENDIF
          ::DrawTexto( 005, ::nLinhaPdf - nLinha, 240, Nil, cOutros, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
          IF Val( ::aRem[ "CNPJ" ] ) > 0
@@ -881,14 +846,14 @@ METHOD Cabecalho() CLASS hbnfeDaCte
          IF Val( ::aRem[ "CPF" ] ) > 0
             ::DrawTexto( 170, ::nLinhaPdf - nLinha, 240, Nil, TRANSF( ::aRem[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
          ENDIF
-         ::DrawTexto( 240, ::nLinhaPdf - nLinha, 295, Nil, ::aInfOutros[ I, 3 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-         IF I + 1 <= Len( ::aInfOutros )
-            If ::aInfOutros[ I + 1, 1 ] = '00'
+         ::DrawTexto( 240, ::nLinhaPdf - nLinha, 295, Nil, ::aInfOutros[ nCont, 3 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+         IF nCont + 1 <= Len( ::aInfOutros )
+            If ::aInfOutros[ nCont + 1, 1 ] = '00'
                cOutros := 'DECLARAÇÃO'
-            ElseIf ::aInfOutros[ I + 1, 1 ] = '10'
+            ElseIf ::aInfOutros[ nCont + 1, 1 ] = '10'
                cOutros := 'DUTOVIÁRIO'
-            ElseIf ::aInfOutros[ I + 1, 1 ] = '99'
-               cOutros := ::aInfOutros[ I + 1, 2 ]
+            ElseIf ::aInfOutros[ nCont + 1, 1 ] = '99'
+               cOutros := ::aInfOutros[ nCont + 1, 2 ]
             ENDIF
             ::DrawTexto( 300, ::nLinhaPdf - nLinha, 535, Nil, cOutros, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
             IF Val( ::aRem[ "CNPJ" ] ) > 0
@@ -897,7 +862,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
             IF Val( ::aRem[ "CPF" ] ) > 0
                ::DrawTexto( 465, ::nLinhaPdf - nLinha, 535, Nil, TRANSF( ::aRem[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             ENDIF
-            ::DrawTexto( 535, ::nLinhaPdf - nLinha, 590, Nil, ::aInfOutros[ I + 1, 3 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+            ::DrawTexto( 535, ::nLinhaPdf - nLinha, 590, Nil, ::aInfOutros[ nCont + 1, 3 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
          ENDIF
          nLinha += 10
       NEXT
@@ -959,28 +924,20 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    NEXT
    /*
    If ! Empty( ::vTotTrib )
-    ::DrawTexto( 005 , ::nLinhaPdf-675 , 590, Nil, 'Valor aproximado total de tributos federais, estaduais e municipais conf. Disposto na Lei nº 12741/12 : R$ '+Alltrim(Trans( Val(::vTotTrib) , '@E 999,999.99' )) , HPDF_TALIGN_LEFT , ::oPDFFontBold, 8 )
+    ::DrawTexto( 005 , ::nLinhaPdf-675 , 590, Nil, 'Valor aproximado total de tributos federais, estaduais e municipais conf. Disposto na Lei nº 12741/12 : R$ '+Alltrim(Transform( Val(::vTotTrib) , '@E 999,999.99' )) , HPDF_TALIGN_LEFT , ::oPDFFontBold, 8 )
    Endif
    */
    // Box dos DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - CARGA FRACIONADA
    ::DrawBox( 003, ::nLinhaPdf - 680, 590, 009, ::nLarguraBox )
    ::DrawTexto( 003, ::nLinhaPdf - 671, 590, Nil, "DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - CARGA FRACIONADA", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    // Box do RNTRC Da Empresa
-   ::DrawBox( 003, ::nLinhaPdf - 698, 140, 018, ::nLarguraBox )
-   ::DrawTexto( 005, ::nLinhaPdf - 680, 143, Nil, "RNTRC Da Empresa", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 005, ::nLinhaPdf - 688, 143, Nil, ::aRodo[ "RNTRC" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 003, ::nLinhaPdf - 680, 140, 018, "RNTRC Da Empresa", ::aRodo[ "RNTRC" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
    // Box do CIOT
-   ::DrawBox( 143, ::nLinhaPdf - 698, 070, 018, ::nLarguraBox )
-   ::DrawTexto( 145, ::nLinhaPdf - 680, 213, Nil, "CIOT", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 145, ::nLinhaPdf - 688, 213, Nil, ::aRodo[ "CIOT" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 143, ::nLinhaPdf - 680, 070, 018, "CIOT", ::aRodo[ "CIOT" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
    // Box do Lotação
-   ::DrawBox( 213, ::nLinhaPdf - 698, 030, 018, ::nLarguraBox )
-   ::DrawTexto( 215, ::nLinhaPdf - 680, 243, Nil, "Lotação", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 215, ::nLinhaPdf - 688, 243, Nil, iif( Val( ::aRodo[ "lota" ] ) = 0, 'Não', 'Sim' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 213, ::nLinhaPdf - 680, 030, 018, "Lotação", iif( Val( ::aRodo[ "lota" ] ) = 0, 'Não', 'Sim' ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
    // Box do Data Prevista de Entrega
-   ::DrawBox( 243, ::nLinhaPdf - 698, 115, 018, ::nLarguraBox )
-   ::DrawTexto( 245, ::nLinhaPdf - 680, 358, Nil, "Data Prevista de Entrega", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 245, ::nLinhaPdf - 688, 358, Nil, SubStr( ::aRodo[ "dPrev" ], 9, 2 ) + "/" + SubStr( ::aRodo[ "dPrev" ], 6, 2 ) + "/" + SubStr( ::aRodo[ "dPrev" ], 1, 4 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawBoxTituloTexto( 243, ::nLinhaPdf - 680, 115, 018, "Data Prevista de Entrega", SubStr( ::aRodo[ "dPrev" ], 9, 2 ) + "/" + SubStr( ::aRodo[ "dPrev" ], 6, 2 ) + "/" + SubStr( ::aRodo[ "dPrev" ], 1, 4 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
    // Box da Legislação
    ::DrawBox( 358, ::nLinhaPdf - 698, 235, 018, ::nLarguraBox )
    ::DrawTexto( 360, ::nLinhaPdf - 680, 590, Nil, "ESTE CONHECIMENTO DE TRANSPORTE ATENDE", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
@@ -1008,10 +965,10 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    // Box dos Dados acima
    ::DrawBox( 003, ::nLinhaPdf - 736, 260, 022, ::nLarguraBox )
    nLinha := 714
-   FOR I = 1 TO Len( ::aVeiculo )
-      ::DrawTexto( 005, ::nLinhaPdf - nLinha, 055, Nil, aTipoCar[ Val( ::aVeiculo[ I, 10 ] ) + 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
-      ::DrawTexto( 060, ::nLinhaPdf - nlinha, 115, Nil, ::aVeiculo[ I, 03 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
-      ::DrawTexto( 115, ::nLinhaPdf - nlinha, 133, Nil, ::aVeiculo[ I, 11 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
+   FOR nCont = 1 TO Len( ::aVeiculo )
+      ::DrawTexto( 005, ::nLinhaPdf - nLinha, 055, Nil, aTipoCar[ Val( ::aVeiculo[ nCont, 10 ] ) + 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
+      ::DrawTexto( 060, ::nLinhaPdf - nlinha, 115, Nil, ::aVeiculo[ nCont, 03 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
+      ::DrawTexto( 115, ::nLinhaPdf - nlinha, 133, Nil, ::aVeiculo[ nCont, 11 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
       ::DrawTexto( 135, ::nLinhaPdf - nlinha, 260, Nil, ::aProp[ "RNTRC" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
       ::DrawTexto( 135, ::nLinhaPdf - nlinha, 260, Nil, ::aRodo[ "RNTRC" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
       nLinha += 05
@@ -1036,7 +993,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    // Box do CPF do Motorista
    ::DrawBox( 263, ::nLinhaPdf - 744, 120, 008, ::nLarguraBox )
    ::DrawTexto( 265, ::nLinhaPdf - 737, 325, Nil, "CPF MOTORISTA:", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
-   ::DrawTexto( 330, ::nLinhaPdf - 737, 383, Nil, TRANS( ::aMoto[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
+   ::DrawTexto( 330, ::nLinhaPdf - 737, 383, Nil, Transform( ::aMoto[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
    // Box do IDENT. LACRE EM TRANSP:
    ::DrawBox( 383, ::nLinhaPdf - 744, 210, 008, ::nLarguraBox )
    ::DrawTexto( 385, ::nLinhaPdf - 737, 495, Nil, "IDENT. LACRE EM TRANSP.", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )

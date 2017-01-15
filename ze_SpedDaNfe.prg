@@ -380,11 +380,8 @@ METHOD Canhoto() CLASS hbNFeDaNFe
    ::DrawTexto( 506, ::nLinhaPdf - 32, 589, NIL, "SÉRIE " + ::aIde[ "serie" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
    ::nLinhaPdf -= 18
 
-   ::DrawBox( 5, ::nLinhaPdf - 26, 130, 26, ::nLarguraBox )
-   ::DrawTexto( 6, ::nLinhaPdf, 134, NIL, "DATA DE RECEBIMENTO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
-
-   ::DrawBox( 135, ::nLinhaPdf - 26, 370, 26, ::nLarguraBox )
-   ::DrawTexto( 136, ::nLinhaPdf, 470, NIL, "IDENTIFICAÇÃO E ASSINATURA DO RECEBEDOR", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
+   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 130, 26, "DATA DE RECEBIMENTO", "", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
+   ::DrawBoxTituloTexto( 135, ::nLinhaPdf, 370, 26, "IDENTIFICAÇÃO E ASSINATURA DO RECEBEDOR", "", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
    ::nLinhaPdf -= 24
 
    // corte
