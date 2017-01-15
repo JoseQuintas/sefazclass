@@ -400,7 +400,7 @@ METHOD Destinatario() CLASS hbnfeDaEvento
 
 METHOD Eventos() CLASS hbnfeDaEvento
 
-   LOCAL cDataHoraReg, cMemo, nI, nCompLinha, oElement, cGrupo, cCampo, cValor
+   LOCAL cDataHoraReg, cMemo, nCont, nCompLinha, oElement, cGrupo, cCampo, cValor
 
    // Eventos
    ::DrawTexto( 30, ::nLinhaPDF -4, 565, Nil, "EVENTOS", HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
@@ -466,7 +466,7 @@ METHOD Eventos() CLASS hbnfeDaEvento
          ::DrawTexto( 38, ::nLinhaPdf,564, Nil, 'Alterado = Grupo : '+cGrupo+' - Campo : '+cCampo+' - Valor : '+cValor , HPDF_TALIGN_LEFT, ::oPdfFontCorrecoes, 11 )
          ::nLinhaPdf -= 12
       NEXT
-      FOR nI = ( Len( ::aCorrecoes ) + 1 ) TO 14
+      FOR nCont = ( Len( ::aCorrecoes ) + 1 ) TO 14
          ::nLinhaPdf -= 12
       NEXT
 
@@ -480,12 +480,12 @@ METHOD Eventos() CLASS hbnfeDaEvento
          nCompLinha := 75
       ENDIF
 
-      FOR nI = 1 TO MLCount( cMemo, nCompLinha )
-         ::DrawTexto( 38, ::nLinhaPdf,564, Nil, Upper( Trim( MemoLine( cMemo, nCompLinha, nI ) ) ), HPDF_TALIGN_LEFT, ::oPdfFontCorrecoes, 11 )
+      FOR nCont = 1 TO MLCount( cMemo, nCompLinha )
+         ::DrawTexto( 38, ::nLinhaPdf,564, Nil, Upper( Trim( MemoLine( cMemo, nCompLinha, nCont ) ) ), HPDF_TALIGN_LEFT, ::oPdfFontCorrecoes, 11 )
          ::nLinhaPdf -= 12
       NEXT
 
-      FOR nI = ( MLCount( cMemo, nCompLinha ) + 1 ) TO 14
+      FOR nCont = ( MLCount( cMemo, nCompLinha ) + 1 ) TO 14
          ::nLinhaPdf -= 12
       NEXT
    ENDIF
