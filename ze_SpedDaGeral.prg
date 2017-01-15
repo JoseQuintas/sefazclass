@@ -131,9 +131,13 @@ METHOD Desenvolvedor( nLinhaPDF ) CLASS hbNFeDaGeral
 
 METHOD DrawBoxTituloTexto( x, y, w, h, cTitle, cText, nAlign, oPDFFont, nFontSize, nAngle ) CLASS hbNFeDaGeral
 
-   ::DrawBox( x, y - 16, w, h, ::nLarguraBox )
-   ::DrawTexto( x + 1, y - 1,  x + w - 1, NIL, cTitle, HPDF_TALIGN_LEFT, oPDFFont, 5 )
-   ::DrawTexto( x + 1, y - 5,  x + w - 1, NIL, cText, nAlign, oPDFFont, nFontSize, nAngle )
+   ::DrawBox( x, y - h, w, h, ::nLarguraBox )
+   IF ! Empty( cTitle )
+      ::DrawTexto( x + 1, y - 1,  x + w - 1, NIL, cTitle, HPDF_TALIGN_LEFT, oPDFFont, 5 )
+      ::DrawTexto( x + 1, y - 6,  x + w - 1, NIL, cText, nAlign, oPDFFont, nFontSize, nAngle )
+   ELSE
+      ::DrawTexto( x + 1, y - 1, x + w - 1, NIL, cText, nAlign, oPDFFont, nFontSize, nAngle )
+   ENDIF
 
    RETURN NIL
 
