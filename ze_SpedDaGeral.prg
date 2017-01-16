@@ -122,7 +122,7 @@ METHOD DefineDecimais( xValue, nDecimais ) CLASS hbNFeDaGeral
 METHOD Desenvolvedor( nLinhaPDF ) CLASS hbNFeDaGeral
 
    hb_Default( @nLinhaPDF, 10 )
-   ::DrawTexto( 1, nLinhaPDF, 884, NIL, ::cDesenvolvedor, HPDF_TALIGN_RIGHT, ::oPdfFontBold, 6 )
+   ::DrawTexto( 1, nLinhaPDF, 590, NIL, ::cDesenvolvedor, HPDF_TALIGN_RIGHT, ::oPdfFontBold, 6 )
    IF .F.
       ::DrawTexto( 20, nLinhaPDF, 300, NIL, "DATA DA IMPRESSÃO: " + DToC( Date() ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
    ENDIF

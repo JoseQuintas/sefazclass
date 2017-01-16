@@ -224,6 +224,9 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    ::aExporta    := XmlToHash( XmlNode( XmlNode( ::cXml, "exporta" ), "infCpl" ), { "UFEmbarq", "xLocEmbarq" } )
    ::aCompra     := XmlToHash( XmlNode( ::cXml, "compra" ), { "xNEmp", "xPed", "xCont" } )
    ::aInfProt    := XmlToHash( iif( Empty( ::cXmlCancel ), ::cXml, ::cXmlCancel ), { "nProt", "dhRecbto", "digVal", "cStat", "xEvento", "dhRegEvento", "xMotivo" } )
+   IF ! Empty( ::aInfProt[ "dhRegEvento" ]  )
+      ::aInfProt[ "dhRecbto" ] := ::aInfProt[ "dhRegEvento" ]
+   ENDIF
 
    ::aEmit[ "xNome" ]  := XmlToString( ::aEmit[ "xNome" ] )
    ::aDest[ "xNome" ]  := XmlToString( ::aDest[ "xNome" ] )
@@ -326,7 +329,7 @@ METHOD NovaPagina() CLASS hbNFeDaNFe
       HPDF_Page_BeginText( ::oPdfPage )
       HPDF_Page_SetTextMatrix( ::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 100)
       HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
-      HPDF_Page_ShowText( ::oPdfPage, ::aInfProt[ "xEvento" ] + " " + /* ::aInfProt[ "dhRegEvento" ] ) + " " + */ ::aInfProt[ "xMotivo" ] )
+      HPDF_Page_ShowText( ::oPdfPage, ::aInfProt[ "xEvento" ] + " " + ::aInfProt[ "dhRegEvento" ] ) // + " " + */ ::aInfProt[ "xMotivo" ] )
       HPDF_Page_EndText( ::oPdfPage)
       HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
       ::DrawLine( 15, 95, 550, 630, 2.0 )
@@ -498,9 +501,9 @@ METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
          ::DrawTexto( 371, ::nLinhaPdf - 1, 589, NIL, "PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 5 )
       ENDIF
       IF ::cFonteNFe == "Times"
-         ::DrawTexto( 371, ::nLinhaPdf - 6, 589, NIL, ::aInfProt[ "nProt" ] + " " + SubStr( SubStr( ::aInfProt[ "dhRecbto" ], 1, 10 ), 9, 2 ) + "/" + SubStr( SubStr( ::aInfProt[ "dhRecbto" ], 1, 10 ), 6, 2 ) + "/" + SubStr( SubStr( ::aInfProt[ "dhRecbto" ], 1, 10 ), 1, 4 ) + " " + SubStr( ::aInfProt[ "dhRecbto" ], 12, 8 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
+         ::DrawTexto( 371, ::nLinhaPdf - 6, 589, NIL, ::aInfProt[ "nProt" ] + " " + SubStr( ::aInfProt[ "dhRecbto" ], 9, 2 ) + "/" + SubStr( ::aInfProt[ "dhRecbto" ], 6, 2 ) + "/" + SubStr( ::aInfProt[ "dhRecbto" ], 1, 4 ) + " " + SubStr( ::aInfProt[ "dhRecbto" ], 12, 8 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
       ELSE
-         ::DrawTexto( 371, ::nLinhaPdf - 6, 589, NIL, ::aInfProt[ "nProt" ] + " " + SubStr( SubStr( ::aInfProt[ "dhRecbto" ], 1, 10 ), 9, 2 ) + "/" + SubStr( SubStr( ::aInfProt[ "dhRecbto" ], 1, 10 ), 6, 2 ) + "/" + SubStr( SubStr( ::aInfProt[ "dhRecbto" ], 1, 10 ), 1, 4 ) + " " + SubStr( ::aInfProt[ "dhRecbto" ], 12, 8 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
+         ::DrawTexto( 371, ::nLinhaPdf - 6, 589, NIL, ::aInfProt[ "nProt" ] + " " + SubStr( ::aInfProt[ "dhRecbto" ], 9, 2 ) + "/" + SubStr( ::aInfProt[ "dhRecbto" ], 6, 2 ) + "/" + SubStr( ::aInfProt[ "dhRecbto" ], 1, 4 ) + " " + SubStr( ::aInfProt[ "dhRecbto" ], 12, 8 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
       ENDIF
    ENDIF
    ::nLinhaPdf -= 16
