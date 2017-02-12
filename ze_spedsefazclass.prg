@@ -204,11 +204,11 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
+   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
    ::cXmlDocumento +=            [<evCancCTe>]
    ::cXmlDocumento +=                XmlTag( "descEvento", "Cancelamento" )
-   ::cXmlDocumento +=                XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   ::cXmlDocumento +=                XmlTag( "nProt", Ltrim( Str( nProt, 16 ) ) )
    ::cXmlDocumento +=                XmlTag( "xJust", xJust )
    ::cXmlDocumento +=            [</evCancCTe>]
    ::cXmlDocumento +=       [</detEvento>]
@@ -240,7 +240,7 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
    ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110110" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia ) ) )
+   ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
    ::cXmlDocumento +=            [<evCCeCTe>]
    ::cXmlDocumento +=                XmlTag( "descEvento", "Carta de Correcao" )
@@ -491,7 +491,7 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
    ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
+   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="1.00">]
    ::cXmlDocumento +=       	  [<evCancMDFe>]
    ::cXmlDocumento +=          		XmlTag( "descEvento", "Cancelamento" )
@@ -525,7 +525,7 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
    ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110112" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
+   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="1.00">]
    ::cXmlDocumento +=       	  [<evEncMDFe>]
    ::cXmlDocumento +=          		XmlTag( "descEvento", "Encerramento" )
@@ -723,7 +723,7 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
    ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110110" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia ) ) )
+   ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       XmlTag( "verEvento", "1.00" )
    ::cXmlDocumento +=       [<detEvento versao="1.00">]
    ::cXmlDocumento +=          XmlTag( "descEvento", "Carta de Correcao" )
@@ -767,7 +767,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia ) ) )
+   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       XmlTag( "verEvento", "1.00" )
    ::cXmlDocumento +=       [<detEvento versao="1.00">]
    ::cXmlDocumento +=          XmlTag( "descEvento", "Cancelamento" )

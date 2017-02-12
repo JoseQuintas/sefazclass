@@ -232,7 +232,7 @@ STATIC FUNCTION hbNFe_Texto_Hpdf( oPage, x1, y1, x2, y2, cText, align, oFontePDF
    IF nAngulo == NIL // horizontal normal
       HPDF_Page_TextRect ( oPage,  x1, y1, x2, y2, cText, align, NIL )
    ELSE
-      nRadiano := nAngulo / 180 * 3.141592 /* Calcurate the radian value. */
+      nRadiano := nAngulo / 180 * 3.141592 /* Calculate the radian value. */
       HPDF_Page_SetTextMatrix( oPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), x1, y1 )
       HPDF_Page_ShowText( oPage, cText )
    ENDIF
