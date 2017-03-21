@@ -1539,14 +1539,17 @@ FUNCTION SoapURL_CE( cAmbiente, nWsServico, ... )
       ENDCASE
    ELSE
       DO CASE
-      CASE nWsServico == WS_NFE_CANCELAMENTO ;        cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeCancelamento2"
-      CASE nWsServico == WS_NFE_CONSULTACADASTRO ;    cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2"
-      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeConsulta2"
-      CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeInutilizacao2"
-      CASE nWsServico == WS_NFE_RECEPCAO ;            cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRecepcao2"
-      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento"
-      CASE nWsServico == WS_NFE_RETRECEPCAO ;         cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRetRecepcao2"
-      CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2"
+      CASE nWsServico == WS_NFE_AUTORIZACAO ; cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeAutorizacao?wsdl"
+      CASE nWsServico == WS_NFE_CANCELAMENTO ; cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeCancelamento2"
+      CASE nWsServico == WS_NFE_CONSULTACADASTRO ; cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2?wsdl"
+      CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ; cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeConsulta2?wsdl"
+      CASE nWsServico == WS_NFE_DOWNLOADNF ; cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeDownloadNF?wsdl"
+      CASE nWsServico == WS_NFE_INUTILIZACAO ; cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeInutilizacao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAO ; cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_RECEPCAOEVENTO ; cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento?wsdl"
+      CASE nWsServico == WS_NFE_RETRECEPCAO ; cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRetRecepcao2?wsdl"
+      CASE nWsServico == WS_NFE_STATUSSERVICO ; cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2?wsdl"
+      CASE nWsServico == WS_NFE_RETAUTORIZACAO ; cUrlWs := "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRetAutorizacao?wsdl"
       ENDCASE
    ENDIF
 
