@@ -6,6 +6,7 @@ ZE_SPEDSEFAZCLASS - Rotinas pra comunicação com SEFAZ
 2016.11.25.2300 - ::ValidaXml() e DomDocValidaXml() pra evitar confusão no uso
 2016.12.01.0230 - NFE 4.00 início
 2017.01.13.1120 - Endereços RS CTE homologação
+2017.05.05.1930 - Grava status e motivo, ref. recibo, pra erros de envio de lote
 
 Nota: CTE 2.00 vale até 06/2017 e CTE 3.00 começa em 12/2016
 */
@@ -374,6 +375,8 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno
    ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
+   ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
+   ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
    IF ! Empty( ::cRecibo )
       Inkey( ::nTempoEspera )
       ::CteConsultaRecibo()
@@ -602,6 +605,8 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno
    ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
+   ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
+   ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
    IF ! Empty( ::cRecibo )
       Inkey( ::nTempoEspera )
       ::MDFeConsultaRecibo()
@@ -894,8 +899,10 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
    ::cXmlEnvio    += [</enviNFe>]
    ::XmlSoapPost()
    IF cIndSinc == INDSINC_RETORNA_RECIBO
-      ::cXmlRecibo := ::cXmlRetorno
-      ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
+      ::cXmlRecibo    := ::cXmlRetorno
+      ::cRecibo       := XmlNode( ::cXmlRecibo, "nRec" )
+      ::cStatus       := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
+      ::cMotivo       := XmlNode( ::cXmlRecibo, "xMotivo" )
       IF ! Empty( ::cRecibo )
          Inkey( ::nTempoEspera )
          ::NfeConsultaRecibo()
@@ -904,6 +911,8 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
    ELSE
       ::cXmlRecibo    := ::cXmlRetorno
       ::cRecibo       := XmlNode( ::cXmlRecibo, "nRec" )
+      ::cStatus       := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
+      ::cMotivo       := XmlNode( ::cXmlRecibo, "xMotivo" )
       IF ! Empty( ::cRecibo )
          ::cXmlProtocolo := ::cXmlRetorno
          ::cXmlRetorno   := ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )

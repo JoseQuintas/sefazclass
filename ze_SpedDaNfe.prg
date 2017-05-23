@@ -1037,6 +1037,8 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
       IF Val( ::aItemIPI[ "pIPI" ]  ) > 0 .OR. Val( ::aItemIPI[ "vIPI" ] ) > 0 // Se houver IPI no XML, habilita coluna
          IF ::aLayout[ LAYOUT_IPIVAL, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
             ::aLayout[ LAYOUT_IPIVAL, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         ENDIF
+         IF ::aLayout[ LAYOUT_IPIALI, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
             ::aLayout[ LAYOUT_IPIALI, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
          ENDIF
       ENDIF
