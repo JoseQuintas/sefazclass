@@ -26,9 +26,10 @@ Os campos que podem ser colocados na mesma coluna são:
 #define LAYOUT_LOGO_DIREITA          2
 #define LAYOUT_LOGO_EXPANDIDO        3
 
-#define LAYOUT_NAOIMPRIME      0
-#define LAYOUT_IMPRIMENORMAL   1
-#define LAYOUT_IMPRIMESEGUNDA  2
+#define LAYOUT_NAOIMPRIME         0
+#define LAYOUT_IMPRIMENORMAL      1
+#define LAYOUT_IMPRIMESEGUNDA     2
+#define LAYOUT_IMPRIMEXMLTEM      3
 
 #define LAYOUT_TITULO          1
 #define LAYOUT_LARGURA         2
@@ -86,6 +87,12 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    METHOD DrawTextoProduto( nCampo, nRow, nConteudo, nAlign )
    METHOD DrawBoxProduto( nCampo, nRow, nHeight )
    METHOD DefineColunasProdutos()
+   METHOD SetDescontoOff()      INLINE ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetSubBasOff()        INLINE ::aLayout[ LAYOUT_SUBBAS,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetSubValOff()        INLINE ::aLayout[ LAYOUT_SUBVAL,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetIpiValOff()        INLINE ::aLayout[ LAYOUT_IPIVAL,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetIpiAliOff()        INLINE ::aLayout[ LAYOUT_IPIALI,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetEanOff()           INLINE ::aLayout[ LAYOUT_EAN,      LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
 
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
@@ -168,6 +175,12 @@ METHOD Init() CLASS hbNFeDaNFe
       oElement[ LAYOUT_CONTEUDO ]     := { || "" }
       oElement[ LAYOUT_LARGURAPDF ]   := 1
    NEXT
+   ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_SUBBAS,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_SUBVAL,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_IPIVAL,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_IPIALI,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_EAN,      LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
 
    RETURN SELF
 
@@ -923,7 +936,7 @@ METHOD DrawTextoProduto( nCampo, nRow, nConteudo, nAlign ) CLASS hbNFeDaNFe
 
    LOCAL nColunaInicial, nColunaFinal, cTexto
 
-   IF ::aLayout[ nCampo, LAYOUT_IMPRIME ] != LAYOUT_NAOIMPRIME
+   IF ::aLayout[ nCampo, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMENORMAL
       nColunaInicial := ::aLayout[ nCampo, LAYOUT_COLUNAPDF ]
       nColunaFinal   := ::aLayout[ nCampo, LAYOUT_COLUNAPDF ] + ::aLayout[ nCampo, LAYOUT_LARGURAPDF ] - 2
       IF ValType( nConteudo ) == "C"
@@ -1003,13 +1016,6 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_IPIALI,    LAYOUT_TITULO2 ]   := "IPI"
    ::aLayout[ LAYOUT_IPIALI,    LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemIPI[ "pIPI" ] ), 15, 2 ) ) }
 
-   ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   ::aLayout[ LAYOUT_SUBBAS,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   ::aLayout[ LAYOUT_SUBVAL,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   ::aLayout[ LAYOUT_IPIVAL,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   ::aLayout[ LAYOUT_IPIALI,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   ::aLayout[ LAYOUT_IPIALI,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   ::aLayout[ LAYOUT_EAN,      LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
    // Define decimais default, mas será ajustado conforme conteúdo do XML
    ::aLayout[ LAYOUT_QTD, LAYOUT_DECIMAIS ]      := 0
    ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] := 2
@@ -1029,22 +1035,37 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
          oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( Eval( oElement[ LAYOUT_CONTEUDO ] ) ) )
       NEXT
       IF Val( ::aItemIPI[ "pIPI" ]  ) > 0 .OR. Val( ::aItemIPI[ "vIPI" ] ) > 0 // Se houver IPI no XML, habilita coluna
-         ::aLayout[ LAYOUT_IPIVAL, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
-         ::aLayout[ LAYOUT_IPIALI, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         IF ::aLayout[ LAYOUT_IPIVAL, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
+            ::aLayout[ LAYOUT_IPIVAL, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         ENDIF
+         IF ::aLayout[ LAYOUT_IPIALI, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
+            ::aLayout[ LAYOUT_IPIALI, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         ENDIF
       ENDIF
       IF Val( ::aItemICMS[ "vBCST" ] ) > 0 .OR. Val( ::aItemICMS[ "vICMSST" ] ) > 0
-         ::aLayout[ LAYOUT_SUBBAS, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
-         ::aLayout[ LAYOUT_SUBVAL, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         IF ::aLayout[ LAYOUT_SUBBAS, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
+            ::aLayout[ LAYOUT_SUBBAS, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         ENDIF
+         IF ::aLayout[ LAYOUT_SUBVAL, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
+            ::aLayout[ LAYOUT_SUBVAL, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         ENDIF
       ENDIF
       IF Val( ::aItem[ "vDesc" ] ) > 0
-         ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         IF ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
+            ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         ENDIF
       ENDIF
       IF ! Empty( ::aItem[ "cEAN" ] )
-         ::aLayout[ LAYOUT_EAN, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         IF ::aLayout[ LAYOUT_EAN, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
+            ::aLayout[ LAYOUT_EAN, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         ENDIF
       ENDIF
    ENDDO
    // Define tamanho de colunas
    FOR EACH oElement IN ::aLayout
+      IF oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
+         oElement[ LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME  // não tem no XML, então não sai
+      ENDIF
       oElement[ LAYOUT_LARGURA ] += 1
       oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( oElement[ LAYOUT_TITULO1 ] ) )
       oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( oELement[ LAYOUT_TITULO2 ] ) )
@@ -1079,4 +1100,5 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
       CASE nTentativa == 4 ; ::aLayout[ LAYOUT_SUBVAL, LAYOUT_IMPRIME ]   := LAYOUT_NAOIMPRIME
       ENDCASE
    NEXT
+
    RETURN NIL

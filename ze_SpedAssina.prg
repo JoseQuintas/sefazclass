@@ -4,6 +4,8 @@ ZE_SPEDASSINA - Assinatura SPED
 2017.01.09.1730 - Teste adicional de assinatura
 2017.01.11.1200 - Nota de serviço usando id ao invés de Id
 2017.01.11.2020 - Errado acima, obrigatório Id com i maiúsculo
+2017.05.25.1330 - Remove declaração de XML
+2017.05.25.1510 - Fonte reorganizado
 */
 
 #define _CAPICOM_STORE_OPEN_READ_ONLY                 0           // Somente Smart Card em Modo de Leitura
@@ -33,130 +35,41 @@ ZE_SPEDASSINA - Assinatura SPED
 
 FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior )
 
-   LOCAL oDOMDoc, nPosIni, nPosFim, xmlHeaderAntes, xmldsig, dsigns, oCert, oCapicomStore, xmlHeaderDepois
-   LOCAL XMLAssinado, SIGNEDKEY, DSIGKEY, SCONTAINER, SPROVIDER, ETYPE, cURI, nP, nResult
-   LOCAL aDelimitadores, nPos, cXmlTagFinal, cRetorno := "Erro: Problemas pra assinar XML"
+   LOCAL oDOMDocument, xmldsig, oCert, oCapicomStore
+   LOCAL SIGNEDKEY, DSIGKEY
+   LOCAL cXmlTagInicial, cXmlTagFinal, cRetorno := ""
    LOCAL cDllFile, acDllList := { "msxml5.dll", "msxml5r.dll", "capicom.dll" }
 
    hb_Default( @lRemoveAnterior, .T. )
 
-   aDelimitadores := { ;
-      { "<enviMDFe",              "</MDFe></enviMDFe>" }, ;
-      { "<eventoMDFe",            "</eventoMDFe>" }, ;
-      { "<eventoCTe",             "</eventoCTe>" }, ;
-      { "<infMDFe",               "</MDFe>" }, ;
-      { "<infCte",                "</CTe>" }, ;
-      { "<infNFe",                "</NFe>" }, ;
-      { "<infDPEC",               "</envDPEC>" }, ;
-      { "<infInut",               "<inutNFe>" }, ;
-      { "<infCanc",               "</cancNFe>" }, ;
-      { "<infInut",               "</inutNFe>" }, ;
-      { "<infInut",               "</inutCTe>" }, ;
-      { "<infEvento",             "</evento>" }, ;
-      { "<infPedidoCancelamento", "</Pedido>" }, ;               // NFSE ABRASF Cancelamento
-      { "<LoteRps",               "</EnviarLoteRpsEnvio>" }, ;   // NFSE ABRASF Lote
-      { "<infRps",                "</Rps>" } }                   // NFSE ABRASF RPS
+   AssinaRemoveAssinatura( @cTxtXml, lRemoveAnterior )
 
-   // Remove assinatura anterior - atenção pra NFS que usa multiplas assinaturas
-   IF lRemoveAnterior
-      DO WHILE "<Signature" $ cTxtXml .AND. "</Signature>" $ cTxtXml
-         nPosIni := At( "<Signature", cTxtXml ) - 1
-         nPosFim := At( "</Signature>", cTxtXml ) + 12
-         cTxtXml := Substr( cTxtXml, 1, nPosIni ) + Substr( cTxtXml, nPosFim )
-      ENDDO
-   ENDIF
+   AssinaRemoveDeclaracao( @cTxtXml )
 
-   // Define Tipo de Documento
-   IF ( nPos := AScan( aDelimitadores, { | oElement | oElement[ 1 ] $ cTxtXml .AND. oElement[ 2 ] $ cTxtXml } ) ) == 0
-      cRetorno := "Erro Assinatura: Não identificado documento"
+   IF ! AssinaAjustaInformacao( @cTxtXml, @cXmlTagInicial, @cXmlTagFinal, @cRetorno )
       RETURN cRetorno
    ENDIF
-   cXmlTagFinal   := aDelimitadores[ nPos, 2 ]
-   // Pega URI
-   nPosIni := At( [Id=], cTxtXml )
-   IF nPosIni = 0
-      cRetorno := "Erro Assinatura: Não encontrado início do URI: Id= (com I maiúsculo)"
-      RETURN cRetorno
-   ENDIF
-   nPosIni := hb_At( ["], cTxtXml, nPosIni + 2 )
-   IF nPosIni = 0
-      cRetorno := "Erro Assinatura: Não encontrado início do URI: aspas inicial"
-      RETURN cRetorno
-   ENDIF
-   nPosFim := hb_At( ["], cTxtXml, nPosIni + 1 )
-   IF nPosFim = 0
-      cRetorno := "Erro Assinatura: Não encontrado início do URI: aspas final"
-      RETURN cRetorno
-   ENDIF
-   cURI := Substr( cTxtXml, nPosIni + 1, nPosFim - nPosIni - 1 )
 
-   // Adiciona bloco de assinatura no local apropriado
-   IF cXmlTagFinal $ cTxtXml
-      cTxtXml := Substr( cTxtXml, 1, At( cXmlTagFinal, cTxtXml ) - 1 ) + SignatureNode( cURI ) + cXmlTagFinal
+   IF ! AssinaLoadXml( @oDOMDocument, cTxtXml, @cRetorno )
+      RETURN cRetorno
    ENDIF
 
-   //   HB_MemoWrit( "NFE\Ultimo-1.XML", cTxtXml )
-   // Lendo Header antes de assinar //
-   xmlHeaderAntes := ""
-   nPosIni        := AT( [?>], cTxtXml )
-   IF nPosIni > 0
-      xmlHeaderAntes := Substr( cTxtXml, 1, nPosIni + 1 )
+   IF ! AssinaLoadCertificado( cCertCN, @ocert, @oCapicomStore, cRetorno )
+      RETURN cRetorno
    ENDIF
 
    BEGIN SEQUENCE WITH __BreakBlock()
 
-      cRetorno := "Erro Assinatura: Não carregado MSXML2.DOMDocument.5.0"
-      oDOMDoc := Win_OleCreateObject( "MSXML2.DOMDocument.5.0" )
-
-      oDOMDoc:async              := .F.
-      oDOMDoc:resolveExternals   := .F.
-      oDOMDoc:validateOnParse    := .T.
-      oDOMDoc:preserveWhiteSpace := .T.
-
       cRetorno := "Erro Assinatura: Não carregado MSXML2.MXDigitalSignature.5.0"
       xmldsig := Win_OleCreateObject( "MSXML2.MXDigitalSignature.5.0" )
-      cRetorno := "Erro Assinatura: Ao carregar XML"
-      oDOMDoc:LoadXML( cTxtXml )
-      IF oDOMDoc:parseError:errorCode <> 0 // XML não carregado
-         cRetorno := "Erro Assinatura: Não foi possivel carregar o documento pois ele não corresponde ao seu Schema" + HB_EOL()
-         cRetorno += " Linha: "              + Str( oDOMDoc:parseError:line )    + HB_EOL()
-         cRetorno += " Caractere na linha: " + Str( oDOMDoc:parseError:linepos ) + HB_EOL()
-         cRetorno += " Causa do erro: "      + oDOMDoc:parseError:reason         + HB_EOL()
-         cRetorno += "code: "                + Str( oDOMDoc:parseError:errorCode )
-         BREAK
-      ENDIF
 
-      DSIGNS = [xmlns:ds="http://www.w3.org/2000/09/xmldsig#"]
-      oDOMDoc:setProperty( "SelectionNamespaces", DSIGNS )
-
-      IF ! "</Signature>" $ cTxtXml
-         cRetorno := "Erro Assinatura: Bloco Assinatura não encontrado"
-         BREAK
-      ENDIF
       cRetorno := "Erro Assinatura: Template de assinatura não encontrado"
-      xmldsig:signature := oDOMDoc:selectSingleNode(".//ds:Signature")
-
-      oCert := CapicomCertificado( cCertCn )
-      IF oCert == NIL
-         cRetorno := "Erro Assinatura: Certificado não encontrado ou vencido"
-         BREAK
-      ENDIF
-
-      cRetorno := "Erro assinatura: Acessando estoque de certificados"
-      oCapicomStore := Win_OleCreateObject( "CAPICOM.Store" )
-      oCapicomStore:open( _CAPICOM_MEMORY_STORE, 'Memoria', _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
-
-      cRetorno := "Erro assinatura: Adicionando certificado na memória CapicomStore:Add()"
-      oCapicomStore:Add( oCert )
+      xmldsig:signature := oDOMDocument:selectSingleNode(".//ds:Signature")
 
       cRetorno := "Erro assinatura: Certificado pra assinar XmlDSig:Store"
       xmldsig:store := oCapicomStore
 
-      //---> Dados necessários para gerar a assinatura
-      eType      := oCert:PrivateKey:ProviderType
-      sProvider  := oCert:PrivateKey:ProviderName
-      sContainer := oCert:PrivateKey:ContainerName
-      dsigKey    := xmldsig:CreateKeyFromCSP( eType, sProvider, sContainer, 0 )
+      dsigKey  := xmldsig:CreateKeyFromCSP( oCert:PrivateKey:ProviderType, oCert:PrivateKey:ProviderName, oCert:PrivateKey:ContainerName, 0 )
       IF ( dsigKey = NIL )
          cRetorno := "Erro assinatura: Ao criar a chave do CSP."
          BREAK
@@ -168,35 +81,8 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior )
          cRetorno := "Erro Assinatura: Assinatura Falhou."
          BREAK
       ENDIF
-      XMLAssinado := oDOMDoc:xml
-      XMLAssinado := StrTran( XMLAssinado, Chr(10), "" )
-      XMLAssinado := StrTran( XMLAssinado, Chr(13), "" )
-      nPosIni     := At( [<SignatureValue>], XMLAssinado ) + Len( [<SignatureValue>] )
-      XMLAssinado := Substr( XMLAssinado, 1, nPosIni - 1 ) + StrTran( Substr( XMLAssinado, nPosIni, Len( XMLAssinado ) ), " ", "" )
-      nPosIni     := At( [<X509Certificate>], XMLAssinado ) - 1
-      nP          := At( [<X509Certificate>], XMLAssinado )
-      nResult     := 0
-      DO WHILE nP <> 0
-         nResult := nP
-         nP      := hb_At( [<X509Certificate>], XMLAssinado, nP + 1 )
-      ENDDO
-      nPosFim     := nResult
-      XMLAssinado := Substr( XMLAssinado, 1, nPosIni ) + Substr( XMLAssinado, nPosFim, Len( XMLAssinado ) )
-
-      IF xmlHeaderAntes <> ""
-         nPosIni := At( XMLAssinado, [?>] )
-         IF nPosIni > 0
-            xmlHeaderDepois := Substr( XMLAssinado, 1, nPosIni + 1 )
-            IF xmlHeaderAntes <> xmlHeaderDepois
-               * ? "entrou stuff"
-               * XMLAssinado := StuffString( XMLAssinado, 1, Length( xmlHeaderDepois ), xmlHeaderAntes )
-            ENDIF
-         ELSE
-            XMLAssinado := xmlHeaderAntes + XMLAssinado
-         ENDIF
-      ENDIF
+      cTxtXml  := AssinaAjustaAssinado( oDOMDocument:Xml )
       cRetorno := "OK"
-      cTxtXml  := XmlAssinado
 
    END SEQUENCE
 
@@ -213,7 +99,7 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior )
 
    RETURN cRetorno
 
-STATIC FUNCTION SignatureNode( cUri )
+STATIC FUNCTION AssinaBlocoAssinatura( cUri )
 
    LOCAL cSignatureNode := ""
 
@@ -238,6 +124,181 @@ STATIC FUNCTION SignatureNode( cUri )
    cSignatureNode += [</Signature>]
 
    RETURN cSignatureNode
+
+STATIC FUNCTION AssinaRemoveAssinatura( cTxtXml, lRemoveAnterior )
+
+   LOCAL nPosIni, nPosFim
+
+   // Remove assinatura anterior - atenção pra NFS que usa multiplas assinaturas
+   IF lRemoveAnterior
+      DO WHILE "<Signature" $ cTxtXml .AND. "</Signature>" $ cTxtXml
+         nPosIni := At( "<Signature", cTxtXml ) - 1
+         nPosFim := At( "</Signature>", cTxtXml ) + 12
+         cTxtXml := Substr( cTxtXml, 1, nPosIni ) + Substr( cTxtXml, nPosFim )
+      ENDDO
+   ENDIF
+
+   RETURN cTxtXml
+
+STATIC FUNCTION AssinaRemoveDeclaracao( cTxtXml )
+
+   IF "<?XML" $ Upper( cTxtXml ) .AND. "?>" $ cTxtXml
+      cTxtXml := Substr( cTxtXml, At( "?>", cTxtXml ) + 2 )
+      DO WHILE Substr( cTxtXml, 1, 1 ) $ hb_Eol()
+         cTxtXml := Substr( cTxtXml, 2 )
+      ENDDO
+   ENDIF
+
+   RETURN cTxtXml
+
+STATIC FUNCTION AssinaAjustaInformacao( cTxtXml, cXmlTagInicial, cXmlTagFinal, cRetorno )
+
+   LOCAL aDelimitadores, nPos, nPosIni, nPosFim, cURI
+
+   aDelimitadores := { ;
+      { "<enviMDFe",              "</MDFe></enviMDFe>" }, ;
+      { "<eventoMDFe",            "</eventoMDFe>" }, ;
+      { "<eventoCTe",             "</eventoCTe>" }, ;
+      { "<infMDFe",               "</MDFe>" }, ;
+      { "<infCte",                "</CTe>" }, ;
+      { "<infNFe",                "</NFe>" }, ;
+      { "<infDPEC",               "</envDPEC>" }, ;
+      { "<infInut",               "<inutNFe>" }, ;
+      { "<infCanc",               "</cancNFe>" }, ;
+      { "<infInut",               "</inutNFe>" }, ;
+      { "<infInut",               "</inutCTe>" }, ;
+      { "<infEvento",             "</evento>" }, ;
+      { "<infPedidoCancelamento", "</Pedido>" }, ;               // NFSE ABRASF Cancelamento
+      { "<LoteRps",               "</EnviarLoteRpsEnvio>" }, ;   // NFSE ABRASF Lote
+      { "<infRps",                "</Rps>" } }                   // NFSE ABRASF RPS
+
+   // Define Tipo de Documento
+   IF ( nPos := AScan( aDelimitadores, { | oElement | oElement[ 1 ] $ cTxtXml .AND. oElement[ 2 ] $ cTxtXml } ) ) == 0
+      cRetorno := "Erro Assinatura: Não identificado documento"
+      RETURN .F.
+   ENDIF
+   cXmlTagFinal   := aDelimitadores[ nPos, 2 ]
+   // Pega URI
+   nPosIni := At( [Id=], cTxtXml )
+   IF nPosIni = 0
+      cRetorno := "Erro Assinatura: Não encontrado início do URI: Id= (com I maiúsculo)"
+      RETURN .F.
+   ENDIF
+   nPosIni := hb_At( ["], cTxtXml, nPosIni + 2 )
+   IF nPosIni = 0
+      cRetorno := "Erro Assinatura: Não encontrado início do URI: aspas inicial"
+      RETURN .F.
+   ENDIF
+   nPosFim := hb_At( ["], cTxtXml, nPosIni + 1 )
+   IF nPosFim = 0
+      cRetorno := "Erro Assinatura: Não encontrado início do URI: aspas final"
+      RETURN .F.
+   ENDIF
+   cURI := Substr( cTxtXml, nPosIni + 1, nPosFim - nPosIni - 1 )
+
+   // Adiciona bloco de assinatura no local apropriado
+   IF cXmlTagFinal $ cTxtXml
+      cTxtXml := Substr( cTxtXml, 1, At( cXmlTagFinal, cTxtXml ) - 1 ) + AssinaBlocoAssinatura( cURI ) + cXmlTagFinal
+   ENDIF
+
+   IF ! "</Signature>" $ cTxtXml
+      cRetorno := "Erro Assinatura: Bloco Assinatura não encontrado"
+      RETURN .F.
+   ENDIF
+
+   HB_SYMBOL_UNUSED( cXmlTagInicial )
+
+   RETURN .T.
+
+STATIC FUNCTION AssinaLoadXml( oDomDocument, cTxtXml, cRetorno )
+
+   LOCAL lOk := .F.
+
+   BEGIN SEQUENCE WITH __BreakBlock()
+
+      oDOMDocument := Win_OleCreateObject( "MSXML2.DOMDocument.5.0" )
+      oDOMDocument:async              := .F.
+      oDOMDocument:resolveExternals   := .F.
+      oDOMDocument:validateOnParse    := .T.
+      oDOMDocument:preserveWhiteSpace := .T.
+      lOk := .T.
+
+   END SEQUENCE
+
+   IF ! lOk
+      cRetorno := "Erro Assinatura: Não carregado MSXML2.DomDocument"
+      RETURN .F.
+   ENDIF
+
+   lOk := .F.
+
+   BEGIN SEQUENCE WITH __BreakBlock()
+
+      oDOMDocument:LoadXML( cTxtXml )
+      oDOMDocument:setProperty( "SelectionNamespaces", [xmlns:ds="http://www.w3.org/2000/09/xmldsig#"] )
+      lOk := .T.
+
+   END SEQUENCE
+
+   IF ! lOk
+      IF oDOMDocument:parseError:errorCode <> 0 // XML não carregado
+         cRetorno := "Erro Assinatura: Não foi possivel carregar o documento pois ele não corresponde ao seu Schema" + HB_EOL()
+         cRetorno += " Linha: "              + Str( oDOMDocument:parseError:line )    + HB_EOL()
+         cRetorno += " Caractere na linha: " + Str( oDOMDocument:parseError:linepos ) + HB_EOL()
+         cRetorno += " Causa do erro: "      + oDOMDocument:parseError:reason         + HB_EOL()
+         cRetorno += "code: "                + Str( oDOMDocument:parseError:errorCode )
+         RETURN .F.
+      ENDIF
+      cRetorno := "Erro Assinatura: Não foi possível carregar documento"
+      RETURN .F.
+   ENDIF
+
+   RETURN .T.
+
+STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cRetorno )
+
+   LOCAL lOk := .F.
+
+   oCert := CapicomCertificado( cCertCn )
+   IF oCert == NIL
+      cRetorno := "Erro Assinatura: Certificado não encontrado ou vencido"
+      RETURN .F.
+   ENDIF
+
+   BEGIN SEQUENCE WITH __BreakBlock()
+
+      oCapicomStore := Win_OleCreateObject( "CAPICOM.Store" )
+      oCapicomStore:open( _CAPICOM_MEMORY_STORE, 'Memoria', _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
+      oCapicomStore:Add( oCert )
+
+      lOk := .T.
+   END SEQUENCE
+   IF ! lOk
+      cRetorno := "Erro assinatura: Problemas no uso do certificado"
+      RETURN .F.
+   ENDIF
+
+   RETURN .T.
+
+STATIC FUNCTION AssinaAjustaAssinado( cXml )
+
+   LOCAL nPosIni, nPosFim, nP, nResult
+
+      cXml := StrTran( cXml, Chr(10), "" )
+      cXml := StrTran( cXml, Chr(13), "" )
+      nPosIni     := At( [<SignatureValue>], cXml ) + Len( [<SignatureValue>] )
+      cXml := Substr( cXml, 1, nPosIni - 1 ) + StrTran( Substr( cXml, nPosIni, Len( cXml ) ), " ", "" )
+      nPosIni     := At( [<X509Certificate>], cXml ) - 1
+      nP          := At( [<X509Certificate>], cXml )
+      nResult     := 0
+      DO WHILE nP <> 0
+         nResult := nP
+         nP      := hb_At( [<X509Certificate>], cXml, nP + 1 )
+      ENDDO
+      nPosFim     := nResult
+      cXml := Substr( cXml, 1, nPosIni ) + Substr( cXml, nPosFim, Len( cXml ) )
+
+      RETURN cXml
 
 FUNCTION FakeSignature( cUri )
 

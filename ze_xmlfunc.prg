@@ -2,7 +2,8 @@
 ZE_XMLFUNC - Funções pra trabalhar com XML
 
 2016.12.27.1320 - StringToXml() eliminando espaço duplo
-2017.01.020800 - Correção horário de verão
+2017.01.02.0800 - Correção horário de verão
+2017.05.19.1500 - & trocado por E
 */
 
 #ifndef DOW_DOMINGO
@@ -251,7 +252,7 @@ FUNCTION StringToXml( cTexto )
    DO WHILE Space(2) $ cTexto
       cTexto := StrTran( cTexto, Space(2), Space(1) )
    ENDDO
-   cTexto := StrTran( cTexto, "&", "&amp;" )
+   cTexto := StrTran( cTexto, "&", "E" ) // "&amp;" )
    cTexto := StrTran( cTexto, ["], "&quot;" )
    cTexto := StrTran( cTexto, "'", "&#39;" )
    cTexto := StrTran( cTexto, "<", "&lt;" )
