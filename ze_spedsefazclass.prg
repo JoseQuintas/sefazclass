@@ -71,6 +71,9 @@ CREATE CLASS SefazClass
    VAR    cIndSinc       INIT INDSINC_RETORNA_RECIBO  // Poucas UFs opção de protocolo
    VAR    nTempoEspera   INIT 7                       // intervalo entre envia lote e consulta recibo
    VAR    cUFTimeZone    INIT "SP"                    // Para DateTimeXml() Obrigatório definir UF default
+   VAR    cIdToken       INIT ""                      // Para NFCe obrigatorio Identificador do CSC - Codigo de Seguran‡a do Contribuinte
+   VAR    cCSC           INIT ""                      // Para NFCe obrigatorio CSC - Codigo de Seguran‡a do Contribuinte (antigo Token)
+
    /* XMLs de cada etapa */
    VAR    cXmlDocumento  INIT ""                      // O documento oficial, com ou sem assinatura, depende do documento
    VAR    cXmlEnvio      INIT ""                      // usado pra criar/complementar XML do documento
@@ -144,12 +147,13 @@ CREATE CLASS SefazClass
    METHOD MicrosoftXmlSoapPost()
 
    /* Apenas redirecionamento */
-   METHOD AssinaXml()                       INLINE ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado )
-   METHOD TipoXml( cXml )                   INLINE TipoXml( cXml )
-   METHOD UFCodigo( cSigla )                INLINE UFCodigo( cSigla )
-   METHOD UFSigla( cCodigo )                INLINE UFSigla( cCodigo )
-   METHOD DateTimeXml( dDate, cTime, lUTC ) INLINE DateTimeXml( dDate, cTime, iif( ::cUFTimeZone == NIL, ::cUF, ::cUFTimeZone ), lUTC )
-   METHOD ValidaXml( cXml, cFileXsd )       INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd )
+   METHOD AssinaXml()                                 INLINE ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado )
+   METHOD TipoXml( cXml )                             INLINE TipoXml( cXml )
+   METHOD UFCodigo( cSigla )                          INLINE UFCodigo( cSigla )
+   METHOD UFSigla( cCodigo )                          INLINE UFSigla( cCodigo )
+   METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( ::cUFTimeZone == NIL, ::cUF, ::cUFTimeZone ), lUTC )
+   METHOD ValidaXml( cXml, cFileXsd )                 INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd )
+   METHOD GeraQRCode( cXmlDocumento, cIdToken, cCSC ) INLINE ::cXmlRetorno := GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC )
    METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico )
 
    ENDCLASS
@@ -2021,3 +2025,131 @@ FUNCTION SoapURL_AN( cAmbiente, nWsServico, ... )
    ENDIF
 
    RETURN cUrlWs
+
+
+FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
+
+   LOCAL QRCODE_cTag, QRCODE_Url,   QRCODE_chNFe,  QRCODE_nVersao,  QRCODE_tpAmb, QRCODE_cDest, QRCODE_dhEmi,;
+         QRCODE_vNF,  QRCODE_vICMS, QRCODE_digVal, QRCODE_cIdToken, QRCODE_cCSC,  QRCODE_cHash,;
+         cInfNFe, cSignature, cAmbiente, cUF
+
+   cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
+   cSignature := XmlNode( cXmlAssinado, "Signature", .T. )
+
+   cAmbiente  := XmlNode( XmlNode( cInfNFe, "ide" ), "tpAmb" )
+   cUF        := UFSigla( XmlNode( XmlNode( cInfNFe, "ide" ), "cUF" ) )
+
+   // 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
+   IF cAmbiente == WS_AMBIENTE_PRODUCAO
+      DO CASE
+      CASE cUF == "AC" ; QRCODE_Url := "http://www.sefaznet.ac.gov.br/nfce/qrcode?"
+      CASE cUF == "AL" ; QRCODE_Url := "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?"
+      CASE cUF == "AP" ; QRCODE_Url := "https://www.sefaz.ap.gov.br/nfce/nfcep.php?"
+      CASE cUF == "AM" ; QRCODE_Url := "http://sistemas.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp?"
+      CASE cUF == "BA" ; QRCODE_Url := "http://nfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx"
+      CASE cUF == "CE" ; QRCODE_Url := "http://nfce.sefaz.ce.gov.br/pages/ShowNFCe.html"
+      CASE cUF == "DF" ; QRCODE_Url := "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx"
+      CASE cUF == "ES" ; QRCODE_Url := "http://app.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?"
+      CASE cUF == "GO" ; QRCODE_Url := "http://nfe.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe"
+      CASE cUF == "MA" ; QRCODE_Url := "http://www.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp?"
+      CASE cUF == "MT" ; QRCODE_Url := "http://www.sefaz.mt.gov.br/nfce/consultanfce?"
+      CASE cUF == "MS" ; QRCODE_Url := "http://www.dfe.ms.gov.br/nfce/qrcode?"
+      CASE cUF == "MG" ; QRCODE_Url := ""
+      CASE cUF == "PA" ; QRCODE_Url := "https://appnfc.sefa.pa.gov.br/portal/view/consultas/nfce/nfceForm.seam?"
+      CASE cUF == "PB" ; QRCODE_Url := "http://www.receita.pb.gov.br/nfce?"
+      CASE cUF == "PR" ; QRCODE_Url := "http://www.dfeportal.fazenda.pr.gov.br/dfe-portal/rest/servico/consultaNFCe?"
+      CASE cUF == "PE" ; QRCODE_Url := "http://nfce.sefaz.pe.gov.br/nfce-web/consultarNFCe?"
+      CASE cUF == "PI" ; QRCODE_Url := "http://webas.sefaz.pi.gov.br/nfceweb/consultarNFCe.jsf?"
+      CASE cUF == "RJ" ; QRCODE_Url := "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode?"
+      CASE cUF == "RN" ; QRCODE_Url := "http://nfce.set.rn.gov.br/consultarNFCe.aspx?"
+      CASE cUF == "RS" ; QRCODE_Url := "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?"
+      CASE cUF == "RO" ; QRCODE_Url := "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp?"
+      CASE cUF == "RR" ; QRCODE_Url := "https://www.sefaz.rr.gov.br/nfce/servlet/qrcode?"
+      CASE cUF == "SC" ; QRCODE_Url := ""
+      CASE cUF == "SP" ; QRCODE_Url := "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx?"
+      CASE cUF == "SE" ; QRCODE_Url := "http://www.nfce.se.gov.br/portal/consultarNFCe.jsp?"
+      CASE cUF == "TO" ; QRCODE_Url := ""
+      ENDCASE
+   ELSE
+      DO CASE
+      CASE cUF == "AC" ; QRCODE_Url := "http://hml.sefaznet.ac.gov.br/nfce/qrcode?"
+      CASE cUF == "AL" ; QRCODE_Url := "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?"
+      CASE cUF == "AP" ; QRCODE_Url := "https://www.sefaz.ap.gov.br/nfcehml/nfce.php?"
+      CASE cUF == "AM" ; QRCODE_Url := "http://homnfce.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp?"
+      CASE cUF == "BA" ; QRCODE_Url := "http://hnfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx"
+      CASE cUF == "CE" ; QRCODE_Url := "http://nfceh.sefaz.ce.gov.br/pages/ShowNFCe.html"
+      CASE cUF == "DF" ; QRCODE_Url := "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx"
+      CASE cUF == "ES" ; QRCODE_Url := "http://homologacao.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?"
+      CASE cUF == "GO" ; QRCODE_Url := ""
+      CASE cUF == "MA" ; QRCODE_Url := "http://www.hom.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp?"
+      CASE cUF == "MT" ; QRCODE_Url := "http://homologacao.sefaz.mt.gov.br/nfce/consultanfce?"
+      CASE cUF == "MS" ; QRCODE_Url := "http://www.dfe.ms.gov.br/nfce/qrcode?"
+      CASE cUF == "MG" ; QRCODE_Url := ""
+      CASE cUF == "PA" ; QRCODE_Url := "https://appnfc.sefa.pa.gov.br/portal-homologacao/view/consultas/nfce/nfceForm.seam"
+      CASE cUF == "PB" ; QRCODE_Url := "http://www.receita.pb.gov.br/nfcehom"
+      CASE cUF == "PR" ; QRCODE_Url := "http://www.dfeportal.fazenda.pr.gov.br/dfe-portal/rest/servico/consultaNFCe?"
+      CASE cUF == "PE" ; QRCODE_Url := "http://nfcehomolog.sefaz.pe.gov.br/nfce-web/consultarNFCe?"
+      CASE cUF == "PI" ; QRCODE_Url := "http://webas.sefaz.pi.gov.br/nfceweb-homologacao/consultarNFCe.jsf?"
+      CASE cUF == "RJ" ; QRCODE_Url := "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode?"
+      CASE cUF == "RN" ; QRCODE_Url := "http://hom.nfce.set.rn.gov.br/consultarNFCe.aspx?"
+      CASE cUF == "RS" ; QRCODE_Url := "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?"
+      CASE cUF == "RO" ; QRCODE_Url := "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp"
+      CASE cUF == "RR" ; QRCODE_Url := "http://200.174.88.103:8080/nfce/servlet/qrcode?"
+      CASE cUF == "SC" ; QRCODE_Url := ""
+      CASE cUF == "SP" ; QRCODE_Url := "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx"
+      CASE cUF == "SE" ; QRCODE_Url := "http://www.hom.nfe.se.gov.br/portal/consultarNFCe.jsp?"
+      CASE cUF == "TO" ; QRCODE_Url := ""
+      ENDCASE
+   ENDIF
+
+   // 2¦ Parte (Parametros)
+   QRCODE_chNFe    := AllTrim( Substr( XmlElement( cInfNFe, "Id" ), 4 ) )
+   QRCODE_nVersao  := "100"
+   QRCODE_tpAmb    := cAmbiente
+   QRCODE_cDest    := XmlNode( XmlNode( cInfNFe, "dest" ), "CPF" )
+   QRCODE_dhEmi    := StrToHex( XmlNode( XmlNode( cInfNFe, "ide" ), "dhEmi" ) )
+   QRCODE_vNF      := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vNF" )
+   QRCODE_vICMS    := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vICMS" )
+   QRCODE_digVal   := StrToHex( XmlNode( XmlNode( XmlNode( cSignature, "SignedInfo" ), "Reference" ), "DigestValue" ) )
+   QRCODE_cIdToken := cIdToken
+   QRCODE_cCSC     := cCSC
+
+   IF !Empty( QRCODE_chNFe ) .AND. !Empty( QRCODE_nVersao ) .AND. !Empty( QRCODE_tpAmb    ) .AND. !Empty( QRCODE_dhEmi ) .AND. !Empty( QRCODE_vNF ) .AND.;
+      !Empty( QRCODE_vICMS ) .AND. !Empty( QRCODE_digVal  ) .AND. !Empty( QRCODE_cIdToken ) .AND. !Empty( QRCODE_cCSC  )
+
+      QRCODE_chNFe    := "chNFe="    + QRCODE_chNFe    + "&"
+      QRCODE_nVersao  := "nVersao="  + QRCODE_nVersao  + "&"
+      QRCODE_tpAmb    := "tpAmb="    + QRCODE_tpAmb    + "&"
+      // Na hipotese do consumidor nao se identificar na NFC-e, nao existira o parametro cDest no QR Code
+      // e tambem nao devera ser incluido o parametro cDest na sequencia sobre a qual sera aplicado o hash do QR Code
+      IF !Empty( QRCODE_cDest )
+         QRCODE_cDest := "cDest="    + QRCODE_cDest    + "&"
+      ENDIF
+      QRCODE_dhEmi    := "dhEmi="    + QRCODE_dhEmi    + "&"
+      QRCODE_vNF      := "vNF="      + QRCODE_vNF      + "&"
+      QRCODE_vICMS    := "vICMS="    + QRCODE_vICMS    + "&"
+      QRCODE_digVal   := "digVal="   + QRCODE_digVal   + "&"
+      QRCODE_cIdToken := "cIdToken=" + QRCODE_cIdToken
+
+      // 3¦ Parte (cHashQRCode)
+      QRCODE_cHash := ( "&cHashQRCode=" +;
+                        hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cCSC ) )
+
+      // Resultado da URL formada a ser incluida na imagem QR Code
+      QRCODE_cTag  := ( "<![CDATA[" +;
+                        QRCODE_Url + QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cHash +;
+                        "]]>" )
+
+      // XML com a Tag do QRCode
+      cXmlAssinado := [<NFe xmlns="http://www.portalfiscal.inf.br/nfe">]
+      cXmlAssinado += cInfNFe
+      cXmlAssinado += [<]+"infNFeSupl"+[>]
+      cXmlAssinado += [<]+"qrCode"+[>] + QRCODE_cTag + [</]+"qrCode"+[>]
+      cXmlAssinado += [</]+"infNFeSupl"+[>]
+      cXmlAssinado += cSignature
+      cXmlAssinado += [</NFe>]
+   ELSE
+      RETURN "Erro na geracao do QRCode"
+   ENDIF
+
+   RETURN "OK"
