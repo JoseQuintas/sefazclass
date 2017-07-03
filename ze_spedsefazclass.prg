@@ -2107,6 +2107,9 @@ FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
    QRCODE_nVersao  := "100"
    QRCODE_tpAmb    := cAmbiente
    QRCODE_cDest    := XmlNode( XmlNode( cInfNFe, "dest" ), "CPF" )
+   IF Empty( QRCODE_cDest )
+      QRCODE_cDest := XmlNode( XmlNode( cInfNFe, "dest" ), "CNPJ" )
+   ENDIF
    QRCODE_dhEmi    := StrToHex( XmlNode( XmlNode( cInfNFe, "ide" ), "dhEmi" ) )
    QRCODE_vNF      := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vNF" )
    QRCODE_vICMS    := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vICMS" )
