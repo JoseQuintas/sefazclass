@@ -1,3 +1,8 @@
+/*
+Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
+Contribuição NFCE: LucianoConforto
+*/
+
 #include "hbclass.ch"
 #include "harupdf.ch"
 
