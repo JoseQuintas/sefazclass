@@ -238,7 +238,6 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
    ENDIF
 
    nLinha := 1
-   cLinha := ""
    DO WHILE .T.
       cLinha := Trim( MemoLine( ::aEmit[ "xNome" ], nTamMax, nLinha ) )
       IF Empty( cLinha )
@@ -253,7 +252,6 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
    ::nLinhaPDF -= 10
 
    nLinha := 1
-   cLinha := ""
    DO WHILE .T.
       cLinha := Trim( MemoLine( ::aEmit[ "xLgr" ] + ", " + ::aEmit[ "nro" ] + ", " + ::aEmit[ "xBairro" ] + ", " + ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], nTamMax, nLinha ) )
       IF Empty( cLinha )
@@ -284,7 +282,7 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
 
 METHOD DetalheProdutosServicos() CLASS hbNFeDaNFCe
 
-   LOCAL nContX, cItem
+   LOCAL nContX
 
    // DIVISAO II - Informacoes de detalhes de produtos/servicos------------------------------------------------------------------
    ::DrawTexto(   6, ::nLinhaPDF - 10, 220, NIL, "CODIGO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
@@ -467,6 +465,8 @@ METHOD ConsultaChaveQRCode() CLASS hbNFeDaNFCe
 
 METHOD Consumidor() CLASS hbNFeDaNFCe
 
+   LOCAL nLinha, cLinha
+
    // DIVISAO VI - Informacoes sobre o Consumidor--------------------------------------------------------------------------------
    ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, "CONSUMIDOR", HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
 
@@ -485,7 +485,6 @@ METHOD Consumidor() CLASS hbNFeDaNFCe
 
       ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, "Nome: ", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
       nLinha := 1
-      cLinha := ""
       DO WHILE .T.
          cLinha := Trim( MemoLine( ::aDest[ "xNome" ], 45, nLinha ) )
          IF Empty( cLinha )
@@ -498,7 +497,6 @@ METHOD Consumidor() CLASS hbNFeDaNFCe
 
       ::DrawTexto(  6, ::nLinhaPDF - 10, 220, NIL, "Endereco: ", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
       nLinha := 1
-      cLinha := ""
       DO WHILE .T.
          cLinha := Trim( MemoLine( ::aDest[ "xLgr" ] + ", " + ::aDest[ "nro" ] + " - " + ::aDest[ "xBairro" ] + " - " + ::aDest[ "xMun" ] + " - " + ::aDest[ "UF" ], 45, nLinha ) )
          IF Empty( cLinha )
@@ -544,7 +542,6 @@ METHOD AreaMensagemFiscal() CLASS hbNFeDaNFCe
 
    FOR nContX := 1 TO Len( aInfAdFisco )
       nLinha := 1
-      cLinha := ""
       DO WHILE .T.
          cLinha := Trim( MemoLine( aInfAdFisco[ nContX ], 50, nLinha ) )
          IF Empty( cLinha )
@@ -573,7 +570,6 @@ METHOD MensagemInteresseContribuinte() CLASS hbNFeDaNFCe
 
    FOR nContX := 1 TO Len( aInfCpl )
       nLinha := 1
-      cLinha := ""
       DO WHILE .T.
          cLinha := Trim( MemoLine( aInfCpl[ nContX ], 50, nLinha ) )
          IF Empty( cLinha )
