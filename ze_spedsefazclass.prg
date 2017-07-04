@@ -158,10 +158,25 @@ CREATE CLASS SefazClass
    METHOD UFSigla( cCodigo )                          INLINE UFSigla( cCodigo )
    METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( ::cUFTimeZone == NIL, ::cUF, ::cUFTimeZone ), lUTC )
    METHOD ValidaXml( cXml, cFileXsd )                 INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd )
-   METHOD GeraQRCode( cXmlDocumento, cIdToken, cCSC ) INLINE ::cXmlRetorno := GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC )
+   METHOD GeraQRCode( cXmlDocumento, cIdToken, cCSC ) //
    METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico )
 
    ENDCLASS
+
+METHOD GeraQRCode( cXmlDocumento, cIdToken, cCsc )
+
+   IF cXmlDocumento != NIL
+      ::cXmlDocumento := cXmlDocumento
+   ENDIF
+   IF cIdToken != NIL
+      ::cIdTokenn := cIdToken
+   ENDIF
+   IF cCsc != NIL
+      ::cCsc := cCsc
+   ENDIF
+   ::cXmlRetorno := GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC )
+
+   RETURN ::cXmlRetorno
 
 METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -2113,10 +2128,10 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
    QRCODE_nVersao  := "100"
    QRCODE_tpAmb    := cAmbiente
    QRCODE_cDest    := XmlNode( XmlNode( cInfNFe, "dest" ), "CPF" )
-   QRCODE_dhEmi    := StrToHex( XmlNode( XmlNode( cInfNFe, "ide" ), "dhEmi" ) )
+   QRCODE_dhEmi    := hb_StrToHex( XmlNode( XmlNode( cInfNFe, "ide" ), "dhEmi" ) )
    QRCODE_vNF      := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vNF" )
    QRCODE_vICMS    := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vICMS" )
-   QRCODE_digVal   := StrToHex( XmlNode( XmlNode( XmlNode( cSignature, "SignedInfo" ), "Reference" ), "DigestValue" ) )
+   QRCODE_digVal   := hb_StrToHex( XmlNode( XmlNode( XmlNode( cSignature, "SignedInfo" ), "Reference" ), "DigestValue" ) )
    QRCODE_cIdToken := cIdToken
    QRCODE_cCSC     := cCSC
 
