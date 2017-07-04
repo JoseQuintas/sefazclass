@@ -169,7 +169,7 @@ METHOD GeraQRCode( cXmlDocumento, cIdToken, cCsc )
       ::cXmlDocumento := cXmlDocumento
    ENDIF
    IF cIdToken != NIL
-      ::cIdTokenn := cIdToken
+      ::cIdToken := cIdToken
    ENDIF
    IF cCsc != NIL
       ::cCsc := cCsc
