@@ -8,6 +8,8 @@ ZE_SPEDSEFAZCLASS - Rotinas pra comunicação com SEFAZ
 2017.01.13.1120 - Endereços RS CTE homologação
 2017.05.05.1930 - Grava status e motivo, ref. recibo, pra erros de envio de lote
 2017.05.24.2040 - Webservice de autorização de NFE do Acre
+2017.05.31.0930 - Reduz ano com 2 dígitos na inutilização
+2017.06.01.0230 - Configuração da versão de CTE, MDFE e NFE
 
 Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
 */
@@ -52,6 +54,10 @@ Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
 #define WS_PROJETO_CTE               "cte"
 #define WS_PROJETO_MDFE              "mdfe"
 
+#define WS_VERSAO_CTE  "2.00"
+#define WS_VERSAO_MDFE "1.00"
+#define WS_VERSAO_NFE  "3.10"
+
 #define INDSINC_RETORNA_PROTOCOLO    "1"
 #define INDSINC_RETORNA_RECIBO       "0"
 
@@ -62,7 +68,7 @@ CREATE CLASS SefazClass
    /* configuração */
    VAR    cProjeto       INIT WS_PROJETO_NFE          // Modificada conforme método
    VAR    cAmbiente      INIT WS_AMBIENTE_PRODUCAO
-   VAR    cVersao        INIT "*DEFAULT*"             // 2016/12/01 NFE 4.00, CTE 3.00, MDFE 3.00, ou diferente disso NFE 3.10, CTE 2.00, MDFE 1.00
+   VAR    cVersao        INIT "*DEFAULT*"             // Default NFE 3.10, MDFE 1.00, CTE 2.00 (Próximas 4.00,3.00,3.00)
    VAR    cScan          INIT "N"                     // Indicar se for SCAN/SVAN, ainda não testado
    VAR    cUF            INIT "SP"                    // Modificada conforme método
    VAR    cCertificado   INIT ""                      // Nome do certificado
@@ -71,9 +77,8 @@ CREATE CLASS SefazClass
    VAR    cIndSinc       INIT INDSINC_RETORNA_RECIBO  // Poucas UFs opção de protocolo
    VAR    nTempoEspera   INIT 7                       // intervalo entre envia lote e consulta recibo
    VAR    cUFTimeZone    INIT "SP"                    // Para DateTimeXml() Obrigatório definir UF default
-   VAR    cIdToken       INIT ""                      // Para NFCe obrigatorio Identificador do CSC - Codigo de Seguran‡a do Contribuinte
-   VAR    cCSC           INIT ""                      // Para NFCe obrigatorio CSC - Codigo de Seguran‡a do Contribuinte (antigo Token)
-
+   VAR    cIdToken       INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
+   VAR    cCSC           INIT ""                      // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
    /* XMLs de cada etapa */
    VAR    cXmlDocumento  INIT ""                      // O documento oficial, com ou sem assinatura, depende do documento
    VAR    cXmlEnvio      INIT ""                      // usado pra criar/complementar XML do documento
@@ -153,10 +158,25 @@ CREATE CLASS SefazClass
    METHOD UFSigla( cCodigo )                          INLINE UFSigla( cCodigo )
    METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( ::cUFTimeZone == NIL, ::cUF, ::cUFTimeZone ), lUTC )
    METHOD ValidaXml( cXml, cFileXsd )                 INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd )
-   METHOD GeraQRCode( cXmlDocumento, cIdToken, cCSC ) INLINE ::cXmlRetorno := GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC )
+   METHOD GeraQRCode( cXmlDocumento, cIdToken, cCSC ) //
    METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico )
 
    ENDCLASS
+
+METHOD GeraQRCode( cXmlDocumento, cIdToken, cCsc )
+
+   IF cXmlDocumento != NIL
+      ::cXmlDocumento := cXmlDocumento
+   ENDIF
+   IF cIdToken != NIL
+      ::cIdTokenn := cIdToken
+   ENDIF
+   IF cCsc != NIL
+      ::cCsc := cCsc
+   ENDIF
+   ::cXmlRetorno := GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC )
+
+   RETURN ::cXmlRetorno
 
 METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -855,7 +875,7 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    ::cXmlDocumento   +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento   +=       XmlTag( "xServ", "INUTILIZAR" )
    ::cXmlDocumento   +=       XmlTag( "cUF", ::UFCodigo( ::cUF ) )
-   ::cXmlDocumento   +=       XmlTag( "ano", cAno )
+   ::cXmlDocumento   +=       XmlTag( "ano", Right( cAno, 2 ) )
    ::cXmlDocumento   +=       XmlTag( "CNPJ", SoNumeros( cCnpj ) )
    ::cXmlDocumento   +=       XmlTag( "mod", cMod )
    ::cXmlDocumento   +=       XmlTag( "serie", cSerie )
@@ -1049,9 +1069,9 @@ METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
    ENDIF
    DO CASE
    CASE ::cVersao != "*DEFAULT*"
-   CASE ::cProjeto == WS_PROJETO_NFE ;  ::cVersao := "3.10"
-   CASE ::cProjeto == WS_PROJETO_CTE ;  ::cVersao := "2.00"
-   CASE ::cProjeto == WS_PROJETO_MDFE ; ::cVersao := "1.00"
+   CASE ::cProjeto == WS_PROJETO_NFE ;  ::cVersao := WS_VERSAO_NFE
+   CASE ::cProjeto == WS_PROJETO_CTE ;  ::cVersao := WS_VERSAO_CTE
+   CASE ::cProjeto == WS_PROJETO_MDFE ; ::cVersao := WS_VERSAO_MDFE
    ENDCASE
    ::SetSoapURL( nWsServico )
 
@@ -1061,6 +1081,8 @@ METHOD SetSoapURL( nWsServico ) CLASS SefazClass
 
    ::cSoapURL := ""
    DO CASE
+   CASE .F.
+      SoapURL_SCVAN() // pra evitar erro de função não utilizada
    CASE ::cProjeto == WS_PROJETO_CTE
       IF ::cScan == "SVCAN"
          IF ::cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
@@ -1217,7 +1239,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
             ::cXmlRetorno += Chr( cRetorno[ nCont ] )
          NEXT
       ENDIF
-   END SEQUENCE
+   ENDSEQUENCE
    IF "<soap:Body>" $ ::cXmlRetorno .AND. "</soap:Body>" $ ::cXmlRetorno
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" ) // hb_UTF8ToStr()
    ELSEIF "<soapenv:Body>" $ ::cXmlRetorno .AND. "</soapenv:Body>" $ ::cXmlRetorno
@@ -1406,7 +1428,7 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
       ENDIF
       cRetorno := "OK"
 
-   END SEQUENCE
+   ENDSEQUENCE
 
    RETURN cRetorno
 
@@ -1470,7 +1492,7 @@ METHOD CurlSoapPost() CLASS SefazClass
    RETURN NIL
 #endif
 
-FUNCTION SoapURL_AM( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_AM( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1503,7 +1525,7 @@ FUNCTION SoapURL_AM( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_BA( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_BA( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1535,7 +1557,7 @@ FUNCTION SoapURL_BA( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_CE( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_CE( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1571,7 +1593,7 @@ FUNCTION SoapURL_CE( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_GO( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_GO( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1603,7 +1625,7 @@ FUNCTION SoapURL_GO( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_MG( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_MG( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1641,7 +1663,7 @@ FUNCTION SoapURL_MG( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_MS( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_MS( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1680,7 +1702,7 @@ FUNCTION SoapURL_MS( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_MT( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_MT( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1718,7 +1740,7 @@ FUNCTION SoapURL_MT( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_PE( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_PE( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1750,7 +1772,7 @@ FUNCTION SoapURL_PE( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_PR( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_PR( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1789,7 +1811,7 @@ FUNCTION SoapURL_PR( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_RS( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_RS( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1821,7 +1843,7 @@ FUNCTION SoapURL_RS( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_SP( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_SP( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1864,7 +1886,7 @@ FUNCTION SoapURL_SP( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_SVRS( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_SVRS( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1917,7 +1939,7 @@ FUNCTION SoapURL_SVRS( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_SVSP( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_SVSP( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1932,7 +1954,7 @@ FUNCTION SoapURL_SVSP( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_SCAN( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_SCAN( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1961,7 +1983,7 @@ FUNCTION SoapURL_SCAN( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_SCVAN( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_SCVAN( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -1979,7 +2001,7 @@ FUNCTION SoapURL_SCVAN( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_SVAN( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_SVAN( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -2011,7 +2033,7 @@ FUNCTION SoapURL_SVAN( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-FUNCTION SoapURL_AN( cAmbiente, nWsServico, ... )
+STATIC FUNCTION SoapURL_AN( cAmbiente, nWsServico, ... )
 
    LOCAL cUrlWs := ""
 
@@ -2026,8 +2048,7 @@ FUNCTION SoapURL_AN( cAmbiente, nWsServico, ... )
 
    RETURN cUrlWs
 
-
-FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
+STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
 
    LOCAL QRCODE_cTag, QRCODE_Url,   QRCODE_chNFe,  QRCODE_nVersao,  QRCODE_tpAmb, QRCODE_cDest, QRCODE_dhEmi,;
          QRCODE_vNF,  QRCODE_vICMS, QRCODE_digVal, QRCODE_cIdToken, QRCODE_cCSC,  QRCODE_cHash,;
@@ -2110,10 +2131,10 @@ FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
    IF Empty( QRCODE_cDest )
       QRCODE_cDest := XmlNode( XmlNode( cInfNFe, "dest" ), "CNPJ" )
    ENDIF
-   QRCODE_dhEmi    := StrToHex( XmlNode( XmlNode( cInfNFe, "ide" ), "dhEmi" ) )
+   QRCODE_dhEmi    := hb_StrToHex( XmlNode( XmlNode( cInfNFe, "ide" ), "dhEmi" ) )
    QRCODE_vNF      := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vNF" )
    QRCODE_vICMS    := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vICMS" )
-   QRCODE_digVal   := StrToHex( XmlNode( XmlNode( XmlNode( cSignature, "SignedInfo" ), "Reference" ), "DigestValue" ) )
+   QRCODE_digVal   := hb_StrToHex( XmlNode( XmlNode( XmlNode( cSignature, "SignedInfo" ), "Reference" ), "DigestValue" ) )
    QRCODE_cIdToken := cIdToken
    QRCODE_cCSC     := cCSC
 

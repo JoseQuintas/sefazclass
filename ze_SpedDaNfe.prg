@@ -22,14 +22,14 @@ Os campos que podem ser colocados na mesma coluna são:
    #include "hbwin.ch"
 #endif
 
-#define LAYOUT_LOGO_ESQUERDA         1
-#define LAYOUT_LOGO_DIREITA          2
-#define LAYOUT_LOGO_EXPANDIDO        3
+#define LAYOUT_LOGO_ESQUERDA   1
+#define LAYOUT_LOGO_DIREITA    2
+#define LAYOUT_LOGO_EXPANDIDO  3
 
-#define LAYOUT_NAOIMPRIME         0
-#define LAYOUT_IMPRIMENORMAL      1
-#define LAYOUT_IMPRIMESEGUNDA     2
-#define LAYOUT_IMPRIMEXMLTEM      3
+#define LAYOUT_NAOIMPRIME      0
+#define LAYOUT_IMPRIMENORMAL   1
+#define LAYOUT_IMPRIMESEGUNDA  2
+#define LAYOUT_IMPRIMEXMLTEM   3
 
 #define LAYOUT_TITULO          1
 #define LAYOUT_LARGURA         2
