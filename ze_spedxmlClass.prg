@@ -5,7 +5,7 @@ ZE_SPEDXMLCLASS - CLASSES PARA NFE/CTE/MDFE/CCE
 
 #include "hbclass.ch"
 
-CREATE CLASS NfeCadastroClass
+CREATE CLASS NfeCadastroClass STATIC
 
    VAR  Nome                INIT ""
    VAR  Cnpj                INIT ""
@@ -24,9 +24,9 @@ CREATE CLASS NfeCadastroClass
    VAR  PaisBACEN           INIT ""
    VAR  Telefone            INIT ""
 
-   END CLASS
+   ENDCLASS
 
-CREATE CLASS NfeEnderecoEntregaClass
+CREATE CLASS NfeEnderecoEntregaClass STATIC
 
    VAR  Cnpj        INIT ""
    VAR  Endereco    INIT ""
@@ -37,9 +37,9 @@ CREATE CLASS NfeEnderecoEntregaClass
    VAR  CidadeIbge  INIT ""
    VAR  Uf          INIT ""
 
-   END CLASS
+   ENDCLASS
 
-CREATE CLASS NfeVolumesClass // From NfeTransporteClass
+CREATE CLASS NfeVolumesClass STATIC // From NfeTransporteClass
 
    VAR  Qtde         INIT 0
    VAR  Especie      INIT ""
@@ -48,9 +48,9 @@ CREATE CLASS NfeVolumesClass // From NfeTransporteClass
    VAR  PesoBruto    INIT 0
    VAR  Lacres       INIT ""
 
-   END CLASS
+   ENDCLASS
 
-CREATE CLASS NfeTransporteClass
+CREATE CLASS NfeTransporteClass STATIC
 
    VAR  Nome              INIT ""
    VAR  Cnpj              INIT ""
@@ -64,7 +64,7 @@ CREATE CLASS NfeTransporteClass
    VAR  Volumes
    METHOD Init()
 
-   END CLASS
+   ENDCLASS
 
 METHOD Init() CLASS NfeTransporteClass
 
@@ -72,7 +72,7 @@ METHOD Init() CLASS NfeTransporteClass
 
    RETURN SELF
 
-CREATE CLASS NfeTotaisClass
+CREATE CLASS NfeTotaisClass STATIC
 
    VAR  IcmBas INIT 0
    VAR  IcmVal INIT 0
@@ -89,33 +89,33 @@ CREATE CLASS NfeTotaisClass
    VAR  ValOut INIT 0
    VAR  ValNot INIT 0
 
-   END CLASS
+   ENDCLASS
 
-CREATE CLASS NfeIIClass
-
-   VAR  Base     INIT 0
-   VAR  Aliquota INIT 0
-   VAR  Valor    INIT 0
-
-   END CLASS
-
-CREATE CLASS NfeIpiClass
+CREATE CLASS NfeIIClass STATIC
 
    VAR  Base     INIT 0
    VAR  Aliquota INIT 0
    VAR  Valor    INIT 0
 
-   END CLASS
+   ENDCLASS
 
-CREATE CLASS NfeIssClass
+CREATE CLASS NfeIpiClass STATIC
 
    VAR  Base     INIT 0
    VAR  Aliquota INIT 0
    VAR  Valor    INIT 0
 
-   END CLASS
+   ENDCLASS
 
-CREATE CLASS NfeIcmsClass
+CREATE CLASS NfeIssClass STATIC
+
+   VAR  Base     INIT 0
+   VAR  Aliquota INIT 0
+   VAR  Valor    INIT 0
+
+   ENDCLASS
+
+CREATE CLASS NfeIcmsClass STATIC
 
    VAR  Cst      INIT ""
    VAR  Base     INIT 0
@@ -123,9 +123,9 @@ CREATE CLASS NfeIcmsClass
    VAR  Aliquota INIT 0
    VAR  Valor    INIT 0
 
-   END CLASS
+   ENDCLASS
 
-CREATE CLASS NfeIcmsStClass
+CREATE CLASS NfeIcmsStClass STATIC
 
    VAR  Base      INIT 0
    VAR  IVA       INIT 0
@@ -133,27 +133,27 @@ CREATE CLASS NfeIcmsStClass
    VAR  Aliquota  INIT 0
    VAR  Valor     INIT 0
 
-   END CLASS
+   ENDCLASS
 
-CREATE CLASS NfePisClass
-
-   VAR  Cst      INIT ""
-   VAR  Base     INIT 0
-   VAR  Aliquota INIT 0
-   VAR  Valor    INIT 0
-
-   END CLASS
-
-CREATE CLASS NfeCofinsClass
+CREATE CLASS NfePisClass STATIC
 
    VAR  Cst      INIT ""
    VAR  Base     INIT 0
    VAR  Aliquota INIT 0
    VAR  Valor    INIT 0
 
-   END CLASS
+   ENDCLASS
 
-CREATE CLASS NfeProdutoClass
+CREATE CLASS NfeCofinsClass STATIC
+
+   VAR  Cst      INIT ""
+   VAR  Base     INIT 0
+   VAR  Aliquota INIT 0
+   VAR  Valor    INIT 0
+
+   ENDCLASS
+
+CREATE CLASS NfeProdutoClass STATIC
 
    VAR  Codigo        INIT ""
    VAR  Nome          INIT ""
@@ -174,7 +174,7 @@ CREATE CLASS NfeProdutoClass
    VAR  II
    METHOD Init()
 
-   END CLASS
+   ENDCLASS
 
 METHOD Init() CLASS NfeProdutoClass
 
@@ -188,14 +188,14 @@ METHOD Init() CLASS NfeProdutoClass
 
    RETURN SELF
 
-CREATE CLASS NfeDuplicataClass
+CREATE CLASS NfeDuplicataClass STATIC
 
    VAR  Vencimento INIT Ctod("" )
    VAR  Valor      INIT 0
 
-   END CLASS
+   ENDCLASS
 
-CREATE CLASS DocSpedClass
+CREATE CLASS DocSpedClass STATIC
 
    VAR  ChaveAcesso             INIT ""
    VAR  cTipoDoc                INIT "" // 2014.11.20
@@ -226,7 +226,7 @@ CREATE CLASS DocSpedClass
    VAR  Status                  INIT ""
    METHOD Init()
 
-   END CLASS
+   ENDCLASS
 
 METHOD Init() CLASS DocSpedClass
 
@@ -335,7 +335,7 @@ FUNCTION XmlToDoc( cXmlInput )
 
    RETURN oDoc
 
-FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
+STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
 
    LOCAL nCont
    LOCAL cBlocoInfNfeComTag, cBlocoChave, cBlocoIde, cBlocoInfAdic
@@ -511,7 +511,7 @@ FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
 
    RETURN NIL
 
-FUNCTION XmlToDocNfeCancel( cXmlInput, oNFe )
+STATIC FUNCTION XmlToDocNfeCancel( cXmlInput, oNFe )
 
    LOCAL mChave, mProtocolo, mXmlInfComTag, mXmlInf
 
@@ -552,7 +552,7 @@ FUNCTION XmlToDocNfeCancel( cXmlInput, oNFe )
 
    RETURN NIL
 
-FUNCTION XmlToDocNfeCce( XmlInput, oDocSped )
+STATIC FUNCTION XmlToDocNfeCce( XmlInput, oDocSped )
 
    LOCAL mXmlProcEvento, mXmlEvento, mXmlInfEvento, mXmlRetEvento
 
@@ -575,7 +575,7 @@ FUNCTION XmlToDocNfeCce( XmlInput, oDocSped )
 
    RETURN NIL
 
-FUNCTION XmlToDocMDFEEmi( cXmlInput, oMDFE )
+STATIC FUNCTION XmlToDocMDFEEmi( cXmlInput, oMDFE )
 
    LOCAL cBlocoInfNfeComTag, cBlocoChave, cBlocoIde, cBlocoInfAdic
    LOCAL cBlocoEmit, cBlocoEndereco
@@ -626,7 +626,7 @@ FUNCTION XmlToDocMDFEEmi( cXmlInput, oMDFE )
 
    RETURN NIL
 
-FUNCTION XmlToDocMDFEEnc( XmlInput, oDocSped )
+STATIC FUNCTION XmlToDocMDFEEnc( XmlInput, oDocSped )
 
    LOCAL mXmlProcEvento, mXmlEvento, mXmlInfEvento
 
@@ -646,7 +646,7 @@ FUNCTION XmlToDocMDFEEnc( XmlInput, oDocSped )
 
    RETURN NIL
 
-FUNCTION XmlToDocMDFECancel( cXmlInput, oDocSped )
+STATIC FUNCTION XmlToDocMDFECancel( cXmlInput, oDocSped )
 
    LOCAL mChave, mProtocolo
 
@@ -671,7 +671,7 @@ FUNCTION XmlToDocMDFECancel( cXmlInput, oDocSped )
 
    RETURN NIL
 
-FUNCTION XmlToDocCteEmi( XmlInput, oCTE )
+STATIC FUNCTION XmlToDocCteEmi( XmlInput, oCTE )
 
    LOCAL XmlProc, XmlCte, XmlInfCte, XmlIde, mTemp, XmlEmit, XmlEndereco
    LOCAL XmlRemetente, XmlDestinatario, XmlPrest, XmlProt, XmlInfProt, XmlInfCteComTag
@@ -738,7 +738,7 @@ FUNCTION XmlToDocCteEmi( XmlInput, oCTE )
 
    RETURN oCte
 
-FUNCTION XmlToDocCteCancel( cXmlInput, oCTE )
+STATIC FUNCTION XmlToDocCteCancel( cXmlInput, oCTE )
 
    LOCAL mXmlInfCanc, mXmlInfCancComTag, mChave, mProtocolo
 

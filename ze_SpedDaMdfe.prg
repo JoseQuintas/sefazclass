@@ -1,6 +1,7 @@
 /*
 ZE_SPEDDAMDFE - Documento Auxiliar de Manifesto Eletrônico de Documentos Fiscais
 Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
+Contrbuição DaMdfe:MSouzaRunner
 */
 
 #include "common.ch"
@@ -85,7 +86,7 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
    VAR cRetorno
    VAR PastaPdf
 
-ENDCLASS
+   ENDCLASS
 
 METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel ) CLASS hbnfeDaMdfe
 
