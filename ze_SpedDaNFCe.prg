@@ -282,7 +282,7 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
 
 METHOD DetalheProdutosServicos() CLASS hbNFeDaNFCe
 
-   LOCAL nContX
+   LOCAL nContX, nLinha, cLinha
 
    // DIVISAO II - Informacoes de detalhes de produtos/servicos------------------------------------------------------------------
    ::DrawTexto(   6, ::nLinhaPDF - 10, 220, NIL, "CODIGO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
@@ -297,12 +297,23 @@ METHOD DetalheProdutosServicos() CLASS hbNFeDaNFCe
    // "cProd", "xProd", "qCom", "uCom", "vUnCom", "vProd"
    FOR nContX := 1 TO Len( ::aItem )
       ::DrawTexto(  6, ::nLinhaPDF - 10, 220, NIL, ::aItem[ nContX, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
-      ::DrawTexto( 40, ::nLinhaPDF - 10, 220, NIL, ::aItem[ nContX, 2 ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
-      ::DrawTexto(  6, ::nLinhaPDF - 20,  44, NIL, FormatNumber( Val( ::aItem[ nContX, 3 ] ), 6, 3 ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 7 )
-      ::DrawTexto( 50, ::nLinhaPDF - 20, 220, NIL, ::aItem[ nContX, 4 ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
-      ::DrawTexto(  6, ::nLinhaPDF - 20, 146, NIL, FormatNumber( Val( ::aItem[ nContX, 5 ] ), 15, 4 ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 7 )
-      ::DrawTexto(  6, ::nLinhaPDF - 20, 220, NIL, FormatNumber( Val( ::aItem[ nContX, 6 ] ), 15, 2 ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 7 )
-      ::nLinhaPDF -= 20
+
+      nLinha := 1
+      DO WHILE .T.
+         cLinha := Trim( MemoLine( ::aItem[ nContX, 2 ], 45, nLinha ) )
+         IF Empty( cLinha )
+            EXIT
+         ENDIF
+         ::DrawTexto( 40, ::nLinhaPDF - 10, 220, NIL, cLinha, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
+         ::nLinhaPDF -= 10
+         nLinha++
+      ENDDO
+
+      ::DrawTexto(  6, ::nLinhaPDF - 10,  44, NIL, FormatNumber( Val( ::aItem[ nContX, 3 ] ), 6, 3 ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 7 )
+      ::DrawTexto( 50, ::nLinhaPDF - 10, 220, NIL, ::aItem[ nContX, 4 ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
+      ::DrawTexto(  6, ::nLinhaPDF - 10, 146, NIL, FormatNumber( Val( ::aItem[ nContX, 5 ] ), 15, 4 ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 7 )
+      ::DrawTexto(  6, ::nLinhaPDF - 10, 220, NIL, FormatNumber( Val( ::aItem[ nContX, 6 ] ), 15, 2 ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 7 )
+      ::nLinhaPDF -= 10
    NEXT
 
    ::DrawTexto( 6, ::nLinhaPDF - 5, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
