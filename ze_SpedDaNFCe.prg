@@ -234,7 +234,7 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
    ELSE
       ::DrawJPEGImage( ::cLogoFile, 3, ::nLinhaPDF - 35, 50, 40 )
       nPosIni := 55
-      nTamMax := 40
+      nTamMax := 45
    ENDIF
 
    nLinha := 1
@@ -253,7 +253,7 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
 
    nLinha := 1
    DO WHILE .T.
-      cLinha := Trim( MemoLine( ::aEmit[ "xLgr" ] + ", " + ::aEmit[ "nro" ] + ", " + ::aEmit[ "xBairro" ] + ", " + ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], nTamMax, nLinha ) )
+      cLinha := Trim( MemoLine( ::aEmit[ "xLgr" ] + ", " + ::aEmit[ "nro" ] + ", " + ::aEmit[ "xBairro" ] + ", " + ::aEmit[ "xMun" ] + ", " + ::aEmit[ "UF" ], nTamMax, nLinha ) )
       IF Empty( cLinha )
          EXIT
       ENDIF
@@ -509,7 +509,7 @@ METHOD Consumidor() CLASS hbNFeDaNFCe
       ::DrawTexto(  6, ::nLinhaPDF - 10, 220, NIL, "Endereco: ", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
       nLinha := 1
       DO WHILE .T.
-         cLinha := Trim( MemoLine( ::aDest[ "xLgr" ] + ", " + ::aDest[ "nro" ] + " - " + ::aDest[ "xBairro" ] + " - " + ::aDest[ "xMun" ] + " - " + ::aDest[ "UF" ], 45, nLinha ) )
+         cLinha := Trim( MemoLine( ::aDest[ "xLgr" ] + ", " + ::aDest[ "nro" ] + ", " + ::aDest[ "xBairro" ] + ", " + ::aDest[ "xMun" ] + ", " + ::aDest[ "UF" ], 45, nLinha ) )
          IF Empty( cLinha )
             EXIT
          ENDIF
@@ -528,12 +528,12 @@ METHOD Consumidor() CLASS hbNFeDaNFCe
 METHOD IdentificacaoNFCeProtocolo() CLASS hbNFeDaNFCe
 
    // DIVISAO VII - Informacoes de Identificacao da NFC-e e do Protocolo de Autorizacao------------------------------------------
-   ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, "Numero: "  + Transform( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), "@R 999999999" ) + "  Serie: " + Transform( StrZero( Val( ::aIde[ "serie" ] ), 3 ), "@R 999" ) +;
-                                               "  " + SubStr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 1, 4 ) + "  " + SubStr( ::aIde[ "dhEmi" ], 12, 8 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
-   ::DrawTexto( 6, ::nLinhaPDF - 20, 220, NIL, "Protocolo de autorizacao: " + ::aInfProt[ "nProt" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 7 )
-   ::DrawTexto( 6, ::nLinhaPDF - 30, 220, NIL, "Data de autorizacao: " + SubStr( ::aInfProt[ "dhRecbto" ], 9, 2 ) + "/" + SubStr( ::aInfProt[ "dhRecbto" ], 6, 2 ) + "/" + SubStr( ::aInfProt[ "dhRecbto" ], 1, 4 ) + " " + SubStr( ::aInfProt[ "dhRecbto" ], 12, 8 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 7 )
-   ::DrawTexto( 6, ::nLinhaPDF - 35, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::nLinhaPDF -= 35
+   ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, "Numero: "  + Transform( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), "@R 999999999" ) + " - Serie: " + Transform( StrZero( Val( ::aIde[ "serie" ] ), 3 ), "@R 999" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
+   ::DrawTexto( 6, ::nLinhaPDF - 20, 220, NIL, "Emissao: " + SubStr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 1, 4 ) + "  " + SubStr( ::aIde[ "dhEmi" ], 12, 8 ) + " - Via Consumidor", HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
+   ::DrawTexto( 6, ::nLinhaPDF - 30, 220, NIL, "Protocolo de autorizacao: " + ::aInfProt[ "nProt" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 7 )
+   ::DrawTexto( 6, ::nLinhaPDF - 40, 220, NIL, "Data de autorizacao: " + SubStr( ::aInfProt[ "dhRecbto" ], 9, 2 ) + "/" + SubStr( ::aInfProt[ "dhRecbto" ], 6, 2 ) + "/" + SubStr( ::aInfProt[ "dhRecbto" ], 1, 4 ) + " " + SubStr( ::aInfProt[ "dhRecbto" ], 12, 8 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 7 )
+   ::DrawTexto( 6, ::nLinhaPDF - 45, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::nLinhaPDF -= 45
 
    RETURN NIL
 
