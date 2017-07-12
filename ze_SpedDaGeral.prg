@@ -158,10 +158,11 @@ METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar ) CLASS hbNFeDaGeral
       cXmlAuxiliar := MemoRead( cXmlAuxiliar )
    ENDIF
    DO CASE
-   CASE "<infCte " $ cXmlDocumento                                  ; oDanfe := hbNFeDaCte():New()
-   CASE "<infNFe " $ cXmlDocumento .AND. "<NFe " $ cXmlDocumento    ; oDanfe := hbNFeDaNFe():New()
-   CASE "<infMDFe " $ cXmlDocumento .AND. "<MDFe " $ cXmlDocumento  ; oDanfe := hbNFeDaMDFe():New()
-   CASE "<infEvento " $ cXmlDocumento                               ; oDanfe := hbNFeDaEvento():New()
+   CASE "<infCte "    $ cXmlDocumento                                                                                                ; oDanfe := hbNFeDaCte():New()
+   CASE "<infNFe "    $ cXmlDocumento .AND. "<NFe "  $ cXmlDocumento .AND. XmlNode( XmlNode( cXmlDocumento, "ide" ), "mod" ) == "55" ; oDanfe := hbNFeDaNFe():New()
+   CASE "<infNFe "    $ cXmlDocumento .AND. "<NFe "  $ cXmlDocumento .AND. XmlNode( XmlNode( cXmlDocumento, "ide" ), "mod" ) == "65" ; oDanfe := hbNFeDaNFCe():New()
+   CASE "<infMDFe "   $ cXmlDocumento .AND. "<MDFe " $ cXmlDocumento                                                                 ; oDanfe := hbNFeDaMDFe():New()
+   CASE "<infEvento " $ cXmlDocumento                                                                                                ; oDanfe := hbNFeDaEvento():New()
    OTHERWISE
       RETURN "XML inválido"
    ENDCASE
