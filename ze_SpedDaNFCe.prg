@@ -262,16 +262,17 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
       nLinha++
    ENDDO
 
-   ::DrawTexto( 6, ::nLinhaPDF +  5, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 6, ::nLinhaPDF -  5, 220, NIL, "DANFE NFC-e - Documento Auxiliar" , HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
-   ::DrawTexto( 6, ::nLinhaPDF - 15, 220, NIL, "da Nota Fiscal de Consumidor Eletronica" , HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
-   ::DrawTexto( 6, ::nLinhaPDF - 25, 220, NIL, "Nao permite aproveitamento de credito do ICMS" , HPDF_TALIGN_CENTER, ::oPDFFontNormal, 7 )
-   ::nLinhaPDF -= 25
+   ::DrawTexto( 6, ::nLinhaPDF     , 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, "DANFE NFC-e - Documento Auxiliar" , HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
+   ::DrawTexto( 6, ::nLinhaPDF - 20, 220, NIL, "da Nota Fiscal de Consumidor Eletronica" , HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
+   ::DrawTexto( 6, ::nLinhaPDF - 30, 220, NIL, "Nao permite aproveitamento de credito do ICMS" , HPDF_TALIGN_CENTER, ::oPDFFontNormal, 7 )
+   ::nLinhaPDF -= 30
 
    IF ::aIde[ "tpAmb" ] == WS_AMBIENTE_HOMOLOGACAO
-      ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, "EMITIDA EM AMBIENTE DE HOMOLOGACAO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
-      ::DrawTexto( 6, ::nLinhaPDF - 20, 220, NIL, "SEM VALOR FISCAL", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
-      ::nLinhaPDF -= 20
+      ::DrawTexto( 6, ::nLinhaPDF -  5, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+      ::DrawTexto( 6, ::nLinhaPDF - 15, 220, NIL, "EMITIDA EM AMBIENTE DE HOMOLOGACAO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
+      ::DrawTexto( 6, ::nLinhaPDF - 25, 220, NIL, "SEM VALOR FISCAL", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
+      ::nLinhaPDF -= 25
    ENDIF
 
    ::DrawTexto( 6, ::nLinhaPDF - 5, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
@@ -497,7 +498,7 @@ METHOD Consumidor() CLASS hbNFeDaNFCe
       ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, "Nome: ", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
       nLinha := 1
       DO WHILE .T.
-         cLinha := Trim( MemoLine( ::aDest[ "xNome" ], 45, nLinha ) )
+         cLinha := Trim( MemoLine( ::aDest[ "xNome" ], 44, nLinha ) )
          IF Empty( cLinha )
             EXIT
          ENDIF
@@ -509,7 +510,7 @@ METHOD Consumidor() CLASS hbNFeDaNFCe
       ::DrawTexto(  6, ::nLinhaPDF - 10, 220, NIL, "Endereco: ", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
       nLinha := 1
       DO WHILE .T.
-         cLinha := Trim( MemoLine( ::aDest[ "xLgr" ] + ", " + ::aDest[ "nro" ] + ", " + ::aDest[ "xBairro" ] + ", " + ::aDest[ "xMun" ] + ", " + ::aDest[ "UF" ], 45, nLinha ) )
+         cLinha := Trim( MemoLine( ::aDest[ "xLgr" ] + ", " + ::aDest[ "nro" ] + ", " + ::aDest[ "xBairro" ] + ", " + ::aDest[ "xMun" ] + ", " + ::aDest[ "UF" ], 44, nLinha ) )
          IF Empty( cLinha )
             EXIT
          ENDIF
@@ -543,18 +544,22 @@ METHOD AreaMensagemFiscal() CLASS hbNFeDaNFCe
    LOCAL aInfAdFisco, nContX, nLinha, cLinha
 
    // DIVISAO VIII - Area de Mensagem Fiscal-------------------------------------------------------------------------------------
-   aInfAdFisco := hb_ATokens( ::aInfAdic[ "infAdFisco" ], "|" )
+   ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], ";;", "|" )
+   ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], "|", hb_eol() )
+
+   aInfAdFisco := hb_ATokens( ::aInfAdic[ "infAdFisco" ], hb_eol() )
 
    IF ::aIde[ "tpAmb" ] == WS_AMBIENTE_HOMOLOGACAO
       ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, "EMITIDA EM AMBIENTE DE HOMOLOGACAO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
       ::DrawTexto( 6, ::nLinhaPDF - 20, 220, NIL, "SEM VALOR FISCAL", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
-      ::nLinhaPDF -= 20
+      ::DrawTexto( 6, ::nLinhaPDF - 25, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+      ::nLinhaPDF -= 25
    ENDIF
 
    FOR nContX := 1 TO Len( aInfAdFisco )
       nLinha := 1
       DO WHILE .T.
-         cLinha := Trim( MemoLine( aInfAdFisco[ nContX ], 50, nLinha ) )
+         cLinha := Trim( MemoLine( aInfAdFisco[ nContX ], 55, nLinha ) )
          IF Empty( cLinha )
             EXIT
          ENDIF
@@ -577,12 +582,15 @@ METHOD MensagemInteresseContribuinte() CLASS hbNFeDaNFCe
    LOCAL aInfCpl, nContX, nLinha, cLinha
 
    // DIVISAO IX - Mensagem de Interesse do Contribuinte-------------------------------------------------------------------------
-   aInfCpl := hb_ATokens( ::aInfAdic[ "infCpl" ], "|" )
+   ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";;", "|" )
+   ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], "|", hb_eol() )
+
+   aInfCpl := hb_ATokens( ::aInfAdic[ "infCpl" ], hb_eol() )
 
    FOR nContX := 1 TO Len( aInfCpl )
       nLinha := 1
       DO WHILE .T.
-         cLinha := Trim( MemoLine( aInfCpl[ nContX ], 50, nLinha ) )
+         cLinha := Trim( MemoLine( aInfCpl[ nContX ], 55, nLinha ) )
          IF Empty( cLinha )
             EXIT
          ENDIF
