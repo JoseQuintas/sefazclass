@@ -569,11 +569,12 @@ METHOD AreaMensagemFiscal() CLASS hbNFeDaNFCe
 
 METHOD MensagemInteresseContribuinte() CLASS hbNFeDaNFCe
 
-   LOCAL aInfCpl, nContX, nLinha, cLinha
+   LOCAL aInfCpl, nContX, nLinha, cLinha, cText
 
    // DIVISAO IX - Mensagem de Interesse do Contribuinte-------------------------------------------------------------------------
-   ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";;", "|" )
-   ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], "|", hb_eol() )
+   FOR EACH cText IN { ";;", ";", "|" }
+      ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], cText, hb_Eol() )
+   NEXT
 
    aInfCpl := hb_ATokens( ::aInfAdic[ "infCpl" ], hb_eol() )
 
