@@ -211,6 +211,8 @@ METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel ) CLASS hbNFeDaNFe
 
 METHOD BuscaDadosXML() CLASS hbNFeDaNFe
 
+   LOCAL cText
+
    ::aIde := XmlToHash( XmlNode( ::cXml, "ide" ), { "cUF", "cNF", "natOp", "indPag", "mod", "serie", "nNF", "dhEmi", "dhSaiEnt", "tpNF", "cMunFG", "tpImp", "tpEmis", ;
              "cDV", "tpAmb", "finNFe", "procEmi", "verProc" } )
    IF Empty( ::aIde[ "dhEmi" ] ) // NFE 2.0
@@ -253,13 +255,13 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
       ::aInfAdic[ "infCpl" ] += ";" + TrimXml( "LOCAL DE RETIRADA: " + ::aRetirada[ "xLgr" ] + " " + ::aRetirada[ "nro" ] + " " + ;
          ::aRetirada[ "xBairro" ] + " " + ::aRetirada[ "xMun" ] + " " + ::aRetirada[ "UF" ] )
    ENDIF
-   ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";;", ";" )
-   ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], "|", ";" )
-   ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], ";", Chr(13) + Chr(10) )
-   ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], ";", Chr(13) + Chr(10) )
+   FOR EACH cText IN { ";;", ";", "|" }
+      ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], cText, hb_Eol() )
+      ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], cText, hb_Eol() )
+   NEXT
 
    IF ! Empty( ::aInfAdic[ "infAdFisco" ] )
-      ::aInfAdic[ "infCpl" ]     := ::aInfAdic[ "infAdFisco" ] + Chr(13) + Chr(10) + ::aInfAdic[ "infCpl" ]
+      ::aInfAdic[ "infCpl" ]     := ::aInfAdic[ "infAdFisco" ] + hb_Eol() + ::aInfAdic[ "infCpl" ]
       ::aInfAdic[ "infAdFisco" ] := ""
    ENDIF
 

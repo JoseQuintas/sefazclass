@@ -541,11 +541,12 @@ METHOD IdentificacaoNFCeProtocolo() CLASS hbNFeDaNFCe
 
 METHOD AreaMensagemFiscal() CLASS hbNFeDaNFCe
 
-   LOCAL aInfAdFisco, nContX, nLinha, cLinha
+   LOCAL aInfAdFisco, nContX, nLinha, cLinha, cText
 
    // DIVISAO VIII - Area de Mensagem Fiscal-------------------------------------------------------------------------------------
-   ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], ";;", "|" )
-   ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], "|", hb_eol() )
+   FOR EACH cText IN { ";;", ";", "|" }
+      ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], cText, hb_Eol() )
+   NEXT
 
    aInfAdFisco := hb_ATokens( ::aInfAdic[ "infAdFisco" ], hb_eol() )
 
