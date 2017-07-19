@@ -17,6 +17,7 @@ CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
    METHOD CalculaPDF()
    METHOD GeraPDF( cFilePDF )
    METHOD NovaPagina()
+   METHOD Desenvolvedor()
 
    METHOD Cabecalho()                     // DIVISAO I    - Informacoes do Cabecalho
    METHOD DetalheProdutosServicos()       // DIVISAO II   - Informacoes de detalhes de produtos/servicos
@@ -53,7 +54,6 @@ CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
 
    END CLASS
 
-
 METHOD ToPDF( cXmlNFCe, cFilePDF, ... ) CLASS hbNFeDaNFCe
 
    ::cXml     := cXmlNFCe
@@ -80,7 +80,6 @@ METHOD ToPDF( cXmlNFCe, cFilePDF, ... ) CLASS hbNFeDaNFCe
    ENDIF
 
    RETURN ::cRetorno
-
 
 METHOD BuscaDadosXML() CLASS hbNFeDaNFCe
 
@@ -136,15 +135,14 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFCe
 
    RETURN .T.
 
-
 METHOD CalculaPDF() CLASS hbNFeDaNFCe
 
    LOCAL oPDFPageAltura
 
-   // Funcao utilizada para calcular a altura maxima utilizada na impressao da NFCe
-   // devido ao fato da nota consumidor se utilizar basicamente de impressoras termicas
-   // de papel continuo, nao sendo recomendavel salto de pagina pois acarreta espacos
-   // em branco entre as paginas.
+   // Funcao para calcular a altura maxima utilizada na impressao da NFCe devido ao
+   // fato da nota consumidor se utilizar basicamente de impressoras termicas de papel
+   // continuo, nao sendo recomendavel salto de pagina pois acarreta espacos em branco
+   // entre as paginas.
 
    ::oPDF := HPDF_New()
 
@@ -168,6 +166,7 @@ METHOD CalculaPDF() CLASS hbNFeDaNFCe
    ::AreaMensagemFiscal()
    ::ConsultaChaveQRCode()
    ::MensagemInteresseContribuinte()
+   ::Desenvolvedor()
 
    oPDFPageAltura   := ::oPDFPageAltura
    ::oPDFPageAltura := ( oPDFPageAltura - ( ::nLinhaPDF - 10 ) )
@@ -175,7 +174,6 @@ METHOD CalculaPDF() CLASS hbNFeDaNFCe
    HPDF_Free( ::oPDF )
 
    RETURN .T.
-
 
 METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFCe
 
@@ -201,12 +199,12 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFCe
    ::AreaMensagemFiscal()
    ::ConsultaChaveQRCode()
    ::MensagemInteresseContribuinte()
+   ::Desenvolvedor()
 
    HPDF_SaveToFile( ::oPDF, cFilePDF )
    HPDF_Free( ::oPDF )
 
    RETURN .T.
-
 
 METHOD NovaPagina() CLASS hbNFeDaNFCe
 
@@ -221,7 +219,6 @@ METHOD NovaPagina() CLASS hbNFeDaNFCe
    ::nLinhaPDF := nAltura - 8 // Margem Superior
 
    RETURN NIL
-
 
 METHOD Cabecalho() CLASS hbNFeDaNFCe
 
@@ -280,7 +277,6 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
 
    RETURN NIL
 
-
 METHOD DetalheProdutosServicos() CLASS hbNFeDaNFCe
 
    LOCAL nContX, nLinha, cLinha
@@ -321,7 +317,6 @@ METHOD DetalheProdutosServicos() CLASS hbNFeDaNFCe
    ::nLinhaPDF -= 5
 
    RETURN NIL
-
 
 METHOD TotaisDanfeNFCe() CLASS hbNFeDaNFCe
 
@@ -368,7 +363,6 @@ METHOD TotaisDanfeNFCe() CLASS hbNFeDaNFCe
    ::nLinhaPDF -= 30
 
    RETURN NIL
-
 
 METHOD ConsultaChaveAcesso() CLASS hbNFeDaNFCe
 
@@ -459,7 +453,6 @@ METHOD ConsultaChaveAcesso() CLASS hbNFeDaNFCe
 
    RETURN NIL
 
-
 METHOD ConsultaChaveQRCode() CLASS hbNFeDaNFCe
 
    // DIVISAO V - Informacoes da consulta via QR Code----------------------------------------------------------------------------
@@ -473,7 +466,6 @@ METHOD ConsultaChaveQRCode() CLASS hbNFeDaNFCe
    ::nLinhaPDF -= 110
 
    RETURN NIL
-
 
 METHOD Consumidor() CLASS hbNFeDaNFCe
 
@@ -525,7 +517,6 @@ METHOD Consumidor() CLASS hbNFeDaNFCe
 
    RETURN NIL
 
-
 METHOD IdentificacaoNFCeProtocolo() CLASS hbNFeDaNFCe
 
    // DIVISAO VII - Informacoes de Identificacao da NFC-e e do Protocolo de Autorizacao------------------------------------------
@@ -537,7 +528,6 @@ METHOD IdentificacaoNFCeProtocolo() CLASS hbNFeDaNFCe
    ::nLinhaPDF -= 45
 
    RETURN NIL
-
 
 METHOD AreaMensagemFiscal() CLASS hbNFeDaNFCe
 
@@ -577,7 +567,6 @@ METHOD AreaMensagemFiscal() CLASS hbNFeDaNFCe
 
    RETURN NIL
 
-
 METHOD MensagemInteresseContribuinte() CLASS hbNFeDaNFCe
 
    LOCAL aInfCpl, nContX, nLinha, cLinha
@@ -604,6 +593,15 @@ METHOD MensagemInteresseContribuinte() CLASS hbNFeDaNFCe
    IF !Empty( ::aInfAdic[ "infCpl" ] )
       ::DrawTexto( 6, ::nLinhaPDF - 5, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
       ::nLinhaPDF -= 5
+   ENDIF
+
+   RETURN NIL
+
+METHOD Desenvolvedor() CLASS hbNFeDaNFCe
+
+   IF !Empty( ::cDesenvolvedor )
+      ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, ::cDesenvolvedor, HPDF_TALIGN_RIGHT, ::oPDFFontBold, 6 )
+      ::nLinhaPDF -= 10
    ENDIF
 
    RETURN NIL
