@@ -689,11 +689,14 @@ METHOD Cabecalho() CLASS hbnfeDaCte
       ::DrawTexto( 005, ::nLinhaPdf - nLinha, 165, Nil, ::aComp[ nCont, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
       ::DrawTexto( 085, ::nLinhaPdf - nlinha, 165, Nil, Transform( Val( ::aComp[ nCont, 2 ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 8 )
 
-      ::DrawTexto( 171, ::nLinhaPdf - nLinha, 251, Nil, ::aComp[ nCont + 1, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ::DrawTexto( 251, ::nLinhaPdf - nLinha, 330, Nil, Transform( Val( ::aComp[ nCont + 1, 2 ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 8 )
-
-      ::DrawTexto( 338, ::nLinhaPdf - nLinha, 418, Nil, ::aComp[ nCont + 2, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ::DrawTexto( 418, ::nLinhaPdf - nLinha, 495, Nil, Transform( Val( ::aComp[ nCont + 2, 2 ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 8 )
+      IF nCont + 1 <= Len( ::aComp )
+         ::DrawTexto( 171, ::nLinhaPdf - nLinha, 251, Nil, ::aComp[ nCont + 1, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+         ::DrawTexto( 251, ::nLinhaPdf - nLinha, 330, Nil, Transform( Val( ::aComp[ nCont + 1, 2 ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 8 )
+         IF nCont + 2 <= Len( ::aComp )
+            ::DrawTexto( 338, ::nLinhaPdf - nLinha, 418, Nil, ::aComp[ nCont + 2, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+            ::DrawTexto( 418, ::nLinhaPdf - nLinha, 495, Nil, Transform( Val( ::aComp[ nCont + 2, 2 ] ), '@E 999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 8 )
+         ENDIF
+      ENDIF
       nLinha += 10
    NEXT
 

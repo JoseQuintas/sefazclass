@@ -256,10 +256,9 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
          ::aRetirada[ "xBairro" ] + " " + ::aRetirada[ "xMun" ] + " " + ::aRetirada[ "UF" ] )
    ENDIF
    FOR EACH cText IN { ";;", ";", "|" }
-      ::aInfAdic[ "infCpl" ] := StrTran( ::aInfAdic[ "infCpl" ], cText, hb_Eol() )
+      ::aInfAdic[ "infCpl" ]     := StrTran( ::aInfAdic[ "infCpl" ], cText, hb_Eol() )
       ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], cText, hb_Eol() )
    NEXT
-
    IF ! Empty( ::aInfAdic[ "infAdFisco" ] )
       ::aInfAdic[ "infCpl" ]     := ::aInfAdic[ "infAdFisco" ] + hb_Eol() + ::aInfAdic[ "infCpl" ]
       ::aInfAdic[ "infAdFisco" ] := ""

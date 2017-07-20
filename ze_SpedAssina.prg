@@ -1,11 +1,9 @@
 /*
 ZE_SPEDASSINA - Assinatura SPED
+José Quintas
 
-2017.01.09.1730 - Teste adicional de assinatura
-2017.01.11.1200 - Nota de serviço usando id ao invés de Id
-2017.01.11.2020 - Errado acima, obrigatório Id com i maiúsculo
-2017.05.25.1330 - Remove declaração de XML
-2017.05.25.1510 - Fonte reorganizado
+* Crédito para hbnfe que mostrou como fazer https://github.com/fernandoathayde/hbnfe
+
 */
 
 #define _CAPICOM_STORE_OPEN_READ_ONLY                 0           // Somente Smart Card em Modo de Leitura

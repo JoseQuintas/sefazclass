@@ -1,5 +1,6 @@
 /*
 ZE_CAPICOM - ROTINAS PRA USO DA CAPICOM
+José Quintas
 */
 
 #define _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED           2
@@ -19,7 +20,7 @@ FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
          dValidTo   := oCertificado:Item(1):ValidToDate
          cNomeCertificado := oCertificado:Item( 1 ):SubjectName
       ENDIF
-   END SEQUENCE
+   ENDSEQUENCE
    IF "CN=" $ cNomeCertificado
       cNomeCertificado := Substr( cNomeCertificado, At( "CN=", cNomeCertificado ) + 3 )
       IF "," $ cNomeCertificado
@@ -27,8 +28,8 @@ FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
       ENDIF
    ENDIF
    // oCapicomStore:Close()
-   RETURN cNomeCertificado
 
+   RETURN cNomeCertificado
 
 FUNCTION CapicomCertificado( cNomeCertificado )
 
@@ -44,4 +45,5 @@ FUNCTION CapicomCertificado( cNomeCertificado )
       ENDIF
    NEXT
    // oCapicomStore:Close()
+
    RETURN oCertificado

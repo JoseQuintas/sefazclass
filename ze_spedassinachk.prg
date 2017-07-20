@@ -1,5 +1,6 @@
 /*
 ZE_SPEDSSINACHK - Checagem de assinatura
+José Quintas
 */
 
 #define DSIGNS "xmlns:ds='http://www.w3.org/2000/09/xmldsig#'"

@@ -1,15 +1,6 @@
 /*
 ZE_SPEDSEFAZCLASS - Rotinas pra comunicação com SEFAZ
-
-2016.11.25.1600 - Se colocar XML version="1.00" o explorer não abre o XML
-2016.11.25.2300 - ::AssinaXml() e CapicomAssinaXml() pra evitar confusão no uso
-2016.11.25.2300 - ::ValidaXml() e DomDocValidaXml() pra evitar confusão no uso
-2016.12.01.0230 - NFE 4.00 início
-2017.01.13.1120 - Endereços RS CTE homologação
-2017.05.05.1930 - Grava status e motivo, ref. recibo, pra erros de envio de lote
-2017.05.24.2040 - Webservice de autorização de NFE do Acre
-2017.05.31.0930 - Reduz ano com 2 dígitos na inutilização
-2017.06.01.0230 - Configuração da versão de CTE, MDFE e NFE
+José Quintas
 
 Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
 */
@@ -61,7 +52,9 @@ Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
 #define INDSINC_RETORNA_PROTOCOLO    "1"
 #define INDSINC_RETORNA_RECIBO       "0"
 
-#define XML_UTF8                     [<?xml version="1.0" encoding="UTF-8"?>]
+#ifndef XML_UTF8
+   #define XML_UTF8                     [<?xml version="1.0" encoding="UTF-8"?>]
+#endif
 
 CREATE CLASS SefazClass
 
@@ -870,20 +863,20 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    ::cSoapVersion  := "3.10"
    ::cXmlDocumento := [<inutNFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
-   ::cXmlDocumento   +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + Right( cAno, 2 ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
-   ::cXmlDocumento   +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
-   ::cXmlDocumento   +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento   +=       XmlTag( "xServ", "INUTILIZAR" )
-   ::cXmlDocumento   +=       XmlTag( "cUF", ::UFCodigo( ::cUF ) )
-   ::cXmlDocumento   +=       XmlTag( "ano", Right( cAno, 2 ) )
-   ::cXmlDocumento   +=       XmlTag( "CNPJ", SoNumeros( cCnpj ) )
-   ::cXmlDocumento   +=       XmlTag( "mod", cMod )
-   ::cXmlDocumento   +=       XmlTag( "serie", cSerie )
-   ::cXmlDocumento   +=       XmlTag( "nNFIni", cNumIni )
-   ::cXmlDocumento   +=       XmlTag( "nNFFin", cNumFim )
-   ::cXmlDocumento   +=       XmlTag( "xJust", cJustificativa )
-   ::cXmlDocumento   +=    [</infInut>]
-   ::cXmlDocumento   += [</inutNFe>]
+   ::cXmlDocumento +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + Right( cAno, 2 ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
+   ::cXmlDocumento +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
+   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDocumento +=       XmlTag( "xServ", "INUTILIZAR" )
+   ::cXmlDocumento +=       XmlTag( "cUF", ::UFCodigo( ::cUF ) )
+   ::cXmlDocumento +=       XmlTag( "ano", Right( cAno, 2 ) )
+   ::cXmlDocumento +=       XmlTag( "CNPJ", SoNumeros( cCnpj ) )
+   ::cXmlDocumento +=       XmlTag( "mod", cMod )
+   ::cXmlDocumento +=       XmlTag( "serie", cSerie )
+   ::cXmlDocumento +=       XmlTag( "nNFIni", cNumIni )
+   ::cXmlDocumento +=       XmlTag( "nNFFin", cNumFim )
+   ::cXmlDocumento +=       XmlTag( "xJust", cJustificativa )
+   ::cXmlDocumento +=    [</infInut>]
+   ::cXmlDocumento += [</inutNFe>]
 
    IF ::AssinaXml() == "OK"
       ::cXmlEnvio := ::cXmlDocumento
@@ -924,20 +917,20 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
    ::cXmlEnvio    += [</enviNFe>]
    ::XmlSoapPost()
    IF cIndSinc == INDSINC_RETORNA_RECIBO
-      ::cXmlRecibo    := ::cXmlRetorno
-      ::cRecibo       := XmlNode( ::cXmlRecibo, "nRec" )
-      ::cStatus       := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
-      ::cMotivo       := XmlNode( ::cXmlRecibo, "xMotivo" )
+      ::cXmlRecibo := ::cXmlRetorno
+      ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
+      ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
+      ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
       IF ! Empty( ::cRecibo )
          Inkey( ::nTempoEspera )
          ::NfeConsultaRecibo()
          ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
       ENDIF
    ELSE
-      ::cXmlRecibo    := ::cXmlRetorno
-      ::cRecibo       := XmlNode( ::cXmlRecibo, "nRec" )
-      ::cStatus       := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
-      ::cMotivo       := XmlNode( ::cXmlRecibo, "xMotivo" )
+      ::cXmlRecibo := ::cXmlRetorno
+      ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
+      ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
+      ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
       IF ! Empty( ::cRecibo )
          ::cXmlProtocolo := ::cXmlRetorno
          ::cXmlRetorno   := ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
@@ -969,12 +962,12 @@ METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_STATUSSERVICO )
 
-   ::cSoapVersion    := "3.10"
-   ::cXmlEnvio       := [<consStatServ versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
-   ::cXmlEnvio       +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio       +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
-   ::cXmlEnvio       +=    XmlTag( "xServ", "STATUS" )
-   ::cXmlEnvio       += [</consStatServ>]
+   ::cSoapVersion := "3.10"
+   ::cXmlEnvio    := [<consStatServ versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio    +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
+   ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
+   ::cXmlEnvio    += [</consStatServ>]
    ::XmlSoapPost()
 
    RETURN ::cXmlRetorno

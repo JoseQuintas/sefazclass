@@ -1,6 +1,6 @@
 /*
 ZE_SPEDXMLCLASS - CLASSES PARA NFE/CTE/MDFE/CCE
-2010.07.19
+2010.07.19 José Quintas
 */
 
 #include "hbclass.ch"
@@ -564,7 +564,7 @@ STATIC FUNCTION XmlToDocNfeCce( XmlInput, oDocSped )
             oDocSped:Destinatario:Cnpj := oDocSped:Emitente:Cnpj
             oDocSped:ChaveAcesso       := XmlNode( mXmlInfEvento, "chNFe" )
             //oDocSped:TipoEvento      := XmlNode( mXmlInfEvento, "tpEvento" )
-            oDocSped:cSequencia        := StrZero(Val( XmlNode( mXmlInfEvento, "nSeqEvento" ) ), 2 )
+            oDocSped:cSequencia        := StrZero( Val( XmlNode( mXmlInfEvento, "nSeqEvento" ) ), 2 )
             // mXmldetEvento           := XmlNode( mXmlInfEvento, "detEvento" )
                //oDocSped:Texto        := XmlNode( mXmlDetEvento, "xCorrecao" )
          oDocSped:cAssinatura          := XmlNode( mXmlEvento, "Signature" )

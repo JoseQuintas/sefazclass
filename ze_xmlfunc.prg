@@ -1,9 +1,6 @@
 /*
 ZE_XMLFUNC - Funções pra trabalhar com XML
-
-2016.12.27.1320 - StringToXml() eliminando espaço duplo
-2017.01.02.0800 - Correção horário de verão
-2017.05.19.1500 - & trocado por E
+José Quintas
 */
 
 #ifndef DOW_DOMINGO
@@ -12,7 +9,7 @@ ZE_XMLFUNC - Funções pra trabalhar com XML
 
 FUNCTION XmlTransform( cXml )
 
-   LOCAL nCont, cRemoveTag, lUtf8
+   LOCAL nCont, cRemoveTag, lUtf8, cLetra
 
    cRemoveTag := { ;
       [<?xml version="1.0" encoding="utf-8"?>], ; // Petrobras inventou de usar assim
@@ -28,14 +25,9 @@ FUNCTION XmlTransform( cXml )
    ENDIF
 
    lUtf8 := .F.
-   IF Substr( cXml, 1, 1 ) $ Chr(239) + Chr(187) + Chr(191)
+   IF Chr(195) $ cXml
       lUtf8 := .T.
    ENDIF
-   FOR nCont = 128 TO 159
-      IF Chr( nCont ) $ cXml
-         lUtf8 := .T.
-      ENDIF
-   NEXT
    IF lUtf8
       cXml := hb_Utf8ToStr( cXml )
    ENDIF
@@ -55,6 +47,26 @@ FUNCTION XmlTransform( cXml )
       cXml := StrTran( cXml, Chr(195) + Chr(161), "a" ) // a acentuado minusculo
       cXml := StrTran( cXml, Chr(195) + Chr(131), "A" ) // a acentuado maiusculo
       cXml := StrTran( cXml, Chr(194) + Chr(186), "o." ) // numero simbolo
+      cxml := StrTran( cxml, Chr(195) + Chr(162), "a" )
+      cxml := StrTran( cxml, Chr(195) + Chr(161), "a" )
+      cxml := StrTran( cxml, Chr(195) + Chr(163), "a" )
+      cxml := StrTran( cxml, Chr(195) + Chr(173), "i" )
+      cxml := StrTran( cxml, Chr(195) + Chr(179), "o" )
+      cxml := StrTran( cxml, Chr(195) + Chr(167), "c" )
+      cxml := StrTran( cxml, Chr(195) + Chr(169), "e" )
+      cxml := StrTran( cxml, Chr(195) + Chr(170), "e" )
+      cxml := StrTran( cxml, Chr(195) + Chr(181), "o" )
+      cxml := StrTran( cxml, Chr(195) + Chr(160), "o" )
+      cxml := StrTran( cxml, Chr(195) + Chr(181), "o" )
+      cxml := StrTran( cxml, Chr(195) + Chr(129), "A" )
+      cxml := StrTran( cxml, Chr(226) + Chr(128) + Chr(156), [*] ) // aspas de destaque "cames"
+      cxml := StrTran( cxml, Chr(226) + Chr(128) + Chr(157), [*] ) // aspas de destaque "cames"
+      cxml := StrTran( cxml, Chr(195) + Chr(180), "o" )
+      cxml := StrTran( cxml, Chr(195) + Chr(186), "u" )
+      cxml := StrTran( cxml, Chr(195) + Chr(147), "O" )
+      cxml := StrTran( cxml, Chr(226) + Chr(128) + Chr(153), [ ] ) // caixa d'agua
+      cxml := StrTran( cxml, Chr(226) + Chr(128) + Chr(147), [-] ) // - mesmo
+      cxml := StrTran( cxml, Chr(194) + Chr(179), [3] ) // m3
       // so pra corrigir no MySql
       cXml := StrTran( cXml, "+" + Chr(129), "A" )
       cXml := StrTran( cXml, "+" + Chr(137), "E" )
@@ -80,6 +92,25 @@ FUNCTION XmlTransform( cXml )
       cXml := StrTran( cXml, Chr(135) + Chr(227), "ca" )
       cXml := StrTran( cXml, "n" + Chr(227), "na" )
       cXml := StrTran( cXml, Chr(162), "o" )
+   NEXT
+   FOR EACH cLetra IN @cXml
+      DO CASE
+      CASE cLetra $ "abcdefghijklmnopqrstuvwxyz"
+      CASE cLetra $ "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      CASE cLetra $ "01234567889"
+      CASE cLetra $ ",.:/;%*$@?<>()+-#=:_" + Chr(34) + Chr(32)
+      CASE cLetra $ "çÇ" ; cLetra := "c"
+      CASE cLetra $ "ÁÃÂ" ; cLetra := "A"
+      CASE cLetra $ "áãâ" ; cLetra := "a"
+      CASE cLetra $ "óõô" ; cLetra := "o"
+      CASE cLetra $ "ÓÕÔ" ; cLetra := "O"
+      CASE cLetra $ "ÉÊ"  ; cLetra := "E"
+      CASE cLetra $ "eêé" ; cLetra := "e"
+      CASE cLetra $ "í"   ; cLetra := "i"
+      CASE cLetra $ "Í"   ; cLetra := "I"
+      CASE cLetra $ "ú"   ; cLetra := "u"
+      CASE cLetra $ "Ú"   ; cLetra := "U"
+      ENDCASE
    NEXT
 
    RETURN cXml
