@@ -1,2 +1,2 @@
-libs=hbhpdf.hbc hbzebra.hbc hbwin.hbc
-libpaths=.\lib\${hb_plat}\${hb_comp}\${hb_name}
+libs=hbhpdf.hbc hbzebra.hbc hbwin.hbc hbct.hbc
+libpaths=.

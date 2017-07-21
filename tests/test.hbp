@@ -1,8 +1,9 @@
 test.prg
 
 -L..
-
+-lSefazClass
 sefazclass.hbc
+hbhpdf.hbc hbzebra.hbc hbwin.hbc hbct.hbc
 
 -m
 -n
