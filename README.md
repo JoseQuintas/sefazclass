@@ -1,3 +1,8 @@
 # sefazclass
-Comunicação sefaz
-Nome temporário, até definir o caminho.
+Classe com funçòes pra Sefaz
+
+Crie e/ou altere \harbour\bin\hbmk.hbc
+
+acrescente
+
+libpaths=pasta do arquivo sefazclass.hbc

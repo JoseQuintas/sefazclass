@@ -1,2 +1,3 @@
-libs=hbhpdf.hbc hbzebra.hbc hbwin.hbc hbct.hbc
-libpaths=.
+Description=any
+libs=hbhpdf.hbc hbzebra.hbc hbwin.hbc hbct.hbc sefazclass
+libpaths=lib\${hb_plat}\${hb_comp}

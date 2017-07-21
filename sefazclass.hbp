@@ -21,7 +21,7 @@ source\ze_inscestadual.prg
 -m
 -n
 
--o${hb_name}
+-olib\${hb_plat}\${hb_comp}\${hb_name}
 
 sefazclass.hbc
 
