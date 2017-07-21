@@ -1,0 +1,2 @@
+libs=hbhpdf.hbc hbzebra.hbc hbwin.hbc
+libpaths=.\lib\${hb_plat}\${hb_comp}\${hb_name}

@@ -200,3 +200,26 @@ METHOD ExtensoBloco( cValor ) CLASS ExtensoClass
    ENDIF
 
    RETURN cTxt
+
+FUNCTION NomeMes( xMes )
+
+   LOCAL aMeses, cNomeMes := ""
+
+   aMeses := { "JANEIRO", "FEVEREIRO", "MARCO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO" }
+   IF ValType( xMes ) == "D"
+      xMes := Month( xMes )
+   ENDIF
+   DO WHILE xMes > 12
+      xMes -= 12
+   ENDDO
+   IF xMes > 0
+      cNomeMes := aMeses[ xMes ]
+   ENDIF
+
+   RETURN cNomeMes
+
+FUNCTION NomeSemana( dData )
+
+   LOCAL acText := { "", "DOMINGO", "SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA", "SABADO" }
+
+   RETURN acText[ Dow( dData ) + 1 ]

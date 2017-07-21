@@ -179,7 +179,6 @@ FUNCTION ValidGTIN( cCodigo )
          nSoma := 10 - nSoma
       ENDIF
       IF Right( cCodigo, 1 ) != Str( nSoma, 1 )
-         MsgWarning( "Código inválido! Deixe em branco ou preencha o código correto" )
          lOk := .F.
       ENDIF
    ENDIF

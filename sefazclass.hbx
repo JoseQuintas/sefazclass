@@ -1,0 +1,76 @@
+/* --------------------------------------------------------------------
+ * NOTE: You can add manual override which functions to include or
+ *       exclude from automatically generated EXTERNAL/DYNAMIC list.
+ *          Syntax: // HB_FUNC_INCLUDE <func>
+ *                  // HB_FUNC_EXCLUDE <func>
+ */
+
+/* --------------------------------------------------------------------
+ * WARNING: Automatically generated code below. DO NOT EDIT! (except casing)
+ *          Regenerate using hbmk2 '-hbx=' option.
+ */
+
+#ifndef __HBEXTERN_CH__SEFAZCLASS__
+#define __HBEXTERN_CH__SEFAZCLASS__
+
+#if defined( __HBEXTREQ__ ) .OR. defined( __HBEXTERN__SEFAZCLASS__ANNOUNCE )
+   ANNOUNCE __HBEXTERN__SEFAZCLASS__
+#endif
+
+#if defined( __HBEXTREQ__ ) .OR. defined( __HBEXTERN__SEFAZCLASS__REQUEST )
+   #command DYNAMIC <fncs,...> => EXTERNAL <fncs>
+#endif
+
+DYNAMIC CalculaDigito
+DYNAMIC CapicomAssinaXml
+DYNAMIC CapicomCertificado
+DYNAMIC CapicomEscolheCertificado
+DYNAMIC ChkSignature
+DYNAMIC DateTimeXml
+DYNAMIC DateXml
+DYNAMIC DomingoDePascoa
+DYNAMIC Extenso
+DYNAMIC ExtensoDolar
+DYNAMIC FAKESIGNATURE
+DYNAMIC FormatCnpj
+DYNAMIC FormatNumber
+DYNAMIC hbnfeDaCte
+DYNAMIC hbnfeDaEvento
+DYNAMIC hbnfeDaGeral
+DYNAMIC hbnfeDaMdfe
+DYNAMIC hbnfeDaNFce
+DYNAMIC hbnfeDaNfe
+DYNAMIC HorarioVeraoInicio
+DYNAMIC HorarioVeraoTermino
+DYNAMIC MultipleNodeToArray
+DYNAMIC NomeMes
+DYNAMIC NomeSemana
+DYNAMIC NumberXml
+DYNAMIC PicNfe
+DYNAMIC SefazClass
+DYNAMIC SoNumeros
+DYNAMIC StringToXml
+DYNAMIC TercaDeCarnaval
+DYNAMIC TrimXml
+DYNAMIC ValidCartao
+DYNAMIC ValidCnhAntiga
+DYNAMIC ValidCnhAtual
+DYNAMIC ValidCnhImpresso
+DYNAMIC ValidCnpjCpf
+DYNAMIC ValidGtin
+DYNAMIC ValidIE
+DYNAMIC ValidRenavam
+DYNAMIC XmlDate
+DYNAMIC XmlElement
+DYNAMIC XmlNode
+DYNAMIC XmlTag
+DYNAMIC XmlToDoc
+DYNAMIC XmlToHash
+DYNAMIC XmlToString
+DYNAMIC XmlTransform
+
+#if defined( __HBEXTREQ__ ) .OR. defined( __HBEXTERN__SEFAZCLASS__REQUEST )
+   #uncommand DYNAMIC <fncs,...> => EXTERNAL <fncs>
+#endif
+
+#endif
