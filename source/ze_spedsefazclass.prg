@@ -186,6 +186,8 @@ METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ELSE
       ::XmlSoapPost()
    ENDIF
+   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
 
    RETURN ::cXmlRetorno
 
@@ -448,6 +450,8 @@ METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
    ENDIF
+   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
 
    RETURN ::cXmlRetorno
 
@@ -701,6 +705,8 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ELSE
       ::XmlSoapPost()
    ENDIF
+   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
 
    RETURN ::cXmlRetorno
 
