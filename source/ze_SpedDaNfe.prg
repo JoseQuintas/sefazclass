@@ -18,9 +18,7 @@ Os campos que podem ser colocados na mesma coluna são:
 #include "common.ch"
 #include "hbclass.ch"
 #include "harupdf.ch"
-#ifndef __XHARBOUR__
-   #include "hbwin.ch"
-#endif
+#include "hbwin.ch"
 
 #define LAYOUT_LOGO_ESQUERDA   1
 #define LAYOUT_LOGO_DIREITA    2

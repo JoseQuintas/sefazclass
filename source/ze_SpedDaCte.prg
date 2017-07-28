@@ -7,9 +7,7 @@ Contribuição DaCTE: MSouzaRunner
 #include "common.ch"
 #include "hbclass.ch"
 #include "harupdf.ch"
-#ifndef __XHARBOUR__
 #include "hbwin.ch"
-#endif
 #define LAYOUT_LOGO_ESQUERDA        1      /* apenas anotado, mas não usado */
 #define LAYOUT_LOGO_DIREITA         2
 #define LAYOUT_LOGO_EXPANDIDO       3

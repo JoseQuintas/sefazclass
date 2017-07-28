@@ -7,11 +7,7 @@ Contribuição DaEvento: MSouzaRunner
 #include "common.ch"
 #include "hbclass.ch"
 #include "harupdf.ch"
-#ifndef __XHARBOUR__
 #include "hbwin.ch"
-// #include "hbcompat.ch"
-#endif
-// #include "hbnfe.ch"
 #define LAYOUT_LOGO_ESQUERDA        1
 #define LAYOUT_LOGO_DIREITA         2
 #define LAYOUT_LOGO_EXPANDIDO       3

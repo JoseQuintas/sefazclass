@@ -35,7 +35,6 @@ CREATE CLASS hbNFeDaGeral
    METHOD DrawContingencia( cTexto1, cTexto2, cTexto3 )
 #ifdef __XHARBOUR__
    METHOD xHarbourCode128c( pcCodigoBarra )                                         INLINE hbNFe_Codifica_Code128c( pcCodigoBarra )
-#else
 #endif
    ENDCLASS
 
