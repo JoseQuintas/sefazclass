@@ -3,6 +3,7 @@ REQUEST HB_CODEPAGE_PTISO
 #include "inkey.ch"
 #include "set.ch"
 #include "hbgtinfo.ch"
+#include "directry.ch"
 
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
@@ -213,26 +214,19 @@ FUNCTION MyInkeyFilter( nKey )
 
 FUNCTION TestDanfe()
 
-   LOCAL oDanfe, oFiles, cFileXml, cFilePdf
+   LOCAL oDanfe, oFile, oFileList, cFilePdf
 
-   oFiles := { "ctecarbolub.xml", "eventoctecarbolub.xml", ;
-        "eventonfecordeiro.xml", "mdfecordeiro.xml", ;
-        "nfecarbolub.xml", "nfecordeiro.xml", "nfemaringa.xml", ;
-        "nfeasper.xml", "nfeenzza.xml", "nfecancel.xml" }
-   FOR EACH cFileXml IN oFiles
+   oFileList := Directory( "*.xml" )
+   FOR EACH oFile IN oFileList
       oDanfe := hbNfeDaGeral():New()
-      cFilePdf := Substr( cFileXml, 1, At( ".", cFileXml ) ) + "pdf"
+      cFilePdf := Substr( oFile[ F_NAME ], 1, At( ".", oFile[ F_NAME ] ) ) + "pdf"
       fErase( cFilePdf )
       oDanfe:cLogoFile := JPEGImage()
-      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
-      oDanfe:ToPDF( cFileXml, cFilePdf, iif( cFileXml == "nfecancel.xml", "nfecancelcan.xml", "" ) )
-      ? cFileXml, oDanfe:cRetorno
+      oDanfe:cDesenvolvedor := "www.josequintas.com.br"
+      oDanfe:ToPDF( oFile[ F_NAME ], cFilePdf )
+      ? oFile[ F_NAME ], oDanfe:cRetorno
       PDFOpen( cFilePdf )
    NEXT
-   oDanfe := hbNFeDaNFCe():New()
-   oDanfe:Execute( "www.jpatecnologia.com.br", "pdfqrcode.pdf" )
-   PDFOpen( "pdfqrcode.pdf" )
-   Inkey(0)
 
    RETURN NIL
 
