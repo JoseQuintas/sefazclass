@@ -1,7 +1,6 @@
 FUNCTION SpedStatusList()
 
    LOCAL aList := { ;
-
    { "100", "Autorizado o uso da NF-e" }, ;
    { "101", "Cancelamento de NF-e homologado" }, ;
    { "102", "Inutilização de número homologado" }, ;
