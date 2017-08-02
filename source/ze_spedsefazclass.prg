@@ -1948,12 +1948,14 @@ STATIC FUNCTION SoapURL_SVRS( cAmbiente, nWsServico, cNFCE, ... )
          CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfce.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
          ENDCASE
       ELSE
+         DO CASE
          CASE nWsServico == WS_NFE_AUTORIZACAO ;         cUrlWs := "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx"
          CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ;   cUrlWs := "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx"
          CASE nWsServico == WS_NFE_INUTILIZACAO ;        cUrlWs := "https://nfce-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx"
          CASE nWsServico == WS_NFE_RECEPCAOEVENTO ;      cUrlWs := "https://nfce-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx"
          CASE nWsServico == WS_NFE_RETAUTORIZACAO ;      cUrlWs := "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx"
          CASE nWsServico == WS_NFE_STATUSSERVICO ;       cUrlWs := "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx"
+         ENDCASE
       ENDIF
    ENDIF
 
