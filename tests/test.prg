@@ -56,6 +56,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "Protocolo MDFE"
       @ Row() + 1, 5 PROMPT "Consulta Destinadas"
       @ Row() + 1, 5 PROMPT "Valida XML"
+      @ Row() + 1, 5 PROMPT "Consulta Status NFCE"
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
@@ -171,13 +172,17 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
-      CASE nOpc == 10
+      CASE nOpc == nOpcTemp++
          cXml := MemoRead( "d:\temp\teste.xml" )
          // cXml := StrTran( cXml, "</NFe>", FakeSignature() + "</NFe>" )
          ? oSefaz:ValidaXml( cXml, "d:\cdrom\fontes\integra\schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd" )
          Inkey(0)
 
       CASE nOpc == nOpcTemp  // pra não esquecer o ++, último não tem
+         wapi_MessageBox( , "NFCE" )
+         oSefaz:cNFCE := "S"
+         oSefaz:NfeStatus()
+         wapi_MessageBox( , oSefaz:cXmlRetorno )
 
       ENDCASE
    ENDDO
