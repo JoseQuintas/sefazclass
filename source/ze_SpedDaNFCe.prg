@@ -263,13 +263,13 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
    ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, "DANFE NFC-e - Documento Auxiliar" , HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
    ::DrawTexto( 6, ::nLinhaPDF - 20, 220, NIL, "da Nota Fiscal de Consumidor Eletronica" , HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
    ::DrawTexto( 6, ::nLinhaPDF - 30, 220, NIL, "Nao permite aproveitamento de credito do ICMS" , HPDF_TALIGN_CENTER, ::oPDFFontNormal, 7 )
-   ::nLinhaPDF -= 30
+   ::nLinhaPDF -= 37
 
    IF ::aIde[ "tpAmb" ] == WS_AMBIENTE_HOMOLOGACAO
       ::DrawTexto( 6, ::nLinhaPDF -  5, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
       ::DrawTexto( 6, ::nLinhaPDF - 15, 220, NIL, "EMITIDA EM AMBIENTE DE HOMOLOGACAO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
       ::DrawTexto( 6, ::nLinhaPDF - 25, 220, NIL, "SEM VALOR FISCAL", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
-      ::nLinhaPDF -= 25
+      ::nLinhaPDF -= 34
    ENDIF
 
    ::DrawTexto( 6, ::nLinhaPDF - 5, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
