@@ -30,21 +30,29 @@ FUNCTION ExtensoDolar( nValor )
 
 FUNCTION Extenso( xValue, xFull )
 
-   LOCAL oExtenso := ExtensoClass():New()
+   LOCAL cTxt := "", oExtenso := ExtensoClass():New()
 
    hb_Default( @xFull, .F. )
 
    IF ValType( xValue ) == "N"
-      RETURN oExtenso:Extenso( xValue )
+      cTxt := oExtenso:Extenso( xValue )
    ELSEIF ValType( xValue ) == "D"
       IF ! xFull
-         RETURN StrZero( Day( xValue ), 2 ) + " de " + NomeMes( xValue ) + " de " + StrZero( Year( xValue ), 4 )
+         cTxt := StrZero( Day( xValue ), 2 ) + " de " + NomeMes( xValue ) + " de " + StrZero( Year( xValue ), 4 )
       ELSE
-         RETURN oExtenso:ExtensoBloco( Day( xValue ) ) + " DE " + Nomemes( xValue ) + " DE " + oExtenso:ExtensoBloco( Year( xValue ) )
+         cTxt := oExtenso:Extenso( Day( xValue ) )
+         cTxt += " DE " + Nomemes( xValue ) + " DE "
+         cTxt += oExtenso:Extenso( Year( xValue ) )
+         cTxt := StrTran( cTxt, "DE REAIS", "" )
+         cTxt := StrTran( cTxt, "REAIS", "" )
+         cTxt := StrTran( cTxt, "REAL", "" )
+         DO WHILE Space(2) $ cTxt
+            cTxt := StrTran( cTxt, Space(2), Space(1) )
+         ENDDO
       ENDIF
    ENDIF
 
-   RETURN ""
+   RETURN cTxt
 
 CREATE CLASS ExtensoClass STATIC
 

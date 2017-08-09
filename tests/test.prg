@@ -17,6 +17,11 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    Set( _SET_CODEPAGE, "PTISO" )
    SetColor( "W/B,N/W,,,W/B" )
 
+   ? Extenso( Date(), .T. )
+   ? Extenso( Date() )
+   ? Extenso( 545454.54 )
+   ? Extenso( 1000000 )
+   Inkey(0)
    IF cXmlDocumento != NIL
       IF File( cXmlDocumento )
          cXmlDocumento := MemoRead( cXmlDocumento )
