@@ -164,7 +164,7 @@ FUNCTION XmlDate( cData )
 
    LOCAL dDate
 
-   dDate := Ctod( Substr( cData, 9, 2 ) + "/" + Substr( cData, 6, 2 ) + "/" + Substr( cData, 1, 4 ) )
+   dDate := Stod( Substr( cData, 1, 4 ) + Substr( cData, 6, 2 ) + Substr( cData, 9, 2 ) )
 
    RETURN dDate
 
