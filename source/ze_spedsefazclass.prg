@@ -1058,7 +1058,7 @@ METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
    IF nWsServico == NIL
       RETURN NIL
    ENDIF
-   IF ::cNFCE != "S" .AND. ( nPos := AScan( aSoapList, { | oElement | oElement[ 1 ] $ ::cUF .AND. oElement[ 2 ] == nWsServico } ) ) != 0
+   IF ::cNFCE != "S" .AND. ::cVersao != "4.00" .AND. ( nPos := AScan( aSoapList, { | oElement | oElement[ 1 ] $ ::cUF .AND. oElement[ 2 ] == nWsServico } ) ) != 0
       ::cProjeto     := aSoapList[ nPos, 3 ]
       ::cSoapAction  := aSoapList[ nPos, 4 ]
       ::cSoapService := aSoapList[ nPos, 5 ]
@@ -1080,6 +1080,41 @@ METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
 METHOD SetSoapURL( nWsServico ) CLASS SefazClass
 
    ::cSoapURL := ""
+   IF ::cVersao == "4.00"
+      DO CASE
+      CASE ::cUF == "AM"
+      CASE ::cUF == "BA"
+      CASE ::cUF == "CE" ;   ::cSoapUrl := "https://nfeh.sefaz.ce.gov.br/nfe2/services/xxxxx/?WSDL"
+      CASE ::cUF == "GO" ;   ::cSoapUrl := "https://homolog.sefaz.go.gov.br/nfe/services/V2/xxxxx?wsdl"
+      CASE ::cUF == "MG" ;   ::cSoapUrl := "https://hnfe.fazenda.mg.gov.br/nfe2/xxxxx"
+      CASE ::cUF == "MS" ;   ::cSoapUrl := "https://homologacao.nfe.ms.gov.br/ws/xxxxx"
+      CASE ::cUF == "MT"
+      CASE ::cUF == "PE"
+      CASE ::cUF == "PR" ;   ::cSoapUrl := "https://homologacao.sefaz.pr/nfe/xxxxx"
+      CASE ::cUF == "RS" ;   ::cSoapUrl := "https://nfe-homologacao.serfazrs.rs.gov/br/ws/xxxxx.asmx"
+      CASE ::cUF == "SP" ;   ::cSoapUrl := "https://homologacao.nfe.fazenda.sp.gov.br/ws/xxxxx.asmx"
+      CASE ::cUF == "SVAN" ;
+         .OR. ::cUF $ "MA,PA"
+      CASE ::cUF == "SVRS" ;
+         .OR. ::cUF $ "AC,AL,AP,DF,ES,PB,PI,RJ,RN,RO,RR,SC,SE,TO" ;
+         .OR. ( ::cUF $ "AC,RN,PB,SC" .AND. nWsServico == WS_NFE_CONSULTACADASTRO )
+                             ::cSoapUrl := "https:nfe-homologacao.svrs.rs.gov.br/ws/xxxxx.asmx"
+      CASE ::cUF == "SVCAN"
+      CASE ::cUF == "SVCRS"
+      CASE ::cUF == "AN" ;   ::cSoapUrl := "https://hom.nfe.fazenda.gov.br/xxxxx.asmx"
+      ENDCASE
+      IF ! Empty( ::cSoapUrl )
+         DO CASE
+         CASE nWsServico == WS_NFE_AUTORIZACAO ; ::cSoapUrl := StrTran( ::cSoapUrl, "xxxxx", "NFeAutorizacao4" )
+         CASE .T. // outros
+         CASE .T. // outros
+         ENDCASE
+      ENDIF
+      IF ::cUF == "SP" // tinha que ter uma diferente
+         ::cSoapUrl := Lower( ::cSoapUrl )
+      ENDIF
+      RETURN NIL
+   ENDIF
    DO CASE
    CASE .F.
       SoapURL_SCVAN() // pra evitar erro de função não utilizada
