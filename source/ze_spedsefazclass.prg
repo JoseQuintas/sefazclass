@@ -1105,9 +1105,13 @@ METHOD SetSoapURL( nWsServico ) CLASS SefazClass
       ENDCASE
       IF ! Empty( ::cSoapUrl )
          DO CASE
-         CASE nWsServico == WS_NFE_AUTORIZACAO ; ::cSoapUrl := StrTran( ::cSoapUrl, "xxxxx", "NFeAutorizacao4" )
-         CASE .T. // outros
-         CASE .T. // outros
+         CASE nWsServico == WS_NFE_AUTORIZACAO       ; ::cSoapUrl := StrTran( ::cSoapUrl, "xxxxx", "NFeAutorizacao4" )
+         CASE nWsServico == WS_NFE_RETAUTORIZACAO    ; ::cSoapUrl := StrTran( ::cSoapUrl, "xxxxx", "NFeRetAutorizacao4" )
+         CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO ; ::cSoapUrl := StrTran( ::cSoapUrl, "xxxxx", "NfeConsulta4" )
+         CASE nWsServico == WS_NFE_INUTILIZACAO      ; ::cSoapUrl := StrTran( ::cSoapUrl, "xxxxx", "Nfeinutilizacao4" )
+         CASE nWsServico == WS_NFE_RECEPCAOEVENTO    ; ::cSoapUrl := StrTran( ::cSoapUrl, "xxxxx", "NFeRecepcaoEvento4" )
+         CASE nWsServico == WS_NFE_STATUSSERVICO     ; ::cSoapUrl := StrTran( ::cSoapUrl, "xxxxx", "NFeStatusServico4" )
+         CASE nWsServico == WS_NFE_CONSULTACADASTRO  ; ::cSoapUrl := StrTran( ::cSoapUrl, "xxxxx", "CadConsultaCadastro4" )
          ENDCASE
       ENDIF
       IF ::cUF == "SP" // tinha que ter uma diferente
