@@ -53,7 +53,7 @@ CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
    VAR cXml
    VAR cRetorno
 
-   END CLASS
+   ENDCLASS
 
 METHOD ToPDF( cXmlNFCe, cFilePDF, ... ) CLASS hbNFeDaNFCe
 

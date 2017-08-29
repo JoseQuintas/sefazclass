@@ -1080,7 +1080,7 @@ METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
 METHOD SetSoapURL( nWsServico ) CLASS SefazClass
 
    ::cSoapURL := ""
-   IF ::cVersao == "4.00"
+   IF ::cVersao == "4.00" .AND. WS_PROJETO_NFE
       DO CASE
       CASE ::cUF == "AM"
       CASE ::cUF == "BA"
