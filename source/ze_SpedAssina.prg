@@ -356,3 +356,11 @@ FUNCTION FakeSignature( cUri )
    cXml += [</Signature>]
 
    RETURN cXml
+
+// Anotação: carregar PFX e instalar via Capicom
+//
+// oCertStore := win_OleCreateObject( "CAPICOM.Store" )
+// oCert      := win_OleCreateObject( "CAPICOM.Certificate" )
+// oCert:Load( "c:\path\file.pfx", "password", 1, 0 )
+// oCert:Add( oCert )
+//

@@ -305,7 +305,7 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
 
    LOCAL nI := 0, checksum := 0, nValorCar, cCode128 := '', cCodigoBarra
 
-   cCodigoBarra == pcCodigoBarra
+   cCodigoBarra := pcCodigoBarra
    IF Len( cCodigoBarra ) > 0    // Verifica se os caracteres são válidos (somente números)
       IF Int( Len( cCodigoBarra ) / 2 ) == Len( cCodigoBarra ) / 2    // Tem ser par o tamanho do código de barras
          FOR nI = 1 TO Len( cCodigoBarra )
