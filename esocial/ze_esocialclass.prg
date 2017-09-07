@@ -10,7 +10,6 @@ PROCEDURE Main
 
    oESocial:cCertificado := "XXXX"
    ? oESocial:ConsultaRetornoLote(  cChave )
-   hb_MemoWrit( "test.xml", oEsocial:cXmlEnvelope )
 
    RETURN
 
@@ -46,9 +45,7 @@ METHOD ConsultaRetornoLote( cChave, cCertificado ) CLASS ESocialClass
           [<soapenv:Header/>] + ;
           [<soapenv:Body>] + ;
              [<consultaLoteEventos>] + ;
-                [<consulta>] + ;
-                   ::cXmlDocumento + ;
-                [</consulta>] + ;
+                [<consulta>] + ::cXmlDocumento + [</consulta>] + ;
              [</consultaLoteEentos>] + ;
           [</soapenv:Body>] + ;
        [</soapenv:Envelope>]
