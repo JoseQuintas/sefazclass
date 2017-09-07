@@ -21,9 +21,9 @@ source\ze_inscestadual.prg
 -m
 -n
 
--olib\${hb_plat}\${hb_comp}\${hb_name}
+-o${hb_install_prefix}\addons\lib\${hb_plat}\${hb_comp}\${hb_name}
 
 sefazclass.hbc
 
 -hblib
--hbx=${hb_name}
+-hbx=${hb_install_prefix}\addons\${hb_name}
