@@ -82,7 +82,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          READ
 
       CASE nOpc == nOpcTemp++
-         cXmlRetorno := oSefaz:NfeStatus()
+         cXmlRetorno := oSefaz:NfeStatusServico()
          wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
          wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
          cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" ) + HB_EOL()
@@ -104,7 +104,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          ENDIF
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          oSefaz:cProjeto := "nfe"
-         cXmlRetorno := oSefaz:NfeCadastro( cCnpj, cUF )
+         cXmlRetorno := oSefaz:NfeConsultaCadastro( cCnpj, cUF )
          wapi_MessageBox( , oSefaz:cXmlSoap, "XML Enviado" )
          wapi_MessageBox( , oSefaz:cXmlRetorno, "XML Retornado" )
          cTexto := "versao:    " + XmlNode( cXmlRetorno, "versao" ) + HB_EOL()
@@ -136,7 +136,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          IF LastKey() == K_ESC
             EXIT
          ENDIF
-         oSefaz:NfeConsulta( cChave )
+         oSefaz:NfeConsultaProtocolo( cChave )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
@@ -147,7 +147,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          IF LastKey() == K_ESC
             EXIT
          ENDIF
-         oSefaz:CteConsulta( cChave, cCertificado )
+         oSefaz:CteConsultaProtocolo( cChave, cCertificado )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
@@ -158,7 +158,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          IF LastKey() == K_ESC
             EXIT
          ENDIF
-         oSefaz:MDFeConsulta( cChave, cCertificado )
+         oSefaz:MDFeConsultaProtocolo( cChave, cCertificado )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
@@ -186,7 +186,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       CASE nOpc == nOpcTemp  // pra não esquecer o ++, último não tem
          wapi_MessageBox( , "NFCE" )
          oSefaz:cNFCE := "S"
-         oSefaz:NfeStatus()
+         oSefaz:NfeStatusServico()
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
       ENDCASE
