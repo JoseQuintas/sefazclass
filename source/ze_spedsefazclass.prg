@@ -90,15 +90,15 @@ CREATE CLASS SefazClass
    VAR    cSoapURL       INIT ""                      // webservice Endereço
    VAR    cNFCE          INIT "N"                     // Porque NFCE tem endereços diferentes
 
-   METHOD CTeConsulta( ... )   INLINE  ::CTeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
-   METHOD NFeConsulta( ... )   INLINE  ::NFeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
-   METHOD MDFeConsulta( ... )  INLINE  ::MDFeConsultaProtocolo( ... )   // Não usar, apenas compatibilidade
-   METHOD CTeStatus( ... )     INLINE  ::CTeStatusServico( ... )        // Não usar, apenas compatibilidade
-   METHOD NFeStatus( ... )     INLINE  ::NFeStatusServico( ... )        // Não usar, apenas compatibilidade
-   METHOD MDFeStatus( ... )    INLINE  ::MDFeStatusServico( ... )       // Não usar, apenas compatibilidade
-   METHOD NFeCadastro( ... )   INLINE  ::NFeConsultaCadastro( ... )     // Não usar, apenas compatibilidade
-   METHOD NFeEventoCCE( ... )  INLINE  ::NFeEventoCarta( ... )          // Não usar, apenas compatibilidade
-   METHOD CTeEventoCCE( ... )  INLINE  ::CTeEventoCarta( ... )
+   //METHOD CTeConsulta( ... )   INLINE  ::CTeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
+   //METHOD NFeConsulta( ... )   INLINE  ::NFeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
+   //METHOD MDFeConsulta( ... )  INLINE  ::MDFeConsultaProtocolo( ... )   // Não usar, apenas compatibilidade
+   //METHOD CTeStatus( ... )     INLINE  ::CTeStatusServico( ... )        // Não usar, apenas compatibilidade
+   //METHOD NFeStatus( ... )     INLINE  ::NFeStatusServico( ... )        // Não usar, apenas compatibilidade
+   //METHOD MDFeStatus( ... )    INLINE  ::MDFeStatusServico( ... )       // Não usar, apenas compatibilidade
+   //METHOD NFeCadastro( ... )   INLINE  ::NFeConsultaCadastro( ... )     // Não usar, apenas compatibilidade
+   //METHOD NFeEventoCCE( ... )  INLINE  ::NFeEventoCarta( ... )          // Não usar, apenas compatibilidade
+   //METHOD CTeEventoCCE( ... )  INLINE  ::CTeEventoCarta( ... )
 
    METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
