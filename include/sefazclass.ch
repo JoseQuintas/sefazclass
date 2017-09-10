@@ -36,15 +36,15 @@
 #define WS_PROJETO_CTE               "cte"
 #define WS_PROJETO_MDFE              "mdfe"
 
-#define WS_VERSAO_CTE  "2.00"
-#define WS_VERSAO_MDFE "1.00"
-#define WS_VERSAO_NFE  "3.10"
+#define WS_VERSAO_CTE                "2.00"
+#define WS_VERSAO_MDFE               "1.00"
+#define WS_VERSAO_NFE                "3.10"
 
 #define INDSINC_RETORNA_PROTOCOLO    "1"
 #define INDSINC_RETORNA_RECIBO       "0"
 
 #ifndef XML_UTF8
-   #define XML_UTF8                     [<?xml version="1.0" encoding="UTF-8"?>]
+   #define XML_UTF8                   [<?xml version="1.0" encoding="UTF-8"?>]
 #endif
 
 #define SEFAZ_NFE_URL_LIST { ;
@@ -470,6 +470,7 @@
    { "SP", WS_AMBIENTE_PRODUCAO,    "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx?" }, ;
    { "SE", WS_AMBIENTE_PRODUCAO,    "http://www.nfce.se.gov.br/portal/consultarNFCe.jsp?" }, ;
    { "TO", WS_AMBIENTE_PRODUCAO,    "" }, ;
+   ;
    { "AC", WS_AMBIENTE_HOMOLOGACAO, "http://hml.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
    { "AL", WS_AMBIENTE_HOMOLOGACAO, "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?" }, ;
    { "AP", WS_AMBIENTE_HOMOLOGACAO, "https://www.sefaz.ap.gov.br/nfcehml/nfce.php?" }, ;
