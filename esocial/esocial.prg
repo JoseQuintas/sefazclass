@@ -8,7 +8,7 @@ PROCEDURE Main
    LOCAL cChave   := "1.2.201709.0000000000000225594"
    LOCAL oESocial := ESocialClass():New()
 
-   oESocial:cCertificado := "XXXX"
+   oESocial:cCertificado := "XXX"
    ? oESocial:ConsultaRetornoLote(  cChave )
 
    RETURN
@@ -57,8 +57,8 @@ METHOD MicrosoftXmlSoapPost() CLASS ESocialClass
 
    LOCAL oComunicacao
 
-   oComunicacao = win_OleCreateObject( "MSXML2.XMLHTTP" )
-   //oComunicacao:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
+   oComunicacao = win_OleCreateObject( "MSXML2.ServerXMLHTTP" )
+   oComunicacao:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
    oComunicacao:open( "POST", ::cUrl, .F. )
    oComunicacao:SetRequestHeader( "SOAPAction", ::cSOAPAction )
    oComunicacao:SetRequestHeader( "Content-Type", "text/xml; charset=utf-8" )
