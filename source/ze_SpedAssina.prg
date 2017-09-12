@@ -82,7 +82,7 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior )
       cTxtXml  := AssinaAjustaAssinado( oDOMDocument:Xml )
       cRetorno := "OK"
 
-   ENDSEQUENCE
+   END SEQUENCE
 
    IF cRetorno != "OK" .OR. ! "<Signature" $ cTxtXml
       IF Empty( cRetorno )
@@ -221,7 +221,7 @@ STATIC FUNCTION AssinaLoadXml( oDomDocument, cTxtXml, cRetorno )
       oDOMDocument:preserveWhiteSpace := .T.
       lOk := .T.
 
-   ENDSEQUENCE
+   END SEQUENCE
 
    IF ! lOk
       cRetorno := "Erro Assinatura: Não carregado MSXML2.DomDocument"
@@ -236,7 +236,7 @@ STATIC FUNCTION AssinaLoadXml( oDomDocument, cTxtXml, cRetorno )
       oDOMDocument:setProperty( "SelectionNamespaces", [xmlns:ds="http://www.w3.org/2000/09/xmldsig#"] )
       lOk := .T.
 
-   ENDSEQUENCE
+   END SEQUENCE
 
    IF ! lOk
       IF oDOMDocument:parseError:errorCode <> 0 // XML não carregado
@@ -270,7 +270,7 @@ STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cRetorno )
       oCapicomStore:Add( oCert )
 
       lOk := .T.
-   ENDSEQUENCE
+   END SEQUENCE
    IF ! lOk
       cRetorno := "Erro assinatura: Problemas no uso do certificado"
       RETURN .F.

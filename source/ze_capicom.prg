@@ -20,7 +20,7 @@ FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
          dValidTo   := oCertificado:Item(1):ValidToDate
          cNomeCertificado := oCertificado:Item( 1 ):SubjectName
       ENDIF
-   ENDSEQUENCE
+   END SEQUENCE
    IF "CN=" $ cNomeCertificado
       cNomeCertificado := Substr( cNomeCertificado, At( "CN=", cNomeCertificado ) + 3 )
       IF "," $ cNomeCertificado

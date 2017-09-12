@@ -1166,7 +1166,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
             ::cXmlRetorno += Chr( cRetorno[ nCont ] )
          NEXT
       ENDIF
-   ENDSEQUENCE
+   END SEQUENCE
    IF "<soap:Body>" $ ::cXmlRetorno .AND. "</soap:Body>" $ ::cXmlRetorno
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" ) // hb_UTF8ToStr()
    ELSEIF "<soapenv:Body>" $ ::cXmlRetorno .AND. "</soapenv:Body>" $ ::cXmlRetorno
@@ -1355,7 +1355,7 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
       ENDIF
       cRetorno := "OK"
 
-   ENDSEQUENCE
+   END SEQUENCE
 
    RETURN cRetorno
 
