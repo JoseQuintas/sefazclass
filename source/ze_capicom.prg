@@ -15,10 +15,10 @@ FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
    oColecao := oCapicomStore:Certificates()
    BEGIN SEQUENCE WITH __BreakBlock()
       oCertificado := oColecao:Select( "Selecione o certificado para uso da Nfe","Selecione o certificado", .F. )
-      IF oCertificado:Count() > 0
-         dValidFrom := oCertificado:Item(1):ValidFromDate
-         dValidTo   := oCertificado:Item(1):ValidToDate
-         cNomeCertificado := oCertificado:Item( 1 ):SubjectName
+      IF oCertificado != NIL
+         dValidFrom := oCertificado:item(1):ValidFromDate
+         dValidTo   := oCertificado:item(1):ValidToDate
+         cNomeCertificado := oCertificado:SubjectName
       ENDIF
    END SEQUENCE
    IF "CN=" $ cNomeCertificado
