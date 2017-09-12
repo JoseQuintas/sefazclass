@@ -8,19 +8,15 @@ José Quintas
 
 FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
 
-   LOCAL oCertificado, oCapicomStore, cNomeCertificado := "NENHUM", oColecao
+   LOCAL oCertificado, oCapicomStore, cNomeCertificado, oColecao
 
    oCapicomStore        := win_oleCreateObject( "CAPICOM.Store" )
    oCapicomStore:Open( _CAPICOM_CURRENT_USER_STORE, 'My', _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
    oColecao := oCapicomStore:Certificates()
-   BEGIN SEQUENCE WITH __BreakBlock()
-      oCertificado := oColecao:Select( "Selecione o certificado para uso da Nfe","Selecione o certificado", .F. )
-      IF oCertificado != NIL
-         dValidFrom := oCertificado:item(1):ValidFromDate
-         dValidTo   := oCertificado:item(1):ValidToDate
-         cNomeCertificado := oCertificado:SubjectName
-      ENDIF
-   END SEQUENCE
+   oCertificado := oColecao:Select( "Selecione o certificado para uso da Nfe","Selecione o certificado", .F. )
+   dValidFrom := oCertificado:item(1):ValidFromDate
+   dValidTo   := oCertificado:item(1):ValidToDate
+   cNomeCertificado := oCertificado:item(1):SubjectName
    IF "CN=" $ cNomeCertificado
       cNomeCertificado := Substr( cNomeCertificado, At( "CN=", cNomeCertificado ) + 3 )
       IF "," $ cNomeCertificado
