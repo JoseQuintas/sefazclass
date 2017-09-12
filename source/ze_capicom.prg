@@ -12,10 +12,10 @@ FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
 
    oCapicomStore        := win_oleCreateObject( "CAPICOM.Store" )
    oCapicomStore:Open( _CAPICOM_CURRENT_USER_STORE, 'My', _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
-   oColecao     := oCapicomStore:Certificates()
-   oCertificado := oColecao:Select( "Selecione o certificado para uso da Nfe","Selecione o certificado", .F. )
-   dValidFrom   := oCertificado:item(1):ValidFromDate
-   dValidTo     := oCertificado:item(1):ValidToDate
+   oColecao         := oCapicomStore:Certificates()
+   oCertificado     := oColecao:Select( "Selecione o certificado para uso da Nfe","Selecione o certificado", .F. )
+   dValidFrom       := oCertificado:item(1):ValidFromDate
+   dValidTo         := oCertificado:item(1):ValidToDate
    cNomeCertificado := oCertificado:item(1):SubjectName
    IF "CN=" $ cNomeCertificado
       cNomeCertificado := Substr( cNomeCertificado, At( "CN=", cNomeCertificado ) + 3 )
