@@ -1049,7 +1049,7 @@ METHOD SetSoapURL( nWsServico ) CLASS SefazClass
       ::cSoapUrl := SoapUrlNfe4( ::cUF, ::cAmbiente, nWsServico )
    CASE ::cProjeto == WS_PROJETO_NFE
       DO CASE
-      CASE ::NFCe == "S"
+      CASE ::cNFCe == "S"
          ::cSoapUrl := SoapUrlNFCe( ::cUF, ::cAmbiente, nWsServico )
       CASE ::cVersao == "4.00"
          ::cSoapUrl := SoapUrlNfe( ::cUf, ::cAmbiente, nWsServico )
