@@ -5,6 +5,7 @@ inclusa aqui w32ole.prg da hbnfe
 */
 
 #ifdef __XHARBOUR__
+// Atenção !!!! pode depender da versão do XHarbour, da LIB gráfica, etc.
 FUNCTION win_OleCreateObject( cObject )
    RETURN xhb_CreateObject( cObject )
 
@@ -46,6 +47,11 @@ STATIC bOleInitialized:=.F.
 #include "oleerr.ch"
 
 FUNCTION xhb_CreateObject( cString, cLicense )
+
+   DO CASE
+   CASE cString == "MSXML2.ServerXMLHTTP" // talvez no Xharbour seja ServerXMLHTTP.5.0
+   CASE cString == "MSXML2.DOMDocument"   // talvez no Xharbour seja DOMDocument.5.0
+   ENDCASE
 
    RETURN TOleAutoX():New( cString, , cLicense )
 
