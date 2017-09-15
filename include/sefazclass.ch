@@ -417,6 +417,7 @@
    { "**", WS_AMBIENTE_PRODUCAO,    WS_MDFE_RETRECEPCAO,     "https://mdfe.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" }, ;
    { "**", WS_AMBIENTE_PRODUCAO,    WS_MDFE_STATUSSERVICO,   "https://mdfe.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" }, ;
    { "**", WS_AMBIENTE_PRODUCAO,    WS_MDFE_CONSNAOENC,      "https://mdfe.svrs.rs.gov.br/ws/mdfeConsNaoEnc/mdfeConsNaoenc.asmx" }, ;
+   ;
    { "**", WS_AMBIENTE_HOMOLOGACAO, WS_MDFE_CONSULTA,        "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" }, ;
    { "**", WS_AMBIENTE_HOMOLOGACAO, WS_MDFE_CONSNAOENC,      "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsNaoEnc/MDFeConsNaoEnc.asmx" }, ;
    { "**", WS_AMBIENTE_HOMOLOGACAO, WS_MDFE_RECEPCAO,        "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" }, ;
