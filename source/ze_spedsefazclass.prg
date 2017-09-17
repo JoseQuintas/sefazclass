@@ -1555,8 +1555,8 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
    QRCODE_cIdToken := cIdToken
    QRCODE_cCSC     := cCSC
 
-   IF !Empty( QRCODE_chNFe ) .AND. !Empty( QRCODE_nVersao ) .AND. !Empty( QRCODE_tpAmb    ) .AND. !Empty( QRCODE_dhEmi ) .AND. !Empty( QRCODE_vNF ) .AND.;
-      !Empty( QRCODE_vICMS ) .AND. !Empty( QRCODE_digVal  ) .AND. !Empty( QRCODE_cIdToken ) .AND. !Empty( QRCODE_cCSC  )
+   IF ! Empty( QRCODE_chNFe ) .AND. ! Empty( QRCODE_nVersao ) .AND. ! Empty( QRCODE_tpAmb    ) .AND. ! Empty( QRCODE_dhEmi ) .AND. !Empty( QRCODE_vNF ) .AND.;
+      ! Empty( QRCODE_vICMS ) .AND. ! Empty( QRCODE_digVal  ) .AND. ! Empty( QRCODE_cIdToken ) .AND. ! Empty( QRCODE_cCSC  )
 
       QRCODE_chNFe    := "chNFe="    + QRCODE_chNFe    + "&"
       QRCODE_nVersao  := "nVersao="  + QRCODE_nVersao  + "&"
@@ -1584,9 +1584,9 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
       // XML com a Tag do QRCode
       cXmlAssinado := [<NFe xmlns="http://www.portalfiscal.inf.br/nfe">]
       cXmlAssinado += cInfNFe
-      cXmlAssinado += [<]+"infNFeSupl"+[>]
-      cXmlAssinado += [<]+"qrCode"+[>] + QRCODE_cTag + [</]+"qrCode"+[>]
-      cXmlAssinado += [</]+"infNFeSupl"+[>]
+      cXmlAssinado += [<] + "infNFeSupl"+[>]
+      cXmlAssinado += [<] + "qrCode"+[>] + QRCODE_cTag + [</] + "qrCode" + [>]
+      cXmlAssinado += [</] + "infNFeSupl"+[>]
       cXmlAssinado += cSignature
       cXmlAssinado += [</NFe>]
    ELSE
