@@ -3,7 +3,7 @@ Tabela NCM com validade e unidade de medida SISCOMEX Portal NFE Diversos 21/07/2
 José Quintas
 */
 
-#define SEFAZ_NCM_EXPORTA  { ;
+#define SEFAZ_NCM_EXTERIOR { ;
    { "01012100", "20160101", "", "UN" }, ;
    { "01012900", "20160101", "", "UN" }, ;
    { "01013000", "20160101", "", "UN" }, ;
