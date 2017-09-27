@@ -130,15 +130,15 @@ METHOD BpeConsulta( cChave, cCertificado, cAmbiente )
 
    ::Setup( ::UfSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_BPE_CONSULTA )
    ::cSoapVersion := ::cVersao
-   ::cXmlEnvio    := [<consSitBPe> versao="] + ::cVersao + [>]
+   ::cXmlEnvio    := [<consSitBPe> versao="] + ::cVersao + [ xmlns="http://portalfiscal.inf.br/bpe">]
    ::cXmlEnvio    +=   XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=   XmlTag( "xServ", "CONSULTAR" )
    ::cXmlEnvio    +=   XmlTag( "chBPe", cChave )
    ::cXmlEnvio    += [</conssitBPe>]
-   IF ! Substr( cChave, 21,  ) $ ""
+   IF Substr( cChave, 21, 2 ) != "63"
       ::cXmlRetorno := "*ERRO* Chave não se refere a BPE"
    ELSE
-      XmlSoapPost()
+      ::XmlSoapPost()
    ENDIF
    ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
    ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
@@ -1045,6 +1045,7 @@ METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
    CASE ::cProjeto == WS_PROJETO_NFE ;  ::cVersao := WS_VERSAO_NFE
    CASE ::cProjeto == WS_PROJETO_CTE ;  ::cVersao := WS_VERSAO_CTE
    CASE ::cProjeto == WS_PROJETO_MDFE ; ::cVersao := WS_VERSAO_MDFE
+   CASE ::cProjeto == WS_PROJETO_BPE ;  ::cVersao := WS_VERSAO_BPE
    ENDCASE
    ::SetSoapURL( nWsServico )
 
@@ -1088,6 +1089,8 @@ METHOD SetSoapURL( nWsServico ) CLASS SefazClass
       IF Empty( ::cSoapUrl )
          ::cSoapUrl := SoapUrlNFe( ::cUF, ::cAmbiente, nWsServico )
       ENDIF
+   CASE ::cProjeto == WS_PROJETO_BPE
+      ::cSoapUrl := SoapUrlBpe( ::cUF, ::cAmbiente, nWsServico )
    ENDCASE
 
    RETURN NIL
@@ -1439,6 +1442,15 @@ METHOD CurlSoapPost() CLASS SefazClass
 
    RETURN NIL
 #endif
+
+STATIC FUNCTION SoapUrlBpe( cUF, cAmbiente, nWsServico )
+
+   LOCAL nPos, cUrl, aList := SEFAZ_BPE_URL_LIST
+
+   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
+   cUrl := iif( nPos == 0, "", aList[ nPos, 4 ] )
+
+   RETURN cUrl
 
 STATIC FUNCTION SoapUrlNfe( cUF, cAmbiente, nWsServico )
 
