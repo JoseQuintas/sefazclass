@@ -52,6 +52,8 @@ CREATE CLASS SefazClass
    //METHOD NFeEventoCCE( ... )  INLINE  ::NFeEventoCarta( ... )          // Não usar, apenas compatibilidade
    //METHOD CTeEventoCCE( ... )  INLINE  ::CTeEventoCarta( ... )
 
+   METHOD BpeConsulta( cChave, cCertificado, cAmbiente )
+
    METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
@@ -121,6 +123,25 @@ METHOD GeraQRCode( cXmlDocumento, cIdToken, cCsc )
       ::cCsc := cCsc
    ENDIF
    ::cXmlRetorno := GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC )
+
+   RETURN ::cXmlRetorno
+
+METHOD BpeConsulta( cChave, cCertificado, cAmbiente )
+
+   ::Setup( ::UfSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_BPE_CONSULTA )
+   ::cSoapVersion := ::cVersao
+   ::cXmlEnvio    := [<consSitBPe> versao="] + ::cVersao + [>]
+   ::cXmlEnvio    +=   XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio    +=   XmlTag( "xServ", "CONSULTAR" )
+   ::cXmlEnvio    +=   XmlTag( "chBPe", cChave )
+   ::cXmlEnvio    += [</conssitBPe>]
+   IF ! Substr( cChave, 21,  ) $ ""
+      ::cXmlRetorno := "*ERRO* Chave não se refere a BPE"
+   ELSE
+      XmlSoapPost()
+   ENDIF
+   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
 
    RETURN ::cXmlRetorno
 
