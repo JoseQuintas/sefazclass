@@ -29,16 +29,24 @@
 #define WS_NFE_DOWNLOADNF            26
 #define WS_NFE_CONSULTADEST          27
 
+#define WS_BPE_RECEPCAO              28
+#define WS_BPE_RECEPCAOEVENTO        29
+#define WS_BPE_CONSULTA              30
+#define WS_BPE_STATUSSERVICO         31
+#define WS_BPE_QRCDE                 32
+
 #define WS_AMBIENTE_HOMOLOGACAO      "2"
 #define WS_AMBIENTE_PRODUCAO         "1"
 
 #define WS_PROJETO_NFE               "nfe"
 #define WS_PROJETO_CTE               "cte"
 #define WS_PROJETO_MDFE              "mdfe"
+#define WS_PROJETO_BPE               "bpe"
 
 #define WS_VERSAO_CTE                "2.00"
 #define WS_VERSAO_MDFE               "1.00"
 #define WS_VERSAO_NFE                "3.10"
+#define WS_VERSAO_BPE                "1.00"
 
 #define INDSINC_RETORNA_PROTOCOLO    "1"
 #define INDSINC_RETORNA_RECIBO       "0"
@@ -499,3 +507,28 @@
    { "SP", WS_AMBIENTE_HOMOLOGACAO, "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
    { "SE", WS_AMBIENTE_HOMOLOGACAO, "http://www.hom.nfe.se.gov.br/portal/consultarNFCe.jsp?" }, ;
    { "TO", WS_AMBIENTE_HOMOLOGACAO, "" } }
+
+#define SEFAZ_BPE_URL_LIST := { ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,     WS_BPE_RECEPCAO,       "https://bpe.fazenda.ms.gov.br/ws/BPeRecepcao" }, ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,     WS_BPE_RECEPCAOEVENTO, "https://bpe.fazenda.ms.gov.br/ws/BPeRecepcaoEvento" }, ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,     WS_BPE_CONSULTA,       "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,     WS_BPE_STATUSSERVICO,  "https://bpe.fazenda.ms.gov.br/ws/BPeStatusServico" }, ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,     WS_BPE_QRCODE,         "http://dfe.ms.gov.br/bpe/qrcode" }, ;
+   ;
+   { "MS",   WS_AMBIENTE_HOMOLOGACAO,  WS_BPE_RECEPCAO,       "https://homologacao.bpe.ms.gov.br/ws/BPeRecepcao" }, ;
+   { "MS",   WS_AMBIENTE_HOMOLOGACAO,  WS_BPE_RECEPCAOEVENTO, "https://homologacao.bpe.ms.gov.br/ws/BPeRecepcaoEvento" }, ;
+   { "MS",   WS_AMBIENTE_HOMOLOGACAO,  WS_BPE_CONSULTA,       "https://homologacao.bpe.ms.gov.br/ws/BPeConsulta" }, ;
+   { "MS",   WS_AMBIENTE_HOMOLOGACAO,  WS_BPE_STATUSSERVICO,  "https://homologacao.bpe.ms.gov.br/ws/BPeStatusServico" }, ;
+   { "MS",   WS_AMBIENTE_HOMOLOGACAO,  WS_BPE_QRCODE,         "http//www.dfe.ms.gov.br/bpe/qrcode" }, ;
+   ;
+   { "SVRS", WS_AMBIENTE_PRODUCAO,     WS_BPE_RECEPCAO,       "https://bpe.svrs.rs.gov.br/ws/bpeRecepcao/bpeRecepcao.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_PRODUCAO,     WS_BPE_RECEPCAOEVENTO, "https://bpe.svrs.rs.gov.br/ms/bpeRecepcaoEvento/bpeRecepcaoEvento.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_PRODUCAO,     WS_BPE_CONSULTA,       "https://bpe.svrs.rs.gov.br/ms/bpeConsulta.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_PRODUCAO,     WS_BPE_STATUSERVICO,   "https://bpe.svrs.rs.gov.br/ms/bpeStatusServico/bpeStatusServico.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_PRODUCAO,     WS_BPE_QRCODE,         "https://bpe.svrs.rs.gov.br/ws/bpeQrCode/qrCode.asmx" }, ;
+   ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO,  WS_RECEPCAO,           "https://bpe-homologacao.srvs.rs.gov.br/ws/bpeRecepcao/bpeRecepcao.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO,  WS_RECEPCAOEVENTO,     "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeRecepcaoEvento/bpeRecepcaoEvento.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO,  WS_CONSULTA,           "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeConsulta/bpeConsulta.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO,  WS_STATUSSERVICO,      "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeStatusServico/bpeStatusServico.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO,  WS_QRCODE,             "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeQrCode/qrCode.asmx" } }
