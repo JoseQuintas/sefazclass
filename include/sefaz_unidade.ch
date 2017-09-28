@@ -1,66 +1,17 @@
 /*
-ULTIMA ATUALIZACAO: 2017.06
+ULTIMA ATUALIZACAO: 2017.09 igual exportação
 */
 
 #define SEFAZ_UNIDADE { ;
-   { "AMPOLA", "AMPOLA" }, ;
-   { "BALDE", "BALDE" }, ;
-   { "BANDEJ", "BANDEJA" }, ;
-   { "BARRA", "BARRA" }, ;
-   { "BISNAG", "BISNAGA" }, ;
-   { "BLOCO", "BLOCO" }, ;
-   { "BOBINA", "BOBINA" }, ;
-   { "BOMB", "BOMBONA" }, ;
-   { "CAPS", "CAPSULA" }, ;
-   { "CART", "CARTELA" }, ;
-   { "CENTO", "CENTO" }, ;
-   { "CJ", "CONJUNTO" }, ;
-   { "CM", "CENTIMETRO" }, ;
-   { "CM2", "CENTIMETRO QUADRADO" }, ;
-   { "CX", "CAIXA" }, ;
-   { "CX2", "CAIXA COM 2 UNIDADES" }, ;
-   { "CX3", "CAIXA COM 3 UNIDADES" }, ;
-   { "CX5", "CAIXA COM 5 UNIDADES" }, ;
-   { "CX10", "CAIXA COM 10 UNIDADES" }, ;
-   { "CX15", "CAIXA COM 15 UNIDADES" }, ;
-   { "CX20", "CAIXA COM 20 UNIDADES" }, ;
-   { "CX25", "CAIXA COM 25 UNIDADES" }, ;
-   { "CX50", "CAIXA COM 50 UNIDADES" }, ;
-   { "CX100", "CAIXA COM 100 UNIDADES" }, ;
-   { "DISP", "DISPLAY" }, ;
    { "DUZIA", "DUZIA" }, ;
-   { "EMBAL", "EMBALAGEM" }, ;
-   { "FARDO", "FARDO" }, ;
-   { "FOLHA", "FOLHA" }, ;
-   { "FRASCO", "FRASCO" }, ;
-   { "GALAO", "GALAO" }, ;
-   { "GF", "GARRAFA" }, ;
-   { "GRAMAS", "GRAMAS" }, ;
-   { "JOGO", "JOGO" }, ;
+   { "G", "GRAMA" }, ;
    { "KG", "QUILOGRAMA" }, ;
-   { "KIT", "KIT" }, ;
-   { "LATA", "LATA" }, ;
-   { "LITRO", "LITRO" }, ;
+   { "LT", "LITRO" }, ;
    { "M", "METRO" }, ;
    { "M2", "METRO QUADRADO" }, ;
    { "M3", "METRO CUBICO" }, ;
-   { "MILHEI", "MILHEIRO" }, ;
-   { "ML", "MILILITRO" }, ;
-   { "MWH", "MEGAWATT HORA" }, ;
-   { "PACOTE", "PACOTE" }, ;
-   { "PALETE", "PALETE" }, ;
+   { "MWHORA", "MEGAWATT HORA" }, ;
    { "PARES", "PARES" }, ;
-   { "PC", "PECA" }, ;
-   { "POTE", "POTE" }, ;
-   { "K", "QUILATE" }, ;
-   { "RESMA", "RESMA" }, ;
-   { "ROLO", "ROLO" }, ;
-   { "SACO", "SACO" }, ;
-   { "SACOLA", "SACOLA" }, ;
-   { "TAMBOR", "TAMBOR" }, ;
-   { "TANQUE", "TANQUE" }, ;
+   { "QUILAT", "QUILATE" }, ;
    { "TON", "TONELADA" }, ;
-   { "TUBO", "TUBO" }, ;
-   { "UNID", "UNIDADE" }, ;
-   { "VASIL", "VASILHAME" }, ;
-   { "VIDRO", "VIDRO" } }
+   { "UNID", "UNIDADE" } }

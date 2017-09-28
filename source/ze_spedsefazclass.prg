@@ -53,6 +53,7 @@ CREATE CLASS SefazClass
    //METHOD CTeEventoCCE( ... )  INLINE  ::CTeEventoCarta( ... )
 
    METHOD BpeConsulta( cChave, cCertificado, cAmbiente )
+   METHOD BpeStatusServico( cUF, cCertificado, cAmbiente )
 
    METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
@@ -126,7 +127,7 @@ METHOD GeraQRCode( cXmlDocumento, cIdToken, cCsc )
 
    RETURN ::cXmlRetorno
 
-METHOD BpeConsulta( cChave, cCertificado, cAmbiente )
+METHOD BpeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UfSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_BPE_CONSULTA )
    ::cSoapVersion := ::cVersao
@@ -142,6 +143,19 @@ METHOD BpeConsulta( cChave, cCertificado, cAmbiente )
    ENDIF
    ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
    ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+
+   RETURN ::cXmlRetorno
+
+METHOD BpeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
+
+   ::Setup( cUF, cCertificado, cAmbiente, WS_BPE_STATUSSERVICO )
+
+   ::cSoapVersion := ::cVersao
+   ::cXmlEnvio := [<consStatServBPe versao="] + ::cVersao + [" xmlns="http://www.portalfiscal.inf.br/bpe">]
+   ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio +=    XmlTag( "xServ", "STATUS" )
+   ::cXmlEnvio += [</consStatServBPe>]
+   ::XmlSoapPost()
 
    RETURN ::cXmlRetorno
 
@@ -1014,6 +1028,10 @@ METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
       { "**", WS_NFE_RECEPCAOEVENTO,    WS_PROJETO_NFE,  "nfeRecepcaoEvento",    "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" }, ;
       { "**", WS_NFE_INUTILIZACAO,      WS_PROJETO_NFE,  "NfeInutilizacaoNF2",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2" }, ;
       { "**", WS_NFE_AUTORIZACAO,       WS_PROJETO_NFE,  "NfeAutorizacao",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
+      { "**", WS_BPE_RECEPCAO,          WS_PROJETO_BPE,  "BpeRecepcao",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeRecepcao/bpeRecepcao" }, ;
+      { "**", WS_BPE_RECEPCAOEVENTO,    WS_PROJETO_BPE,  "BpeRecepcaoEvento",    "http://www.portalfiscal.inf.br/bpe/wsdl/bpeRecepcaoEvento" }, ;
+      { "**", WS_BPE_CONSULTA,          WS_PROJETO_BPE,  "BpeConsulta",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
+      { "**", WS_BPE_STATUSSERVICO,     WS_PROJETO_BPE,  "BpeStatusServicoBP",   "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico" }, ;
       { "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO", ;
 	          WS_NFE_AUTORIZACAO,        WS_PROJETO_NFE,  "nfeAutorizacaoLote",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
       { "**", WS_NFE_RETAUTORIZACAO,    WS_PROJETO_NFE,  "NfeRetAutorizacao",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" }, ;
@@ -1068,7 +1086,7 @@ METHOD SetSoapURL( nWsServico ) CLASS SefazClass
    CASE ::cProjeto == WS_PROJETO_MDFE
       ::cSoapURL := SoapURLMDFe( "SVRS", ::cAmbiente, nWsServico )
    CASE ::cProjeto == WS_PROJETO_NFE .AND. ::cVersao == "4.00"
-      ::cSoapUrl := SoapUrlNfe4( ::cUF, ::cAmbiente, nWsServico )
+      ::cSoapUrl := SoapUrlNFe4( ::cUF, ::cAmbiente, nWsServico )
    CASE ::cProjeto == WS_PROJETO_NFE
       DO CASE
       CASE ::cNFCe == "S"
