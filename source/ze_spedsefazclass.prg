@@ -410,7 +410,7 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_CONSNAOENC )
 
-   ::cSoapVersion := "1.00"
+   ::cSoapVersion := WS_VERSAO_MDFE
    ::cXmlEnvio    := [<consMDFeNaoEnc versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR NÃO ENCERRADOS" )
@@ -426,7 +426,7 @@ METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_CONSULTA )
 
-   ::cSoapVersion := "1.00"
+   ::cSoapVersion := WS_VERSAO_MDFE
    ::cXmlEnvio    := [<consSitMDFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR" )
@@ -451,7 +451,7 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_RETRECEPCAO )
 
-   ::cSoapVersion := "1.00"
+   ::cSoapVersion := WS_VERSAO_MDFE
    ::cXmlEnvio    := [<consReciMDFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "nRec", ::cRecibo )
@@ -470,7 +470,7 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_DISTRIBUICAODFE )
 
-   ::cSoapVersion := "1.00"
+   ::cSoapVersion := WS_VERSAO_MDFE
    ::cXmlEnvio    := [<distDFeInt versao="] + ::cSoapVersion + ["xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
@@ -495,7 +495,7 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
 
-	::cSoapVersion  := "1.00"
+	::cSoapVersion  := WS_VERSAO_MDFE
    ::cXmlDocumento := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -529,7 +529,7 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
 
-	::cSoapVersion  := "1.00"
+	::cSoapVersion  := WS_VERSAO_MDFE
    ::cXmlDocumento := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
    ::cXmlDocumento +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -570,7 +570,7 @@ METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       RETURN ::cXmlRetorno
    ENDIF
    ::cXmlAutorizado := XML_UTF8
-   ::cXmlAutorizado += [<mdfeProc versao="1.00" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cXmlAutorizado += [<mdfeProc versao=" + WS_VERSAO_MDFE + " xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlAUtorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protMDFe", .T. )
    ::cXmlAutorizado += [</mdfeProc>]
@@ -589,9 +589,9 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
-   ::cXmlAutorizado += [<procEventoMDFe versao="1.00" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cXmlAutorizado += [<procEventoMDFe versao="] + WS_VERSAO_MDFE + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlAutorizado +=    cXmlAssinado
-   ::cXmlAutorizado += [<retEventoMDFe versao="1.00">]
+   ::cXmlAutorizado += [<retEventoMDFe versao="] + WS_VERSAO_MDFE + [">]
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEventoMDFe" ) // hb_Utf8ToStr(
    ::cXmlAutorizado += [</retEventoMDFe>]
    ::cXmlAutorizado += [</procEventoMDFe>]
@@ -607,7 +607,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
-   ::cSoapVersion := "1.00"
+   ::cSoapVersion := WS_VERSAO_MDFE
    ::cXmlEnvio    := [<enviMDFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlEnvio    +=    XmlTag( "idLote", cLote )
    ::cXmlEnvio    +=    ::cXmlDocumento
@@ -629,8 +629,8 @@ METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_STATUSSERVICO )
 
-   ::cSoapVersion := "1.00"
-   ::cXmlEnvio    := [<consStatServMDFe versao="] + ::cSoapVersion + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
+   ::cSoapVersion := WS_VERSAO_MDFE
+   ::cXmlEnvio    := [<consStatServMDFe versao="] + WS_VERSAO_MDFE + [" xmlns="http://www.portalfiscal.inf.br/mdfe">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
    ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
@@ -1387,7 +1387,14 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
       oXmlSchema := win_OleCreateObject( "MSXML2.XMLSchemaCache.6.0" )
 
       cRetorno   := "Erro carregando " + cFileXSD
-      oXmlSchema:Add( "http://www.portalfiscal.inf.br/nfe", cFileXSD )
+      DO CASE
+      CASE "mdfe" $ Lower( cFileXsd )
+         oXmlSchema:Add( "http://www.portalfiscal.inf.br/mdfe", cFileXSD )
+      CASE "cte"  $ Lower( cFileXsd )
+         oXmlSchema:Add( "http://www.portalfiscal.inf.br/cte", cFileXSD )
+      CASE "nfe"  $ Lower( cFileXsd )
+         oXmlSchema:Add( "http://www.portalfiscal.inf.br/nfe", cFileXSD )
+      ENDCASE
 
       oXmlDomDoc:Schemas := oXmlSchema
       oXmlErro := oXmlDomDoc:Validate()

@@ -44,7 +44,7 @@
 #define WS_PROJETO_BPE               "bpe"
 
 #define WS_VERSAO_CTE                "2.00"
-#define WS_VERSAO_MDFE               "1.00"
+#define WS_VERSAO_MDFE               "3.00"
 #define WS_VERSAO_NFE                "3.10"
 #define WS_VERSAO_BPE                "1.00"
 
