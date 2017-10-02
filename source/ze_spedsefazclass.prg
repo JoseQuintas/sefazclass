@@ -496,16 +496,16 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
 
 	::cSoapVersion  := WS_VERSAO_MDFE
-   ::cXmlDocumento := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
+   ::cXmlDocumento := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="] + WS_VERSAO_MDFE + [">]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
+   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="1.00">]
+   ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_MDFE + [">]
    ::cXmlDocumento +=       	  [<evCancMDFe>]
    ::cXmlDocumento +=          		XmlTag( "descEvento", "Cancelamento" )
    ::cXmlDocumento +=          		XmlTag( "nProt", Ltrim( Str( nProt ) ) )
@@ -530,16 +530,16 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
 
 	::cSoapVersion  := WS_VERSAO_MDFE
-   ::cXmlDocumento := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="1.00">]
+   ::cXmlDocumento := [<eventoMDFe xmlns="http://www.portalfiscal.inf.br/mdfe" versao="] + WS_VERSAO_MDFE + [">]
    ::cXmlDocumento +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
+   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110112" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="1.00">]
+   ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_MDFE + [">]
    ::cXmlDocumento +=       	  [<evEncMDFe>]
    ::cXmlDocumento +=          		XmlTag( "descEvento", "Encerramento" )
    ::cXmlDocumento +=          		XmlTag( "nProt", Ltrim( Str( nProt ) ) )
