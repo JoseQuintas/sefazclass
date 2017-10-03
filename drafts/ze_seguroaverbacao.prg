@@ -8,6 +8,8 @@
 9(4)  Mês e ano da vigência final da apólice MMYY
 9(2)  Dígitos verificadores
 Total: 40 caracteres
+
+fonte de referência: http://www.lex.com.br/legis_27520186_DELIBERACAO_N_325_DE_28_DE_SETEMBRO_DE_2017.aspx
 */
 
 PROCEDURE Main
