@@ -1,7 +1,5 @@
 #include "hbclass.ch"
-#ifndef XML_UTF8
-   #define XML_UTF8                     [<?xml version="1.0" encoding="UTF-8"?>]
-#endif
+#include "sefazclass.ch"
 
 PROCEDURE Main
 

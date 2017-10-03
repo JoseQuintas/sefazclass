@@ -51,9 +51,7 @@
 #define INDSINC_RETORNA_PROTOCOLO    "1"
 #define INDSINC_RETORNA_RECIBO       "0"
 
-#ifndef XML_UTF8
-   #define XML_UTF8                   [<?xml version="1.0" encoding="UTF-8"?>]
-#endif
+#define XML_UTF8                   [<?xml version="1.0" encoding="UTF-8"?>]
 
 #define SEFAZ_NFE_URL_LIST { ;
    ;

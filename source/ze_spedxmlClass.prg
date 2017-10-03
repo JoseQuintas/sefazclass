@@ -4,6 +4,7 @@ ZE_SPEDXMLCLASS - CLASSES PARA NFE/CTE/MDFE/CCE
 */
 
 #include "hbclass.ch"
+#include "sefazclass.ch"
 
 CREATE CLASS NfeCadastroClass STATIC
 
@@ -321,7 +322,7 @@ FUNCTION XmlToDoc( cXmlInput )
       oDoc:cErro := "Sem protocolo"
    CASE Empty( oDoc:cAssinatura )
       oDoc:cErro := "Sem assinatura"
-   CASE oDoc:cAmbiente != "1"
+   CASE oDoc:cAmbiente != WS_AMBIENTE_PRODUCAO
       oDoc:cErro := "Não é ambiente de produção"
    CASE oDoc:cTipoDoc != Substr( oDoc:ChaveAcesso, 21, 2 )
       oDoc:cErro := "Tipo de documento " + Substr( oDoc:ChaveAcesso, 21, 2 )
