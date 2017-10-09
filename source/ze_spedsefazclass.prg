@@ -13,7 +13,7 @@ CREATE CLASS SefazClass
    /* configuração */
    VAR    cProjeto       INIT WS_PROJETO_NFE          // Modificada conforme método
    VAR    cAmbiente      INIT WS_AMBIENTE_PRODUCAO
-   VAR    cVersao        INIT "*DEFAULT*"             // Default NFE 3.10, MDFE 1.00, CTE 2.00 (Próximas 4.00,3.00,3.00)
+   VAR    cVersao        INIT "*DEFAULT*"             // Default NFE 3.10, MDFE 3.00, CTE 2.00 (Próximas 4.00,----,3.00)
    VAR    cScan          INIT "N"                     // Indicar se for SCAN/SVAN, ainda não testado
    VAR    cUF            INIT "SP"                    // Modificada conforme método
    VAR    cCertificado   INIT ""                      // Nome do certificado
@@ -131,7 +131,6 @@ METHOD GeraQRCode( cXmlDocumento, cIdToken, cCsc )
 METHOD BpeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UfSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_BPE_CONSULTA )
-   ::cSoapVersion := ::cVersao
    ::cXmlEnvio    := [<consSitBPe> versao="] + ::cVersao + [" ] + ::cXmlNameSpace + [>]
    ::cXmlEnvio    +=   XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=   XmlTag( "xServ", "CONSULTAR" )
@@ -151,7 +150,6 @@ METHOD BpeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_BPE_STATUSSERVICO )
 
-   ::cSoapVersion := ::cVersao
    ::cXmlEnvio := [<consStatServBPe versao="] + ::cVersao + [" ] + ::cXmlNameSpace + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=    XmlTag( "xServ", "STATUS" )
@@ -699,7 +697,6 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_DISTRIBUICAODFE )
 
-   ::cSoapVersion := "1.00"
    ::cXmlEnvio    := [<distDFeInt versao="] + ::cVersao + [" ] + ::cXmlNameSpace + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
@@ -724,8 +721,7 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_NFE_RECEPCAOEVENTO )
 
-   ::cSoapVersion  := "1.00"
-   ::cXmlDocumento := [<evento versao="1.00" ] + ::cXmlNameSpace + [>]
+   ::cXmlDocumento := [<evento versao="] + ::cSoapVersion + [" ] + ::cXmlNameSpace + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -734,8 +730,8 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110110" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       XmlTag( "verEvento", "1.00" )
-   ::cXmlDocumento +=       [<detEvento versao="1.00">]
+   ::cXmlDocumento +=       XmlTag( "verEvento", ::cSoapVersion )
+   ::cXmlDocumento +=       [<detEvento versao="] + ::cSoapVersion + [">]
    ::cXmlDocumento +=          XmlTag( "descEvento", "Carta de Correcao" )
    ::cXmlDocumento +=          XmlTag( "xCorrecao", cTexto )
    ::cXmlDocumento +=          [<xCondUso>]
@@ -768,8 +764,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_NFE_RECEPCAOEVENTO )
 
-   ::cSoapVersion  := "1.00"
-   ::cXmlDocumento := [<evento versao="1.00" ] + ::cXmlNameSpace + [>]
+   ::cXmlDocumento := [<evento versao="] + ::cSoapVersion + [" ] + ::cXmlNameSpace + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -778,8 +773,8 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       XmlTag( "verEvento", "1.00" )
-   ::cXmlDocumento +=       [<detEvento versao="1.00">]
+   ::cXmlDocumento +=       XmlTag( "verEvento", ::cSoapVersion )
+   ::cXmlDocumento +=       [<detEvento versao="] + ::cSoapVersion + [">]
    ::cXmlDocumento +=          XmlTag( "descEvento", "Cancelamento" )
    ::cXmlDocumento +=          XmlTag( "nProt", Ltrim( Str( nProt ) ) )
    ::cXmlDocumento +=          XmlTag( "xJust", xJust )
@@ -813,8 +808,7 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
    CASE cCodigoEvento == "210240" ; cDescEvento := "Operacao Nao Realizada"
    ENDCASE
 
-   ::cSoapVersion  := "1.00"
-   ::cXmlDocumento := [<evento versao="1.00" xmlns="] + ::cXmlNamSpace + [" >]
+   ::cXmlDocumento := [<evento versao="] + ::cSoapVersion + [" ] + ::cXmlNameSpace + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cCodigoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -823,8 +817,8 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", cCodigoEvento )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", StrZero( 1, 2 ) )
-   ::cXmlDocumento +=       XmlTag( "verEvento", "1.00" )
-   ::cXmlDocumento +=       [<detEvento versao="1.00">]
+   ::cXmlDocumento +=       XmlTag( "verEvento", ::cSoapVersion )
+   ::cXmlDocumento +=       [<detEvento versao="] + ::cSoapVersion + [">]
    ::cXmlDocumento +=          XmlTag( "descEvento", cDescEvento )
    IF cCodigoEvento == "210240"
       ::cXmlDocumento +=          XmlTag( "xJust", xJust )
@@ -989,9 +983,9 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
-   ::cXmlAutorizado += [<procEventoNFe versao="1.00" ] + ::cXmlNameSpace + [>]
+   ::cXmlAutorizado += [<procEventoNFe versao="] + ::cSoapVersion + [" ] + ::cXmlNameSpace + [>]
    ::cXmlAutorizado +=    cXmlAssinado
-   ::cXmlAutorizado += [<retEvento versao="1.00">]
+   ::cXmlAutorizado += [<retEvento versao="] + ::cSoapVersion + [">]
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEvento" ) // hb_UTF8ToStr()
    ::cXmlAutorizado += [</retEvento>] // runner
    ::cXmlAutorizado += [</procEventoNFe>]
@@ -1026,7 +1020,7 @@ METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
       { "**", WS_BPE_CONSULTA,          WS_PROJETO_BPE,  "BpeConsulta",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
       { "**", WS_BPE_STATUSSERVICO,     WS_PROJETO_BPE,  "BpeStatusServicoBP",   "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico" }, ;
       { "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO", ;
-	          WS_NFE_AUTORIZACAO,        WS_PROJETO_NFE,  "nfeAutorizacaoLote",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
+	           WS_NFE_AUTORIZACAO,       WS_PROJETO_NFE,  "nfeAutorizacaoLote",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
       { "**", WS_NFE_RETAUTORIZACAO,    WS_PROJETO_NFE,  "NfeRetAutorizacao",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" }, ;
       { "**", WS_NFE_STATUSSERVICO,     WS_PROJETO_NFE,  "nfeStatusServicoNF2",  "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2" }, ;
       { "BA", WS_NFE_STATUSSERVICO,     WS_PROJETO_NFE,  "nfeStatusServicoNF",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" }, ;
@@ -1069,39 +1063,39 @@ METHOD SetSoapURL( nWsServico ) CLASS SefazClass
    CASE ::cProjeto == WS_PROJETO_CTE
       IF ::cScan == "SVCAN"
          IF ::cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
-            ::cSoapURL := SoapURLCTe( "SVSP", ::cAmbiente, nWsServico ) // SVC_SP não existe
+            ::cSoapURL := SoapURLCTe( "SVSP", ::cAmbiente, nWsServico, @::cSoapVersion ) // SVC_SP não existe
          ELSEIF ::cUF $ "MS,MT,SP," + "AP,PE,RR"
-            ::cSoapURL := SoapUrlCTe( "SVRS", ::cAmbiente, nWsServico ) // SVC_RS não existe
+            ::cSoapURL := SoapUrlCTe( "SVRS", ::cAmbiente, nWsServico, @::CSoapVersion ) // SVC_RS não existe
          ENDIF
       ELSE
-         ::cSoapUrl := SoapUrlCTe( ::cUF, ::cAmbiente, nWsServico )
+         ::cSoapUrl := SoapUrlCTe( ::cUF, ::cAmbiente, nWsServico, @::cSoapVersion )
       ENDIF
    CASE ::cProjeto == WS_PROJETO_MDFE
-      ::cSoapURL := SoapURLMDFe( "SVRS", ::cAmbiente, nWsServico )
+      ::cSoapURL := SoapURLMDFe( "SVRS", ::cAmbiente, nWsServico, @::cSoapVersion )
    CASE ::cProjeto == WS_PROJETO_NFE .AND. ::cVersao == "4.00"
-      ::cSoapUrl := SoapUrlNFe4( ::cUF, ::cAmbiente, nWsServico )
+      ::cSoapUrl := SoapUrlNFe4( ::cUF, ::cAmbiente, nWsServico, @::cSoapVersion )
    CASE ::cProjeto == WS_PROJETO_NFE
       DO CASE
       CASE ::cNFCe == "S"
-         ::cSoapUrl := SoapUrlNFCe( ::cUF, ::cAmbiente, nWsServico )
+         ::cSoapUrl := SoapUrlNFCe( ::cUF, ::cAmbiente, nWsServico, @::cSoapVersion )
       CASE ::cVersao == "4.00"
-         ::cSoapUrl := SoapUrlNfe( ::cUf, ::cAmbiente, nWsServico )
+         ::cSoapUrl := SoapUrlNfe( ::cUf, ::cAmbiente, nWsServico, @::cSoapVersion )
       CASE ::cScan == "SCAN"
-         ::cSoapURL := SoapUrlNFe( "SCAN", ::cAmbiente, nWsServico )
+         ::cSoapURL := SoapUrlNFe( "SCAN", ::cAmbiente, nWsServico, @::cSoapVersion )
       CASE ::cScan == "SVAN"
-         ::cSoapUrl := SoapUrlNFe( "SVAN", ::cAmbiente, nWsServico )
+         ::cSoapUrl := SoapUrlNFe( "SVAN", ::cAmbiente, nWsServico, @::cSoapVersion )
       CASE ::cScan == "SVCAN"
          IF ::cUF $ "AM,BA,CE,GO,MA,MS,MT,PA,PE,PI,PR"
-            ::cSoapURL := SoapURLNfe( "SVRS", ::cAmbiente, nWsServico ) // svc-rs não existe
+            ::cSoapURL := SoapURLNfe( "SVRS", ::cAmbiente, nWsServico, @::cSoapVersion ) // svc-rs não existe
          ELSE
-            ::cSoapURL := SoapUrlNFe( "SVAN", ::cAmbiente, nWsServico ) // svc-an não existe
+            ::cSoapURL := SoapUrlNFe( "SVAN", ::cAmbiente, nWsServico, @::cSoapVersion ) // svc-an não existe
          ENDIF
       ENDCASE
       IF Empty( ::cSoapUrl )
-         ::cSoapUrl := SoapUrlNFe( ::cUF, ::cAmbiente, nWsServico )
+         ::cSoapUrl := SoapUrlNFe( ::cUF, ::cAmbiente, nWsServico, @::cSoapVersion )
       ENDIF
    CASE ::cProjeto == WS_PROJETO_BPE
-      ::cSoapUrl := SoapUrlBpe( ::cUF, ::cAmbiente, nWsServico )
+      ::cSoapUrl := SoapUrlBpe( ::cUF, ::cAmbiente, nWsServico, @::cSoapVersion )
    ENDCASE
 
    RETURN NIL
@@ -1132,26 +1126,26 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ::cXmlSoap    := XML_UTF8
    ::cXmlSoap    += [<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ]
    ::cXmlSoap    +=    [xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">]
-   IF ::cSoapAction != "nfeDistDFeInteresse" .AND. ! ( ::cProjeto == WS_PROJETO_NFE .AND. ::cVersao == "4.00" )
+   //IF ::cSoapAction != "nfeDistDFeInteresse" .AND. ! ( ::cProjeto == WS_PROJETO_NFE .AND. ::cVersao == "4.00" )
       ::cXmlSoap +=    [<soap12:Header>]
       ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
       ::cXmlSoap +=          [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
       ::cXmlSoap +=          [<versaoDados>] + ::cSoapVersion + [</versaoDados>]
       ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
       ::cXmlSoap +=    [</soap12:Header>]
-   ENDIF
+   //ENDIF
    ::cXmlSoap    +=    [<soap12:Body>]
-   IF ::cSoapAction == "nfeDistDFeInteresse"
-      ::cXmlSoap += [<nfeDistDFeInteresse xmlns="] + ::cSoapService + [">]
-      ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
-   ELSE
+   //IF ::cSoapAction == "nfeDistDFeInteresse"
+      //::cXmlSoap += [<nfeDistDFeInteresse xmlns="] + ::cSoapService + [">]
+      //::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
+   //ELSE
       ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg xmlns="] + ::cSoapService + [">]
-   ENDIF
+   //ENDIF
    ::cXmlSoap    += ::cXmlEnvio
    ::cXmlSoap    +=    [</] + ::cProjeto + [DadosMsg>]
-   IF ::cSoapAction == "nfeDistDFeInteresse"
-      ::cXmlSoap += [</nfeDistDFeInteresse>]
-   ENDIF
+   //IF ::cSoapAction == "nfeDistDFeInteresse"
+      //::cXmlSoap += [</nfeDistDFeInteresse>]
+   //ENDIF
    ::cXmlSoap    +=    [</soap12:Body>]
    ::cXmlSoap    += [</soap12:Envelope>]
 
@@ -1461,76 +1455,91 @@ METHOD CurlSoapPost() CLASS SefazClass
    RETURN NIL
 #endif
 
-STATIC FUNCTION SoapUrlBpe( cUF, cAmbiente, nWsServico )
+STATIC FUNCTION SoapUrlBpe( cUF, cAmbiente, nWsServico, cSoapVersion )
 
    LOCAL nPos, cUrl, aList := SEFAZ_BPE_URL_LIST
 
    nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
-   cUrl := iif( nPos == 0, "", aList[ nPos, 4 ] )
+   IF nPos != 0
+      cUrl         := aList[ nPos, 5 ]
+      cSoapVersion := aList[ nPos, 4 ]
+   ENDIF
 
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlNfe( cUF, cAmbiente, nWsServico )
+STATIC FUNCTION SoapUrlNfe( cUF, cAmbiente, nWsServico, cSoapVersion )
 
-   LOCAL nPos, cUrl, aList := SEFAZ_NFE_URL_LIST
+   LOCAL nPos,cUrl, aList := SEFAZ_NFE_URL_LIST
 
    nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
-   cUrl := iif( nPos == 0, "", aList[ nPos, 4 ] )
+   IF nPos != 0
+      cUrl         := aList[ nPos, 5 ]
+      cSoapVersion := aList[ nPos, 4 ]
+   ENDIF
    IF nWsServico == WS_NFE_CONSULTACADASTRO .AND. cUF $ "AC,RN,PB,SC"
-      cUrl := SoapUrlNfe( "SVRS", cAmbiente, nWsServico )
+      cUrl := SoapUrlNfe( "SVRS", cAmbiente, nWsServico, @cSoapVersion )
    ENDIF
    DO CASE
    CASE ! Empty( cUrl )
    CASE cUf $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO"
-      cURL := SoapURLNFe( "SVRS", cAmbiente, nWsServico )
+      cURL := SoapURLNFe( "SVRS", cAmbiente, nWsServico, @cSoapVersion )
    CASE cUf $ "MA,PA,PI"
-      cURL := SoapUrlNFe( "SVAN", cAmbiente, nWsServico )
+      cURL := SoapUrlNFe( "SVAN", cAmbiente, nWsServico, @cSoapVersion )
    ENDCASE
 
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlCte(  cUF, cAmbiente, nWsServico )
+STATIC FUNCTION SoapUrlCte(  cUF, cAmbiente, nWsServico, cSoapVersion )
 
    LOCAL nPos, cUrl, aList := SEFAZ_CTE_URL_LIST
 
 
    nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
-   cUrl := iif( nPos == 0, "", aList[ nPos, 4 ] )
+   IF nPos != 0
+      cUrl         := aList[ nPos, 5 ]
+      cSoapVersion := aList[ nPos, 4 ]
+   ENDIF
    IF Empty( cUrl )
       IF cUF $ "AP,PE,RR"
-         cUrl := SoapUrlCTe( "SVSP", cAmbiente, nWsServico )
+         cUrl := SoapUrlCTe( "SVSP", cAmbiente, nWsServico, @cSoapVersion )
       ELSEIF cUF $ "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
-         cUrl := SoapURLCTe( "SVRS", cAmbiente, nWsServico )
+         cUrl := SoapURLCTe( "SVRS", cAmbiente, nWsServico, @cSoapVersion )
       ENDIF
    ENDIF
 
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlMdfe( cUF, cAmbiente, nWsServico )
+STATIC FUNCTION SoapUrlMdfe( cUF, cAmbiente, nWsServico, cSoapVersion )
 
    LOCAL cUrl, nPos, aList := SEFAZ_MDFE_URL_LIST
 
    nPos := AScan( aList, { | e | cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
-   cUrl := iif( nPos == 0, "", aList[ nPos, 4 ] )
+   IF nPos != 0
+      cUrl         := aList[ nPos, 5 ]
+      cSoapVersion := aList[ nPos, 4 ]
+   ENDIF
 
    HB_SYMBOL_UNUSED( cUF )
 
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlNFCe( cUf, cAmbiente, nWsServico )
+STATIC FUNCTION SoapUrlNFCe( cUf, cAmbiente, nWsServico, cSoapVersion )
 
    LOCAL cUrl, nPos, aList := SEFAZ_NFCE_URL_LIST
 
 
-   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 3 ] .AND. nWsServico == e[ 4 ] } )
-   cUrl := iif( nPos == 0, "", aList[ nPos, 4 ] )
+   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
+   IF nPos != 0
+      cUrl         := aList[ nPos, 5 ]
+      cSoapVersion := aList[ nPos, 4 ]
+   ENDIF
    IF Empty( cUrl )
-      cUrl := SoapUrlNFe( cUF, cAmbiente, nWsServico )
+      cUrl := SoapUrlNFe( cUF, cAmbiente, nWsServico, cSoapVersion )
    ENDIF
 
   RETURN cUrl
 
-STATIC FUNCTION SoapUrlNfe4( cUF, cAmbiente, nWsServico )
+STATIC FUNCTION SoapUrlNfe4( cUF, cAmbiente, nWsServico, cSoapVersion )
 
    LOCAL cUrl := ""
 
@@ -1568,6 +1577,7 @@ STATIC FUNCTION SoapUrlNfe4( cUF, cAmbiente, nWsServico )
          CASE nWsServico == WS_NFE_CONSULTACADASTRO  ; cUrl := StrTran( cUrl, "xxxxx", "CadConsultaCadastro4" )
          ENDCASE
       ENDIF
+      cSoapVersion := "4.00"
       IF cUF == "SP" // tinha que ter uma diferente
          cUrl := Lower( cUrl )
       ENDIF
