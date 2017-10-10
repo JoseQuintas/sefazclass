@@ -1,3 +1,8 @@
+/*
+http://www.pctoledo.com.br/forum/viewtopic.php?f=43&t=18664
+*/
+
+
 #define __TESTE__
 
 #include "capicom.ch"

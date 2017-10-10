@@ -1184,7 +1184,9 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       ENDIF
       ::cXmlRetorno := "Erro: Na conexão com webservice " + ::cSoapURL
       oServer:Open( "POST", ::cSoapURL, .F. )
-      oServer:SetRequestHeader( "SOAPAction", cSoapAction )
+      IF cSoapAction != NIL .AND. ! Empty( cSoapAction )
+         oServer:SetRequestHeader( "SOAPAction", cSoapAction )
+      ENDIF
       oServer:SetRequestHeader( "Content-Type", "application/soap+xml; charset=utf-8" )
       oServer:Send( ::cXmlSoap )
       oServer:WaitForResponse( 500 )
