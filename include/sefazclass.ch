@@ -46,9 +46,15 @@
 #define WS_VERSAO_MDFE               "3.00"
 #define WS_VERSAO_NFE                "3.10"
 #define WS_VERSAO_BPE                "1.00"
+#define WS_VERSAO_NFEEVENTO          "1.00"
 
-#define INDSINC_RETORNA_PROTOCOLO    "1"
-#define INDSINC_RETORNA_RECIBO       "0"
+#define WS_XMLNS_CTE                 [xmlns="http://www.portalfiscal.inf.br/cte"]
+#define WS_XMLNS_NFE                 [xmlns="http://www.portalfiscal.inf.br/nfe"]
+#define WS_XMLNS_MDFE                [xmlns="http://www.portalfiscal.inf.br/mdfe"]
+#define WS_XMLNS_BPE                 [xmlns="http://www.portalfiscal.inf.br/bpe"]
+
+#define WS_RETORNA_PROTOCOLO    "1"
+#define WS_RETORNA_RECIBO       "0"
 
 #define XML_UTF8                   [<?xml version="1.0" encoding="UTF-8"?>]
 
