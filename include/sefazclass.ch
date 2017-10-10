@@ -156,8 +156,8 @@
    { "MG",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_CONSULTAPROTOCOLO, "3.10", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2" }, ;
    { "MG",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_INUTILIZACAO,      "3.10", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2" }, ;
    { "MG",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_RECEPCAO,          "3.10", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2" }, ;
-   { "MG",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_RETRECEPCAO,       "1.00", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2" }, ;
-   { "MG",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_RECEPCAOEVENTO,    "3.10", "https://hnfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento" }, ;
+   { "MG",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_RETRECEPCAO,       "3.10", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2" }, ;
+   { "MG",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_RECEPCAOEVENTO,    "1.00", "https://hnfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento" }, ;
    { "MG",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_STATUSSERVICO,     "3.10", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatusServico2" }, ;
    ;
    { "MS",   WS_AMBIENTE_PRODUCAO,    WS_NFE_AUTORIZACAO,       "3.10", "https://nfe.fazenda.ms.gov.br/producao/services2/NfeAutorizacao" }, ;
