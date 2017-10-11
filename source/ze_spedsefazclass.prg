@@ -72,6 +72,7 @@ CREATE CLASS SefazClass
    METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD MDFeEventoEncerramento( cChave, nSequencia, nProt, cUFFim, cMunCarrega, cCertificado, cAmbiente )
+   METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado, cAmbiente )
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
@@ -540,6 +541,39 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
    ::cXmlDocumento +=          		XmlTag( "cUF", ::UFCodigo( cUFFim ) )
    ::cXmlDocumento +=          		XmlTag( "cMun", cMunCarrega )
    ::cXmlDocumento +=       	  [</evEncMDFe>]
+   ::cXmlDocumento +=       [</detEvento>]
+   ::cXmlDocumento +=    [</infEvento>]
+   ::cXmlDocumento += [</eventoMDFe>]
+   IF ::AssinaXml() == "OK"
+      ::cXmlEnvio := ::cXmlDocumento
+      ::XmlSoapPost()
+      ::cXmlProtocolo := ::cXmlRetorno
+      ::MDFeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo ) // hb_Utf8ToStr(
+   ENDIF
+
+   RETURN ::cXmlRetorno
+
+METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado, cAmbiente )
+
+   hb_Default( @nSequencia, 1 )
+
+   ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
+
+   ::cXmlDocumento := [<eventoMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlDocumento +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
+   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDocumento +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
+   ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
+   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
+   ::cXmlDocumento +=       XmlTag( "tpEvento", "110114" )
+   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
+   ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_MDFE + [">]
+   ::cXmlDocumento +=       	  [<evIncCondutorMDFe>]
+   ::cXmlDocumento +=          		XmlTag( "descEvento", "Inclusao Condutor" )
+   ::cXmlDocumento +=          		XmlTag( "xNome", cNome )
+   ::cXmlDocumento +=          		XmlTag( "CPF", cCPF)
+   ::cXmlDocumento +=       	  [</evIncCondutorMDFe>]
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</eventoMDFe>]
