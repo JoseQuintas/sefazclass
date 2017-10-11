@@ -536,10 +536,10 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_MDFE + [">]
    ::cXmlDocumento +=       	  [<evEncMDFe>]
    ::cXmlDocumento +=          		XmlTag( "descEvento", "Encerramento" )
-   ::cXmlDocumento +=          		XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   ::cXmlDocumento +=          		XmlTag( "dtEnc", DateXml( Date() ) )
-   ::cXmlDocumento +=          		XmlTag( "cUF", ::UFCodigo( cUFFim ) )
-   ::cXmlDocumento +=          		XmlTag( "cMun", cMunCarrega )
+   ::cXmlDocumento +=                  XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   ::cXmlDocumento +=                  XmlTag( "dtEnc", DateXml( Date() ) )
+   ::cXmlDocumento +=                  XmlTag( "cUF", ::UFCodigo( cUFFim ) )
+   ::cXmlDocumento +=                  XmlTag( "cMun", cMunCarrega )
    ::cXmlDocumento +=       	  [</evEncMDFe>]
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
@@ -571,8 +571,10 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_MDFE + [">]
    ::cXmlDocumento +=       	  [<evIncCondutorMDFe>]
    ::cXmlDocumento +=          		XmlTag( "descEvento", "Inclusao Condutor" )
-   ::cXmlDocumento +=          		XmlTag( "xNome", cNome )
-   ::cXmlDocumento +=          		XmlTag( "CPF", cCPF)
+   ::cXmlDocumento +=               [<Condutor>]
+   ::cXmlDocumento +=                  XmlTag( "xNome", cNome )
+   ::cXmlDocumento +=                  XmlTag( "CPF", cCPF)
+   ::cXmlDocumento +=               [</Condutor>]
    ::cXmlDocumento +=       	  [</evIncCondutorMDFe>]
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
