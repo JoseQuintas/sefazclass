@@ -43,16 +43,6 @@ CREATE CLASS SefazClass
    VAR    cXmlNameSpace  INIT "xmlns="
    VAR    cNFCE          INIT "N"                     // Porque NFCE tem endereços diferentes
 
-   //METHOD CTeConsulta( ... )   INLINE  ::CTeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
-   //METHOD NFeConsulta( ... )   INLINE  ::NFeConsultaProtocolo( ... )    // Não usar, apenas compatibilidade
-   //METHOD MDFeConsulta( ... )  INLINE  ::MDFeConsultaProtocolo( ... )   // Não usar, apenas compatibilidade
-   //METHOD CTeStatus( ... )     INLINE  ::CTeStatusServico( ... )        // Não usar, apenas compatibilidade
-   //METHOD NFeStatus( ... )     INLINE  ::NFeStatusServico( ... )        // Não usar, apenas compatibilidade
-   //METHOD MDFeStatus( ... )    INLINE  ::MDFeStatusServico( ... )       // Não usar, apenas compatibilidade
-   //METHOD NFeCadastro( ... )   INLINE  ::NFeConsultaCadastro( ... )     // Não usar, apenas compatibilidade
-   //METHOD NFeEventoCCE( ... )  INLINE  ::NFeEventoCarta( ... )          // Não usar, apenas compatibilidade
-   //METHOD CTeEventoCCE( ... )  INLINE  ::CTeEventoCarta( ... )
-
    METHOD BpeConsulta( cChave, cCertificado, cAmbiente )
    METHOD BpeStatusServico( cUF, cCertificado, cAmbiente )
 
@@ -132,11 +122,11 @@ METHOD GeraQRCode( cXmlDocumento, cIdToken, cCsc )
 METHOD BpeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UfSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_BPE_CONSULTA )
-   ::cXmlEnvio    := [<consSitBPe> versao="] + WS_VERSAO_BPE + [" ] + WS_XMLNS_BPE + [>]
-   ::cXmlEnvio    +=   XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio    +=   XmlTag( "xServ", "CONSULTAR" )
-   ::cXmlEnvio    +=   XmlTag( "chBPe", cChave )
-   ::cXmlEnvio    += [</conssitBPe>]
+   ::cXmlEnvio := [<consSitBPe> versao="] + WS_VERSAO_BPE + [" ] + WS_XMLNS_BPE + [>]
+   ::cXmlEnvio +=   XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio +=   XmlTag( "xServ", "CONSULTAR" )
+   ::cXmlEnvio +=   XmlTag( "chBPe", cChave )
+   ::cXmlEnvio += [</conssitBPe>]
    IF Substr( cChave, 21, 2 ) != "63"
       ::cXmlRetorno := "*ERRO* Chave não se refere a BPE"
    ELSE
@@ -331,22 +321,22 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    IF Len( cAno ) != 2
       cAno := Right( cAno, 2 )
    ENDIF
-   ::cSoapVersion    := ::cVersao
-   ::cXmlDocumento   := [<inutCTe versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
-   ::cXmlDocumento   +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
-   ::cXmlDocumento   +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
-   ::cXmlDocumento   +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento   +=       XmlTag( "xServ", "INUTILIZAR" )
-   ::cXmlDocumento   +=       XmlTag( "cUF", ::UFCodigo( ::cUF ) )
-   ::cXmlDocumento   +=       XmlTag( "ano", cAno )
-   ::cXmlDocumento   +=       XmlTag( "CNPJ", SoNumeros( cCnpj ) )
-   ::cXmlDocumento   +=       XmlTag( "mod", cMod )
-   ::cXmlDocumento   +=       XmlTag( "serie", cSerie )
-   ::cXmlDocumento   +=       XmlTag( "nCTIni", Alltrim(Str(Val(cNumIni))) )
-   ::cXmlDocumento   +=       XmlTag( "nCTFin", Alltrim(Str(Val(cNumFim))) )
-   ::cXmlDocumento   +=       XmlTag( "xJust", cJustificativa )
-   ::cXmlDocumento   +=    [</infInut>]
-   ::cXmlDocumento   += [</inutCTe>]
+   ::cSoapVersion  := ::cVersao
+   ::cXmlDocumento := [<inutCTe versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+   ::cXmlDocumento +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
+   ::cXmlDocumento +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
+   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDocumento +=       XmlTag( "xServ", "INUTILIZAR" )
+   ::cXmlDocumento +=       XmlTag( "cUF", ::UFCodigo( ::cUF ) )
+   ::cXmlDocumento +=       XmlTag( "ano", cAno )
+   ::cXmlDocumento +=       XmlTag( "CNPJ", SoNumeros( cCnpj ) )
+   ::cXmlDocumento +=       XmlTag( "mod", cMod )
+   ::cXmlDocumento +=       XmlTag( "serie", cSerie )
+   ::cXmlDocumento +=       XmlTag( "nCTIni", Alltrim(Str(Val(cNumIni))) )
+   ::cXmlDocumento +=       XmlTag( "nCTFin", Alltrim(Str(Val(cNumFim))) )
+   ::cXmlDocumento +=       XmlTag( "xJust", cJustificativa )
+   ::cXmlDocumento +=    [</infInut>]
+   ::cXmlDocumento += [</inutCTe>]
    IF ::AssinaXml() == "OK"
       ::cXmlEnvio := ::cXmlDocumento
       ::XmlSoapPost()
@@ -410,11 +400,11 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_CONSNAOENC )
 
-   ::cXmlEnvio    := [<consMDFeNaoEnc versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
-   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR NÃO ENCERRADOS" )
-   ::cXmlEnvio    +=    XmlTag( "CNPJ", cCNPJ )
-   ::cXmlEnvio    += [</consMDFeNaoEnc>]
+   ::cXmlEnvio := [<consMDFeNaoEnc versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio +=    XmlTag( "xServ", "CONSULTAR NÃO ENCERRADOS" )
+   ::cXmlEnvio +=    XmlTag( "CNPJ", cCNPJ )
+   ::cXmlEnvio += [</consMDFeNaoEnc>]
    ::XmlSoapPost()
    ::cStatus := Pad( XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "cStat" ), 3 )
    ::cMotivo := XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "xMotivo" )
@@ -425,11 +415,11 @@ METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_CONSULTA )
 
-   ::cXmlEnvio    := [<consSitMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
-   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR" )
-   ::cXmlEnvio    +=    XmlTag( "chMDFe", cChave )
-   ::cXmlEnvio    += [</consSitMDFe>]
+   ::cXmlEnvio := [<consSitMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio +=    XmlTag( "xServ", "CONSULTAR" )
+   ::cXmlEnvio +=    XmlTag( "chMDFe", cChave )
+   ::cXmlEnvio += [</consSitMDFe>]
    IF Substr( cChave, 21, 2 ) != "58"
       ::cXmlRetorno := "*ERRO* Chave não se refere a MDFE"
    ELSE
@@ -449,10 +439,10 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_RETRECEPCAO )
 
-   ::cXmlEnvio    := [<consReciMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
-   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio    +=    XmlTag( "nRec", ::cRecibo )
-   ::cXmlEnvio    += [</consReciMDFe>]
+   ::cXmlEnvio := [<consReciMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio +=    XmlTag( "nRec", ::cRecibo )
+   ::cXmlEnvio += [</consReciMDFe>]
    ::XmlSoapPost()
    ::cXmlProtocolo := ::cXmlRetorno
    ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
@@ -636,10 +626,10 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
-   ::cXmlEnvio    := [<enviMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
-   ::cXmlEnvio    +=    XmlTag( "idLote", cLote )
-   ::cXmlEnvio    +=    ::cXmlDocumento
-   ::cXmlEnvio    += [</enviMDFe>]
+   ::cXmlEnvio  := [<enviMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlEnvio  +=    XmlTag( "idLote", cLote )
+   ::cXmlEnvio  +=    ::cXmlDocumento
+   ::cXmlEnvio  += [</enviMDFe>]
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno
    ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
@@ -657,11 +647,11 @@ METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_STATUSSERVICO )
 
-   ::cXmlEnvio    := [<consStatServMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
-   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio    +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
-   ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
-   ::cXmlEnvio    += [</consStatServMDFe>]
+   ::cXmlEnvio := [<consStatServMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlEnvio +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
+   ::cXmlEnvio +=    XmlTag( "xServ", "STATUS" )
+   ::cXmlEnvio += [</consStatServMDFe>]
    ::XmlSoapPost()
 
    RETURN ::cXmlRetorno
@@ -783,10 +773,10 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
-      ::cXmlEnvio    := [<envEvento versao="] + WS_VERSAO_NFEEVENTO + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
-      ::cXmlEnvio    +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
-      ::cXmlEnvio    +=    ::cXmlDocumento
-      ::cXmlEnvio    += [</envEvento>]
+      ::cXmlEnvio := [<envEvento versao="] + WS_VERSAO_NFEEVENTO + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+      ::cXmlEnvio +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
+      ::cXmlEnvio +=    ::cXmlDocumento
+      ::cXmlEnvio += [</envEvento>]
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
       ::NfeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
@@ -818,10 +808,10 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
-      ::cXmlEnvio    := [<envEvento versao="] + WS_VERSAO_NFEEVENTO + [" ] + WS_XMLNS_NFE + [>]
-      ::cXmlEnvio    +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
-      ::cXmlEnvio    +=    ::cXmlDocumento
-      ::cXmlEnvio    += [</envEvento>]
+      ::cXmlEnvio := [<envEvento versao="] + WS_VERSAO_NFEEVENTO + [" ] + WS_XMLNS_NFE + [>]
+      ::cXmlEnvio +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
+      ::cXmlEnvio +=    ::cXmlDocumento
+      ::cXmlEnvio += [</envEvento>]
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
       ::NFeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
@@ -863,10 +853,10 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
-      ::cXmlEnvio    := [<envEvento versao="] + WS_VERSAO_NFEEVENTO + [" ] + WS_XMLNS_NFE + [>]
-      ::cXmlEnvio    +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
-      ::cXmlEnvio    +=    ::cXmlDocumento
-      ::cXmlEnvio    += [</envEvento>]
+      ::cXmlEnvio := [<envEvento versao="] + WS_VERSAO_NFEEVENTO + [" ] + WS_XMLNS_NFE + [>]
+      ::cXmlEnvio +=    XmlTag( "idLote", Substr( cChave, 26, 9 ) ) // usado numero da nota
+      ::cXmlEnvio +=    ::cXmlDocumento
+      ::cXmlEnvio += [</envEvento>]
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
       ::NFeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
@@ -1031,39 +1021,7 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
 
 METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
 
-   LOCAL nPos, aSoapList := { ;
-      { "**", WS_CTE_CONSULTAPROTOCOLO, WS_PROJETO_CTE,  "cteConsultaCT",        "http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta" }, ;
-      { "**", WS_CTE_RETRECEPCAO,       WS_PROJETO_CTE,  "cteRetRecepcao",       "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao" }, ;
-      { "**", WS_CTE_RECEPCAOEVENTO,    WS_PROJETO_CTE,  "cteRecepcaoEvento",    "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento" }, ;
-      { "**", WS_CTE_INUTILIZACAO,      WS_PROJETO_CTE,  "cteInutilizacaoCT",    "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao" }, ;
-      { "**", WS_CTE_RECEPCAO,          WS_PROJETO_CTE,  "cteRecepcaoLote",      "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao" }, ;
-      { "**", WS_CTE_STATUSSERVICO,     WS_PROJETO_CTE,  "cteStatusServicoCT",   "http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico" }, ;
-      { "**", WS_MDFE_CONSNAOENC,       WS_PROJETO_MDFE, "mdfeConsNaoEnc",       "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc" }, ;
-      { "**", WS_MDFE_CONSULTA,         WS_PROJETO_MDFE, "mdfeConsultaMDF",      "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta" }, ;
-      { "**", WS_MDFE_RETRECEPCAO,      WS_PROJETO_MDFE, "mdfeRetRecepcao",      "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao" }, ;
-      { "**", WS_MDFE_DISTRIBUICAODFE,  "??????",        "mdfeDistDFeInteresse", "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe" }, ;
-      { "**", WS_MDFE_RECEPCAOEVENTO,   WS_PROJETO_MDFE, "mdfeRecepcaoEvento",   "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento" }, ;
-      { "**", WS_MDFE_RECEPCAO,         WS_PROJETO_MDFE, "MDFeRecepcao",         "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao" }, ;
-      { "**", WS_MDFE_STATUSSERVICO,    WS_PROJETO_MDFE, "MDFeStatusServico",    "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF" }, ;
-      { "**", WS_NFE_CONSULTACADASTRO,  WS_PROJETO_NFE,  "CadConsultaCadastro2", "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2" }, ;
-      { "**", WS_NFE_CONSULTADEST,      WS_PROJETO_NFE,  "nfeConsultaNFDest",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest" }, ;
-      { "**", WS_NFE_DISTRIBUICAODFE,   "???",           "nfeDistDFeInteresse",  "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe" }, ;
-      { "**", WS_NFE_RECEPCAOEVENTO,    WS_PROJETO_NFE,  "nfeRecepcaoEvento",    "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" }, ;
-      { "**", WS_NFE_INUTILIZACAO,      WS_PROJETO_NFE,  "NfeInutilizacaoNF2",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2" }, ;
-      { "**", WS_NFE_AUTORIZACAO,       WS_PROJETO_NFE,  "NfeAutorizacao",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
-      { "**", WS_BPE_RECEPCAO,          WS_PROJETO_BPE,  "BpeRecepcao",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeRecepcao/bpeRecepcao" }, ;
-      { "**", WS_BPE_RECEPCAOEVENTO,    WS_PROJETO_BPE,  "BpeRecepcaoEvento",    "http://www.portalfiscal.inf.br/bpe/wsdl/bpeRecepcaoEvento" }, ;
-      { "**", WS_BPE_CONSULTA,          WS_PROJETO_BPE,  "BpeConsulta",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
-      { "**", WS_BPE_STATUSSERVICO,     WS_PROJETO_BPE,  "BpeStatusServicoBP",   "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico" }, ;
-      { "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO", ;
-	           WS_NFE_AUTORIZACAO,       WS_PROJETO_NFE,  "nfeAutorizacaoLote",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
-      { "**", WS_NFE_RETAUTORIZACAO,    WS_PROJETO_NFE,  "NfeRetAutorizacao",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" }, ;
-      { "**", WS_NFE_STATUSSERVICO,     WS_PROJETO_NFE,  "nfeStatusServicoNF2",  "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2" }, ;
-      { "BA", WS_NFE_STATUSSERVICO,     WS_PROJETO_NFE,  "nfeStatusServicoNF",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" }, ;
-      { "**", WS_NFE_CONSULTAPROTOCOLO, WS_PROJETO_NFE,  "NfeConsulta2",         "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" }, ;
-      { "BA", WS_NFE_CONSULTAPROTOCOLO, WS_PROJETO_NFE,  "nfeConsultaNF",        "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" }, ;
-      { "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO", ;
-              WS_NFE_CONSULTAPROTOCOLO, WS_PROJETO_NFE,  "nfeConsultaNF2",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" } }
+   LOCAL nPos, aSoapList := SEFAZ_SOAPACTION_LIST
 
    ::cUF          := iif( cUF == NIL, ::cUF, cUF )
    ::cCertificado := iif( cCertificado == NIL, ::cCertificado, cCertificado )

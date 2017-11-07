@@ -242,101 +242,101 @@ METHOD Init() CLASS DocSpedClass
 
 FUNCTION XmlToDoc( cXmlInput )
 
-   LOCAL oDoc
+   LOCAL oDocSped
 
    IF ! ["] $ cXmlInput  // Petrobras usa aspas simples
       cXmlInput := StrTran( cXmlInput, ['], ["] )
    ENDIF
-   oDoc := DocSpedClass():New()
+   oDocSped := DocSpedClass():New()
    DO CASE
    CASE "<nfeProc"      $ cXmlInput
-      oDoc:cTipoDoc := "55"
-      oDoc:cEvento  := "110100"
-      XmlToDocNfeEmi( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "55"
+      oDocSped:cEvento  := "110100"
+      XmlToDocNfeEmi( cXmlInput, @oDocSped )
    CASE "<cteProc" $ cXmlInput
-      oDoc:cTipoDoc := "57"
-      oDoc:cEvento  := "110100"
-      XmlToDocCteEmi( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "57"
+      oDocSped:cEvento  := "110100"
+      XmlToDocCteEmi( cXmlInput, @oDocSped )
    CASE "<mdfeProc" $ cXmlInput
-      oDoc:cTipoDoc := "58"
-      oDoc:cEvento  := "110100"
-      XmlToDocMDFEEmi( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "58"
+      oDocSped:cEvento  := "110100"
+      XmlToDocMDFEEmi( cXmlInput, @oDocSped )
    CASE "<procEventoNFe" $ cXmlInput .AND. "<descEvento>Cancelamento" $ cXmlInput
-      oDoc:cTipoDoc := "55"
-      oDoc:cEvento  := "110111"
-      XmlToDocNfeCancel( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "55"
+      oDocSped:cEvento  := "110111"
+      XmlToDocNfeCancel( cXmlInput, @oDocSped )
    CASE "<procCancNFe" $ cXmlInput .AND. "<xServ>CANCELAR" $ cXmlInput
-      oDoc:cTipoDoc := "55"
-      oDoc:cEvento  := "110111"
-      XmlToDocNFECancel( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "55"
+      oDocSped:cEvento  := "110111"
+      XmlToDocNFECancel( cXmlInput, @oDocSped )
    CASE "<procEventoCTe" $ cXmlInput .AND. "<descEvento>Cancelamento" $ cXmlInput
-      oDoc:cTipoDoc := "57"
-      oDoc:cEvento  := "110111"
-      XmlToDocCTeCancel( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "57"
+      oDocSped:cEvento  := "110111"
+      XmlToDocCTeCancel( cXmlInput, @oDocSped )
    CASE "<procEventoNFe" $ cXmlInput .AND. "<descEvento>Carta de Correcao" $ cXmlInput
-      oDoc:cTipoDoc := "55"
-      oDoc:cEvento  := "110110"
-      XmlToDocNfeCCe( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "55"
+      oDocSped:cEvento  := "110110"
+      XmlToDocNfeCCe( cXmlInput, @oDocSped )
    CASE "<procEventoMDFe" $ cXmlInput .AND. "<descEvento>Cancelamento" $ cXmlInput
-      oDoc:cTipoDoc := "58"
-      oDoc:cEvento  := "110111"
-      XmlToDocMDFECancel( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "58"
+      oDocSped:cEvento  := "110111"
+      XmlToDocMDFECancel( cXmlInput, @oDocSped )
    CASE "<procEventoMDFe" $ cXmlInput .AND. "<descEvento>Encerramento" $ cXmlInput
-      oDoc:cTipoDoc := "58"
-      oDoc:cEvento  := "110112"
-      XmlToDocMDFEEnc( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "58"
+      oDocSped:cEvento  := "110112"
+      XmlToDocMDFEEnc( cXmlInput, @oDocSped )
    CASE "<infMDFe" $ cXmlInput
-      oDoc:cTipoDoc := "58"
-      oDoc:cEvento  := "000000"
-      XmlToDocMDFEEmi( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "58"
+      oDocSped:cEvento  := "000000"
+      XmlToDocMDFEEmi( cXmlInput, @oDocSped )
    CASE "<infCte" $ cXmlInput
-      oDoc:cTipoDoc := "57"
-      oDoc:cEvento  := "000000"
-      XmlToDocCteEmi( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "57"
+      oDocSped:cEvento  := "000000"
+      XmlToDocCteEmi( cXmlInput, @oDocSped )
    CASE "<infNFe" $ cXmlInput
-      oDoc:cTipoDoc := "55"
-      oDoc:cEvento  := "000000"
-      XmlToDocNfeEmi( cXmlInput, @oDoc )
+      oDocSped:cTipoDoc := "55"
+      oDocSped:cEvento  := "000000"
+      XmlToDocNfeEmi( cXmlInput, @oDocSped )
    //CASE "<infEvento" $ cXmlInput
    //   // pode ser pra qualquer documento
-   //   oDoc:cTipoDoc := "XX"
-   //   oDoc:cEvento  := "XX"
+   //   oDocSped:cTipoDoc := "XX"
+   //   oDocSped:cEvento  := "XX"
    OTHERWISE
-      oDoc:cErro := "Documento não identificado"
+      oDocSped:cErro := "Documento não identificado"
    ENDCASE
-   IF Empty( oDoc:Destinatario:Cnpj ) .AND. Empty( oDoc:Destinatario:Nome )
-      oDoc:Destinatario := oDoc:Emitente
+   IF Empty( oDocSped:Destinatario:Cnpj ) .AND. Empty( oDocSped:Destinatario:Nome )
+      oDocSped:Destinatario := oDocSped:Emitente
    ENDIF
-   oDoc:ChaveAcesso := SoNumeros( oDoc:ChaveAcesso )
+   oDocSped:ChaveAcesso := SoNumeros( oDocSped:ChaveAcesso )
    DO CASE
-   CASE Len( oDoc:cErro ) != 0
-   CASE Len( oDoc:ChaveAcesso ) != 44
-      oDoc:cErro := "Tamanho da chave de acesso inválido"
-   CASE Right( oDoc:ChaveAcesso, 1 ) != CalculaDigito( Substr( oDoc:ChaveAcesso, 1, 43 ), "11" )
-      oDoc:cErro := "Dígito da chave de acesso inválido"
-   CASE Substr( oDoc:ChaveAcesso, 5, 2 ) < "01" .OR. Substr( oDoc:ChaveAcesso, 5, 2 ) > "12"
-      oDoc:cErro := "Mes da chave inválido"
-   CASE ! ValidCnpjCpf( Substr( oDoc:ChaveAcesso, 7, 14 ) )
-      oDoc:cErro := "CNPJ inválido na chave de acesso"
-   CASE Val( oDoc:Protocolo ) == 0
-      oDoc:cErro := "Sem protocolo"
-   CASE Empty( oDoc:cAssinatura )
-      oDoc:cErro := "Sem assinatura"
-   CASE oDoc:cAmbiente != WS_AMBIENTE_PRODUCAO
-      oDoc:cErro := "Não é ambiente de produção"
-   CASE oDoc:cTipoDoc != Substr( oDoc:ChaveAcesso, 21, 2 )
-      oDoc:cErro := "Tipo de documento " + Substr( oDoc:ChaveAcesso, 21, 2 )
-   CASE oDoc:cEvento = "110100" .AND. Empty( oDoc:cNumDoc )
-      oDoc:cErro := "Número de documento vazio"
+   CASE Len( oDocSped:cErro ) != 0
+   CASE Len( oDocSped:ChaveAcesso ) != 44
+      oDocSped:cErro := "Tamanho da chave de acesso inválido"
+   CASE Right( oDocSped:ChaveAcesso, 1 ) != CalculaDigito( Substr( oDocSped:ChaveAcesso, 1, 43 ), "11" )
+      oDocSped:cErro := "Dígito da chave de acesso inválido"
+   CASE Substr( oDocSped:ChaveAcesso, 5, 2 ) < "01" .OR. Substr( oDocSped:ChaveAcesso, 5, 2 ) > "12"
+      oDocSped:cErro := "Mes da chave inválido"
+   CASE ! ValidCnpjCpf( Substr( oDocSped:ChaveAcesso, 7, 14 ) )
+      oDocSped:cErro := "CNPJ inválido na chave de acesso"
+   CASE Val( oDocSped:Protocolo ) == 0
+      oDocSped:cErro := "Sem protocolo"
+   CASE Empty( oDocSped:cAssinatura )
+      oDocSped:cErro := "Sem assinatura"
+   CASE oDocSped:cAmbiente != WS_AMBIENTE_PRODUCAO
+      oDocSped:cErro := "Não é ambiente de produção"
+   CASE oDocSped:cTipoDoc != Substr( oDocSped:ChaveAcesso, 21, 2 )
+      oDocSped:cErro := "Tipo de documento " + Substr( oDocSped:ChaveAcesso, 21, 2 )
+   CASE oDocSped:cEvento = "110100" .AND. Empty( oDocSped:cNumDoc )
+      oDocSped:cErro := "Número de documento vazio"
    ENDCASE
-   IF Len( oDoc:cErro ) != 0
-      oDoc:cTipoDoc := "XX"
-      oDoc:cEvento  := "XXXXXX"
+   IF Len( oDocSped:cErro ) != 0
+      oDocSped:cTipoDoc := "XX"
+      oDocSped:cEvento  := "XXXXXX"
    ENDIF
 
-   RETURN oDoc
+   RETURN oDocSped
 
-STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
+STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
 
    LOCAL nCont
    LOCAL cBlocoInfNfeComTag, cBlocoChave, cBlocoIde, cBlocoInfAdic
@@ -350,101 +350,101 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
    cBlocoChave := Substr( cBlocoChave, 4 )
    cBlocoChave := AllTrim( cBlocoChave )
    IF Len( cBlocoChave ) <> 44
-      oNfe:cErro := "Chave de Acesso Inválida"
+      oDocSped:cErro := "Chave de Acesso Inválida"
       RETURN NIL
    ENDIF
-   oNfe:ChaveAcesso := cBlocoChave
-   oNfe:cAssinatura := XmlNode( cXmlInput, "Signature" )
+   oDocSped:ChaveAcesso := cBlocoChave
+   oDocSped:cAssinatura := XmlNode( cXmlInput, "Signature" )
    cBlocoIde := XmlNode( cXmlInput, "ide" )
-      oNfe:cNumDoc := XmlNode( cBlocoIde, "nNF" )
-      IF Len( Trim( oNfe:cNumDoc ) ) = 0
-         oNfe:cErro := "Sem número de documento"
+      oDocSped:cNumDoc := XmlNode( cBlocoIde, "nNF" )
+      IF Len( Trim( oDocSped:cNumDoc ) ) = 0
+         oDocSped:cErro := "Sem número de documento"
          RETURN NIL
       ENDIF
-      oNfe:cNumDoc := StrZero( Val( oNfe:cNumDoc ), 9 )
+      oDocSped:cNumDoc := StrZero( Val( oDocSped:cNumDoc ), 9 )
       IF ! Empty( XmlDate( XmlNode( cBlocoIde, "dhEmi" ) ) )
-         oNfe:DataEmissao := XmlDate( XmlNode( cBlocoIde, "dhEmi" ) )
-         oNfe:DataSaida   := XmlDate( XmlNode( cBlocoIde, "dhSaiEnt" ) )
+         oDocSped:DataEmissao := XmlDate( XmlNode( cBlocoIde, "dhEmi" ) )
+         oDocSped:DataSaida   := XmlDate( XmlNode( cBlocoIde, "dhSaiEnt" ) )
       ELSE
-         oNfe:DataEmissao := XmlDate( XmlNode( cBlocoIde, "dEmi" ) )
-         oNfe:DataSaida   := XmlDate( XmlNode( cBlocoIde, "dSaiEnt" ) )
+         oDocSped:DataEmissao := XmlDate( XmlNode( cBlocoIde, "dEmi" ) )
+         oDocSped:DataSaida   := XmlDate( XmlNode( cBlocoIde, "dSaiEnt" ) )
       ENDIF
-      IF Empty( oNfe:DataSaida )
-         oNfe:DataSaida := oNfe:DataEmissao
+      IF Empty( oDocSped:DataSaida )
+         oDocSped:DataSaida := oDocSped:DataEmissao
       ENDIF
-      oNfe:cAmbiente := XmlNode( cBlocoIde, "tpAmb" )
+      oDocSped:cAmbiente := XmlNode( cBlocoIde, "tpAmb" )
 
    cBlocoInfAdic := XmlNode( cXmlInput, "InfAdic" )
-      oNfe:InfAdicionais := XmlNode( cBlocoInfAdic, "InfCpl" )
+      oDocSped:InfAdicionais := XmlNode( cBlocoInfAdic, "InfCpl" )
 
    cBlocoEmit := XmlNode( cXmlInput, "emit" )
-      oNfe:Emitente:Cnpj              := Transform( Substr( oNfe:ChaveAcesso, 7, 14 ), "@R 99.999.999/9999-99" )
-      oNfe:Emitente:Nome              := Upper( XmlNode( cBlocoEmit, "xNome" ) )
-      oNfe:Emitente:InscricaoEstadual := XmlNode( cBlocoEmit, "IE" )
+      oDocSped:Emitente:Cnpj              := Transform( Substr( oDocSped:ChaveAcesso, 7, 14 ), "@R 99.999.999/9999-99" )
+      oDocSped:Emitente:Nome              := Upper( XmlNode( cBlocoEmit, "xNome" ) )
+      oDocSped:Emitente:InscricaoEstadual := XmlNode( cBlocoEmit, "IE" )
       cBlocoEndereco := XmlNode( cBlocoEmit, "enderEmit" )
-         oNfe:Emitente:Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
-         oNfe:Emitente:Numero     := XmlNode( cBlocoEndereco, "nro" )
-         oNfe:Emitente:Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
-         oNfe:Emitente:Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
-         oNfe:Emitente:CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
-         oNfe:Emitente:Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
-         oNfe:Emitente:Uf         := Upper( XmlNode( cBlocoEndereco, "UF" ) )
-         oNfe:Emitente:Cep        := Transform( XmlNode( cBlocoEndereco, "CEP" ), "@R 99999-999" )
-         oNfe:Emitente:Telefone   := XmlNode( cBlocoEndereco, "fone" )
+         oDocSped:Emitente:Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
+         oDocSped:Emitente:Numero     := XmlNode( cBlocoEndereco, "nro" )
+         oDocSped:Emitente:Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
+         oDocSped:Emitente:Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
+         oDocSped:Emitente:CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
+         oDocSped:Emitente:Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
+         oDocSped:Emitente:Uf         := Upper( XmlNode( cBlocoEndereco, "UF" ) )
+         oDocSped:Emitente:Cep        := Transform( XmlNode( cBlocoEndereco, "CEP" ), "@R 99999-999" )
+         oDocSped:Emitente:Telefone   := XmlNode( cBlocoEndereco, "fone" )
 
       cBlocoDest := XmlNode( cXmlInput, "dest" )
-      oNfe:Destinatario:Cnpj := Trim( XmlNode( cBlocoDest, "CNPJ" ) )
-      IF Len( Trim( oNfe:Destinatario:Cnpj ) ) = 0
-         oNfe:Destinatario:Cnpj := XmlNode( cBlocoDest, "CPF" )
-         oNfe:Destinatario:Cnpj := Transform( oNfe:Destinatario:Cnpj, "@R 999.999.999-99" )
+      oDocSped:Destinatario:Cnpj := Trim( XmlNode( cBlocoDest, "CNPJ" ) )
+      IF Len( Trim( oDocSped:Destinatario:Cnpj ) ) = 0
+         oDocSped:Destinatario:Cnpj := XmlNode( cBlocoDest, "CPF" )
+         oDocSped:Destinatario:Cnpj := Transform( oDocSped:Destinatario:Cnpj, "@R 999.999.999-99" )
       ELSE
-         oNfe:Destinatario:Cnpj := Transform( oNfe:Destinatario:Cnpj, "@R 99.999.999/9999-99" )
+         oDocSped:Destinatario:Cnpj := Transform( oDocSped:Destinatario:Cnpj, "@R 99.999.999/9999-99" )
       ENDIF
-      oNfe:Destinatario:Nome := Upper( XmlNode( cBlocoDest, "xNome" ) )
-      oNfe:Destinatario:InscricaoEstadual := XmlNode( cBlocoDest, "IE" )
+      oDocSped:Destinatario:Nome := Upper( XmlNode( cBlocoDest, "xNome" ) )
+      oDocSped:Destinatario:InscricaoEstadual := XmlNode( cBlocoDest, "IE" )
       cBlocoEndereco := XmlNode( cBlocoDest, "enderDest" )
-         oNfe:Destinatario:Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
-         oNfe:Destinatario:Numero     := XmlNode( cBlocoEndereco, "nro" )
-         oNfe:Destinatario:Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
-         oNfe:Destinatario:Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
-         oNfe:Destinatario:CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
-         oNfe:Destinatario:Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
-         oNfe:Destinatario:Uf         := Upper( XmlNode( cBlocoEndereco, "UF" ) )
-         oNfe:Destinatario:Cep        := Transform( XmlNode( cBlocoEndereco, "CEP" ), "@R 99999-999" )
-         oNfe:Destinatario:Telefone   := XmlNode( cBlocoEndereco, "fone" )
+         oDocSped:Destinatario:Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
+         oDocSped:Destinatario:Numero     := XmlNode( cBlocoEndereco, "nro" )
+         oDocSped:Destinatario:Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
+         oDocSped:Destinatario:Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
+         oDocSped:Destinatario:CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
+         oDocSped:Destinatario:Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
+         oDocSped:Destinatario:Uf         := Upper( XmlNode( cBlocoEndereco, "UF" ) )
+         oDocSped:Destinatario:Cep        := Transform( XmlNode( cBlocoEndereco, "CEP" ), "@R 99999-999" )
+         oDocSped:Destinatario:Telefone   := XmlNode( cBlocoEndereco, "fone" )
 
    cBlocoTransporte := XmlNode( cXmlInput, "transp" )
       cBlocoTransp := XmlNode( cBlocoTransporte, "transporta" )
-         oNfe:Transporte:Cnpj              := Transform( XmlNode( cBlocoTransp, "CNPJ" ), "@R 99.999.999/9999-99" )
-         oNfe:Transporte:Nome              := Upper( XmlNode( cBlocoTransp, "xNome" ) )
-         oNfe:Transporte:InscricaoEstadual := XmlNode( cBlocoTransp, "IE" )
-         oNfe:Transporte:Endereco          := Upper( XmlNode( cBlocoTransp, "xEnder" ) )
-         oNfe:Transporte:Cidade            := Upper( XmlNode( cBlocoTransp, "xMun" ) )
-         oNfe:Transporte:Uf                := Upper( XmlNode( cBlocoTransp, "UF" ) )
+         oDocSped:Transporte:Cnpj              := Transform( XmlNode( cBlocoTransp, "CNPJ" ), "@R 99.999.999/9999-99" )
+         oDocSped:Transporte:Nome              := Upper( XmlNode( cBlocoTransp, "xNome" ) )
+         oDocSped:Transporte:InscricaoEstadual := XmlNode( cBlocoTransp, "IE" )
+         oDocSped:Transporte:Endereco          := Upper( XmlNode( cBlocoTransp, "xEnder" ) )
+         oDocSped:Transporte:Cidade            := Upper( XmlNode( cBlocoTransp, "xMun" ) )
+         oDocSped:Transporte:Uf                := Upper( XmlNode( cBlocoTransp, "UF" ) )
       cBlocoVol := XmlNode( cBlocoTransporte, "vol" )
-         oNfe:Transporte:Volumes:Qtde        := Val( XmlNode( cBlocoVol, "qVol" ) )
-         oNfe:Transporte:Volumes:Especie     := Upper( XmlNode( cBlocoVol, "esp" ) )
-         oNfe:Transporte:Volumes:Marca       := Upper( XmlNode( cBlocoVol, "marca" ) )
-         oNfe:Transporte:Volumes:PesoLiquido := Val( XmlNode( cBlocoVol, "pesoL" ) )
-         oNfe:Transporte:Volumes:PesoBruto   := Val( XmlNode( cBlocoVol, "pesoB" ) )
+         oDocSped:Transporte:Volumes:Qtde        := Val( XmlNode( cBlocoVol, "qVol" ) )
+         oDocSped:Transporte:Volumes:Especie     := Upper( XmlNode( cBlocoVol, "esp" ) )
+         oDocSped:Transporte:Volumes:Marca       := Upper( XmlNode( cBlocoVol, "marca" ) )
+         oDocSped:Transporte:Volumes:PesoLiquido := Val( XmlNode( cBlocoVol, "pesoL" ) )
+         oDocSped:Transporte:Volumes:PesoBruto   := Val( XmlNode( cBlocoVol, "pesoB" ) )
       cBlocoVeiculo := XmlNode( cBlocoTransporte, "veicTransp" )
-      oNfe:Transporte:PlacaUf := Upper( XmlNode( cBlocoVeiculo, "UF" ) )
-      oNfe:Transporte:Placa   := Upper( XmlNode( cBlocoVeiculo, "placa" ) )
+      oDocSped:Transporte:PlacaUf := Upper( XmlNode( cBlocoVeiculo, "UF" ) )
+      oDocSped:Transporte:Placa   := Upper( XmlNode( cBlocoVeiculo, "placa" ) )
 
    cBlocoTotal := XmlNode( cXmlInput, "total" )
-      oNfe:Totais:IpiVal := Val( XmlNode( cBlocoTotal, "vIPI" ) )
-      oNfe:Totais:IIVal  := Val( XmlNode( cBlocoTotal, "vII" ) )
-      oNfe:Totais:IcmBas := Val( XmlNode( cBlocoTotal, "vBC" ) )
-      oNfe:Totais:IcmVal := Val( XmlNode( cBlocoTotal, "vICMS" ) )
-      oNfe:Totais:SubBas := Val( XmlNode( cBlocoTotal, "vBCST" ) )
-      oNfe:Totais:SubVal := Val( XmlNode( cBlocoTotal, "vST" ) )
-      oNfe:Totais:PisVal := Val( XmlNode( cBlocoTotal, "vPIS" ) )
-      oNfe:Totais:CofVal := Val( XmlNode( cBlocoTotal, "vCOFINS" ) )
-      oNfe:Totais:ValPro := Val( XmlNode( cBlocoTotal, "vProd" ) )
-      oNfe:Totais:ValSeg := Val( XmlNode( cBlocoTotal, "vSeg" ) )
-      oNfe:Totais:ValFre := Val( XmlNode( cBlocoTotal, "vFrete" ) )
-      oNfe:Totais:ValOut := Val( XmlNode( cBlocoTotal, "vOutro" ) )
-      oNfe:Totais:ValNot := Val( XmlNode( cBlocoTotal, "vNF" ) )
+      oDocSped:Totais:IpiVal := Val( XmlNode( cBlocoTotal, "vIPI" ) )
+      oDocSped:Totais:IIVal  := Val( XmlNode( cBlocoTotal, "vII" ) )
+      oDocSped:Totais:IcmBas := Val( XmlNode( cBlocoTotal, "vBC" ) )
+      oDocSped:Totais:IcmVal := Val( XmlNode( cBlocoTotal, "vICMS" ) )
+      oDocSped:Totais:SubBas := Val( XmlNode( cBlocoTotal, "vBCST" ) )
+      oDocSped:Totais:SubVal := Val( XmlNode( cBlocoTotal, "vST" ) )
+      oDocSped:Totais:PisVal := Val( XmlNode( cBlocoTotal, "vPIS" ) )
+      oDocSped:Totais:CofVal := Val( XmlNode( cBlocoTotal, "vCOFINS" ) )
+      oDocSped:Totais:ValPro := Val( XmlNode( cBlocoTotal, "vProd" ) )
+      oDocSped:Totais:ValSeg := Val( XmlNode( cBlocoTotal, "vSeg" ) )
+      oDocSped:Totais:ValFre := Val( XmlNode( cBlocoTotal, "vFrete" ) )
+      oDocSped:Totais:ValOut := Val( XmlNode( cBlocoTotal, "vOutro" ) )
+      oDocSped:Totais:ValNot := Val( XmlNode( cBlocoTotal, "vNF" ) )
 
    cBlocoDetalhe := ""
    IF "<det" $ cXmlInput
@@ -455,44 +455,44 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
       IF Len( Trim( cBlocoItem ) ) = 0 // Se acabaram os itens
          EXIT
       ENDIF
-      AAdd( oNFE:Produto, NFEProdutoClass():New() )
+      AAdd( oDocSped:Produto, NFEProdutoClass():New() )
       cBlocoProd := XmlNode( cBlocoItem, "prod" )
-         oNfe:Produto[ nCont ]:Codigo          := XmlNode( cBlocoProd, "cProd" )
-         oNfe:Produto[ nCont ]:Nome            := Upper( XmlNode( cBlocoProd, "xProd" ) )
-         oNfe:Produto[ nCont ]:CFOP            := Transform( XmlNode( cBlocoProd, "CFOP" ), "@R 9.9999" )
-         oNfe:Produto[ nCont ]:NCM             := XmlNode( cBlocoProd, "NCM" )
-         oNfe:Produto[ nCont ]:GTIN            := XmlNode( cBlocoProd, "cEAN" )
-         oNfe:Produto[ nCont ]:Unidade         := Upper( XmlNode( cBlocoProd, "uCom" ) )
-         oNfe:Produto[ nCont ]:Qtde            := Val( XmlNode( cBlocoProd, "qCom" ) )
-         oNfe:Produto[ nCont ]:ValorUnitario   := Val( XmlNode( cBlocoProd, "vUnCom" ) )
-         oNfe:Produto[ nCont ]:ValorTotal      := Val( XmlNode( cBlocoProd, "vProd" ) )
+         oDocSped:Produto[ nCont ]:Codigo          := XmlNode( cBlocoProd, "cProd" )
+         oDocSped:Produto[ nCont ]:Nome            := Upper( XmlNode( cBlocoProd, "xProd" ) )
+         oDocSped:Produto[ nCont ]:CFOP            := Transform( XmlNode( cBlocoProd, "CFOP" ), "@R 9.9999" )
+         oDocSped:Produto[ nCont ]:NCM             := XmlNode( cBlocoProd, "NCM" )
+         oDocSped:Produto[ nCont ]:GTIN            := XmlNode( cBlocoProd, "cEAN" )
+         oDocSped:Produto[ nCont ]:Unidade         := Upper( XmlNode( cBlocoProd, "uCom" ) )
+         oDocSped:Produto[ nCont ]:Qtde            := Val( XmlNode( cBlocoProd, "qCom" ) )
+         oDocSped:Produto[ nCont ]:ValorUnitario   := Val( XmlNode( cBlocoProd, "vUnCom" ) )
+         oDocSped:Produto[ nCont ]:ValorTotal      := Val( XmlNode( cBlocoProd, "vProd" ) )
       cBlocoIpi := XmlNode( cBlocoItem, "IPI" )
-         oNfe:Produto[ nCont ]:Ipi:Base        := Val( XmlNode( cBlocoIpi, "vBC" ) )
-         oNfe:Produto[ nCont ]:Ipi:Aliquota    := Val( XmlNode( cBlocoIpi, "pIPI" ) )
-         oNfe:Produto[ nCont ]:Ipi:Valor       := Val( XmlNode( cBlocoIpi, "vIPI" ) )
+         oDocSped:Produto[ nCont ]:Ipi:Base        := Val( XmlNode( cBlocoIpi, "vBC" ) )
+         oDocSped:Produto[ nCont ]:Ipi:Aliquota    := Val( XmlNode( cBlocoIpi, "pIPI" ) )
+         oDocSped:Produto[ nCont ]:Ipi:Valor       := Val( XmlNode( cBlocoIpi, "vIPI" ) )
       cBlocoIcms := XmlNode( cBlocoItem, "ICMS" )
-         oNfe:Produto[ nCont ]:Icms:Cst        := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CST" )
-         oNfe:Produto[ nCont ]:Icms:Base       := Val( XmlNode( cBlocoIcms, "vBC" ) )
-         oNfe:Produto[ nCont ]:Icms:Reducao    := Val( XmlNode( cBlocoIcms, "vRedBC" ) )
-         oNfe:Produto[ nCont ]:Icms:Aliquota   := Val( XmlNode( cBlocoIcms, "pICMS" ) )
-         oNfe:Produto[ nCont ]:Icms:Valor      := Val( XmlNode( cBlocoIcms, "vICMS" ) )
-         oNfe:Produto[ nCont ]:IcmsSt:Base     := Val( XmlNode( cBlocoIcms, "vBCST" ) )
-         oNfe:Produto[ nCont ]:IcmsSt:Iva      := Val( XmlNode( cBlocoIcms, "pMVAST" ) )
-         oNfe:Produto[ nCont ]:IcmsSt:Reducao  := Val( XmlNode( cBlocoIcms, "pRedBCST" ) )
-         oNfe:Produto[ nCont ]:IcmsSt:Aliquota := Val( XmlNode( cBlocoIcms, "pICMSST" ) )
-         oNfe:Produto[ nCont ]:IcmsSt:Valor    := Val( XmlNode( cBlocoIcms, "vICMSST" ) )
+         oDocSped:Produto[ nCont ]:Icms:Cst        := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CST" )
+         oDocSped:Produto[ nCont ]:Icms:Base       := Val( XmlNode( cBlocoIcms, "vBC" ) )
+         oDocSped:Produto[ nCont ]:Icms:Reducao    := Val( XmlNode( cBlocoIcms, "vRedBC" ) )
+         oDocSped:Produto[ nCont ]:Icms:Aliquota   := Val( XmlNode( cBlocoIcms, "pICMS" ) )
+         oDocSped:Produto[ nCont ]:Icms:Valor      := Val( XmlNode( cBlocoIcms, "vICMS" ) )
+         oDocSped:Produto[ nCont ]:IcmsSt:Base     := Val( XmlNode( cBlocoIcms, "vBCST" ) )
+         oDocSped:Produto[ nCont ]:IcmsSt:Iva      := Val( XmlNode( cBlocoIcms, "pMVAST" ) )
+         oDocSped:Produto[ nCont ]:IcmsSt:Reducao  := Val( XmlNode( cBlocoIcms, "pRedBCST" ) )
+         oDocSped:Produto[ nCont ]:IcmsSt:Aliquota := Val( XmlNode( cBlocoIcms, "pICMSST" ) )
+         oDocSped:Produto[ nCont ]:IcmsSt:Valor    := Val( XmlNode( cBlocoIcms, "vICMSST" ) )
       cBlocoPis := XmlNode( cBlocoItem, "PIS" )
-         oNfe:Produto[ nCont ]:Pis:Cst         := XmlNode( cBlocoPis, "CST" )
-         oNfe:Produto[ nCont ]:Pis:Base        := Val( XmlNode( cBlocoPis, "vBC" ) )
-         oNfe:Produto[ nCont ]:Pis:Aliquota    := Val( XmlNode( cBlocoPis, "pPIS" ) )
-         oNfe:Produto[ nCont ]:Pis:Valor       := Val( XmlNode( cBlocoPis, "vPIS" ) )
+         oDocSped:Produto[ nCont ]:Pis:Cst         := XmlNode( cBlocoPis, "CST" )
+         oDocSped:Produto[ nCont ]:Pis:Base        := Val( XmlNode( cBlocoPis, "vBC" ) )
+         oDocSped:Produto[ nCont ]:Pis:Aliquota    := Val( XmlNode( cBlocoPis, "pPIS" ) )
+         oDocSped:Produto[ nCont ]:Pis:Valor       := Val( XmlNode( cBlocoPis, "vPIS" ) )
       cBlocoCofins := XmlNode( cBlocoItem, "COFINS" )
-         oNfe:Produto[ nCont ]:Cofins:Cst      := XmlNode( cBlocoCofins, "CST" )
-         oNfe:Produto[ nCont ]:Cofins:Base     := Val( XmlNode( cBlocoCofins, "vBC" ) )
-         oNfe:Produto[ nCont ]:Cofins:Aliquota := Val( XmlNode( cBlocoCofins, "pCOFINS" ) )
-         oNfe:Produto[ nCont ]:Cofins:Valor    := Val( XmlNode( cBlocoCofins, "vCOFINS" ) )
+         oDocSped:Produto[ nCont ]:Cofins:Cst      := XmlNode( cBlocoCofins, "CST" )
+         oDocSped:Produto[ nCont ]:Cofins:Base     := Val( XmlNode( cBlocoCofins, "vBC" ) )
+         oDocSped:Produto[ nCont ]:Cofins:Aliquota := Val( XmlNode( cBlocoCofins, "pCOFINS" ) )
+         oDocSped:Produto[ nCont ]:Cofins:Valor    := Val( XmlNode( cBlocoCofins, "vCOFINS" ) )
       cBlocoComb := XmlNode( cBlocoItem, "comb" )
-         oNfe:Produto[ nCont ]:Anp             := XmlNode( cBlocoComb, "cProdANP" )
+         oDocSped:Produto[ nCont ]:Anp             := XmlNode( cBlocoComb, "cProdANP" )
       cBlocoDetalhe := Substr( cBlocoDetalhe, At( "</det", cBlocoDetalhe ) + 4 )
    NEXT
 
@@ -502,17 +502,17 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oNfe )
       IF Len( Trim( cBlocoDup ) ) = 0
          EXIT
       ENDIF
-      AAdd( oNfe:Duplicata, NFEDuplicataClass():New() )
-      oNfe:Duplicata[ nCont ]:Vencimento := XmlDate( XmlNode( cBlocoDup, "dVenc" ) )
-      oNfe:Duplicata[ nCont ]:Valor      := Val( XmlNode( cBlocoDup, "vDup" ) )
+      AAdd( oDocSped:Duplicata, NFEDuplicataClass():New() )
+      oDocSped:Duplicata[ nCont ]:Vencimento := XmlDate( XmlNode( cBlocoDup, "dVenc" ) )
+      oDocSped:Duplicata[ nCont ]:Valor      := Val( XmlNode( cBlocoDup, "vDup" ) )
       cBlocoCobranca := Substr( cBlocoCobranca, At( "</dup>", cBlocoCobranca ) + 3 )
    NEXT
-   oNfe:Protocolo := XmlNode( cXmlInput, "nProt" )
-   oNFE:Status    := XmlNode( cXmlInput, "cStat" )
+   oDocSped:Protocolo := XmlNode( cXmlInput, "nProt" )
+   oDocSped:Status    := XmlNode( cXmlInput, "cStat" )
 
    RETURN NIL
 
-STATIC FUNCTION XmlToDocNfeCancel( cXmlInput, oNFe )
+STATIC FUNCTION XmlToDocNfeCancel( cXmlInput, oDocSped )
 
    LOCAL mChave, mProtocolo, mXmlInfComTag, mXmlInf
 
@@ -539,16 +539,16 @@ STATIC FUNCTION XmlToDocNfeCancel( cXmlInput, oNFe )
       End If
    ENDIF
    IF Len( AllTrim( mChave ) ) == 0
-      oNfe:cErro := "Sem chave de acesso"
+      oDocSped:cErro := "Sem chave de acesso"
       RETURN .F.
    ELSE
-      oNfe:ChaveAcesso   := mChave
-      oNfe:Protocolo     := mProtocolo
-      oNFE:cAmbiente     := XmlNode( cXmlInput, "tpAmb" )
-      oNfe:Emitente:Cnpj := Transform( Substr( mChave, 7, 14 ), "@R 99.999.999/9999-99" )
-      oNfe:cNumDoc       := Substr( mChave, 26, 9 )
-      oNfe:cAssinatura   := XmlNode( cXmlInput, "Signature" )
-      oNfe:Status        := "111"
+      oDocSped:ChaveAcesso   := mChave
+      oDocSped:Protocolo     := mProtocolo
+      oDocSped:cAmbiente     := XmlNode( cXmlInput, "tpAmb" )
+      oDocSped:Emitente:Cnpj := Transform( Substr( mChave, 7, 14 ), "@R 99.999.999/9999-99" )
+      oDocSped:cNumDoc       := Substr( mChave, 26, 9 )
+      oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
+      oDocSped:Status        := "111"
    ENDIF
 
    RETURN NIL
@@ -672,74 +672,76 @@ STATIC FUNCTION XmlToDocMDFECancel( cXmlInput, oDocSped )
 
    RETURN NIL
 
-STATIC FUNCTION XmlToDocCteEmi( XmlInput, oCTE )
+STATIC FUNCTION XmlToDocCteEmi( XmlInput, oDocSped )
 
    LOCAL XmlProc, XmlCte, XmlInfCte, XmlIde, mTemp, XmlEmit, XmlEndereco
    LOCAL XmlRemetente, XmlDestinatario, XmlPrest, XmlProt, XmlInfProt, XmlInfCteComTag
 
-   XmlProc := XmlNode( XmlInput, "cteProc" )
+   IF Empty( XmlProc := XmlNode( XmlInput, "cteProc" ) )
+      XmlProc := XmlNode( XmlInput, "procCTe" )
+   ENDIF
       XmlCte := XmlNode( XmlProc, "CTe" )
          XmlInfCteComTag := XmlNode( XmlProc, "CTe", .T. )
          XmlInfCte := XmlNode( XmlCte, "infCte" )
-            oCte:ChaveAcesso := Substr( XmlElement( XmlInfCteComTag, "id" ), 4 )  // id minusculo
-            IF Empty( oCte:ChaveAcesso )
-               oCte:ChaveAcesso := Substr( XmlElement( XmlInfCteComTag, "Id" ), 4 ) // id maiusculo
+            oDocSped:ChaveAcesso := Substr( XmlElement( XmlInfCteComTag, "id" ), 4 )  // id minusculo
+            IF Empty( oDocSped:ChaveAcesso )
+               oDocSped:ChaveAcesso := Substr( XmlElement( XmlInfCteComTag, "Id" ), 4 ) // id maiusculo
             ENDIF
             XmlIde := XmlNode( XmlInfCte, "ide" )
-               oCte:cNumDoc := StrZero( Val( XmlNode( XmlIde, "nCT" ) ), 9 )
+               oDocSped:cNumDoc := StrZero( Val( XmlNode( XmlIde, "nCT" ) ), 9 )
                mTemp := XmlNode( XmlIde, "dhEmi" ) // Data/hora
                mTemp := Substr( mTemp, 1, 10 ) // Data aaaa-mm-dd
                mTemp := Substr( mTemp, 9, 2 ) + "/" + Substr( mTemp, 6, 2 ) + "/" + Substr( mTemp, 1, 4 )
-               oCte:DataEmissao := Ctod( mTemp )
-               oCte:cAmbiente   := XmlNode( XmlIde, "tpAmb" )
+               oDocSped:DataEmissao := Ctod( mTemp )
+               oDocSped:cAmbiente   := XmlNode( XmlIde, "tpAmb" )
             XmlEmit := XmlNode( XmlInfCte, "emit" )
-               oCte:Emitente:Cnpj := Trim( Transform( XmlNode( XmlEmit, "CNPJ" ), "@R 99.999.999/9999-99" ) )
-               oCte:Emitente:Nome := XmlNode( XmlEmit, "xNome" )
+               oDocSped:Emitente:Cnpj := Trim( Transform( XmlNode( XmlEmit, "CNPJ" ), "@R 99.999.999/9999-99" ) )
+               oDocSped:Emitente:Nome := XmlNode( XmlEmit, "xNome" )
                XmlEndereco := XmlNode( XmlEmit, "enderEmit" )
-                  oCte:Emitente:Endereco := XmlNode( XmlEndereco, "xLgr" ) + " " + XmlNode( XmlEndereco, "nro" )
-                  oCte:Emitente:Bairro   := XmlNode( XmlEndereco, "xBairro" )
-                  oCte:Emitente:Cidade   := XmlNode( XmlEndereco, "xMun" )
-                  oCte:Emitente:Uf       := XmlNode( XmlEndereco, "UF" )
-                  oCte:Emitente:Cep      := Transform( XmlNode( XmlEndereco, "CEP" ), "@R 99999-999" )
-                  oCte:Emitente:Telefone := XmlNode( XmlEndereco, "fone" )
+                  oDocSped:Emitente:Endereco := XmlNode( XmlEndereco, "xLgr" ) + " " + XmlNode( XmlEndereco, "nro" )
+                  oDocSped:Emitente:Bairro   := XmlNode( XmlEndereco, "xBairro" )
+                  oDocSped:Emitente:Cidade   := XmlNode( XmlEndereco, "xMun" )
+                  oDocSped:Emitente:Uf       := XmlNode( XmlEndereco, "UF" )
+                  oDocSped:Emitente:Cep      := Transform( XmlNode( XmlEndereco, "CEP" ), "@R 99999-999" )
+                  oDocSped:Emitente:Telefone := XmlNode( XmlEndereco, "fone" )
             XmlRemetente := XmlNode( XmlInfCte, "rem" )
-               oCte:Remetente:Cnpj := Trim( Transform( XmlNode( XmlRemetente, "CNPJ" ), "@R 99.999.999/9999-99" ) )
-               oCte:Remetente:Nome := XmlNode( XmlRemetente, "xNome" )
+               oDocSped:Remetente:Cnpj := Trim( Transform( XmlNode( XmlRemetente, "CNPJ" ), "@R 99.999.999/9999-99" ) )
+               oDocSped:Remetente:Nome := XmlNode( XmlRemetente, "xNome" )
                XmlEndereco := XmlNode( XmlRemetente, "enderReme" )
-                  oCte:Remetente:Endereco := XmlNode( XmlRemetente, "xLgr" ) + " " + XmlNode( XmlEndereco, "nro" )
-                  oCte:Remetente:Bairro   := XmlNode( XmlRemetente, "xBairro" )
-                  oCte:Remetente:Cidade   := XmlNode( XmlRemetente, "xMun" )
-                  oCte:Remetente:Uf       := XmlNode( XmlRemetente, "UF" )
-                  oCte:Remetente:Cep      := Transform( XmlNode( XmlRemetente, "CEP" ), "@R 99999-999" )
-                  oCte:Remetente:Telefone := XmlNode( XmlRemetente, "fone" )
+                  oDocSped:Remetente:Endereco := XmlNode( XmlRemetente, "xLgr" ) + " " + XmlNode( XmlEndereco, "nro" )
+                  oDocSped:Remetente:Bairro   := XmlNode( XmlRemetente, "xBairro" )
+                  oDocSped:Remetente:Cidade   := XmlNode( XmlRemetente, "xMun" )
+                  oDocSped:Remetente:Uf       := XmlNode( XmlRemetente, "UF" )
+                  oDocSped:Remetente:Cep      := Transform( XmlNode( XmlRemetente, "CEP" ), "@R 99999-999" )
+                  oDocSped:Remetente:Telefone := XmlNode( XmlRemetente, "fone" )
             XmlDestinatario := XmlNode( XmlInfCte, "dest" )
-               oCte:Destinatario:Cnpj := Trim( XmlNode( XmlDestinatario, "CNPJ" ) )
-               IF Empty( oCte:Destinatario:Cnpj )
-                  oCte:Destinatario:Cnpj := Transform( XmlNode( XmlDestinatario, "CPF" ), "@R 999.999.999-99" )
+               oDocSped:Destinatario:Cnpj := Trim( XmlNode( XmlDestinatario, "CNPJ" ) )
+               IF Empty( oDocSped:Destinatario:Cnpj )
+                  oDocSped:Destinatario:Cnpj := Transform( XmlNode( XmlDestinatario, "CPF" ), "@R 999.999.999-99" )
                ELSE
-                  oCte:Destinatario:Cnpj := Transform( oCte:Destinatario:Cnpj, "@R 99.999.999/9999-99" )
+                  oDocSped:Destinatario:Cnpj := Transform( oDocSped:Destinatario:Cnpj, "@R 99.999.999/9999-99" )
                ENDIF
-               oCte:Destinatario:Nome := XmlNode( XmlDestinatario, "xNome" )
+               oDocSped:Destinatario:Nome := XmlNode( XmlDestinatario, "xNome" )
                XmlEndereco := XmlNode( XmlDestinatario, "enderDest" )
-                  oCte:Destinatario:Endereco := XmlNode( XmlDestinatario, "xLgr" ) + " " + XmlNode( XmlEndereco, "nro" )
-                  oCte:Destinatario:Bairro   := XmlNode( XmlDestinatario, "xBairro" )
-                  oCte:Destinatario:Cidade   := XmlNode( XmlDestinatario, "xMun" )
-                  oCte:Destinatario:Uf       := XmlNode( XmlDestinatario, "UF" )
-                  oCte:Destinatario:Cep      := XmlNode( XmlDestinatario, "CEP" )
-                  oCte:Destinatario:Telefone := XmlNode( XmlDestinatario, "fone" )
+                  oDocSped:Destinatario:Endereco := XmlNode( XmlDestinatario, "xLgr" ) + " " + XmlNode( XmlEndereco, "nro" )
+                  oDocSped:Destinatario:Bairro   := XmlNode( XmlDestinatario, "xBairro" )
+                  oDocSped:Destinatario:Cidade   := XmlNode( XmlDestinatario, "xMun" )
+                  oDocSped:Destinatario:Uf       := XmlNode( XmlDestinatario, "UF" )
+                  oDocSped:Destinatario:Cep      := XmlNode( XmlDestinatario, "CEP" )
+                  oDocSped:Destinatario:Telefone := XmlNode( XmlDestinatario, "fone" )
                XmlPrest := XmlNode( XmlInfCte, "vPrest" )
-                  oCte:Valor := Val( XmlNode(XmlPrest, "vTPrest" ) )
-      oCte:PesoCarga  := Val( XmlNode( XmlCte, "vCarga" ) )
-      oCte:ValorCarga := Val( XmlNode( XmlCte, "qCarga" ) )
-      oCte:cAssinatura := XmlNode( XmlCte, "Signature" )
+                  oDocSped:Valor := Val( XmlNode(XmlPrest, "vTPrest" ) )
+      oDocSped:PesoCarga  := Val( XmlNode( XmlCte, "vCarga" ) )
+      oDocSped:ValorCarga := Val( XmlNode( XmlCte, "qCarga" ) )
+      oDocSped:cAssinatura := XmlNode( XmlCte, "Signature" )
    XmlProt := XmlNode(XmlProc, "protCTe" )
       XmlInfProt := XmlNode( XmlProt, "infProt" )
-      oCte:Protocolo := XmlNode( XmlInfProt, "nProt" )
-      oCte:Status    := XmlNode( XmlProt, "cStat" )
+      oDocSped:Protocolo := XmlNode( XmlInfProt, "nProt" )
+      oDocSped:Status    := XmlNode( XmlProt, "cStat" )
 
-   RETURN oCte
+   RETURN oDocSped
 
-STATIC FUNCTION XmlToDocCteCancel( cXmlInput, oCTE )
+STATIC FUNCTION XmlToDocCteCancel( cXmlInput, oDocSped )
 
    LOCAL mXmlInfCanc, mXmlInfCancComTag, mChave, mProtocolo
 
@@ -760,16 +762,16 @@ STATIC FUNCTION XmlToDocCteCancel( cXmlInput, oCTE )
       mProtocolo  := XmlNode( mXmlInfCanc, "nProt" )
    ENDIF
    IF Len( Trim( mChave ) ) != 0
-      oCte:ChaveAcesso   := mChave
-      oCte:Protocolo     := mProtocolo
-      oCte:cAmbiente     := XmlNode( cXmlInput, "tpAmb" )
-      oCte:Emitente:Cnpj := Transform( Substr( mChave, 7, 14 ), "@R 99.999.999/9999-99" )
-      oCte:cNumDoc       := Substr( mChave, 26, 9 )
-      oCTE:cAssinatura   := XmlNode( cXmlInput, "Signature" )
-      oCte:Status        := "111"
+      oDocSped:ChaveAcesso   := mChave
+      oDocSped:Protocolo     := mProtocolo
+      oDocSped:cAmbiente     := XmlNode( cXmlInput, "tpAmb" )
+      oDocSped:Emitente:Cnpj := Transform( Substr( mChave, 7, 14 ), "@R 99.999.999/9999-99" )
+      oDocSped:cNumDoc       := Substr( mChave, 26, 9 )
+      oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
+      oDocSped:Status        := "111"
    ENDIF
 
-   RETURN oCte
+   RETURN oDocSped
 
 FUNCTION PicNfe( cChave )
 
