@@ -5,9 +5,7 @@ Contribuição NFCE: LucianoConforto
 
 #include "hbclass.ch"
 #include "harupdf.ch"
-
-#define WS_AMBIENTE_HOMOLOGACAO      "2"
-#define WS_AMBIENTE_PRODUCAO         "1"
+#include "sefazclass.ch"
 
 CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
 

@@ -8,6 +8,12 @@ Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
 #include "hbclass.ch"
 #include "sefazclass.ch"
 
+#ifdef __XHARBOUR__
+   #define ALL_PARAMETERS P1, P2, P3, P4, P5, P6, P7, P8, P9, P10
+#else
+   #define ALL_PARAMETERS ...
+#endif
+
 CREATE CLASS SefazClass
 
    /* configuração */
@@ -42,6 +48,7 @@ CREATE CLASS SefazClass
    VAR    cSoapURL       INIT ""                      // webservice Endereço
    VAR    cXmlNameSpace  INIT "xmlns="
    VAR    cNFCE          INIT "N"                     // Porque NFCE tem endereços diferentes
+   VAR    nWsServico     INIT 0
 
    METHOD BpeConsulta( cChave, cCertificado, cAmbiente )
    METHOD BpeStatusServico( cUF, cCertificado, cAmbiente )
@@ -118,6 +125,7 @@ METHOD GeraQRCode( cXmlDocumento, cIdToken, cCsc )
    ::cXmlRetorno := GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC )
 
    RETURN ::cXmlRetorno
+
 
 METHOD BpeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -472,6 +480,13 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    ENDIF
    ::cXmlEnvio    += [</distDFeInt>]
    ::XmlSoapPost()
+   //
+   // UltNSU = ultimo NSU pesquisado
+   // maxUSU = número máximo existente
+   // docZIP = Documento em formato ZIP
+   // NSU    = NSU do documento fiscal
+   // schema = schemma de validação do XML anexado ex. procMDFe_v1.00.xsd, procEventoMDFe_V1.00.xsd
+   //
 
    RETURN NIL
 
@@ -1030,6 +1045,9 @@ METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
    IF nWsServico == NIL
       RETURN NIL
    ENDIF
+
+   ::nWsServico := nWsServico
+
    IF ::cNFCE != "S" .AND. ::cVersao != "4.00" .AND. ( nPos := AScan( aSoapList, { | oElement | oElement[ 1 ] $ ::cUF .AND. oElement[ 2 ] == nWsServico } ) ) != 0
       ::cProjeto     := aSoapList[ nPos, 3 ]
       ::cSoapAction  := aSoapList[ nPos, 4 ]
@@ -1124,26 +1142,26 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
 
    ::cXmlSoap    := XML_UTF8
    ::cXmlSoap    += [<soap12:Envelope ] + cXmlns + [>]
-   //IF ::cSoapAction != "nfeDistDFeInteresse" .AND. ! ( ::cProjeto == WS_PROJETO_NFE .AND. ::cVersao == "4.00" )
+   IF ::nWsServico != WS_MDFE_DISTRIBUICAODFE // ! ( ::cProjeto == WS_PROJETO_NFE .AND. ::cVersao == "4.00" )
       ::cXmlSoap +=    [<soap12:Header>]
       ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
       ::cXmlSoap +=          [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
       ::cXmlSoap +=          [<versaoDados>] + ::cSoapVersion + [</versaoDados>]
       ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
       ::cXmlSoap +=    [</soap12:Header>]
-   //ENDIF
+   ENDIF
    ::cXmlSoap    +=    [<soap12:Body>]
-   //IF ::cSoapAction == "nfeDistDFeInteresse"
-      //::cXmlSoap += [<nfeDistDFeInteresse xmlns="] + ::cSoapService + [">]
-      //::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
-   //ELSE
+   IF ::nWsServico == WS_MDFE_DISTRIBUICAODFE
+      ::cXmlSoap += [<nfeDistDFeInteresse xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
+   ELSE
       ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg xmlns="] + ::cSoapService + [">]
-   //ENDIF
+   ENDIF
    ::cXmlSoap    += ::cXmlEnvio
    ::cXmlSoap    +=    [</] + ::cProjeto + [DadosMsg>]
-   //IF ::cSoapAction == "nfeDistDFeInteresse"
-      //::cXmlSoap += [</nfeDistDFeInteresse>]
-   //ENDIF
+   IF ::nWsServico == WS_MDFE_DISTRIBUICAODFE
+      ::cXmlSoap += [</nfeDistDFeInteresse>]
+   ENDIF
    ::cXmlSoap    +=    [</soap12:Body>]
    ::cXmlSoap    += [</soap12:Envelope>]
 
