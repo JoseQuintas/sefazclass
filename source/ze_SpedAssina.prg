@@ -284,17 +284,19 @@ STATIC FUNCTION AssinaAjustaAssinado( cXml )
 
       cXml := StrTran( cXml, Chr(10), "" )
       cXml := StrTran( cXml, Chr(13), "" )
-      nPosIni     := At( [<SignatureValue>], cXml ) + Len( [<SignatureValue>] )
+      nPosIni     := RAt( [<SignatureValue>], cXml ) + Len( [<SignatureValue>] )
       cXml := Substr( cXml, 1, nPosIni - 1 ) + StrTran( Substr( cXml, nPosIni, Len( cXml ) ), " ", "" )
-      nPosIni     := At( [<X509Certificate>], cXml ) - 1
-      nP          := At( [<X509Certificate>], cXml )
+      nPosIni     := hb_At( [<X509Certificate>], cXml, nPosIni ) - 1
+      nP          := nPosIni + 1
       nResult     := 0
       DO WHILE nP <> 0
          nResult := nP
          nP      := hb_At( [<X509Certificate>], cXml, nP + 1 )
       ENDDO
       nPosFim     := nResult
-      cXml := Substr( cXml, 1, nPosIni ) + Substr( cXml, nPosFim, Len( cXml ) )
+      IF nPosIni > 0 .AND. nPosFim > 0
+         cXml := Substr( cXml, 1, nPosIni ) + Substr( cXml, nPosFim, Len( cXml ) )
+      ENDIF
 
       RETURN cXml
 
