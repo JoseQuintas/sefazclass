@@ -50,7 +50,7 @@ CREATE CLASS SefazClass
    VAR    cNFCE          INIT "N"                     // Porque NFCE tem endereços diferentes
    VAR    nWsServico     INIT 0
 
-   METHOD BpeConsulta( cChave, cCertificado, cAmbiente )
+   METHOD BpeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD BpeStatusServico( cUF, cCertificado, cAmbiente )
 
    METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente )
@@ -127,9 +127,9 @@ METHOD GeraQRCode( cXmlDocumento, cIdToken, cCsc )
    RETURN ::cXmlRetorno
 
 
-METHOD BpeConsulta( cChave, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD BpeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
-   ::Setup( ::UfSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_BPE_CONSULTA )
+   ::Setup( ::UfSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_BPE_CONSULTAPROTOCOLO )
    ::cXmlEnvio := [<consSitBPe> versao="] + WS_VERSAO_BPE + [" ] + WS_XMLNS_BPE + [>]
    ::cXmlEnvio +=   XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=   XmlTag( "xServ", "CONSULTAR" )
