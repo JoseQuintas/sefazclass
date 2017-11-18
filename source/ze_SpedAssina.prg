@@ -280,20 +280,20 @@ STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cRetorno )
 
 STATIC FUNCTION AssinaAjustaAssinado( cXml )
 
-   LOCAL nPosIni, nPosFim, nP
+   LOCAL nPosIni // , nPosFim, nP
 
       cXml    := StrTran( cXml, Chr(10), "" )
       cXml    := StrTran( cXml, Chr(13), "" )
       nPosIni := RAt( [<SignatureValue>], cXml ) + Len( [<SignatureValue>] )
-      cXml    := Substr( cXml, 1, nPosIni - 1 ) + StrTran( Substr( cXml, nPosIni, Len( cXml ) ), " ", "" )
-      nPosIni := hb_At( [<X509Certificate>], cXml, nPosIni ) - 1
-      nP      := nPosIni + 1
-      nPosFim := 0
-      DO WHILE nP <> 0
-         nPosFim := nP
-         nP      := hb_At( [<X509Certificate>], cXml, nP + 1 )
-      ENDDO
-      cXml := Substr( cXml, 1, nPosIni ) + Substr( cXml, nPosFim, Len( cXml ) )
+      cXml    := Substr( cXml, 1, nPosIni - 1 ) + StrTran( Substr( cXml, nPosIni ), " ", "" )
+      //nPosIni := hb_At( [<X509Certificate>], cXml, nPosIni ) - 1
+      //nP      := nPosIni + 1
+      //nPosFim := 0
+      //DO WHILE nP <> 0
+      //   nPosFim := nP
+      //   nP      := hb_At( [<X509Certificate>], cXml, nP + 1 )
+      //ENDDO
+      //cXml := Substr( cXml, 1, nPosIni ) + Substr( cXml, nPosFim, Len( cXml ) )
 
       RETURN cXml
 

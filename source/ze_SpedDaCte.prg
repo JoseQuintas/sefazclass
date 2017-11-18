@@ -149,7 +149,7 @@ METHOD ToPDF( cXmlCTE, cFilePDF, cXmlCancel ) CLASS hbnfeDaCte
 
 METHOD BuscaDadosXML() CLASS hbnfeDaCte
 
-   LOCAL cIde, cCompl, cEmit, cDest, cPrest, cImp, cinfCTeNorm, cRodo, cExped, cReceb, oElement
+   LOCAL cIde, cCompl, cEmit, cDest, cToma, cPrest, cImp, cinfCTeNorm, cRodo, cExped, cReceb, oElement
 
    cIde := XmlNode( ::cXml, "ide" )
    ::aIde := XmlToHash( cIde, { "cUF", "cCT", "CFOP", "natOp", "forPag", "mod", "serie", "nCT", "dhEmi", "tpImp", "tpEmis", ;
@@ -217,6 +217,13 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    ::aDest := XmlToHash( XmlNode( cDest, "enderDest" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais" }, ::aDest )
 
    ::alocEnt := XmlToHash( XmlNode( cDest, "locEnt" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "xMun", "UF" } )
+
+   // adicionado pra evitar erro
+   cToma := XmlNode( ::cXml, "toma4" )
+   ::aToma := XmlToHash( cToma, { "CNPJ", "CPF", "IE", "xNome", "fone", "email" } )
+   ::aToma[ "xNome" ] := XmlToString( ::aToma[ "xNome" ] )
+   ::aToma[ "email" ] := XmlToString( ::aToma[ "email" ] )
+   ::aToma:= XmlToHash( XmlNode( cToma, "enderExped" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais" }, ::aToma )
 
    cExped := XmlNode( ::cXml, "exped" )
    ::aExped := XmlToHash( cExped, { "CNPJ", "CPF", "IE", "xNome", "fone", "email" } )

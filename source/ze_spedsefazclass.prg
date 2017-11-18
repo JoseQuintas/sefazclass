@@ -1515,7 +1515,7 @@ STATIC FUNCTION SoapUrlCte(  cUF, cAmbiente, nWsServico, cSoapVersion )
    nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
    IF nPos != 0
       cUrl         := aList[ nPos, 5 ]
-      cSoapVersion := aList[ nPos, 4 ]
+      cSoapVersion := WS_VERSAO_CTE // aList[ nPos, 4 ]
    ENDIF
    IF Empty( cUrl )
       IF cUF $ "AP,PE,RR"

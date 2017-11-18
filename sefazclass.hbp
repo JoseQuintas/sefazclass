@@ -20,6 +20,7 @@ source/ze_inscestadual.prg
 -es2
 -m
 -n
+-beep
 
 -o${hb_install_prefix}/addons/sefazclass/lib/${hb_plat}/${hb_comp}/${hb_name}
 

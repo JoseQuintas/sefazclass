@@ -42,7 +42,7 @@
 #define WS_PROJETO_NFE               "nfe"
 
 #define WS_VERSAO_BPE                "1.00"
-#define WS_VERSAO_CTE                "2.00"
+#define WS_VERSAO_CTE                "3.00"
 #define WS_VERSAO_MDFE               "3.00"
 #define WS_VERSAO_NFE                "3.10"
 #define WS_VERSAO_NFEEVENTO          "1.00"
@@ -94,71 +94,71 @@
 
 #define SEFAZ_CTE_URL_LIST { ;
    ;
-   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTACADASTRO,  "2.00", "https://producao.cte.ms.gov.br/ws/CadConsultaCadastro" }, ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTACADASTRO,  "3.00", "https://producao.cte.ms.gov.br/ws/CadConsultaCadastro" }, ;
    ;
-   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "2.00", "https://cte.fazenda.mg.gov.br/cte/services/CteConsulta" }, ;
-   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "2.00", "https://producao.cte.ms.gov.br/ws/CteConsulta" }, ;
-   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "2.00", "https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta" }, ;
-   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "2.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
-   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "2.00", "https://cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl" }, ;
-   { "SVSP", WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "2.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteConsulta.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "2.00", "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" }, ;
+   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "3.00", "https://cte.fazenda.mg.gov.br/cte/services/CteConsulta" }, ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "3.00", "https://producao.cte.ms.gov.br/ws/CteConsulta" }, ;
+   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "3.00", "https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta" }, ;
+   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "3.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "3.00", "https://cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl" }, ;
+   { "SVSP", WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "3.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteConsulta.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_CONSULTAPROTOCOLO, "3.00", "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" }, ;
    ;
-   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_CONSULTAPROTOCOLO, "2.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_CONSULTAPROTOCOLO, "2.00", "https://cte-homologacao.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" }, ;
+   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_CONSULTAPROTOCOLO, "3.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_CONSULTAPROTOCOLO, "3.00", "https://cte-homologacao.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" }, ;
    ;
-   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "2.00", "https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao" }, ;
-   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "2.00", "https://producao.cte.ms.gov.br/ws/CteInutilizacao" }, ;
-   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "2.00", "https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao" }, ;
-   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "2.00", "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao?wsdl" }, ;
-   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "2.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "2.00", "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" }, ;
+   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "3.00", "https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao" }, ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "3.00", "https://producao.cte.ms.gov.br/ws/CteInutilizacao" }, ;
+   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "3.00", "https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao" }, ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "3.00", "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao?wsdl" }, ;
+   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "3.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_INUTILIZACAO,      "3.00", "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" }, ;
    ;
-   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_INUTILIZACAO,      "2.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_INUTILIZACAO,      "2.00", "https://cte-homologacao.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" }, ;
+   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_INUTILIZACAO,      "3.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_INUTILIZACAO,      "3.00", "https://cte-homologacao.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" }, ;
    ;
-   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "2.00", "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao" }, ;
-   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "2.00", "https://producao.cte.ms.gov.br/ws/CteRecepcao" }, ;
-   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "2.00", "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao" }, ;
-   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "2.00", "https://cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl" }, ;
-   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "2.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-   { "SVSP", WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "2.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "2.00", "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
+   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "3.00", "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao" }, ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "3.00", "https://producao.cte.ms.gov.br/ws/CteRecepcao" }, ;
+   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "3.00", "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao" }, ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "3.00", "https://cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl" }, ;
+   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "3.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+   { "SVSP", WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "3.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAO,          "3.00", "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
    ;
-   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RECEPCAO,          "2.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RECEPCAO,          "2.00", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
+   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RECEPCAO,          "3.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RECEPCAO,          "3.00", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
    ;
-   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "2.00", "https://cte.fazenda.mg.gov.br/cte/services/RecepcaoEvento" }, ;
-   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "2.00", "https://producao.cte.ms.gov.br/ws/CteRecepcaoEvento" }, ;
-   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "2.00", "https://cte.sefaz.mt.gov.br/ctews2/services/CteRecepcaoEvento?wsdl" }, ;
-   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "2.00", "https://cte.fazenda.pr.gov.br/cte/CteRecepcaoEvento?wsdl" }, ;
-   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "2.00", "https://nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "2.00", "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" }, ;
+   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "3.00", "https://cte.fazenda.mg.gov.br/cte/services/RecepcaoEvento" }, ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "3.00", "https://producao.cte.ms.gov.br/ws/CteRecepcaoEvento" }, ;
+   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "3.00", "https://cte.sefaz.mt.gov.br/ctews2/services/CteRecepcaoEvento?wsdl" }, ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "3.00", "https://cte.fazenda.pr.gov.br/cte/CteRecepcaoEvento?wsdl" }, ;
+   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "3.00", "https://nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_RECEPCAOEVENTO,    "3.00", "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" }, ;
    ;
-   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RECEPCAOEVENTO,    "2.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RECEPCAOEVENTO,    "2.00", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" }, ;
+   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RECEPCAOEVENTO,    "3.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RECEPCAOEVENTO,    "3.00", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" }, ;
    ;
-   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "2.00", "https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao" }, ;
-   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "2.00", "https://producao.cte.ms.gov.br/ws/CteRetRecepcao" }, ;
-   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "2.00", "https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao" }, ;
-   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "2.00", "https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao?wsdl" }, ;
-   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "2.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
-   { "SVSP", WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "2.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteRetRecepcao.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "2.00", "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" }, ;
+   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "3.00", "https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao" }, ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "3.00", "https://producao.cte.ms.gov.br/ws/CteRetRecepcao" }, ;
+   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "3.00", "https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao" }, ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "3.00", "https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao?wsdl" }, ;
+   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "3.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
+   { "SVSP", WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "3.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteRetRecepcao.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_RETRECEPCAO,       "3.00", "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" }, ;
    ;
-   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RETRECEPCAO,       "2.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RETRECEPCAO,       "2.00", "https://cte-homologacao.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" }, ;
+   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RETRECEPCAO,       "3.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_RETRECEPCAO,       "3.00", "https://cte-homologacao.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" }, ;
    ;
-   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "2.00", "https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico" }, ;
-   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "2.00", "https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico" }, ;
-   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "2.00", "https://producao.cte.ms.gov.br/ws/CteStatusServico" }, ;
-   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "2.00", "https://cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl" }, ;
-   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "2.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
-   { "SVSP", WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "2.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteStatusServico.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "2.00", "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" }, ;
+   { "MG",   WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "3.00", "https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico" }, ;
+   { "MT",   WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "3.00", "https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico" }, ;
+   { "MS",   WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "3.00", "https://producao.cte.ms.gov.br/ws/CteStatusServico" }, ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "3.00", "https://cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl" }, ;
+   { "SP",   WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "3.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
+   { "SVSP", WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "3.00", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteStatusServico.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_CTE_STATUSSERVICO,     "3.00", "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" }, ;
    ;
-   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_STATUSSERVICO,     "2.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_STATUSSERVICO,     "2.00", "https://cte-homologacao.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" } }
+   { "SP",   WS_AMBIENTE_HOMOLOGACAO, WS_CTE_STATUSSERVICO,     "3.00", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_CTE_STATUSSERVICO,     "3.00", "https://cte-homologacao.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" } }
 
 #define SEFAZ_MDFE_URL_LIST   { ;
    ;
