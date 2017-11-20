@@ -2,11 +2,14 @@
 http://www.pctoledo.com.br/forum/viewtopic.php?f=39&t=17470&start=75#p118783
 */
 
+REQUEST HB_CODEPAGE_PTISO
+
 FUNCTION Main()
 
-   LOCAL cCep, cBairro, cCidade, cEndereco, cUF, cID, b
+   LOCAL cCep, cBairro, cCidade, cEndereco, cUF, cID
 
-   cCep := "02860001"
+   Set( _SET_CODEPAGE, "PTISO" )
+   cCep := "001007000"
    ConsultaCep( cCep, @cBairro, @cCidade, @cEndereco, @cUF, @cId )
 
    ? cCep
@@ -35,6 +38,7 @@ STATIC FUNCTION ConsultaCep( cCep, cBairro, cCidade, cEndereco, cUF, cId )
       cUF       := XmlNode( :cXmlRetorno, "uf" )
       cID       := XmlNode( :cXmlRetorno, "id" )
    END WITH
+   HB_SYMBOL_UNUSED( oSefaz )
 
    RETURN NIL
 
@@ -46,7 +50,7 @@ STATIC FUNCTION SoapEnvelope( cCEP )
    cxMLSoap +=    [<soapenv:Header/>]
    cxMLSoap +=    [<soapenv:Body>]
    cxMLSoap +=       [<cli:consultaCEP>]
-   cxMLSoap +=          [<!--Optional:-->]
+   //cxMLSoap +=          [<!--Optional:-->]
    cxMLSoap +=          [<cep>] + cCEP + [</cep>]
    cxMLSoap +=       [</cli:consultaCEP>]
    cxMLSoap +=    [</soapenv:Body>]
