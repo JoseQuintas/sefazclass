@@ -1,6 +1,8 @@
 /*
 ZE_DIGITODOC - Checagem de dígitos de controle
 José Quintas
+
+2017.11.27 - Validação PIS
 */
 
 STATIC FUNCTION ValidCnpj( cCnpj )
@@ -243,3 +245,23 @@ FUNCTION CalculaDigito( cNumero, cModulo )
 
    RETURN cCalculo
 
+
+FUNCTION ValidPis( cPis )
+
+   LOCAL nTotal, nPeso, nResto, nCont, lOk
+
+   cPis := SoNumeros( cPis )
+   IF Len( cPis ) != 11
+      RETURN .F.
+   ENDIF
+
+   nTotal := 0
+   nPeso  := 2
+   FOR nCont = 10 TO 1 STEP -1
+      nTotal += Val( Substr( cPis, nCont, 1 ) ) * nPeso
+      nPeso := iif( nPeso == 9, 2, nPeso + 1 )
+   NEXT
+   nResto := Mod( 11 - Mod( nTotal, 11 ), 10 )
+   lOk    := Right( cPis, 1 ) == Str( nResto, 1 )
+
+   RETURN lOk
