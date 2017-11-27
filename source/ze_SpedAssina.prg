@@ -4,6 +4,7 @@ José Quintas
 
 * Crédito para hbnfe que mostrou como fazer https://github.com/fernandoathayde/hbnfe
 
+2017.11.27.1230 - Opção de usar arquivo PFX
 */
 
 #define _CAPICOM_STORE_OPEN_READ_ONLY                 0           // Somente Smart Card em Modo de Leitura
@@ -31,7 +32,7 @@ José Quintas
 #include "common.ch"
 #include "hbclass.ch"
 
-FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior )
+FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior, cPassword )
 
    LOCAL oDOMDocument, xmldsig, oCert, oCapicomStore
    LOCAL SIGNEDKEY, DSIGKEY
@@ -52,7 +53,7 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior )
       RETURN cRetorno
    ENDIF
 
-   IF ! AssinaLoadCertificado( cCertCN, @ocert, @oCapicomStore, cRetorno )
+   IF ! AssinaLoadCertificado( cCertCN, @ocert, @oCapicomStore, cPassword, @cRetorno )
       RETURN cRetorno
    ENDIF
 
@@ -253,11 +254,20 @@ STATIC FUNCTION AssinaLoadXml( oDomDocument, cTxtXml, cRetorno )
 
    RETURN .T.
 
-STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cRetorno )
+STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cRetorno, cPassword )
 
    LOCAL lOk := .F.
 
-   oCert := CapicomCertificado( cCertCn )
+   IF Upper( Right( cCertCN, 4 ) ) == ".PFX"
+      IF ! File( cCertCn )
+         cRetorno := "Erro assinatura: Arquivo PFX não encontrado"
+         RETURN .F.
+      ENDIF
+      oCert := win_OleCreateObject( "CAPICOM.Certificate" )
+      oCert:Load( cCertCN, cPassword, 1, 0 )
+   ELSE
+      oCert := CapicomCertificado( cCertCn )
+   ENDIF
    IF oCert == NIL
       cRetorno := "Erro Assinatura: Certificado não encontrado ou vencido"
       RETURN .F.
