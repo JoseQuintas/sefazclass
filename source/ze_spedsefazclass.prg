@@ -3,6 +3,8 @@ ZE_SPEDSEFAZCLASS - Rotinas pra comunicação com SEFAZ
 José Quintas
 
 Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
+
+2017.11.27.1230 - Aceita arquivo PFX pra assinatura somente
 */
 
 #include "hbclass.ch"
@@ -30,6 +32,7 @@ CREATE CLASS SefazClass
    VAR    cUFTimeZone    INIT "SP"                    // Para DateTimeXml() Obrigatório definir UF default
    VAR    cIdToken       INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
    VAR    cCSC           INIT ""                      // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
+   VAR    cPassword      INIT ""                      // Senha de arquivo PFX
    /* XMLs de cada etapa */
    VAR    cXmlDocumento  INIT ""                      // O documento oficial, com ou sem assinatura, depende do documento
    VAR    cXmlEnvio      INIT ""                      // usado pra criar/complementar XML do documento
@@ -100,7 +103,7 @@ CREATE CLASS SefazClass
    METHOD MicrosoftXmlSoapPost()
 
    /* Apenas redirecionamento */
-   METHOD AssinaXml()                                 INLINE ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado )
+   METHOD AssinaXml()                                 INLINE ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado,,::cPassword )
    METHOD TipoXml( cXml )                             INLINE TipoXml( cXml )
    METHOD UFCodigo( cSigla )                          INLINE UFCodigo( cSigla )
    METHOD UFSigla( cCodigo )                          INLINE UFSigla( cCodigo )
