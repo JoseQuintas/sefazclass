@@ -254,7 +254,7 @@ STATIC FUNCTION AssinaLoadXml( oDomDocument, cTxtXml, cRetorno )
 
    RETURN .T.
 
-STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cRetorno, cPassword )
+STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cPassword, cRetorno )
 
    LOCAL lOk := .F.
 
