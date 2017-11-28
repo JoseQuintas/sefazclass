@@ -261,7 +261,12 @@ FUNCTION ValidPis( cPis )
       nTotal += Val( Substr( cPis, nCont, 1 ) ) * nPeso
       nPeso := iif( nPeso == 9, 2, nPeso + 1 )
    NEXT
-   nResto := Mod( 11 - Mod( nTotal, 11 ), 10 )
+   nResto := Mod( nTotal, 11 )
+   IF nResto <= 1
+      nResto := 0
+   ELSE
+      nResto := 11 - Mod( nTotal, 11 )
+   ENDIF
    lOk    := Right( cPis, 1 ) == Str( nResto, 1 )
 
    RETURN lOk
