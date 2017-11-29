@@ -201,11 +201,12 @@ FUNCTION SetupHarbour()
 #endif
    SET( _SET_EVENTMASK, INKEY_ALL - INKEY_MOVE )
    SET CONFIRM ON
+
    RETURN NIL
 
-
 #ifndef __XHARBOUR__
-// rotina do ctrl-v
+   // rotina do ctrl-v
+
 FUNCTION MyInkeyFilter( nKey )
 
    LOCAL nBits, lIsKeyCtrl
@@ -219,6 +220,7 @@ FUNCTION MyInkeyFilter( nKey )
          RETURN 0
       ENDIF
    ENDSWITCH
+
    RETURN nKey
 #endif
 
@@ -231,7 +233,7 @@ FUNCTION TestDanfe()
       oDanfe := hbNfeDaGeral():New()
       cFilePdf := Substr( oFile[ F_NAME ], 1, At( ".", oFile[ F_NAME ] ) ) + "pdf"
       fErase( cFilePdf )
-      oDanfe:cLogoFile := JPEGImage()
+      //oDanfe:cLogoFile := JPEGImage()
       oDanfe:cDesenvolvedor := "www.josequintas.com.br"
       oDanfe:ToPDF( oFile[ F_NAME ], cFilePdf )
       ? oFile[ F_NAME ], oDanfe:cRetorno
@@ -251,4 +253,4 @@ FUNCTION PDFOpen( cFile )
 
 FUNCTION JPEGImage()
 
-   #pragma __binarystreaminclude "jpatecnologia.jpg"        | RETURN %s
+#pragma __binarystreaminclude "jpatecnologia.jpg"        | RETURN %s

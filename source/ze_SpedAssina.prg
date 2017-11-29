@@ -31,6 +31,7 @@ José Quintas
 
 #include "common.ch"
 #include "hbclass.ch"
+#include "hb2xhb.ch"
 
 FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior, cPassword )
 
@@ -263,6 +264,10 @@ STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cPassword,
          cRetorno := "Erro assinatura: Arquivo PFX não encontrado"
          RETURN .F.
       ENDIF
+      IF cPassword == NIL .OR. Empty( cPassword )
+         cRetorno := "Erro assinatura: Falta senha do arquivo PFX"
+         RETURN .F.
+      ENDIF
       oCert := win_OleCreateObject( "CAPICOM.Certificate" )
       oCert:Load( cCertCN, cPassword, 1, 0 )
    ELSE
@@ -292,20 +297,20 @@ STATIC FUNCTION AssinaAjustaAssinado( cXml )
 
    LOCAL nPosIni // , nPosFim, nP
 
-      cXml    := StrTran( cXml, Chr(10), "" )
-      cXml    := StrTran( cXml, Chr(13), "" )
-      nPosIni := RAt( [<SignatureValue>], cXml ) + Len( [<SignatureValue>] )
-      cXml    := Substr( cXml, 1, nPosIni - 1 ) + StrTran( Substr( cXml, nPosIni ), " ", "" )
-      //nPosIni := hb_At( [<X509Certificate>], cXml, nPosIni ) - 1
-      //nP      := nPosIni + 1
-      //nPosFim := 0
-      //DO WHILE nP <> 0
-      //   nPosFim := nP
-      //   nP      := hb_At( [<X509Certificate>], cXml, nP + 1 )
-      //ENDDO
-      //cXml := Substr( cXml, 1, nPosIni ) + Substr( cXml, nPosFim, Len( cXml ) )
+   cXml    := StrTran( cXml, Chr(10), "" )
+   cXml    := StrTran( cXml, Chr(13), "" )
+   nPosIni := RAt( [<SignatureValue>], cXml ) + Len( [<SignatureValue>] )
+   cXml    := Substr( cXml, 1, nPosIni - 1 ) + StrTran( Substr( cXml, nPosIni ), " ", "" )
+   //nPosIni := hb_At( [<X509Certificate>], cXml, nPosIni ) - 1
+   //nP      := nPosIni + 1
+   //nPosFim := 0
+   //DO WHILE nP <> 0
+   //   nPosFim := nP
+   //   nP      := hb_At( [<X509Certificate>], cXml, nP + 1 )
+   //ENDDO
+   //cXml := Substr( cXml, 1, nPosIni ) + Substr( cXml, nPosFim, Len( cXml ) )
 
-      RETURN cXml
+   RETURN cXml
 
 FUNCTION FakeSignature( cUri )
 
@@ -366,10 +371,8 @@ FUNCTION FakeSignature( cUri )
 
    RETURN cXml
 
-// Anotação: carregar PFX e instalar via Capicom
-//
-// oCertStore := win_OleCreateObject( "CAPICOM.Store" )
-// oCert      := win_OleCreateObject( "CAPICOM.Certificate" )
-// oCert:Load( "c:\path\file.pfx", "password", 1, 0 )
-// oCert:Add( oCert )
-//
+   // Anotação: carregar PFX e instalar via Capicom
+   // oCertStore := win_OleCreateObject( "CAPICOM.Store" )
+   // oCert      := win_OleCreateObject( "CAPICOM.Certificate" )
+   // oCert:Load( "c:\path\file.pfx", "password", 1, 0 )
+   // oCert:Add( oCert )

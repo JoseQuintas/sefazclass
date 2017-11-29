@@ -62,11 +62,11 @@ STATIC FUNCTION SoapEnvelope( cCEP )
    //oMSXML  := win_OleCreateObject( "MSXML2.ServerXMLHTTP" )
    //oDOMDoc := win_OleCreateObject( "MSXML2.DOMDocument" )
    //WITH OBJECT oMSXML
-      //:Open( "POST", cUrlWs, .F. )
-      //:SetRequestHeader( "Content-Type", 'text/xml; charset="utf-8"' )
-      //:SetRequestHeader( "Content-Length", hb_NtoS( hb_BLen( cXML ) ) )
-      //:Send( cXML )
-      //:WaitForResponse( 500 )
+   //:Open( "POST", cUrlWs, .F. )
+   //:SetRequestHeader( "Content-Type", 'text/xml; charset="utf-8"' )
+   //:SetRequestHeader( "Content-Length", hb_NtoS( hb_BLen( cXML ) ) )
+   //:Send( cXML )
+   //:WaitForResponse( 500 )
    //END WITH
    //hb_MemoWrit( "cep.htm", oMSXML:Responsebody )
    //WITH OBJECT oDOMDoc

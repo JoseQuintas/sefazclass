@@ -35,13 +35,13 @@ CREATE CLASS MP2032
    METHOD EsperaImpressao()                               INLINE ::CallDllStd( "EsperaImpressao" )
    METHOD ConfiguraModeloImpressora( nModeloImpressora )  INLINE ::CallDllStd( "ConfiguraModeloImpressora" )
    METHOD AcionaGuilhotina( nModo )                       INLINE ::CallDllStd( "AcionaGuilhotina", nModo )
-   METHOD FormataTx( cBufTrans, nTpoLtra, nItalic, nSublin, nExpand, nEnfat )
-                                                          INLINE ::CallDllStd( "FormataTX", cBufTrans, nTpoLtra, nItalic, nSublin, nExpand, nEnfat )
+   METHOD FormataTx( cBufTrans, nTpoLtra, nItalic, nSublin, nExpand, nEnfat ) ;
+      INLINE ::CallDllStd( "FormataTX", cBufTrans, nTpoLtra, nItalic, nSublin, nExpand, nEnfat )
    METHOD HabilitaPresenterRetratil( nFlag )              INLINE ::CallDllStd( "HabilitaPresenterRetratil", nFlag )
    METHOD ProgramaPresenterRetratil( nTempo )             INLINE ::CallDllStd( "ProgramaPresenterRetratil", nFlag )
    METHOD VerificaPapelPresenter()                        INLINE ::CallDllStd( "VerificaPapelPresenter" )
    METHOD ConfiguraCodigoBarras( nAltura, nLargura, nPosicaoCaracteres, nFonte, nMargem ) ;
-                                                          INLINE ::CallDllStd( "ConfiguraCodigoBarras", nAltura, nLargura, nPosicaoCaracteres, nFonte, nMargem )
+      INLINE ::CallDllStd( "ConfiguraCodigoBarras", nAltura, nLargura, nPosicaoCaracteres, nFonte, nMargem )
    METHOD ImprimeCodigoBarrasUPCA( cCodigo )              INLINE ::CallDllStd( "ImprimeCodigoBarrasUPCA", cCodigo )
    METHOD ImprimeCodigoBarrasUPCE( cCodigo )              INLINE ::CallDllStd( "ImprimeCodigoBarrasUPCE", cCodigo )
    METHOD ImprimeCodigoBarrasEAN13( cCodigo )             INLINE ::CallDllStd( "ImprimeCodigoBarrasEAN13", cCodigo )
@@ -55,12 +55,12 @@ CREATE CLASS MP2032
    METHOD ImprimeCodigoBarrasMSI( cCodigo )               INLINE ::CallDllStd( "ImprimeCodigoBarrasMSI", cCodigo )
    METHOD ImprimeCodigoBarrasPLESSEY( cCodigo )           INLINE ::CallDllStd( "ImprimeCodigoBarrasPLESSEY", cCodigo )
    METHOD ImprimeCodigoBarrasPDF417( nNivelCorrecaoErros, nAltura, nLargura, nColunas, cCodigo ) ;
-                                                          INLINE ::CallDllStd( "ImprimeCodigoBarrasPDF417", nNivelCorrecaoErros, nAltura, nLargura, nColunas, cCodigo )
+      INLINE ::CallDllStd( "ImprimeCodigoBarrasPDF417", nNivelCorrecaoErros, nAltura, nLargura, nColunas, cCodigo )
    METHOD ImprimeCodigoQRCODE( nErrorCorrectionLevel, nModuleSize, nCodeType, nQRCodeVersion, nEncodingModes, cCodeQr ) ;
-                                                          INLINE ::CallDllStd( "ImprimeCodigoQRCODE", nErrorCorrectionLevel, nModuleSize, nCodeType, nQRCodeVersion, nEncodingModes, cCodeQr )
+      INLINE ::CallDllStd( "ImprimeCodigoQRCODE", nErrorCorrectionLevel, nModuleSize, nCodeType, nQRCodeVersion, nEncodingModes, cCodeQr )
    METHOD ImprimeBitmap( cName, nMode )                   INLINE ::CallDllStd( "ImprimeBitMap", cName, nMode )
    METHOD ImprimeBmpEspecial( cName As String, nxScale, nyScale, nAngle ) ;
-                                                          INLINE ::CallDllStd( "ImprimeBmpEspecial", cName As String, nxScale, nyScale, nAngle )
+      INLINE ::CallDllStd( "ImprimeBmpEspecial", cName As String, nxScale, nyScale, nAngle )
    METHOD AjustaLarguraPapel( nWidth )                    INLINE ::CallDllStd( "AjustaLarguraPapel", nWidth )
    METHOD SelectDithering( nType )                        INLINE ::CallDllStd( "SelectDithering", nType )
    METHOD PrinterReset()                                  INLINE ::CallDllStd( "PrinterReset" )

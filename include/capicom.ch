@@ -67,7 +67,7 @@
 #define CAPICOM_KEY_STORAGE_EXPORTABLE                           1
 #define CAPICOM_KEY_STORAGE_USER_PROTECTED                       2
 
-#define CAPICOM_MY_STORE				"My"
+#define CAPICOM_MY_STORE                                         "My"
 
 #define CAPICOM_PROPID_KEY_PROV_INFO                             2
 

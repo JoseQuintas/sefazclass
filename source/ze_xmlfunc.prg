@@ -4,7 +4,7 @@ José Quintas
 */
 
 #ifndef DOW_DOMINGO
-   #define DOW_DOMINGO 1
+#define DOW_DOMINGO 1
 #endif
 
 FUNCTION XmlTransform( cXml )
@@ -13,8 +13,8 @@ FUNCTION XmlTransform( cXml )
 
    cRemoveTag := { ;
       [<?xml version="1.0" encoding="utf-8"?>], ; // Petrobras inventou de usar assim
-      [<?xml version="1.0" encoding="UTF-8"?>], ; // o mais correto
-      [<?xml version="1.00"?>], ;
+   [<?xml version="1.0" encoding="UTF-8"?>], ; // o mais correto
+   [<?xml version="1.00"?>], ;
       [<?xml version="1.0"?>] }
 
    FOR nCont = 1 TO Len( cRemoveTag )
@@ -93,7 +93,8 @@ FUNCTION XmlTransform( cXml )
       cXml := StrTran( cXml, "n" + Chr(227), "na" )
       cXml := StrTran( cXml, Chr(162), "o" )
    NEXT
-   FOR EACH cLetra IN @cXml
+   FOR nCont = 1 TO Len( cXml )
+      cLetra := Substr( cXml, nCont, 1 )
       DO CASE
       CASE cLetra $ "abcdefghijklmnopqrstuvwxyz"
       CASE cLetra $ "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -111,6 +112,7 @@ FUNCTION XmlTransform( cXml )
       CASE cLetra $ "ú"   ; cLetra := "u"
       CASE cLetra $ "Ú"   ; cLetra := "U"
       ENDCASE
+      cXml := Substr( cXml, 1, nCont - 1 ) + cLetra + Substr( cXml, nCont + 1 )
    NEXT
 
    RETURN cXml
@@ -217,49 +219,49 @@ FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC )
 
    RETURN cText
 
-FUNCTION DomingoDePascoa( iAno )
+FUNCTION DomingoDePascoa( nAno )
 
-   LOCAL iA, iB, iC, iD, iE, iF, iG, iH, iI, iK, iL, iM, iMes, iDia
+   LOCAL nA, nB, nC, nD, nE, nF, nG, nH, nI, nK, nL, nM, nMes, nDia
 
-   iA := iAno % 19
-   iB := Int( iAno / 100 )
-   iC := iAno % 100
-   iD := Int( iB / 4 )
-   iE := iB % 4
-   iF := Int( ( iB + 8 ) / 25 )
-   iG := Int( ( iB - iF + 1 ) / 3 )
-   iH := ( 19 * iA + iB - iD - iG + 15 ) % 30
-   iI := Int( iC / 4 )
-   iK := iC % 4
-   iL := ( 32 + 2 * iE + 2 * iI - iH - iK ) % 7
-   iM := Int( ( iA + 11 * iH + 22 * iL) / 451 )
-   iMes := Int( ( iH + iL - 7 * iM + 114 ) / 31 )
-   iDia := ( ( iH + iL - 7 * iM + 114 ) % 31 ) + 1
+   nA   := nAno % 19
+   nB   := Int( nAno / 100 )
+   nC   := nAno % 100
+   nD   := Int( nB / 4 )
+   nE   := nB % 4
+   nF   := Int( ( nB + 8 ) / 25 )
+   nG   := Int( ( nB - nF + 1 ) / 3 )
+   nH   := ( 19 * nA + nB - nD - nG + 15 ) % 30
+   nI   := Int( nC / 4 )
+   nK   := nC % 4
+   nL   := ( 32 + 2 * nE + 2 * nI - nH - nK ) % 7
+   nM   := Int( ( nA + 11 * nH + 22 * nL) / 451 )
+   nMes := Int( ( nH + nL - 7 * nM + 114 ) / 31 )
+   nDia := ( ( nH + nL - 7 * nM + 114 ) % 31 ) + 1
 
-   RETURN Stod( StrZero( iAno, 4 ) + StrZero( iMes, 2 ) + StrZero( iDia, 2 ) )
+   RETURN Stod( StrZero( nAno, 4 ) + StrZero( nMes, 2 ) + StrZero( nDia, 2 ) )
 
-FUNCTION TercaDeCarnaval( iAno )
+FUNCTION TercaDeCarnaval( nAno )
 
-   RETURN DomingoDePascoa( iAno ) - 47
+   RETURN DomingoDePascoa( nAno ) - 47
 
-FUNCTION HorarioVeraoInicio( iAno )
+FUNCTION HorarioVeraoInicio( nAno )
 
    LOCAL dPrimeiroDeOutubro, dPrimeiroDomingoDeOutubro, dTerceiroDomingoDeOutubro
 
-   dPrimeiroDeOutubro := Stod( StrZero( iAno, 4 ) + "1001" )
+   dPrimeiroDeOutubro := Stod( StrZero( nAno, 4 ) + "1001" )
    dPrimeiroDomingoDeOutubro := dPrimeiroDeOutubro + iif( Dow( dPrimeiroDeOutubro ) == DOW_DOMINGO, 0, ( 7 - Dow( dPrimeiroDeOutubro ) + 1 ) )
    dTerceiroDomingoDeOutubro := dPrimeiroDomingoDeOutubro + 14
 
    RETURN dTerceiroDomingoDeOutubro
 
-FUNCTION HorarioVeraoTermino( iAno )
+FUNCTION HorarioVeraoTermino( nAno )
 
    LOCAL dPrimeiroDeFevereiro, dPrimeiroDomingoDeFevereiro, dTerceiroDomingoDeFevereiro
 
-   dPrimeiroDeFevereiro := Stod( StrZero( iAno + 1, 4 ) + "0201" )
+   dPrimeiroDeFevereiro := Stod( StrZero( nAno + 1, 4 ) + "0201" )
    dPrimeiroDomingoDeFevereiro := dPrimeiroDeFevereiro + iif( Dow( dPrimeiroDeFevereiro ) == DOW_DOMINGO, 0, ( 7 - Dow( dPrimeiroDeFevereiro ) + 1 ) )
    dTerceiroDomingoDeFevereiro := dPrimeiroDomingoDeFevereiro + 14
-   IF dTerceiroDomingoDeFevereiro == TercaDeCarnaval( iAno + 1 ) - 2 /* nao pode ser domingo de carnaval */
+   IF dTerceiroDomingoDeFevereiro == TercaDeCarnaval( nAno + 1 ) - 2 /* nao pode ser domingo de carnaval */
       dTerceiroDomingoDeFevereiro += 7
    ENDIF
 
@@ -292,7 +294,6 @@ FUNCTION StringToXml( cTexto )
    cTexto := StrTran( cTexto, "ª", "&#170;" )
 
    RETURN cTexto
-
 
 FUNCTION XmlToHash( cXml, aTagList, oVar )
 
@@ -329,3 +330,14 @@ FUNCTION TrimXml( cTexto )
    ENDDO
 
    RETURN cTexto
+
+/*
+nItem := Mod( x, 19 ) + 1
+aList := { "0414", "0403", "0323", "0411", "0331", "0418", "0408", ;
+           "0328", "0416", "0405", "0325", "0413", "0402", "0322", ;
+           "0410", "0330", "0417", "0407", "0327" }
+d := Stod( StrZero( x, 4 ) + aList[ nItem ]
+DO WHILE ! Dow( d ) == DOW_DOMINGO
+   d += 1
+ENDDO
+*/

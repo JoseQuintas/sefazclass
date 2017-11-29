@@ -6,7 +6,7 @@ ZE_EXTENSO - EXTENSO DE VALORES
 #include "hbclass.ch"
 
 /* Moedas:
-           a 07/10/1833 R    Real/Reis
+00/00/0000 a 07/10/1833 R    Real/Reis
 08/10/1833 a 31/10/1942 Rs   Conto de Reis    1 Rs  = 1000R
 01/11/1942 a 12/02/1967 Cr$  Cruzeiro         1 Cr$ = 1 Rs
 13/02/1967 a 14/05/1970 NCr$ Cruzeiro Novo    1 NCr$= 1000 Cr$

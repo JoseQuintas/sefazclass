@@ -7,7 +7,7 @@ Contrbuição DaMdfe:MSouzaRunner
 #include "common.ch"
 #include "hbclass.ch"
 #include "harupdf.ch"
-#include "hbwin.ch"
+
 #define LAYOUT_LOGO_ESQUERDA        1      /* apenas anotado, mas não usado */
 #define LAYOUT_LOGO_DIREITA         2
 #define LAYOUT_LOGO_EXPANDIDO       3
@@ -105,7 +105,7 @@ METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel ) CLASS hbnfeDaMdfe
 
    IF ! ::GeraPdf( cFilePDF )
       ::cRetorno := "Problema ao gerar o PDF !"
-      Return ::cRetorno
+      RETURN ::cRetorno
    ENDIF
 
    ::cRetorno := "OK"
@@ -117,7 +117,7 @@ METHOD buscaDadosXML() CLASS hbnfeDaMdfe
    LOCAL cinfNF, cText, cNF, cchCT
 
    ::aIde         := XmlToHash( XmlNode( ::cXml, "ide" ), { "cUF", "tpAmb", "tpEmis", "mod", "serie", "nMDF", "cMDF", "cDV", "modal", ;
-                     "dhEmi", "tpEmis", "procEmi", "verProc", "UFIni", "UFFim" } )
+      "dhEmi", "tpEmis", "procEmi", "verProc", "UFIni", "UFFim" } )
    ::aMunCarreg   := XmlToHash( XmlNode( ::cXml, "infMunCarrega" ), { "cMunCarrega" } )
    ::aEmit        := XmlToHash( XmlNode( ::cXml, "emit" ), { "CNPJ", "IE", "xNome", "xFant", "fone" } )
    ::aEmit        := XmlToHash( XmlNode( XmlNode( ::cXml, "emit" ), "enderEmit" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "CEP", "UF" }, ::aEmit )
@@ -166,7 +166,7 @@ METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
 
    // criacao objeto pdf
    ::oPDF := HPDF_New()
-   If ::oPDF == NIL
+   IF ::oPDF == NIL
       ::cRetorno := "Falha da criação do objeto PDF !"
       RETURN .F.
    ENDIF
@@ -202,29 +202,29 @@ METHOD NovaPagina() CLASS hbnfeDaMdfe
    ENDIF
 
    IF ::aIde[ "tpAmb" ] = "1"
-/*
+      /*
       IF ::aInfCanc[ "nProt" ] <> Nil
 
-       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-       HPDF_Page_BeginText(::oPdfPage)
-       HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 100)
-       HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
-       HPDF_Page_ShowText(::oPdfPage, ::aInfCanc[ "xEvento" ])
-       HPDF_Page_EndText(::oPdfPage)
+      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
+      HPDF_Page_BeginText(::oPdfPage)
+      HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 100)
+      HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
+      HPDF_Page_ShowText(::oPdfPage, ::aInfCanc[ "xEvento" ])
+      HPDF_Page_EndText(::oPdfPage)
 
-       HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
-       IF ::lPaisagem
-          ::DrawLine( 15, 95, 675, 475, 2.0)
-       ELSE
-          ::DrawLine( 15, 95, 550, 630, 2.0)
-       ENDIF
+      HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
+      IF ::lPaisagem
+      ::DrawLine( 15, 95, 675, 475, 2.0)
+      ELSE
+      ::DrawLine( 15, 95, 550, 630, 2.0)
+      ENDIF
 
-       HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
+      HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
 
-       HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
+      HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
 
-  ENDIF
-*/
+      ENDIF
+      */
    ENDIF
 
    RETURN NIL

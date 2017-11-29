@@ -34,20 +34,20 @@ METHOD ConsultaRetornoLote( cChave, cCertificado ) CLASS ESocialClass
    ::cXmlDocumento := ;
       [<eSocial xmlns="http://www.esocial.gov.br/schema/lote/eventos/envio/consulta/retornoProcessamento/v1_0_0">] + ;
          [<consultaLoteEventos>] + ;
-            [<protocoloEnvio>] + cChave + [</protocoloEnvio>] + ;
+           [<protocoloEnvio>] + cChave + [</protocoloEnvio>] + ;
          [</consultaLoteEventos>] + ;
       [</eSocial>]
    ::cXmlEnvelope := XML_UTF8 + ;
-       [<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ] + ;
-          [xmlns:v1="http://www.esocial.gov.br/servicos/empregador/lote/eventos/envio/consulta/retornoProcessamento/v1_1_0">] + ;
-          [<soapenv:Header/>] + ;
-          [<soapenv:Body>] + ;
-             [<consultaLoteEventos>] + ;
-                [<consulta>] + ::cXmlDocumento + [</consulta>] + ;
-             [</consultaLoteEentos>] + ;
-          [</soapenv:Body>] + ;
-       [</soapenv:Envelope>]
-       ::MicrosoftXmlSoapPost()
+      [<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ] + ;
+         [xmlns:v1="http://www.esocial.gov.br/servicos/empregador/lote/eventos/envio/consulta/retornoProcessamento/v1_1_0">] + ;
+         [<soapenv:Header/>] + ;
+         [<soapenv:Body>] + ;
+            [<consultaLoteEventos>] + ;
+               [<consulta>] + ::cXmlDocumento + [</consulta>] + ;
+            [</consultaLoteEentos>] + ;
+         [</soapenv:Body>] + ;
+      [</soapenv:Envelope>]
+   ::MicrosoftXmlSoapPost()
 
    RETURN ::cXmlRetorno
 
@@ -65,4 +65,3 @@ METHOD MicrosoftXmlSoapPost() CLASS ESocialClass
    ::cXmlRetorno := oComunicacao:responseText
 
    RETURN NIL
-

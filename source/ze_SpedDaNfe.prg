@@ -18,7 +18,6 @@ Os campos que podem ser colocados na mesma coluna são:
 #include "common.ch"
 #include "hbclass.ch"
 #include "harupdf.ch"
-#include "hbwin.ch"
 
 #define LAYOUT_LOGO_ESQUERDA   1
 #define LAYOUT_LOGO_DIREITA    2
@@ -212,7 +211,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    LOCAL cText
 
    ::aIde := XmlToHash( XmlNode( ::cXml, "ide" ), { "cUF", "cNF", "natOp", "indPag", "mod", "serie", "nNF", "dhEmi", "dhSaiEnt", "tpNF", "cMunFG", "tpImp", "tpEmis", ;
-             "cDV", "tpAmb", "finNFe", "procEmi", "verProc" } )
+      "cDV", "tpAmb", "finNFe", "procEmi", "verProc" } )
    IF Empty( ::aIde[ "dhEmi" ] ) // NFE 2.0
       ::aIde[ "dhEmi" ] := XmlNode( XmlNode( ::cXml, "ide" ), "dEmi" )
    ENDIF
@@ -220,7 +219,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    //   ::aIde[ "dhSaiEnt" ] := XmlNode( XmlNode( ::cXml, "ide" ), "dSaiEnt" )
    //ENDIF
    ::aEmit       := XmlToHash( XmlNode( ::cXml, "emit" ), { "CNPJ", "CPF", "xNome", "xFant", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", ;
-                    "fone", "IE", "IEST", "IM", "CNAE", "CRT", "fone" } )
+      "fone", "IE", "IEST", "IM", "CNAE", "CRT", "fone" } )
    ::aDest       := XmlToHash( XmlNode( ::cXml, "dest" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", "fone", "IE", "ISUF", "email" } )
    ::aRetirada   := XmlToHash( XmlNode( ::cXml, "retirada" ), { "CNPJ", "CPF", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF" } )
    ::aEntrega    := XmlToHash( XmlNode( ::cXml, "entrega" ), { "CNPJ", "CPF", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF" } )
@@ -853,7 +852,7 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
       RETURN .F.
    ENDIF
    ::aItem          := XmlToHash( cItem, { "cProd", "cEAN", "xProd", "NCM", "EXTIPI", "CFOP", "uCom", "qCom", "vUnCom", "vProd", "cEANTrib", "uTrib", "qTrib", "vUnTrib", "vFrete", ;
-                       "vSeg", "vDesc", "vOutro", "indTot", "infAdProd" } )
+      "vSeg", "vDesc", "vOutro", "indTot", "infAdProd" } )
    ::aItemDI        := XmlToHash( XmlNode( cItem, "DI" ), { "nDI", "dDI", "xLocDesemb", "UFDesemb", "cExportador" } )
    ::aItemAdi       := XmlToHash( XmlNode( cItem, "adi" ), { "nAdicao", "nSeqAdic", "cFabricante", "vDescDI", "xPed", "nItemPed" } )
    // todo veiculos (veicProd), medicamentos (med), armamentos (arm), combustiveis (comb)
@@ -866,7 +865,7 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
    ::aItemICMSSN202 := XmlToHash( XmlNode( cItem, "ICMSSN202" ), { "orig", "CSOSN", "modBCST", "pMVAST", "pRedBCST", "vBCST", "pICMSST", "vICMSST" } )
    ::aItemICMSSN500 := XmlToHash( XmlNode( cItem, "ICMSSN500" ), { "orig", "CSOSN", "vBCSTRet", "vICMSSTRet" } )
    ::aItemICMSSN900 := XmlToHash( XmlNode( cItem, "ICMSSN900" ), { "orig", "CSOSN", "modBC", "pRedBC", "vBC", "pICMS", "vICMS", "modBCST", "pMVAST", "pRedBCST", "vBCST", ;
-                       "pICMSST", "vICMSST", "pCredSN", "vCredICMSSN" } )
+      "pICMSST", "vICMSST", "pCredSN", "vCredICMSSN" } )
    ::aItemIPI       := XmlToHash( XmlNode( cItem, "IPI" ), { "clEnq", "CNPJProd", "cSelo", "qSelo", "cEnq", "CST", "vBC", "pIPI", "qUnid", "vUnid", "vIPI" } )
    ::aItemII        := XmlToHash( XmlNode( cItem, "II" ), { "vBC", "vDespAdu", "vII", "vIOF" } )
    ::aItemPIS       := XmlToHash( XmlNode( cItem, "PIS" ), { "CST", "vBC", "pPIS", "vPIS", "qBCProd", "vAliqProd" } )
@@ -925,9 +924,9 @@ METHOD ItensDaFolha( nFolha ) CLASS hbNFeDaNFe
 
    IF nFolha == 1
       nQuadro := 270 + ;
-                iif( ::lLaser, 54, 0  ) + ;
-                iif( Empty( ::cCobranca ), 12, 0 ) + ;
-                iif( Val( ::aIssTotal[ "vServ" ] ) <= 0, 24, 0 )
+         iif( ::lLaser, 54, 0  ) + ;
+         iif( Empty( ::cCobranca ), 12, 0 ) + ;
+         iif( Val( ::aIssTotal[ "vServ" ] ) <= 0, 24, 0 )
    ENDIF
 
    RETURN Int( nQuadro / LAYOUT_FONTSIZE )

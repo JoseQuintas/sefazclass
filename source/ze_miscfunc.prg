@@ -32,5 +32,3 @@ FUNCTION FormatNumber( nValor, nTamanho, nDecimais )
    ENDIF
 
    RETURN Transform( nValor, "@E " + cPicture )
-
-

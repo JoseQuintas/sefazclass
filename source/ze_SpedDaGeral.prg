@@ -294,6 +294,7 @@ STATIC FUNCTION hbNFe_FormataIE( cIE, cUF )
    RETURN cIE
 
 #ifdef __XHARBOUR__
+
 STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
 
    // Parameters de entrada : O codigo de barras no formato Code128C "somente numeros" campo tipo caracter

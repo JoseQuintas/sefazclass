@@ -23,7 +23,6 @@ PROCEDURE Main
    ? ValidSeguroAverbacao( cNumero )
    Inkey(0)
 
-
 FUNCTION ValidSeguroAverbacao( cAverbacao, lAdicionaDigito )
 
    LOCAL nFator, nResult, nDigito1, nDigito2, oElement
@@ -67,4 +66,3 @@ FUNCTION ValidSeguroAverbacao( cAverbacao, lAdicionaDigito )
    ENDIF
 
    RETURN .T.
-

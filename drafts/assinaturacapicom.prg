@@ -2,7 +2,6 @@
 http://www.pctoledo.com.br/forum/viewtopic.php?f=43&t=18664
 */
 
-
 #define __TESTE__
 
 #include "capicom.ch"
@@ -36,7 +35,7 @@ FUNCTION IsValidSignatureCapicom( cDigestValue, cSignatureValue )
 
    RETURN CapicomClass():VerifySignature( cSignatureValue ) == cDigestValue
 
-CLASS CapicomClass
+CREATE CLASS CapicomClass
 
    METHOD SelectCertificate()
    METHOD VerifySignature( cSignedData )
@@ -145,7 +144,7 @@ METHOD Sign( cDigestValue, oCAPICOMCert, nEncode, cPublicKey ) CLASS CapicomClas
    oCAPICOMSignedData := win_OleCreateObject( "CAPICOM.SignedData.1" )
    oCAPICOMSignedData:Content := cDigestValue
 
-// segundo parametro falso, apenas retona assinatura do texto, não inclui no texto
+   // segundo parametro falso, apenas retona assinatura do texto, não inclui no texto
    cSignature := oCAPICOMSignedData:Sign( oCAPICOMSigner, .F., nEncode )
 
    RETURN cSignature

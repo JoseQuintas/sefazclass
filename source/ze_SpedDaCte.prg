@@ -7,7 +7,6 @@ Contribuição DaCTE: MSouzaRunner
 #include "common.ch"
 #include "hbclass.ch"
 #include "harupdf.ch"
-#include "hbwin.ch"
 #define LAYOUT_LOGO_ESQUERDA        1      /* apenas anotado, mas não usado */
 #define LAYOUT_LOGO_DIREITA         2
 #define LAYOUT_LOGO_EXPANDIDO       3
@@ -152,9 +151,10 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    LOCAL cIde, cCompl, cEmit, cDest, cToma, cPrest, cImp, cinfCTeNorm, cRodo, cExped, cReceb, oElement
 
    cIde := XmlNode( ::cXml, "ide" )
-   ::aIde := XmlToHash( cIde, { "cUF", "cCT", "CFOP", "natOp", "forPag", "mod", "serie", "nCT", "dhEmi", "tpImp", "tpEmis", ;
-             "cDV", "tpAmb", "tpCTe", "procEmi", "verProc", "cMunEnv", "xMunEnv", "UFEnv", "modal", "tpServ", "cMunIni", ;
-             "xMunIni", "UFIni", "cMunFim", "xMunFim", "UFFim", "retira", "xDetRetira" } )
+   ::aIde := XmlToHash( cIde, { "cUF", "cCT", "CFOP", "natOp", "forPag", "mod", "serie", ;
+      "nCT", "dhEmi", "tpImp", "tpEmis", "cDV", "tpAmb", "tpCTe", "procEmi", "verProc", ;
+      "cMunEnv", "xMunEnv", "UFEnv", "modal", "tpServ", "cMunIni", "xMunIni", "UFIni", ;
+      "cMunFim", "xMunFim", "UFFim", "retira", "xDetRetira" } )
    ::aIde[ "toma" ] := XmlNode( XmlNode( cIde, "toma03" ), "toma" )
 
    cCompl := XmlNode( ::cXml, "compl" )
@@ -273,10 +273,10 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
 
    ::aVeiculo := MultipleNodeToArray( XmlNode( cinfCteNorm, "rodo" ), "veic" )
    FOR EACH oElement IN ::aVeiculo
-      oElement := { XmlNode( oElement, "cInt" ),   XmlNode( oElement, "RENAVAM" ), XmlNode( oElement, "placa" ), ;
-                    XmlNode( oElement, "tara" ),   XmlNode( oElement, "capKG" ),   XmlNode( oElement, "capM3" ), ;
-                    XmlNode( oElement, "tpProp" ), XmlNode( oElement, "tpVeic" ),  XmlNode( oElement, "tpRod" ), ;
-                    XmlNode( oElement, "tpCar" ),  XmlNode( oElement, "UF" ) }
+      oElement := { XmlNode( oElement, "cInt" ), XmlNode( oElement, "RENAVAM" ), XmlNode( oElement, "placa" ), ;
+         XmlNode( oElement, "tara" ),   XmlNode( oElement, "capKG" ),   XmlNode( oElement, "capM3" ), ;
+         XmlNode( oElement, "tpProp" ), XmlNode( oElement, "tpVeic" ),  XmlNode( oElement, "tpRod" ), ;
+         XmlNode( oElement, "tpCar" ),  XmlNode( oElement, "UF" ) }
    NEXT
 
    ::aInfProt   := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto", "digVal", "cStat", "xMotivo" } )
@@ -294,7 +294,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
 METHOD GeraPDF( cFilePDF ) CLASS hbnfeDaCte
 
    ::oPdf := HPDF_New()
-   If ::oPdf == NIL
+   IF ::oPdf == NIL
       ::cRetorno := "Falha da criação do objeto PDF !"
       RETURN .F.
    ENDIF
@@ -336,23 +336,23 @@ METHOD NovaPagina() CLASS hbnfeDaCte
 
    IF ! Empty( ::aInfCanc[ "nProt" ] ) .AND. ::aInfCanc[ "cStat" ] $ "101,135,302" // 302=denegada
 
-       HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-       HPDF_Page_BeginText(::oPdfPage)
-       HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 150)
-       HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
-       HPDF_Page_ShowText(::oPdfPage, ::aInfCanc[ "xMotivo" ])
-       HPDF_Page_EndText(::oPdfPage)
+      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
+      HPDF_Page_BeginText(::oPdfPage)
+      HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 150)
+      HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
+      HPDF_Page_ShowText(::oPdfPage, ::aInfCanc[ "xMotivo" ])
+      HPDF_Page_EndText(::oPdfPage)
 
-       HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
-       IF ::lPaisagem
-          ::DrawLine( 15, 95, 675, 475, 2.0)
-       ELSE
-          ::DrawLine( 15, 95, 550, 630, 2.0)
-       ENDIF
+      HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
+      IF ::lPaisagem
+         ::DrawLine( 15, 95, 675, 475, 2.0)
+      ELSE
+         ::DrawLine( 15, 95, 550, 630, 2.0)
+      ENDIF
 
-       HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
+      HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
 
-       HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
+      HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
 
    ENDIF
 
@@ -537,35 +537,35 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ::DrawBox( 003, ::nLinhaPdf - 318, 295, 054, ::nLarguraBox )
 
    ::DrawTexto( 005, ::nLinhaPdf - 264, 040, Nil, "Expedidor", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aExped[ "xNome" ] )
+   IF ! Empty( ::aExped[ "xNome" ] )
       ::DrawTexto( 042, ::nLinhaPdf - 265, 295, Nil, ::aExped[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 005, ::nLinhaPdf - 272, 040, Nil, "Endereço", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aExped[ "xLgr" ] )
+   IF ! Empty( ::aExped[ "xLgr" ] )
       ::DrawTexto( 042, ::nLinhaPdf - 273, 295, Nil, ::aExped[ "xLgr" ] + " " + ::aExped[ "nro" ] + " " + ::aExped[ "xCpl" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
-   If ! Empty( ::aExped[ "xBairro" ] )
+   IF ! Empty( ::aExped[ "xBairro" ] )
       ::DrawTexto( 042, ::nLinhaPdf - 280, 295, Nil, ::aExped[ "xBairro" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 005, ::nLinhaPdf - 288, 040, Nil, "Município", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aExped[ "xMun" ] )
+   IF ! Empty( ::aExped[ "xMun" ] )
       ::DrawTexto( 042, ::nLinhaPdf - 289, 240, Nil, ::aExped[ "xMun" ] + " " + ::aExped[ "UF" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 240, ::nLinhaPdf - 288, 260, Nil, "CEP", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aExped[ "CEP" ] )
+   IF ! Empty( ::aExped[ "CEP" ] )
       ::DrawTexto( 260, ::nLinhaPdf - 289, 295, Nil, SubStr( ::aExped[ "CEP" ], 1, 5 ) + '-' + SubStr( ::aExped[ "CEP" ], 6, 3 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 005, ::nLinhaPdf - 296, 042, Nil, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aExped[ "CNPJ" ] )
+   IF ! Empty( ::aExped[ "CNPJ" ] )
       ::DrawTexto( 042, ::nLinhaPdf - 297, 150, Nil, TRANSF( ::aExped[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
-   If ! Empty( ::aExped[ "CPF" ] )
+   IF ! Empty( ::aExped[ "CPF" ] )
       ::DrawTexto( 042, ::nLinhaPdf - 297, 150, Nil, TRANSF( ::aExped[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 150, ::nLinhaPdf - 296, 250, Nil, "INSCRIÇÃO ESTADUAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
    ::DrawTexto( 245, ::nLinhaPdf - 297, 295, Nil, AllTrim( ::aExped[ "IE" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ::DrawTexto( 005, ::nLinhaPdf - 304, 042, Nil, "Pais", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aExped[ "xPais" ] )
+   IF ! Empty( ::aExped[ "xPais" ] )
       ::DrawTexto( 042, ::nLinhaPdf - 305, 150, Nil, ::aExped[ "xPais" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 225, ::nLinhaPdf - 304, 250, Nil, "FONE", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
@@ -574,35 +574,35 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    // Box do Recebedor
    ::DrawBox( 303, ::nLinhaPdf - 318, 290, 054, ::nLarguraBox )
    ::DrawTexto( 305, ::nLinhaPdf - 264, 340, Nil, "Recebedor", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
-   If ! Empty( ::aReceb[ "xNome" ] )
+   IF ! Empty( ::aReceb[ "xNome" ] )
       ::DrawTexto( 342, ::nLinhaPdf - 265, 595, Nil, ::aReceb[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 305, ::nLinhaPdf - 272, 340, Nil, "Endereço", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aReceb[ "xLgr" ] )
+   IF ! Empty( ::aReceb[ "xLgr" ] )
       ::DrawTexto( 342, ::nLinhaPdf - 273, 588, Nil, ::aReceb[ "xLgr" ] + " " + ::aReceb[ "nro" ] + " " + ::aReceb[ "xCpl" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
-   If ! Empty( ::aReceb[ "xBairro" ] )
+   IF ! Empty( ::aReceb[ "xBairro" ] )
       ::DrawTexto( 342, ::nLinhaPdf - 280, 588, Nil, ::aReceb[ "xBairro" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 305, ::nLinhaPdf - 288, 340, Nil, "Município", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aReceb[ "xMun" ] )
+   IF ! Empty( ::aReceb[ "xMun" ] )
       ::DrawTexto( 342, ::nLinhaPdf - 289, 540, Nil, ::aReceb[ "xMun" ] + " " + ::aReceb[ "UF" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 535, ::nLinhaPdf - 288, 555, Nil, "CEP", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aReceb[ "CEP" ] )
+   IF ! Empty( ::aReceb[ "CEP" ] )
       ::DrawTexto( 555, ::nLinhaPdf - 289, 588, Nil, SubStr( ::aReceb[ "CEP" ], 1, 5 ) + '-' + SubStr( ::aReceb[ "CEP" ], 6, 3 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 305, ::nLinhaPdf - 296, 342, Nil, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aReceb[ "CNPJ" ] )
+   IF ! Empty( ::aReceb[ "CNPJ" ] )
       ::DrawTexto( 342, ::nLinhaPdf - 297, 450, Nil, TRANSF( ::aReceb[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
-   If ! Empty( ::aReceb[ "CPF" ] )
+   IF ! Empty( ::aReceb[ "CPF" ] )
       ::DrawTexto( 342, ::nLinhaPdf - 297, 450, Nil, TRANSF( ::aReceb[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 440, ::nLinhaPdf - 296, 540, Nil, "INSCRIÇÃO ESTADUAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
    ::DrawTexto( 540, ::nLinhaPdf - 297, 590, Nil, ::FormataIE( ::aReceb[ "IE" ], ::aReceb[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ::DrawTexto( 305, ::nLinhaPdf - 304, 342, Nil, "Pais", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   If ! Empty( ::aReceb[ "xPais" ] )
+   IF ! Empty( ::aReceb[ "xPais" ] )
       ::DrawTexto( 342, ::nLinhaPdf - 305, 450, Nil, ::aReceb[ "xPais" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::DrawTexto( 520, ::nLinhaPdf - 304, 545, Nil, "FONE", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
@@ -841,11 +841,11 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    IF Len( ::aInfOutros ) > 0
       nLinha := 536
       FOR nCont = 1 TO Len( ::aInfOutros ) STEP 2
-         If ::aInfOutros[ nCont, 1 ] = '00'
+         IF ::aInfOutros[ nCont, 1 ] = '00'
             cOutros := 'DECLARAÇÃO'
-         ElseIf ::aInfOutros[ nCont, 1 ] = '10'
+         ELSEIF ::aInfOutros[ nCont, 1 ] = '10'
             cOutros := 'DUTOVIÁRIO'
-         ElseIf ::aInfOutros[ nCont, 1 ] = '99'
+         ELSEIF ::aInfOutros[ nCont, 1 ] = '99'
             cOutros := ::aInfOutros[ nCont, 2 ]
          ENDIF
          ::DrawTexto( 005, ::nLinhaPdf - nLinha, 240, Nil, cOutros, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
@@ -857,11 +857,11 @@ METHOD Cabecalho() CLASS hbnfeDaCte
          ENDIF
          ::DrawTexto( 240, ::nLinhaPdf - nLinha, 295, Nil, ::aInfOutros[ nCont, 3 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
          IF nCont + 1 <= Len( ::aInfOutros )
-            If ::aInfOutros[ nCont + 1, 1 ] = '00'
+            IF ::aInfOutros[ nCont + 1, 1 ] = '00'
                cOutros := 'DECLARAÇÃO'
-            ElseIf ::aInfOutros[ nCont + 1, 1 ] = '10'
+            ELSEIF ::aInfOutros[ nCont + 1, 1 ] = '10'
                cOutros := 'DUTOVIÁRIO'
-            ElseIf ::aInfOutros[ nCont + 1, 1 ] = '99'
+            ELSEIF ::aInfOutros[ nCont + 1, 1 ] = '99'
                cOutros := ::aInfOutros[ nCont + 1, 2 ]
             ENDIF
             ::DrawTexto( 300, ::nLinhaPdf - nLinha, 535, Nil, cOutros, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
@@ -892,33 +892,33 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    IF ! Empty( ::cAdFisco )
       AAdd( aObserv, ::cAdFisco )
    ENDIF
-   If ! Empty( ::alocEnt[ 'xNome' ] )
+   IF ! Empty( ::alocEnt[ 'xNome' ] )
       cEntrega := 'Local de Entrega : '
-      If ! Empty( ::alocEnt[ "CNPJ" ] )
+      IF ! Empty( ::alocEnt[ "CNPJ" ] )
          cEntrega += 'CNPJ:' + ::alocEnt[ "CNPJ" ]
       ENDIF
-      If ! Empty( ::alocEnt[ "CNPJ" ] )
+      IF ! Empty( ::alocEnt[ "CNPJ" ] )
          cEntrega += 'CPF:' + ::alocEnt[ "CPF" ]
       ENDIF
-      If ! Empty( ::alocEnt[ "xNome" ] )
+      IF ! Empty( ::alocEnt[ "xNome" ] )
          cEntrega += ' - ' + ::alocEnt[ "xNome" ]
       ENDIF
-      If ! Empty( ::alocEnt[ "xLgr" ] )
+      IF ! Empty( ::alocEnt[ "xLgr" ] )
          cEntrega += ' - ' + ::alocEnt[ "xLgr" ]
       ENDIF
-      If ! Empty( ::alocEnt[ "nro" ] )
+      IF ! Empty( ::alocEnt[ "nro" ] )
          cEntrega += ',' + ::alocEnt[ "nro" ]
       ENDIF
-      If ! Empty( ::alocEnt[ "xCpl" ] )
+      IF ! Empty( ::alocEnt[ "xCpl" ] )
          cEntrega += ::alocEnt[ "xCpl" ]
       ENDIF
-      If ! Empty( ::alocEnt[ "xBairro" ] )
+      IF ! Empty( ::alocEnt[ "xBairro" ] )
          cEntrega += ::alocEnt[ "xBairro" ]
       ENDIF
-      If ! Empty( ::alocEnt[ "xMun" ] )
+      IF ! Empty( ::alocEnt[ "xMun" ] )
          cEntrega += ::alocEnt[ "xMun" ]
       ENDIF
-      If ! Empty( ::alocEnt[ "UF" ] )
+      IF ! Empty( ::alocEnt[ "UF" ] )
          cEntrega += ::alocEnt[ "UF" ]
       ENDIF
       AAdd( aObserv, cEntrega )
@@ -933,7 +933,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    NEXT
    /*
    If ! Empty( ::vTotTrib )
-    ::DrawTexto( 005 , ::nLinhaPdf-675 , 590, Nil, 'Valor aproximado total de tributos federais, estaduais e municipais conf. Disposto na Lei nº 12741/12 : R$ '+Alltrim(Transform( Val(::vTotTrib) , '@E 999,999.99' )) , HPDF_TALIGN_LEFT , ::oPDFFontBold, 8 )
+   ::DrawTexto( 005 , ::nLinhaPdf-675 , 590, Nil, 'Valor aproximado total de tributos federais, estaduais e municipais conf. Disposto na Lei nº 12741/12 : R$ '+Alltrim(Transform( Val(::vTotTrib) , '@E 999,999.99' )) , HPDF_TALIGN_LEFT , ::oPDFFontBold, 8 )
    Endif
    */
    // Box dos DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - CARGA FRACIONADA
@@ -1063,4 +1063,3 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ENDIF
 
    RETURN NIL
-

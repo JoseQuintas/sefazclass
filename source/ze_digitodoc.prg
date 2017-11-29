@@ -85,8 +85,8 @@ FUNCTION ValidCnhAntiga( cPgu )
    Soma := 0
    Mult := 2
    FOR j := 1 to 8
-       Soma := Soma + ( Val( Substr( PGU_Forn, j, 1 ) ) * Mult )
-       Mult := Mult + 1
+      Soma := Soma + ( Val( Substr( PGU_Forn, j, 1 ) ) * Mult )
+      Mult := Mult + 1
    NEXT
    Digito := Int( Mod( Soma, 11 ) )
    IF Digito > 9
@@ -116,8 +116,8 @@ FUNCTION ValidCnhAtual( cCnh )
    Soma := 0
    Mult := 9
    FOR j := 1 to 9
-       Soma := Soma + ( val( substr( CNH_Forn, j, 1 ) ) * Mult )
-       Mult := Mult - 1
+      Soma := Soma + ( val( substr( CNH_Forn, j, 1 ) ) * Mult )
+      Mult := Mult - 1
    NEXT
    Digito1 := int( mod( Soma, 11 ) )
    IF Digito1 = 10
@@ -129,8 +129,8 @@ FUNCTION ValidCnhAtual( cCnh )
    Soma := 0
    Mult := 1
    FOR j := 1 to 9
-       Soma := Soma + ( val( substr( CNH_Forn, j, 1 ) ) * Mult)
-       Mult := Mult + 1
+      Soma := Soma + ( val( substr( CNH_Forn, j, 1 ) ) * Mult)
+      Mult := Mult + 1
    NEXT
    IF int( mod( Soma, 11 ) ) + Incr_Dig2 < 0
       Digito2 := 11 + Int( Mod( Soma, 11 ) ) + Incr_Dig2
@@ -244,7 +244,6 @@ FUNCTION CalculaDigito( cNumero, cModulo )
    ENDIF
 
    RETURN cCalculo
-
 
 FUNCTION ValidPis( cPis )
 

@@ -9,11 +9,12 @@ Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
 
 #include "hbclass.ch"
 #include "sefazclass.ch"
+#include "hb2xhb.ch"
 
 #ifdef __XHARBOUR__
-   #define ALL_PARAMETERS P1, P2, P3, P4, P5, P6, P7, P8, P9, P10
+#define ALL_PARAMETERS P1, P2, P3, P4, P5, P6, P7, P8, P9, P10
 #else
-   #define ALL_PARAMETERS ...
+#define ALL_PARAMETERS ...
 #endif
 
 CREATE CLASS SefazClass
@@ -128,7 +129,6 @@ METHOD GeraQRCode( cXmlDocumento, cIdToken, cCsc )
    ::cXmlRetorno := GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC )
 
    RETURN ::cXmlRetorno
-
 
 METHOD BpeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -254,13 +254,13 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_CTE + [">]
    ::cXmlDocumento +=            [<evCCeCTe>]
    ::cXmlDocumento +=                XmlTag( "descEvento", "Carta de Correcao" )
-                        FOR EACH oElement IN aAlteracoes
-   ::cXmlDocumento +=                     [<infCorrecao>]
-   ::cXmlDocumento +=                      XmlTag( "grupoAlterado", oElement[ 1 ] )
-   ::cXmlDocumento +=                      XmlTag( "campoAlterado", oElement[ 2 ] )
-   ::cXmlDocumento +=                      XmlTag( "valorAlterado", oElement[ 3 ] )
-   ::cXmlDocumento +=                     [</infCorrecao>]
-                        NEXT
+   FOR EACH oElement IN aAlteracoes
+      ::cXmlDocumento +=                     [<infCorrecao>]
+      ::cXmlDocumento +=                      XmlTag( "grupoAlterado", oElement[ 1 ] )
+      ::cXmlDocumento +=                      XmlTag( "campoAlterado", oElement[ 2 ] )
+      ::cXmlDocumento +=                      XmlTag( "valorAlterado", oElement[ 3 ] )
+      ::cXmlDocumento +=                     [</infCorrecao>]
+   NEXT
    ::cXmlDocumento +=                [<xCondUso>]
    ::cXmlDocumento +=                   "A Carta de Correcao e disciplinada pelo Art. 58-B "
    ::cXmlDocumento +=                   "do CONVENIO/SINIEF 06/89: Fica permitida a utilizacao de carta "
@@ -460,7 +460,8 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
 
    RETURN ::cXmlRetorno
 
-// 2016.01.31.2200 Iniciado apenas
+   // 2016.01.31.2200 Iniciado apenas
+
 METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @cUltNSU, "0" )
@@ -483,13 +484,11 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    ENDIF
    ::cXmlEnvio    += [</distDFeInt>]
    ::XmlSoapPost()
-   //
    // UltNSU = ultimo NSU pesquisado
    // maxUSU = número máximo existente
    // docZIP = Documento em formato ZIP
    // NSU    = NSU do documento fiscal
    // schema = schemma de validação do XML anexado ex. procMDFe_v1.00.xsd, procEventoMDFe_V1.00.xsd
-   //
 
    RETURN NIL
 
@@ -509,11 +508,11 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_MDFE + [">]
-   ::cXmlDocumento +=       	  [<evCancMDFe>]
-   ::cXmlDocumento +=          		XmlTag( "descEvento", "Cancelamento" )
-   ::cXmlDocumento +=          		XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   ::cXmlDocumento +=          		XmlTag( "xJust", xJust )
-   ::cXmlDocumento +=       	  [</evCancMDFe>]
+   ::cXmlDocumento +=            [<evCancMDFe>]
+   ::cXmlDocumento +=                XmlTag( "descEvento", "Cancelamento" )
+   ::cXmlDocumento +=                XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   ::cXmlDocumento +=                XmlTag( "xJust", xJust )
+   ::cXmlDocumento +=            [</evCancMDFe>]
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</eventoMDFe>]
@@ -542,13 +541,13 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110112" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_MDFE + [">]
-   ::cXmlDocumento +=       	  [<evEncMDFe>]
-   ::cXmlDocumento +=          		XmlTag( "descEvento", "Encerramento" )
+   ::cXmlDocumento +=            [<evEncMDFe>]
+   ::cXmlDocumento +=                XmlTag( "descEvento", "Encerramento" )
    ::cXmlDocumento +=                  XmlTag( "nProt", Ltrim( Str( nProt ) ) )
    ::cXmlDocumento +=                  XmlTag( "dtEnc", DateXml( Date() ) )
    ::cXmlDocumento +=                  XmlTag( "cUF", ::UFCodigo( cUFFim ) )
    ::cXmlDocumento +=                  XmlTag( "cMun", cMunCarrega )
-   ::cXmlDocumento +=       	  [</evEncMDFe>]
+   ::cXmlDocumento +=            [</evEncMDFe>]
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</eventoMDFe>]
@@ -577,13 +576,13 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110114" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_MDFE + [">]
-   ::cXmlDocumento +=       	  [<evIncCondutorMDFe>]
-   ::cXmlDocumento +=          		XmlTag( "descEvento", "Inclusao Condutor" )
+   ::cXmlDocumento +=            [<evIncCondutorMDFe>]
+   ::cXmlDocumento +=                XmlTag( "descEvento", "Inclusao Condutor" )
    ::cXmlDocumento +=               [<Condutor>]
    ::cXmlDocumento +=                  XmlTag( "xNome", cNome )
    ::cXmlDocumento +=                  XmlTag( "CPF", cCPF)
    ::cXmlDocumento +=               [</Condutor>]
-   ::cXmlDocumento +=       	  [</evIncCondutorMDFe>]
+   ::cXmlDocumento +=            [</evIncCondutorMDFe>]
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</eventoMDFe>]
@@ -690,7 +689,8 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    RETURN ::cXmlRetorno
 
-/* Iniciado apenas 2015.07.31.1400 */
+   /* Iniciado apenas 2015.07.31.1400 */
+
 METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @cUltNSU, "0" )
@@ -733,7 +733,8 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-/* 2015.07.31.1400 Iniciado apenas */
+   /* 2015.07.31.1400 Iniciado apenas */
+
 METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @cUltNSU, "0" )
@@ -916,6 +917,7 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
          ::cXmlAutorizado += [</ProcInutNFe>]
       ENDIF
    ENDIF
+
    RETURN ::cXmlRetorno
 
 METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass
@@ -1176,16 +1178,16 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    LOCAL cSoapAction
 
    //IF ::cSoapAction == "nfeDistDFeInteresse" .OR. ::cSoapAction == "nfeConsultaNFDest"
-      //cSoapAction := ::cSoapService + "/" + ::cSoapAction
+   //cSoapAction := ::cSoapService + "/" + ::cSoapAction
    //ELSE
-      cSoapAction := ::cSoapAction
+   cSoapAction := ::cSoapAction
    //ENDIF
    BEGIN SEQUENCE WITH __BreakBlock()
       ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP"
 #ifdef __XHARBOUR__
       //IF ::cUF == "GO" .AND. ::cAmbiente == "2"
-         ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP.5.0"
-         oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.5.0" )
+      ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP.5.0"
+      oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.5.0" )
       //ELSE
       //   ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP.6.0"
       //   oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
@@ -1384,11 +1386,11 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
       oXmlDomDoc:LoadXml( cXml )
       IF oXmlDomDoc:ParseError:ErrorCode <> 0
          cRetorno := "Erro XML inválido " + ;
-                     " Linha: "   + AllTrim( Transform( oXmlDomDoc:ParseError:Line, "" ) ) + ;
-                     " coluna: "  + AllTrim( Transform( oXmlDomDoc:ParseError:LinePos, "" ) ) + ;
-                     " motivo: "  + AllTrim( Transform( oXmlDomDoc:ParseError:Reason, "" ) ) + ;
-                     " errcode: " + AllTrim( Transform( oXmlDomDoc:ParseError:ErrorCode, "" ) )
-          BREAK
+            " Linha: "   + AllTrim( Transform( oXmlDomDoc:ParseError:Line, "" ) ) + ;
+            " coluna: "  + AllTrim( Transform( oXmlDomDoc:ParseError:LinePos, "" ) ) + ;
+            " motivo: "  + AllTrim( Transform( oXmlDomDoc:ParseError:Reason, "" ) ) + ;
+            " errcode: " + AllTrim( Transform( oXmlDomDoc:ParseError:ErrorCode, "" ) )
+         BREAK
       ENDIF
 
       cRetorno   := "Erro Carregando MSXML2.XMLSchemaCache.6.0"
@@ -1436,8 +1438,7 @@ STATIC FUNCTION ConverteErroValidacao( cTexto )
    RETURN cTexto
 
 #ifdef LIBCURL // pra nao compilar, apenas anotado
-//
-// Pode ser usada a LibCurl pra comunicação
+   // Pode ser usada a LibCurl pra comunicação
 
 METHOD CurlSoapPost() CLASS SefazClass
 
@@ -1514,7 +1515,6 @@ STATIC FUNCTION SoapUrlCte(  cUF, cAmbiente, nWsServico, cSoapVersion )
 
    LOCAL nPos, cUrl, aList := SEFAZ_CTE_URL_LIST
 
-
    nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
    IF nPos != 0
       cUrl         := aList[ nPos, 5 ]
@@ -1548,7 +1548,6 @@ STATIC FUNCTION SoapUrlNFCe( cUf, cAmbiente, nWsServico, cSoapVersion )
 
    LOCAL cUrl, nPos, aList := SEFAZ_NFCE_URL_LIST
 
-
    nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
    IF nPos != 0
       cUrl         := aList[ nPos, 5 ]
@@ -1558,7 +1557,7 @@ STATIC FUNCTION SoapUrlNFCe( cUf, cAmbiente, nWsServico, cSoapVersion )
       cUrl := SoapUrlNFe( cUF, cAmbiente, nWsServico, cSoapVersion )
    ENDIF
 
-  RETURN cUrl
+   RETURN cUrl
 
 STATIC FUNCTION SoapUrlNfe4( cUF, cAmbiente, nWsServico, cSoapVersion )
 
@@ -1578,11 +1577,11 @@ STATIC FUNCTION SoapUrlNfe4( cUF, cAmbiente, nWsServico, cSoapVersion )
       CASE cUF == "RS" ;   cUrl := "https://nfe-homologacao.serfazrs.rs.gov/br/ws/xxxxx.asmx"
       CASE cUF == "SP" ;   cUrl := "https://homologacao.nfe.fazenda.sp.gov.br/ws/xxxxx.asmx"
       CASE cUF == "SVAN" ;
-         .OR. cUF $ "MA,PA"
+            .OR. cUF $ "MA,PA"
       CASE cUF == "SVRS" ;
-         .OR. cUF $ "AC,AL,AP,DF,ES,PB,PI,RJ,RN,RO,RR,SC,SE,TO" ;
-         .OR. ( cUF $ "AC,RN,PB,SC" .AND. nWsServico == WS_NFE_CONSULTACADASTRO )
-            cUrl := "https:nfe-homologacao.svrs.rs.gov.br/ws/xxxxx.asmx"
+            .OR. cUF $ "AC,AL,AP,DF,ES,PB,PI,RJ,RN,RO,RR,SC,SE,TO" ;
+            .OR. ( cUF $ "AC,RN,PB,SC" .AND. nWsServico == WS_NFE_CONSULTACADASTRO )
+         cUrl := "https:nfe-homologacao.svrs.rs.gov.br/ws/xxxxx.asmx"
       CASE cUF == "SVCAN"
       CASE cUF == "SVCRS"
       CASE cUF == "AN" ;   cUrl := "https://hom.nfe.fazenda.gov.br/xxxxx.asmx"
@@ -1609,8 +1608,8 @@ STATIC FUNCTION SoapUrlNfe4( cUF, cAmbiente, nWsServico, cSoapVersion )
 STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
 
    LOCAL QRCODE_cTag, QRCODE_Url,   QRCODE_chNFe,  QRCODE_nVersao,  QRCODE_tpAmb, QRCODE_cDest, QRCODE_dhEmi,;
-         QRCODE_vNF,  QRCODE_vICMS, QRCODE_digVal, QRCODE_cIdToken, QRCODE_cCSC,  QRCODE_cHash,;
-         cInfNFe, cSignature, cAmbiente, cUF, nPos, aList := SEFAZ_QRCODE_URL_LIST
+      QRCODE_vNF,  QRCODE_vICMS, QRCODE_digVal, QRCODE_cIdToken, QRCODE_cCSC,  QRCODE_cHash,;
+      cInfNFe, cSignature, cAmbiente, cUF, nPos, aList := SEFAZ_QRCODE_URL_LIST
 
    cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
    cSignature := XmlNode( cXmlAssinado, "Signature", .T. )
@@ -1618,7 +1617,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
    cAmbiente  := XmlNode( XmlNode( cInfNFe, "ide" ), "tpAmb" )
    cUF        := UFSigla( XmlNode( XmlNode( cInfNFe, "ide" ), "cUF" ) )
 
-// 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
+   // 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
    nPos       := AScan( aList, { | e | e[ 1 ] == cUF .AND. e[ 2 ] == cAmbiente } )
    QRCode_Url := iif( nPos == 0, "", aList[ nPos, 3 ] )
 
@@ -1638,7 +1637,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
    QRCODE_cCSC     := cCSC
 
    IF ! Empty( QRCODE_chNFe ) .AND. ! Empty( QRCODE_nVersao ) .AND. ! Empty( QRCODE_tpAmb    ) .AND. ! Empty( QRCODE_dhEmi ) .AND. !Empty( QRCODE_vNF ) .AND.;
-      ! Empty( QRCODE_vICMS ) .AND. ! Empty( QRCODE_digVal  ) .AND. ! Empty( QRCODE_cIdToken ) .AND. ! Empty( QRCODE_cCSC  )
+         ! Empty( QRCODE_vICMS ) .AND. ! Empty( QRCODE_digVal  ) .AND. ! Empty( QRCODE_cIdToken ) .AND. ! Empty( QRCODE_cCSC  )
 
       QRCODE_chNFe    := "chNFe="    + QRCODE_chNFe    + "&"
       QRCODE_nVersao  := "nVersao="  + QRCODE_nVersao  + "&"
@@ -1656,12 +1655,12 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
 
       // 3¦ Parte (cHashQRCode)
       QRCODE_cHash := ( "&cHashQRCode=" +;
-                        hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cCSC ) )
+         hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cCSC ) )
 
       // Resultado da URL formada a ser incluida na imagem QR Code
       QRCODE_cTag  := ( "<![CDATA[" +;
-                        QRCODE_Url + QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cHash +;
-                        "]]>" )
+         QRCODE_Url + QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cHash +;
+         "]]>" )
 
       // XML com a Tag do QRCode
       cXmlAssinado := [<NFe xmlns="http://www.portalfiscal.inf.br/nfe">]

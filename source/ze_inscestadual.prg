@@ -76,8 +76,8 @@ STATIC FUNCTION ValidIE_AC( cInscricao )
          nSoma := 0
       ENDIF
       IF nSoma != Val( Substr( cInscricao, 13, 1 ) )
-        lOk := .F.
-       ENDIF
+         lOk := .F.
+      ENDIF
    ENDIF
    IF lOk
       cInscricao := Transform( cInscricao, "@R 99.999.999/999-99" )
@@ -167,7 +167,7 @@ STATIC FUNCTION ValidIE_AP( cInscricao )
       ENDIF
    ENDIF
    IF lOk
-     cInscricao := Transform( cInscricao, "@R 999999999" )
+      cInscricao := Transform( cInscricao, "@R 999999999" )
    ENDIF
 
    RETURN lOk
@@ -746,13 +746,13 @@ STATIC FUNCTION ValidIE_SP( cInscricao )
          lOk := .F.
       ELSE
          nSoma := ( Val( Substr( cInscricao, 2, 1 ) ) * 1 ) + ;
-                  ( Val( Substr( cInscricao, 3, 1 ) ) * 3 ) + ;
-                  ( Val( Substr( cInscricao, 4, 1 ) ) * 4 ) + ;
-                  ( Val( Substr( cInscricao, 5, 1 ) ) * 5 ) + ;
-                  ( Val( Substr( cInscricao, 6, 1 ) ) * 6 ) + ;
-                  ( Val( Substr( cInscricao, 7, 1 ) ) * 7 ) + ;
-                  ( Val( Substr( cInscricao, 8, 1 ) ) * 8 ) + ;
-                  ( Val( Substr( cInscricao, 9, 1 ) ) * 10 )
+            ( Val( Substr( cInscricao, 3, 1 ) ) * 3 ) + ;
+            ( Val( Substr( cInscricao, 4, 1 ) ) * 4 ) + ;
+            ( Val( Substr( cInscricao, 5, 1 ) ) * 5 ) + ;
+            ( Val( Substr( cInscricao, 6, 1 ) ) * 6 ) + ;
+            ( Val( Substr( cInscricao, 7, 1 ) ) * 7 ) + ;
+            ( Val( Substr( cInscricao, 8, 1 ) ) * 8 ) + ;
+            ( Val( Substr( cInscricao, 9, 1 ) ) * 10 )
          nSoma := Mod( nSoma, 11 )
          nSoma := iif( nSoma > 9, nSoma - 10, nSoma )
          IF nSoma != Val( Substr( cInscricao, 10, 1 ) ) // Corrigido 22/04

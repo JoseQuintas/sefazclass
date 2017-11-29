@@ -2,7 +2,6 @@
 sefaz_origem - origem de mercadorias
 */
 
-
 #define SEFAZ_ORIGEM { ;
       { "0", "NACIONAL, EXCETO CODIGOS 3 A 5" }, ;
       { "1", "ESTRANGEIRA IMP DIRETA, EXCETO 6" }, ;
