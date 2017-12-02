@@ -1,5 +1,5 @@
 source/ze_sefazclass.prg
-source/ze_capicom.prg
+source/ze_sefazcapicom.prg
 source/ze_sefazAssina.prg
 source/ze_sefazAssinachk.prg
 source/ze_sefazDaCte.prg

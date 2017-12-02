@@ -3,15 +3,14 @@ ZE_CAPICOM - ROTINAS PRA USO DA CAPICOM
 José Quintas
 */
 
-#define _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED           2
-#define _CAPICOM_CURRENT_USER_STORE                   2
+#include "sefaz_capicom.ch"
 
 FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
 
    LOCAL oCertificado, oCapicomStore, cNomeCertificado := "NENHUM", oColecao
 
    oCapicomStore        := win_oleCreateObject( "CAPICOM.Store" )
-   oCapicomStore:Open( _CAPICOM_CURRENT_USER_STORE, 'My', _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
+   oCapicomStore:Open( CAPICOM_CURRENT_USER_STORE, 'My', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
    oColecao         := oCapicomStore:Certificates()
    DO CASE
    CASE oColecao:Count() == 1
@@ -39,7 +38,7 @@ FUNCTION CapicomCertificado( cNomeCertificado )
    LOCAL oCapicomStore, oColecao, oCertificado, nCont
 
    oCapicomStore := Win_OleCreateObject( "CAPICOM.Store" )
-   oCapicomStore:Open( _CAPICOM_CURRENT_USER_STORE, "My", _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
+   oCapicomStore:Open( CAPICOM_CURRENT_USER_STORE, "My", CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
    oColecao := oCapicomStore:Certificates()
    FOR nCont = 1 TO oColecao:Count()
       IF cNomeCertificado $ oColecao:Item( nCont ):SubjectName
