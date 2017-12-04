@@ -1607,9 +1607,11 @@ STATIC FUNCTION SoapUrlNfe4( cUF, cAmbiente, nWsServico, cSoapVersion )
 
 STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
 
-   LOCAL QRCODE_cTag, QRCODE_Url,   QRCODE_chNFe,  QRCODE_nVersao,  QRCODE_tpAmb, QRCODE_cDest, QRCODE_dhEmi,;
-      QRCODE_vNF,  QRCODE_vICMS, QRCODE_digVal, QRCODE_cIdToken, QRCODE_cCSC,  QRCODE_cHash,;
-      cInfNFe, cSignature, cAmbiente, cUF, nPos, aList := SEFAZ_QRCODE_URL_LIST
+   LOCAL QRCODE_cTag, QRCODE_Url, QRCODE_chNFe, QRCODE_nVersao, QRCODE_tpAmb
+   LOCAL QRCODE_cDest, QRCODE_dhEmi, QRCODE_vNF, QRCODE_vICMS, QRCODE_digVal
+   LOCAL QRCODE_cIdToken, QRCODE_cCSC, QRCODE_cHash
+   LOCAL cInfNFe, cSignature, cAmbiente, cUF, nPos
+   LOCAL aList := SEFAZ_QRCODE_URL_LIST
 
    cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
    cSignature := XmlNode( cXmlAssinado, "Signature", .T. )
