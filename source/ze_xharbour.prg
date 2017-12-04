@@ -1,31 +1,10 @@
 /*
 ZE_XHARBOUR - compatibilidade xHarbour
 
-inclusa aqui w32ole.prg da hbnfe
+* w32ole.prg baseada na win32ole.prg v 1.82 2005/04/29 do xharbour
 */
 
 #ifdef __XHARBOUR__
-// Atenção !!!! pode depender da versão do XHarbour, da LIB gráfica, etc.
-FUNCTION win_OleCreateObject( cObject )
-   RETURN xhb_CreateObject( cObject )
-
-FUNCTION hb_MemoWrit( cFile, cText )
-   RETURN Memowrit( cFile, cText, .T. )
-
-FUNCTION hb_At( cText, nStart, nEnd )
-   RETURN At( cText, nStart, nEnd )
-
-FUNCTION hb_Eol()
-   RETURN Chr(13) + Chr(10)
-
-FUNCTION wapi_MessageBox( nHwnd, cText, cTitle )
-   RETURN Alert( cText )
-
-FUNCTION hb_Hash()
-   RETURN Hash()
-
-* w32ole.prg baseada na win32ole.prg v 1.82 2005/04/29 do xharbour
-
 STATIC bOleInitialized:=.F.
 
 #ifndef __PLATFORM__Windows
@@ -53,13 +32,13 @@ FUNCTION xhb_CreateObject( cString, cLicense )
    CASE cString == "MSXML2.DOMDocument"   // talvez no Xharbour seja DOMDocument.5.0
    ENDCASE
 
-   RETURN TOleAutoX():New( cString, , cLicense )
+   RETURN SefazTOleAuto():New( cString, , cLicense )
 
 FUNCTION xhb_GetActiveObject( cString )
 
-   RETURN TOleAutoX():GetActiveObject( cString )
+   RETURN SefazTOleAuto():GetActiveObject( cString )
 
-CLASS TOleAutoX
+CLASS SefazTOleAuto
 
    DATA hObj
    DATA cClassName
@@ -82,7 +61,7 @@ CLASS TOleAutoX
 
    ENDCLASS
 
-METHOD New( uObj, cClass ) CLASS TOleAutoX
+METHOD New( uObj, cClass ) CLASS SefazTOleAuto
 
    LOCAL oErr
 
@@ -127,7 +106,7 @@ METHOD New( uObj, cClass ) CLASS TOleAutoX
             oErr:Operation     := ProcName()
             oErr:Severity      := ES_ERROR
             oErr:SubCode       := -1
-            oErr:SubSystem     := "TOleAutoX"
+            oErr:SubSystem     := "SefazTOleAuto"
 
             RETURN Eval( ErrorBlock(), oErr )
          ENDIF
@@ -143,14 +122,14 @@ METHOD New( uObj, cClass ) CLASS TOleAutoX
          ::cClassName := LTrim( Str( uObj ) )
       ENDIF
    ELSE
-      MessageBox( 0, "Invalid parameter type to constructor TOleAutoX():New()!", "OLE Interface", 0 )
+      MessageBox( 0, "Invalid parameter type to constructor SefazTOleAuto():New()!", "OLE Interface", 0 )
       ::hObj := 0
    ENDIF
 
    RETURN SELF
 
 // Destructor!
-PROCEDURE Release() CLASS TOleAutoX
+PROCEDURE Release() CLASS SefazTOleAuto
 
    IF ! Empty( ::hObj )
        OleReleaseObject( ::hObj )
@@ -158,7 +137,7 @@ PROCEDURE Release() CLASS TOleAutoX
 
    RETURN
 
-METHOD GetActiveObject( cClass ) CLASS TOleAutoX
+METHOD GetActiveObject( cClass ) CLASS SefazTOleAuto
 
    LOCAL oErr
 
@@ -193,7 +172,7 @@ METHOD GetActiveObject( cClass ) CLASS TOleAutoX
             oErr:Operation     := ProcName()
             oErr:Severity      := ES_ERROR
             oErr:SubCode       := -1
-            oErr:SubSystem     := "TOleAutoX"
+            oErr:SubSystem     := "SefazTOleAuto"
 
             RETURN Eval( ErrorBlock(), oErr )
          ENDIF
@@ -201,19 +180,19 @@ METHOD GetActiveObject( cClass ) CLASS TOleAutoX
 
       ::cClassName := cClass
    ELSE
-      MessageBox( 0, "Invalid parameter type to constructor TOleAutoX():GetActiveObject()!", "OLE Interface", 0 )
+      MessageBox( 0, "Invalid parameter type to constructor SefazTOleAuto():GetActiveObject()!", "OLE Interface", 0 )
       ::hObj := 0
    ENDIF
 
    RETURN SELF
 
-METHOD Invoke( ... ) CLASS TOleAutoX
+METHOD Invoke( ... ) CLASS SefazTOleAuto
 
    LOCAL cMethod := HB_aParams()[1]
 
    RETURN HB_ExecFromArray( Self, cMethod, aDel( HB_aParams(), 1, .T. ) )
 
-METHOD Collection( xIndex, xValue ) CLASS TOleAutoX
+METHOD Collection( xIndex, xValue ) CLASS SefazTOleAuto
 
    LOCAL xRet
 
@@ -1460,4 +1439,24 @@ PROCEDURE UnInitialize_Ole
    ENDIF
 
    RETURN
+
+
+FUNCTION win_OleCreateObject( cObject )
+   RETURN xhb_CreateObject( cObject )
+
+FUNCTION hb_MemoWrit( cFile, cText )
+   RETURN Memowrit( cFile, cText, .T. )
+
+FUNCTION hb_At( cText, nStart, nEnd )
+   RETURN At( cText, nStart, nEnd )
+
+FUNCTION hb_Eol()
+   RETURN Chr(13) + Chr(10)
+
+FUNCTION wapi_MessageBox( nHwnd, cText, cTitle )
+   RETURN Alert( cText )
+
+FUNCTION hb_Hash()
+   RETURN Hash()
+
 #endif
