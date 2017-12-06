@@ -35,13 +35,13 @@ FUNCTION xhb_CreateObject( cString, cLicense )
    CASE cString == "MSXML2.DOMDocument"   // talvez no Xharbour seja DOMDocument.5.0
    ENDCASE
 
-   RETURN SefazTOleAuto():New( cString, , cLicense )
+   RETURN TOleAutoX():New( cString, , cLicense )
 
 FUNCTION xhb_GetActiveObject( cString )
 
-   RETURN SefazTOleAuto():GetActiveObject( cString )
+   RETURN TOleAutoX():GetActiveObject( cString )
 
-CLASS SefazTOleAuto
+CLASS TOleAutoX
 
    DATA hObj
    DATA cClassName
@@ -64,7 +64,7 @@ CLASS SefazTOleAuto
 
    ENDCLASS
 
-METHOD New( uObj, cClass ) CLASS SefazTOleAuto
+METHOD New( uObj, cClass ) CLASS TOleAutoX
 
    LOCAL oErr
 
@@ -109,7 +109,7 @@ METHOD New( uObj, cClass ) CLASS SefazTOleAuto
             oErr:Operation     := ProcName()
             oErr:Severity      := ES_ERROR
             oErr:SubCode       := -1
-            oErr:SubSystem     := "SefazTOleAuto"
+            oErr:SubSystem     := "TOleAutoX"
 
             RETURN Eval( ErrorBlock(), oErr )
          ENDIF
@@ -125,14 +125,14 @@ METHOD New( uObj, cClass ) CLASS SefazTOleAuto
          ::cClassName := LTrim( Str( uObj ) )
       ENDIF
    ELSE
-      MessageBox( 0, "Invalid parameter type to constructor SefazTOleAuto():New()!", "OLE Interface", 0 )
+      MessageBox( 0, "Invalid parameter type to constructor TOleAutoX():New()!", "OLE Interface", 0 )
       ::hObj := 0
    ENDIF
 
    RETURN SELF
 
 // Destructor!
-PROCEDURE Release() CLASS SefazTOleAuto
+PROCEDURE Release() CLASS TOleAutoX
 
    IF ! Empty( ::hObj )
        OleReleaseObject( ::hObj )
@@ -140,7 +140,7 @@ PROCEDURE Release() CLASS SefazTOleAuto
 
    RETURN
 
-METHOD GetActiveObject( cClass ) CLASS SefazTOleAuto
+METHOD GetActiveObject( cClass ) CLASS TOleAutoX
 
    LOCAL oErr
 
@@ -175,7 +175,7 @@ METHOD GetActiveObject( cClass ) CLASS SefazTOleAuto
             oErr:Operation     := ProcName()
             oErr:Severity      := ES_ERROR
             oErr:SubCode       := -1
-            oErr:SubSystem     := "SefazTOleAuto"
+            oErr:SubSystem     := "TOleAutoX"
 
             RETURN Eval( ErrorBlock(), oErr )
          ENDIF
@@ -183,19 +183,19 @@ METHOD GetActiveObject( cClass ) CLASS SefazTOleAuto
 
       ::cClassName := cClass
    ELSE
-      MessageBox( 0, "Invalid parameter type to constructor SefazTOleAuto():GetActiveObject()!", "OLE Interface", 0 )
+      MessageBox( 0, "Invalid parameter type to constructor TOleAutoX():GetActiveObject()!", "OLE Interface", 0 )
       ::hObj := 0
    ENDIF
 
    RETURN SELF
 
-METHOD Invoke( ... ) CLASS SefazTOleAuto
+METHOD Invoke( ... ) CLASS TOleAutoX
 
    LOCAL cMethod := HB_aParams()[1]
 
    RETURN HB_ExecFromArray( Self, cMethod, aDel( HB_aParams(), 1, .T. ) )
 
-METHOD Collection( xIndex, xValue ) CLASS SefazTOleAuto
+METHOD Collection( xIndex, xValue ) CLASS TOleAutoX
 
    LOCAL xRet
 
