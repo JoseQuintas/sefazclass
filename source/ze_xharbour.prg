@@ -11,12 +11,15 @@ STATIC bOleInitialized:=.F.
 
 #include "common.ch"
 
-  Function xhb_CreateObject()
-  Return NIL
+  FUNCTION xhb_CreateObject()
+
+  RETURN NIL
 
   FUNCTION xhb_GetActiveObject( cString )
+
     HB_SYMBOL_UNUSED( cString )
-  Return NIL
+
+  RETURN NIL
 
 #else
 
@@ -1458,5 +1461,16 @@ FUNCTION wapi_MessageBox( nHwnd, cText, cTitle )
 
 FUNCTION hb_Hash()
    RETURN Hash()
+
+FUNCTION HB_SYMBOL_UNUSED( x )
+   RETURN NIL
+
+FUNCTION hb_Default( xVar, xValue )
+
+   IF xValue != NIL .AND. ( xVar == NIL .OR. ValType( xVar ) != ValType( xValue ) )
+      xVar := xValue
+   ENDIF
+
+   RETURN NIL
 
 #endif

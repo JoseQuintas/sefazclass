@@ -372,7 +372,9 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_RECEPCAO )
 
-   ::cXmlDocumento := cXml
+   IF cXml != NIL
+      ::cXmlDocumento := cXml
+   ENDIF
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
@@ -639,7 +641,9 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_RECEPCAO )
 
-   ::cXmlDocumento := cXml
+   IF cXml != NIL
+      ::cXmlDocumento := cXml
+   ENDIF
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
@@ -929,8 +933,9 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
    IF Empty( cLote )
       cLote := "1"
    ENDIF
-
-   ::cXmlDocumento := cXml
+   IF cXml != NIL
+      ::cXmlDocumento := cXml
+   ENDIF
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
