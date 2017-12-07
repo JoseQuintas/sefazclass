@@ -1553,13 +1553,17 @@ STATIC FUNCTION SoapUrlNFCe( cUf, cAmbiente, nWsServico, cSoapVersion )
 
    LOCAL cUrl, nPos, aList := SEFAZ_NFCE_URL_LIST
 
-   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
-   IF nPos != 0
-      cUrl         := aList[ nPos, 5 ]
-      cSoapVersion := aList[ nPos, 4 ]
+   IF cUF $ "RR"
+      cUrl := SoapUrlNFCe( "SVRS", cAmbiente, nWsServico, @cSoapVersion )
+   ELSE
+      nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
+      IF nPos != 0
+         cUrl         := aList[ nPos, 5 ]
+         cSoapVersion := aList[ nPos, 4 ]
+      ENDIF
    ENDIF
    IF Empty( cUrl )
-      cUrl := SoapUrlNFe( cUF, cAmbiente, nWsServico, cSoapVersion )
+      cUrl := SoapUrlNFe( cUF, cAmbiente, nWsServico, @cSoapVersion )
    ENDIF
 
    RETURN cUrl
