@@ -295,12 +295,21 @@ STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cPassword,
 
 STATIC FUNCTION AssinaAjustaAssinado( cXml )
 
-   LOCAL nPosIni // , nPosFim, nP
+   LOCAL nPosIni, nPosFim
 
    cXml    := StrTran( cXml, Chr(10), "" )
    cXml    := StrTran( cXml, Chr(13), "" )
    nPosIni := RAt( [<SignatureValue>], cXml ) + Len( [<SignatureValue>] )
    cXml    := Substr( cXml, 1, nPosIni - 1 ) + StrTran( Substr( cXml, nPosIni ), " ", "" )
+
+   // Ocorrência estranha: <X509Data> duplicado num cliente com A3
+   nPosIni := At( "</X509Data><X509Data>", cXml )
+   IF nPosIni != 0
+      nPosFim := hb_At( "</X509Data>", cXml, nPosIni + 5 )
+      cXml    := Substr( cXml, 1, nPosIni - 1 ) + Substr( cXml, nPosFim )
+   ENDIF
+
+
    //nPosIni := hb_At( [<X509Certificate>], cXml, nPosIni ) - 1
    //nP      := nPosIni + 1
    //nPosFim := 0
@@ -334,7 +343,12 @@ FUNCTION FakeSignature( cUri )
    cXml += [GbNNpKX/2BjzNDcnUmE8GnJFwzKHqr6Mk9CO0pvBc0pIh1DtyWyIb7WOsOknxlZ46Z8nHyCbRmGtoQftktYG01cOMibHfukWbFLs]
    cXml += [tHAslX5THfXo4jh+WXw1idyNq2FC7+g16cO5DEoyiOcPsFFjUmieYaZHZ/bgoBtSPE3dOooX2My6ATvf11/n5kmFdMj/DTX6HIC3]
    cXml += [KlNiok2du5XoV8ExwZ7i8jI3WjjU2ha49tJLXZqiJ1ySc46coqmuuXp1NkucRMR8VEBSOZt+xVfldHUyAg9K+fsmB/wvCywqILEv]
-   cXml += [Z7OYzrlszhB3quVQJtGxU9p0rqtUXxy/xoAD0RcCEA==</SignatureValue><KeyInfo><X509Data><X509Certificate>MII]
+   cXml += [Z7OYzrlszhB3quVQJtGxU9p0rqtUXxy/xoAD0RcCEA==]
+   cXml += [</SignatureValue>]
+   cXml += [<KeyInfo>]
+   cXml += [<X509Data>]
+   cXml += [<X509Certificate>]
+   cXml += [MII]
    cXml += [IVDCCBjygAwIBAgIQS95TYS8G5+BftP3vKfMOtjANBgkqhkiG9w0BAQsFADB4MQswCQYDVQQGEwJCUjETMBEGA1UEChMKSUNQLUJ]
    cXml += [yYXNpbDE2MDQGA1UECxMtU2VjcmV0YXJpYSBkYSBSZWNlaXRhIEZlZGVyYWwgZG8gQnJhc2lsIC0gUkZCMRwwGgYDVQQDExNBQyB]
    cXml += [DZXJ0aXNpZ24gUkZCIEc0MB4XDTE1MDMwNDAwMDAwMFoXDTE2MDMwMjIzNTk1OVowgfIxCzAJBgNVBAYTAkJSMRMwEQYDVQQKFAp]
