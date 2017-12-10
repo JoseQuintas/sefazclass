@@ -61,6 +61,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "Protocolo MDFE"
       @ Row() + 1, 5 PROMPT "Consulta Destinadas"
       @ Row() + 1, 5 PROMPT "Valida XML"
+      @ Row() + 1, 5 PROMPT "Teste de assinatura"
       @ Row() + 1, 5 PROMPT "Consulta Status NFCE"
       MENU TO nOpc
       nOpcTemp := 1
@@ -183,6 +184,12 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          ? oSefaz:ValidaXml( cXml, "d:\cdrom\fontes\integra\schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd" )
          Inkey(0)
 
+      CASE nOpc == nOpcTemp
+         oSefaz:cXmlDocumento := [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>]
+         oSefaz:AssinaXml()
+         ? oSefaz:cXmlRetorno
+         ? oSefaz:cXmlDocumento
+         Inkey(0)
       CASE nOpc == nOpcTemp  // pra não esquecer o ++, último não tem
          wapi_MessageBox( , "NFCE" )
          oSefaz:cNFCE := "S"
