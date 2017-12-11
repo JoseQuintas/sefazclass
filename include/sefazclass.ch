@@ -82,8 +82,9 @@
       { "**", WS_BPE_RECEPCAOEVENTO,    WS_PROJETO_BPE,  "BpeRecepcaoEvento",    "http://www.portalfiscal.inf.br/bpe/wsdl/bpeRecepcaoEvento" }, ;
       { "**", WS_BPE_CONSULTAPROTOCOLO, WS_PROJETO_BPE,  "BpeConsulta",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
       { "**", WS_BPE_STATUSSERVICO,     WS_PROJETO_BPE,  "BpeStatusServicoBP",   "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico" }, ;
-      { "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO", ;
+      { "AC,AL,AP,DF,ES,PB,PR,RJ,RN,RO,RR,SC,SE,TO", ;
               WS_NFE_AUTORIZACAO,       WS_PROJETO_NFE,  "nfeAutorizacaoLote",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
+      { "PR", WS_NFE_RETAUTORIZACAO,    WS_PROJETO_NFE,  "NfeRetAutorizacaoLote","http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao3" }, ;
       { "**", WS_NFE_RETAUTORIZACAO,    WS_PROJETO_NFE,  "NfeRetAutorizacao",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" }, ;
       { "**", WS_NFE_STATUSSERVICO,     WS_PROJETO_NFE,  "nfeStatusServicoNF2",  "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2" }, ;
       { "BA", WS_NFE_STATUSSERVICO,     WS_PROJETO_NFE,  "nfeStatusServicoNF",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" }, ;
@@ -442,6 +443,20 @@
    { "SCAN",  WS_AMBIENTE_HOMOLOGACAO, WS_NFE_STATUSSERVICO,     "3.10", "https://hom.nfe.fazenda.gov.br/SCAN/NfeStatusServico2/NfeStatusServico2.asmx" } }
 
 #define SEFAZ_NFCE_URL_LIST { ;
+   ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_NFE_AUTORIZACAO,        "3.10", "https://nfce.fazenda.pr.gov.br/nfce/NFeAutorizacao3" }, ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_NFE_CONSULTAPROTOCOLO,  "3.10", "https://nfce.fazenda.pr.gov.br/nfce/NFeConsulta3" }, ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_NFE_INUTILIZACAO,       "3.10", "https://nfce.fazenda.pr.gov.br/nfce/NFeInutilizacao3" }, ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_NFE_RECEPCAOEVENTO,     "3.10", "https://nfce.fazenda.pr.gov.br/nfce/NFeRecepcaoEvento" }, ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_NFE_RETAUTORIZACAO,     "3.10", "https://nfce.fazenda.pr.gov.br/nfce/NFeRetAutorizacao3" }, ;
+   { "PR",   WS_AMBIENTE_PRODUCAO,    WS_NFE_STATUSSERVICO,      "3.10", "https://nfce.fazenda.pr.gov.br/nfce/NFeStatusServico3" }, ;
+   ;
+   { "PR",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_AUTORIZACAO,        "3.10", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeAutorizacao3" }, ;
+   { "PR",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_CONSULTAPROTOCOLO,  "3.10", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeConsulta3" }, ;
+   { "PR",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_INUTILIZACAO,       "3.10", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeInutilizacao3" }, ;
+   { "PR",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_RECEPCAOEVENTO,     "3.10", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeRecepcaoEvento" }, ;
+   { "PR",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_RETAUTORIZACAO,     "3.10", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeRetAutorizacao3" }, ;
+   { "PR",   WS_AMBIENTE_HOMOLOGACAO, WS_NFE_STATUSSERVICO,      "3.10", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeStatusServico3" }, ;
    ;
    { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_NFE_AUTORIZACAO,        "3.10", "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
    { "SVRS", WS_AMBIENTE_PRODUCAO,    WS_NFE_CONSULTAPROTOCOLO,  "3.10", "https://nfce.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
