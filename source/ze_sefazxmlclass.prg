@@ -253,7 +253,7 @@ FUNCTION XmlToDoc( cXmlInput )
       oDocSped:cTipoDoc := "55"
       oDocSped:cEvento  := "110100"
       XmlToDocNfeEmi( cXmlInput, @oDocSped )
-   CASE "<cteProc" $ cXmlInput
+   CASE "<cteProc" $ cXmlInput .OR. "<procCTe" $ cXmlInput // proc=CTE 3.0
       oDocSped:cTipoDoc := "57"
       oDocSped:cEvento  := "110100"
       XmlToDocCteEmi( cXmlInput, @oDocSped )
