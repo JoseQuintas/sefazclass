@@ -212,7 +212,7 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", Substr( cChave, 7, 14 ) )
    ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
+   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_CTE + [">]
@@ -1059,8 +1059,8 @@ METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
    ::nWsServico := nWsServico
 
    // precisa saber o projeto pra escolher versao
-   nPos := AScan( aSoapList, { | oElement | oElement[ 2 ] == nWsServico } )
-   ::cProjeto := aSoapList[ nPos, 4 ]
+   nPos := AScan( aSoapList, { | oElement | oElement[ WS_SOAP_SERVICO ] == nWsServico } )
+   ::cProjeto := aSoapList[ nPos, WS_SOAP_PROJETO ]
    // agora versao
    DO CASE
    CASE ::cVersao != "DEFAULT"
@@ -1070,15 +1070,19 @@ METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
    CASE ::cProjeto == WS_PROJETO_BPE;  ::cVersao := WS_VERSAO_BPE
    ENDCASE
    // agora sim, o resto
-   IF ::cNFCE != "S" .AND. ;
-        ( nPos := AScan( aSoapList, { | oElement | oElement[ 1 ] $ ::cUF .AND. ;
-        oElement[ 2 ] == nWsServico .AND. ::cVersao == oElement[ 3 ] } ) ) != 0
-      ::cSoapAction  := aSoapList[ nPos, 5 ]
-      ::cSoapService := aSoapList[ nPos, 6 ]
-   ELSEIF ( nPos := AScan( aSoapList, { | oElement | oElement[ 1 ] == "**" .AND. ;
-         oElement[ 2 ] == nWsServico .AND. ::cVersao == oElement[ 3 ] } ) ) != 0
-      ::cSoapAction  := aSoapList[ nPos, 5 ]
-      ::cSoapService := aSoapList[ nPos, 6 ]
+   IF ::cNFCE != "S" .AND. ; // NFCE é igual pra todas as UFs?
+        ( nPos := AScan( aSoapList, { | oElement | ;
+        ::cUF $ oElement[ WS_SOAP_UF ] .AND. ;
+        oElement[ WS_SOAP_SERVICO ] == nWsServico .AND. ;
+        oElement[ WS_SOAP_VERSAO ] == ::cVersao } ) ) != 0
+      ::cSoapAction  := aSoapList[ nPos, WS_SOAP_SOAPACTION ]
+      ::cSoapService := aSoapList[ nPos, WS_SOAP_SOAPSERVICE ]
+   ELSEIF ( nPos := AScan( aSoapList, { | oElement | ;
+         oElement[ WS_SOAP_UF ] == "**" .AND. ;
+         oElement[ WS_SOAP_SERVICO ] == nWsServico .AND. ;
+         oElement[ WS_SOAP_VERSAO ] == ::cVersao } ) ) != 0
+      ::cSoapAction  := aSoapList[ nPos, WS_SOAP_SOAPACTION ]
+      ::cSoapService := aSoapList[ nPos, WS_SOAP_SOAPSERVICE ]
    ENDIF
    ::SetSoapURL( nWsServico )
 
@@ -1137,6 +1141,12 @@ METHOD SetSoapURL( nWsServico ) CLASS SefazClass
             ELSE
                ::cSoapURL := SoapUrlNFe( "SVAN", ::cAmbiente, nWsServico, @::cSoapVersion ) // svc-an não existe
             ENDIF
+         ENDIF
+      OTHERWISE
+         IF ::cVersao == "4.00"
+            ::cSoapUrl := SoapUrlNfe4( ::cUF, ::cAmbiente, nWsServico, @::cSoapVersion )
+         ELSE
+            ::cSoapUrl := SoapUrlNfe( ::cUF, ::cAmbiente, nWsServico, @::cSoapVersion )
          ENDIF
       ENDCASE
    CASE ::cProjeto == WS_PROJETO_BPE

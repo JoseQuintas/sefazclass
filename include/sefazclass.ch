@@ -57,6 +57,13 @@
 
 #define XML_UTF8                   [<?xml version="1.0" encoding="UTF-8"?>]
 
+#define WS_SOAP_UF          1
+#define WS_SOAP_SERVICO     2
+#define WS_SOAP_VERSAO      3
+#define WS_SOAP_PROJETO     4
+#define WS_SOAP_SOAPACTION  5
+#define WS_SOAP_SOAPSERVICE 6
+
 #define SEFAZ_SOAPACTION_LIST { ;
       ;
       { "**", WS_BPE_CONSULTAPROTOCOLO, "1.00", WS_PROJETO_BPE,  "BpeConsulta",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
