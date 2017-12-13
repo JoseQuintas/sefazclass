@@ -112,7 +112,7 @@ STATIC FUNCTION ValidIE_AL( cInscricao )
 
    RETURN lOk
 
-STATIC FUNCTION ValidIE_Am( cInscricao )
+STATIC FUNCTION ValidIE_AM( cInscricao )
 
    LOCAL lOk := .T.
    LOCAL nSoma
@@ -175,11 +175,11 @@ STATIC FUNCTION ValidIE_AP( cInscricao )
 STATIC FUNCTION ValidIE_BA( cInscricao )
 
    LOCAL lOk := .T.
-   LOCAL nSoma
+   LOCAL nSoma, oElement, nModulo
 
-   IF Len( cInscricao ) != 8
+   IF Len( cInscricao ) != 8 .AND. Len( cInscricao ) != 9
       lOk := .F.
-   ELSE
+   ELSEIF Len( cInscricao ) == 8
       IF Left( cInscricao, 1 ) $ "0123458" // A formula varia conforme inicio
          nSoma := SomaModulo11( Substr( cInscricao, 1, 6 ) )
          nSoma := 10 - Mod( nSoma, 10 )
@@ -217,9 +217,34 @@ STATIC FUNCTION ValidIE_BA( cInscricao )
             ENDIF
          ENDIF
       ENDIF
-   ENDIF
-   IF lOk
-      cInscricao := Transform( cInscricao, "@R 999.999-99" )
+      IF lOk
+         cInscricao := Transform( cInscricao, "@R 999.999-99" )
+      ENDIF
+   ELSEIF Len( cInscricao ) == 9
+      nSoma   := 0
+      nModulo := iif( Substr( cInscricao, 2, 1 ) $ "0,1,2,3,4,5,8", 10, 11 )
+      FOR EACH oElement IN Substr( cInscricao, 1, 7 ) DESCEND
+         nSoma += Val( oElement ) * ( 9 - oElement:__EnumIndex  )
+      NEXT
+      nSoma := nModulo - Mod( nSoma, nModulo )
+      IF nSoma > 9
+         nSoma := 0
+      ENDIF
+      IF Str( nSoma, 1 ) != Substr( cInscricao, 9, 1 )
+         lOk := .F.
+      ENDIF
+      nSoma := 0
+      FOR EACH oElement IN Substr( cInscricao, 1, 7 ) + Substr( cInscricao, 9, 1 ) DESCEND
+         nSoma += Val( oElement ) * ( 10 - oElement:__EnumIndex  )
+      NEXT
+      nSoma := nModulo - Mod( nSoma, nModulo )
+      IF nSoma > 9
+         nSoma := 0
+      ENDIF
+      IF Str( nSoma, 1 ) != Substr( cInscricao, 8, 1 )
+         lOk := .F.
+      ENDIF
+
    ENDIF
 
    RETURN lOk
