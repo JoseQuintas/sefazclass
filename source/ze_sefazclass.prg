@@ -939,6 +939,10 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
+   IF ::cNFCe == "S"
+      ::GeraQrCode()
+   ENDIF
+
    ::cSoapVersion := "3.10"
    ::cXmlEnvio    := [<enviNFe versao="] + WS_VERSAO_NFE + [" ] + WS_XMLNS_NFE + [>]
    // FOR EACH cXmlNota IN aXmlNotas
