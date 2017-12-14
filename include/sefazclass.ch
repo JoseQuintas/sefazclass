@@ -520,7 +520,7 @@
    { "SE", WS_AMBIENTE_PRODUCAO,    "http://www.nfce.se.gov.br/portal/consultarNFCe.jsp?" }, ;
    { "TO", WS_AMBIENTE_PRODUCAO,    "" }, ;
    ;
-   { "AC", WS_AMBIENTE_HOMOLOGACAO, "http://hml.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
+   { "AC", WS_AMBIENTE_HOMOLOGACAO, "http://www.hml.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
    { "AL", WS_AMBIENTE_HOMOLOGACAO, "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?" }, ;
    { "AP", WS_AMBIENTE_HOMOLOGACAO, "https://www.sefaz.ap.gov.br/nfcehml/nfce.php?" }, ;
    { "AM", WS_AMBIENTE_HOMOLOGACAO, "http://homnfce.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp?" }, ;
