@@ -1,45 +1,49 @@
-#define WS_BPE_CONSULTAPROTOCOLO      1
-#define WS_BPE_RECEPCAO               2
-#define WS_BPE_RECEPCAOEVENTO         3
-#define WS_BPE_STATUSSERVICO          4
-#define WS_BPE_QRCODE                 5
+#define WS_BPE                       100
+#define WS_BPE_CONSULTAPROTOCOLO     WS_BPE + 1
+#define WS_BPE_RECEPCAO              WS_BPE + 2
+#define WS_BPE_RECEPCAOEVENTO        WS_BPE + 3
+#define WS_BPE_STATUSSERVICO         WS_BPE + 4
+#define WS_BPE_QRCODE                WS_BPE + 5
 
-#define WS_CTE_CONSULTACADASTRO       6
-#define WS_CTE_CONSULTAPROTOCOLO      7
-#define WS_CTE_INUTILIZACAO           8
-#define WS_CTE_RECEPCAO               9
-#define WS_CTE_RECEPCAOEVENTO        10
-#define WS_CTE_RETRECEPCAO           11
-#define WS_CTE_STATUSSERVICO         12
+#define WS_CTE                       200
+#define WS_CTE_CONSULTACADASTRO      WS_CTE + 1
+#define WS_CTE_CONSULTAPROTOCOLO     WS_CTE + 2
+#define WS_CTE_INUTILIZACAO          WS_CTE + 3
+#define WS_CTE_RECEPCAO              WS_CTE + 4
+#define WS_CTE_RECEPCAOEVENTO        WS_CTE + 5
+#define WS_CTE_RETRECEPCAO           WS_CTE + 6
+#define WS_CTE_STATUSSERVICO         WS_CTE + 7
 
-#define WS_MDFE_CONSNAOENC           13
-#define WS_MDFE_CONSULTA             14
-#define WS_MDFE_DISTRIBUICAODFE      15
-#define WS_MDFE_RECEPCAO             16
-#define WS_MDFE_RECEPCAOEVENTO       17
-#define WS_MDFE_RETRECEPCAO          18
-#define WS_MDFE_STATUSSERVICO        19
+#define WS_MDFE                      300
+#define WS_MDFE_CONSNAOENC           WS_MDFE + 1
+#define WS_MDFE_CONSULTA             WS_MDFE + 2
+#define WS_MDFE_DISTRIBUICAODFE      WS_MDFE + 3
+#define WS_MDFE_RECEPCAO             WS_MDFE + 4
+#define WS_MDFE_RECEPCAOEVENTO       WS_MDFE + 5
+#define WS_MDFE_RETRECEPCAO          WS_MDFE + 6
+#define WS_MDFE_STATUSSERVICO        WS_MDFE + 7
 
-#define WS_NFE_AUTORIZACAO           20
-#define WS_NFE_CONSULTACADASTRO      21
-#define WS_NFE_CONSULTADEST          22
-#define WS_NFE_CONSULTAPROTOCOLO     23
-#define WS_NFE_DISTRIBUICAODFE       24
-#define WS_NFE_DOWNLOADNF            25
-#define WS_NFE_INUTILIZACAO          26
-#define WS_NFE_RECEPCAO              27
-#define WS_NFE_RECEPCAOEVENTO        28
-#define WS_NFE_RETAUTORIZACAO        29
-#define WS_NFE_RETRECEPCAO           30
-#define WS_NFE_STATUSSERVICO         31
-
-#define WS_AMBIENTE_HOMOLOGACAO      "2"
-#define WS_AMBIENTE_PRODUCAO         "1"
+#define WS_NFE                       400
+#define WS_NFE_AUTORIZACAO           WS_NFE + 1
+#define WS_NFE_CONSULTACADASTRO      WS_NFE + 2
+#define WS_NFE_CONSULTADEST          WS_NFE + 3
+#define WS_NFE_CONSULTAPROTOCOLO     WS_NFE + 4
+#define WS_NFE_DISTRIBUICAODFE       WS_NFE + 5
+#define WS_NFE_DOWNLOADNF            WS_NFE + 6
+#define WS_NFE_INUTILIZACAO          WS_NFE + 7
+#define WS_NFE_RECEPCAO              WS_NFE + 8
+#define WS_NFE_RECEPCAOEVENTO        WS_NFE + 9
+#define WS_NFE_RETAUTORIZACAO        WS_NFE + 10
+#define WS_NFE_RETRECEPCAO           WS_NFE + 11
+#define WS_NFE_STATUSSERVICO         WS_NFE + 12
 
 #define WS_PROJETO_BPE               "bpe"
 #define WS_PROJETO_CTE               "cte"
 #define WS_PROJETO_MDFE              "mdfe"
 #define WS_PROJETO_NFE               "nfe"
+
+#define WS_AMBIENTE_HOMOLOGACAO      "2"
+#define WS_AMBIENTE_PRODUCAO         "1"
 
 #define WS_VERSAO_BPE                "1.00"
 #define WS_VERSAO_CTE                "3.00"
@@ -60,51 +64,50 @@
 #define WS_SOAP_UF          1
 #define WS_SOAP_SERVICO     2
 #define WS_SOAP_VERSAO      3
-#define WS_SOAP_PROJETO     4
-#define WS_SOAP_SOAPACTION  5
-#define WS_SOAP_SOAPSERVICE 6
+#define WS_SOAP_SOAPACTION  4
+#define WS_SOAP_SOAPSERVICE 5
 
 #define SEFAZ_SOAPACTION_LIST { ;
       ;
-      { "**", WS_BPE_CONSULTAPROTOCOLO, "1.00", WS_PROJETO_BPE,  "BpeConsulta",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
-      { "**", WS_BPE_RECEPCAO,          "1.00", WS_PROJETO_BPE,  "BpeRecepcao",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeRecepcao/bpeRecepcao" }, ;
-      { "**", WS_BPE_RECEPCAOEVENTO,    "1.00", WS_PROJETO_BPE,  "BpeRecepcaoEvento",    "http://www.portalfiscal.inf.br/bpe/wsdl/bpeRecepcaoEvento" }, ;
-      { "**", WS_BPE_STATUSSERVICO,     "1.00", WS_PROJETO_BPE,  "BpeStatusServicoBP",   "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico" }, ;
-      { "**", WS_CTE_CONSULTAPROTOCOLO, "3.00", WS_PROJETO_CTE,  "cteConsultaCT",        "http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta" }, ;
-      { "**", WS_CTE_INUTILIZACAO,      "3.00", WS_PROJETO_CTE,  "cteInutilizacaoCT",    "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao" }, ;
-      { "**", WS_CTE_RECEPCAOEVENTO,    "3.00", WS_PROJETO_CTE,  "cteRecepcaoEvento",    "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento" }, ;
-      { "**", WS_CTE_RETRECEPCAO,       "3.00", WS_PROJETO_CTE,  "cteRetRecepcao",       "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao" }, ;
-      { "**", WS_CTE_RECEPCAO,          "3.00", WS_PROJETO_CTE,  "cteRecepcaoLote",      "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao" }, ;
-      { "**", WS_CTE_STATUSSERVICO,     "3.00", WS_PROJETO_CTE,  "cteStatusServicoCT",   "http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico" }, ;
-      { "**", WS_MDFE_CONSNAOENC,       "3.00", WS_PROJETO_MDFE, "mdfeConsNaoEnc",       "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc" }, ;
-      { "**", WS_MDFE_CONSULTA,         "3.00", WS_PROJETO_MDFE, "mdfeConsultaMDF",      "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta" }, ;
-      { "**", WS_MDFE_DISTRIBUICAODFE,  "3.00", 0,               "mdfeDistDFeInteresse", "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe" }, ;
-      { "**", WS_MDFE_RECEPCAO,         "3.00", WS_PROJETO_MDFE, "MDFeRecepcao",         "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao" }, ;
-      { "**", WS_MDFE_RECEPCAOEVENTO,   "3.00", WS_PROJETO_MDFE, "mdfeRecepcaoEvento",   "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento" }, ;
-      { "**", WS_MDFE_RETRECEPCAO,      "3.00", WS_PROJETO_MDFE, "mdfeRetRecepcao",      "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao" }, ;
-      { "**", WS_MDFE_STATUSSERVICO,    "3.00", WS_PROJETO_MDFE, "MDFeStatusServico",    "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF" }, ;
-      { "**", WS_NFE_AUTORIZACAO,       "3.10", WS_PROJETO_NFE,  "NfeAutorizacao",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
+      { "**", WS_BPE_CONSULTAPROTOCOLO, "1.00", "BpeConsulta",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
+      { "**", WS_BPE_RECEPCAO,          "1.00", "BpeRecepcao",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeRecepcao/bpeRecepcao" }, ;
+      { "**", WS_BPE_RECEPCAOEVENTO,    "1.00", "BpeRecepcaoEvento",    "http://www.portalfiscal.inf.br/bpe/wsdl/bpeRecepcaoEvento" }, ;
+      { "**", WS_BPE_STATUSSERVICO,     "1.00", "BpeStatusServicoBP",   "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico" }, ;
+      { "**", WS_CTE_CONSULTAPROTOCOLO, "3.00", "cteConsultaCT",        "http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta" }, ;
+      { "**", WS_CTE_INUTILIZACAO,      "3.00", "cteInutilizacaoCT",    "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao" }, ;
+      { "**", WS_CTE_RECEPCAOEVENTO,    "3.00", "cteRecepcaoEvento",    "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento" }, ;
+      { "**", WS_CTE_RETRECEPCAO,       "3.00", "cteRetRecepcao",       "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao" }, ;
+      { "**", WS_CTE_RECEPCAO,          "3.00", "cteRecepcaoLote",      "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao" }, ;
+      { "**", WS_CTE_STATUSSERVICO,     "3.00", "cteStatusServicoCT",   "http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico" }, ;
+      { "**", WS_MDFE_CONSNAOENC,       "3.00", "mdfeConsNaoEnc",       "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc" }, ;
+      { "**", WS_MDFE_CONSULTA,         "3.00", "mdfeConsultaMDF",      "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta" }, ;
+      { "**", WS_MDFE_DISTRIBUICAODFE,  "3.00", "mdfeDistDFeInteresse", "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe" }, ;
+      { "**", WS_MDFE_RECEPCAO,         "3.00", "MDFeRecepcao",         "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao" }, ;
+      { "**", WS_MDFE_RECEPCAOEVENTO,   "3.00", "mdfeRecepcaoEvento",   "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento" }, ;
+      { "**", WS_MDFE_RETRECEPCAO,      "3.00", "mdfeRetRecepcao",      "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao" }, ;
+      { "**", WS_MDFE_STATUSSERVICO,    "3.00", "MDFeStatusServico",    "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF" }, ;
       { "AC,AL,AP,DF,ES,PB,PR,RJ,RN,RO,RR,SC,SE,TO", ;
-              WS_NFE_AUTORIZACAO,       "3.10", WS_PROJETO_NFE,  "nfeAutorizacaoLote",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
-      { "**", WS_NFE_CONSULTACADASTRO,  "3.10", WS_PROJETO_NFE,  "CadConsultaCadastro2", "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2" }, ;
-      { "**", WS_NFE_CONSULTADEST,      "3.10", WS_PROJETO_NFE,  "nfeConsultaNFDest",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest" }, ;
-      { "**", WS_NFE_CONSULTAPROTOCOLO, "3.10", WS_PROJETO_NFE,  "NfeConsulta2",         "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" }, ;
-      { "BA", WS_NFE_CONSULTAPROTOCOLO, "3.10", WS_PROJETO_NFE,  "nfeConsultaNF",        "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" }, ;
+              WS_NFE_AUTORIZACAO,       "3.10", "nfeAutorizacaoLote",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
+      { "**", WS_NFE_AUTORIZACAO,       "3.10", "NfeAutorizacao",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
+      { "**", WS_NFE_CONSULTACADASTRO,  "2.00", "CadConsultaCadastro2", "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2" }, ;
+      { "**", WS_NFE_CONSULTADEST,      "3.10", "nfeConsultaNFDest",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest" }, ;
+      { "BA", WS_NFE_CONSULTAPROTOCOLO, "3.10", "nfeConsultaNF",        "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" }, ;
       { "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO", ;
-              WS_NFE_CONSULTAPROTOCOLO, "3.10", WS_PROJETO_NFE,  "nfeConsultaNF2",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" }, ;
-      { "**", WS_NFE_DISTRIBUICAODFE,   "???",  0,               "nfeDistDFeInteresse",  "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe" }, ;
-      { "**", WS_NFE_INUTILIZACAO,      "3.10", WS_PROJETO_NFE,  "NfeInutilizacaoNF2",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2" }, ;
-      { "**", WS_NFE_RECEPCAOEVENTO,    "3.10", WS_PROJETO_NFE,  "nfeRecepcaoEvento",    "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" }, ;
-      { "PR", WS_NFE_RETAUTORIZACAO,    "3.10", WS_PROJETO_NFE,  "NfeRetAutorizacaoLote","http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao3" }, ;
-      { "**", WS_NFE_RETAUTORIZACAO,    "3.10", WS_PROJETO_NFE,  "NfeRetAutorizacao",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" }, ;
-      { "**", WS_NFE_STATUSSERVICO,     "3.10", WS_PROJETO_NFE,  "nfeStatusServicoNF2",  "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2" }, ;
-      { "BA", WS_NFE_STATUSSERVICO,     "3.10", WS_PROJETO_NFE,  "nfeStatusServicoNF",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" }, ;
-      { "**", WS_NFE_AUTORIZACAO,       "4.00", WS_PROJETO_NFE,  "NfeAutorizacao4",      "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
-      { "**", WS_NFE_CONSULTACADASTRO,  "4.00", WS_PROJETO_NFE,  "CadConsultaCadastro4", "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro" }, ;
-      { "**", WS_NFE_CONSULTAPROTOCOLO, "4.00", WS_PROJETO_NFE,  "NfeConsulta4",         "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" }, ;
-      { "**", WS_NFE_INUTILIZACAO,      "4.00", WS_PROJETO_NFE,  "Nfeinutilizacao4",     "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao" }, ;
-      { "**", WS_NFE_RECEPCAOEVENTO,    "4.00", WS_PROJETO_NFE,  "NfeRecepcaoEvento4",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcaoEvento" }, ;
-      { "**", WS_NFE_RETAUTORIZACAO,    "4.00", WS_PROJETO_NFE,  "NfeRetAutorizacao4",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" } }
+              WS_NFE_CONSULTAPROTOCOLO, "3.10", "nfeConsultaNF2",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" }, ;
+      { "**", WS_NFE_CONSULTAPROTOCOLO, "3.10", "NfeConsulta2",         "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" }, ;
+      { "**", WS_NFE_DISTRIBUICAODFE,   "???",  "nfeDistDFeInteresse",  "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe" }, ;
+      { "**", WS_NFE_INUTILIZACAO,      "3.10", "NfeInutilizacaoNF2",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2" }, ;
+      { "**", WS_NFE_RECEPCAOEVENTO,    "3.10", "nfeRecepcaoEvento",    "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" }, ;
+      { "**", WS_NFE_RETAUTORIZACAO,    "3.10", "NfeRetAutorizacao",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" }, ;
+      { "PR", WS_NFE_RETAUTORIZACAO,    "3.10", "NfeRetAutorizacaoLote","http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao3" }, ;
+      { "**", WS_NFE_STATUSSERVICO,     "3.10", "nfeStatusServicoNF2",  "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2" }, ;
+      { "BA", WS_NFE_STATUSSERVICO,     "3.10", "nfeStatusServicoNF",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" }, ;
+      { "**", WS_NFE_AUTORIZACAO,       "4.00", "NfeAutorizacao4",      "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
+      { "**", WS_NFE_CONSULTACADASTRO,  "4.00", "CadConsultaCadastro4", "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro" }, ;
+      { "**", WS_NFE_CONSULTAPROTOCOLO, "4.00", "NfeConsulta4",         "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" }, ;
+      { "**", WS_NFE_INUTILIZACAO,      "4.00", "Nfeinutilizacao4",     "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao" }, ;
+      { "**", WS_NFE_RECEPCAOEVENTO,    "4.00", "NfeRecepcaoEvento4",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcaoEvento" }, ;
+      { "**", WS_NFE_RETAUTORIZACAO,    "4.00", "NfeRetAutorizacao4",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" } }
 
 #define SEFAZ_CTE_URL_LIST { ;
    ;
