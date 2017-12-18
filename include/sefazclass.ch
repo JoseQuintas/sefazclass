@@ -36,6 +36,7 @@
 #define WS_NFE_RETAUTORIZACAO        WS_NFE + 10
 #define WS_NFE_RETRECEPCAO           WS_NFE + 11
 #define WS_NFE_STATUSSERVICO         WS_NFE + 12
+#define WS_NFE_QRCODE                WS_NFE + 13
 
 #define WS_PROJETO_BPE               "bpe"
 #define WS_PROJETO_CTE               "cte"
@@ -490,66 +491,63 @@
    { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_INUTILIZACAO,       "3.10", "https://nfce-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
    { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_RECEPCAOEVENTO,     "1.00", "https://nfce-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
    { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_RETAUTORIZACAO,     "3.10", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
-   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_STATUSSERVICO,      "3.10", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" } }
-
-// 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
-#define SEFAZ_QRCODE_URL_LIST { ;
+   { "SVRS", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_STATUSSERVICO,      "3.10", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" }, ;
    ;
-   { "AC", WS_AMBIENTE_PRODUCAO,    "http://www.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
-   { "AL", WS_AMBIENTE_PRODUCAO,    "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?" }, ;
-   { "AP", WS_AMBIENTE_PRODUCAO,    "https://www.sefaz.ap.gov.br/nfce/nfcep.php?" }, ;
-   { "AM", WS_AMBIENTE_PRODUCAO,    "http://sistemas.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp?" }, ;
-   { "BA", WS_AMBIENTE_PRODUCAO,    "http://nfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
-   { "CE", WS_AMBIENTE_PRODUCAO,    "http://nfce.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
-   { "DF", WS_AMBIENTE_PRODUCAO,    "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
-   { "ES", WS_AMBIENTE_PRODUCAO,    "http://app.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?" }, ;
-   { "GO", WS_AMBIENTE_PRODUCAO,    "http://nfe.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
-   { "MA", WS_AMBIENTE_PRODUCAO,    "http://www.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp?" }, ;
-   { "MT", WS_AMBIENTE_PRODUCAO,    "http://www.sefaz.mt.gov.br/nfce/consultanfce?" }, ;
-   { "MS", WS_AMBIENTE_PRODUCAO,    "http://www.dfe.ms.gov.br/nfce/qrcode?" }, ;
-   { "MG", WS_AMBIENTE_PRODUCAO,    "" }, ;
-   { "PA", WS_AMBIENTE_PRODUCAO,    "https://appnfc.sefa.pa.gov.br/portal/view/consultas/nfce/nfceForm.seam?" }, ;
-   { "PB", WS_AMBIENTE_PRODUCAO,    "http://www.receita.pb.gov.br/nfce?" }, ;
-   { "PR", WS_AMBIENTE_PRODUCAO,    "http://www.dfeportal.fazenda.pr.gov.br/dfe-portal/rest/servico/consultaNFCe?" }, ;
-   { "PE", WS_AMBIENTE_PRODUCAO,    "http://nfce.sefaz.pe.gov.br/nfce-web/consultarNFCe?" }, ;
-   { "PI", WS_AMBIENTE_PRODUCAO,    "http://webas.sefaz.pi.gov.br/nfceweb/consultarNFCe.jsf?" }, ;
-   { "RJ", WS_AMBIENTE_PRODUCAO,    "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode?" }, ;
-   { "RN", WS_AMBIENTE_PRODUCAO,    "http://nfce.set.rn.gov.br/consultarNFCe.aspx?" }, ;
-   { "RS", WS_AMBIENTE_PRODUCAO,    "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?" }, ;
-   { "RO", WS_AMBIENTE_PRODUCAO,    "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp?" }, ;
-   { "RR", WS_AMBIENTE_PRODUCAO,    "https://www.sefaz.rr.gov.br/nfce/servlet/qrcode?" }, ;
-   { "SC", WS_AMBIENTE_PRODUCAO,    "" }, ;
-   { "SP", WS_AMBIENTE_PRODUCAO,    "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx?" }, ;
-   { "SE", WS_AMBIENTE_PRODUCAO,    "http://www.nfce.se.gov.br/portal/consultarNFCe.jsp?" }, ;
-   { "TO", WS_AMBIENTE_PRODUCAO,    "" }, ;
+   { "AC", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://www.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
+   { "AL", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?" }, ;
+   { "AP", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "https://www.sefaz.ap.gov.br/nfce/nfcep.php?" }, ;
+   { "AM", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://sistemas.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp?" }, ;
+   { "BA", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://nfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
+   { "CE", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://nfce.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
+   { "DF", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
+   { "ES", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://app.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?" }, ;
+   { "GO", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://nfe.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
+   { "MA", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://www.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp?" }, ;
+   { "MT", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://www.sefaz.mt.gov.br/nfce/consultanfce?" }, ;
+   { "MS", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://www.dfe.ms.gov.br/nfce/qrcode?" }, ;
+   { "MG", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "" }, ;
+   { "PA", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "https://appnfc.sefa.pa.gov.br/portal/view/consultas/nfce/nfceForm.seam?" }, ;
+   { "PB", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://www.receita.pb.gov.br/nfce?" }, ;
+   { "PR", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://www.dfeportal.fazenda.pr.gov.br/dfe-portal/rest/servico/consultaNFCe?" }, ;
+   { "PE", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://nfce.sefaz.pe.gov.br/nfce-web/consultarNFCe?" }, ;
+   { "PI", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://webas.sefaz.pi.gov.br/nfceweb/consultarNFCe.jsf?" }, ;
+   { "RJ", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode?" }, ;
+   { "RN", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://nfce.set.rn.gov.br/consultarNFCe.aspx?" }, ;
+   { "RS", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?" }, ;
+   { "RO", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp?" }, ;
+   { "RR", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "https://www.sefaz.rr.gov.br/nfce/servlet/qrcode?" }, ;
+   { "SC", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "" }, ;
+   { "SP", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx?" }, ;
+   { "SE", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "http://www.nfce.se.gov.br/portal/consultarNFCe.jsp?" }, ;
+   { "TO", WS_AMBIENTE_PRODUCAO,    WS_NFE_QRCODE, "" }, ;
    ;
-   { "AC", WS_AMBIENTE_HOMOLOGACAO, "http://www.hml.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
-   { "AL", WS_AMBIENTE_HOMOLOGACAO, "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?" }, ;
-   { "AP", WS_AMBIENTE_HOMOLOGACAO, "https://www.sefaz.ap.gov.br/nfcehml/nfce.php?" }, ;
-   { "AM", WS_AMBIENTE_HOMOLOGACAO, "http://homnfce.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp?" }, ;
-   { "BA", WS_AMBIENTE_HOMOLOGACAO, "http://hnfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
-   { "CE", WS_AMBIENTE_HOMOLOGACAO, "http://nfceh.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
-   { "DF", WS_AMBIENTE_HOMOLOGACAO, "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
-   { "ES", WS_AMBIENTE_HOMOLOGACAO, "http://homologacao.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?" }, ;
-   { "GO", WS_AMBIENTE_HOMOLOGACAO, "" }, ;
-   { "MA", WS_AMBIENTE_HOMOLOGACAO, "http://www.hom.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp?" }, ;
-   { "MT", WS_AMBIENTE_HOMOLOGACAO, "http://homologacao.sefaz.mt.gov.br/nfce/consultanfce?" }, ;
-   { "MS", WS_AMBIENTE_HOMOLOGACAO, "http://www.dfe.ms.gov.br/nfce/qrcode?" }, ;
-   { "MG", WS_AMBIENTE_HOMOLOGACAO, "" }, ;
-   { "PA", WS_AMBIENTE_HOMOLOGACAO, "https://appnfc.sefa.pa.gov.br/portal-homologacao/view/consultas/nfce/nfceForm.seam" }, ;
-   { "PB", WS_AMBIENTE_HOMOLOGACAO, "http://www.receita.pb.gov.br/nfcehom" }, ;
-   { "PR", WS_AMBIENTE_HOMOLOGACAO, "http://www.dfeportal.fazenda.pr.gov.br/dfe-portal/rest/servico/consultaNFCe?" }, ;
-   { "PE", WS_AMBIENTE_HOMOLOGACAO, "http://nfcehomolog.sefaz.pe.gov.br/nfce-web/consultarNFCe?" }, ;
-   { "PI", WS_AMBIENTE_HOMOLOGACAO, "http://webas.sefaz.pi.gov.br/nfceweb-homologacao/consultarNFCe.jsf?" }, ;
-   { "RJ", WS_AMBIENTE_HOMOLOGACAO, "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode?" }, ;
-   { "RN", WS_AMBIENTE_HOMOLOGACAO, "http://hom.nfce.set.rn.gov.br/consultarNFCe.aspx?" }, ;
-   { "RS", WS_AMBIENTE_HOMOLOGACAO, "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?" }, ;
-   { "RO", WS_AMBIENTE_HOMOLOGACAO, "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp" }, ;
-   { "RR", WS_AMBIENTE_HOMOLOGACAO, "http://200.174.88.103:8080/nfce/servlet/qrcode?" }, ;
-   { "SC", WS_AMBIENTE_HOMOLOGACAO, "" }, ;
-   { "SP", WS_AMBIENTE_HOMOLOGACAO, "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
-   { "SE", WS_AMBIENTE_HOMOLOGACAO, "http://www.hom.nfe.se.gov.br/portal/consultarNFCe.jsp?" }, ;
-   { "TO", WS_AMBIENTE_HOMOLOGACAO, "" } }
+   { "AC", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://www.hml.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
+   { "AL", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?" }, ;
+   { "AP", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "https://www.sefaz.ap.gov.br/nfcehml/nfce.php?" }, ;
+   { "AM", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://homnfce.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp?" }, ;
+   { "BA", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://hnfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
+   { "CE", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://nfceh.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
+   { "DF", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
+   { "ES", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://homologacao.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?" }, ;
+   { "GO", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "" }, ;
+   { "MA", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://www.hom.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp?" }, ;
+   { "MT", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://homologacao.sefaz.mt.gov.br/nfce/consultanfce?" }, ;
+   { "MS", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://www.dfe.ms.gov.br/nfce/qrcode?" }, ;
+   { "MG", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "" }, ;
+   { "PA", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "https://appnfc.sefa.pa.gov.br/portal-homologacao/view/consultas/nfce/nfceForm.seam" }, ;
+   { "PB", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://www.receita.pb.gov.br/nfcehom" }, ;
+   { "PR", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://www.dfeportal.fazenda.pr.gov.br/dfe-portal/rest/servico/consultaNFCe?" }, ;
+   { "PE", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://nfcehomolog.sefaz.pe.gov.br/nfce-web/consultarNFCe?" }, ;
+   { "PI", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://webas.sefaz.pi.gov.br/nfceweb-homologacao/consultarNFCe.jsf?" }, ;
+   { "RJ", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode?" }, ;
+   { "RN", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://hom.nfce.set.rn.gov.br/consultarNFCe.aspx?" }, ;
+   { "RS", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?" }, ;
+   { "RO", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp" }, ;
+   { "RR", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://200.174.88.103:8080/nfce/servlet/qrcode?" }, ;
+   { "SC", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "" }, ;
+   { "SP", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
+   { "SE", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "http://www.hom.nfe.se.gov.br/portal/consultarNFCe.jsp?" }, ;
+   { "TO", WS_AMBIENTE_HOMOLOGACAO, WS_NFE_QRCODE, "" } }
 
 #define SEFAZ_BPE_URL_LIST { ;
    ;

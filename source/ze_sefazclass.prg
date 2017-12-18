@@ -117,7 +117,7 @@ CREATE CLASS SefazClass
 METHOD BpeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UfSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_BPE_CONSULTAPROTOCOLO )
-   ::cXmlEnvio := [<consSitBPe> versao="] + WS_VERSAO_BPE + [" ] + WS_XMLNS_BPE + [>]
+   ::cXmlEnvio := [<consSitBPe> versao="] + ::cVersao + [" ] + WS_XMLNS_BPE + [>]
    ::cXmlEnvio +=   XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=   XmlTag( "xServ", "CONSULTAR" )
    ::cXmlEnvio +=   XmlTag( "chBPe", cChave )
@@ -136,7 +136,7 @@ METHOD BpeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_BPE_STATUSSERVICO )
 
-   ::cXmlEnvio := [<consStatServBPe versao="] + WS_VERSAO_BPE + [" ] + WS_XMLNS_BPE + [>]
+   ::cXmlEnvio := [<consStatServBPe versao="] + ::cVersao + [" ] + WS_XMLNS_BPE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=    XmlTag( "xServ", "STATUS" )
    ::cXmlEnvio += [</consStatServBPe>]
@@ -148,7 +148,7 @@ METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_CTE_CONSULTAPROTOCOLO )
 
-   ::cXmlEnvio    := [<consSitCTe versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+   ::cXmlEnvio    := [<consSitCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR" )
    ::cXmlEnvio    +=    XmlTag( "chCTe", cChave )
@@ -171,7 +171,7 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_RETRECEPCAO )
 
-   ::cXmlEnvio     := [<consReciCTe versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+   ::cXmlEnvio     := [<consReciCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio     +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio     +=    XmlTag( "nRec",  ::cRecibo )
    ::cXmlEnvio     += [</consReciCTe>]
@@ -187,7 +187,7 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_CTE_RECEPCAOEVENTO )
 
-   ::cXmlDocumento := [<eventoCTe versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+   ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -196,7 +196,7 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_CTE + [">]
+   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
    ::cXmlDocumento +=            [<evCancCTe>]
    ::cXmlDocumento +=                XmlTag( "descEvento", "Cancelamento" )
    ::cXmlDocumento +=                XmlTag( "nProt", Ltrim( Str( nProt, 16 ) ) )
@@ -222,7 +222,7 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_CTE_RECEPCAOEVENTO )
 
-   ::cXmlDocumento := [<eventoCTe versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+   ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -231,7 +231,7 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110110" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_CTE + [">]
+   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
    ::cXmlDocumento +=            [<evCCeCTe>]
    ::cXmlDocumento +=                XmlTag( "descEvento", "Carta de Correcao" )
    FOR EACH oElement IN aAlteracoes
@@ -276,7 +276,7 @@ METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
-   ::cXmlAutorizado += [<cteProc versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+   ::cXmlAutorizado += [<cteProc versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protCTe", .T. ) // ?hb_Utf8ToStr()
    ::cXmlAutorizado += [</cteProc>]
@@ -295,9 +295,9 @@ METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
-   ::cXmlAutorizado += [<procEventoCTe versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+   ::cXmlAutorizado += [<procEventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlAutorizado +=    cXmlAssinado
-   ::cXmlAutorizado += [<retEventoCTe versao="] + WS_VERSAO_CTE + [">]
+   ::cXmlAutorizado += [<retEventoCTe versao="] + ::cVersao + [">]
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEventoCTe" ) // hb_UTF8ToStr()
    ::cXmlAutorizado += [</retEventoCTe>]
    ::cXmlAutorizado += [</procEventoCTe>]
@@ -312,7 +312,7 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    IF Len( cAno ) != 2
       cAno := Right( cAno, 2 )
    ENDIF
-   ::cXmlDocumento := [<inutCTe versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+   ::cXmlDocumento := [<inutCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlDocumento +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
    ::cXmlDocumento +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -334,7 +334,7 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
       ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
       IF ::cStatus == "102"
          ::cXmlAutorizado := XML_UTF8
-         ::cXmlAutorizado += [<ProcInutCTe versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+         ::cXmlAutorizado += [<ProcInutCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
          ::cXmlAutorizado += ::cXmlDocumento
          ::cXmlAutorizado += XmlNode( ::cXmlRetorno , "retInutCTe", .T. )
          ::cXmlAutorizado += [</ProcInutCTe>]
@@ -357,7 +357,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
-   ::cXmlEnvio    := [<enviCTe versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+   ::cXmlEnvio    := [<enviCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio    +=    XmlTag( "idLote", cLote )
    ::cXmlEnvio    +=    ::cXmlDocumento
    ::cXmlEnvio    += [</enviCTe>]
@@ -378,7 +378,7 @@ METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_STATUSSERVICO )
 
-   ::cXmlEnvio    := [<consStatServCte versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+   ::cXmlEnvio    := [<consStatServCte versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
    ::cXmlEnvio    += [</consStatServCte>]
@@ -390,7 +390,7 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_CONSNAOENC )
 
-   ::cXmlEnvio := [<consMDFeNaoEnc versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlEnvio := [<consMDFeNaoEnc versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=    XmlTag( "xServ", "CONSULTAR NÃO ENCERRADOS" )
    ::cXmlEnvio +=    XmlTag( "CNPJ", cCNPJ )
@@ -405,7 +405,7 @@ METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_CONSULTA )
 
-   ::cXmlEnvio := [<consSitMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlEnvio := [<consSitMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=    XmlTag( "xServ", "CONSULTAR" )
    ::cXmlEnvio +=    XmlTag( "chMDFe", cChave )
@@ -429,7 +429,7 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_RETRECEPCAO )
 
-   ::cXmlEnvio := [<consReciMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlEnvio := [<consReciMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=    XmlTag( "nRec", ::cRecibo )
    ::cXmlEnvio += [</consReciMDFe>]
@@ -448,7 +448,7 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_DISTRIBUICAODFE )
 
-   ::cXmlEnvio    := [<distDFeInt versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlEnvio    := [<distDFeInt versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
    ::cXmlEnvio    +=    XmlTag( "CNPJ", cCnpj )
@@ -477,7 +477,7 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
 
-   ::cXmlDocumento := [<eventoMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -486,7 +486,7 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_MDFE + [">]
+   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
    ::cXmlDocumento +=            [<evCancMDFe>]
    ::cXmlDocumento +=                XmlTag( "descEvento", "Cancelamento" )
    ::cXmlDocumento +=                XmlTag( "nProt", Ltrim( Str( nProt ) ) )
@@ -510,7 +510,7 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
 
-   ::cXmlDocumento := [<eventoMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -519,7 +519,7 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110112" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_MDFE + [">]
+   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
    ::cXmlDocumento +=            [<evEncMDFe>]
    ::cXmlDocumento +=                XmlTag( "descEvento", "Encerramento" )
    ::cXmlDocumento +=                  XmlTag( "nProt", Ltrim( Str( nProt ) ) )
@@ -545,7 +545,7 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
 
-   ::cXmlDocumento := [<eventoMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -554,7 +554,7 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110114" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + WS_VERSAO_MDFE + [">]
+   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
    ::cXmlDocumento +=            [<evIncCondutorMDFe>]
    ::cXmlDocumento +=                XmlTag( "descEvento", "Inclusao Condutor" )
    ::cXmlDocumento +=               [<Condutor>]
@@ -585,7 +585,7 @@ METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       RETURN ::cXmlRetorno
    ENDIF
    ::cXmlAutorizado := XML_UTF8
-   ::cXmlAutorizado += [<mdfeProc versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlAutorizado += [<mdfeProc versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlAUtorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protMDFe", .T. )
    ::cXmlAutorizado += [</mdfeProc>]
@@ -604,9 +604,9 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
-   ::cXmlAutorizado += [<procEventoMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlAutorizado += [<procEventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlAutorizado +=    cXmlAssinado
-   ::cXmlAutorizado += [<retEventoMDFe versao="] + WS_VERSAO_MDFE + [">]
+   ::cXmlAutorizado += [<retEventoMDFe versao="] + ::cVersao + [">]
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEventoMDFe" ) // hb_Utf8ToStr(
    ::cXmlAutorizado += [</retEventoMDFe>]
    ::cXmlAutorizado += [</procEventoMDFe>]
@@ -624,7 +624,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
-   ::cXmlEnvio  := [<enviMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlEnvio  := [<enviMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio  +=    XmlTag( "idLote", cLote )
    ::cXmlEnvio  +=    ::cXmlDocumento
    ::cXmlEnvio  += [</enviMDFe>]
@@ -645,7 +645,7 @@ METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_STATUSSERVICO )
 
-   ::cXmlEnvio := [<consStatServMDFe versao="] + WS_VERSAO_MDFE + [" ] + WS_XMLNS_MDFE + [>]
+   ::cXmlEnvio := [<consStatServMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
    ::cXmlEnvio +=    XmlTag( "xServ", "STATUS" )
@@ -680,7 +680,7 @@ METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAm
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_CONSULTADEST )
 
-   ::cXmlEnvio    := [<consNFeDest versao="] + WS_VERSAO_NFE + [">]
+   ::cXmlEnvio    := [<consNFeDest versao="] + ::cVersao + [">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR NFE DEST" )
    ::cXmlEnvio    +=    XmlTag( "CNPJ", SoNumeros( cCnpj ) )
@@ -697,7 +697,7 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( ::UFSigla( Substr( cChave, 1, 2 ) ), cCertificado, cAmbiente, WS_NFE_CONSULTAPROTOCOLO )
 
-   ::cXmlEnvio    := [<consSitNFe versao="] + WS_VERSAO_NFE + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlEnvio    := [<consSitNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR" )
    ::cXmlEnvio    +=    XmlTag( "chNFe", cChave )
@@ -866,7 +866,7 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_INUTILIZACAO )
 
-   ::cXmlDocumento := [<inutNFe versao="] + WS_VERSAO_NFE + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlDocumento := [<inutNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + Right( cAno, 2 ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
    ::cXmlDocumento +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -889,7 +889,7 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
       ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
       IF ::cStatus == "102"
          ::cXmlAutorizado := XML_UTF8
-         ::cXmlAutorizado += [<ProcInutNFe versao="] + WS_VERSAO_NFE + [" ] + WS_XMLNS_NFE + [>]
+         ::cXmlAutorizado += [<ProcInutNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
          ::cXmlAutorizado += ::cXmlDocumento
          ::cXmlAutorizado += XmlNode( ::cXmlRetorno, "retInutNFe", .T. )
          ::cXmlAutorizado += [</ProcInutNFe>]
@@ -914,10 +914,10 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       RETURN ::cXmlRetorno
    ENDIF
    IF ::cNFCe == "S"
-      GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC )
+      GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC, ::cVersao )
    ENDIF
 
-   ::cXmlEnvio    := [<enviNFe versao="] + WS_VERSAO_NFE + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlEnvio    := [<enviNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    // FOR EACH cXmlNota IN aXmlNotas
    ::cXmlEnvio    += XmlTag( "idLote", cLote )
    ::cXmlEnvio    += XmlTag( "indSinc", cIndSinc )
@@ -956,7 +956,7 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_RETAUTORIZACAO )
 
-   ::cXmlEnvio     := [<consReciNFe versao="] + WS_VERSAO_NFE + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlEnvio     := [<consReciNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio     +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio     +=    XmlTag( "nRec", ::cRecibo )
    ::cXmlEnvio     += [</consReciNFe>]
@@ -970,7 +970,7 @@ METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_STATUSSERVICO )
 
-   ::cXmlEnvio    := [<consStatServ versao="] + WS_VERSAO_NFE + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlEnvio    := [<consStatServ versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
    ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
@@ -990,7 +990,7 @@ METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
-   ::cXmlAutorizado += [<nfeProc versao="] + WS_VERSAO_NFE + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlAutorizado += [<nfeProc versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlAutorizado +=    cXmlAssinado
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protNFe", .T. ) // hb_UTF8ToStr()
    ::cXmlAutorizado += [</nfeProc>]
@@ -1267,9 +1267,9 @@ METHOD CTeAddCancelamento( cXmlAssinado, cXmlCancelamento ) CLASS SefazClass
    cDigVal := XmlNode( cDigVal , "DigestValue" )
 
    cXmlAutorizado := XML_UTF8
-   cXmlAutorizado += [<cteProc versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_CTE + [>]
+   cXmlAutorizado += [<cteProc versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    cXmlAutorizado +=    cXmlAssinado
-   cXmlAutorizado +=    [<protCTe versao="] + WS_VERSAO_CTE + [">]
+   cXmlAutorizado +=    [<protCTe versao="] + ::cVersao + [">]
    cXmlAutorizado +=       [<infProt>]
    cXmlAutorizado +=          XmlTag( "tpAmb" , XmlNode( XmlNode( XmlNode( cXmlCancelamento, "retEventoCTe" ) , "infEvento" ), "tpAmb" ) ) // runner
    cXmlAutorizado +=          XmlTag( "verAplic", XmlNode( XmlNode( XmlNode( cXmlCancelamento, "retEventoCTe" ) , "infEvento" ), "verAplic" ) )
@@ -1295,9 +1295,9 @@ METHOD NFeAddCancelamento( cXmlAssinado, cXmlCancelamento ) CLASS SefazClass
    cDigVal := XmlNode( cDigVal , "DigestValue" )
 
    cXmlAutorizado := XML_UTF8
-   cXmlAutorizado += [<nfeProc versao="] + WS_VERSAO_CTE + [" ] + WS_XMLNS_NFE + [>]
+   cXmlAutorizado += [<nfeProc versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    cXmlAutorizado +=    cXmlAssinado
-   cXmlAutorizado +=    [<protNFe versao="] = WS_VERSAO_NFE + [">]
+   cXmlAutorizado +=    [<protNFe versao="] = ::cVersao + [">]
    cXmlAutorizado +=       [<infProt>]
    cXmlAutorizado +=          XmlTag( "tpAmb" , XmlNode( XmlNode( XmlNode( cXmlCancelamento, "retEvento" ) , "infEvento" ), "tpAmb" ) ) // runner
    cXmlAutorizado +=          XmlTag( "verAplic", 'SP_NFE_PL_008i2')
@@ -1632,13 +1632,19 @@ STATIC FUNCTION SoapUrlNFCe4( cUf, cAmbiente, nWsServico, cSoapVersion )
 
    RETURN cUrl
 
-STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
+STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
 
    LOCAL QRCODE_cTag, QRCODE_Url, QRCODE_chNFe, QRCODE_nVersao, QRCODE_tpAmb
    LOCAL QRCODE_cDest, QRCODE_dhEmi, QRCODE_vNF, QRCODE_vICMS, QRCODE_digVal
    LOCAL QRCODE_cIdToken, QRCODE_cCSC, QRCODE_cHash
    LOCAL cInfNFe, cSignature, cAmbiente, cUF, nPos
-   LOCAL aList := SEFAZ_QRCODE_URL_LIST
+   LOCAL aList
+
+   IF cVersao == "4.00"
+      aList := SEFAZ_NFCE4_URL_LIST
+   ELSE
+      aList := SEFAZ_NFCE_URL_LIST
+   ENDIF
 
    cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
    cSignature := XmlNode( cXmlAssinado, "Signature", .T. )
@@ -1647,8 +1653,8 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC )
    cUF        := UFSigla( XmlNode( XmlNode( cInfNFe, "ide" ), "cUF" ) )
 
    // 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
-   nPos       := AScan( aList, { | e | e[ 1 ] == cUF .AND. e[ 2 ] == cAmbiente } )
-   QRCode_Url := iif( nPos == 0, "", aList[ nPos, 3 ] )
+   nPos       := AScan( aList, { | e | e[ 1 ] == cUF .AND. e[ 2 ] == cAmbiente .AND. e[ 3 ] == WS_NFE_QRCODE } )
+   QRCode_Url := iif( nPos == 0, "", aList[ nPos, 4 ] )
 
    // 2¦ Parte (Parametros)
    QRCODE_chNFe    := AllTrim( Substr( XmlElement( cInfNFe, "Id" ), 4 ) )
