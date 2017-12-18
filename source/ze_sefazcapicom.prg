@@ -50,24 +50,33 @@ FUNCTION CapicomCertificado( cNomeCertificado )
 
    RETURN oCertificado
 
-FUNCTION CapicomInstalaPFX( cFileName, cPassword )
+FUNCTION CapicomInstalaPFX( cFileName, cPassword, lREMOVER )
 
 	LOCAL oCertificado, oStore, cID
 
+   hb_Default( @lREMOVER, .F. )
+
+   BEGIN SEQUENCE WITH __BreakBlock()
+
    oCertificado := CreateObject( "CAPICOM.Certificate" )
-   oCertificado:Load( cFileName, cPassword, CAPICOM_KEY_STORAGE_DEFAULT, 0 )
-   cID := oCertificado:SubjectName
+      oCertificado:Load( cFileName, cPassword, CAPICOM_KEY_STORAGE_DEFAULT, 0 )
+      cID := oCertificado:SubjectName
 
-   IF "CN=" $ cID
-      cID := Substr( cID, At( "CN=", cID ) + 3 )
-      IF "," $ cID
-         cID := Substr( cID, 1, At( ",", cID ) - 1 )
+      IF "CN=" $ cID
+         cID := Substr( cID, At( "CN=", cID ) + 3 )
+         IF "," $ cID
+            cID := Substr( cID, 1, At( ",", cID ) - 1 )
+         ENDIF
       ENDIF
-   ENDIF
 
-   oStore := CreateObject( "CAPICOM.Store" )
-   oStore:open( CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_READ_WRITE )
-   oStore:Add( oCertificado )
+      oStore := CreateObject( "CAPICOM.Store" )
+      oStore:open( CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_READ_WRITE )
+      IF lREMOVER
+         oStore:Remove( oCertificado )
+      ELSE
+         oStore:Add( oCertificado )
+      ENDIF
 
+   ENDSEQUENCE
 
    RETURN cID
