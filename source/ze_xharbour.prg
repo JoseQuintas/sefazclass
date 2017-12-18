@@ -1473,4 +1473,8 @@ FUNCTION hb_Default( xVar, xValue )
 
    RETURN NIL
 
+   FUNCTION HPDF_LOADJPEGIMAGEFROMMEM()
+
+   RETURN NIL
+
 #endif
