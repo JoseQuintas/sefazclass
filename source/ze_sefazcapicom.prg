@@ -58,7 +58,7 @@ FUNCTION CapicomInstalaPFX( cFileName, cPassword, lREMOVER )
 
    BEGIN SEQUENCE WITH __BreakBlock()
 
-   oCertificado := CreateObject( "CAPICOM.Certificate" )
+   oCertificado := win_OleCreateObject( "CAPICOM.Certificate" )
       oCertificado:Load( cFileName, cPassword, CAPICOM_KEY_STORAGE_DEFAULT, 0 )
       cID := oCertificado:SubjectName
 
@@ -69,7 +69,7 @@ FUNCTION CapicomInstalaPFX( cFileName, cPassword, lREMOVER )
          ENDIF
       ENDIF
 
-      oStore := CreateObject( "CAPICOM.Store" )
+      oStore := win_OleCreateObject( "CAPICOM.Store" )
       oStore:open( CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_READ_WRITE )
       IF lREMOVER
          oStore:Remove( oCertificado )

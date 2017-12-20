@@ -1085,62 +1085,37 @@ METHOD SetSoapURL() CLASS SefazClass
    CASE cProjeto == WS_PROJETO_CTE
       IF cScan == "SVCAN"
          IF cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
-            ::cSoapURL := SoapURLCTe( "SVSP", cAmbiente, nWsServico, @::cSoapVersion ) // SVC_SP não existe
+            ::cSoapURL := SoapURLCTe( "SVSP", cAmbiente, nWsServico, cVersao, @::cSoapVersion ) // SVC_SP não existe
          ELSEIF cUF $ "MS,MT,SP," + "AP,PE,RR"
-            ::cSoapURL := SoapUrlCTe( "SVRS", cAmbiente, nWsServico, @::CSoapVersion ) // SVC_RS não existe
+            ::cSoapURL := SoapUrlCTe( "SVRS", cAmbiente, nWsServico, cVersao, @::CSoapVersion ) // SVC_RS não existe
          ENDIF
       ELSE
-         ::cSoapUrl := SoapUrlCTe( cUF, cAmbiente, nWsServico, @::cSoapVersion )
+         ::cSoapUrl := SoapUrlCTe( cUF, cAmbiente, nWsServico, cVersao, @::cSoapVersion )
       ENDIF
    CASE cProjeto == WS_PROJETO_MDFE
-      ::cSoapURL := SoapURLMDFe( "SVRS", cAmbiente, nWsServico, @::cSoapVersion )
+      ::cSoapURL := SoapURLMDFe( "SVRS", cAmbiente, nWsServico, cVersao, @::cSoapVersion )
    CASE cProjeto == WS_PROJETO_NFE
       DO CASE
-      CASE cNFCe == "S" .AND. cVersao == "4.00"
-         ::cSoapUrl := SoapUrlNFCe4( cUF, cAmbiente, nWsServico, @::cSoapVersion )
-         IF Empty( ::cSoapUrl )
-            ::cSoapUrl := SoapUrlNfe4( cUF, cAmbiente, nWsServico, @::cSoapVersion )
-         ENDIF
       CASE cNFCe == "S"
-         ::cSoapUrl := SoapUrlNFCe( cUf, cAmbiente, nWsServico, @::cSoapVersion )
+         ::cSoapUrl := SoapUrlNFCe( cUF, cAmbiente, nWsServico, cVersao, @::cSoapVersion )
          IF Empty( ::cSoapUrl )
-            ::cSoapUrl := SoapUrlNFe( cUF, cAmbiente, nWsServico, @::cSoapVersion )
+            ::cSoapUrl := SoapUrlNfe( cUF, cAmbiente, nWsServico, cVersao, @::cSoapVersion )
          ENDIF
       CASE cScan == "SCAN"
-         IF cVersao == "4.00"
-            ::cSoapURL := SoapUrlNFe4( "SCAN", cAmbiente, nWsServico, @::cSoapVersion )
-         ELSE
-            ::cSoapURL := SoapUrlNFe( "SCAN", cAmbiente, nWsServico, @::cSoapVersion )
-         ENDIF
+         ::cSoapURL := SoapUrlNFe( "SCAN", cAmbiente, nWsServico, cVersao, @::cSoapVersion )
       CASE cScan == "SVAN"
-         IF cVersao == "4.00"
-            ::cSoapUrl := SoapUrlNFe4( "SVAN", cAmbiente, nWsServico, @::cSoapVersion )
-         ELSE
-            ::cSoapUrl := SoapUrlNFe( "SVAN", cAmbiente, nWsServico, @::cSoapVersion )
-         ENDIF
+         ::cSoapUrl := SoapUrlNFe( "SVAN", cAmbiente, nWsServico, cVersao, @::cSoapVersion )
       CASE cScan == "SVCAN"
          IF cUF $ "AM,BA,CE,GO,MA,MS,MT,PA,PE,PI,PR"
-            IF cVersao == "4.00"
-               ::cSoapURL := SoapURLNfe4( "SVRS", cAmbiente, nWsServico, @::cSoapVersion ) // svc-rs não existe
-            ELSE
-               ::cSoapURL := SoapURLNfe( "SVRS", cAmbiente, nWsServico, @::cSoapVersion ) // svc-rs não existe
-            ENDIF
+            ::cSoapURL := SoapURLNfe( "SVRS", cAmbiente, nWsServico, cVersao, @::cSoapVersion ) // svc-rs não existe
          ELSE
-            IF cVersao == "4.00"
-               ::cSoapURL := SoapUrlNFe4( "SVAN", cAmbiente, nWsServico, @::cSoapVersion ) // svc-an não existe
-            ELSE
-               ::cSoapURL := SoapUrlNFe( "SVAN", cAmbiente, nWsServico, @::cSoapVersion ) // svc-an não existe
-            ENDIF
+            ::cSoapURL := SoapUrlNFe( "SVAN", cAmbiente, nWsServico, cVersao, @::cSoapVersion ) // svc-an não existe
          ENDIF
       OTHERWISE
-         IF cVersao == "4.00"
-            ::cSoapUrl := SoapUrlNfe4( cUF, cAmbiente, nWsServico, @::cSoapVersion )
-         ELSE
-            ::cSoapUrl := SoapUrlNfe( cUF, cAmbiente, nWsServico, @::cSoapVersion )
-         ENDIF
+         ::cSoapUrl := SoapUrlNfe( cUF, cAmbiente, nWsServico, cVersao, @::cSoapVersion )
       ENDCASE
    CASE cProjeto == WS_PROJETO_BPE
-      ::cSoapUrl := SoapUrlBpe( cUF, cAmbiente, nWsServico, @::cSoapVersion )
+      ::cSoapUrl := SoapUrlBpe( cUF, cAmbiente, nWsServico, cVersao, @::cSoapVersion )
    ENDCASE
 
    RETURN NIL
@@ -1505,129 +1480,88 @@ METHOD CurlSoapPost() CLASS SefazClass
    RETURN NIL
 #endif
 
-STATIC FUNCTION SoapUrlBpe( cUF, cAmbiente, nWsServico, cSoapVersion )
+STATIC FUNCTION SoapUrlBpe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
    LOCAL nPos, cUrl, aList := SEFAZ_BPE_URL_LIST
 
-   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
+   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
    IF nPos != 0
-      cUrl         := aList[ nPos, 5 ]
-      cSoapVersion := aList[ nPos, 4 ]
+      cUrl         := aList[ nPos, 6 ]
+      cSoapVersion := aList[ nPos, 3 ]
    ENDIF
 
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlNfe( cUF, cAmbiente, nWsServico, cSoapVersion )
+STATIC FUNCTION SoapUrlNfe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
    LOCAL nPos,cUrl, aList := SEFAZ_NFE_URL_LIST
 
-   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
+   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
    IF nPos != 0
-      cUrl         := aList[ nPos, 5 ]
-      cSoapVersion := aList[ nPos, 4 ]
+      cUrl         := aList[ nPos, 6 ]
+      cSoapVersion := aList[ nPos, 3 ]
    ENDIF
    IF nWsServico == WS_NFE_CONSULTACADASTRO .AND. cUF $ "AC,RN,PB,SC"
-      cUrl := SoapUrlNfe( "SVRS", cAmbiente, nWsServico, @cSoapVersion )
+      cUrl := SoapUrlNfe( "SVRS", cAmbiente, nWsServico, cVersao, @cSoapVersion )
    ENDIF
    DO CASE
    CASE ! Empty( cUrl )
    CASE cUf $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO"
-      cURL := SoapURLNFe( "SVRS", cAmbiente, nWsServico, @cSoapVersion )
+      cURL := SoapURLNFe( "SVRS", cAmbiente, nWsServico, cVersao, @cSoapVersion )
    CASE cUf $ "MA,PA,PI"
-      cURL := SoapUrlNFe( "SVAN", cAmbiente, nWsServico, @cSoapVersion )
+      cURL := SoapUrlNFe( "SVAN", cAmbiente, nWsServico, cVersao, @cSoapVersion )
    ENDCASE
 
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlNfe4( cUF, cAmbiente, nWsServico, cSoapVersion )
-
-   LOCAL nPos, cUrl, aList := SEFAZ_NFE4_URL_LIST
-
-   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
-   IF nPos != 0
-      cUrl         := aList[ nPos, 5 ]
-      cSoapVersion := aList[ nPos, 4 ]
-   ENDIF
-   IF nWsServico == WS_NFE_CONSULTACADASTRO .AND. cUF $ "AC,RN,PB,SC"
-      cUrl := SoapUrlNfe( "SVRS", cAmbiente, nWsServico, @cSoapVersion )
-   ENDIF
-   DO CASE
-   CASE ! Empty( cUrl )
-   CASE cUf $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO"
-      cURL := SoapURLNFe( "SVRS", cAmbiente, nWsServico, @cSoapVersion )
-   CASE cUf $ "MA,PA,PI"
-      cURL := SoapUrlNFe( "SVAN", cAmbiente, nWsServico, @cSoapVersion )
-   ENDCASE
-
-   RETURN cUrl
-
-STATIC FUNCTION SoapUrlCte(  cUF, cAmbiente, nWsServico, cSoapVersion )
+STATIC FUNCTION SoapUrlCte(  cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
    LOCAL nPos, cUrl, aList := SEFAZ_CTE_URL_LIST
 
-   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
+   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
    IF nPos != 0
-      cUrl         := aList[ nPos, 5 ]
-      cSoapVersion := WS_VERSAO_CTE // aList[ nPos, 4 ]
+      cUrl         := aList[ nPos, 6 ]
+      cSoapVersion := aList[ nPos, 3 ]
    ENDIF
    IF Empty( cUrl )
       IF cUF $ "AP,PE,RR"
-         cUrl := SoapUrlCTe( "SVSP", cAmbiente, nWsServico, @cSoapVersion )
+         cUrl := SoapUrlCTe( "SVSP", cAmbiente, nWsServico, cVersao, @cSoapVersion )
       ELSEIF cUF $ "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
-         cUrl := SoapURLCTe( "SVRS", cAmbiente, nWsServico, @cSoapVersion )
+         cUrl := SoapURLCTe( "SVRS", cAmbiente, nWsServico, cVersao, @cSoapVersion )
       ENDIF
    ENDIF
 
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlMdfe( cUF, cAmbiente, nWsServico, cSoapVersion )
+STATIC FUNCTION SoapUrlMdfe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
    LOCAL cUrl, nPos, aList := SEFAZ_MDFE_URL_LIST
 
-   nPos := AScan( aList, { | e | cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
+   nPos := AScan( aList, { | e | cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
    IF nPos != 0
-      cUrl         := aList[ nPos, 5 ]
-      cSoapVersion := aList[ nPos, 4 ]
+      cUrl         := aList[ nPos, 6 ]
+      cSoapVersion := aList[ nPos, 3 ]
    ENDIF
 
    HB_SYMBOL_UNUSED( cUF )
 
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlNFCe( cUf, cAmbiente, nWsServico, cSoapVersion )
+STATIC FUNCTION SoapUrlNFCe( cUf, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
    LOCAL cUrl, nPos, aList := SEFAZ_NFCE_URL_LIST
 
    IF cUF $ "AC,RR"
-      cUrl := SoapUrlNFCe( "SVRS", cAmbiente, nWsServico, @cSoapVersion )
+      cUrl := SoapUrlNFCe( "SVRS", cAmbiente, nWsServico, cVersao, @cSoapVersion )
    ELSE
-      nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
+      nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] .AND. cAmbiente == e[ 3 ] .AND. nWsServico == e[ 4 ] } )
       IF nPos != 0
          cUrl         := aList[ nPos, 5 ]
-         cSoapVersion := aList[ nPos, 4 ]
+         cSoapVersion := aList[ nPos, 3 ]
       ENDIF
    ENDIF
    IF Empty( cUrl )
-      cUrl := SoapUrlNFe( cUF, cAmbiente, nWsServico, @cSoapVersion )
-   ENDIF
-
-   RETURN cUrl
-
-STATIC FUNCTION SoapUrlNFCe4( cUf, cAmbiente, nWsServico, cSoapVersion )
-
-   LOCAL cUrl, nPos, aList := SEFAZ_NFCE_URL_LIST
-
-   IF cUF $ "AC,RR"
-      cUrl := SoapUrlNFCe( "SVRS", cAmbiente, nWsServico, @cSoapVersion )
-   ELSE
-      nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 2 ] .AND. nWsServico == e[ 3 ] } )
-      IF nPos != 0
-         cUrl         := aList[ nPos, 5 ]
-         cSoapVersion := aList[ nPos, 4 ]
-      ENDIF
-   ENDIF
-   IF Empty( cUrl )
-      cUrl := SoapUrlNFe4( cUF, cAmbiente, nWsServico, @cSoapVersion )
+      cUrl := SoapUrlNFe( cUF, cAmbiente, nWsServico, cVersao, @cSoapVersion )
    ENDIF
 
    RETURN cUrl
@@ -1638,13 +1572,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
    LOCAL QRCODE_cDest, QRCODE_dhEmi, QRCODE_vNF, QRCODE_vICMS, QRCODE_digVal
    LOCAL QRCODE_cIdToken, QRCODE_cCSC, QRCODE_cHash
    LOCAL cInfNFe, cSignature, cAmbiente, cUF, nPos
-   LOCAL aList
-
-   IF cVersao == "4.00"
-      aList := SEFAZ_NFCE4_URL_LIST
-   ELSE
-      aList := SEFAZ_NFCE_URL_LIST
-   ENDIF
+   LOCAL aList := SEFAZ_NFCE_URL_LIST
 
    cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
    cSignature := XmlNode( cXmlAssinado, "Signature", .T. )
@@ -1653,8 +1581,8 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
    cUF        := UFSigla( XmlNode( XmlNode( cInfNFe, "ide" ), "cUF" ) )
 
    // 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
-   nPos       := AScan( aList, { | e | e[ 1 ] == cUF .AND. e[ 2 ] == cAmbiente .AND. e[ 3 ] == WS_NFE_QRCODE } )
-   QRCode_Url := iif( nPos == 0, "", aList[ nPos, 4 ] )
+   nPos       := AScan( aList, { | e | e[ 1 ] == cUF .AND. e[ 2 ] == cVersao .AND. e[ 4 ] == cAmbiente .AND. e[ 5 ] == WS_NFE_QRCODE } )
+   QRCode_Url := iif( nPos == 0, "", aList[ nPos, 6 ] )
 
    // 2¦ Parte (Parametros)
    QRCODE_chNFe    := AllTrim( Substr( XmlElement( cInfNFe, "Id" ), 4 ) )
