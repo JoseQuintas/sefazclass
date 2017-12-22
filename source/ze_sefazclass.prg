@@ -28,7 +28,7 @@ CREATE CLASS SefazClass
    VAR    cCertificado   INIT ""                      // Nome do certificado
    VAR    ValidFromDate  INIT ""                      // Validade do certificado
    VAR    ValidToDate    INIT ""                      // Validade do certificado
-   VAR    cIndSinc       INIT WS_RETORNA_RECIBO  // Poucas UFs opção de protocolo
+   VAR    cIndSinc       INIT WS_RETORNA_RECIBO       // Poucas UFs opção de protocolo
    VAR    nTempoEspera   INIT 7                       // intervalo entre envia lote e consulta recibo
    VAR    cUFTimeZone    INIT "SP"                    // Para DateTimeXml() Obrigatório definir UF default
    VAR    cIdToken       INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
@@ -1482,7 +1482,9 @@ METHOD CurlSoapPost() CLASS SefazClass
 
 STATIC FUNCTION SoapUrlBpe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
-   LOCAL nPos, cUrl, aList := SEFAZ_BPE_URL_LIST
+   LOCAL nPos, cUrl, aList
+
+   aList := SefazSoapList( nWsServico )
 
    nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
    IF nPos != 0
@@ -1494,7 +1496,9 @@ STATIC FUNCTION SoapUrlBpe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
 STATIC FUNCTION SoapUrlNfe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
-   LOCAL nPos,cUrl, aList := SEFAZ_NFE_URL_LIST
+   LOCAL nPos,cUrl, aList
+
+   aList :=  SefazSoapList( nWsServico, "N", cVersao )
 
    nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
    IF nPos != 0
@@ -1516,7 +1520,9 @@ STATIC FUNCTION SoapUrlNfe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
 STATIC FUNCTION SoapUrlCte(  cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
-   LOCAL nPos, cUrl, aList := SEFAZ_CTE_URL_LIST
+   LOCAL nPos, cUrl, aList
+
+   aList := SefazSoapList( nWsServico )
 
    nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
    IF nPos != 0
@@ -1535,7 +1541,9 @@ STATIC FUNCTION SoapUrlCte(  cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
 STATIC FUNCTION SoapUrlMdfe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
-   LOCAL cUrl, nPos, aList := SEFAZ_MDFE_URL_LIST
+   LOCAL cUrl, nPos, aList
+
+   aList := SefazSoapList( nWsServico )
 
    nPos := AScan( aList, { | e | cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
    IF nPos != 0
@@ -1549,7 +1557,9 @@ STATIC FUNCTION SoapUrlMdfe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
 STATIC FUNCTION SoapUrlNFCe( cUf, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
-   LOCAL cUrl, nPos, aList := SEFAZ_NFCE_URL_LIST
+   LOCAL cUrl, nPos, aList
+
+   aList := SefazSoapList( nWsServico, "S", cVersao )
 
    IF cUF $ "AC,RR"
       cUrl := SoapUrlNFCe( "SVRS", cAmbiente, nWsServico, cVersao, @cSoapVersion )
@@ -1572,7 +1582,9 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
    LOCAL QRCODE_cDest, QRCODE_dhEmi, QRCODE_vNF, QRCODE_vICMS, QRCODE_digVal
    LOCAL QRCODE_cIdToken, QRCODE_cCSC, QRCODE_cHash
    LOCAL cInfNFe, cSignature, cAmbiente, cUF, nPos
-   LOCAL aList := SEFAZ_NFCE_URL_LIST
+   LOCAL aList
+
+   aList := SefazSoapList( WS_NFE_QRCODE, cVersao )
 
    cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
    cSignature := XmlNode( cXmlAssinado, "Signature", .T. )
@@ -1596,8 +1608,8 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
    QRCODE_vNF      := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vNF" )
    QRCODE_vICMS    := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vICMS" )
    QRCODE_digVal   := hb_StrToHex( XmlNode( XmlNode( XmlNode( cSignature, "SignedInfo" ), "Reference" ), "DigestValue" ) )
-   QRCODE_cIdToken := cIdToken
-   QRCODE_cCSC     := cCSC
+   QRCODE_cIdToken := iif( cIdToken == NIL, StrZero( 0, 16 ), cIdToken )
+   QRCODE_cCSC     := iif( cCSC == NIL, StrZero( 0, 6 ), StrZero( Val( cCsc ), 6 ) )
 
    IF ! Empty( QRCODE_chNFe ) .AND. ! Empty( QRCODE_nVersao ) .AND. ! Empty( QRCODE_tpAmb ) .AND. ! Empty( QRCODE_dhEmi ) .AND. !Empty( QRCODE_vNF ) .AND.;
          ! Empty( QRCODE_vICMS ) .AND. ! Empty( QRCODE_digVal  ) .AND. ! Empty( QRCODE_cIdToken ) .AND. ! Empty( QRCODE_cCSC  )
