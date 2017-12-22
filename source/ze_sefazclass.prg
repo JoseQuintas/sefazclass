@@ -1584,6 +1584,9 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
    LOCAL cInfNFe, cSignature, cAmbiente, cUF, nPos
    LOCAL aList
 
+   hb_Default( @cIdToken, StrZero( 0, 6 ) )
+   hb_Default( @cCsc, StrZero( 0, 36 ) )
+
    aList := SefazSoapList( WS_NFE_QRCODE, cVersao )
 
    cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
@@ -1608,8 +1611,8 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
    QRCODE_vNF      := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vNF" )
    QRCODE_vICMS    := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vICMS" )
    QRCODE_digVal   := hb_StrToHex( XmlNode( XmlNode( XmlNode( cSignature, "SignedInfo" ), "Reference" ), "DigestValue" ) )
-   QRCODE_cIdToken := iif( cIdToken == NIL, StrZero( 0, 16 ), cIdToken )
-   QRCODE_cCSC     := iif( cCSC == NIL, StrZero( 0, 6 ), StrZero( Val( cCsc ), 6 ) )
+   QRCODE_cIdToken := cIdToken
+   QRCODE_cCSC     := cCsc
 
    IF ! Empty( QRCODE_chNFe ) .AND. ! Empty( QRCODE_nVersao ) .AND. ! Empty( QRCODE_tpAmb ) .AND. ! Empty( QRCODE_dhEmi ) .AND. !Empty( QRCODE_vNF ) .AND.;
          ! Empty( QRCODE_vICMS ) .AND. ! Empty( QRCODE_digVal  ) .AND. ! Empty( QRCODE_cIdToken ) .AND. ! Empty( QRCODE_cCSC  )
