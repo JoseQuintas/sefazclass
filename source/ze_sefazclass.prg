@@ -1484,12 +1484,12 @@ STATIC FUNCTION SoapUrlBpe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
    LOCAL nPos, cUrl, aList
 
-   aList := SefazSoapList( nWsServico )
+   aList := SefazSoapList( nWsServico, "N", cVersao )
 
-   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
+   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 3 ] } )
    IF nPos != 0
-      cUrl         := aList[ nPos, 6 ]
-      cSoapVersion := aList[ nPos, 3 ]
+      cUrl         := aList[ nPos, 4 ]
+      cSoapVersion := aList[ nPos, 2 ]
    ENDIF
 
    RETURN cUrl
@@ -1500,10 +1500,10 @@ STATIC FUNCTION SoapUrlNfe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
    aList :=  SefazSoapList( nWsServico, "N", cVersao )
 
-   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
+   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 3 ] } )
    IF nPos != 0
-      cUrl         := aList[ nPos, 6 ]
-      cSoapVersion := aList[ nPos, 3 ]
+      cUrl         := aList[ nPos, 4 ]
+      cSoapVersion := aList[ nPos, 2 ]
    ENDIF
    IF nWsServico == WS_NFE_CONSULTACADASTRO .AND. cUF $ "AC,RN,PB,SC"
       cUrl := SoapUrlNfe( "SVRS", cAmbiente, nWsServico, cVersao, @cSoapVersion )
@@ -1522,12 +1522,12 @@ STATIC FUNCTION SoapUrlCte(  cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
    LOCAL nPos, cUrl, aList
 
-   aList := SefazSoapList( nWsServico )
+   aList := SefazSoapList( nWsServico, "N", cVersao )
 
-   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
+   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 3 ] } )
    IF nPos != 0
-      cUrl         := aList[ nPos, 6 ]
-      cSoapVersion := aList[ nPos, 3 ]
+      cUrl         := aList[ nPos, 4 ]
+      cSoapVersion := aList[ nPos, 2 ]
    ENDIF
    IF Empty( cUrl )
       IF cUF $ "AP,PE,RR"
@@ -1543,12 +1543,12 @@ STATIC FUNCTION SoapUrlMdfe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
 
    LOCAL cUrl, nPos, aList
 
-   aList := SefazSoapList( nWsServico )
+   aList := SefazSoapList( nWsServico, "N", cVersao )
 
-   nPos := AScan( aList, { | e | cVersao == e[ 2 ] .AND. cAmbiente == e[ 4 ] .AND. nWsServico == e[ 5 ] } )
+   nPos := AScan( aList, { | e | cAmbiente == e[ 3 ] } )
    IF nPos != 0
-      cUrl         := aList[ nPos, 6 ]
-      cSoapVersion := aList[ nPos, 3 ]
+      cUrl         := aList[ nPos, 4 ]
+      cSoapVersion := aList[ nPos, 2 ]
    ENDIF
 
    HB_SYMBOL_UNUSED( cUF )
@@ -1564,10 +1564,10 @@ STATIC FUNCTION SoapUrlNFCe( cUf, cAmbiente, nWsServico, cVersao, cSoapVersion )
    IF cUF $ "AC,RR"
       cUrl := SoapUrlNFCe( "SVRS", cAmbiente, nWsServico, cVersao, @cSoapVersion )
    ELSE
-      nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] .AND. cAmbiente == e[ 3 ] .AND. nWsServico == e[ 4 ] } )
+      nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 3 ] } )
       IF nPos != 0
-         cUrl         := aList[ nPos, 5 ]
-         cSoapVersion := aList[ nPos, 3 ]
+         cUrl         := aList[ nPos, 4 ]
+         cSoapVersion := aList[ nPos, 2 ]
       ENDIF
    ENDIF
    IF Empty( cUrl )
@@ -1587,7 +1587,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
    hb_Default( @cIdToken, StrZero( 0, 6 ) )
    hb_Default( @cCsc, StrZero( 0, 36 ) )
 
-   aList := SefazSoapList( WS_NFE_QRCODE, cVersao )
+   aList := SefazSoapList( WS_NFE_QRCODE, "S", cVersao )
 
    cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
    cSignature := XmlNode( cXmlAssinado, "Signature", .T. )
@@ -1596,8 +1596,8 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
    cUF        := UFSigla( XmlNode( XmlNode( cInfNFe, "ide" ), "cUF" ) )
 
    // 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
-   nPos       := AScan( aList, { | e | e[ 1 ] == cUF .AND. e[ 2 ] == cVersao .AND. e[ 4 ] == cAmbiente .AND. e[ 5 ] == WS_NFE_QRCODE } )
-   QRCode_Url := iif( nPos == 0, "", aList[ nPos, 6 ] )
+   nPos       := AScan( aList, { | e | e[ 1 ] == cUF .AND. e[ 3 ] == cAmbiente } )
+   QRCode_Url := iif( nPos == 0, "", aList[ nPos, 4 ] )
 
    // 2¦ Parte (Parametros)
    QRCODE_chNFe    := AllTrim( Substr( XmlElement( cInfNFe, "Id" ), 4 ) )
