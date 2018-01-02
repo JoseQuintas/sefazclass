@@ -36,6 +36,7 @@ CREATE CLASS hbNFeDaGeral
 #ifdef __XHARBOUR__
    METHOD xHarbourCode128c( pcCodigoBarra )                                         INLINE hbNFe_Codifica_Code128c( pcCodigoBarra )
 #endif
+
    ENDCLASS
 
 METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 ) CLASS hbNFeDaGeral
