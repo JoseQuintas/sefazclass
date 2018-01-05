@@ -175,7 +175,7 @@ STATIC FUNCTION ValidIE_AP( cInscricao )
 STATIC FUNCTION ValidIE_BA( cInscricao )
 
    LOCAL lOk := .T.
-   LOCAL nSoma, oElement, nModulo
+   LOCAL nSoma, oElement, nModulo, cTmp
 
    IF Len( cInscricao ) != 8 .AND. Len( cInscricao ) != 9
       lOk := .F.
@@ -234,7 +234,8 @@ STATIC FUNCTION ValidIE_BA( cInscricao )
          lOk := .F.
       ENDIF
       nSoma := 0
-      FOR EACH oElement IN Substr( cInscricao, 1, 7 ) + Substr( cInscricao, 9, 1 ) DESCEND
+      cTmp := Substr( cInscricao, 1, 7 ) + Substr( cInscricao, 9, 1 )
+      FOR EACH oElement IN cTmp DESCEND
          nSoma += Val( oElement ) * ( 10 - oElement:__EnumIndex  )
       NEXT
       nSoma := nModulo - Mod( nSoma, nModulo )

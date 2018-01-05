@@ -4,6 +4,8 @@ José Quintas
 */
 
 #include "sefaz_capicom.ch"
+#include "sefazclass.ch"
+#include "hb2xhb.ch"
 
 FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
 
