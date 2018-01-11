@@ -12,9 +12,9 @@ Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
 #include "hb2xhb.ch"
 
 #ifdef __XHARBOUR__
-#define ALL_PARAMETERS P1, P2, P3, P4, P5, P6, P7, P8, P9, P10
+   #define ALL_PARAMETERS P1, P2, P3, P4, P5, P6, P7, P8, P9, P10
 #else
-#define ALL_PARAMETERS ...
+   #define ALL_PARAMETERS ...
 #endif
 
 CREATE CLASS SefazClass
