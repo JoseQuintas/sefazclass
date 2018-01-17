@@ -4,7 +4,7 @@ http://www.pctoledo.com.br/forum/viewtopic.php?f=43&t=18664
 
 #define __TESTE__
 
-#include "capicom.ch"
+#include "sefaz_capicom.ch"
 #include "hbclass.ch"
 #ifdef __TESTE__
 
@@ -93,12 +93,12 @@ METHOD HashData( cData, nAlgorithm ) CLASS CapicomClass
 
 METHOD PublicKey( oCapicomCert ) CLASS CapicomClass
 
-   LOCAL oCapicom, cPublicKey
+   LOCAL cPublicKey
 
-   oCapicom := win_OleCreateObject( "CAPICOM.Signer.2" )
-   oCapicom:Signer:Certificate := oCAPICOMCert
-   oCapicom:Signer:Options := CAPICOM_CERTIFICATE_INCLUDE_CHAIN_EXCEPT_ROOT
-   cPublicKey := StrTran( oCapicom:Certificate:Export( CAPICOM_ENCODE_BASE64 ), Chr(13) + Chr(10), "" )
+   //oCapicom := win_OleCreateObject( "CAPICOM.Signer.2" )
+   //oCapicom:Signer:Certificate := oCAPICOMCert
+   //oCapicom:Signer:Options := CAPICOM_CERTIFICATE_INCLUDE_CHAIN_EXCEPT_ROOT
+   cPublicKey := StrTran( /* oCapicom:Certificate:*/ oCapicomCert:Export( CAPICOM_ENCODE_BASE64 ), Chr(13) + Chr(10), "" )
 
    RETURN cPublicKey
 
