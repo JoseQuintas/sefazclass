@@ -5,6 +5,10 @@ REQUEST HB_CODEPAGE_PTISO
 #include "hbgtinfo.ch"
 #include "directry.ch"
 
+#ifndef WIN_SW_SHOWNORMAL
+   #define WIN_SW_SHOWNORMAL 0
+#endif
+
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    LOCAL nOpc := 1, GetList := {}, cTexto := "", nOpcTemp
@@ -258,6 +262,10 @@ FUNCTION PDFOpen( cFile )
 
    RETURN NIL
 
+#ifndef __XHARBOUR__
+
 FUNCTION JPEGImage()
 
 #pragma __binarystreaminclude "jpatecnologia.jpg"        | RETURN %s
+
+#endif
