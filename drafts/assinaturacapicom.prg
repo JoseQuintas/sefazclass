@@ -75,21 +75,23 @@ METHOD VerifySignature( cSignedData ) CLASS CapicomClass
 
 METHOD HashData( cData, nAlgorithm ) CLASS CapicomClass
 
-   LOCAL oCapicom
+   LOCAL oCapicom, oUtil
 
    IF cData = NIL
       cData := DToS( Date() ) + Time()
    ENDIF
 
    IF nAlgorithm = NIL
-      nAlgorithm := CAPICOM_HASH_ALGORITHM_SHA_256
+      nAlgorithm := CAPICOM_HASH_ALGORITHM_SHA1 // 256
    ENDIF
 
+   oUtil    := win_OleCreateObject( "CAPICOM.Utilities" )
    oCapicom := win_OleCreateObject( "CAPICOM.HashedData.1" )
    oCapicom:Algorithm := nAlgorithm
    oCapicom:Hash( cData )
 
-   RETURN oCapicom:Value
+   RETURN oUtil:Base64Encode( outil:HexToBinary( oCapicom:Value ) )
+   // RETURN oCapicom:Value
 
 METHOD PublicKey( oCapicomCert ) CLASS CapicomClass
 
