@@ -47,7 +47,7 @@ CREATE CLASS NfeVolumesClass STATIC // From NfeTransporteClass
    VAR  Marca        INIT ""
    VAR  PesoLiquido  INIT 0
    VAR  PesoBruto    INIT 0
-   VAR  Lacres       INIT ""
+   VAR  Numeros      INIT ""
 
    ENDCLASS
 
@@ -75,20 +75,22 @@ METHOD Init() CLASS NfeTransporteClass
 
 CREATE CLASS NfeTotaisClass STATIC
 
-   VAR  IcmBas INIT 0
-   VAR  IcmVal INIT 0
-   VAR  SubBas INIT 0
-   VAR  SubVal INIT 0
-   VAR  IpiVal INIT 0
-   VAR  IIVal  INIT 0
-   VAR  IssVal INIT 0
-   VAR  PisVal INIT 0
-   VAR  CofVal INIT 0
-   VAR  ValPro INIT 0
-   VAR  ValSeg INIT 0
-   VAR  ValFre INIT 0
-   VAR  ValOut INIT 0
-   VAR  ValNot INIT 0
+   VAR  IcmBas  INIT 0
+   VAR  IcmVal  INIT 0
+   VAR  SubBas  INIT 0
+   VAR  SubVal  INIT 0
+   VAR  IpiVal  INIT 0
+   VAR  IIVal   INIT 0
+   VAR  IssVal  INIT 0
+   VAR  PisVal  INIT 0
+   VAR  CofVal  INIT 0
+   VAR  ValPro  INIT 0
+   VAR  ValSeg  INIT 0
+   VAR  ValFre  INIT 0
+   VAR  ValDesc INIT 0 // 2018.01.23 Jackson
+   VAR  ValOut  INIT 0
+   VAR  ValNot  INIT 0
+   VAR  ValTrib INIT 0 // 2018.01.23 Jackson
 
    ENDCLASS
 
@@ -163,9 +165,11 @@ CREATE CLASS NfeProdutoClass STATIC
    VAR  GTIN          INIT ""
    VAR  Anp           INIT ""
    VAR  Unidade       INIT ""
+   VAR  Pedido        INIT "" // 2018.01.23 Jackson
    VAR  Qtde          INIT 0
    VAR  ValorUnitario INIT 0
    VAR  ValorTotal    INIT 0
+   VAR  Desconto      INIT 0 // 2018.01.23 Jackson
    VAR  Icms
    VAR  IcmsSt
    VAR  Iss
@@ -173,6 +177,7 @@ CREATE CLASS NfeProdutoClass STATIC
    VAR  Pis
    VAR  Cofins
    VAR  II
+   VAR  InfAdicional  INIT "" // 2018.01.23 Jackson
    METHOD Init()
 
    ENDCLASS
@@ -189,8 +194,20 @@ METHOD Init() CLASS NfeProdutoClass
 
    RETURN SELF
 
+CREATE CLASS NfePagamentosClass
+
+   VAR  TipoPago    INIT ""  // 2018.01.23 Jackson
+   VAR  ValorPago   INIT 0   // 2018.01.23 Jackson
+   VAR  Integracao  INIT ""  // 2018.01.23 Jackson
+   VAR  Cnpj_Ope    INIT ""  // 2018.01.23 Jackson
+   VAR  Bandeira    INIT ""  // 2018.01.23 Jackson
+   VAR  Autorizacao INIT ""  // 2018.01.23 Jackson
+
+   END CLASS
+
 CREATE CLASS NfeDuplicataClass STATIC
 
+   VAR  Duplicata  INIT ""  // 2018.01.23 Jackson
    VAR  Vencimento INIT Ctod("" )
    VAR  Valor      INIT 0
 
@@ -200,10 +217,14 @@ CREATE CLASS DocSpedClass STATIC
 
    VAR  ChaveAcesso             INIT ""
    VAR  cTipoDoc                INIT "" // 2014.11.20
+   VAR  TipoNFe                 INIT "" // 2018.01.23 Jackson
+   VAR  TipoEmissao             INIT "" // 2018.01.23 Jackson
    VAR  cEvento                 INIT "" // 2014.11.20
    VAR  Protocolo               INIT ""
    VAR  cNumDoc                 INIT ""
+   VAR  cSerie                  INIT "" // 2018.01.23 Jackson
    VAR  DataEmissao             INIT Ctod( "" )
+   VAR  DataHora                INIT ""  // 2018.01.23 Jackson
    VAR  DataSaida               INIT Ctod( "" )
    VAR  cAmbiente               INIT ""
    VAR  NaturezaOperacao        INIT ""
@@ -221,10 +242,11 @@ CREATE CLASS DocSpedClass STATIC
    VAR  cAssinatura             INIT ""
    VAR  cSequencia              INIT "01" // Carta Correção
    VAR  Valor                   INIT 0  // CTE
-   VAR  cERRO                   INIT "" // Texto do erro
+   VAR  cErro                   INIT "" // Texto do erro
    VAR  PesoCarga               INIT 0  // Cte
    VAR  ValorCarga              INIT 0  // Cte
    VAR  Status                  INIT ""
+   VAR  Pagamentos              INIT {} // 2018.01.23 Jackson
    METHOD Init()
 
    ENDCLASS
@@ -308,8 +330,12 @@ FUNCTION XmlToDoc( cXmlInput )
       oDocSped:Destinatario := oDocSped:Emitente
    ENDIF
    oDocSped:ChaveAcesso := SoNumeros( oDocSped:ChaveAcesso )
+   IF Len( oDocSped:ChaveAcesso ) == 44
+      oDocSped:cTipoDoc := Substr( oDocSped:ChaveAcesso, 21, 2 )
+      oDocSped:cSerie   := Substr( oDocSped:ChaveAcesso, 23, 3 )
+   ENDIF
    DO CASE
-   CASE Len( oDocSped:cErro ) != 0
+   CASE ! Empty( oDocSped:cErro )
    CASE Len( oDocSped:ChaveAcesso ) != 44
       oDocSped:cErro := "Tamanho da chave de acesso inválido"
    CASE Right( oDocSped:ChaveAcesso, 1 ) != CalculaDigito( Substr( oDocSped:ChaveAcesso, 1, 43 ), "11" )
@@ -324,12 +350,10 @@ FUNCTION XmlToDoc( cXmlInput )
       oDocSped:cErro := "Sem assinatura"
    CASE oDocSped:cAmbiente != WS_AMBIENTE_PRODUCAO
       oDocSped:cErro := "Não é ambiente de produção"
-   CASE oDocSped:cTipoDoc != Substr( oDocSped:ChaveAcesso, 21, 2 )
-      oDocSped:cErro := "Tipo de documento " + Substr( oDocSped:ChaveAcesso, 21, 2 )
    CASE oDocSped:cEvento = "110100" .AND. Empty( oDocSped:cNumDoc )
       oDocSped:cErro := "Número de documento vazio"
    ENDCASE
-   IF Len( oDocSped:cErro ) != 0
+   IF ! Empty( oDocSped:cErro )
       oDocSped:cTipoDoc := "XX"
       oDocSped:cEvento  := "XXXXXX"
    ENDIF
@@ -342,7 +366,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
    LOCAL cBlocoInfNfeComTag, cBlocoChave, cBlocoIde, cBlocoInfAdic
    LOCAL cBlocoEmit, cBlocoEndereco, cBlocoDest, cBlocoTransporte, cBlocoTransp, cBlocoVeiculo, cBlocoVol, cBlocoTotal
    LOCAL cBlocoDetalhe, cBlocoItem, cBlocoProd,  cBlocoIpi, cBlocoIcms, cBlocoPis, cBlocoCofins
-   LOCAL cBlocoComb, cBlocoCobranca, cBlocoDup
+   LOCAL cBlocoComb, cBlocoCobranca, cBlocoDup, cBlocoDetalhePG, cBlocoPG
 
    cBlocoInfNfeComTag := XmlNode( cXmlInput, "infNFe", .T. )
 
@@ -357,12 +381,16 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
    oDocSped:cAssinatura := XmlNode( cXmlInput, "Signature" )
    cBlocoIde := XmlNode( cXmlInput, "ide" )
       oDocSped:cNumDoc := XmlNode( cBlocoIde, "nNF" )
-      IF Len( Trim( oDocSped:cNumDoc ) ) = 0
+      IF Empty( oDocSped:cNumDoc )
          oDocSped:cErro := "Sem número de documento"
          RETURN NIL
       ENDIF
-      oDocSped:cNumDoc := StrZero( Val( oDocSped:cNumDoc ), 9 )
+      oDocSped:cNumDoc          := StrZero( Val( oDocSped:cNumDoc ), 9 )
+      oDocSped:TipoNFe          := XmlNode( cBlocoIde, "tpNF" )  // 2018.02.23 Jackson
+      oDocSped:TipoEmissao      := XmlNode( cBlocoIde, "tpEmis" ) // 2018.01.23 Jackson
+      oDocSPed:NaturezaOperacao := XmlNode( cBlocoIde, "natOp" ) // 2018.01.23 Jackson
       IF ! Empty( XmlDate( XmlNode( cBlocoIde, "dhEmi" ) ) )
+         oDocSped:DataHora    := XmlNode( cBlocoIde, "dEmi" ) // 2018.01.23 Jackson
          oDocSped:DataEmissao := XmlDate( XmlNode( cBlocoIde, "dhEmi" ) )
          oDocSped:DataSaida   := XmlDate( XmlNode( cBlocoIde, "dhSaiEnt" ) )
       ELSE
@@ -427,24 +455,27 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          oDocSped:Transporte:Volumes:Marca       := Upper( XmlNode( cBlocoVol, "marca" ) )
          oDocSped:Transporte:Volumes:PesoLiquido := Val( XmlNode( cBlocoVol, "pesoL" ) )
          oDocSped:Transporte:Volumes:PesoBruto   := Val( XmlNode( cBlocoVol, "pesoB" ) )
+         oDocSped:Transporte:Volumes:Numeros     := XmlNode( cBlocoVol, "nvol" ) // 2018.01.23 Jackson
       cBlocoVeiculo := XmlNode( cBlocoTransporte, "veicTransp" )
       oDocSped:Transporte:PlacaUf := Upper( XmlNode( cBlocoVeiculo, "UF" ) )
       oDocSped:Transporte:Placa   := Upper( XmlNode( cBlocoVeiculo, "placa" ) )
 
    cBlocoTotal := XmlNode( cXmlInput, "total" )
-      oDocSped:Totais:IpiVal := Val( XmlNode( cBlocoTotal, "vIPI" ) )
-      oDocSped:Totais:IIVal  := Val( XmlNode( cBlocoTotal, "vII" ) )
-      oDocSped:Totais:IcmBas := Val( XmlNode( cBlocoTotal, "vBC" ) )
-      oDocSped:Totais:IcmVal := Val( XmlNode( cBlocoTotal, "vICMS" ) )
-      oDocSped:Totais:SubBas := Val( XmlNode( cBlocoTotal, "vBCST" ) )
-      oDocSped:Totais:SubVal := Val( XmlNode( cBlocoTotal, "vST" ) )
-      oDocSped:Totais:PisVal := Val( XmlNode( cBlocoTotal, "vPIS" ) )
-      oDocSped:Totais:CofVal := Val( XmlNode( cBlocoTotal, "vCOFINS" ) )
-      oDocSped:Totais:ValPro := Val( XmlNode( cBlocoTotal, "vProd" ) )
-      oDocSped:Totais:ValSeg := Val( XmlNode( cBlocoTotal, "vSeg" ) )
-      oDocSped:Totais:ValFre := Val( XmlNode( cBlocoTotal, "vFrete" ) )
-      oDocSped:Totais:ValOut := Val( XmlNode( cBlocoTotal, "vOutro" ) )
-      oDocSped:Totais:ValNot := Val( XmlNode( cBlocoTotal, "vNF" ) )
+      oDocSped:Totais:IpiVal   := Val( XmlNode( cBlocoTotal, "vIPI" ) )
+      oDocSped:Totais:IIVal    := Val( XmlNode( cBlocoTotal, "vII" ) )
+      oDocSped:Totais:IcmBas   := Val( XmlNode( cBlocoTotal, "vBC" ) )
+      oDocSped:Totais:IcmVal   := Val( XmlNode( cBlocoTotal, "vICMS" ) )
+      oDocSped:Totais:SubBas   := Val( XmlNode( cBlocoTotal, "vBCST" ) )
+      oDocSped:Totais:SubVal   := Val( XmlNode( cBlocoTotal, "vST" ) )
+      oDocSped:Totais:PisVal   := Val( XmlNode( cBlocoTotal, "vPIS" ) )
+      oDocSped:Totais:CofVal   := Val( XmlNode( cBlocoTotal, "vCOFINS" ) )
+      oDocSped:Totais:ValPro   := Val( XmlNode( cBlocoTotal, "vProd" ) )
+      oDocSped:Totais:ValSeg   := Val( XmlNode( cBlocoTotal, "vSeg" ) )
+      oDocSped:Totais:ValFre   := Val( XmlNode( cBlocoTotal, "vFrete" ) )
+      oDocSPed:Totais:ValDesc  := Val( XmlNode( cBlocoTotal, "vDesc" ) ) // 2018.01.23 Jackson
+      oDocSped:Totais:ValOut   := Val( XmlNode( cBlocoTotal, "vOutro" ) )
+      oDocSped:Totais:ValNot   := Val( XmlNode( cBlocoTotal, "vNF" ) )
+      oDocSped:Totais:ValTrib  := Val( XmlNode( cBlocoTotal, "vTotTrib" ) ) // 2018.01.23 Jackson
 
    cBlocoDetalhe := ""
    IF "<det" $ cXmlInput
@@ -466,6 +497,9 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          oDocSped:Produto[ nCont ]:Qtde            := Val( XmlNode( cBlocoProd, "qCom" ) )
          oDocSped:Produto[ nCont ]:ValorUnitario   := Val( XmlNode( cBlocoProd, "vUnCom" ) )
          oDocSped:Produto[ nCont ]:ValorTotal      := Val( XmlNode( cBlocoProd, "vProd" ) )
+         oDocSped:Produto[ nCont ]:Desconto        := Val( XmlNode( cBlocoProd, "vDesc" ) ) // 2018.01.23 Jackson
+         oDocSped:Produto[ nCont ]:Pedido          := Val( XmlNode( cBlocoProd, "xPed" ) ) // 2018.01.23 Jackson
+         oDocSped:Produto[ nCont ]:InfAdicional    := XmlNode( cBlocoProd, "infAdProd" ) // 2018.01.23 Jackson
       cBlocoIpi := XmlNode( cBlocoItem, "IPI" )
          oDocSped:Produto[ nCont ]:Ipi:Base        := Val( XmlNode( cBlocoIpi, "vBC" ) )
          oDocSped:Produto[ nCont ]:Ipi:Aliquota    := Val( XmlNode( cBlocoIpi, "pIPI" ) )
@@ -503,10 +537,33 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          EXIT
       ENDIF
       AAdd( oDocSped:Duplicata, NFEDuplicataClass():New() )
+      oDocSped:Duplicata[ nCont ]:Duplicata  := XmlNode( cBlocoDup, "nDup" ) // 2018.01.23 Jackson
       oDocSped:Duplicata[ nCont ]:Vencimento := XmlDate( XmlNode( cBlocoDup, "dVenc" ) )
       oDocSped:Duplicata[ nCont ]:Valor      := Val( XmlNode( cBlocoDup, "vDup" ) )
       cBlocoCobranca := Substr( cBlocoCobranca, At( "</dup>", cBlocoCobranca ) + 3 )
    NEXT
+
+   // Detalhes dos Blocos de Pagamentos na NFCe
+   // 2018.02.23 Jackson
+   cBlocoDetalhePG := ""
+   IF "<pag>" $ cXmlInput
+      cBlocoDetalhePG := Substr( cXmlInput, At( "<pag>", cXmlInput ) - 1 )
+   ENDIF
+   FOR nCont = 1 TO 100
+      cBlocoPG := XmlNode( cBlocoDetalhePG, "pag" )
+      IF Len( Trim( cBlocoPG ) ) = 0
+         EXIT
+      ENDIF
+      AAdd( oDocSped:Pagamentos, NfePagamentosClass():New() )
+      oDocSped:Pagamentos[ nCont ]:TipoPago    := XmlNode( cBlocoPG, "tPag" )
+      oDocSped:Pagamentos[ nCont ]:ValorPago   := Val( XmlNode( cBlocoPG, "vPag" ) )
+      oDocSped:Pagamentos[ nCont ]:Integracao  := XmlNode( cBlocoPG, "tpIntegra" )
+      oDocSped:Pagamentos[ nCont ]:Cnpj_Ope    := XmlNode( cBlocoPG, "CNPJ" )
+      oDocSped:Pagamentos[ nCont ]:Bandeira    := XmlNode( cBlocoPG, "tBand" )
+      oDocSped:Pagamentos[ nCont ]:Autorizacao := XmlNode( cBlocoPG, "cAut" )
+      cBlocoDetalhePG := Substr( cBlocoDetalhePG, At( "</pag>", cBlocoDetalhePG ) + 3 )
+   NEXT
+
    oDocSped:Protocolo := XmlNode( cXmlInput, "nProt" )
    oDocSped:Status    := XmlNode( cXmlInput, "cStat" )
 
