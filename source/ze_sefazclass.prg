@@ -4,7 +4,7 @@ José Quintas
 
 Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
 
-2017.11.27.1230 - Aceita arquivo PFX pra assinatura somente
+2017.11.27 - Aceita arquivo PFX pra assinatura somente
 */
 
 #include "hbclass.ch"

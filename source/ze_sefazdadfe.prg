@@ -3,7 +3,7 @@ ZE_SPEDDAGERAL - Rotinas comuns de Documento Auxiliar
 Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 2016.11.15
 
-2017.01.13.1310 - Aceita arquivo como parâmetro
+2017.01.13 - Aceita arquivo como parâmetro
 */
 
 #include "hbzebra.ch"
