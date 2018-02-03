@@ -4,7 +4,7 @@ José Quintas
 
 * Crédito para hbnfe que mostrou como fazer https://github.com/fernandoathayde/hbnfe
 
-2017.11.27.1230 - Opção de usar arquivo PFX
+2017.11.27 - Opção de usar arquivo PFX
 */
 
 #define _CAPICOM_STORE_OPEN_READ_ONLY                 0           // Somente Smart Card em Modo de Leitura
