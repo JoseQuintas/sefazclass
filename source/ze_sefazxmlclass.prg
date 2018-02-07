@@ -163,10 +163,12 @@ CREATE CLASS NfeProdutoClass STATIC
    VAR  CfOp          INIT ""
    VAR  NCM           INIT ""
    VAR  GTIN          INIT ""
+   VAR  GTINTRIB      INIT ""
    VAR  Anp           INIT ""
    VAR  Unidade       INIT ""
    VAR  Pedido        INIT "" // 2018.01.23 Jackson
    VAR  Qtde          INIT 0
+   VAR  QtdeTrib      INIT 0
    VAR  ValorUnitario INIT 0
    VAR  ValorTotal    INIT 0
    VAR  Desconto      INIT 0 // 2018.01.23 Jackson
@@ -493,8 +495,13 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          oDocSped:Produto[ nCont ]:CFOP            := Transform( XmlNode( cBlocoProd, "CFOP" ), "@R 9.9999" )
          oDocSped:Produto[ nCont ]:NCM             := XmlNode( cBlocoProd, "NCM" )
          oDocSped:Produto[ nCont ]:GTIN            := XmlNode( cBlocoProd, "cEAN" )
+         oDocSped:Produto[ nCont ]:GTINTrib        := XmlNode( cBlocoProd, "cEANTrib" )
+         IF Empty( oDocSped:Produto[ nCont ]:GTINTrib )
+            oDocSped:Produto[ nCont ]:GTINTrib := oDocSped:Produto[ nCont ]:GTIN
+         ENDIF
          oDocSped:Produto[ nCont ]:Unidade         := Upper( XmlNode( cBlocoProd, "uCom" ) )
          oDocSped:Produto[ nCont ]:Qtde            := Val( XmlNode( cBlocoProd, "qCom" ) )
+         oDocSped:Produto[ nCont ]:QtdeTrib        := Val( XmlNode( cBlocoProd, "qTrib" ) )
          oDocSped:Produto[ nCont ]:ValorUnitario   := Val( XmlNode( cBlocoProd, "vUnCom" ) )
          oDocSped:Produto[ nCont ]:ValorTotal      := Val( XmlNode( cBlocoProd, "vProd" ) )
          oDocSped:Produto[ nCont ]:Desconto        := Val( XmlNode( cBlocoProd, "vDesc" ) ) // 2018.01.23 Jackson

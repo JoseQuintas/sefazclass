@@ -607,6 +607,41 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
    DO CASE
    CASE cVersao != "4.00" // Este case é pra NFE 4.00
    CASE cNFCe != "N"      // NFE, não consumidor
+   CASE nWsServico == WS_NFE_AUTORIZACAO
+      RETURN { ;
+         { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" }, ;
+         { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" } }
+
+   CASE nWsServico == WS_NFE_CONSULTACADASTRO
+      RETURN { ;
+      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" }, ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" } }
+
+   CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO
+      RETURN { ;
+      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx" }, ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx" } }
+
+   CASE nWsServico == WS_NFE_INUTILIZACAO
+      RETURN { ;
+      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" }, ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" } }
+
+   CASE nWsServico == WS_NFE_RETAUTORIZACAO
+      RETURN { ;
+      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao4.asmx" }, ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao4.asmx" } }
+
+   CASE nWsServico == WS_NFE_STATUSSERVICO
+      RETURN { ;
+      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx" }, ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx" } }
+
+   CASE nWsServico == WS_NFE_RECEPCAOEVENTO
+      RETURN { ;
+      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" }, ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" } }
+
    ENDCASE
 
    DO CASE
