@@ -158,15 +158,15 @@ METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar ) CLASS hbNFeDaGeral
       cXmlAuxiliar := MemoRead( cXmlAuxiliar )
    ENDIF
    DO CASE
-   CASE "<infCte "    $ cXmlDocumento                                                                                                ; oDanfe := hbNFeDaCte():New()
+   CASE "<infMDFe "   $ cXmlDocumento .AND. "<MDFe " $ cXmlDocumento                                                                 ; oDanfe := hbNFeDaMDFe():New()
+   CASE "<infCte "    $ cXmlDocumento .AND. "<CTe "  $ cXmlDocumento                                                                 ; oDanfe := hbNFeDaCte():New()
    CASE "<infNFe "    $ cXmlDocumento .AND. "<NFe "  $ cXmlDocumento .AND. XmlNode( XmlNode( cXmlDocumento, "ide" ), "mod" ) == "55" ; oDanfe := hbNFeDaNFe():New()
    CASE "<infNFe "    $ cXmlDocumento .AND. "<NFe "  $ cXmlDocumento .AND. XmlNode( XmlNode( cXmlDocumento, "ide" ), "mod" ) == "65" ; oDanfe := hbNFeDaNFCe():New()
-   CASE "<infMDFe "   $ cXmlDocumento .AND. "<MDFe " $ cXmlDocumento                                                                 ; oDanfe := hbNFeDaMDFe():New()
    CASE "<infEvento " $ cXmlDocumento                                                                                                ; oDanfe := hbNFeDaEvento():New()
    OTHERWISE
       RETURN "XML inválido"
    ENDCASE
-   oDanfe:cLogoFile := ::cLogoFile
+   oDanfe:cLogoFile      := ::cLogoFile
    oDanfe:cDesenvolvedor := ::cDesenvolvedor
 
    RETURN oDanfe:ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar )

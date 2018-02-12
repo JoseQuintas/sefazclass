@@ -217,8 +217,8 @@ CREATE CLASS NfeDuplicataClass STATIC
 
 CREATE CLASS DocSpedClass STATIC
 
-   VAR  ChaveAcesso             INIT ""
-   VAR  cTipoDoc                INIT "" // 2014.11.20
+   VAR  cChave                  INIT ""
+   VAR  cModFis                 INIT "" // 2014.11.20
    VAR  TipoNFe                 INIT "" // 2018.01.23 Jackson
    VAR  TipoEmissao             INIT "" // 2018.01.23 Jackson
    VAR  cEvento                 INIT "" // 2014.11.20
@@ -274,56 +274,56 @@ FUNCTION XmlToDoc( cXmlInput )
    oDocSped := DocSpedClass():New()
    DO CASE
    CASE "<nfeProc"      $ cXmlInput
-      oDocSped:cTipoDoc := "55"
+      oDocSped:cModFis := "55"
       oDocSped:cEvento  := "110100"
       XmlToDocNfeEmi( cXmlInput, @oDocSped )
    CASE "<cteProc" $ cXmlInput .OR. "<procCTe" $ cXmlInput // proc=CTE 3.0
-      oDocSped:cTipoDoc := "57"
+      oDocSped:cModFis := "57"
       oDocSped:cEvento  := "110100"
       XmlToDocCteEmi( cXmlInput, @oDocSped )
    CASE "<mdfeProc" $ cXmlInput
-      oDocSped:cTipoDoc := "58"
+      oDocSped:cModFis := "58"
       oDocSped:cEvento  := "110100"
       XmlToDocMDFEEmi( cXmlInput, @oDocSped )
    CASE "<procEventoNFe" $ cXmlInput .AND. "<descEvento>Cancelamento" $ cXmlInput
-      oDocSped:cTipoDoc := "55"
+      oDocSped:cModFis := "55"
       oDocSped:cEvento  := "110111"
       XmlToDocNfeCancel( cXmlInput, @oDocSped )
    CASE "<procCancNFe" $ cXmlInput .AND. "<xServ>CANCELAR" $ cXmlInput
-      oDocSped:cTipoDoc := "55"
+      oDocSped:cModFis := "55"
       oDocSped:cEvento  := "110111"
       XmlToDocNFECancel( cXmlInput, @oDocSped )
    CASE "<procEventoCTe" $ cXmlInput .AND. "<descEvento>Cancelamento" $ cXmlInput
-      oDocSped:cTipoDoc := "57"
+      oDocSped:cModFis := "57"
       oDocSped:cEvento  := "110111"
       XmlToDocCTeCancel( cXmlInput, @oDocSped )
    CASE "<procEventoNFe" $ cXmlInput .AND. "<descEvento>Carta de Correcao" $ cXmlInput
-      oDocSped:cTipoDoc := "55"
+      oDocSped:cModFis := "55"
       oDocSped:cEvento  := "110110"
       XmlToDocNfeCCe( cXmlInput, @oDocSped )
    CASE "<procEventoMDFe" $ cXmlInput .AND. "<descEvento>Cancelamento" $ cXmlInput
-      oDocSped:cTipoDoc := "58"
+      oDocSped:cModFis := "58"
       oDocSped:cEvento  := "110111"
       XmlToDocMDFECancel( cXmlInput, @oDocSped )
    CASE "<procEventoMDFe" $ cXmlInput .AND. "<descEvento>Encerramento" $ cXmlInput
-      oDocSped:cTipoDoc := "58"
+      oDocSped:cModFis := "58"
       oDocSped:cEvento  := "110112"
       XmlToDocMDFEEnc( cXmlInput, @oDocSped )
    CASE "<infMDFe" $ cXmlInput
-      oDocSped:cTipoDoc := "58"
+      oDocSped:cModFis := "58"
       oDocSped:cEvento  := "000000"
       XmlToDocMDFEEmi( cXmlInput, @oDocSped )
    CASE "<infCte" $ cXmlInput
-      oDocSped:cTipoDoc := "57"
+      oDocSped:cModFis := "57"
       oDocSped:cEvento  := "000000"
       XmlToDocCteEmi( cXmlInput, @oDocSped )
    CASE "<infNFe" $ cXmlInput
-      oDocSped:cTipoDoc := "55"
+      oDocSped:cModFis := "55"
       oDocSped:cEvento  := "000000"
       XmlToDocNfeEmi( cXmlInput, @oDocSped )
    //CASE "<infEvento" $ cXmlInput
    //   // pode ser pra qualquer documento
-   //   oDocSped:cTipoDoc := "XX"
+   //   oDocSped:cModFis := "XX"
    //   oDocSped:cEvento  := "XX"
    OTHERWISE
       oDocSped:cErro := "Documento não identificado"
@@ -331,20 +331,20 @@ FUNCTION XmlToDoc( cXmlInput )
    IF Empty( oDocSped:Destinatario:Cnpj ) .AND. Empty( oDocSped:Destinatario:Nome )
       oDocSped:Destinatario := oDocSped:Emitente
    ENDIF
-   oDocSped:ChaveAcesso := SoNumeros( oDocSped:ChaveAcesso )
-   IF Len( oDocSped:ChaveAcesso ) == 44
-      oDocSped:cTipoDoc := Substr( oDocSped:ChaveAcesso, 21, 2 )
-      oDocSped:cSerie   := Substr( oDocSped:ChaveAcesso, 23, 3 )
+   oDocSped:cChave := SoNumeros( oDocSped:cChave )
+   IF Len( oDocSped:cChave ) == 44
+      oDocSped:cModFis := DfeModFis( oDocSped:cChave )
+      oDocSped:cSerie       := Substr( oDocSped:cChave, 23, 3 )
    ENDIF
    DO CASE
    CASE ! Empty( oDocSped:cErro )
-   CASE Len( oDocSped:ChaveAcesso ) != 44
+   CASE Len( oDocSped:cChave ) != 44
       oDocSped:cErro := "Tamanho da chave de acesso inválido"
-   CASE Right( oDocSped:ChaveAcesso, 1 ) != CalculaDigito( Substr( oDocSped:ChaveAcesso, 1, 43 ), "11" )
+   CASE Right( oDocSped:cChave, 1 ) != CalculaDigito( Substr( oDocSped:cChave, 1, 43 ), "11" )
       oDocSped:cErro := "Dígito da chave de acesso inválido"
-   CASE Substr( oDocSped:ChaveAcesso, 5, 2 ) < "01" .OR. Substr( oDocSped:ChaveAcesso, 5, 2 ) > "12"
+   CASE Substr( oDocSped:cChave, 5, 2 ) < "01" .OR. Substr( oDocSped:cChave, 5, 2 ) > "12"
       oDocSped:cErro := "Mes da chave inválido"
-   CASE ! ValidCnpjCpf( Substr( oDocSped:ChaveAcesso, 7, 14 ) )
+   CASE ! ValidCnpjCpf( DfeEmitente( oDocSped:cChave ) )
       oDocSped:cErro := "CNPJ inválido na chave de acesso"
    CASE Val( oDocSped:Protocolo ) == 0
       oDocSped:cErro := "Sem protocolo"
@@ -356,8 +356,8 @@ FUNCTION XmlToDoc( cXmlInput )
       oDocSped:cErro := "Número de documento vazio"
    ENDCASE
    IF ! Empty( oDocSped:cErro )
-      oDocSped:cTipoDoc := "XX"
-      oDocSped:cEvento  := "XXXXXX"
+      oDocSped:cModFis := "XX"
+      oDocSped:cEvento      := "XXXXXX"
    ENDIF
 
    RETURN oDocSped
@@ -379,7 +379,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
       oDocSped:cErro := "Chave de Acesso Inválida"
       RETURN NIL
    ENDIF
-   oDocSped:ChaveAcesso := cBlocoChave
+   oDocSped:cChave := cBlocoChave
    oDocSped:cAssinatura := XmlNode( cXmlInput, "Signature" )
    cBlocoIde := XmlNode( cXmlInput, "ide" )
       oDocSped:cNumDoc := XmlNode( cBlocoIde, "nNF" )
@@ -408,7 +408,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
       oDocSped:InfAdicionais := XmlNode( cBlocoInfAdic, "InfCpl" )
 
    cBlocoEmit := XmlNode( cXmlInput, "emit" )
-      oDocSped:Emitente:Cnpj              := Transform( Substr( oDocSped:ChaveAcesso, 7, 14 ), "@R 99.999.999/9999-99" )
+      oDocSped:Emitente:Cnpj              := Transform( DfeEmitente( oDocSped:cChave ), "@R 99.999.999/9999-99" )
       oDocSped:Emitente:Nome              := Upper( XmlNode( cBlocoEmit, "xNome" ) )
       oDocSped:Emitente:InscricaoEstadual := XmlNode( cBlocoEmit, "IE" )
       cBlocoEndereco := XmlNode( cBlocoEmit, "enderEmit" )
@@ -610,11 +610,11 @@ STATIC FUNCTION XmlToDocNfeCancel( cXmlInput, oDocSped )
       oDocSped:cErro := "Sem chave de acesso"
       RETURN .F.
    ELSE
-      oDocSped:ChaveAcesso   := mChave
+      oDocSped:cChave   := mChave
       oDocSped:Protocolo     := mProtocolo
       oDocSped:cAmbiente     := XmlNode( cXmlInput, "tpAmb" )
-      oDocSped:Emitente:Cnpj := Transform( Substr( mChave, 7, 14 ), "@R 99.999.999/9999-99" )
-      oDocSped:cNumDoc       := Substr( mChave, 26, 9 )
+      oDocSped:Emitente:Cnpj := Transform( DfeEmitente( mChave ), "@R 99.999.999/9999-99" )
+      oDocSped:cNumDoc       := DfeNumero( mChave )
       oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
       oDocSped:Status        := "111"
    ENDIF
@@ -631,7 +631,7 @@ STATIC FUNCTION XmlToDocNfeCce( XmlInput, oDocSped )
             oDocSped:cAmbiente         := XmlNode( mXmlInfEvento, "tpAmb" )
             oDocSped:Emitente:Cnpj     := Transform( XmlNode( mXmlInfEvento, "CNPJ" ), "@R 99.999.999/9999-99" )
             oDocSped:Destinatario:Cnpj := oDocSped:Emitente:Cnpj
-            oDocSped:ChaveAcesso       := XmlNode( mXmlInfEvento, "chNFe" )
+            oDocSped:cChave       := XmlNode( mXmlInfEvento, "chNFe" )
             //oDocSped:TipoEvento      := XmlNode( mXmlInfEvento, "tpEvento" )
             oDocSped:cSequencia        := StrZero( Val( XmlNode( mXmlInfEvento, "nSeqEvento" ) ), 2 )
             // mXmldetEvento           := XmlNode( mXmlInfEvento, "detEvento" )
@@ -660,7 +660,7 @@ STATIC FUNCTION XmlToDocMDFEEmi( cXmlInput, oMDFE )
       oMDFE:cErro := "Chave de acesso inválida"
       RETURN NIL
    ENDIF
-   oMDFE:ChaveAcesso := cBlocoChave
+   oMDFE:cChave := cBlocoChave
    oMDFE:cAssinatura := XmlNode( cXmlInput, "Signature" )
    cBlocoIde := XmlNode( cXmlInput, "ide" )
       oMDFE:cNumDoc := XmlNode( cBlocoIde, "nMDF" )
@@ -705,7 +705,7 @@ STATIC FUNCTION XmlToDocMDFEEnc( XmlInput, oDocSped )
             oDocSped:cAmbiente         := XmlNode( mXmlInfEvento, "tpAmb" )
             oDocSped:Emitente:Cnpj     := Transform( XmlNode( mXmlInfEvento, "CNPJ" ), "@R 99.999.999/9999-99" )
             oDocSped:Destinatario:Cnpj := oDocSped:Emitente:Cnpj
-            oDocSped:ChaveAcesso       := XmlNode( mXmlInfEvento, "chMDFe" )
+            oDocSped:cChave       := XmlNode( mXmlInfEvento, "chMDFe" )
             //oDocSped:TipoEvento      := XmlNode( mXmlInfEvento, "tpEvento" )
             oDocSped:cSequencia        := StrZero(Val( XmlNode( mXmlInfEvento, "nSeqEvento" ) ), 2 )
             // mXmldetEvento           := XmlNode( mXmlInfEvento, "detEvento" )
@@ -730,10 +730,10 @@ STATIC FUNCTION XmlToDocMDFECancel( cXmlInput, oDocSped )
    ELSE
       oDocSped:cAmbiente     := XmlNode( cXmlInput, "tpAmb" )
       oDocSped:cSequencia    := StrZero( Val( XmlNode( cXmlInput, "nSeqEvento" ) ), 2 )
-      oDocSPed:ChaveAcesso   := mChave
+      oDocSPed:cChave   := mChave
       oDocSped:Protocolo     := mProtocolo
-      oDocSped:Emitente:Cnpj := Transform( Substr( mChave, 7, 14 ), "@R 99.999.999/9999-99" )
-      oDocSPed:cNumDoc       := Substr( mChave, 26, 9 )
+      oDocSped:Emitente:Cnpj := Transform( DfeEmitente( mChave ), "@R 99.999.999/9999-99" )
+      oDocSPed:cNumDoc       := DfeNumero( mChave )
       oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
       oDocSped:Status        := "111"
    ENDIF
@@ -751,9 +751,9 @@ STATIC FUNCTION XmlToDocCteEmi( XmlInput, oDocSped )
       XmlCte := XmlNode( XmlProc, "CTe" )
          XmlInfCteComTag := XmlNode( XmlProc, "CTe", .T. )
          XmlInfCte := XmlNode( XmlCte, "infCte" )
-            oDocSped:ChaveAcesso := Substr( XmlElement( XmlInfCteComTag, "id" ), 4 )  // id minusculo
-            IF Empty( oDocSped:ChaveAcesso )
-               oDocSped:ChaveAcesso := Substr( XmlElement( XmlInfCteComTag, "Id" ), 4 ) // id maiusculo
+            oDocSped:cChave := Substr( XmlElement( XmlInfCteComTag, "id" ), 4 )  // id minusculo
+            IF Empty( oDocSped:cChave )
+               oDocSped:cChave := Substr( XmlElement( XmlInfCteComTag, "Id" ), 4 ) // id maiusculo
             ENDIF
             XmlIde := XmlNode( XmlInfCte, "ide" )
                oDocSped:cNumDoc := StrZero( Val( XmlNode( XmlIde, "nCT" ) ), 9 )
@@ -830,11 +830,11 @@ STATIC FUNCTION XmlToDocCteCancel( cXmlInput, oDocSped )
       mProtocolo  := XmlNode( mXmlInfCanc, "nProt" )
    ENDIF
    IF Len( Trim( mChave ) ) != 0
-      oDocSped:ChaveAcesso   := mChave
+      oDocSped:cChave   := mChave
       oDocSped:Protocolo     := mProtocolo
       oDocSped:cAmbiente     := XmlNode( cXmlInput, "tpAmb" )
-      oDocSped:Emitente:Cnpj := Transform( Substr( mChave, 7, 14 ), "@R 99.999.999/9999-99" )
-      oDocSped:cNumDoc       := Substr( mChave, 26, 9 )
+      oDocSped:Emitente:Cnpj := Transform( DfeEmitente( mChave ), "@R 99.999.999/9999-99" )
+      oDocSped:cNumDoc       := DfeNumero( mChave )
       oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
       oDocSped:Status        := "111"
    ENDIF
@@ -844,3 +844,19 @@ STATIC FUNCTION XmlToDocCteCancel( cXmlInput, oDocSped )
 FUNCTION PicNfe( cChave )
 
    RETURN Transform( cChave, "@R 99-99/99-99.999.999/9999-99.99.999.999999999.9.99999999.9" )
+
+FUNCTION DfeModFis( cKey )
+
+   RETURN Substr( cKey, 21, 2 )
+
+FUNCTION DfeSerie( cKey )
+
+   RETURN Substr( cKey, 23, 3 )
+
+FUNCTION DfeNumero( cKey )
+
+   RETURN Substr( cKey, 26, 9 )
+
+FUNCTION DfeEmitente( cKey )
+
+   RETURN Substr( cKey, 7, 14 )

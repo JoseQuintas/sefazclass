@@ -104,13 +104,13 @@ METHOD BuscaDadosXML() CLASS hbnfeDaEvento
       ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "retEvento" ), { "cStat", "xMotivo", "dhRegEvento", "nProt" }, ::aInfEvento )
    ENDIF
    ::aIde := hb_Hash()
-   ::aIde[ "mod" ]   := SubStr( ::cChaveEvento, 21, 2 ) // XmlNode( cIde, "mod" )
+   ::aIde[ "mod" ]   := DfeModFis( ::cChaveEvento ) // XmlNode( cIde, "mod" )
    ::aIde[ "serie" ] := SubStr( ::cChaveEvento, 23, 3 ) // XmlNode( cIde, "serie" )
-   ::aIde[ "nNF" ]   := SubStr( ::cChaveEvento, 26, 9 ) // XmlNode( cIde, "nNF" )
+   ::aIde[ "nNF" ]   := DfeNumero( ::cChaveEvento ) // XmlNode( cIde, "nNF" )
    ::aIde[ "dhEmi" ] := XmlNode( XmlNode( ::cXmlDocumento, "ide" ), "dhEmi" )
 
    ::aEmit := XmlToHash( XmlNode( ::cXmlDocumento, "emit" ), { "xNome", "xFant", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "fone", "IE" } )
-   ::aEmit[ "CNPJ" ]    := SubStr( ::cChaveEvento, 7, 14 )
+   ::aEmit[ "CNPJ" ]    := DfeEmitente( ::cChaveEvento )
    ::aEmit[ "xNome" ]   := XmlToString( ::aEmit[ "xNome" ] )
    ::cTelefoneEmitente  := ::FormataTelefone( ::aEmit[ "fone" ] )
 
@@ -305,7 +305,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
    ::DrawTexto( 341, ::nLinhaPdf,     390, Nil, "SERIE", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 6 )
    ::DrawTexto( 341, ::nLinhaPDF -6,   390, Nil, ::aIde[ "serie" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
 
-   IF Substr( ::cChaveEvento, 21, 2 ) == "57" // At( "retEventoCTe",::cXmlEvento) > 0
+   IF DfeModFis( ::cChaveEvento ) == "57" // At( "retEventoCTe",::cXmlEvento) > 0
       // NUMERO CTE
       ::DrawTexto( 391, ::nLinhaPdf,     480, Nil, "NUMERO DO CT-e", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 6 )
       ::DrawTexto( 391, ::nLinhaPDF -6,   480, Nil, SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
