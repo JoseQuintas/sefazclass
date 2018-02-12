@@ -41,7 +41,7 @@ CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
    VAR nItem              INIT 0
    VAR aICMSTotal
    VAR aFPags             INIT {}
-   VAR cChaveAcesso
+   VAR cChave
    VAR cQRCode
    VAR aInfProt
    VAR aInfAdic
@@ -96,7 +96,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFCe
    ::aICMSTotal   := XmlToHash( XmlNode( ::cXml, "ICMSTot" ), { "vProd", "vFrete", "vSeg", "vOutro", "vDesc", "vNF", "vTotTrib" } )
    ::aInfProt     := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto" } )
    ::aInfAdic     := XmlToHash( XmlNode( ::cXml, "infAdic" ), { "infAdFisco", "infCpl" } )
-   ::cChaveAcesso := AllTrim( Substr( XmlElement( ::cXml, "Id" ), 4 ) )
+   ::cChave       := AllTrim( Substr( XmlElement( ::cXml, "Id" ), 4 ) )
    ::cQRCode      := XmlToString( XmlNode( XmlNode( ::cXml, "infNFeSupl" ), "qrCode" ) )
 
    // Produtos / Servicos
@@ -435,7 +435,7 @@ METHOD ConsultaChaveAcesso() CLASS hbNFeDaNFCe
    ENDIF
 
    ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, "CHAVE DE ACESSO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
-   ::DrawTexto( 6, ::nLinhaPDF - 20, 220, NIL, Transform( ::cChaveAcesso, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 6, ::nLinhaPDF - 20, 220, NIL, Transform( ::cChave, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::DrawTexto( 6, ::nLinhaPDF - 25, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::nLinhaPDF -= 25
 
