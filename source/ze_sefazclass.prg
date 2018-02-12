@@ -279,7 +279,7 @@ METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente ) C
    ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
    ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110110" )
+   ::cXmlDocumento +=       XmlTag( "tpEvento", "610110" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
    ::cXmlDocumento +=          [<evPrestDesacordo>]
