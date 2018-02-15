@@ -1,5 +1,6 @@
-# sefazclass
-Classe com funçòes pra Sefaz
+# Sefazclass
+
+Classe com funções pra Sefaz
 
 Crie e/ou altere \harbour\bin\hbmk.hbc
 
@@ -8,8 +9,7 @@ acrescente
 libpaths=pasta do arquivo sefazclass.hbc
 
 
-Como funciona o Webservice do governo:
---------------------------------------
+# Como funciona o Webservice do governo:
 
 Entregar XML e receber uma resposta.
 
@@ -22,8 +22,7 @@ Já outras etapas: cancelamento, carta de correção, inutilização, etc. envol
 
 1. Entrega o XML e já obtém o protocolo (ou erro)
 
-E a Sefazclass:
----------------
+# E a Sefazclass:
 
 Tem eventos que tratam cada etapa.
 
@@ -36,8 +35,7 @@ Outros eventos: CteEventoDesacordo(), MdfeEventoEncerramento(), MdfeEventoInclus
 Verifique o nome dos parâmetros e saberá o que informar.
 Dúvidas, consulte o manual da SEFAZ, que contém todos os detalhes.
 
-Considerações:
---------------
+# Considerações:
 
 A Sefazclass não trata arquivos XMLs, e sim o conteúdo. cXML representa o conteúdo do XML
 cCertificado é o nome do certificado, veja em propriedades do certificado o CN=
