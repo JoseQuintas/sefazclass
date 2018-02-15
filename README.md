@@ -26,19 +26,19 @@ Já outras etapas: cancelamento, carta de correção, inutilização, etc. envol
 
 Tem eventos que tratam cada etapa.
 
-Autorização de NFE, CTE, MDFE: NfeLoteEnvia(), CteLoteEnvia(), MDFeLoteEnvia()
-Cancelamento:  NfeEventoCancela(), CteEventoCancela(), MDFeEventoCancela()
-Carta de correção: NfeEventoCarta(), CteEventoCarta()
-Inutilização: NfeInutiliza(), CteInutiliza()
-Outros eventos: CteEventoDesacordo(), MdfeEventoEncerramento(), MdfeEventoInclusaoCondutor(), NfeEventoManifestacao()
+- Autorização de NFE, CTE, MDFE: NfeLoteEnvia(), CteLoteEnvia(), MDFeLoteEnvia()
+- Cancelamento:  NfeEventoCancela(), CteEventoCancela(), MDFeEventoCancela()
+- Carta de correção: NfeEventoCarta(), CteEventoCarta()
+- Inutilização: NfeInutiliza(), CteInutiliza()
+- Outros eventos: CteEventoDesacordo(), MdfeEventoEncerramento(), MdfeEventoInclusaoCondutor(), NfeEventoManifestacao()
 
 Verifique o nome dos parâmetros e saberá o que informar.
 Dúvidas, consulte o manual da SEFAZ, que contém todos os detalhes.
 
 # Considerações:
 
-A Sefazclass não trata arquivos XMLs, e sim o conteúdo. cXML representa o conteúdo do XML
-cCertificado é o nome do certificado, veja em propriedades do certificado o CN=
+- A Sefazclass não trata arquivos XMLs, e sim o conteúdo. cXML representa o conteúdo do XML
+- cCertificado é o nome do certificado, veja em propriedades do certificado o CN=
 
 A Sefazclass não inventa nada, tudo está dentro dos manuais do governo.
 
