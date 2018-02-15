@@ -1289,7 +1289,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       IF ValType( cRetorno ) == "C"
          ::cXmlRetorno := cRetorno
       ELSEIF cRetorno == NIL
-         ::cXmlRetorno := "Erro: Sem retorno do webservice"
+         ::cXmlRetorno := "Sem retorno do webservice"
       ELSE
          ::cXmlRetorno := ""
          FOR nCont = 1 TO Len( cRetorno )
@@ -1302,7 +1302,8 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    ELSEIF "<soapenv:Body>" $ ::cXmlRetorno .AND. "</soapenv:Body>" $ ::cXmlRetorno
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soapenv:Body" ) // hb_UTF8ToStr()
    ELSE
-      ::cXmlRetorno := "Erro SOAP: XML retorno não contém soapenv:Body " + ::cXmlRetorno
+      // teste usando procname(2)
+      ::cXmlRetorno := "Erro SOAP: " + ProcName(2) + " XML retorno não contém soapenv:Body " + ::cXmlRetorno
    ENDIF
 
    RETURN NIL
