@@ -1,3 +1,7 @@
+/*
+2018.02.20 Ajuste endereços MG pra NFE 3.10
+*/
+
 #include "sefazclass.ch"
 
 FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
@@ -206,6 +210,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "SVAN",  "3.10", WS_AMBIENTE_PRODUCAO,     "https://www.sefazvirtual.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx" }, ;
          ;
          { "CE",    "3.10", WS_AMBIENTE_HOMOLOGACAO,  "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeAutorizacao?wsdl" }, ;
+         { "MG",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao" }, ;
          { "PR",    "3.10", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeAutorizacao3?wsdl" }, ;
          { "RS",    "3.10", WS_AMBIENTE_HOMOLOGACAO,  "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
          { "SP",    "3.10", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx" }, ;
@@ -417,6 +422,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "SCVAN", "3.10", WS_AMBIENTE_PRODUCAO,    "https://www.svc.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx" }, ;
          ;
          { "CE",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRetAutorizacao?wsdl" }, ;
+         { "MG",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao" }, ;
          { "PR",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeRetAutorizacao3?wsdl" }, ;
          { "RS",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
          { "SP",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx" }, ;
