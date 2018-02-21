@@ -1,5 +1,6 @@
 /*
 2018.02.20 Ajuste endereços MG pra NFE 3.10
+2018.02.21 WebService NFE 4.00 Marcelo Carli
 */
 
 #include "sefazclass.ch"
@@ -224,7 +225,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "ES",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://app.sefaz.es.gov.br/ConsultaCadastroService/CadConsultaCadastro2.asmx" }, ;
          { "GO",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2?wsdl" }, ;
          { "MA",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://sistemas.sefaz.ma.gov.br/wscadastro/CadConsultaCadastro2?wsdl" }, ;
-         { "MG",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2" }, ;
+         { "MG",    "2.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2" }, ;
          { "MS",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.ms.gov.br/producao/services2/CadConsultaCadastro2" }, ;
          { "MT",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2?wsdl" }, ;
          { "PE",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro2" }, ;
@@ -239,7 +240,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "ES",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://app.sefaz.es.gov.br/ConsultaCadastroService/CadConsultaCadastro2.asmx" }, ;
          { "GO",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homolog.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2?wsdl" }, ;
          { "MA",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://sistemas.sefaz.ma.gov.br/wscadastro/CadConsultaCadastro2?wsdl" }, ;
-         { "MG",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2" }, ;
+         { "MG",    "2.00", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2" }, ;
          { "MS",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.ms.gov.br/homologacao/services2/CadConsultaCadastro2" }, ;
          { "MT",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2?wsdl" }, ;
          { "PE",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2" }, ;
@@ -615,38 +616,57 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
    CASE cNFCe != "N"      // NFE, não consumidor
    CASE nWsServico == WS_NFE_AUTORIZACAO
       RETURN { ;
-         { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" }, ;
-         { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" } }
+         { "MG", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeAutorizacao4" }, ;
+         { "SP", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" }, ;
+         ;
+         { "MG", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeAutorizacao4" }, ;
+         { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" } }
 
    CASE nWsServico == WS_NFE_CONSULTACADASTRO
       RETURN { ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" } }
+      ;
       { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" }, ;
-      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" } }
 
    CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO
       RETURN { ;
-      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx" }, ;
-      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx" } }
+      { "MG", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeConsultaProtocolo4" }, ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx" }, ;
+      ;
+      { "MG", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeConsultaProtocolo4" }, ;
+      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx" } }
 
    CASE nWsServico == WS_NFE_INUTILIZACAO
       RETURN { ;
-      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" }, ;
-      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" } }
+      { "MG", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeInutilizacao4" }, ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" }, ;
+      ;
+      { "MG", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeInutilizacao4" }, ;
+      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" } }
 
    CASE nWsServico == WS_NFE_RETAUTORIZACAO
       RETURN { ;
-      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao4.asmx" }, ;
-      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao4.asmx" } }
+      { "MG", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeRetAutorizacao4" }, ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao4.asmx" }, ;
+      ;
+      { "MG", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeRetAutorizacao4" }, ;
+      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao4.asmx" } }
 
    CASE nWsServico == WS_NFE_STATUSSERVICO
       RETURN { ;
+      { "MG", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeStatusServico4" }, ;
       { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx" }, ;
-      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx" } }
+      ;
+      { "MG", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeStatusServico4" }, ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx" } }
 
    CASE nWsServico == WS_NFE_RECEPCAOEVENTO
       RETURN { ;
-      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" }, ;
-      { "SP", "4.00", WS_AMBIENTE_PRODUCAO, "https://nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" } }
+      { "MG", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeRecepcaoEvento4 " }, ;
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" }, ;
+      ;
+      { "MG", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeRecepcaoEvento4 " }, ;
+      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" } }
 
    ENDCASE
 
