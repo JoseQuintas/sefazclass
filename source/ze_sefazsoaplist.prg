@@ -624,9 +624,9 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
 
    CASE nWsServico == WS_NFE_CONSULTACADASTRO
       RETURN { ;
-      { "SP", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" } }
+      { "SP", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" }, ;
       ;
-      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" }, ;
+      { "SP", "4.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" } }
 
    CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO
       RETURN { ;
