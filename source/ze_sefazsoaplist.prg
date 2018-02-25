@@ -189,7 +189,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
 
    DO CASE
    CASE cVersao != "3.10" // este case é pra NFE 3.10
-   CASE cNFCe != "N"      // NFE, não consumidor
+   CASE cNFCe == "S"      // NFCE não é aqui
 
    CASE nWsServico == WS_NFE_AUTORIZACAO
 
@@ -211,7 +211,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "SVAN",  "3.10", WS_AMBIENTE_PRODUCAO,     "https://www.sefazvirtual.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx" }, ;
          ;
          { "CE",    "3.10", WS_AMBIENTE_HOMOLOGACAO,  "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeAutorizacao?wsdl" }, ;
-         { "MG",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao" }, ;
+         { "MG",    "3.10", WS_AMBIENTE_HOMOLOGACAO,  "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao" }, ;
          { "PR",    "3.10", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeAutorizacao3?wsdl" }, ;
          { "RS",    "3.10", WS_AMBIENTE_HOMOLOGACAO,  "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
          { "SP",    "3.10", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx" }, ;
@@ -495,7 +495,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
 
    DO CASE
    CASE cVersao != "3.10" // Este case é pra NFCE 3.10
-   CASE cNFCE != "S"      // NFCE consumidor
+   CASE cNFCE != "S"      // NFCE consumidor é aqui
    CASE nWsServico == WS_NFE_AUTORIZACAO .AND. cNFCe == "S"
 
       RETURN { ;
@@ -602,7 +602,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "RJ", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode?" }, ;
          { "RN", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://hom.nfce.set.rn.gov.br/consultarNFCe.aspx?" }, ;
          { "RS", "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?" }, ;
-         { "RO", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp" }, ;
+         { "RO", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp?" }, ;
          { "RR", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://200.174.88.103:8080/nfce/servlet/qrcode?" }, ;
          { "SC", "3.10", WS_AMBIENTE_HOMOLOGACAO, "" }, ;
          { "SP", "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
