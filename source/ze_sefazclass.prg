@@ -1,5 +1,5 @@
 /*
-ZE_SPEDSEFAZCLASS - Rotinas pra comunicação com SEFAZ
+ZE_SEFAZCLASS - Rotinas pra comunicação com SEFAZ
 José Quintas
 
 Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
