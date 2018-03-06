@@ -1,6 +1,8 @@
 /*
 Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 Contribuição NFCE: LucianoConforto
+
+2018.03.06 Aumento do campo quantidade 7,3
 */
 
 #include "hbclass.ch"
@@ -294,7 +296,7 @@ METHOD DetalheProdutosServicos() CLASS hbNFeDaNFCe
          ::nLinhaPDF -= 10
       NEXT
 
-      ::DrawTexto(  6, ::nLinhaPDF - 10,  44, NIL, FormatNumber( Val( ::aItem[ nContX, 3 ] ), 6, 3 ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 7 )
+      ::DrawTexto(  6, ::nLinhaPDF - 10,  44, NIL, FormatNumber( Val( ::aItem[ nContX, 3 ] ), 7, 3 ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 7 )
       ::DrawTexto( 50, ::nLinhaPDF - 10, 220, NIL, ::aItem[ nContX, 4 ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
       ::DrawTexto(  6, ::nLinhaPDF - 10, 146, NIL, FormatNumber( Val( ::aItem[ nContX, 5 ] ), 15, 4 ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 7 )
       ::DrawTexto(  6, ::nLinhaPDF - 10, 220, NIL, FormatNumber( Val( ::aItem[ nContX, 6 ] ), 15, 2 ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 7 )
