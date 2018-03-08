@@ -4,7 +4,6 @@ ULTIMA ATUALIZACAO: 2017.06
 */
 
 #define SEFAZ_UF { ;
-   { "SP", "SAO PAULO", "35" }, ;
    { "AC", "ACRE", "12" }, ;
    { "AL", "ALAGOAS", "27" }, ;
    { "AP", "AMAPA", "16" }, ;
