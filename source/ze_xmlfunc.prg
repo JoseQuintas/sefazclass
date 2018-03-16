@@ -1,6 +1,8 @@
 /*
 ZE_XMLFUNC - Funções pra trabalhar com XML
 José Quintas
+
+2018.03.14 Uso diferente pela Petrobrás
 */
 
 #ifndef DOW_DOMINGO
@@ -13,8 +15,9 @@ FUNCTION XmlTransform( cXml )
 
    cRemoveTag := { ;
       [<?xml version="1.0" encoding="utf-8"?>], ; // Petrobras inventou de usar assim
-   [<?xml version="1.0" encoding="UTF-8"?>], ; // o mais correto
-   [<?xml version="1.00"?>], ;
+      [<?xml version="1.0" encoding="ISO-8859-1"?>], ; // Petrobras agora assim
+      [<?xml version="1.0" encoding="UTF-8"?>], ; // o mais correto
+      [<?xml version="1.00"?>], ;
       [<?xml version="1.0"?>] }
 
    FOR nCont = 1 TO Len( cRemoveTag )

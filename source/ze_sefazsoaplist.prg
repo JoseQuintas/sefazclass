@@ -1,6 +1,8 @@
 /*
 2018.02.20 Ajuste endereços MG pra NFE 3.10
 2018.02.21 WebService NFE 4.00 Marcelo Carli
+2018.03.13 Dividido em subfunções
+2018.03.13 SoapList de CTE e MDFE para métodos
 */
 
 #include "sefazclass.ch"
@@ -30,23 +32,6 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.bpe.ms.gov.br/ws/BPeRecepcaoEvento" }, ;
          { "SVRS", "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeRecepcaoEvento/bpeRecepcaoEvento.asmx" } }
 
-   CASE nWsServico == WS_BPE_CONSULTAPROTOCOLO
-
-      RETURN { ;
-         { "MS",   "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
-         { "SVRS", "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.svrs.rs.gov.br/ms/bpeConsulta.asmx" }, ;
-         ;
-         { "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.bpe.ms.gov.br/ws/BPeConsulta" } }
-
-   CASE nWsServico == WS_BPE_STATUSSERVICO
-
-      RETURN { ;
-         { "MS",   "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.fazenda.ms.gov.br/ws/BPeStatusServico" }, ;
-         { "SVRS", "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.svrs.rs.gov.br/ms/bpeStatusServico/bpeStatusServico.asmx" }, ;
-         ;
-         { "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.bpe.ms.gov.br/ws/BPeStatusServico" }, ;
-         { "SVRS", "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeStatusServico/bpeStatusServico.asmx" } }
-
    CASE nWsServico == WS_BPE_QRCODE
 
       RETURN { ;
@@ -61,135 +46,20 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
       RETURN { ;
          { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CadConsultaCadastro" } }
 
-   CASE nWsServico == WS_CTE_CONSULTAPROTOCOLO
-
-      RETURN { ;
-         { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/CteConsulta" }, ;
-         { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteConsulta" }, ;
-         { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta" }, ;
-         { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
-         { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl" }, ;
-         { "SVSP", "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteConsulta.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" }, ;
-         ;
-         { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" } }
-
-   CASE nWsServico == WS_CTE_INUTILIZACAO
-
-      RETURN { ;
-         { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao" }, ;
-         { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteInutilizacao" }, ;
-         { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao" }, ;
-         { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao?wsdl" }, ;
-         { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" }, ;
-         ;
-         { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" } }
-
-   CASE nWsServico == WS_CTE_RECEPCAO
-
-      RETURN { ;
-         { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao" }, ;
-         { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteRecepcao" }, ;
-         { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao" }, ;
-         { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl" }, ;
-         { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-         { "SVSP", "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
-         ;
-         { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" } }
-
-   CASE nWsServico == WS_CTE_RECEPCAOEVENTO
-
-      RETURN { ;
-         { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/RecepcaoEvento" }, ;
-         { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteRecepcaoEvento" }, ;
-         { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews2/services/CteRecepcaoEvento?wsdl" }, ;
-         { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteRecepcaoEvento?wsdl" }, ;
-         { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" }, ;
-         ;
-         { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" } }
-
-   CASE nWsServico == WS_CTE_RETRECEPCAO
-
-      RETURN { ;
-         { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao" }, ;
-         { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteRetRecepcao" }, ;
-         { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao" }, ;
-         { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao?wsdl" }, ;
-         { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
-         { "SVSP", "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteRetRecepcao.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" }, ;
-         ;
-         { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" } }
-
-   CASE nWsServico == WS_CTE_STATUSSERVICO
-
-      RETURN { ;
-         { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico" }, ;
-         { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico" }, ;
-         { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteStatusServico" }, ;
-         { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl" }, ;
-         { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
-         { "SVSP", "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteStatusServico.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" }, ;
-         ;
-         { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" } }
-
-   CASE nWsServico == WS_MDFE_CONSNAOENC
-
-      RETURN { ;
-         { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/mdfeConsNaoEnc/mdfeConsNaoenc.asmx" }, ;
-         { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsNaoEnc/MDFeConsNaoEnc.asmx" } }
-
-   CASE nWsServico == WS_MDFE_CONSULTA
-
-      RETURN { ;
-         { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" }, ;
-         { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" } }
-
-   CASE nWsServico == WS_MDFE_DISTRIBUICAODFE
-
-      RETURN { ;
-         { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/WS/MDFeDistribuicaoDFe/MDFeDistribuicaoDFe.asmx" } }
-
-   CASE nWsServico == WS_MDFE_RECEPCAO
-
-      RETURN { ;
-         { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" }, ;
-         { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" } }
-
-   CASE nWsServico == WS_MDFE_RECEPCAOEVENTO
-
-      RETURN { ;
-         { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" }, ;
-         { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" } }
-
-   CASE nWsServico == WS_MDFE_RETRECEPCAO
-
-      RETURN { ;
-         { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" }, ;
-         { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" } }
-
-   CASE nWsServico == WS_MDFE_STATUSSERVICO
-
-      RETURN { ;
-         { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" }, ;
-         ;
-         { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" } }
-
    ENDCASE
 
    DO CASE
-   CASE cVersao != "3.10" // este case é pra NFE 3.10
-   CASE cNFCe == "S"      // NFCE não é aqui
+   CASE cVersao == "3.10" .AND. cNFCe != "S" ; RETURN SefazSoapList310( nWsServico )
+   CASE cVersao == "3.10" .AND. cNFCe == "S" ; RETURN SefazSoapList310NFCe( nWsServico )
+   CASE cVersao == "4.00" .AND. cNFCe != "S" ; RETURN SefazSoapList40( nWsServico )
+   CASE cVersao == "4.00" .AND. cNFCe == "S" ; RETURN SefazSoapList40NFCe( nWsServico )
+   ENDCASE
+
+   RETURN {}
+
+STATIC FUNCTION SefazSoapList310( nWsServico )
+
+   DO CASE
 
    CASE nWsServico == WS_NFE_AUTORIZACAO
 
@@ -493,10 +363,13 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
 
    ENDCASE
 
+   RETURN {}
+
+STATIC FUNCTION SefazSoapList310NFCe( nWsServico )
+
    DO CASE
-   CASE cVersao != "3.10" // Este case é pra NFCE 3.10
-   CASE cNFCE != "S"      // NFCE consumidor é aqui
-   CASE nWsServico == WS_NFE_AUTORIZACAO .AND. cNFCe == "S"
+
+   CASE nWsServico == WS_NFE_AUTORIZACAO
 
       RETURN { ;
          { "PR",   "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfce.fazenda.pr.gov.br/nfce/NFeAutorizacao3" }, ;
@@ -505,7 +378,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "PR",   "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeAutorizacao3" }, ;
          { "SVRS", "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" } }
 
-   CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO .AND. cNFCe == "S"
+   CASE nWsServico == WS_NFE_CONSULTAPROTOCOLO
 
       RETURN { ;
          { "PR",   "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfce.fazenda.pr.gov.br/nfce/NFeConsulta3" }, ;
@@ -514,7 +387,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "PR",   "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeConsulta3" }, ;
          { "SVRS", "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" } }
 
-   CASE nWsServico == WS_NFE_INUTILIZACAO .AND. cNFCe == "S"
+   CASE nWsServico == WS_NFE_INUTILIZACAO
 
       RETURN { ;
          { "PR",   "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfce.fazenda.pr.gov.br/nfce/NFeInutilizacao3" }, ;
@@ -523,7 +396,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "PR",   "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeInutilizacao3" }, ;
          { "SVRS", "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfce-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" } }
 
-   CASE nWsServico == WS_NFE_RECEPCAOEVENTO .AND. cNFCe == "S"
+   CASE nWsServico == WS_NFE_RECEPCAOEVENTO
 
       RETURN { ;
          { "PR",   "1.00", WS_AMBIENTE_PRODUCAO,    "https://nfce.fazenda.pr.gov.br/nfce/NFeRecepcaoEvento" }, ;
@@ -532,7 +405,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "PR",   "1.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeRecepcaoEvento" }, ;
          { "SVRS", "1.00", WS_AMBIENTE_HOMOLOGACAO, "https://nfce-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" } }
 
-   CASE nWsServico == WS_NFE_RETAUTORIZACAO .AND. cNFCe == "S"
+   CASE nWsServico == WS_NFE_RETAUTORIZACAO
 
       RETURN { ;
          { "PR",   "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfce.fazenda.pr.gov.br/nfce/NFeRetAutorizacao3" }, ;
@@ -541,7 +414,7 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
          { "PR",   "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeRetAutorizacao3" }, ;
          { "SVRS", "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" } }
 
-   CASE nWsServico == WS_NFE_STATUSSERVICO .AND. cNFCe == "S"
+   CASE nWsServico == WS_NFE_STATUSSERVICO
 
       RETURN { ;
          { "PR",   "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfce.fazenda.pr.gov.br/nfce/NFeStatusServico3" }, ;
@@ -611,9 +484,12 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
 
    ENDCASE
 
+   RETURN {}
+
+STATIC FUNCTION SefazSoapList40( nWsServico )
+
    DO CASE
-   CASE cVersao != "4.00" // Este case é pra NFE 4.00
-   CASE cNFCe != "N"      // NFE, não consumidor
+
    CASE nWsServico == WS_NFE_AUTORIZACAO
       RETURN { ;
          { "MG", "4.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeAutorizacao4" }, ;
@@ -670,9 +546,12 @@ FUNCTION SefazSoapList( nWsServico, cNFCe, cVersao )
 
    ENDCASE
 
+   RETURN {}
+
+STATIC FUNCTION SefazSoapList40NFCe( nWsServico )
+
    DO CASE
-   CASE cVersao != "4.00" // Este case é pra NFCE 4.00
-   CASE cNFCe != "S"      // NFCE, consumidor
    ENDCASE
+   HB_SYMBOL_UNUSED( nWsServico )
 
    RETURN {}
