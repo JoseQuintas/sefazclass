@@ -63,10 +63,9 @@
 #define XML_UTF8                   [<?xml version="1.0" encoding="UTF-8"?>]
 
 #define WS_SOAP_UF          1
-#define WS_SOAP_SERVICO     2
-#define WS_SOAP_VERSAO      3
-#define WS_SOAP_SOAPACTION  4
-#define WS_SOAP_SOAPSERVICE 5
+#define WS_SOAP_VERSAO      2
+#define WS_SOAP_SOAPACTION  3
+#define WS_SOAP_SOAPSERVICE 4
 
 /*
 #define SEFAZ_STATUSLIST { ;
