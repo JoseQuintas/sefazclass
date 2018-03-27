@@ -31,12 +31,10 @@
 #define WS_NFE_DISTRIBUICAODFE       WS_NFE + 5
 #define WS_NFE_DOWNLOADNF            WS_NFE + 6
 #define WS_NFE_INUTILIZACAO          WS_NFE + 7
-#define WS_NFE_RECEPCAO              WS_NFE + 8
-#define WS_NFE_RECEPCAOEVENTO        WS_NFE + 9
-#define WS_NFE_RETAUTORIZACAO        WS_NFE + 10
-#define WS_NFE_RETRECEPCAO           WS_NFE + 11
-#define WS_NFE_STATUSSERVICO         WS_NFE + 12
-#define WS_NFE_QRCODE                WS_NFE + 13
+#define WS_NFE_RECEPCAOEVENTO        WS_NFE + 8
+#define WS_NFE_RETAUTORIZACAO        WS_NFE + 9
+#define WS_NFE_STATUSSERVICO         WS_NFE + 10
+#define WS_NFE_QRCODE                WS_NFE + 11
 
 #define WS_PROJETO_BPE               "bpe"
 #define WS_PROJETO_CTE               "cte"
