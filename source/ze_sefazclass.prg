@@ -881,9 +881,13 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    ::cProjeto := WS_PROJETO_NFE
    ::Setup( cUF, cCertificado, cAmbiente )
+   IF ::cVersao == "3.10"
    ::aSoapActionList := { ;
-      { "**", "2.00", "CadConsultaCadastro2", "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2" }, ;
+      { "**", "2.00", "CadConsultaCadastro2", "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2" } }
+   ELSE
+   ::aSoapActionList := { ;
       { "**", "4.00", "CadConsultaCadastro4", "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro" } }
+   ENDIF
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_CONSULTACADASTRO )
 
    ::cSoapVersion := "2.00"
@@ -930,12 +934,16 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cProjeto := WS_PROJETO_NFE
    ::Setup( cChave, cCertificado, cAmbiente )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
+   IF ::cVersao == "3.10"
+      ::aSoapActionList := { ;
+         { "BA", "3.10", "nfeConsultaNF", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" }, ;
+         { "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO", ;
+                 "3.10", "nfeConsultaNF2",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" }, ;
+         { "**", "3.10", "NfeConsulta2",         "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" } }
+   ELSE
    ::aSoapActionList := { ;
-      { "BA", "3.10", "nfeConsultaNF", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" }, ;
-      { "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO", ;
-              "3.10", "nfeConsultaNF2",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" }, ;
-      { "**", "3.10", "NfeConsulta2",         "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" }, ;
       { "**", "4.00", "NfeConsulta4",         "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" } }
+   ENDIF
    ::Setup( cChave, cCertificado, cAmbiente, WS_NFE_CONSULTAPROTOCOLO )
 
    ::cXmlEnvio    := [<consSitNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
@@ -986,9 +994,13 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
 
 METHOD NFeEventoSoapList() CLASS SefazClass
 
-   ::aSoapActionList := { ;
-      { "**", "3.10", "nfeRecepcaoEvento",  "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" }, ;
-      { "**", "4.00", "NfeRecepcaoEvento4", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcaoEvento" } }
+   IF ::cVersao == "3.10"
+      ::aSoapActionList := { ;
+         { "**", "3.10", "nfeRecepcaoEvento",  "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" } }
+   ELSE
+      ::aSoapActionList := { ;
+         { "**", "4.00", "NfeRecepcaoEvento4", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcaoEvento" } }
+   ENDIF
 
    RETURN NIL
 
@@ -1128,9 +1140,13 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    ::cProjeto := WS_PROJETO_NFE
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::aSoapActionList := { ;
-      { "**", "3.10", "NfeInutilizacaoNF2", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2" }, ;
-      { "**", "4.00", "Nfeinutilizacao4",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao" } }
+   IF ::cVersao == "3.10"
+      ::aSoapActionList := { ;
+         { "**", "3.10", "NfeInutilizacaoNF2", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2" } }
+   ELSE
+      ::aSoapActionList := { ;
+         { "**", "4.00", "Nfeinutilizacao4",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao" } }
+   ENDIF
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_INUTILIZACAO )
 
    ::cXmlDocumento := [<inutNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
@@ -1171,11 +1187,15 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
 
    ::cProjeto := WS_PROJETO_NFE
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::aSoapActionList := { ;
-      { "AC,AL,AP,DF,ES,PB,PR,RJ,RN,RO,RR,SC,SE,TO", ;
-              "3.10", "nfeAutorizacaoLote", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
-      { "**", "3.10", "NfeAutorizacao",     "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
-      { "**", "4.00", "NfeAutorizacao4",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" } }
+   IF ::cVersao == "3.10"
+      ::aSoapActionList := { ;
+         { "AC,AL,AP,DF,ES,PB,PR,RJ,RN,RO,RR,SC,SE,TO", ;
+                 "3.10", "nfeAutorizacaoLote", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
+         { "**", "3.10", "NfeAutorizacao",     "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" } }
+   ELSE
+      ::aSoapActionList := { ;
+         { "**", "4.00", "NfeAutorizacao4",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" } }
+   ENDIF
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_AUTORIZACAO )
 
    IF Empty( cLote )
@@ -1230,10 +1250,14 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    ::cProjeto := WS_PROJETO_NFE
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::aSoapActionList := { ;
-      { "PR", "3.10", "NfeRetAutorizacaoLote","http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao3" }, ;
-      { "**", "3.10", "NfeRetAutorizacao",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" }, ;
-      { "**", "4.00", "NfeRetAutorizacao4",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" } }
+   IF ::cVersao == "3.10"
+      ::aSoapActionList := { ;
+         { "PR", "3.10", "NfeRetAutorizacaoLote","http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao3" }, ;
+         { "**", "3.10", "NfeRetAutorizacao",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" } }
+   ELSE
+      ::aSoapActionList := { ;
+         { "**", "4.00", "NfeRetAutorizacao4",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" } }
+   ENDIF
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_RETAUTORIZACAO )
 
    ::cXmlEnvio     := [<consReciNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
@@ -1249,9 +1273,14 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::cProjeto := WS_PROJETO_NFE
-   ::aSoapActionList := { ;
-      { "**", "3.10", "nfeStatusServicoNF2", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2" }, ;
-      { "BA", "3.10", "nfeStatusServicoNF",  "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" } }
+   IF ::cVersao == "3.10"
+      ::aSoapActionList := { ;
+         { "**", "3.10", "nfeStatusServicoNF2", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2" }, ;
+         { "BA", "3.10", "nfeStatusServicoNF",  "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" } }
+   ELSE
+      ::aSoapActionList := { ;
+         { "**", "4.00", "nfeStatusServicoNF", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico4" } }
+   ENDIF
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_STATUSSERVICO )
 
    ::cXmlEnvio    := [<consStatServ versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]

@@ -211,34 +211,6 @@ STATIC FUNCTION SefazSoapList310( nWsServico )
          { "SCAN",  "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hom.nfe.fazenda.gov.br/SCAN/NfeInutilizacao2/NfeInutilizacao2.asmx" }, ;
          { "SVAN",  "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hom.sefazvirtual.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx" } }
 
-   CASE nWsServico == WS_NFE_RECEPCAO
-
-      RETURN { ;
-         { "AM",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.am.gov.br/services2/services/NfeRecepcao2" }, ;
-         { "BA",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeRecepcao2.asmx" }, ;
-         { "CE",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeRecepcao2?wsdl" }, ;
-         { "GO",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao2?wsdl" }, ;
-         { "MG",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2" }, ;
-         { "MS",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.ms.gov.br/producao/services2/NfeRecepcao2" }, ;
-         { "MT",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRecepcao2?wsdl" }, ;
-         { "PE",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao2" }, ;
-         { "PR",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe2.fazenda.pr.gov.br/nfe/NFeRecepcao2?wsdl" }, ;
-         { "SCAN",  "3.10", WS_AMBIENTE_PRODUCAO,    "https://www.scan.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx" }, ;
-         { "SVAN",  "3.10", WS_AMBIENTE_PRODUCAO,    "https://www.sefazvirtual.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx" }, ;
-         { "SCVAN", "3.10", WS_AMBIENTE_PRODUCAO,    "https://www.svc.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx" }, ;
-         ;
-         { "AM",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homnfe.sefaz.am.gov.br/services2/services/NfeRecepcao2" }, ;
-         { "BA",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeRecepcao2.asmx" }, ;
-         { "CE",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRecepcao2?wsdl" }, ;
-         { "GO",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao2?wsdl" }, ;
-         { "MG",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2" }, ;
-         { "MS",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRecepcao2" }, ;
-         { "MT",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeRecepcao2?wsdl" }, ;
-         { "PE",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao2" }, ;
-         { "PR",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRecepcao2?wsdl" }, ;
-         { "SCAN",  "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hom.nfe.fazenda.gov.br/SCAN/NfeRecepcao2/NfeRecepcao2.asmx" }, ;
-         { "SVAN",  "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hom.sefazvirtual.fazenda.gov.br/NfeRecepcao2/NfeRecepcao2.asmx" } }
-
    CASE nWsServico == WS_NFE_RECEPCAOEVENTO
 
       RETURN { ;
@@ -298,34 +270,6 @@ STATIC FUNCTION SefazSoapList310( nWsServico )
          { "RS",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
          { "SP",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx" }, ;
          { "SVRS",  "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" } }
-
-   CASE nWsServico == WS_NFE_RETRECEPCAO
-
-      RETURN { ;
-         { "AM",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.am.gov.br/services2/services/NfeRetRecepcao2" }, ;
-         { "BA",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeRetRecepcao2.asmx" }, ;
-         { "CE",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeRetRecepcao2?wsdl" }, ;
-         { "GO",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao2?wsdl" }, ;
-         { "MG",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2" }, ;
-         { "MS",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.ms.gov.br/producao/services2/NfeRetRecepcao2" }, ;
-         { "MT",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRetRecepcao2?wsdl" }, ;
-         { "PE",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao2" }, ;
-         { "PR",    "3.10", WS_AMBIENTE_PRODUCAO,    "https://nfe2.fazenda.pr.gov.br/nfe/NFeRetRecepcao2?wsdl" }, ;
-         { "SCAN",  "3.10", WS_AMBIENTE_PRODUCAO,    "https://www.scan.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx" }, ;
-         { "SVAN",  "3.10", WS_AMBIENTE_PRODUCAO,    "https://www.sefazvirtual.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx" }, ;
-         { "SCVAN", "3.10", WS_AMBIENTE_PRODUCAO,    "https://www.svc.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx" }, ;
-         ;
-         { "AM",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homnfe.sefaz.am.gov.br/services2/services/NfeRetRecepcao2" }, ;
-         { "BA",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeRetRecepcao2.asmx" }, ;
-         { "CE",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRetRecepcao2?wsdl" }, ;
-         { "GO",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao2?wsdl" }, ;
-         { "MG",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2" }, ;
-         { "MS",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRetRecepcao2" }, ;
-         { "MT",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeRetRecepcao2?wsdl" }, ;
-         { "PR",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRetRecepcao2?wsdl" }, ;
-         { "PE",    "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao2" }, ;
-         { "SCAN",  "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hom.nfe.fazenda.gov.br/SCAN/NfeRetRecepcao2/NfeRetRecepcao2.asmx" }, ;
-         { "SVAN",  "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://hom.sefazvirtual.fazenda.gov.br/NfeRetRecepcao2/NfeRetRecepcao2.asmx" } }
 
    CASE nWsServico == WS_NFE_STATUSSERVICO
 
