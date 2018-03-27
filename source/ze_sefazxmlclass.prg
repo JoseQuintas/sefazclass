@@ -75,22 +75,23 @@ METHOD Init() CLASS NfeTransporteClass
 
 CREATE CLASS NfeTotaisClass STATIC
 
-   VAR  IcmBas  INIT 0
-   VAR  IcmVal  INIT 0
-   VAR  SubBas  INIT 0
-   VAR  SubVal  INIT 0
-   VAR  IpiVal  INIT 0
-   VAR  IIVal   INIT 0
-   VAR  IssVal  INIT 0
-   VAR  PisVal  INIT 0
-   VAR  CofVal  INIT 0
-   VAR  ValPro  INIT 0
-   VAR  ValSeg  INIT 0
-   VAR  ValFre  INIT 0
-   VAR  ValDesc INIT 0 // 2018.01.23 Jackson
-   VAR  ValOut  INIT 0
-   VAR  ValNot  INIT 0
-   VAR  ValTrib INIT 0 // 2018.01.23 Jackson
+   VAR  IcmBas     INIT 0
+   VAR  IcmVal     INIT 0
+   VAR  SubBas     INIT 0
+   VAR  SubVal     INIT 0
+   VAR  IpiVal     INIT 0
+   VAR  IIVal      INIT 0
+   VAR  IssVal     INIT 0
+   VAR  PisVal     INIT 0
+   VAR  CofVal     INIT 0
+   VAR  ValPro     INIT 0
+   VAR  ValSeg     INIT 0
+   VAR  ValFre     INIT 0
+   VAR  ValDesc    INIT 0 // 2018.01.23 Jackson
+   VAR  ValOut     INIT 0
+   VAR  ValNot     INIT 0
+   VAR  ValTrib    INIT 0 // 2018.01.23 Jackson
+   VAR  VIcmsDeson INIT 0 // 2018.03.27 Jackson
 
    ENDCLASS
 
@@ -125,6 +126,7 @@ CREATE CLASS NfeIcmsClass STATIC
    VAR  Reducao  INIT 0
    VAR  Aliquota INIT 0
    VAR  Valor    INIT 0
+   VAR  VDeson   INIT 0 // Jackson 2018/03/27
 
    ENDCLASS
 
