@@ -514,10 +514,9 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          oDocSped:Produto[ nCont ]:Ipi:Aliquota    := Val( XmlNode( cBlocoIpi, "pIPI" ) )
          oDocSped:Produto[ nCont ]:Ipi:Valor       := Val( XmlNode( cBlocoIpi, "vIPI" ) )
       cBlocoIcms := XmlNode( cBlocoItem, "ICMS" )
-         IF ! Empty( XmlNode( cBlocoIcms, "CST" ) )
-            oDocSped:Produto[ nCont ]:Icms:Cst        := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CST" )
-         ELSE
-            oDocSped:Produto[ nCont ]:Icms:Cst        := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CSOSN" )
+         oDocSped:Produto[ nCont ]:Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CST" )
+         IF Empty( oDocSped:Produto[ nCont ]:Icms:Cst )
+            oDocSped:Produto[ nCont ]:Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CSOSN" )
          ENDIF
          oDocSped:Produto[ nCont ]:Icms:Base       := Val( XmlNode( cBlocoIcms, "vBC" ) )
          oDocSped:Produto[ nCont ]:Icms:Reducao    := Val( XmlNode( cBlocoIcms, "vRedBC" ) )
