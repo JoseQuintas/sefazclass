@@ -39,7 +39,7 @@ CREATE CLASS SefazClass
    VAR    cXmlDocumento   INIT ""                      // O documento oficial, com ou sem assinatura, depende do documento
    VAR    cXmlEnvio       INIT ""                      // usado pra criar/complementar XML do documento
    VAR    cXmlSoap        INIT ""                      // XML completo enviado pra Sefaz, incluindo informações do envelope
-   VAR    cXmlRetorno     INIT "Erro Desconhecido"     // Retorno do webservice e/ou rotina
+   VAR    cXmlRetorno     INIT [<erro text="*ERRO* Erro Desconhecido" />]    // Retorno do webservice e/ou rotina
    VAR    cXmlRecibo      INIT ""                      // XML recibo (obtido no envio do lote)
    VAR    cXmlProtocolo   INIT ""                      // XML protocolo (obtido no consulta recibo e/ou envio de outros docs)
    VAR    cXmlAutorizado  INIT ""                      // XML autorizado, caso tudo ocorra sem problemas
@@ -139,7 +139,7 @@ METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlEnvio +=   XmlTag( "chBPe", cChave )
    ::cXmlEnvio += [</conssitBPe>]
    IF DfeModFis( cChave ) != "63"
-      ::cXmlRetorno := "*ERRO* Chave não se refere a BPE"
+      ::cXmlRetorno := [<erro text="*ERRO* BpeConsultaProtocolo() Chave não se refere a BPE" />]
    ELSE
       ::XmlSoapPost()
    ENDIF
@@ -200,7 +200,7 @@ METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlEnvio    +=    XmlTag( "chCTe", cChave )
    ::cXmlEnvio    += [</consSitCTe>]
    IF ! DfeModFis( cChave ) $ "57,67"
-      ::cXmlRetorno := "*ERRO* Chave não se refere a CTE"
+      ::cXmlRetorno := [<erro text="*ERRO* CteConsultaProtocolo() Chave não se refere a CTE" />]
    ELSE
       ::XmlSoapPost()
    ENDIF
@@ -396,7 +396,7 @@ METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protCTe" ), "cStat" ), 3 )
    IF ! ::cStatus $ "100,101,150,301,302"
-      ::cXmlRetorno := [<Erro text="Não autorizado" />] + cXmlProtocolo
+      ::cXmlRetorno := [<erro text="*ERRO* CTEGeraAutorizado() Não autorizado" />] + cXmlProtocolo
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
@@ -417,7 +417,7 @@ METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEventoCTe" ), "cStat" ), 3 )
    ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "retEventoCTe" ), "xMotivo" ) // runner
    IF ! ::cStatus $ "135,155"
-      ::cXmlRetorno := [<Erro text="Não autorizado" />] + cXmlProtocolo
+      ::cXmlRetorno := [<erro text="*ERRO* CteGeraEventoAutorizado() Não autorizado" />] + cXmlProtocolo
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
@@ -594,7 +594,7 @@ METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlEnvio +=    XmlTag( "chMDFe", cChave )
    ::cXmlEnvio += [</consSitMDFe>]
    IF DfeModFis( cChave ) != "58"
-      ::cXmlRetorno := "*ERRO* Chave não se refere a MDFE"
+      ::cXmlRetorno := [<erro text="*ERRO* MDFEConsultaProtocolo() Chave não se refere a MDFE" />]
    ELSE
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
@@ -799,7 +799,7 @@ METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protMDFe" ), "cStat" ), 3 )
    IF ! ::cStatus $ "100,101,150,301,302"
-      ::cXmlRetorno := [<Erro text="Não autorizado" />] + ::cXmlProtocolo
+      ::cXmlRetorno := [<erro text="*ERRO* MDFEGeraAutorizado() Não autorizado" />] + ::cXmlProtocolo
       RETURN ::cXmlRetorno
    ENDIF
    ::cXmlAutorizado := XML_UTF8
@@ -820,7 +820,7 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "cStat" ), 3 )
    ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "xMotivo" ) // hb_utf8tostr()
    IF ! ::cStatus $ "135,136"
-      ::cXmlRetorno := [<Erro Text="Status inválido" />] + ::cXmlRetorno
+      ::cXmlRetorno := [<erro Text="*ERRO* MDFeGeraEventoAutorizado() Status inválido" />] + ::cXmlRetorno
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
@@ -964,7 +964,7 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlEnvio    +=    XmlTag( "chNFe", cChave )
    ::cXmlEnvio    += [</consSitNFe>]
    IF ! DfeModFis( cChave ) $ "55,65"
-      ::cXmlRetorno := "*ERRO* Chave não se refere a NFE"
+      ::cXmlRetorno := [<erro text="*ERRO* NfeConsultaProtocolo() Chave não se refere a NFE" />]
    ELSE
       ::XmlSoapPost()
    ENDIF
@@ -1316,7 +1316,7 @@ METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protNFe" ), "cStat" ), 3 ) // Pad() garante 3 caracteres
    IF ! ::cStatus $ "100,101,150,301,302"
-      ::cXmlRetorno := [<Erro text="Não autorizado" />] + ::cXmlProtocolo
+      ::cXmlRetorno := [<erro text="*ERRO* NFeGeraAutorizado() Não autorizado" />] + ::cXmlProtocolo
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
@@ -1337,7 +1337,7 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
    ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "cStat" ), 3 )
    ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "xMotivo" ) // runner
    IF ! ::cStatus $ "135,155"
-      ::cXmlRetorno := [<Erro text="Status inválido pra autorização" />] + ::cXmlRetorno
+      ::cXmlRetorno := [<erro text="*ERRO* NFEGeraEventoAutorizado() Status inválido pra autorização" />] + ::cXmlRetorno
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
@@ -1439,18 +1439,18 @@ METHOD XmlSoapPost() CLASS SefazClass
 
    DO CASE
    CASE Empty( ::cSoapURL )
-      ::cXmlRetorno := "Erro SOAP: Não há endereço de webservice"
+      ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há endereço de webservice" />]
       RETURN NIL
    CASE Empty( ::cSoapService )
-      ::cXmlRetorno := "Erro SOAP: Não há nome do serviço"
+      ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há nome do serviço" />]
       RETURN NIL
    CASE Empty( ::cSoapAction )
-      ::cXmlRetorno := "Erro SOAP: Não há endereço de SOAP Action"
+      ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há endereço de SOAP Action" />]
       RETURN NIL
    ENDCASE
    ::XmlSoapEnvelope()
    ::MicrosoftXmlSoapPost()
-   IF Upper( Left( ::cXmlRetorno, 4 ) )  == "ERRO"
+   IF "*ERRO*" $ Upper( ::cXmlRetorno )
       RETURN NIL
    ENDIF
 
@@ -1501,10 +1501,10 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    cSoapAction := ::cSoapAction
    //ENDIF
    BEGIN SEQUENCE WITH __BreakBlock()
-      ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP"
+      ::cXmlRetorno := [<erro text="*ERRO* Erro: Criando objeto MSXML2.ServerXMLHTTP" />]
 #ifdef __XHARBOUR__
       //IF ::cUF == "GO" .AND. ::cAmbiente == "2"
-      ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP.5.0"
+      ::cXmlRetorno := [<erro text="*ERRO* Erro: Criando objeto MSXML2.ServerXMLHTTP.5.0" /?]
       oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.5.0" )
       //ELSE
       //   ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP.6.0"
@@ -1513,11 +1513,11 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
 #else
       oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP" )
 #endif
-      ::cXmlRetorno := "Erro: No uso do objeto MSXML2.ServerXmlHTTP"
+      ::cXmlRetorno := [erro text="*ERRO* Erro: No uso do objeto MSXML2.ServerXmlHTTP" />]
       IF ::cCertificado != NIL
          oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
       ENDIF
-      ::cXmlRetorno := "Erro: Na conexão com webservice " + ::cSoapURL
+      ::cXmlRetorno := [erro text="*ERRO* Erro: Na conexão com webservice ] + ::cSoapURL + [" />]
       oServer:Open( "POST", ::cSoapURL, .F. )
       IF cSoapAction != NIL .AND. ! Empty( cSoapAction )
          oServer:SetRequestHeader( "SOAPAction", cSoapAction )
@@ -1543,7 +1543,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soapenv:Body" ) // hb_UTF8ToStr()
    ELSE
       // teste usando procname(2)
-      ::cXmlRetorno := "Erro SOAP: " + ProcName(2) + " XML retorno não contém soapenv:Body " + ::cXmlRetorno
+      ::cXmlRetorno := [<erro text="*ERRO* Erro SOAP: ] + ProcName(2) + [ XML retorno não contém soapenv:Body" />] + ::cXmlRetorno
    ENDIF
 
    RETURN NIL

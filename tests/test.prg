@@ -4,16 +4,24 @@ REQUEST HB_CODEPAGE_PTISO
 #include "set.ch"
 #include "hbgtinfo.ch"
 #include "directry.ch"
+#include "sefazclass.ch"
 
 #ifndef WIN_SW_SHOWNORMAL
    #define WIN_SW_SHOWNORMAL 0
 #endif
 
+MEMVAR cVersao, cCertificado, cUF, cAmbiente
+
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    LOCAL nOpc := 1, GetList := {}, cTexto := "", nOpcTemp
-   LOCAL cCnpj := Space(14), cChave := Space(44), cCertificado := "", cUF := "SP", cXmlRetorno
+   LOCAL cCnpj := Space(14), cChave := Space(44), cUF := "SP", cXmlRetorno
    LOCAL oSefaz, cXml, oDanfe, cTempFile, nHandle
+
+   cVersao      := "3.10"
+   cCertificado := ""
+   cUF          := "SP"
+   cAmbiente    := WS_AMBIENTE_HOMOLOGACAO
 
    SET DATE BRITISH
    SetupHarbour()
@@ -21,11 +29,11 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    Set( _SET_CODEPAGE, "PTISO" )
    SetColor( "W/B,N/W,,,W/B" )
 
-   ? Extenso( Date(), .T. )
-   ? Extenso( Date() )
-   ? Extenso( 545454.54 )
-   ? Extenso( 1000000 )
-   Inkey(0)
+   //? Extenso( Date(), .T. )
+   //? Extenso( Date() )
+   //? Extenso( 545454.54 )
+   //? Extenso( 1000000 )
+   //Inkey(0)
    IF cXmlDocumento != NIL
       IF File( cXmlDocumento )
          cXmlDocumento := MemoRead( cXmlDocumento )
@@ -50,10 +58,13 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       RETURN NIL
    ENDIF
 
-   oSefaz     := SefazClass():New()
-   oSefaz:cUF := "SP"
-
    DO WHILE .T.
+      oSefaz              := SefazClass():New()
+      oSefaz:cUF          := cUF
+      oSefaz:cVersao      := cVersao
+      oSefaz:cCertificado := cCertificado
+      oSefaz:cAmbiente    := cAmbiente
+
       CLS
       @ Row() + 1, 5 PROMPT "Teste Danfe"
       @ Row() + 1, 5 PROMPT "Seleciona certificado"
@@ -67,6 +78,11 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "Valida XML"
       @ Row() + 1, 5 PROMPT "Teste de assinatura"
       @ Row() + 1, 5 PROMPT "Consulta Status NFCE"
+      @ Row() + 1, 5 PROMPT "Altera 3.10/4.00"
+      @ Row() + 1, 5 PROMPT "Ambiente Produção/Homologação"
+      @ Row() + 2, 5 SAY "Versão atual:" + cVersao
+      @ Row() + 2, 5 SAY "Certificado atual:" + cCertificado
+      @ Row() + 2, 5 SAY "Ambiente atual:" + iif( cAmbiente == WS_AMBIENTE_PRODUCAO, "Producao", "Homologacao" )
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
@@ -77,13 +93,13 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          TestDanfe()
 
       CASE nOpc == nOpcTemp++
-         oSefaz:cCertificado := CapicomEscolheCertificado()
-         wapi_MessageBox( , oSefaz:cCertificado )
+         cCertificado := CapicomEscolheCertificado()
+         wapi_MessageBox( , cCertificado )
          LOOP
 
       CASE nOpc == nOpcTemp++
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
-         @ 8, 0 SAY "Qual UF:" GET oSefaz:cUF PICTURE "@!"
+         @ 8, 0 SAY "Qual UF:" GET cUF PICTURE "@!"
          READ
 
       CASE nOpc == nOpcTemp++
@@ -188,18 +204,26 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          ? oSefaz:ValidaXml( cXml, "d:\cdrom\fontes\integra\schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd" )
          Inkey(0)
 
-      CASE nOpc == nOpcTemp
+      CASE nOpc == nOpcTemp++
          oSefaz:cXmlDocumento := [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>]
          oSefaz:AssinaXml()
          ? oSefaz:cXmlRetorno
          ? oSefaz:cXmlDocumento
          Inkey(0)
-      CASE nOpc == nOpcTemp  // pra não esquecer o ++, último não tem
+
+      CASE nOpc == nOpcTemp++
          wapi_MessageBox( , "NFCE" )
          oSefaz:cNFCE := "S"
          oSefaz:NfeStatusServico()
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
+      CASE nOpc == nOpcTemp++
+         cVersao := iif( cVersao == "3.10", "4.00", "3.10" )
+
+      CASE nOpc == nOpcTemp++
+         cAmbiente := iif( cAmbiente == WS_AMBIENTE_PRODUCAO, WS_AMBIENTE_HOMOLOGACAO, WS_AMBIENTE_PRODUCAO )
+
+      CASE nOpc == nOpcTemp // pra não esquecer o ++, último não tem
       ENDCASE
    ENDDO
 
