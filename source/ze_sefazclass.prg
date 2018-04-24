@@ -128,8 +128,8 @@ METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cSoapAction  := "BpeConsulta"
    ::cSoapService := "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP"
    ::aSoapUrlList := { ;
-         { "MS",   "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
-         { "SVRS", "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.svrs.rs.gov.br/ms/bpeConsulta.asmx" }, ;
+         { "MS",   "1.00", WS_AMBIENTE_PRODUCAO, "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
+         { "SVRS", "1.00", WS_AMBIENTE_PRODUCAO, "https://bpe.svrs.rs.gov.br/ms/bpeConsulta.asmx" }, ;
          ;
          { "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.bpe.ms.gov.br/ws/BPeConsulta" } }
    ::Setup( cChave, cCertificado, cAmbiente, WS_BPE_CONSULTAPROTOCOLO )
@@ -1294,7 +1294,7 @@ METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
          { "BA", "3.10", "nfeStatusServicoNF",  "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" } }
    ELSE
       ::aSoapActionList := { ;
-         { "**", "4.00", "nfeStatusServicoNF", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico4" } }
+         { "**", "4.00", "nfeStatusServicoNF", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4" } }
    ENDIF
    ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_STATUSSERVICO )
 
