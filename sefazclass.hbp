@@ -8,7 +8,6 @@ source/ze_sefazDaMdfe.prg
 source/ze_sefazDaNfe.prg
 source/ze_sefazDaNFCe.prg
 source/ze_sefazDadfe.prg
-source/ze_sefazSoapList.prg
 source/ze_sefazxmlclass.prg
 source/ze_xmlfunc.prg
 source/ze_miscfunc.prg

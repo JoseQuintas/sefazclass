@@ -47,15 +47,12 @@ CREATE CLASS SefazClass
    VAR    cRecibo         INIT ""                      // Número do recibo
    VAR    cMotivo         INIT ""                      // Motivo constante no Recibo
    /* uso interno */
-   VAR    cSoapVersion    INIT ""                      // webservice versão XML e comunicação
    VAR    cSoapService    INIT ""                      // webservice Serviço
    VAR    cSoapAction     INIT ""                      // webservice Action
    VAR    cSoapURL        INIT ""                      // webservice Endereço
    VAR    cXmlNameSpace   INIT "xmlns="
    VAR    cNFCE           INIT "N"                     // Porque NFCE tem endereços diferentes
-   VAR    nWsServico      INIT 0
    VAR    aSoapUrlList    INIT {}
-   VAR    aSoapActionList INIT {}
 
    METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD BPeStatusServico( cUF, cCertificado, cAmbiente )
@@ -117,7 +114,7 @@ CREATE CLASS SefazClass
    METHOD UFSigla( cCodigo )                          INLINE UFSigla( cCodigo )
    METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( ::cUFTimeZone == NIL, ::cUF, ::cUFTimeZone ), lUTC )
    METHOD ValidaXml( cXml, cFileXsd )                 INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd )
-   METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico )
+   METHOD Setup( cUF, cCertificado, cAmbiente )
 
    ENDCLASS
 
@@ -125,14 +122,15 @@ METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cVersao, "1.00" )
    hb_Default( @::cProjeto, WS_PROJETO_BPE )
+   ::aSoapUrlList := { ;
+         { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
+         { "SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ms/bpeConsulta.asmx" }, ;
+         ;
+         { "MS",   "1.00H", "https://homologacao.bpe.ms.gov.br/ws/BPeConsulta" } }
+   ::Setup( cChave, cCertificado, cAmbiente )
    ::cSoapAction  := "BpeConsulta"
    ::cSoapService := "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP"
-   ::aSoapUrlList := { ;
-         { "MS",   "1.00", WS_AMBIENTE_PRODUCAO, "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
-         { "SVRS", "1.00", WS_AMBIENTE_PRODUCAO, "https://bpe.svrs.rs.gov.br/ms/bpeConsulta.asmx" }, ;
-         ;
-         { "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.bpe.ms.gov.br/ws/BPeConsulta" } }
-   ::Setup( cChave, cCertificado, cAmbiente, WS_BPE_CONSULTAPROTOCOLO )
+
    ::cXmlEnvio := [<consSitBPe> versao="] + ::cVersao + [" ] + WS_XMLNS_BPE + [>]
    ::cXmlEnvio +=   XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=   XmlTag( "xServ", "CONSULTAR" )
@@ -148,24 +146,44 @@ METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-//      ::aSoapActionList := { ;
-//      { "**", WS_BPE_RECEPCAO,          "1.00", "BpeRecepcao",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeRecepcao/bpeRecepcao" } }
-//      ::aSoapActionList := { ;
-//      { "**", WS_BPE_RECEPCAOEVENTO,    "1.00", "BpeRecepcaoEvento",    "http://www.portalfiscal.inf.br/bpe/wsdl/bpeRecepcaoEvento" } }
+      //::aSoapActionList := { ;
+      //{ "**", WS_BPE_RECEPCAO,          "1.00", "BpeRecepcao",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeRecepcao/bpeRecepcao" } }
+      //::aSoapActionList := { ;
+      //{ "**", WS_BPE_RECEPCAOEVENTO,    "1.00", "BpeRecepcaoEvento",    "http://www.portalfiscal.inf.br/bpe/wsdl/bpeRecepcaoEvento" } }
+     //::aSoapUrlList := { ;
+         //{ "MS",   "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.fazenda.ms.gov.br/ws/BPeRecepcao" }, ;
+         //{ "SVRS", "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.svrs.rs.gov.br/ws/bpeRecepcao/bpeRecepcao.asmx" }, ;
+         //;
+         //{ "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.bpe.ms.gov.br/ws/BPeRecepcao" }, ;
+         //{ "SVRS", "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://bpe-homologacao.srvs.rs.gov.br/ws/bpeRecepcao/bpeRecepcao.asmx" } }
+
+      //::aSoapUrlList := { ;
+         //{ "MS",   "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.fazenda.ms.gov.br/ws/BPeRecepcaoEvento" }, ;
+         //{ "SVRS", "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.svrs.rs.gov.br/ms/bpeRecepcaoEvento/bpeRecepcaoEvento.asmx" }, ;
+         //;
+         //{ "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.bpe.ms.gov.br/ws/BPeRecepcaoEvento" }, ;
+         //{ "SVRS", "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeRecepcaoEvento/bpeRecepcaoEvento.asmx" } }
+
+      //aSoapUrlList := { ;
+         //{ "MS",   "1.00", WS_AMBIENTE_PRODUCAO,     "http://dfe.ms.gov.br/bpe/qrcode" }, ;
+         //{ "SVRS", "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.svrs.rs.gov.br/ws/bpeQrCode/qrCode.asmx" }, ;
+         //;
+         //{ "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "http//www.dfe.ms.gov.br/bpe/qrcode" }, ;
+         //{ "SVRS", "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeQrCode/qrCode.asmx" } }
 
 METHOD BPeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cVersao, "1.00" )
    hb_Default( @::cProjeto, WS_PROJETO_BPE )
+   ::aSoapUrlList := { ;
+         { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeStatusServico" }, ;
+         { "SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ms/bpeStatusServico/bpeStatusServico.asmx" }, ;
+         ;
+         { "MS",   "1.00H", "https://homologacao.bpe.ms.gov.br/ws/BPeStatusServico" }, ;
+         { "SVRS", "1.00H", "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeStatusServico/bpeStatusServico.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "BpeStatusServicoBP"
    ::cSoapService := "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico"
-   ::aSoapUrlList := { ;
-         { "MS",   "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.fazenda.ms.gov.br/ws/BPeStatusServico" }, ;
-         { "SVRS", "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.svrs.rs.gov.br/ms/bpeStatusServico/bpeStatusServico.asmx" }, ;
-         ;
-         { "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.bpe.ms.gov.br/ws/BPeStatusServico" }, ;
-         { "SVRS", "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeStatusServico/bpeStatusServico.asmx" } }
-   ::Setup( cUF, cCertificado, cAmbiente, WS_BPE_STATUSSERVICO )
 
    ::cXmlEnvio := [<consStatServBPe versao="] + ::cVersao + [" ] + WS_XMLNS_BPE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -175,24 +193,27 @@ METHOD BPeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
+      //::aSoapUrlList := { ;
+         //{ "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CadConsultaCadastro" } }
+
 METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cVersao, "3.00" )
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   ::aSoapUrlList := { ;
+         { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteConsulta" }, ;
+         { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteConsulta" }, ;
+         { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta" }, ;
+         { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
+         { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl" }, ;
+         { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteConsulta.asmx" }, ;
+         { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" }, ;
+         ;
+         { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
+         { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" } }
+   ::Setup( cChave, cCertificado, cAmbiente )
    ::cSoapAction  := "cteConsultaCT"
    ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta"
-   ::aSoapUrlList := { ;
-         { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/CteConsulta" }, ;
-         { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteConsulta" }, ;
-         { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta" }, ;
-         { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
-         { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl" }, ;
-         { "SVSP", "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteConsulta.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" }, ;
-         ;
-         { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
-         { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" } }
-   ::Setup( cChave, cCertificado, cAmbiente, WS_CTE_CONSULTAPROTOCOLO )
 
    ::cXmlEnvio    := [<consSitCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -216,21 +237,20 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF cRecibo != NIL
       ::cRecibo := cRecibo
    ENDIF
+   ::aSoapUrlList := { ;
+      { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao" }, ;
+      { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRetRecepcao" }, ;
+      { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao" }, ;
+      { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao?wsdl" }, ;
+      { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
+      { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteRetRecepcao.asmx" }, ;
+      { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" }, ;
+      ;
+      { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
+      { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "cteRetRecepcao"
    ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao"
-   ::aSoapUrlList := { ;
-      { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao" }, ;
-      { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteRetRecepcao" }, ;
-      { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao" }, ;
-      { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao?wsdl" }, ;
-      { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
-      { "SVSP", "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteRetRecepcao.asmx" }, ;
-      { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" }, ;
-      ;
-      { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
-      { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" } }
-
-   ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_RETRECEPCAO )
 
    ::cXmlEnvio     := [<consReciCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio     +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -246,18 +266,18 @@ METHOD CTeEventoSoapList() CLASS SefazClass
 
    hb_Default( @::cVersao, "3.00" )
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   ::aSoapUrlList := { ;
+      { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/RecepcaoEvento" }, ;
+      { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRecepcaoEvento" }, ;
+      { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews2/services/CteRecepcaoEvento?wsdl" }, ;
+      { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcaoEvento?wsdl" }, ;
+      { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
+      { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" }, ;
+      ;
+      { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
+      { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" } }
    ::cSoapAction  := "cteRecepcaoEvento"
    ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento"
-   ::aSoapUrlList := { ;
-      { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/RecepcaoEvento" }, ;
-      { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteRecepcaoEvento" }, ;
-      { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews2/services/CteRecepcaoEvento?wsdl" }, ;
-      { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteRecepcaoEvento?wsdl" }, ;
-      { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
-      { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" }, ;
-      ;
-      { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
-      { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" } }
 
       RETURN NIL
 
@@ -268,7 +288,7 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    hb_Default( @nSequencia, 1 )
 
    ::CTeEventoSoapList()
-   ::Setup( cChave, cCertificado, cAmbiente, WS_CTE_RECEPCAOEVENTO )
+   ::Setup( cChave, cCertificado, cAmbiente )
 
    ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
@@ -306,7 +326,7 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
    hb_Default( @nSequencia, 1 )
 
    ::CTeEventoSoapList()
-   ::Setup( cChave, cCertificado, cAmbiente, WS_CTE_RECEPCAOEVENTO )
+   ::Setup( cChave, cCertificado, cAmbiente )
 
    ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
@@ -358,7 +378,7 @@ METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente ) C
    hb_Default( @nSequencia, 1 )
 
    ::CTeEventoSoapList()
-   ::Setup( cChave, cCertificado, cAmbiente, WS_CTE_RECEPCAOEVENTO )
+   ::Setup( cChave, cCertificado, cAmbiente )
 
    ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
@@ -435,19 +455,19 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
    hb_Default( @::cVersao, "3.00" )
+   ::aSoapUrlList := { ;
+      { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao" }, ;
+      { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteInutilizacao" }, ;
+      { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao" }, ;
+      { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao?wsdl" }, ;
+      { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
+      { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" }, ;
+      ;
+      { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
+      { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "cteInutilizacaoCT"
    ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao"
-   ::aSoapUrlList := { ;
-      { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao" }, ;
-      { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteInutilizacao" }, ;
-      { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao" }, ;
-      { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao?wsdl" }, ;
-      { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
-      { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" }, ;
-      ;
-      { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
-      { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" } }
-   ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_INUTILIZACAO )
 
    IF Len( cAno ) != 2
       cAno := Right( cAno, 2 )
@@ -490,20 +510,20 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    IF Empty( cLote )
       cLote := "1"
    ENDIF
+   ::aSoapUrlList := { ;
+      { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao" }, ;
+      { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRecepcao" }, ;
+      { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao" }, ;
+      { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl" }, ;
+      { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+      { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+      { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
+      ;
+      { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+      { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "cteRecepcaoLote"
    ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao"
-   ::aSoapUrlList := { ;
-      { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao" }, ;
-      { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteRecepcao" }, ;
-      { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao" }, ;
-      { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl" }, ;
-      { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-      { "SVSP", "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-      { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
-      ;
-      { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-      { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" } }
-   ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_RECEPCAO )
 
    IF cXml != NIL
       ::cXmlDocumento := cXml
@@ -532,20 +552,20 @@ METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cVersao, "3.00" )
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   ::aSoapUrlList := { ;
+      { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico" }, ;
+      { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico" }, ;
+      { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteStatusServico" }, ;
+      { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl" }, ;
+      { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
+      { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteStatusServico.asmx" }, ;
+      { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" }, ;
+      ;
+      { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
+      { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "cteStatusServicoCT"
    ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico"
-   ::aSoapUrlList := { ;
-      { "MG",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico" }, ;
-      { "MT",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico" }, ;
-      { "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CteStatusServico" }, ;
-      { "PR",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl" }, ;
-      { "SP",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
-      { "SVSP", "3.00", WS_AMBIENTE_PRODUCAO,    "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteStatusServico.asmx" }, ;
-      { "SVRS", "3.00", WS_AMBIENTE_PRODUCAO,    "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" }, ;
-      ;
-      { "SP",   "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
-      { "SVRS", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://cte-homologacao.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" } }
-   ::Setup( cUF, cCertificado, cAmbiente, WS_CTE_STATUSSERVICO )
 
    ::cXmlEnvio    := [<consStatServCte versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -562,9 +582,9 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
    ::cSoapAction  := "mdfeConsNaoEnc"
    ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc"
    ::aSoapUrlList := { ;
-         { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/mdfeConsNaoEnc/mdfeConsNaoenc.asmx" }, ;
-         { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsNaoEnc/MDFeConsNaoEnc.asmx" } }
-   ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_CONSNAOENC )
+         { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/mdfeConsNaoEnc/mdfeConsNaoenc.asmx" }, ;
+         { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsNaoEnc/MDFeConsNaoEnc.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
 
    ::cXmlEnvio := [<consMDFeNaoEnc versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -581,12 +601,12 @@ METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
    hb_Default( @::cVersao, "3.00" )
+   ::aSoapUrlList := { ;
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" }, ;
+      { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" } }
+   ::Setup( cChave, cCertificado, cAmbiente )
    ::cSoapAction  := "mdfeConsultaMDF"
    ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta"
-   ::aSoapUrlList := { ;
-      { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" }, ;
-      { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" } }
-   ::Setup( cChave, cCertificado, cAmbiente, WS_MDFE_CONSULTA )
 
    ::cXmlEnvio := [<consSitMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -611,13 +631,12 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
    IF cRecibo != NIL
       ::cRecibo := cRecibo
    ENDIF
-
+   ::aSoapUrlList := { ;
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" }, ;
+      { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "mdfeRetRecepcao"
    ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao"
-   ::aSoapUrlList := { ;
-      { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" }, ;
-      { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" } }
-   ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_RETRECEPCAO )
 
    ::cXmlEnvio := [<consReciMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -637,11 +656,11 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cNSU, "" )
 
-   ::cSoapAction  := "mdfeDistDFeInteresse"
-   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe"
    ::aSoapUrlList := { ;
-      { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/WS/MDFeDistribuicaoDFe/MDFeDistribuicaoDFe.asmx" } }
-   ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_DISTRIBUICAODFE )
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/WS/MDFeDistribuicaoDFe/MDFeDistribuicaoDFe.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
+   ::cSoapAction  := "mdfeDistDFeInteresse" // verificar na comunicação
+   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe"
 
    ::cXmlEnvio    := [<distDFeInt versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -670,11 +689,11 @@ METHOD MDFeEventoSoapList() CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
    hb_Default( @::cVersao, "3.00" )
+   ::aSoapUrlList := { ;
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" }, ;
+      { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" } }
    ::cSoapAction  := "mdfeRecepcaoEvento"
    ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento"
-   ::aSoapUrlList := { ;
-      { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" }, ;
-      { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" } }
 
    RETURN NIL
 
@@ -685,7 +704,7 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
    hb_Default( @nSequencia, 1 )
 
    ::MDFeEventoSoapList()
-   ::Setup( cChave, cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
+   ::Setup( cChave, cCertificado, cAmbiente )
 
    ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
@@ -721,7 +740,7 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega 
    hb_Default( @nSequencia, 1 )
 
    ::MDFeEventoSoapList()
-   ::Setup( cChave, cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
+   ::Setup( cChave, cCertificado, cAmbiente )
 
    ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
@@ -759,7 +778,7 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
    hb_Default( @nSequencia, 1 )
 
    ::MDFeEventoSoapList()
-   ::Setup( cChave, cCertificado, cAmbiente, WS_MDFE_RECEPCAOEVENTO )
+   ::Setup( cChave, cCertificado, cAmbiente )
 
    ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
@@ -838,12 +857,12 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
    hb_Default( @::cVersao, "3.00" )
+   ::aSoapUrlList := { ;
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" }, ;
+      { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "MDFeRecepcao"
    ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao"
-   ::aSoapUrlList := { ;
-      { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" }, ;
-      { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" } }
-   ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_RECEPCAO )
 
    IF cXml != NIL
       ::cXmlDocumento := cXml
@@ -872,13 +891,13 @@ METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
    hb_Default( @::cVersao, "3.00" )
+   ::aSoapUrlList := { ;
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" }, ;
+      ;
+      { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "MDFeStatusServico"
    ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF"
-   ::aSoapUrlList := { ;
-      { "**", "3.00", WS_AMBIENTE_PRODUCAO,    "https://mdfe.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" }, ;
-      ;
-      { "**", "3.00", WS_AMBIENTE_HOMOLOGACAO, "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" } }
-   ::Setup( cUF, cCertificado, cAmbiente, WS_MDFE_STATUSSERVICO )
 
    ::cXmlEnvio := [<consStatServMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -893,16 +912,56 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, "3.10" )
+   ::cSoapUrlList := { ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2?wsdl" }, ;
+      { "ES",    "3.10P", "https://app.sefaz.es.gov.br/ConsultaCadastroService/CadConsultaCadastro2.asmx" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2?wsdl" }, ;
+      { "MA",    "3.10P", "https://sistemas.sefaz.ma.gov.br/wscadastro/CadConsultaCadastro2?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/CadConsultaCadastro2" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro2" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/CadConsultaCadastro2?wsdl" }, ;
+      { "RS",    "3.10P", "https://cad.sefazrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx" }, ;
+      { "SVRS",  "3.10P", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "AC",    "3.10P", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "RN",    "3.10P", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "PB",    "3.10P", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "SC",    "3.10P", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      ;
+      { "AM",    "3.10H", "https://homnfe.sefaz.am.gov.br/services2/services/CadConsultaCadastro2" }, ;
+      { "BA",    "3.10H", "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx" }, ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2?wsdl" }, ;
+      { "ES",    "3.10H", "https://app.sefaz.es.gov.br/ConsultaCadastroService/CadConsultaCadastro2.asmx" }, ;
+      { "GO",    "3.10H", "https://homolog.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2?wsdl" }, ;
+      { "MA",    "3.10H", "https://sistemas.sefaz.ma.gov.br/wscadastro/CadConsultaCadastro2?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2" }, ;
+      { "MS",    "3.10H", "https://homologacao.nfe.ms.gov.br/homologacao/services2/CadConsultaCadastro2" }, ;
+      { "MT",    "3.10H", "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2?wsdl" }, ;
+      { "PE",    "3.10H", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/CadConsultaCadastro2?wsdl" }, ;
+      { "RS",    "3.10H", "https://cad.sefazrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx" }, ;
+      { "SVRS",  "3.10H", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "AC",    "3.10H", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "RN",    "3.10H", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "PB",    "3.10H", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "SC",    "3.10H", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      ;
+      { "SP",    "4.00P", "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" }, ;
+      ;
+      { "SP",    "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
-   ::aSoapActionList := { ;
-      { "**", "2.00", "CadConsultaCadastro2", "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2" } }
+      ::cSoapAction  := "CadConsultaCadastro2"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2"
    ELSE
-   ::aSoapActionList := { ;
-      { "**", "4.00", "CadConsultaCadastro4", "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro" } }
+      ::cSoapAction := "CadConsultaCadastro4"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro"
    ENDIF
-   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_CONSULTACADASTRO )
 
-   ::cSoapVersion := "2.00"
    ::cXmlEnvio    := [<ConsCad versao="2.00" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    [<infCons>]
    ::cXmlEnvio    +=       XmlTag( "xServ", "CONS-CAD" )
@@ -924,9 +983,14 @@ METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAm
    hb_Default( @cIndNFe, "0" )
    hb_Default( @cIndEmi, "0" )
 
-   ::aSoapActionList := { ;
-      { "**", "3.10", "nfeConsultaNFDest", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest" } }
-   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_CONSULTADEST )
+   ::aSoapUrlList := { ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx" }, ;
+      { "AN",    "3.10P", "https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx" }, ;
+      ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
+   ::cSoapAction := "nfeConsultaNFDest"
+   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest"
 
    ::cXmlEnvio    := [<consNFeDest versao="] + ::cVersao + [">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -946,17 +1010,66 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, "3.10" )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
+   ::aSoapUrlList := { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeConsulta2" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeConsulta/NfeConsulta.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeConsulta2?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/NfeConsulta2" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta2?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/NFeConsulta3?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx" }, ;
+      { "SCVAN", "3.10P", "https://www.svc.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx" }, ;
+      ;
+      { "AM",    "3.10H", "https://homnfe.sefaz.am.gov.br/services2/services/NfeConsulta2" }, ;
+      { "BA",    "3.10H", "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeConsulta2.asmx" }, ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeConsulta2?wsdl" }, ;
+      { "GO",    "3.10H", "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2" }, ;
+      { "MT",    "3.10H", "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta2?wsdl" }, ;
+      { "MS",    "3.10H", "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeConsulta2" }, ;
+      { "PE",    "3.10H", "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeConsulta3?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      { "SCAN",  "3.10H", "https://hom.nfe.fazenda.gov.br/SCAN/NfeConsulta2/NfeConsulta2.asmx" }, ;
+      { "SVAN",  "3.10H", "https://hom.sefazvirtual.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx" }, ;
+      ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeConsulta3" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeConsulta3" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      ;
+      { "MG",   "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeConsultaProtocolo4" }, ;
+      { "SP",   "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx" }, ;
+      ;
+      { "MG",   "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeConsultaProtocolo4" }, ;
+      { "SP",   "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx" } }
+   ::Setup( cChave, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
-      ::aSoapActionList := { ;
-         { "BA", "3.10", "nfeConsultaNF", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" }, ;
-         { "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO", ;
-                 "3.10", "nfeConsultaNF2",       "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" }, ;
-         { "**", "3.10", "NfeConsulta2",         "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2" } }
+      DO CASE
+      CASE ::cUF == "BA"
+         ::cSoapAction  := "nfeConsultaNF"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta"
+      CASE ::cUF $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO"
+         ::cSoapAction  := "nfeConsultaNF2"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2"
+      OTHERWISE
+         ::cSoapAction  := "NfeConsulta2"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2"
+      ENDCASE
    ELSE
-   ::aSoapActionList := { ;
-      { "**", "4.00", "NfeConsulta4",         "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta" } }
+      ::cSoapAction := "NfeConsulta4"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta"
    ENDIF
-   ::Setup( cChave, cCertificado, cAmbiente, WS_NFE_CONSULTAPROTOCOLO )
 
    ::cXmlEnvio    := [<consSitNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -982,9 +1095,11 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) 
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cNSU, "" )
 
-   ::aSoapActionList := { ;
-      { "**", "???",  "nfeDistDFeInteresse", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe" } }
-   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_DISTRIBUICAODFE )
+   ::aSoapUrlList := { ;
+      { "AN",    "3.10P", "https://www1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
+   ::cSoapAction  := "nfeDistDFeInteresse"
+   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe"
 
    ::cXmlEnvio    := [<distDFeInt versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -1008,26 +1123,71 @@ METHOD NFeEventoSoapList() CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, "3.10" )
+   ::aSoapUrlList := { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/RecepcaoEvento" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/RecepcaoEvento?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/RecepcaoEvento" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento" }, ;
+      { "PR",    "3.10P", "https://nfe2.fazenda.pr.gov.br/nfe-evento/NFeRecepcaoEvento?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx" }, ;
+      { "SCVAN", "3.10P", "https://www.svc.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx" }, ;
+      { "AN",    "3.10P", "https://www.nfe.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx" }, ;
+      ;
+      { "AM",    "3.10H", "https://homnfe.sefaz.am.gov.br/services2/services/RecepcaoEvento" }, ;
+      { "BA",    "3.10H", "https://hnfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx" }, ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento?wsdl" }, ;
+      { "GO",    "3.10H", "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcaoEvento?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento" }, ;
+      { "MS",    "3.10H", "https://homologacao.nfe.ms.gov.br/homologacao/services2/RecepcaoEvento" }, ;
+      { "MT",    "3.10H", "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento?wsdl" }, ;
+      { "PE",    "3.10H", "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeRecepcaoEvento?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      { "SVAN",  "3.10H", "https://hom.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx" }, ;
+      ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeRecepcaoEvento" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeRecepcaoEvento" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      ;
+      { "MG",   "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeRecepcaoEvento4 " }, ;
+      { "SP",   "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" }, ;
+      ;
+      { "MG",   "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeRecepcaoEvento4 " }, ;
+      { "SP",   "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" } }
    IF ::cVersao == "3.10"
-      ::aSoapActionList := { ;
-         { "**", "3.10", "nfeRecepcaoEvento",  "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento" } }
+      ::cSoapAction  := "nfeRecepcaoEvento"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"
    ELSE
-      ::aSoapActionList := { ;
-         { "**", "4.00", "NfeRecepcaoEvento4", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcaoEvento" } }
+      ::cSoapAction  := "NfeRecepcaoEvento4"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcaoEvento"
    ENDIF
 
    RETURN NIL
 
 METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS SefazClass
 
+   LOCAL cVersaoEvento
+
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, "3.10" )
    hb_Default( @nSequencia, 1 )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::NFeEventoSoapList()
-   ::Setup( cChave, cCertificado, cAmbiente, WS_NFE_RECEPCAOEVENTO )
-
-   ::cXmlDocumento := [<evento versao="] + WS_VERSAO_NFEEVENTO + [" ] + WS_XMLNS_NFE + [>]
+   ::Setup( cChave, cCertificado, cAmbiente )
+   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "4.00" )
+   ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -1036,8 +1196,8 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110110" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       XmlTag( "verEvento", WS_VERSAO_NFEEVENTO )
-   ::cXmlDocumento +=       [<detEvento versao="] + WS_VERSAO_NFEEVENTO + [">]
+   ::cXmlDocumento +=       XmlTag( "verEvento", cVersaoEvento )
+   ::cXmlDocumento +=       [<detEvento versao="] + cVersaoEvento + [">]
    ::cXmlDocumento +=          XmlTag( "descEvento", "Carta de Correcao" )
    ::cXmlDocumento +=          XmlTag( "xCorrecao", cTexto )
    ::cXmlDocumento +=          [<xCondUso>]
@@ -1053,7 +1213,7 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := [<envEvento versao="] + WS_VERSAO_NFEEVENTO + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+      ::cXmlEnvio := [<envEvento versao="] + cVersaoEvento + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
       ::cXmlEnvio +=    XmlTag( "idLote", DfeNumero( cChave ) ) // usado numero da nota
       ::cXmlEnvio +=    ::cXmlDocumento
       ::cXmlEnvio += [</envEvento>]
@@ -1066,14 +1226,17 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
 
 METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
+   LOCAL cVersaoEvento
+
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, "3.10" )
    hb_Default( @nSequencia, 1 )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::NFeEventoSoapList()
-   ::Setup( cChave, cCertificado, cAmbiente, WS_NFE_RECEPCAOEVENTO )
+   ::Setup( cChave, cCertificado, cAmbiente )
+   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "4.00" )
 
-   ::cXmlDocumento := [<evento versao="] + WS_VERSAO_NFEEVENTO + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -1082,8 +1245,8 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       XmlTag( "verEvento", WS_VERSAO_NFEEVENTO )
-   ::cXmlDocumento +=       [<detEvento versao="] + WS_VERSAO_NFEEVENTO + [">]
+   ::cXmlDocumento +=       XmlTag( "verEvento", cVersaoEvento )
+   ::cXmlDocumento +=       [<detEvento versao="] + cVersaoEvento + [">]
    ::cXmlDocumento +=          XmlTag( "descEvento", "Cancelamento" )
    ::cXmlDocumento +=          XmlTag( "nProt", Ltrim( Str( nProt ) ) )
    ::cXmlDocumento +=          XmlTag( "xJust", xJust )
@@ -1091,7 +1254,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := [<envEvento versao="] + WS_VERSAO_NFEEVENTO + [" ] + WS_XMLNS_NFE + [>]
+      ::cXmlEnvio := [<envEvento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
       ::cXmlEnvio +=    XmlTag( "idLote", DfeNumero( cChave ) ) // usado numero da nota
       ::cXmlEnvio +=    ::cXmlDocumento
       ::cXmlEnvio += [</envEvento>]
@@ -1104,14 +1267,15 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
 METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL cDescEvento
+   LOCAL cDescEvento, cVersaoEvento
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, "3.10" )
    hb_Default( @nSequencia, 1 )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::NFeEventoSoapList()
-   ::Setup( cChave, cCertificado, cAmbiente, WS_NFE_RECEPCAOEVENTO )
+   ::Setup( cChave, cCertificado, cAmbiente )
+   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "4.00" )
 
    DO CASE
    CASE cCodigoEvento == "210200" ; cDescEvento := "Confirmacao da Operacao"
@@ -1120,7 +1284,7 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
    CASE cCodigoEvento == "210240" ; cDescEvento := "Operacao Nao Realizada"
    ENDCASE
 
-   ::cXmlDocumento := [<evento versao="] + WS_VERSAO_NFEEVENTO + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cCodigoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -1129,8 +1293,8 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", cCodigoEvento )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", StrZero( 1, 2 ) )
-   ::cXmlDocumento +=       XmlTag( "verEvento", WS_VERSAO_NFEEVENTO )
-   ::cXmlDocumento +=       [<detEvento versao="] + WS_VERSAO_NFEEVENTO + [">]
+   ::cXmlDocumento +=       XmlTag( "verEvento", cVersaoEvento )
+   ::cXmlDocumento +=       [<detEvento versao="] + cVersaoEvento + [">]
    ::cXmlDocumento +=          XmlTag( "descEvento", cDescEvento )
    IF cCodigoEvento == "210240"
       ::cXmlDocumento +=          XmlTag( "xJust", xJust )
@@ -1139,7 +1303,7 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := [<envEvento versao="] + WS_VERSAO_NFEEVENTO + [" ] + WS_XMLNS_NFE + [>]
+      ::cXmlEnvio := [<envEvento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
       ::cXmlEnvio +=    XmlTag( "idLote", DfeNumero( cChave ) ) // usado numero da nota
       ::cXmlEnvio +=    ::cXmlDocumento
       ::cXmlEnvio += [</envEvento>]
@@ -1154,14 +1318,56 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, "3.10" )
+   ::aSoapUrlList := { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeInutilizacao2" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeInutilizacao/NfeInutilizacao.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeInutilizacao2?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/NfeInutilizacao2" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao2?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/NFeInutilizacao3?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao2.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx" }, ;
+      ;
+      { "AM",    "3.10H", "https://homnfe.sefaz.am.gov.br/services2/services/NfeInutilizacao2" }, ;
+      { "BA",    "3.10H", "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeInutilizacao2.asmx" }, ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeInutilizacao2?wsdl" }, ;
+      { "GO",    "3.10H", "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2" }, ;
+      { "MS",    "3.10H", "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeInutilizacao2" }, ;
+      { "MT",    "3.10H", "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao2?wsdl" }, ;
+      { "PE",    "3.10H", "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeInutilizacao3?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao2.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      { "SCAN",  "3.10H", "https://hom.nfe.fazenda.gov.br/SCAN/NfeInutilizacao2/NfeInutilizacao2.asmx" }, ;
+      { "SVAN",  "3.10H", "https://hom.sefazvirtual.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx" }, ;
+      ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeInutilizacao3" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeInutilizacao3" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      ;
+      { "MG", "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeInutilizacao4" }, ;
+      { "SP", "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" }, ;
+      ;
+      { "MG", "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeInutilizacao4" }, ;
+      { "SP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
-      ::aSoapActionList := { ;
-         { "**", "3.10", "NfeInutilizacaoNF2", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2" } }
+      ::cSoapAction  := "NfeInutilizacaoNF2"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2"
    ELSE
-      ::aSoapActionList := { ;
-         { "**", "4.00", "Nfeinutilizacao4",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao" } }
+      ::cSoapAction  := "Nfeinutilizacao4"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao"
    ENDIF
-   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_INUTILIZACAO )
 
    ::cXmlDocumento := [<inutNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + Right( cAno, 2 ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
@@ -1201,16 +1407,54 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
    hb_Default( @::cVersao, "3.10" )
    hb_Default( @cIndSinc, ::cIndSinc )
 
+   ::aSoapUrlList := { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeAutorizacao" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeAutorizacao/NfeAutorizacao.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeAutorizacao?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeAutorizacao?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/NfeAutorizacao" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeAutorizacao?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeAutorizacao?wsdl" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/NFeAutorizacao3?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx" }, ;
+      { "SCVAN", "3.10P", "https://www.svc.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx" }, ;
+      ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeAutorizacao?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeAutorizacao3?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+   ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeAutorizacao3" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeAutorizacao3" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+   ;
+      { "MG", "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeAutorizacao4" }, ;
+      { "SP", "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" }, ;
+      ;
+      { "MG", "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeAutorizacao4" }, ;
+      { "SP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
-      ::aSoapActionList := { ;
-         { "AC,AL,AP,DF,ES,PB,PR,RJ,RN,RO,RR,SC,SE,TO", ;
-                 "3.10", "nfeAutorizacaoLote", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" }, ;
-         { "**", "3.10", "NfeAutorizacao",     "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" } }
+      IF ::cUF $ "AC,AL,AP,DF,ES,PB,PR,RJ,RN,RO,RR,SC,SE,TO"
+         ::cSoapAction := "nfeAutorizacaoLote"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao"
+      ELSE
+         ::cSoapAction := "NfeAutorizacao"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao"
+      ENDIF
    ELSE
-      ::aSoapActionList := { ;
-         { "**", "4.00", "NfeAutorizacao4",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao" } }
+      ::cSoapAction  := "NfeAutorizacao4"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao"
    ENDIF
-   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_AUTORIZACAO )
 
    IF Empty( cLote )
       cLote := "1"
@@ -1264,15 +1508,55 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
       ::cRecibo := cRecibo
    ENDIF
 
+   ::aSoapUrlList := { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeRetAutorizacao" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeRetAutorizacao/NfeRetAutorizacao.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeRetAutorizacao?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRetAutorizacao?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/NfeRetAutorizacao" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRetAutorizacao?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetAutorizacao?wsdl" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/NFeRetAutorizacao3?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx" }, ;
+      { "SCVAN", "3.10P", "https://www.svc.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx" }, ;
+      ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRetAutorizacao?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeRetAutorizacao3?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeRetAutorizacao3" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeRetAutorizacao3" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      ;
+      { "MG", "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeRetAutorizacao4" }, ;
+      { "SP", "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao4.asmx" }, ;
+      ;
+      { "MG", "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeRetAutorizacao4" }, ;
+      { "SP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao4.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
-      ::aSoapActionList := { ;
-         { "PR", "3.10", "NfeRetAutorizacaoLote","http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao3" }, ;
-         { "**", "3.10", "NfeRetAutorizacao",    "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" } }
+      DO CASE
+      CASE ::cUF == "PR"
+         ::cSoapAction  := "NfeRetAutorizacaoLote"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao3"
+      OTHERWISE
+         ::cSoapAction  := "NfeRetAutorizacao"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
+      ENDCASE
    ELSE
-      ::aSoapActionList := { ;
-         { "**", "4.00", "NfeRetAutorizacao4",   "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao" } }
+      ::cSoapAction  := "NfeRetAutorizacao4"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
    ENDIF
-   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_RETAUTORIZACAO )
 
    ::cXmlEnvio     := [<consReciNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio     +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -1288,15 +1572,63 @@ METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, "3.10" )
+   ::aSoapUrlList := { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeStatusServico2" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/NfeStatusServico2" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico2?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/NFeStatusServico3?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/nfeStatusServico/NfeStatusServico2.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx" }, ;
+      { "SCVAN", "3.10P", "https://www.svc.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx" }, ;
+      ;
+      { "AM",    "3.10H", "https://homnfe.sefaz.am.gov.br/services2/services/NfeStatusServico2" }, ;
+      { "BA",    "3.10H", "https://hnfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx" }, ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2?wsdl" }, ;
+      { "GO",    "3.10H", "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatusServico2" }, ;
+      { "MS",    "3.10H", "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeStatusServico2" }, ;
+      { "MT",    "3.10H", "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico2?wsdl" }, ;
+      { "PE",    "3.10H", "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeStatusServico3?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" }, ;
+      { "SCAN",  "3.10H", "https://hom.nfe.fazenda.gov.br/SCAN/NfeStatusServico2/NfeStatusServico2.asmx" }, ;
+      { "SVAN",  "3.10H", "https://hom.sefazvirtual.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx" }, ;
+      ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeStatusServico3" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeStatusServico3" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" }, ;
+      ;
+      { "MG", "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeStatusServico4" }, ;
+      { "SP", "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx" }, ;
+      ;
+      { "MG", "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeStatusServico4" }, ;
+      { "SP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx" } }
+   ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
-      ::aSoapActionList := { ;
-         { "**", "3.10", "nfeStatusServicoNF2", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2" }, ;
-         { "BA", "3.10", "nfeStatusServicoNF",  "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico" } }
+      DO CASE
+      CASE ::cUF == "BA"
+         ::cSoapAction  := "nfeStatusServicoNF"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico"
+      OTHERWISE
+         ::cSoapAction  := "nfeStatusServicoNF2"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2"
+      ENDCASE
    ELSE
-      ::aSoapActionList := { ;
-         { "**", "4.00", "nfeStatusServicoNF", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4" } }
+      ::cSoapAction  := "nfeStatusServicoNF"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4"
    ENDIF
-   ::Setup( cUF, cCertificado, cAmbiente, WS_NFE_STATUSSERVICO )
 
    ::cXmlEnvio    := [<consStatServ versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -1329,8 +1661,12 @@ METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
 METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass // runner
 
+   LOCAL cVersaoEvento
+
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, "3.10" )
+   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "4.00" )
+
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
@@ -1341,9 +1677,9 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
-   ::cXmlAutorizado += [<procEventoNFe versao="] + WS_VERSAO_NFEEVENTO + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlAutorizado += [<procEventoNFe versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlAutorizado +=    cXmlAssinado
-   ::cXmlAutorizado += [<retEvento versao="] + WS_VERSAO_NFEEVENTO + [">]
+   ::cXmlAutorizado += [<retEvento versao="] + cVersaoEvento + [">]
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEvento" ) // hb_UTF8ToStr()
    ::cXmlAutorizado += [</retEvento>] // runner
    ::cXmlAutorizado += [</procEventoNFe>]
@@ -1351,85 +1687,67 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
 
    RETURN NIL
 
-METHOD Setup( cUF, cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
-
-   LOCAL nPos
+METHOD Setup( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    DO CASE
    CASE cUF == NIL
    CASE Len( SoNumeros( cUF ) ) != 0
       ::cUF := ::UFSigla( Left( cUF, 2 ) )
    OTHERWISE
-      ::cUF    := cUF
+      ::cUF := cUF
    ENDCASE
    ::cCertificado := iif( cCertificado == NIL, ::cCertificado, cCertificado )
    ::cAmbiente    := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
 
-   ::nWsServico := nWsServico
-
-   // define o restante
-   IF ::cNFCE != "S" .AND. ; // NFCE é igual pra todas as UFs?
-        ( nPos := AScan( ::aSoapActionList, { | oElement | ;
-        ::cUF $ oElement[ WS_SOAP_UF ] .AND. ;
-        oElement[ WS_SOAP_VERSAO ] == ::cVersao } ) ) != 0
-      ::cSoapAction  := ::aSoapActionList[ nPos, WS_SOAP_SOAPACTION ]
-      ::cSoapService := ::aSoapActionList[ nPos, WS_SOAP_SOAPSERVICE ]
-   ELSEIF ( nPos := AScan( ::aSoapActionList, { | oElement | ;
-         oElement[ WS_SOAP_UF ] == "**" .AND. ;
-         oElement[ WS_SOAP_VERSAO ] == ::cVersao } ) ) != 0
-      ::cSoapAction  := ::aSoapActionList[ nPos, WS_SOAP_SOAPACTION ]
-      ::cSoapService := ::aSoapActionList[ nPos, WS_SOAP_SOAPSERVICE ]
-   ENDIF
    ::SetSoapURL()
 
    RETURN NIL
 
 METHOD SetSoapURL() CLASS SefazClass
 
-   LOCAL nWsServico, cAmbiente, cUF, cProjeto, cNFCe, cScan, cVersao
+   LOCAL cAmbiente, cUF, cProjeto, cNFCe, cScan, cVersao
 
    ::cSoapURL := ""
-   nWsServico := ::nWsServico
    cAmbiente  := ::cAmbiente
    cUF        := ::cUF
    cProjeto   := ::cProjeto
    cNFCE      := ::cNFCE
    cScan      := ::cScan
-   cVersao    := ::cVersao
+   cVersao    := ::cVersao + iif( cAmbiente == WS_AMBIENTE_PRODUCAO, "P", "H" )
    DO CASE
    CASE cProjeto == WS_PROJETO_BPE
-      ::cSoapUrl := SoapUrlBpe( ::aSoapUrlList, cUF, cAmbiente, nWsServico, cVersao, @::cSoapVersion )
+      ::cSoapUrl := SoapUrlBpe( ::aSoapUrlList, cUF, cVersao )
    CASE cProjeto == WS_PROJETO_CTE
       IF cScan == "SVCAN"
          IF cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
-            ::cSoapURL := SoapURLCTe( ::aSoapUrlList, "SVSP", cAmbiente, nWsServico, cVersao, @::cSoapVersion ) // SVC_SP não existe
+            ::cSoapURL := SoapURLCTe( ::aSoapUrlList, "SVSP", cVersao ) // SVC_SP não existe
          ELSEIF cUF $ "MS,MT,SP," + "AP,PE,RR"
-            ::cSoapURL := SoapUrlCTe( ::aSoapUrlList, "SVRS", cAmbiente, nWsServico, cVersao, @::CSoapVersion ) // SVC_RS não existe
+            ::cSoapURL := SoapUrlCTe( ::aSoapUrlList, "SVRS", cVersao ) // SVC_RS não existe
          ENDIF
       ELSE
-         ::cSoapUrl := SoapUrlCTe( ::aSoapUrlList, cUF, cAmbiente, nWsServico, cVersao, @::cSoapVersion )
+         ::cSoapUrl := SoapUrlCTe( ::aSoapUrlList, cUF, cVersao )
       ENDIF
    CASE cProjeto == WS_PROJETO_MDFE
-      ::cSoapURL := SoapURLMDFe( ::aSoapUrlList, "SVRS", cAmbiente, nWsServico, cVersao, @::cSoapVersion )
+      ::cSoapURL := SoapURLMDFe( ::aSoapUrlList, "SVRS", cVersao )
    CASE cProjeto == WS_PROJETO_NFE
       DO CASE
       CASE cNFCe == "S"
-         ::cSoapUrl := SoapUrlNFCe( cUF, cAmbiente, nWsServico, cVersao, @::cSoapVersion )
+         ::cSoapUrl := SoapUrlNFCe( ::aSoapUrlList, cUF, cVersao )
          IF Empty( ::cSoapUrl )
-            ::cSoapUrl := SoapUrlNfe( cUF, cAmbiente, nWsServico, cVersao, @::cSoapVersion )
+            ::cSoapUrl := SoapUrlNfe( ::aSoapUrlList, cUF, cVersao )
          ENDIF
       CASE cScan == "SCAN"
-         ::cSoapURL := SoapUrlNFe( "SCAN", cAmbiente, nWsServico, cVersao, @::cSoapVersion )
+         ::cSoapURL := SoapUrlNFe( ::aSoapUrlList, "SCAN", cVersao )
       CASE cScan == "SVAN"
-         ::cSoapUrl := SoapUrlNFe( "SVAN", cAmbiente, nWsServico, cVersao, @::cSoapVersion )
+         ::cSoapUrl := SoapUrlNFe( ::aSoapUrlList, "SVAN", cVersao )
       CASE cScan == "SVCAN"
          IF cUF $ "AM,BA,CE,GO,MA,MS,MT,PA,PE,PI,PR"
-            ::cSoapURL := SoapURLNfe( "SVRS", cAmbiente, nWsServico, cVersao, @::cSoapVersion ) // svc-rs não existe
+            ::cSoapURL := SoapURLNfe( ::aSoapUrlList, "SVRS", cVersao ) // svc-rs não existe
          ELSE
-            ::cSoapURL := SoapUrlNFe( "SVAN", cAmbiente, nWsServico, cVersao, @::cSoapVersion ) // svc-an não existe
+            ::cSoapURL := SoapUrlNFe( ::aSoapUrlList, "SVAN", cVersao ) // svc-an não existe
          ENDIF
       OTHERWISE
-         ::cSoapUrl := SoapUrlNfe( cUF, cAmbiente, nWsServico, cVersao, @::cSoapVersion )
+         ::cSoapUrl := SoapUrlNfe( ::aSoapUrlList, cUF, cVersao )
       ENDCASE
    ENDCASE
 
@@ -1462,19 +1780,24 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
       [xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ] + ;
       [xmlns:xsd="http://www.w3.org/2001/XMLSchema" ] + ;
       [xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"]
+   LOCAL cSoapVersion
 
+   cSoapVersion := ::cVersao
+   IF "CadConsultaCadastro" $ ::cSoapAction
+      cSoapVersion := "2.00"
+   ENDIF
    ::cXmlSoap    := XML_UTF8
    ::cXmlSoap    += [<soap12:Envelope ] + cXmlns + [>]
-   IF ::nWsServico != WS_MDFE_DISTRIBUICAODFE // ! ( ::cProjeto == WS_PROJETO_NFE .AND. ::cVersao == "4.00" )
+   IF ::cSoapAction != "nfeDistDFeInteresse"
       ::cXmlSoap +=    [<soap12:Header>]
       ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
       ::cXmlSoap +=          [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
-      ::cXmlSoap +=          [<versaoDados>] + ::cSoapVersion + [</versaoDados>]
+      ::cXmlSoap +=          [<versaoDados>] + cSoapVersion + [</versaoDados>]
       ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
       ::cXmlSoap +=    [</soap12:Header>]
    ENDIF
    ::cXmlSoap    +=    [<soap12:Body>]
-   IF ::nWsServico == WS_MDFE_DISTRIBUICAODFE
+   IF ::cSoapAction == "nfeDistDFeInteresse"
       ::cXmlSoap += [<nfeDistDFeInteresse xmlns="] + ::cSoapService + [">]
       ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
    ELSE
@@ -1482,7 +1805,7 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ENDIF
    ::cXmlSoap    += ::cXmlEnvio
    ::cXmlSoap    +=    [</] + ::cProjeto + [DadosMsg>]
-   IF ::nWsServico == WS_MDFE_DISTRIBUICAODFE
+   IF ::cSoapAction == "nfeDistDFeInteresse"
       ::cXmlSoap += [</nfeDistDFeInteresse>]
    ENDIF
    ::cXmlSoap    +=    [</soap12:Body>]
@@ -1796,92 +2119,79 @@ METHOD CurlSoapPost() CLASS SefazClass
    RETURN NIL
 #endif
 
-STATIC FUNCTION SoapUrlBpe( aSoapList, cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
+STATIC FUNCTION SoapUrlBpe( aSoapList, cUF, cVersao )
 
    LOCAL nPos, cUrl
 
-   nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 3 ] } )
+   nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
    IF nPos != 0
-      cUrl         := aSoapList[ nPos, 4 ]
-      cSoapVersion := aSoapList[ nPos, 2 ]
+      cUrl := aSoapList[ nPos, 3 ]
    ENDIF
-   HB_SYMBOL_UNUSED( nWsServico + cVersao )
+
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlNfe( cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
+STATIC FUNCTION SoapUrlNfe( aSoapList, cUF, cVersao )
 
-   LOCAL nPos,cUrl, aList
+   LOCAL nPos, cUrl
 
-   aList :=  SefazSoapList( nWsServico, "N", cVersao )
-
-   nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 3 ] } )
+   nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
    IF nPos != 0
-      cUrl         := aList[ nPos, 4 ]
-      cSoapVersion := aList[ nPos, 2 ]
-   ENDIF
-   IF nWsServico == WS_NFE_CONSULTACADASTRO .AND. cUF $ "AC,RN,PB,SC"
-      cUrl := SoapUrlNfe( "SVRS", cAmbiente, nWsServico, cVersao, @cSoapVersion )
+      cUrl := aSoapList[ nPos, 3 ]
    ENDIF
    DO CASE
    CASE ! Empty( cUrl )
    CASE cUf $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO"
-      cURL := SoapURLNFe( "SVRS", cAmbiente, nWsServico, cVersao, @cSoapVersion )
+      cURL := SoapURLNFe( aSoapList, "SVRS", cVersao )
    CASE cUf $ "MA,PA,PI"
-      cURL := SoapUrlNFe( "SVAN", cAmbiente, nWsServico, cVersao, @cSoapVersion )
+      cURL := SoapUrlNFe( aSoapList, "SVAN", cVersao )
    ENDCASE
 
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlCte( aSoapList, cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
+STATIC FUNCTION SoapUrlCte( aSoapList, cUF, cVersao )
 
    LOCAL nPos, cUrl
 
-   nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 3 ] } )
+   nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
    IF nPos != 0
-      cUrl         := aSoapList[ nPos, 4 ]
-      cSoapVersion := aSoapList[ nPos, 2 ]
+      cUrl := aSoapList[ nPos, 3 ]
    ENDIF
    IF Empty( cUrl )
       IF cUF $ "AP,PE,RR"
-         cUrl := SoapUrlCTe( aSoapList, "SVSP", cAmbiente, nWsServico, cVersao, @cSoapVersion )
+         cUrl := SoapUrlCTe( aSoapList, "SVSP", cVersao )
       ELSEIF cUF $ "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
-         cUrl := SoapUrlCTe( aSoapList, "SVRS", cAmbiente, nWsServico, cVersao, @cSoapVersion )
+         cUrl := SoapUrlCTe( aSoapList, "SVRS", cVersao )
       ENDIF
    ENDIF
 
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlMdfe( aSoapList, cUF, cAmbiente, nWsServico, cVersao, cSoapVersion )
+STATIC FUNCTION SoapUrlMdfe( aSoapList, cUF, cVersao )
 
    LOCAL cUrl, nPos
 
-   nPos := AScan( aSoapList, { | e | cAmbiente == e[ 3 ] } )
+   nPos := AScan( aSoapList, { | e | cVersao == e[ 2 ] } )
    IF nPos != 0
-      cUrl         := aSoapList[ nPos, 4 ]
-      cSoapVersion := aSoapList[ nPos, 2 ]
+      cUrl := aSoapList[ nPos, 3 ]
    ENDIF
-
-   HB_SYMBOL_UNUSED( cUF + nWsServico + cVersao )
+   HB_SYMBOL_UNUSED( cUF )
 
    RETURN cUrl
 
-STATIC FUNCTION SoapUrlNFCe( cUf, cAmbiente, nWsServico, cVersao, cSoapVersion )
+STATIC FUNCTION SoapUrlNFCe( aSoapList, cUf, cVersao )
 
-   LOCAL cUrl, nPos, aList
-
-   aList := SefazSoapList( nWsServico, "S", cVersao )
+   LOCAL cUrl, nPos
 
    IF cUF $ "AC,RR"
-      cUrl := SoapUrlNFCe( "SVRS", cAmbiente, nWsServico, cVersao, @cSoapVersion )
+      cUrl := SoapUrlNFCe( aSoapList, "SVRS", cVersao  )
    ELSE
-      nPos := AScan( aList, { | e | cUF == e[ 1 ] .AND. cAmbiente == e[ 3 ] } )
+      nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao + "C" == e[ 2 ] } )
       IF nPos != 0
-         cUrl         := aList[ nPos, 4 ]
-         cSoapVersion := aList[ nPos, 2 ]
+         cUrl := aSoapList[ nPos, 3 ]
       ENDIF
    ENDIF
    IF Empty( cUrl )
-      cUrl := SoapUrlNFe( cUF, cAmbiente, nWsServico, cVersao, @cSoapVersion )
+      cUrl := SoapUrlNFe( aSoapList, cUF, cVersao )
    ENDIF
 
    RETURN cUrl
@@ -1892,12 +2202,71 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
    LOCAL QRCODE_cDest, QRCODE_dhEmi, QRCODE_vNF, QRCODE_vICMS, QRCODE_digVal
    LOCAL QRCODE_cIdToken, QRCODE_cCSC, QRCODE_cHash
    LOCAL cInfNFe, cSignature, cAmbiente, cUF, nPos
-   LOCAL aList
+   LOCAL aUrlList
 
    hb_Default( @cIdToken, StrZero( 0, 6 ) )
    hb_Default( @cCsc, StrZero( 0, 36 ) )
 
-   aList := SefazSoapList( WS_NFE_QRCODE, "S", cVersao )
+   IF cVersao == "3.10"
+      aUrlList := { ;
+         { "AC", "3.10", WS_AMBIENTE_PRODUCAO,    "http://www.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
+         { "AL", "3.10", WS_AMBIENTE_PRODUCAO,    "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?" }, ;
+         { "AP", "3.10", WS_AMBIENTE_PRODUCAO,    "https://www.sefaz.ap.gov.br/nfce/nfcep.php?" }, ;
+         { "AM", "3.10", WS_AMBIENTE_PRODUCAO,    "http://sistemas.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp?" }, ;
+         { "BA", "3.10", WS_AMBIENTE_PRODUCAO,    "http://nfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
+         { "CE", "3.10", WS_AMBIENTE_PRODUCAO,    "http://nfce.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
+         { "DF", "3.10", WS_AMBIENTE_PRODUCAO,    "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
+         { "ES", "3.10", WS_AMBIENTE_PRODUCAO,    "http://app.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?" }, ;
+         { "GO", "3.10", WS_AMBIENTE_PRODUCAO,    "http://nfe.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
+         { "MA", "3.10", WS_AMBIENTE_PRODUCAO,    "http://www.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp?" }, ;
+         { "MT", "3.10", WS_AMBIENTE_PRODUCAO,    "http://www.sefaz.mt.gov.br/nfce/consultanfce?" }, ;
+         { "MS", "3.10", WS_AMBIENTE_PRODUCAO,    "http://www.dfe.ms.gov.br/nfce/qrcode?" }, ;
+         { "MG", "3.10", WS_AMBIENTE_PRODUCAO,    "" }, ;
+         { "PA", "3.10", WS_AMBIENTE_PRODUCAO,    "https://appnfc.sefa.pa.gov.br/portal/view/consultas/nfce/nfceForm.seam?" }, ;
+         { "PB", "3.10", WS_AMBIENTE_PRODUCAO,    "http://www.receita.pb.gov.br/nfce?" }, ;
+         { "PR", "3.10", WS_AMBIENTE_PRODUCAO,    "http://www.dfeportal.fazenda.pr.gov.br/dfe-portal/rest/servico/consultaNFCe?" }, ;
+         { "PE", "3.10", WS_AMBIENTE_PRODUCAO,    "http://nfce.sefaz.pe.gov.br/nfce-web/consultarNFCe?" }, ;
+         { "PI", "3.10", WS_AMBIENTE_PRODUCAO,    "http://webas.sefaz.pi.gov.br/nfceweb/consultarNFCe.jsf?" }, ;
+         { "RJ", "3.10", WS_AMBIENTE_PRODUCAO,    "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode?" }, ;
+         { "RN", "3.10", WS_AMBIENTE_PRODUCAO,    "http://nfce.set.rn.gov.br/consultarNFCe.aspx?" }, ;
+         { "RS", "3.10", WS_AMBIENTE_PRODUCAO,    "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?" }, ;
+         { "RO", "3.10", WS_AMBIENTE_PRODUCAO,    "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp?" }, ;
+         { "RR", "3.10", WS_AMBIENTE_PRODUCAO,    "https://www.sefaz.rr.gov.br/nfce/servlet/qrcode?" }, ;
+         { "SC", "3.10", WS_AMBIENTE_PRODUCAO,    "" }, ;
+         { "SP", "3.10", WS_AMBIENTE_PRODUCAO,    "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx?" }, ;
+         { "SE", "3.10", WS_AMBIENTE_PRODUCAO,    "http://www.nfce.se.gov.br/portal/consultarNFCe.jsp?" }, ;
+         { "TO", "3.10", WS_AMBIENTE_PRODUCAO,    "" }, ;
+         ;
+         { "AC", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://www.hml.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
+         { "AL", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?" }, ;
+         { "AP", "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://www.sefaz.ap.gov.br/nfcehml/nfce.php?" }, ;
+         { "AM", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://homnfce.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp?" }, ;
+         { "BA", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://hnfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
+         { "CE", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://nfceh.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
+         { "DF", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
+         { "ES", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://homologacao.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?" }, ;
+         { "GO", "3.10", WS_AMBIENTE_HOMOLOGACAO, "" }, ;
+         { "MA", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://www.hom.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp?" }, ;
+         { "MT", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://homologacao.sefaz.mt.gov.br/nfce/consultanfce?" }, ;
+         { "MS", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://www.dfe.ms.gov.br/nfce/qrcode?" }, ;
+         { "MG", "3.10", WS_AMBIENTE_HOMOLOGACAO, "" }, ;
+         { "PA", "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://appnfc.sefa.pa.gov.br/portal-homologacao/view/consultas/nfce/nfceForm.seam" }, ;
+         { "PB", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://www.receita.pb.gov.br/nfcehom" }, ;
+         { "PR", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://www.dfeportal.fazenda.pr.gov.br/dfe-portal/rest/servico/consultaNFCe?" }, ;
+         { "PE", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://nfcehomolog.sefaz.pe.gov.br/nfce-web/consultarNFCe?" }, ;
+         { "PI", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://webas.sefaz.pi.gov.br/nfceweb-homologacao/consultarNFCe.jsf?" }, ;
+         { "RJ", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode?" }, ;
+         { "RN", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://hom.nfce.set.rn.gov.br/consultarNFCe.aspx?" }, ;
+         { "RS", "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?" }, ;
+         { "RO", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp?" }, ;
+         { "RR", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://200.174.88.103:8080/nfce/servlet/qrcode?" }, ;
+         { "SC", "3.10", WS_AMBIENTE_HOMOLOGACAO, "" }, ;
+         { "SP", "3.10", WS_AMBIENTE_HOMOLOGACAO, "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
+         { "SE", "3.10", WS_AMBIENTE_HOMOLOGACAO, "http://www.hom.nfe.se.gov.br/portal/consultarNFCe.jsp?" }, ;
+         { "TO", "3.10", WS_AMBIENTE_HOMOLOGACAO, "" } }
+   ELSE
+      aUrlList := {}
+   ENDIF
 
    cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
    cSignature := XmlNode( cXmlAssinado, "Signature", .T. )
@@ -1906,8 +2275,8 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
    cUF        := UFSigla( XmlNode( XmlNode( cInfNFe, "ide" ), "cUF" ) )
 
    // 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
-   nPos       := AScan( aList, { | e | e[ 1 ] == cUF .AND. e[ 3 ] == cAmbiente } )
-   QRCode_Url := iif( nPos == 0, "", aList[ nPos, 4 ] )
+   nPos       := AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. e[ 3 ] == cAmbiente } )
+   QRCode_Url := iif( nPos == 0, "", aUrlList[ nPos, 4 ] )
 
    // 2¦ Parte (Parametros)
    QRCODE_chNFe    := AllTrim( Substr( XmlElement( cInfNFe, "Id" ), 4 ) )

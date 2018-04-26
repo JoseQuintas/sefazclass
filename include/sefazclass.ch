@@ -5,37 +5,6 @@
 #define WS_BPE_STATUSSERVICO         WS_BPE + 4
 #define WS_BPE_QRCODE                WS_BPE + 5
 
-#define WS_CTE                       200
-#define WS_CTE_CONSULTACADASTRO      WS_CTE + 1
-#define WS_CTE_CONSULTAPROTOCOLO     WS_CTE + 2
-#define WS_CTE_INUTILIZACAO          WS_CTE + 3
-#define WS_CTE_RECEPCAO              WS_CTE + 4
-#define WS_CTE_RECEPCAOEVENTO        WS_CTE + 5
-#define WS_CTE_RETRECEPCAO           WS_CTE + 6
-#define WS_CTE_STATUSSERVICO         WS_CTE + 7
-
-#define WS_MDFE                      300
-#define WS_MDFE_CONSNAOENC           WS_MDFE + 1
-#define WS_MDFE_CONSULTA             WS_MDFE + 2
-#define WS_MDFE_DISTRIBUICAODFE      WS_MDFE + 3
-#define WS_MDFE_RECEPCAO             WS_MDFE + 4
-#define WS_MDFE_RECEPCAOEVENTO       WS_MDFE + 5
-#define WS_MDFE_RETRECEPCAO          WS_MDFE + 6
-#define WS_MDFE_STATUSSERVICO        WS_MDFE + 7
-
-#define WS_NFE                       400
-#define WS_NFE_AUTORIZACAO           WS_NFE + 1
-#define WS_NFE_CONSULTACADASTRO      WS_NFE + 2
-#define WS_NFE_CONSULTADEST          WS_NFE + 3
-#define WS_NFE_CONSULTAPROTOCOLO     WS_NFE + 4
-#define WS_NFE_DISTRIBUICAODFE       WS_NFE + 5
-#define WS_NFE_DOWNLOADNF            WS_NFE + 6
-#define WS_NFE_INUTILIZACAO          WS_NFE + 7
-#define WS_NFE_RECEPCAOEVENTO        WS_NFE + 8
-#define WS_NFE_RETAUTORIZACAO        WS_NFE + 9
-#define WS_NFE_STATUSSERVICO         WS_NFE + 10
-#define WS_NFE_QRCODE                WS_NFE + 11
-
 #define WS_PROJETO_BPE               "bpe"
 #define WS_PROJETO_CTE               "cte"
 #define WS_PROJETO_MDFE              "mdfe"
@@ -43,12 +12,6 @@
 
 #define WS_AMBIENTE_HOMOLOGACAO      "2"
 #define WS_AMBIENTE_PRODUCAO         "1"
-
-#define WS_VERSAO_BPE                "1.00"
-#define WS_VERSAO_CTE                "3.00"
-#define WS_VERSAO_MDFE               "3.00"
-#define WS_VERSAO_NFE                "3.10"
-#define WS_VERSAO_NFEEVENTO          "1.00"
 
 #define WS_XMLNS_BPE                 [xmlns="http://www.portalfiscal.inf.br/bpe"]
 #define WS_XMLNS_CTE                 [xmlns="http://www.portalfiscal.inf.br/cte"]
@@ -59,11 +22,6 @@
 #define WS_RETORNA_RECIBO       "0"
 
 #define XML_UTF8                   [<?xml version="1.0" encoding="UTF-8"?>]
-
-#define WS_SOAP_UF          1
-#define WS_SOAP_VERSAO      2
-#define WS_SOAP_SOAPACTION  3
-#define WS_SOAP_SOAPSERVICE 4
 
 /*
 #define SEFAZ_STATUSLIST { ;
