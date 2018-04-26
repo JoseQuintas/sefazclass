@@ -10,18 +10,19 @@ REQUEST HB_CODEPAGE_PTISO
    #define WIN_SW_SHOWNORMAL 0
 #endif
 
-MEMVAR cVersao, cCertificado, cUF, cAmbiente
+MEMVAR cVersao, cCertificado, cUF, cAmbiente, cNFCe
 
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    LOCAL nOpc := 1, GetList := {}, cTexto := "", nOpcTemp
-   LOCAL cCnpj := Space(14), cChave := Space(44), cUF := "SP", cXmlRetorno
+   LOCAL cCnpj := Space(14), cChave := Space(44), cXmlRetorno
    LOCAL oSefaz, cXml, oDanfe, cTempFile, nHandle
 
    cVersao      := "3.10"
    cCertificado := ""
    cUF          := "SP"
    cAmbiente    := WS_AMBIENTE_HOMOLOGACAO
+   cNFCe        := "N"
 
    SET DATE BRITISH
    SetupHarbour()
@@ -64,25 +65,23 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       oSefaz:cVersao      := cVersao
       oSefaz:cCertificado := cCertificado
       oSefaz:cAmbiente    := cAmbiente
+      oSefaz:cNFCe        := cNFCe
 
       CLS
       @ Row() + 1, 5 PROMPT "Teste Danfe"
-      @ Row() + 1, 5 PROMPT "Seleciona certificado"
-      @ Row() + 1, 5 PROMPT "UF Default"
+      @ Row() + 1, 5 PROMPT "Seleciona certificado (atual=" + cCertificado + ")"
+      @ Row() + 1, 5 PROMPT "UF (atual=" + cUF + ")"
+      @ Row() + 1, 5 PROMPT "Versao NFE (atual=" + cVersao + ")"
+      @ Row() + 1, 5 PROMPT "Ambiente (atual=" + iif( cAmbiente == WS_AMBIENTE_PRODUCAO, "Produção", "Homologação" ) + ")"
+      @ Row() + 1, 5 PROMPT "Nota (atual=" + iif( cNFCe == "S", "NFCE", "NFE" ) + ")"
       @ Row() + 1, 5 PROMPT "Consulta Status NFE"
-      @ Row() + 1, 5 PROMPT "Consulta Cadastro"
+      @ Row() + 1, 5 PROMPT "Consulta Cadastro NFE"
       @ Row() + 1, 5 PROMPT "Protocolo NFE"
-      @ Row() + 1, 5 PROMPT "Protocolo CTE"
-      @ Row() + 1, 5 PROMPT "Protocolo MDFE"
+      @ Row() + 1, 5 PROMPT "Protocolo CTE 3.00"
+      @ Row() + 1, 5 PROMPT "Protocolo MDFE 3.00"
       @ Row() + 1, 5 PROMPT "Consulta Destinadas"
       @ Row() + 1, 5 PROMPT "Valida XML"
       @ Row() + 1, 5 PROMPT "Teste de assinatura"
-      @ Row() + 1, 5 PROMPT "Consulta Status NFCE"
-      @ Row() + 1, 5 PROMPT "Altera 3.10/4.00"
-      @ Row() + 1, 5 PROMPT "Ambiente Produção/Homologação"
-      @ Row() + 2, 5 SAY "Versão atual:" + cVersao
-      @ Row() + 2, 5 SAY "Certificado atual:" + cCertificado
-      @ Row() + 2, 5 SAY "Ambiente atual:" + iif( cAmbiente == WS_AMBIENTE_PRODUCAO, "Producao", "Homologacao" )
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
@@ -103,8 +102,17 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          READ
 
       CASE nOpc == nOpcTemp++
+         cVersao := iif( cVersao == "3.10", "4.00", "3.10" )
+
+      CASE nOpc == nOpcTemp++
+         cAmbiente := iif( cAmbiente == WS_AMBIENTE_PRODUCAO, WS_AMBIENTE_HOMOLOGACAO, WS_AMBIENTE_PRODUCAO )
+
+      CASE nOpc == nOpcTemp++
+         cNFCe := iif( cNFCe == "S", "N", "S" )
+
+      CASE nOpc == nOpcTemp++
          cXmlRetorno := oSefaz:NfeStatusServico()
-         wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
+         //wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
          wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
          cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" ) + hb_Eol()
          cTexto += "Versão Aplicativo:" + XmlNode( cXmlRetorno, "verAplic" ) + hb_Eol()
@@ -168,7 +176,8 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          IF LastKey() == K_ESC
             EXIT
          ENDIF
-         oSefaz:CteConsultaProtocolo( cChave, cCertificado )
+         oSefaz:cVersao := "3.00"
+         oSefaz:CteConsultaProtocolo( cChave )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
@@ -179,7 +188,8 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          IF LastKey() == K_ESC
             EXIT
          ENDIF
-         oSefaz:MDFeConsultaProtocolo( cChave, cCertificado )
+         oSefaz:cVersao := "3.00"
+         oSefaz:MDFeConsultaProtocolo( cChave )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
@@ -210,18 +220,6 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          ? oSefaz:cXmlRetorno
          ? oSefaz:cXmlDocumento
          Inkey(0)
-
-      CASE nOpc == nOpcTemp++
-         wapi_MessageBox( , "NFCE" )
-         oSefaz:cNFCE := "S"
-         oSefaz:NfeStatusServico()
-         wapi_MessageBox( , oSefaz:cXmlRetorno )
-
-      CASE nOpc == nOpcTemp++
-         cVersao := iif( cVersao == "3.10", "4.00", "3.10" )
-
-      CASE nOpc == nOpcTemp++
-         cAmbiente := iif( cAmbiente == WS_AMBIENTE_PRODUCAO, WS_AMBIENTE_HOMOLOGACAO, WS_AMBIENTE_PRODUCAO )
 
       CASE nOpc == nOpcTemp // pra não esquecer o ++, último não tem
       ENDCASE
@@ -293,3 +291,4 @@ FUNCTION JPEGImage()
 #pragma __binarystreaminclude "jpatecnologia.jpg"        | RETURN %s
 
 #endif
+
