@@ -1,10 +1,3 @@
-#define WS_BPE                       100
-#define WS_BPE_CONSULTAPROTOCOLO     WS_BPE + 1
-#define WS_BPE_RECEPCAO              WS_BPE + 2
-#define WS_BPE_RECEPCAOEVENTO        WS_BPE + 3
-#define WS_BPE_STATUSSERVICO         WS_BPE + 4
-#define WS_BPE_QRCODE                WS_BPE + 5
-
 #define WS_PROJETO_BPE               "bpe"
 #define WS_PROJETO_CTE               "cte"
 #define WS_PROJETO_MDFE              "mdfe"
@@ -22,6 +15,472 @@
 #define WS_RETORNA_RECIBO       "0"
 
 #define XML_UTF8                   [<?xml version="1.0" encoding="UTF-8"?>]
+
+#define WS_BPE_CONSULTAPROTOCOLO { ;
+         { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
+         { "SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ms/bpeConsulta.asmx" }, ;
+         ;
+         { "MS",   "1.00H", "https://homologacao.bpe.ms.gov.br/ws/BPeConsulta" } }
+
+#define WS_BPE_STATUSSERVICO { ;
+         { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeStatusServico" }, ;
+         { "SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ms/bpeStatusServico/bpeStatusServico.asmx" }, ;
+         ;
+         { "MS",   "1.00H", "https://homologacao.bpe.ms.gov.br/ws/BPeStatusServico" }, ;
+         { "SVRS", "1.00H", "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeStatusServico/bpeStatusServico.asmx" } }
+
+#define WS_CTE_CONSULTAPROTOCOLO { ;
+         { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteConsulta" }, ;
+         { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteConsulta" }, ;
+         { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta" }, ;
+         { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
+         { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl" }, ;
+         { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteConsulta.asmx" }, ;
+         { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" }, ;
+         ;
+         { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
+         { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" } }
+
+#define WS_CTE_CONSULTARECIBO { ;
+      { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao" }, ;
+      { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRetRecepcao" }, ;
+      { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao" }, ;
+      { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao?wsdl" }, ;
+      { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
+      { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteRetRecepcao.asmx" }, ;
+      { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" }, ;
+      ;
+      { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
+      { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" } }
+
+#define WS_CTE_ENVIAEVENTO { ;
+      { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/RecepcaoEvento" }, ;
+      { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRecepcaoEvento" }, ;
+      { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews2/services/CteRecepcaoEvento?wsdl" }, ;
+      { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcaoEvento?wsdl" }, ;
+      { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
+      { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" }, ;
+      ;
+      { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
+      { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" } }
+
+#define WS_CTE_INUTILIZA { ;
+      { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao" }, ;
+      { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteInutilizacao" }, ;
+      { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao" }, ;
+      { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao?wsdl" }, ;
+      { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
+      { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" }, ;
+      ;
+      { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
+      { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" } }
+
+#define WS_CTE_ENVIALOTE { ;
+      { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao" }, ;
+      { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRecepcao" }, ;
+      { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao" }, ;
+      { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl" }, ;
+      { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+      { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+      { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
+      ;
+      { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+      { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" } }
+
+#define WS_CTE_STATUSSERVICO { ;
+      { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico" }, ;
+      { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico" }, ;
+      { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteStatusServico" }, ;
+      { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl" }, ;
+      { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
+      { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteStatusServico.asmx" }, ;
+      { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" }, ;
+      ;
+      { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
+      { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" } }
+
+#define WS_MDFE_CONSULTANAOENCERRADOS { ;
+         { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/mdfeConsNaoEnc/mdfeConsNaoenc.asmx" }, ;
+         { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsNaoEnc/MDFeConsNaoEnc.asmx" } }
+
+#define WS_MDFE_CONSULTAPROTOCOLO { ;
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" }, ;
+      { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" } }
+
+#define WS_MDFE_CONSULTARECIBO { ;
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" }, ;
+      { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" } }
+
+#define WS_MDFE_DISTRIBUICAO { ;
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/WS/MDFeDistribuicaoDFe/MDFeDistribuicaoDFe.asmx" } }
+
+#define WS_MDFE_EVENTO { ;
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" }, ;
+      { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" } }
+
+#define WS_MDFE_ENVIALOTE { ;
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" }, ;
+      { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" } }
+
+#define WS_MDFE_STATUSSERVICO { ;
+      { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" }, ;
+      ;
+      { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" } }
+
+#define WS_NFE_CONSULTACADASTRO { ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2?wsdl" }, ;
+      { "ES",    "3.10P", "https://app.sefaz.es.gov.br/ConsultaCadastroService/CadConsultaCadastro2.asmx" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2?wsdl" }, ;
+      { "MA",    "3.10P", "https://sistemas.sefaz.ma.gov.br/wscadastro/CadConsultaCadastro2?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/CadConsultaCadastro2" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro2" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/CadConsultaCadastro2?wsdl" }, ;
+      { "RS",    "3.10P", "https://cad.sefazrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx" }, ;
+      { "SVRS",  "3.10P", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "AC",    "3.10P", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "RN",    "3.10P", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "PB",    "3.10P", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "SC",    "3.10P", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      ;
+      { "AM",    "3.10H", "https://homnfe.sefaz.am.gov.br/services2/services/CadConsultaCadastro2" }, ;
+      { "BA",    "3.10H", "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx" }, ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2?wsdl" }, ;
+      { "ES",    "3.10H", "https://app.sefaz.es.gov.br/ConsultaCadastroService/CadConsultaCadastro2.asmx" }, ;
+      { "GO",    "3.10H", "https://homolog.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2?wsdl" }, ;
+      { "MA",    "3.10H", "https://sistemas.sefaz.ma.gov.br/wscadastro/CadConsultaCadastro2?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2" }, ;
+      { "MS",    "3.10H", "https://homologacao.nfe.ms.gov.br/homologacao/services2/CadConsultaCadastro2" }, ;
+      { "MT",    "3.10H", "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2?wsdl" }, ;
+      { "PE",    "3.10H", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/CadConsultaCadastro2?wsdl" }, ;
+      { "RS",    "3.10H", "https://cad.sefazrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro2.asmx" }, ;
+      { "SVRS",  "3.10H", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "AC",    "3.10H", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "RN",    "3.10H", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "PB",    "3.10H", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      { "SC",    "3.10H", "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx" }, ;
+      ;
+      { "SP",    "4.00P", "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" }, ;
+      ;
+      { "SP",    "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" } }
+
+#define WS_NFE_CONSULTADEST { ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx" }, ;
+      { "AN",    "3.10P", "https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx" }, ;
+      ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx" } }
+
+#define WS_NFE_CONSULTAPROTOCOLO { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeConsulta2" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeConsulta/NfeConsulta.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeConsulta2?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/NfeConsulta2" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta2?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/NFeConsulta3?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx" }, ;
+      { "SCVAN", "3.10P", "https://www.svc.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx" }, ;
+      ;
+      { "AM",    "3.10H", "https://homnfe.sefaz.am.gov.br/services2/services/NfeConsulta2" }, ;
+      { "BA",    "3.10H", "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeConsulta2.asmx" }, ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeConsulta2?wsdl" }, ;
+      { "GO",    "3.10H", "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2" }, ;
+      { "MT",    "3.10H", "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta2?wsdl" }, ;
+      { "MS",    "3.10H", "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeConsulta2" }, ;
+      { "PE",    "3.10H", "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeConsulta3?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsulta2.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      { "SCAN",  "3.10H", "https://hom.nfe.fazenda.gov.br/SCAN/NfeConsulta2/NfeConsulta2.asmx" }, ;
+      { "SVAN",  "3.10H", "https://hom.sefazvirtual.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx" }, ;
+      ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeConsulta3" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeConsulta3" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx" }, ;
+      ;
+      { "MG",   "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeConsultaProtocolo4" }, ;
+      { "SP",   "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx" }, ;
+      ;
+      { "MG",   "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeConsultaProtocolo4" }, ;
+      { "SP",   "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeconsultaprotocolo4.asmx" } }
+
+#define WS_NFE_DISTRIBUICAO { ;
+      { "AN",    "3.10P", "https://www1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx" } }
+
+#define WS_NFE_EVENTO { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/RecepcaoEvento" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/RecepcaoEvento?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/RecepcaoEvento" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento" }, ;
+      { "PR",    "3.10P", "https://nfe2.fazenda.pr.gov.br/nfe-evento/NFeRecepcaoEvento?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx" }, ;
+      { "SCVAN", "3.10P", "https://www.svc.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx" }, ;
+      { "AN",    "3.10P", "https://www.nfe.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx" }, ;
+      ;
+      { "AM",    "3.10H", "https://homnfe.sefaz.am.gov.br/services2/services/RecepcaoEvento" }, ;
+      { "BA",    "3.10H", "https://hnfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx" }, ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento?wsdl" }, ;
+      { "GO",    "3.10H", "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcaoEvento?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento" }, ;
+      { "MS",    "3.10H", "https://homologacao.nfe.ms.gov.br/homologacao/services2/RecepcaoEvento" }, ;
+      { "MT",    "3.10H", "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento?wsdl" }, ;
+      { "PE",    "3.10H", "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeRecepcaoEvento?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/recepcaoevento.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      { "SVAN",  "3.10H", "https://hom.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx" }, ;
+      ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeRecepcaoEvento" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeRecepcaoEvento" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx" }, ;
+      ;
+      { "MG",   "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeRecepcaoEvento4 " }, ;
+      { "SP",   "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" }, ;
+      ;
+      { "MG",   "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeRecepcaoEvento4 " }, ;
+      { "SP",   "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" } }
+
+#define WS_NFE_INUTILIZA { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeInutilizacao2" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeInutilizacao/NfeInutilizacao.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeInutilizacao2?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/NfeInutilizacao2" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao2?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/NFeInutilizacao3?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao2.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx" }, ;
+      ;
+      { "AM",    "3.10H", "https://homnfe.sefaz.am.gov.br/services2/services/NfeInutilizacao2" }, ;
+      { "BA",    "3.10H", "https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeInutilizacao2.asmx" }, ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeInutilizacao2?wsdl" }, ;
+      { "GO",    "3.10H", "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2" }, ;
+      { "MS",    "3.10H", "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeInutilizacao2" }, ;
+      { "MT",    "3.10H", "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao2?wsdl" }, ;
+      { "PE",    "3.10H", "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeInutilizacao3?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao2.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      { "SCAN",  "3.10H", "https://hom.nfe.fazenda.gov.br/SCAN/NfeInutilizacao2/NfeInutilizacao2.asmx" }, ;
+      { "SVAN",  "3.10H", "https://hom.sefazvirtual.fazenda.gov.br/NfeInutilizacao2/NfeInutilizacao2.asmx" }, ;
+      ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeInutilizacao3" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeInutilizacao3" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao2.asmx" }, ;
+      ;
+      { "MG", "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeInutilizacao4" }, ;
+      { "SP", "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" }, ;
+      ;
+      { "MG", "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeInutilizacao4" }, ;
+      { "SP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" } }
+
+#define WS_NFE_ENVIALOTE { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeAutorizacao" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeAutorizacao/NfeAutorizacao.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeAutorizacao?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeAutorizacao?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/NfeAutorizacao" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeAutorizacao?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeAutorizacao?wsdl" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/NFeAutorizacao3?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx" }, ;
+      { "SCVAN", "3.10P", "https://www.svc.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/NfeAutorizacao/NfeAutorizacao.asmx" }, ;
+      ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeAutorizacao?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeAutorizacao3?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+   ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeAutorizacao3" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeAutorizacao3" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao.asmx" }, ;
+   ;
+      { "MG", "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeAutorizacao4" }, ;
+      { "SP", "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" }, ;
+      ;
+      { "MG", "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeAutorizacao4" }, ;
+      { "SP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" } }
+
+#define WS_NFE_CONSULTARECIBO { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeRetAutorizacao" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeRetAutorizacao/NfeRetAutorizacao.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeRetAutorizacao?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRetAutorizacao?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/NfeRetAutorizacao" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRetAutorizacao?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetAutorizacao?wsdl" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/NFeRetAutorizacao3?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx" }, ;
+      { "SCVAN", "3.10P", "https://www.svc.fazenda.gov.br/NfeRetAutorizacao/NfeRetAutorizacao.asmx" }, ;
+      ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeRetAutorizacao?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetAutorizacao" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeRetAutorizacao3?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeRetAutorizacao3" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeRetAutorizacao3" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao.asmx" }, ;
+      ;
+      { "MG", "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeRetAutorizacao4" }, ;
+      { "SP", "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nferetautorizacao4.asmx" }, ;
+      ;
+      { "MG", "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeRetAutorizacao4" }, ;
+      { "SP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferetautorizacao4.asmx" } }
+
+#define WS_NFE_STATUSSERVICO { ;
+      { "AM",    "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeStatusServico2" }, ;
+      { "BA",    "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx" }, ;
+      { "CE",    "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2?wsdl" }, ;
+      { "GO",    "3.10P", "https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2?wsdl" }, ;
+      { "MG",    "3.10P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2" }, ;
+      { "MS",    "3.10P", "https://nfe.fazenda.ms.gov.br/producao/services2/NfeStatusServico2" }, ;
+      { "MT",    "3.10P", "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico2?wsdl" }, ;
+      { "PE",    "3.10P", "https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2" }, ;
+      { "PR",    "3.10P", "https://nfe.fazenda.pr.gov.br/nfe/NFeStatusServico3?wsdl" }, ;
+      { "RS",    "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" }, ;
+      { "SP",    "3.10P", "https://nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx" }, ;
+      { "SVRS",  "3.10P", "https://nfe.svrs.rs.gov.br/ws/nfeStatusServico/NfeStatusServico2.asmx" }, ;
+      { "SCAN",  "3.10P", "https://www.scan.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx" }, ;
+      { "SVAN",  "3.10P", "https://www.sefazvirtual.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx" }, ;
+      { "SCVAN", "3.10P", "https://www.svc.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx" }, ;
+      ;
+      { "AM",    "3.10H", "https://homnfe.sefaz.am.gov.br/services2/services/NfeStatusServico2" }, ;
+      { "BA",    "3.10H", "https://hnfe.sefaz.ba.gov.br/webservices/NfeStatusServico/NfeStatusServico.asmx" }, ;
+      { "CE",    "3.10H", "https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2?wsdl" }, ;
+      { "GO",    "3.10H", "https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2?wsdl" }, ;
+      { "MG",    "3.10H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatusServico2" }, ;
+      { "MS",    "3.10H", "https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeStatusServico2" }, ;
+      { "MT",    "3.10H", "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico2?wsdl" }, ;
+      { "PE",    "3.10H", "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2" }, ;
+      { "PR",    "3.10H", "https://homologacao.nfe.fazenda.pr.gov.br/nfe/NFeStatusServico3?wsdl" }, ;
+      { "RS",    "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" }, ;
+      { "SP",    "3.10H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico2.asmx" }, ;
+      { "SVRS",  "3.10H", "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" }, ;
+      { "SCAN",  "3.10H", "https://hom.nfe.fazenda.gov.br/SCAN/NfeStatusServico2/NfeStatusServico2.asmx" }, ;
+      { "SVAN",  "3.10H", "https://hom.sefazvirtual.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx" }, ;
+      ;
+      { "PR",   "3.10PC", "https://nfce.fazenda.pr.gov.br/nfce/NFeStatusServico3" }, ;
+      { "SVRS", "3.10PC", "https://nfce.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" }, ;
+      ;
+      { "PR",   "3.10HC", "https://homologacao.nfce.fazenda.pr.gov.br/nfce/NFeStatusServico3" }, ;
+      { "SVRS", "3.10HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx" }, ;
+      ;
+      { "MG", "4.00P", "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeStatusServico4" }, ;
+      { "SP", "4.00P", "https://nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx" }, ;
+      ;
+      { "MG", "4.00H", "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeStatusServico4" }, ;
+      { "SP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfestatusservico4.asmx" } }
+
+#define WS_NFE_QRCODE { ;
+      { "AC", "3.10P", "http://www.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
+      { "AL", "3.10P", "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?" }, ;
+      { "AP", "3.10P", "https://www.sefaz.ap.gov.br/nfce/nfcep.php?" }, ;
+      { "AM", "3.10P", "http://sistemas.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp?" }, ;
+      { "BA", "3.10P", "http://nfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
+      { "CE", "3.10P", "http://nfce.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
+      { "DF", "3.10P", "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
+      { "ES", "3.10P", "http://app.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?" }, ;
+      { "GO", "3.10P", "http://nfe.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
+      { "MA", "3.10P", "http://www.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp?" }, ;
+      { "MT", "3.10P", "http://www.sefaz.mt.gov.br/nfce/consultanfce?" }, ;
+      { "MS", "3.10P", "http://www.dfe.ms.gov.br/nfce/qrcode?" }, ;
+      { "MG", "3.10P", "" }, ;
+      { "PA", "3.10P", "https://appnfc.sefa.pa.gov.br/portal/view/consultas/nfce/nfceForm.seam?" }, ;
+      { "PB", "3.10P", "http://www.receita.pb.gov.br/nfce?" }, ;
+      { "PR", "3.10P", "http://www.dfeportal.fazenda.pr.gov.br/dfe-portal/rest/servico/consultaNFCe?" }, ;
+      { "PE", "3.10P", "http://nfce.sefaz.pe.gov.br/nfce-web/consultarNFCe?" }, ;
+      { "PI", "3.10P", "http://webas.sefaz.pi.gov.br/nfceweb/consultarNFCe.jsf?" }, ;
+      { "RJ", "3.10P", "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode?" }, ;
+      { "RN", "3.10P", "http://nfce.set.rn.gov.br/consultarNFCe.aspx?" }, ;
+      { "RS", "3.10P", "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?" }, ;
+      { "RO", "3.10P", "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp?" }, ;
+      { "RR", "3.10P", "https://www.sefaz.rr.gov.br/nfce/servlet/qrcode?" }, ;
+      { "SC", "3.10P", "" }, ;
+      { "SP", "3.10P", "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx?" }, ;
+      { "SE", "3.10P", "http://www.nfce.se.gov.br/portal/consultarNFCe.jsp?" }, ;
+      { "TO", "3.10P", "" }, ;
+      ;
+      { "AC", "3.10H", "http://www.hml.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
+      { "AL", "3.10H", "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?" }, ;
+      { "AP", "3.10H", "https://www.sefaz.ap.gov.br/nfcehml/nfce.php?" }, ;
+      { "AM", "3.10H", "http://homnfce.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp?" }, ;
+      { "BA", "3.10H", "http://hnfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
+      { "CE", "3.10H", "http://nfceh.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
+      { "DF", "3.10H", "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
+      { "ES", "3.10H", "http://homologacao.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?" }, ;
+      { "GO", "3.10H", "" }, ;
+      { "MA", "3.10H", "http://www.hom.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp?" }, ;
+      { "MT", "3.10H", "http://homologacao.sefaz.mt.gov.br/nfce/consultanfce?" }, ;
+      { "MS", "3.10H", "http://www.dfe.ms.gov.br/nfce/qrcode?" }, ;
+      { "MG", "3.10H", "" }, ;
+      { "PA", "3.10H", "https://appnfc.sefa.pa.gov.br/portal-homologacao/view/consultas/nfce/nfceForm.seam" }, ;
+      { "PB", "3.10H", "http://www.receita.pb.gov.br/nfcehom" }, ;
+      { "PR", "3.10H", "http://www.dfeportal.fazenda.pr.gov.br/dfe-portal/rest/servico/consultaNFCe?" }, ;
+      { "PE", "3.10H", "http://nfcehomolog.sefaz.pe.gov.br/nfce-web/consultarNFCe?" }, ;
+      { "PI", "3.10H", "http://webas.sefaz.pi.gov.br/nfceweb-homologacao/consultarNFCe.jsf?" }, ;
+      { "RJ", "3.10H", "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode?" }, ;
+      { "RN", "3.10H", "http://hom.nfce.set.rn.gov.br/consultarNFCe.aspx?" }, ;
+      { "RS", "3.10H", "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx?" }, ;
+      { "RO", "3.10H", "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp?" }, ;
+      { "RR", "3.10H", "http://200.174.88.103:8080/nfce/servlet/qrcode?" }, ;
+      { "SC", "3.10H", "" }, ;
+      { "SP", "3.10H", "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
+      { "SE", "3.10H", "http://www.hom.nfe.se.gov.br/portal/consultarNFCe.jsp?" }, ;
+      { "TO", "3.10H", "" } }
 
 /*
 #define SEFAZ_STATUSLIST { ;
