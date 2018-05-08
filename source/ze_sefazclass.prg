@@ -944,7 +944,7 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
    LOCAL cVersaoEvento
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    hb_Default( @nSequencia, 1 )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_EVENTO
@@ -952,11 +952,11 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
       ::cSoapAction  := "nfeRecepcaoEvento"
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"
    ELSE
-      ::cSoapAction  := "NfeRecepcaoEvento4"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcaoEvento"
+      ::cSoapAction  := "nfeRecepcaoEvento"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
    ENDIF
    ::Setup( cChave, cCertificado, cAmbiente )
-   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "4.00" )
+   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "1.00" )
    ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -999,7 +999,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    LOCAL cVersaoEvento
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    hb_Default( @nSequencia, 1 )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_EVENTO
@@ -1007,11 +1007,11 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
       ::cSoapAction  := "nfeRecepcaoEvento"
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"
    ELSE
-      ::cSoapAction  := "NfeRecepcaoEvento4"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcaoEvento"
+      ::cSoapAction  := "nfeRecepcaoEvento"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
    ENDIF
    ::Setup( cChave, cCertificado, cAmbiente )
-   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "4.00" )
+   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "1.00" )
 
    ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
@@ -1047,7 +1047,7 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
    LOCAL cDescEvento, cVersaoEvento
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    hb_Default( @nSequencia, 1 )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_EVENTO
@@ -1055,11 +1055,11 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
       ::cSoapAction  := "nfeRecepcaoEvento"
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"
    ELSE
-      ::cSoapAction  := "NfeRecepcaoEvento4"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcaoEvento"
+      ::cSoapAction  := "nfeRecepcaoEvento"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEvento"
    ENDIF
    ::Setup( cChave, cCertificado, cAmbiente )
-   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "4.00" )
+   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "1.00" )
 
    DO CASE
    CASE cCodigoEvento == "210200" ; cDescEvento := "Confirmacao da Operacao"
@@ -1297,8 +1297,8 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
    LOCAL cVersaoEvento
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
-   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "4.00" )
+   hb_Default( @::cVersao, "4.00" )
+   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "1.00" )
 
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
@@ -1425,10 +1425,14 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ::cXmlSoap    += [<soap12:Envelope ] + cXmlns + [>]
    IF ::cSoapAction != "nfeDistDFeInteresse"
       ::cXmlSoap +=    [<soap12:Header>]
-      ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
-      ::cXmlSoap +=          [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
-      ::cXmlSoap +=          [<versaoDados>] + cSoapVersion + [</versaoDados>]
-      ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
+      IF ::cVersao == "4.00"
+         ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + ["/>]
+      ELSE
+         ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
+         ::cXmlSoap +=          [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
+         ::cXmlSoap +=          [<versaoDados>] + cSoapVersion + [</versaoDados>]
+         ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
+      ENDIF
       ::cXmlSoap +=    [</soap12:Header>]
    ENDIF
    ::cXmlSoap    +=    [<soap12:Body>]
