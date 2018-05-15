@@ -31,6 +31,7 @@ CREATE CLASS hbNFeDaGeral
    METHOD FormataIE( cText )                                                        INLINE hbNFe_FormataIE( cText )
    METHOD Desenvolvedor( nLinhaPDF )
    METHOD DrawBoxTituloTexto( x, y, w, h, cTitle, cText, nAlign, oPDFFont, nFontSize, nAngle )
+   METHOD DrawAviso( cTexto )
    METHOD DrawHomologacao()
    METHOD DrawContingencia( cTexto1, cTexto2, cTexto3 )
 #ifdef __XHARBOUR__
@@ -162,6 +163,8 @@ METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar ) CLASS hbNFeDaGeral
    CASE "<infCte "    $ cXmlDocumento .AND. "<CTe "  $ cXmlDocumento                                                                 ; oDanfe := hbNFeDaCte():New()
    CASE "<infNFe "    $ cXmlDocumento .AND. "<NFe "  $ cXmlDocumento .AND. XmlNode( XmlNode( cXmlDocumento, "ide" ), "mod" ) == "55" ; oDanfe := hbNFeDaNFe():New()
    CASE "<infNFe "    $ cXmlDocumento .AND. "<NFe "  $ cXmlDocumento .AND. XmlNode( XmlNode( cXmlDocumento, "ide" ), "mod" ) == "65" ; oDanfe := hbNFeDaNFCe():New()
+   CASE "<infNFe "    $ cXmlDocumento .AND. "<NFe>"  $ cXmlDocumento .AND. XmlNode( XmlNode( cXmlDocumento, "ide" ), "mod" ) == "55" ; oDanfe := hbNFeDaNFe():New()
+   CASE "<infNFe "    $ cXmlDocumento .AND. "<NFe>"  $ cXmlDocumento .AND. XmlNode( XmlNode( cXmlDocumento, "ide" ), "mod" ) == "65" ; oDanfe := hbNFeDaNFCe():New()
    CASE "<infEvento " $ cXmlDocumento                                                                                                ; oDanfe := hbNFeDaEvento():New()
    OTHERWISE
       RETURN "XML inválido"
@@ -219,6 +222,27 @@ METHOD DrawContingencia( cTexto1, cTexto2, cTexto3 ) CLASS hbNFeDaGeral
    HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0 ) // reseta cor fontes
 
    RETURN NIL
+
+METHOD DrawAviso( cTexto ) CLASS hbNFeDaGeral
+
+   LOCAL nRadiano, nAngulo
+
+   nAngulo     := 45                             // A rotation of 45 degrees
+   nRadiano    := nAngulo / 180 * 3.141592       // Calcurate the radian value
+
+   HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
+   HPDF_Page_BeginText( ::oPdfPage )
+   HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 100)
+   HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
+   HPDF_Page_ShowText( ::oPdfPage, iif( Empty( cTexto ), "FALTOU TEXTO", cTexto ) )
+   HPDF_Page_EndText( ::oPdfPage )
+   HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
+   //::DrawLine( 15, 95, 550, 630, 2.0 )
+   HPDF_Page_SetRGBStroke( ::oPdfPage, 0, 0, 0 ) // reseta cor linhas
+   HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0) // reseta cor fontes
+
+   RETURN NIL
+
 
 STATIC FUNCTION hbNFe_Texto_Hpdf( oPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
 
