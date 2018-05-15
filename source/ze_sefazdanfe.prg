@@ -314,15 +314,8 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFe
 
 METHOD NovaPagina() CLASS hbNFeDaNFe
 
-   LOCAL nRadiano, nAltura, nAngulo
-
    ::oPdfPage := HPDF_AddPage( ::oPdf )
    HPDF_Page_SetSize( ::oPdfPage, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT )
-   nAltura := HPDF_Page_GetHeight( ::oPdfPage )
-
-   ::nLinhaPdf := nAltura - 8                    // Margem Superior
-   nAngulo     := 45                             // A rotation of 45 degrees
-   nRadiano    := nAngulo / 180 * 3.141592       // Calcurate the radian value
 
    IF ::aIde[ "tpEmis" ] = "5" // Contingencia
       ::DrawContingencia( "", "DANFE EM CONTINGÊNCIA. IMPRESSO EM", "DECORRÊNCIA DE PROBLEMAS TÉCNICOS" )
@@ -335,19 +328,10 @@ METHOD NovaPagina() CLASS hbNFeDaNFe
    IF ::aIde[ "tpAmb" ] == "2"
       ::DrawHomologacao()
    ENDIF
-
    IF ::aInfProt[ "cStat" ] $ "101,135,302" .OR. ! Empty( ::cXmlCancel )
-      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-      HPDF_Page_BeginText( ::oPdfPage )
-      HPDF_Page_SetTextMatrix( ::oPdfPage, cos( nRadiano ), sin( nRadiano ), -sin( nRadiano ), cos( nRadiano ), 15, 100)
-      HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
-      HPDF_Page_ShowText( ::oPdfPage, ::aInfProt[ "xEvento" ] + " " + ::aInfProt[ "dhRegEvento" ] ) // + " " + */ ::aInfProt[ "xMotivo" ] )
-      HPDF_Page_EndText( ::oPdfPage)
-      HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
-      ::DrawLine( 15, 95, 550, 630, 2.0 )
-      HPDF_Page_SetRGBStroke( ::oPdfPage, 0, 0, 0 ) // reseta cor linhas
-      HPDF_Page_SetRGBFill( ::oPdfPage, 0, 0, 0) // reseta cor fontes
+      ::DrawAviso( ::aInfProt[ "xEvento" ] + " " + ::aInfProt[ "dhRegEvento" ] + " " + ::aInfProt[ "xMotivo" ] )
    ENDIF
+   ::nLinhaPdf := HPDF_Page_GetHeight( ::oPDFPage ) - 8                    // Margem Superior
 
    RETURN NIL
 

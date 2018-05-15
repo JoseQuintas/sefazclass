@@ -6,6 +6,7 @@ Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
 
 2017.11.27 Aceita arquivo PFX pra assinatura somente
 2018.03.13 SoapList de CTE e MDFE nos métodos
+2018.05.13 Default NFE 4.0 exceto autorização/recibo/protocolo
 */
 
 #include "hbclass.ch"
@@ -956,7 +957,7 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
    ENDIF
    ::Setup( cChave, cCertificado, cAmbiente )
-   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "1.00" )
+   cVersaoEvento := "1.00"
    ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
@@ -1011,7 +1012,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
    ENDIF
    ::Setup( cChave, cCertificado, cAmbiente )
-   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "1.00" )
+   cVersaoEvento := "1.00"
 
    ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
@@ -1059,7 +1060,7 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEvento"
    ENDIF
    ::Setup( cChave, cCertificado, cAmbiente )
-   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "1.00" )
+   cVersaoEvento := "1.00"
 
    DO CASE
    CASE cCodigoEvento == "210200" ; cDescEvento := "Confirmacao da Operacao"
@@ -1101,7 +1102,7 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
 METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    ::aSoapUrlList := WS_NFE_INUTILIZA
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
@@ -1246,7 +1247,7 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    ::aSoapUrlList := WS_NFE_STATUSSERVICO
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
@@ -1298,7 +1299,7 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, "4.00" )
-   cVersaoEvento := iif( ::cVersao == "3.10", "1.00", "1.00" )
+   cVersaoEvento := "1.00"
 
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
