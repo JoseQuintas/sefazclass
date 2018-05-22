@@ -819,7 +819,7 @@ METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    ::aSoapUrlList := WS_NFE_CONSULTACADASTRO
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
@@ -846,7 +846,7 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cIndNFe, "0" )
    hb_Default( @cIndEmi, "0" )
@@ -872,7 +872,7 @@ METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAm
 METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
@@ -913,7 +913,7 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cNSU, "" )
 
@@ -1148,7 +1148,7 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    hb_Default( @cIndSinc, ::cIndSinc )
 
    ::aSoapUrlList := WS_NFE_ENVIALOTE
@@ -1213,7 +1213,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
 METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    IF cRecibo != NIL
       ::cRecibo := cRecibo
    ENDIF
@@ -1276,7 +1276,7 @@ METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "3.10" )
+   hb_Default( @::cVersao, "4.00" )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
