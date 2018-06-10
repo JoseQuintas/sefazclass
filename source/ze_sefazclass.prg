@@ -1240,7 +1240,13 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ::cXmlEnvio     += [</consReciNFe>]
    ::XmlSoapPost()
    ::cXmlProtocolo := ::cXmlRetorno
-   ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   IF "<infProt" $ ::cXmlRetorno // 23/05/2018
+      ::cStatus       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ) // 23/05/2018
+      ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   ELSE
+      ::cMotivo       := XmlNode( ::cXmlRetorno, "xMotivo" )
+      ::cStatus       := XmlNode( ::cXmlRetorno, "cStat" )
+   ENDIF
 
    RETURN ::cXmlRetorno
 
