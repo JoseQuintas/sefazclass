@@ -9,7 +9,7 @@ FUNCTION Main()
    LOCAL cCep, cBairro, cCidade, cEndereco, cUF, cID
 
    Set( _SET_CODEPAGE, "PTISO" )
-   cCep := "001007000"
+   cCep := "03676080"
    ConsultaCep( cCep, @cBairro, @cCidade, @cEndereco, @cUF, @cId )
 
    ? cCep
