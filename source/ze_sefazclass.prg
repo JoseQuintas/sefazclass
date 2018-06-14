@@ -1162,8 +1162,8 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
          ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao"
       ENDIF
    ELSE
-      ::cSoapAction  := "NfeAutorizacao4"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao"
+      ::cSoapAction  := "nfeAutorizacaoLote"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4"
    ENDIF
 
    IF Empty( cLote )
