@@ -1907,6 +1907,9 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
       cXmlAssinado += cInfNFe
       cXmlAssinado += [<] + "infNFeSupl"+[>]
       cXmlAssinado += [<] + "qrCode"+[>] + QRCODE_cTag + [</] + "qrCode" + [>]
+      IF cVersao == "4.00"
+         cXmlAssinado += "<urlChave>" +  + QRCode_Url + [</urlChave>]
+      ENDIF
       cXmlAssinado += [</] + "infNFeSupl"+[>]
       cXmlAssinado += cSignature
       cXmlAssinado += [</NFe>]
