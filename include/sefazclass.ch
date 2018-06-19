@@ -748,9 +748,6 @@
    { "RS",    "4.00H",  "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx" }, ;
    { "SE",    "4.00H",  "http://www.hom.nfe.se.gov.br/portal/consultarNFCe.jsp" }, ;
    { "SP",    "4.00H",  "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
-   { "AM",    "4.00HC", "http://homnfce.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp" }, ;
-   { "MA",    "4.00HC", "http://www.hom.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp" }, ;
-   { "RS",    "4.00HC", "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx" }, ;
    { "AC",    "4.00P",  "http://www.sefaznet.ac.gov.br/nfe/NFe.jsp?opc=3" }, ;
    { "AL",    "4.00P",  "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp" }, ;
    { "AM",    "4.00P",  "http://sistemas.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp" }, ;
@@ -767,10 +764,7 @@
    { "RR",    "4.00P",  "https://www.sefaz.rr.gov.br/nfce/servlet/qrcode" }, ;
    { "RS",    "4.00P",  "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx" }, ;
    { "SE",    "4.00P",  "http://www.nfe.se.gov.br/portal/consultarNFCe.jsp" }, ;
-   { "SP",    "4.00P",  "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
-   { "AM",    "4.00PC", "http://sistemas.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp" }, ;
-   { "MA",    "4.00PC", "http://www.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp" }, ;
-   { "RS",    "4.00PC", "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx" } }
+   { "SP",    "4.00P",  "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" } }
 
 /*
 #define SEFAZ_STATUSLIST { ;
