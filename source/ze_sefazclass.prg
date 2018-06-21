@@ -826,8 +826,8 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
       ::cSoapAction  := "CadConsultaCadastro2"
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2"
    ELSE
-      ::cSoapAction := "CadConsultaCadastro4"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro"
+      ::cSoapAction := "consultaCadastro"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro4"
    ENDIF
 
    ::cXmlEnvio    := [<ConsCad versao="2.00" ] + WS_XMLNS_NFE + [>]
