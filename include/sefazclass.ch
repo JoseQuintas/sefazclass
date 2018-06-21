@@ -41,7 +41,7 @@
    { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
    { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" } }
 
-#define WS_CTE_CONSULTARECIBO { ;
+#define WS_CTE_RETAUTORIZACAO { ;
    { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao" }, ;
    { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRetRecepcao" }, ;
    { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao" }, ;
@@ -75,7 +75,7 @@
    { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
    { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" } }
 
-#define WS_CTE_ENVIALOTE { ;
+#define WS_CTE_AUTORIZACAO { ;
    { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao" }, ;
    { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRecepcao" }, ;
    { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao" }, ;
@@ -107,7 +107,7 @@
    { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" }, ;
    { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" } }
 
-#define WS_MDFE_CONSULTARECIBO { ;
+#define WS_MDFE_RETAUTORIZACAO { ;
    { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" }, ;
    { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" } }
 
@@ -118,7 +118,7 @@
    { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" }, ;
    { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" } }
 
-#define WS_MDFE_ENVIALOTE { ;
+#define WS_MDFE_AUTORIZACAO { ;
    { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" }, ;
    { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" } }
 
@@ -446,7 +446,7 @@
    { "SP",    "4.00PC", "https://nfce.fazenda.sp.gov.br/ws/NFeInutilizacao4.asmx" }, ;
    { "SVRS",  "4.00PC", "https://nfce.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" } }
 
-#define WS_NFE_ENVIALOTE { ;
+#define WS_NFE_AUTORIZACAO { ;
    { "AM",   "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeAutorizacao" }, ;
    { "BA",   "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeAutorizacao/NfeAutorizacao.asmx" }, ;
    { "CE",   "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeAutorizacao?wsdl" }, ;
@@ -519,7 +519,7 @@
    { "SP",    "4.00PC", "https://nfce.fazenda.sp.gov.br/ws/NFeAutorizacao4.asmx" }, ;
    { "SVRS",  "4.00PC", "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" } }
 
-#define WS_NFE_CONSULTARECIBO { ;
+#define WS_NFE_RETAUTORIZACAO { ;
    { "AM",   "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/NfeRetAutorizacao" }, ;
    { "BA",   "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/NfeRetAutorizacao/NfeRetAutorizacao.asmx" }, ;
    { "CE",   "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/NfeRetAutorizacao?wsdl" }, ;

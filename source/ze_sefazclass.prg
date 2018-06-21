@@ -216,7 +216,7 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF cRecibo != NIL
       ::cRecibo := cRecibo
    ENDIF
-   ::aSoapUrlList := WS_CTE_CONSULTARECIBO
+   ::aSoapUrlList := WS_CTE_RETAUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "cteRetRecepcao"
    ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao"
@@ -456,7 +456,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    IF Empty( cLote )
       cLote := "1"
    ENDIF
-   ::aSoapUrlList := WS_CTE_ENVIALOTE
+   ::aSoapUrlList := WS_CTE_AUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "cteRecepcaoLote"
    ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao"
@@ -553,7 +553,7 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
    IF cRecibo != NIL
       ::cRecibo := cRecibo
    ENDIF
-   ::aSoapUrlList := WS_MDFE_CONSULTARECIBO
+   ::aSoapUrlList := WS_MDFE_RETAUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "mdfeRetRecepcao"
    ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao"
@@ -770,7 +770,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
    hb_Default( @::cVersao, "3.00" )
-   ::aSoapUrlList := WS_MDFE_ENVIALOTE
+   ::aSoapUrlList := WS_MDFE_AUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "MDFeRecepcao"
    ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao"
@@ -1151,7 +1151,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
    hb_Default( @::cVersao, "4.00" )
    hb_Default( @cIndSinc, ::cIndSinc )
 
-   ::aSoapUrlList := WS_NFE_ENVIALOTE
+   ::aSoapUrlList := WS_NFE_AUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
       IF ::cUF $ "AC,AL,AP,DF,ES,PB,PR,RJ,RN,RO,RR,SC,SE,TO"
@@ -1218,7 +1218,7 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
       ::cRecibo := cRecibo
    ENDIF
 
-   ::aSoapUrlList := WS_NFE_CONSULTARECIBO
+   ::aSoapUrlList := WS_NFE_RETAUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
       DO CASE
@@ -1230,8 +1230,13 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
          ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
       ENDCASE
    ELSE
-      ::cSoapAction  := "NfeRetAutorizacao4"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
+      IF ::cUF == "SP"
+         ::cSoapAction  := "nfeRetAutorizacaoLote"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRetAutorizacao4"
+      ELSE
+         ::cSoapAction  := "NfeRetAutorizacao4"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
+      ENDIF
    ENDIF
 
    ::cXmlEnvio     := [<consReciNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
