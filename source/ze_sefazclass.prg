@@ -1511,7 +1511,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    ELSEIF "<soapenv:Body" $ ::cXmlRetorno .AND. "</soapenv:Body>" $ ::cXmlRetorno
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soapenv:Body" ) // hb_UTF8ToStr()
    ELSEIF "<env:Body" $ ::cXmlRetorno .AND. "</env:Body>" $ ::cXmlRetorno
-      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" )
+      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "env:Body" )
    ELSE
       // teste usando procname(2)
       ::cXmlRetorno := [<erro text="*ERRO* Erro SOAP: ] + ProcName(2) + [ XML retorno não contém soapenv:Body" />] + ::cXmlRetorno
