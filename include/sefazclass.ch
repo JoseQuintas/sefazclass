@@ -744,10 +744,11 @@
    { "RJ",    "4.00H",  "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode" }, ;
    { "RN",    "4.00H",  "http://www.hom.nfe.rn.gov.br/portal/consultarNFCe.jsp" }, ;
    { "RO",    "4.00H",  "http://www.nfce.sefin.ro.gov.br/consultanfce/consulta.jsp" }, ;
-   { "RR",    "4.00H",  "http://200.174.88.103:8080/nfce/servlet/qrcode" }, ;
+   { "RR",    "4.00H",  "https://www.sefaz.rr.gov.br/nfce/servlet/wp_consulta_nfce" }, ;
    { "RS",    "4.00H",  "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx" }, ;
    { "SE",    "4.00H",  "http://www.hom.nfe.se.gov.br/portal/consultarNFCe.jsp" }, ;
    { "SP",    "4.00H",  "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
+   ;
    { "AC",    "4.00P",  "http://www.sefaznet.ac.gov.br/nfe/NFe.jsp?opc=3" }, ;
    { "AL",    "4.00P",  "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp" }, ;
    { "AM",    "4.00P",  "http://sistemas.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp" }, ;
