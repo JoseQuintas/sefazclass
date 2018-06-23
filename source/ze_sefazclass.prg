@@ -1230,13 +1230,8 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
          ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
       ENDCASE
    ELSE
-      IF ::cUF == "SP"
-         ::cSoapAction  := "nfeRetAutorizacaoLote"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRetAutorizacao4"
-      ELSE
-         ::cSoapAction  := "NfeRetAutorizacao4"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
-      ENDIF
+      ::cSoapAction  := "nfeRetAutorizacaoLote"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRetAutorizacao4"
    ENDIF
 
    ::cXmlEnvio     := [<consReciNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
@@ -1511,10 +1506,12 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
          NEXT
       ENDIF
    END SEQUENCE
-   IF "<soap:Body>" $ ::cXmlRetorno .AND. "</soap:Body>" $ ::cXmlRetorno
+   IF "<soap:Body" $ ::cXmlRetorno .AND. "</soap:Body>" $ ::cXmlRetorno
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" ) // hb_UTF8ToStr()
-   ELSEIF "<soapenv:Body>" $ ::cXmlRetorno .AND. "</soapenv:Body>" $ ::cXmlRetorno
+   ELSEIF "<soapenv:Body" $ ::cXmlRetorno .AND. "</soapenv:Body>" $ ::cXmlRetorno
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soapenv:Body" ) // hb_UTF8ToStr()
+   ELSEIF "<env:Body" $ ::cXmlRetorno .AND. "</env:Body>" $ ::cXmlRetorno
+      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" )
    ELSE
       // teste usando procname(2)
       ::cXmlRetorno := [<erro text="*ERRO* Erro SOAP: ] + ProcName(2) + [ XML retorno não contém soapenv:Body" />] + ::cXmlRetorno
