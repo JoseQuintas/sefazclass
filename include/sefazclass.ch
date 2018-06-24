@@ -729,6 +729,7 @@
    { "SP",   "3.10H", "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
    { "SE",   "3.10H", "http://www.hom.nfe.se.gov.br/portal/consultarNFCe.jsp?" }, ;
    { "TO",   "3.10H", "" }, ;
+   ;
    { "AC",    "4.00H",  "http://hml.sefaznet.ac.gov.br" }, ;
    { "AL",    "4.00H",  "http://nfce.sefaz.al.gov.br/consultaNFCe.htm" }, ;
    { "AM",    "4.00H",  "http://homnfce.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp" }, ;

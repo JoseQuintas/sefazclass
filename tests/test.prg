@@ -16,7 +16,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    LOCAL nOpc := 1, GetList := {}, cTexto := "", nOpcTemp
    LOCAL cCnpj := Space(14), cChave := Space(44), cXmlRetorno
-   LOCAL oSefaz, cXml, oDanfe, cTempFile, nHandle
+   LOCAL oSefaz, cXml, oDanfe, cTempFile, nHandle, cRecibo := Space(20)
 
    cVersao      := "3.10"
    cCertificado := ""
@@ -82,6 +82,8 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "Consulta Destinadas"
       @ Row() + 1, 5 PROMPT "Valida XML"
       @ Row() + 1, 5 PROMPT "Teste de assinatura"
+      @ Row() + 1, 5 PROMPT "Consulta Recibo"
+      @ Row() + 1, 5 PROMPT "Envio de XML*"
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
@@ -219,6 +221,21 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          oSefaz:AssinaXml()
          ? oSefaz:cXmlRetorno
          ? oSefaz:cXmlDocumento
+         Inkey(0)
+
+      CASE nOpc == nOpcTemp++
+         Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
+         @ 8, 1 GET cRecibo PICTURE "@9"
+         READ
+         IF LastKey() != K_ESC .AND. ! Empty( cRecibo )
+            oSefaz:NfeConsultaRecibo( cRecibo )
+            ? oSefaz:cXmlRetorno
+            Inkey(0)
+         ENDIF
+
+      CASE nOpc == nOpcTemp++
+         oSefaz:NfeLoteEnvia( [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>] )
+         ? oSefaz:cXmlRetorno
          Inkey(0)
 
       CASE nOpc == nOpcTemp // pra não esquecer o ++, último não tem
