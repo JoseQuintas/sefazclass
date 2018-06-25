@@ -889,8 +889,8 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
          ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2"
       ENDCASE
    ELSE
-      ::cSoapAction := "NfeConsulta4"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta"
+      ::cSoapAction := "nfeConsultaNF"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaProtocolo4"
    ENDIF
 
    ::cXmlEnvio    := [<consSitNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
