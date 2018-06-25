@@ -1109,8 +1109,8 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
       ::cSoapAction  := "NfeInutilizacaoNF2"
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2"
    ELSE
-      ::cSoapAction  := "Nfeinutilizacao4"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao"
+      ::cSoapAction  := "nfeInutilizacaoNF"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeInutilizacao4"
    ENDIF
 
    ::cXmlDocumento := [<inutNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
