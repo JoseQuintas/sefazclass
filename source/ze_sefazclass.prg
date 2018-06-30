@@ -19,6 +19,8 @@ Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
    #define ALL_PARAMETERS ...
 #endif
 
+#define WS_NFE_DEFAULT "4.00"
+
 CREATE CLASS SefazClass
 
    /* configuração */
@@ -819,7 +821,7 @@ METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::aSoapUrlList := WS_NFE_CONSULTACADASTRO
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
@@ -846,7 +848,7 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cIndNFe, "0" )
    hb_Default( @cIndEmi, "0" )
@@ -872,7 +874,7 @@ METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAm
 METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
@@ -913,7 +915,7 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cNSU, "" )
 
@@ -945,7 +947,7 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
    LOCAL cVersaoEvento
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    hb_Default( @nSequencia, 1 )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_EVENTO
@@ -1000,7 +1002,7 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    LOCAL cVersaoEvento
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    hb_Default( @nSequencia, 1 )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_EVENTO
@@ -1048,7 +1050,7 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
    LOCAL cDescEvento, cVersaoEvento
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    hb_Default( @nSequencia, 1 )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_EVENTO
@@ -1102,7 +1104,7 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
 METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::aSoapUrlList := WS_NFE_INUTILIZA
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
@@ -1148,7 +1150,7 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    hb_Default( @cIndSinc, ::cIndSinc )
 
    ::aSoapUrlList := WS_NFE_AUTORIZACAO
@@ -1213,7 +1215,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
 METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    IF cRecibo != NIL
       ::cRecibo := cRecibo
    ENDIF
@@ -1253,7 +1255,7 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::aSoapUrlList := WS_NFE_STATUSSERVICO
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.10"
@@ -1282,7 +1284,7 @@ METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
@@ -1304,7 +1306,7 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
    LOCAL cVersaoEvento
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, "4.00" )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
    cVersaoEvento := "1.00"
 
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
@@ -1844,16 +1846,17 @@ STATIC FUNCTION SoapUrlNFCe( aSoapList, cUf, cVersao )
 
    RETURN cUrl
 
-STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
+STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode )
 
    LOCAL QRCODE_cTag, QRCODE_Url, QRCODE_chNFe, QRCODE_nVersao, QRCODE_tpAmb
    LOCAL QRCODE_cDest, QRCODE_dhEmi, QRCODE_vNF, QRCODE_vICMS, QRCODE_digVal
-   LOCAL QRCODE_cIdToken, QRCODE_cCSC, QRCODE_cHash
+   LOCAL QRCODE_cIdToken, QRCODE_cCSC, QRCODE_cHash, QRCODE_UrlChave
    LOCAL cInfNFe, cSignature, cAmbiente, cUF, nPos
    LOCAL aUrlList := WS_NFE_QRCODE
 
    hb_Default( @cIdToken, StrZero( 0, 6 ) )
    hb_Default( @cCsc, StrZero( 0, 36 ) )
+   hb_Default( @cVersaoQRCode, "1.00" )
 
    cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
    cSignature := XmlNode( cXmlAssinado, "Signature", .T. )
@@ -1862,12 +1865,14 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
    cUF        := UFSigla( XmlNode( XmlNode( cInfNFe, "ide" ), "cUF" ) )
 
    // 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
-   nPos       := AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. e[ 2 ] == cVersao + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) } )
+   nPos       := AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
+                 ( e[ 2 ] == cVersao + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) .OR. ;
+                   e[ 2 ] == "4.00"  + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) ) } )
    QRCode_Url := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
 
    // 2¦ Parte (Parametros)
    QRCODE_chNFe    := AllTrim( Substr( XmlElement( cInfNFe, "Id" ), 4 ) )
-   QRCODE_nVersao  := "100"
+   QRCODE_nVersao  := SoNumeros( cVersaoQRCode )
    QRCODE_tpAmb    := cAmbiente
    QRCODE_cDest    := XmlNode( XmlNode( cInfNFe, "dest" ), "CPF" )
    IF Empty( QRCODE_cDest )
@@ -1882,7 +1887,6 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
 
    IF ! Empty( QRCODE_chNFe ) .AND. ! Empty( QRCODE_nVersao ) .AND. ! Empty( QRCODE_tpAmb ) .AND. ! Empty( QRCODE_dhEmi ) .AND. !Empty( QRCODE_vNF ) .AND.;
          ! Empty( QRCODE_vICMS ) .AND. ! Empty( QRCODE_digVal  ) .AND. ! Empty( QRCODE_cIdToken ) .AND. ! Empty( QRCODE_cCSC  )
-
       QRCODE_chNFe    := "chNFe="    + QRCODE_chNFe    + "&"
       QRCODE_nVersao  := "nVersao="  + QRCODE_nVersao  + "&"
       QRCODE_tpAmb    := "tpAmb="    + QRCODE_tpAmb    + "&"
@@ -1902,15 +1906,21 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao )
          hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cCSC ) )
 
       // Resultado da URL formada a ser incluida na imagem QR Code
-      QRCODE_cTag  := "<![CDATA[" + QRCODE_Url + QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cDest + ;
-         QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cHash + "]]>"
+      QRCODE_cTag  := "<![CDATA[" + QRCODE_Url + QRCODE_chNFe + QRCODE_nVersao + ;
+         QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + ;
+         QRCODE_digVal + QRCODE_cIdToken + QRCODE_cHash + "]]>"
+
       // XML com a Tag do QRCode
       cXmlAssinado := [<NFe xmlns="http://www.portalfiscal.inf.br/nfe">]
       cXmlAssinado += cInfNFe
       cXmlAssinado += [<] + "infNFeSupl"+[>]
       cXmlAssinado += [<] + "qrCode"+[>] + QRCODE_cTag + [</] + "qrCode" + [>]
       IF cVersao == "4.00"
-         cXmlAssinado += "<urlChave>" +  + QRCode_Url + [</urlChave>]
+         aUrlList := WS_NFE_CHAVE
+         nPos := AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
+                 e[ 2 ] == SoNumeros( cVersaoQrCode ) + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) } )
+         QRCode_UrlChave := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
+         cXmlAssinado += "<urlChave>" + QRCode_UrlChave + [</urlChave>]
       ENDIF
       cXmlAssinado += [</] + "infNFeSupl"+[>]
       cXmlAssinado += cSignature
