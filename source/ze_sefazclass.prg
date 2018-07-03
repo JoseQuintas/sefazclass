@@ -27,6 +27,7 @@ CREATE CLASS SefazClass
    VAR    cProjeto        INIT NIL
    VAR    cAmbiente       INIT WS_AMBIENTE_PRODUCAO
    VAR    cVersao         INIT NIL
+   VAR    cVersaoQrCode   INIT "1.00"                  // Versao do QRCode
    VAR    cScan           INIT "N"                     // Indicar se for SCAN/SVAN, ainda não testado
    VAR    cUF             INIT "SP"                    // Modificada conforme método
    VAR    cCertificado    INIT ""                      // Nome do certificado
@@ -1178,7 +1179,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       RETURN ::cXmlRetorno
    ENDIF
    IF ::cNFCe == "S"
-      GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC, ::cVersao )
+      GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC, ::cVersao, ::cVersaoQrCode )
    ENDIF
 
    ::cXmlEnvio    := [<enviNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
@@ -1918,10 +1919,11 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
       IF cVersao == "4.00"
          aUrlList := WS_NFE_CHAVE
          nPos := AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
-                 e[ 2 ] == SoNumeros( cVersaoQrCode ) + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) } )
+                 e[ 2 ] == cVersaoQrCode + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) } )
          QRCode_UrlChave := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
          cXmlAssinado += "<urlChave>" + QRCode_UrlChave + [</urlChave>]
       ENDIF
+
       cXmlAssinado += [</] + "infNFeSupl"+[>]
       cXmlAssinado += cSignature
       cXmlAssinado += [</NFe>]
