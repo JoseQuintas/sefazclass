@@ -168,6 +168,7 @@ STATIC FUNCTION AssinaAjustaInformacao( cTxtXml, cXmlTagInicial, cXmlTagFinal, c
       { "<infInut",               "</inutNFe>" }, ;
       { "<infInut",               "</inutCTe>" }, ;
       { "<infEvento",             "</evento>" }, ;
+      { "<evtInfoEmpregador",     "</eSocial>" }, ;
       { "<infPedidoCancelamento", "</Pedido>" }, ;               // NFSE ABRASF Cancelamento
       { "<LoteRps",               "</EnviarLoteRpsEnvio>" }, ;   // NFSE ABRASF Lote
       { "<infRps",                "</Rps>" } }                   // NFSE ABRASF RPS
