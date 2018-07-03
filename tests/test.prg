@@ -84,6 +84,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "Teste de assinatura"
       @ Row() + 1, 5 PROMPT "Consulta Recibo"
       @ Row() + 1, 5 PROMPT "Envio de XML*"
+      @ Row() + 1, 5 PROMPT "Assinatura arquivo externo (esocial,etc)"
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
@@ -236,6 +237,14 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       CASE nOpc == nOpcTemp++
          oSefaz:NfeLoteEnvia( [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>] )
          ? oSefaz:cXmlRetorno
+         Inkey(0)
+
+      CASE nOpc == nOpcTemp++
+         oSefaz:cXmlDocumento := MemoRead( win_GetOpenFileName(, "Arquivo a assinar", "importa\", "XML", "*.XML", 1 ) )
+         oSefaz:AssinaXml()
+         ? oSefaz:cXmlRetorno
+         ? oSefaz:cXmlDocumento
+         hb_MemoWrit( "testassina.xml", oSefaz:cXmlDocumento )
          Inkey(0)
 
       CASE nOpc == nOpcTemp // pra não esquecer o ++, último não tem
