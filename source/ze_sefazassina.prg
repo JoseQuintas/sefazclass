@@ -61,7 +61,11 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior, cPassword )
    BEGIN SEQUENCE WITH __BreakBlock()
 
       cRetorno := "Erro Assinatura: Não carregado MSXML2.MXDigitalSignature.5.0"
-      xmldsig := Win_OleCreateObject( "MSXML2.MXDigitalSignature.5.0" )
+#ifdef __XHARBOUR__
+      xmldsig := xhb_CreateObject( "MSXML2.MXDigitalSignature.5.0" )
+#else
+      xmldsig := win_OleCreateObject( "MSXML2.MXDigitalSignature.5.0" )
+#endif
 
       cRetorno := "Erro Assinatura: Template de assinatura não encontrado"
       xmldsig:signature := oDOMDocument:selectSingleNode(".//ds:Signature")
@@ -217,7 +221,11 @@ STATIC FUNCTION AssinaLoadXml( oDomDocument, cTxtXml, cRetorno )
 
    BEGIN SEQUENCE WITH __BreakBlock()
 
-      oDOMDocument := Win_OleCreateObject( "MSXML2.DOMDocument.5.0" )
+#ifdef __XHARBOUR__
+      oDOMDocument := xhb_CreateObject( "MSXML2.DOMDocument.5.0" )
+#else
+      oDOMDocument := win_OleCreateObject( "MSXML2.DOMDocument.5.0" )
+#endif
       oDOMDocument:async              := .F.
       oDOMDocument:resolveExternals   := .F.
       oDOMDocument:validateOnParse    := .T.
@@ -269,7 +277,11 @@ STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cPassword,
          cRetorno := "Erro assinatura: Falta senha do arquivo PFX"
          RETURN .F.
       ENDIF
+#ifdef __XHARBOUR__
+      oCert := xhb_OleCreateObject( "CAPICOM.Certificate" )
+#else
       oCert := win_OleCreateObject( "CAPICOM.Certificate" )
+#endif
       oCert:Load( cCertCN, cPassword, 1, 0 )
    ELSE
       oCert := CapicomCertificado( cCertCn )
@@ -281,7 +293,11 @@ STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cPassword,
 
    BEGIN SEQUENCE WITH __BreakBlock()
 
-      oCapicomStore := Win_OleCreateObject( "CAPICOM.Store" )
+#ifdef __XHARBOUR__
+   oCapicomStore := xhb_CreateObject( "CAPICOM.Store" )
+#else
+      oCapicomStore := win_OleCreateObject( "CAPICOM.Store" )
+#endif
       oCapicomStore:open( _CAPICOM_MEMORY_STORE, 'Memoria', _CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
       oCapicomStore:Add( oCert )
 
