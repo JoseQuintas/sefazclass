@@ -331,16 +331,28 @@ STATIC FUNCTION ValidIE_ES( cInscricao )
 
 STATIC FUNCTION ValidIE_GO( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk, nSoma
 
    IF Len( cInscricao ) != 9
       lOk := .F.
    ELSE
       nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      nSoma := iif( nSoma > 9, nSoma - 10, nSoma )
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
-         lOk := .F.
+      nSoma := Mod( nSoma, 11 )
+      IF Substr( cInscricao, 1, 8 ) == "11094402"
+         lOk := Substr( cInscricao, 9, 1 ) $ "01"
+      ELSE
+         IF nSoma == 0
+            lOk := Substr( cInscricao, 9, 1 ) == "0"
+         ELSEIF nSoma == 1
+            IF Substr( cInscricao, 1, 8 ) >= "10103105" .AND. Substr( cInscricao, 1, 8 ) <= "10119997"
+               lOk := Substr( cInscricao, 9, 1 ) == "1"
+            ELSE
+               lOk := Substr( cInscricao, 9, 1 ) == "0"
+            ENDIF
+         ELSE
+            nSoma := 11 - nSoma
+            lOk := Substr( cInscricao, 9, 1 ) == Str( nSoma, 1 )
+         ENDIF
       ENDIF
    ENDIF
    IF lOk
