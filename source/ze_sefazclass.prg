@@ -892,8 +892,14 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
          ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2"
       ENDCASE
    ELSE
-      ::cSoapAction := "nfeConsultaNF"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaProtocolo4"
+      DO CASE
+      CASE ::cUF $ "RO" // TODOS que usam SVRS
+         ::cSoapAction := "nfeConsultaNF"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeConsultaProtocolo4"
+      OTHERWISE
+         ::cSoapAction := "nfeConsultaNF"
+         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaProtocolo4"
+      ENDCASE
    ENDIF
 
    ::cXmlEnvio    := [<consSitNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
@@ -902,7 +908,7 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlEnvio    +=    XmlTag( "chNFe", cChave )
    ::cXmlEnvio    += [</consSitNFe>]
    IF ! DfeModFis( cChave ) $ "55,65"
-      ::cXmlRetorno := [<erro text="*ERRO* NfeConsultaProtocolo() Chave não se refere a NFE" />]
+      ::cXmlRetorno := [<erro text="*ERRO* NfeConsultaProtocolo() Chave não se refere a NFE/NFCE" />]
    ELSE
       ::XmlSoapPost()
    ENDIF
@@ -1833,7 +1839,7 @@ STATIC FUNCTION SoapUrlNFCe( aSoapList, cUf, cVersao )
 
    LOCAL cUrl, nPos
 
-   IF cUF $ "AC,RR"
+   IF cUF $ "AC,RO,RR"
       cUrl := SoapUrlNFCe( aSoapList, "SVRS", cVersao  )
    ELSE
       nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao + "C" == e[ 2 ] } )
