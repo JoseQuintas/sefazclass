@@ -1,10 +1,13 @@
 #include "directry.ch"
 
+MEMVAR cFileName
+
 PROCEDURE Main
 
    LOCAL x, nPos, aTagsAbre := {}, cTmp
+   PARAMETERS cFileName
 
-   x := MemoRead( Directory( "*.xml" )[ 1, F_NAME ] )
+   x := MemoRead( cFileName )
 
    DO WHILE .T.
       nPos := hb_At( "<", x, nPos )
