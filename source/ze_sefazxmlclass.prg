@@ -1,6 +1,8 @@
 /*
 ZE_SPEDXMLCLASS - CLASSES PARA NFE/CTE/MDFE/CCE
 2010.07.19 José Quintas
+
+2018.07.26 - Uso de MultipleNodeToArray - Tem nota com 1 unico produto começando em 17
 */
 
 #include "hbclass.ch"
@@ -366,11 +368,11 @@ FUNCTION XmlToDoc( cXmlInput )
 
 STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
 
-   LOCAL nCont
+   LOCAL aList, nCont
    LOCAL cBlocoInfNfeComTag, cBlocoChave, cBlocoIde, cBlocoInfAdic
    LOCAL cBlocoEmit, cBlocoEndereco, cBlocoDest, cBlocoTransporte, cBlocoTransp, cBlocoVeiculo, cBlocoVol, cBlocoTotal
-   LOCAL cBlocoDetalhe, cBlocoItem, cBlocoProd,  cBlocoIpi, cBlocoIcms, cBlocoPis, cBlocoCofins
-   LOCAL cBlocoComb, cBlocoCobranca, cBlocoDup, cBlocoDetalhePG, cBlocoPG
+   LOCAL cBlocoItem, cBlocoProd,  cBlocoIpi, cBlocoIcms, cBlocoPis, cBlocoCofins
+   LOCAL cBlocoComb, cBlocoCobranca, cBlocoDup, cBlocoPG
 
    cBlocoInfNfeComTag := XmlNode( cXmlInput, "infNFe", .T. )
 
@@ -481,16 +483,10 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
       oDocSped:Totais:ValNot   := Val( XmlNode( cBlocoTotal, "vNF" ) )
       oDocSped:Totais:ValTrib  := Val( XmlNode( cBlocoTotal, "vTotTrib" ) ) // 2018.01.23 Jackson
 
-   cBlocoDetalhe := ""
-   IF "<det" $ cXmlInput
-      cBlocoDetalhe := Substr( cXmlInput, At( "<det", cXmlInput ) - 1 )
-   ENDIF
-   FOR nCont = 1 TO 1000
-      cBlocoItem := XmlNode( cBlocoDetalhe, [det nItem="] + LTrim( Str( nCont ) ) + ["])
-      IF Len( Trim( cBlocoItem ) ) = 0 // Se acabaram os itens
-         EXIT
-      ENDIF
+   aList := MultipleNodeToArray( cXmlInput, "det" )
+   FOR EACH cBlocoItem IN aList
       AAdd( oDocSped:Produto, NFEProdutoClass():New() )
+      nCont := Len( oDocSped:Produto )
       cBlocoProd := XmlNode( cBlocoItem, "prod" )
          oDocSped:Produto[ nCont ]:Codigo          := XmlNode( cBlocoProd, "cProd" )
          oDocSped:Produto[ nCont ]:Nome            := Upper( XmlNode( cBlocoProd, "xProd" ) )
@@ -539,41 +535,34 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          oDocSped:Produto[ nCont ]:Cofins:Valor    := Val( XmlNode( cBlocoCofins, "vCOFINS" ) )
       cBlocoComb := XmlNode( cBlocoItem, "comb" )
          oDocSped:Produto[ nCont ]:Anp             := XmlNode( cBlocoComb, "cProdANP" )
-      cBlocoDetalhe := Substr( cBlocoDetalhe, At( "</det", cBlocoDetalhe ) + 4 )
    NEXT
 
    cBlocoCobranca := XmlNode( cXmlInput, "cobr" )
-   FOR nCont = 1 TO 500
+   aList := MultipleNodeToArray( cBlocoCobranca, "dup" )
+   FOR EACH cBlocoDup IN aList
       cBlocoDup := XmlNode( cBlocoCobranca, "dup" )
       IF Len( Trim( cBlocoDup ) ) = 0
          EXIT
       ENDIF
       AAdd( oDocSped:Duplicata, NFEDuplicataClass():New() )
+      nCont := Len( oDocSped:Duplicata )
       oDocSped:Duplicata[ nCont ]:Duplicata  := XmlNode( cBlocoDup, "nDup" ) // 2018.01.23 Jackson
       oDocSped:Duplicata[ nCont ]:Vencimento := XmlDate( XmlNode( cBlocoDup, "dVenc" ) )
       oDocSped:Duplicata[ nCont ]:Valor      := Val( XmlNode( cBlocoDup, "vDup" ) )
-      cBlocoCobranca := Substr( cBlocoCobranca, At( "</dup>", cBlocoCobranca ) + 3 )
    NEXT
 
    // Detalhes dos Blocos de Pagamentos na NFCe
    // 2018.02.23 Jackson
-   cBlocoDetalhePG := ""
-   IF "<pag>" $ cXmlInput
-      cBlocoDetalhePG := Substr( cXmlInput, At( "<pag>", cXmlInput ) - 1 )
-   ENDIF
-   FOR nCont = 1 TO 100
-      cBlocoPG := XmlNode( cBlocoDetalhePG, "pag" )
-      IF Len( Trim( cBlocoPG ) ) = 0
-         EXIT
-      ENDIF
+   aList := MultipleNodeToArray( cXmlInput, "pag" )
+   FOR EACH cBlocoPG IN aList
       AAdd( oDocSped:Pagamentos, NfePagamentosClass():New() )
+      nCont := Len( oDocSped:Pagamentos )
       oDocSped:Pagamentos[ nCont ]:TipoPago    := XmlNode( cBlocoPG, "tPag" )
       oDocSped:Pagamentos[ nCont ]:ValorPago   := Val( XmlNode( cBlocoPG, "vPag" ) )
       oDocSped:Pagamentos[ nCont ]:Integracao  := XmlNode( cBlocoPG, "tpIntegra" )
       oDocSped:Pagamentos[ nCont ]:Cnpj_Ope    := XmlNode( cBlocoPG, "CNPJ" )
       oDocSped:Pagamentos[ nCont ]:Bandeira    := XmlNode( cBlocoPG, "tBand" )
       oDocSped:Pagamentos[ nCont ]:Autorizacao := XmlNode( cBlocoPG, "cAut" )
-      cBlocoDetalhePG := Substr( cBlocoDetalhePG, At( "</pag>", cBlocoDetalhePG ) + 3 )
    NEXT
 
    oDocSped:Protocolo := XmlNode( cXmlInput, "nProt" )
