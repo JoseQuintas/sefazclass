@@ -25,6 +25,9 @@ PROCEDURE Main
       ENDIF
       nPos := nPos + 3
    ENDDO
+   ? "Tudo ok"
+   Inkey(0)
+
    RETURN
 
 FUNCTION ProcFecha( cTag, aTagsAbre )
@@ -50,10 +53,12 @@ FUNCTION ProcFecha( cTag, aTagsAbre )
       ? "fechou " + cTag
       hb_ADel( aTagsAbre, Len( aTagsAbre ), .T. )
    ELSE
-      ? "erro " + cTag + " esperada " + Atail( aTagsAbre ) +  "Len() " + Str( Len( aTagsAbre ) )
+      ? "erro " + cTag + " esperada " + Atail( aTagsAbre )
+      ? "Restam " +  Ltrim( Str( Len( aTagsAbre ) ) ) + " tags em aberto"
       FOR EACH oElement IN aTagsAbre
          ? oELement
       NEXT
+      ? "Tecle algo pra fechar"
       Inkey(0)
       QUIT
    ENDIF
