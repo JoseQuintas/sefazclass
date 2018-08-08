@@ -893,7 +893,7 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
       ENDCASE
    ELSE
       DO CASE
-      CASE ::cUF $ "RO" // TODOS que usam SVRS
+      CASE ::cUF $ "AC,AL,AP,DF,ES,PB,PI,RJ,RN,RO,RR,SC,SE,TO" // TODOS que usam SVRS
          ::cSoapAction := "nfeConsultaNF"
          ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeConsultaProtocolo4"
       OTHERWISE
@@ -1490,7 +1490,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       //ENDIF
 #else
       oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
-      oServer:SetOption( 2, 13056 )
+      // oServer:SetOption( 2, 13056 ) // uma das tentativas de TLS 1.2 mas não fez diferença
 #endif
       ::cXmlRetorno := [erro text="*ERRO* Erro: No uso do objeto MSXML2.ServerXmlHTTP.6.0" />]
       IF ::cCertificado != NIL

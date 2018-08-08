@@ -838,6 +838,8 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
       cItem := aItem[ nItem ]
       ::aItem          := XmlToHash( cItem, { "cProd", "cEAN", "xProd", "NCM", "EXTIPI", "CFOP", "uCom", "qCom", "vUnCom", "vProd", "cEANTrib", "uTrib", "qTrib", "vUnTrib", "vFrete", ;
          "vSeg", "vDesc", "vOutro", "indTot", "infAdProd" } )
+      ::aItem[ "cEAN" ] := iif( ::aItem[ "cEAN" ] == "SEM GTIN", "", ::aItem[ "cEAN" ] )
+      ::aItem[ "cEANTrib" ] := iif( ::aItem[ "cEANTrib" ] == "SEM GTIN", "", ::aItem[ "cEANTrib" ] )
       ::aItemDI        := XmlToHash( XmlNode( cItem, "DI" ), { "nDI", "dDI", "xLocDesemb", "UFDesemb", "cExportador" } )
       ::aItemAdi       := XmlToHash( XmlNode( cItem, "adi" ), { "nAdicao", "nSeqAdic", "cFabricante", "vDescDI", "xPed", "nItemPed" } )
       // todo veiculos (veicProd), medicamentos (med), armamentos (arm), combustiveis (comb)
