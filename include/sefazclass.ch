@@ -17,17 +17,39 @@
 #define XML_UTF8                   [<?xml version="1.0" encoding="UTF-8"?>]
 
 #define WS_BPE_CONSULTAPROTOCOLO { ;
+   { "MG",   "1.00P", "https://bpe.fazenda.mg.gov.br/bpe/services/BPeConsulta" }, ;
    { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
+   { "PR",   "1.00P", "https://bpe.fazenda.pr.gov.br/bpe/BpeConsulta" }, ;
    { "SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ms/bpeConsulta.asmx" }, ;
    ;
    { "MS",   "1.00H", "https://homologacao.bpe.ms.gov.br/ws/BPeConsulta" } }
 
+#define WS_BPE_RECEPCAO { ;
+   { "MG",   "1.00P", "https://bpe.fazenda.mg.gov.br/bpe/services/BPeRecepcao" }, ;
+   { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
+   { "PR",   "1.00P", "https://bpe.fazenda.pr.gov.br/bpe/BPeRecepcao" }, ;
+   { "SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ws/bpeRecepcao/bpeRecepcao.asmx" } }
+
+#define WS_BPE_RECEPCAOEVENTO { ;
+   { "MG",   "1.00P", "https://bpe.fazenda.mg.gov.br/bpe/services/BPeRecepcaoEvento" }, ;
+   { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeRecepcaoEvento" }, ;
+   { "PR",   "1.00P", "https://bpe.fazenda.pr.gov.br/bpe/BPeRecepcaoEvento" }, ;
+   { "SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ws/bpeRecepcaoEvento.asmx" } }
+
 #define WS_BPE_STATUSSERVICO { ;
+   { "MG",   "1.00P", "https://bpe.fazenda.mg.gov.br/bpe/BPeStatusServico" }, ;
    { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeStatusServico" }, ;
+   { "PR",   "1.00P", "https://bpe.fazenda.pr.gov.br/bpe/BPeStatusServico" }, ;
    { "SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ms/bpeStatusServico/bpeStatusServico.asmx" }, ;
    ;
    { "MS",   "1.00H", "https://homologacao.bpe.ms.gov.br/ws/BPeStatusServico" }, ;
    { "SVRS", "1.00H", "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeStatusServico/bpeStatusServico.asmx" } }
+
+#define WS_BPE_QRCODE { ;
+   { "MG",   "1.00P", "https://bpe.fazenda.mg.gov.br/portalbpe/sistema/qrcode.xhtml" }, ;
+   { "MS",   "1.00P", "http://www.dfe.ms.gov.br/qrcode" }, ;
+   { "PR",   "1.00P", "https://www.fazenda.pr.gov.br/qrcode" }, ;
+   { "SVRS", "1.00P", "https://bpe-portal.sefazvirtual.rs.gov.br/bpe/qrCode" } }
 
 #define WS_CTE_CONSULTAPROTOCOLO { ;
    { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteConsulta" }, ;

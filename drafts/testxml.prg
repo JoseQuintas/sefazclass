@@ -1,31 +1,42 @@
 #include "directry.ch"
 
-MEMVAR cFileName
+MEMVAR cFileName, cTxtErro
 
 PROCEDURE Main
 
-   LOCAL x, nPos, aTagsAbre := {}, cTmp
+   LOCAL cTexto, nPos, aTagsAbre := {}, cTmp, oElement
    PARAMETERS cFileName
 
-   x := MemoRead( cFileName )
-
+   cTexto := MemoRead( cFileName )
+   cTxtErro := ""
    DO WHILE .T.
-      nPos := hb_At( "<", x, nPos )
+      nPos := hb_At( "<", cTexto, nPos )
       IF nPos < 1
          EXIT
       ENDIF
-      IF Substr( x, nPos + 1, 1 ) == "/"
-         ProcFecha( Substr( x, nPos, hb_At( ">", x, nPos ) - nPos ), aTagsAbre )
+      IF Substr( cTexto, nPos + 1, 1 ) == "/"
+         IF ! ProcFecha( Substr( cTexto, nPos, hb_At( ">", cTexto, nPos ) - nPos ), aTagsAbre )
+            EXIT
+         ENDIF
       ELSE
-         cTmp := Substr( x, nPos, hb_At( ">", x, nPos ) - nPos )
-         IF ! "/" $ cTmp
+         cTmp := Substr( cTexto, nPos, hb_At( ">", cTexto, nPos ) - nPos + 1 )
+         IF ! "/>" $ cTmp .AND. ! "/ >" $ cTmp
             AAdd( aTagsAbre, cTmp )
-            ? "Abriu " + Atail( aTagsAbre )
+            //? "Abriu " + Atail( aTagsAbre )
          ENDIF
       ENDIF
       nPos := nPos + 3
    ENDDO
-   ? "Tudo ok"
+   IF Len( aTagsAbre ) == 0
+      ? .T.
+   ELSE
+      cTxtErro += "Em aberto" + hb_Eol()
+      FOR EACH oElement IN aTagsAbre
+         cTxtErro += oElement + hb_Eol()
+      NEXT
+      ? cTxtErro
+      ? .F.
+   ENDIF
    Inkey(0)
 
    RETURN
@@ -50,17 +61,13 @@ FUNCTION ProcFecha( cTag, aTagsAbre )
       cTag := Substr( cTag, 1, At( ">", cTag ) - 1 )
    ENDIF
    IF cTag == Atail( aTagsAbre )
-      ? "fechou " + cTag
+      //? "fechou " + cTag
       hb_ADel( aTagsAbre, Len( aTagsAbre ), .T. )
    ELSE
-      ? "erro " + cTag + " esperada " + Atail( aTagsAbre )
-      ? "Restam " +  Ltrim( Str( Len( aTagsAbre ) ) ) + " tags em aberto"
-      FOR EACH oElement IN aTagsAbre
-         ? oELement
-      NEXT
-      ? "Tecle algo pra fechar"
-      Inkey(0)
-      QUIT
+      IF Len( aTagsAbre ) != 0
+         cTxtErro += "erro fechada " + cTag + " esperada " + Atail( aTagsAbre ) + hb_Eol()
+      ENDIF
+      RETURN .F.
    ENDIF
 
-   RETURN NIL
+   RETURN .T.
