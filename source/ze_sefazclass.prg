@@ -39,6 +39,9 @@ CREATE CLASS SefazClass
    VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
    VAR    cCSC            INIT ""                      // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
    VAR    cPassword       INIT ""                      // Senha de arquivo PFX
+   VAR    cProxyUrl       INIT ""
+   VAR    cProxyUser      INIT ""
+   VAR    cProxyPassword  INIT ""
    /* XMLs de cada etapa */
    VAR    cXmlDocumento   INIT ""                      // O documento oficial, com ou sem assinatura, depende do documento
    VAR    cXmlEnvio       INIT ""                      // usado pra criar/complementar XML do documento
@@ -1381,7 +1384,7 @@ METHOD SetSoapURL() CLASS SefazClass
    CASE cProjeto == WS_PROJETO_NFE
       DO CASE
       CASE cNFCe == "S"
-         ::cSoapUrl := SoapUrlNFCe( ::aSoapUrlList, cUF, cVersao )
+         ::cSoapUrl := SoapUrlNFCe( ::aSoapUrlList, cUF, cVersao + "C" )
          IF Empty( ::cSoapUrl )
             ::cSoapUrl := SoapUrlNfe( ::aSoapUrlList, cUF, cVersao )
          ENDIF
@@ -1490,7 +1493,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       //ENDIF
 #else
       oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
-      // oServer:SetOption( 2, 13056 ) // uma das tentativas de TLS 1.2 mas não fez diferença
+      //oServer:SetOption( 2, 13056 ) // uma das tentativas de TLS 1.2 mas não fez diferença
 #endif
       ::cXmlRetorno := [erro text="*ERRO* Erro: No uso do objeto MSXML2.ServerXmlHTTP.6.0" />]
       IF ::cCertificado != NIL
@@ -1498,6 +1501,12 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       ENDIF
       ::cXmlRetorno := [erro text="*ERRO* Erro: Na conexão com webservice ] + ::cSoapURL + [" />]
       oServer:Open( "POST", ::cSoapURL, .F. )
+      IF ! Empty( ::cProxyUrl )
+         oServer:SetProxy( 2, ::cProxyUrl )
+         IF ! Empty( ::ProxyUser ) .OR. ! Empty( ::cProxyPassword )
+            oServer:SetProxyCredentials( ::ProxyUser, ::ProxyPassword )
+         ENDIF
+      ENDIF
       IF cSoapAction != NIL .AND. ! Empty( cSoapAction )
          oServer:SetRequestHeader( "SOAPAction", cSoapAction )
       ENDIF
@@ -1668,7 +1677,7 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
    ENDIF
 
    IF Empty( cFileXsd )
-      RETURN "OK"
+      RETURN SmallValidate( cXml )
    ENDIF
    IF ! File( cFileXSD )
       RETURN "Erro não encontrado arquivo " + cFileXSD
@@ -1939,3 +1948,69 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
    ENDIF
 
    RETURN "OK"
+
+STATIC FUNCTION SmallValidate( cXml )
+
+   LOCAL nPos, aTagsAbre := {}, cTmp, oElement
+   MEMVAR cTxtErro
+   PRIVATE cTxtErro := ""
+
+   DO WHILE .T.
+      nPos := hb_At( "<", cXml, nPos )
+      IF nPos < 1
+         EXIT
+      ENDIF
+      IF Substr( cXml, nPos + 1, 1 ) == "/"
+         IF ! ProcFecha( Substr( cXml, nPos, hb_At( ">", cXml, nPos ) - nPos ), aTagsAbre )
+            EXIT
+         ENDIF
+      ELSE
+         cTmp := Substr( cXml, nPos, hb_At( ">", cXml, nPos ) - nPos + 1 )
+         IF ! "/>" $ cTmp .AND. ! "/ >" $ cTmp
+            AAdd( aTagsAbre, cTmp )
+            //? "Abriu " + Atail( aTagsAbre )
+         ENDIF
+      ENDIF
+      nPos := nPos + 3
+   ENDDO
+   IF Len( aTagsAbre ) != 0
+      cTxtErro += "Em aberto" + Space(3)
+      FOR EACH oElement IN aTagsAbre
+         cTxtErro += oElement + Space(3)
+      NEXT
+      RETURN "*ERRO* " + cTxtErro
+   ENDIF
+
+   RETURN "OK"
+
+FUNCTION ProcFecha( cTag, aTagsAbre )
+
+   LOCAL oElement
+   MEMVAR cTxtErro
+
+   FOR EACH oElement IN aTagsAbre
+      IF " " $ oElement
+         oElement := Substr( oElement, 1, At( " ", oElement ) - 1 )
+      ENDIF
+      IF ">" $ oElement
+         oElement := Substr( oElement, 1, At( ">", oElement ) - 1 )
+      ENDIF
+      IF "<" $ oElement
+         oElement := Trim( Substr( oElement, 2 ) )
+      ENDIF
+   NEXT
+   cTag := Substr( cTag, 3 )
+   IF ">" $ cTag
+      cTag := Substr( cTag, 1, At( ">", cTag ) - 1 )
+   ENDIF
+   IF cTag == Atail( aTagsAbre )
+      //? "fechou " + cTag
+      hb_ADel( aTagsAbre, Len( aTagsAbre ), .T. )
+   ELSE
+      IF Len( aTagsAbre ) != 0
+         cTxtErro += "erro fechada " + cTag + " esperada " + Atail( aTagsAbre ) + Space(3)
+      ENDIF
+      RETURN .F.
+   ENDIF
+
+   RETURN .T.

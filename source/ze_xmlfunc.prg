@@ -95,6 +95,7 @@ FUNCTION XmlTransform( cXml )
       cXml := StrTran( cXml, Chr(135) + Chr(227), "ca" )
       cXml := StrTran( cXml, "n" + Chr(227), "na" )
       cXml := StrTran( cXml, Chr(162), "o" )
+      cXml := StrTran( cXml, " " + Chr(241) + " ", " " )
    NEXT
    FOR nCont = 1 TO Len( cXml )
       cLetra := Substr( cXml, nCont, 1 )
