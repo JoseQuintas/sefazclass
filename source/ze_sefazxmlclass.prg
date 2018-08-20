@@ -511,7 +511,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          oDocSped:Produto[ nCont ]:Ipi:Valor       := Val( XmlNode( cBlocoIpi, "vIPI" ) )
       cBlocoIcms := XmlNode( cBlocoItem, "ICMS" )
          oDocSped:Produto[ nCont ]:Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CST" )
-         IF Empty( oDocSped:Produto[ nCont ]:Icms:Cst )
+         IF Len( oDocSped:Produto[ nCont ]:Icms:Cst ) < 3
             oDocSped:Produto[ nCont ]:Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CSOSN" )
          ENDIF
          oDocSped:Produto[ nCont ]:Icms:Base       := Val( XmlNode( cBlocoIcms, "vBC" ) )
