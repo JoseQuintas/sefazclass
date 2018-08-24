@@ -668,10 +668,10 @@ STATIC FUNCTION ValidIE_RO( cInscricao )
          lOk := .F.
       ENDIF
    ELSE // apos 07/2000
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 12 ) )
+      nSoma := SomaModulo11( Substr( cInscricao, 1, 13 ) )
       nSoma := 11 - Mod( nSoma, 11 )
       nSoma := iif( nSoma > 9, nSoma - 10, nSoma )
-      IF nSoma != Val( Substr( cInscricao, 13, 1 ) )
+      IF nSoma != Val( Substr( cInscricao, 14, 1 ) )
          lOk := .F.
       ENDIF
    ENDIF

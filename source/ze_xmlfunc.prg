@@ -23,7 +23,7 @@ FUNCTION XmlTransform( cXml )
    FOR nCont = 1 TO Len( cRemoveTag )
       cXml := StrTran( cXml, cRemoveTag[ nCont ], "" )
    NEXT
-   IF ! ["] $ cXml // Petrobras usa aspas simples
+   IF ! ["] $ cXml // Pode ser usado aspas simples
       cXml := StrTran( cXml, ['], ["] )
    ENDIF
 
@@ -41,15 +41,15 @@ FUNCTION XmlTransform( cXml )
       IF Substr( cXml, 1, 1 ) $ Chr(239) + Chr(187) + Chr(191)
          cXml := Substr( cXml, 2 )
       ENDIF
-      cXml := StrTran( cXml, " />", "/>" ) // Diferenca entre versoes do emissor
-      cXml := StrTran( cXml, Chr(195) + Chr(173), "i" ) // i acentuado minusculo
-      cXml := StrTran( cXml, Chr(195) + Chr(135), "C" ) // c cedilha maiusculo
-      cXml := StrTran( cXml, Chr(195) + Chr(141), "I" ) // i acentuado maiusculo
-      cXml := StrTran( cXml, Chr(195) + Chr(163), "a" ) // a acentuado minusculo
-      cXml := StrTran( cXml, Chr(195) + Chr(167), "c" ) // c acentuado minusculo
-      cXml := StrTran( cXml, Chr(195) + Chr(161), "a" ) // a acentuado minusculo
-      cXml := StrTran( cXml, Chr(195) + Chr(131), "A" ) // a acentuado maiusculo
-      cXml := StrTran( cXml, Chr(194) + Chr(186), "o." ) // numero simbolo
+      cXml := StrTran( cXml, " />", "/>" )
+      cXml := StrTran( cXml, Chr(195) + Chr(173), "i" )
+      cXml := StrTran( cXml, Chr(195) + Chr(135), "C" )
+      cXml := StrTran( cXml, Chr(195) + Chr(141), "I" )
+      cXml := StrTran( cXml, Chr(195) + Chr(163), "a" )
+      cXml := StrTran( cXml, Chr(195) + Chr(167), "c" )
+      cXml := StrTran( cXml, Chr(195) + Chr(161), "a" )
+      cXml := StrTran( cXml, Chr(195) + Chr(131), "A" )
+      cXml := StrTran( cXml, Chr(194) + Chr(186), "o." )
       cxml := StrTran( cxml, Chr(195) + Chr(162), "a" )
       cxml := StrTran( cxml, Chr(195) + Chr(161), "a" )
       cxml := StrTran( cxml, Chr(195) + Chr(163), "a" )
