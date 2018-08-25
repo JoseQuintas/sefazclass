@@ -212,9 +212,8 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
       CASE nOpc == nOpcTemp++
-         cXml := MemoRead( "d:\temp\teste.xml" )
-         // cXml := StrTran( cXml, "</NFe>", FakeSignature() + "</NFe>" )
-         ? oSefaz:ValidaXml( cXml, "d:\cdrom\fontes\integra\schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd" )
+         cXml := MemoRead( win_GetOpenFileName(, "Arquivo a assinar", "importa\", "XML", "*.XML", 1 ) )
+         ? oSefaz:ValidaXml( cXml ) // , "d:\cdrom\fontes\integra\schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd" )
          Inkey(0)
 
       CASE nOpc == nOpcTemp++

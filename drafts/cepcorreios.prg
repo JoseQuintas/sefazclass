@@ -38,7 +38,7 @@ STATIC FUNCTION ConsultaCep( cCep, cBairro, cCidade, cEndereco, cUF, cId )
       cUF       := XmlNode( :cXmlRetorno, "uf" )
       cID       := XmlNode( :cXmlRetorno, "id" )
    END WITH
-   HB_SYMBOL_UNUSED( oSefaz )
+   ? oSefaz:cXmlRetorno
 
    RETURN NIL
 
