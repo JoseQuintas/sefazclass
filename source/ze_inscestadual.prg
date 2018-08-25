@@ -675,9 +675,7 @@ STATIC FUNCTION ValidIE_RO( cInscricao )
          lOk := .F.
       ENDIF
    ENDIF
-   IF lOk
-      cInscricao := Transform( cInscricao, "@R 999.99999-9" )
-   ENDIF
+   // Sem formatação de IE
 
    RETURN lOk
 
