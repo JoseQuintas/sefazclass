@@ -492,8 +492,8 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          oDocSped:Produto[ nCont ]:Nome            := Upper( XmlNode( cBlocoProd, "xProd" ) )
          oDocSped:Produto[ nCont ]:CFOP            := Transform( XmlNode( cBlocoProd, "CFOP" ), "@R 9.9999" )
          oDocSped:Produto[ nCont ]:NCM             := XmlNode( cBlocoProd, "NCM" )
-         oDocSped:Produto[ nCont ]:GTIN            := XmlNode( cBlocoProd, "cEAN" )
-         oDocSped:Produto[ nCont ]:GTINTrib        := XmlNode( cBlocoProd, "cEANTrib" )
+         oDocSped:Produto[ nCont ]:GTIN            := SoNumeros( XmlNode( cBlocoProd, "cEAN" ) )
+         oDocSped:Produto[ nCont ]:GTINTrib        := SoNumeros( XmlNode( cBlocoProd, "cEANTrib" ) )
          IF Empty( oDocSped:Produto[ nCont ]:GTINTrib )
             oDocSped:Produto[ nCont ]:GTINTrib := oDocSped:Produto[ nCont ]:GTIN
          ENDIF
