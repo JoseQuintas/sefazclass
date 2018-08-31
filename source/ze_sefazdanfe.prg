@@ -109,6 +109,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    VAR aVeicTransp
    VAR aReboque
    VAR cCobranca
+   VAR aDetPag
    VAR aInfAdic
    VAR aObsCont
    VAR aObsFisco
@@ -230,6 +231,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    ::aVeicTransp := XmlToHash( XmlNode( XmlNode( ::cXml, "transp" ), "veicTransp" ), { "placa", "UF", "RNTC" } )
    ::aReboque    := XmlToHash( XmlNode( XmlNode( ::cXml, "reboque" ), "veicTransp" ), { "placa", "UF", "RNTC" } )
    ::cCobranca   := XmlNode( ::cXml, "cobr" )
+   ::aDetPag     := MultipleNodeToArray( XmlNode( ::cXml, "pag" ), "detPag" )
    ::aInfAdic    := XmlToHash( XmlNode( ::cXml, "infAdic" ), { "infAdFisco", "infCpl" } )
    ::aObsCont    := XmlToHash( XmlNode( XmlNode( ::cXml, "infAdic" ), "obsCont" ), { "xCampo", "xTexto" } )
    ::aObsFisco   := XmlToHash( XmlNode( XmlNode( ::cXml, "infAdic" ), "obsFisco" ), { "xCampo", "xTexto" } )
@@ -540,7 +542,7 @@ METHOD Destinatario() CLASS hbNFeDaNFe
 
 METHOD Duplicatas() CLASS hbNFeDaNFe
 
-   LOCAL nICob, nItensCob, nLinhaFinalCob, nTamanhoCob
+   LOCAL nICob, nItensCob, nLinhaFinalCob, nTamanhoCob, aList, cTPag, nPos
    LOCAL nTamForm, aDups, nColuna, cDup, cNumero, cVencimento, cValor, nCont
 
    IF ::nFolha != 1
@@ -551,21 +553,45 @@ METHOD Duplicatas() CLASS hbNFeDaNFe
 
    IF Empty( ::cCobranca )
       ::DrawBox( 5, ::nLinhaPdf - 12, 585, 12, ::nLarguraBox )
-      IF ::aIde[ "indPag" ] == "0"
-         ::DrawTexto( 6, ::nLinhaPdf - 1,  589, NIL, "PAGAMENTO À VISTA", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-      ELSEIF ::aIde[ "indPag" ] == "1"
-         ::DrawTexto( 6, ::nLinhaPdf - 1,  589, NIL, "PAGAMENTO À PRAZO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-      ELSE
-         ::DrawTexto( 6, ::nLinhaPdf - 1,  589, NIL, "OUTROS", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+      IF ! Empty( ::aIde[ "indPag" ] )
+         IF ::aIde[ "indPag" ] == "0"
+            ::DrawTexto( 6, ::nLinhaPdf - 1,  589, NIL, "PAGAMENTO À VISTA", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+         ELSEIF ::aIde[ "indPag" ] == "1"
+            ::DrawTexto( 6, ::nLinhaPdf - 1,  589, NIL, "PAGAMENTO À PRAZO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+         ELSE
+            ::DrawTexto( 6, ::nLinhaPdf - 1,  589, NIL, "OUTROS", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+         ENDIF
       ENDIF
       ::nLinhaPdf -= 13
       RETURN NIL
+   ENDIF
+   IF Len( ::aDetPag ) > 0
+      aList := { ;
+         { "01", "DINHEIRO" }, ;
+         { "02", "CHEQUE" }, ;
+         { "03", "CARTAO DE CREDITO" }, ;
+         { "04", "CARTAO DE DEBITO" }, ;
+         { "05", "CREDITO LOJA" }, ;
+         { "10", "VALE ALIMENTACAO" }, ;
+         { "11", "VALE REFEICAO" }, ;
+         { "12", "VALE PRESENTE" }, ;
+         { "13", "VALE COMBUSTIVEL" }, ;
+         { "15", "BOLETO BANCARIO" }, ;
+         { "90", "SEM PAGAMENTO" }, ;
+         { "99", "OUTROS" } }
+      FOR EACH cTPag IN ::aDetPag
+         IF ( nPos := AScan( aList, { | e | e[ 1 ] == cTPag } ) ) != 0
+            ValType( nPos ) // só pra usar variável -w3 -es2
+         //   ::DrawTexto( 6, ::nLinhaPdf - 1, 589, NIL, aList[ nPos, 2 ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+         //   ::nLinhaPdf -= 13
+         ENDIF
+      NEXT
    ENDIF
    nICob := Len( MultipleNodeToArray( ::cCobranca, "dup" ) )
    IF nICob < 1
       nICob := 1
    ENDIF
-   nItensCob      := Round( nIcob / 3 + 0.99, 0 )
+   nItensCob      := 1 + Int( ( nIcob - 1 ) / 3 )
    nLinhaFinalCob := ::nLinhaPdf - ( nItensCob * 8 ) - 2
    nTamanhoCob    := ( nItensCob * 8 ) + 2
 
@@ -585,9 +611,9 @@ METHOD Duplicatas() CLASS hbNFeDaNFe
       cVencimento := XmlNode( cDup, "dVenc" )
       cVencimento := SubStr( cVencimento, 9, 2 ) + "/" + SubStr( cVencimento, 6, 2 ) + "/" + SubStr( cVencimento, 1, 4 )
       cValor      := AllTrim( FormatNumber( Val( XmlNode( cDup, "vDup" ) ), 13, 2 ) )
-      ::DrawTexto( 6 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1,  61 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cNumero, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-      ::DrawTexto( 63 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 118 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-      ::DrawTexto( 120 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 195 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 8 )
+      ::DrawTexto( 6 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1,  80 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cNumero, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
+      ::DrawTexto( 82 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 128 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
+      ::DrawTexto( 130 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 195 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 8 )
       nColuna++
       IF nColuna > 3
          ::nLinhaPdf -= 8
