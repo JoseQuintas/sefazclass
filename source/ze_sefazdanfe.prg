@@ -946,7 +946,7 @@ METHOD ItensDaFolha( nFolha ) CLASS hbNFeDaNFe
    nFolha := iif( nFolha == NIL, ::nFolha, nFolha )
 
    IF nFolha == 1
-      nQuadro := 300 + ;
+      nQuadro := 291 + ;
          iif( ::lLaser, 54, 0  ) + ;
          iif( Val( ::aIssTotal[ "vServ" ] ) <= 0, 24, 0 )
       nParcelas := Len( MultipleNodeToArray( ::cCobranca, "dup" ) )
