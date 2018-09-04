@@ -22,9 +22,9 @@ source/ze_inscestadual.prg
 -n
 -beep
 
--o${hb_install_prefix}/addons/sefazclass/lib/${hb_plat}/${hb_comp}/${hb_name}
+-o${hb_addons}/sefazclass/lib/${hb_plat}/${hb_comp}/${hb_name}
 
 sefazclass.hbc
 
 -hblib
--hbx=${hb_install_prefix}/addons/sefazclass/${hb_name}
+-hbx=${hb_addons}/sefazclass/${hb_name}
