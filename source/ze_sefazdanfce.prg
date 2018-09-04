@@ -275,7 +275,7 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
 
 METHOD DetalheProdutosServicos() CLASS hbNFeDaNFCe
 
-   LOCAL nContX, oElement
+   LOCAL nContX, nCont, cTexto
 
    // DIVISAO II - Informacoes de detalhes de produtos/servicos------------------------------------------------------------------
    ::DrawTexto(   6, ::nLinhaPDF - 10, 220, NIL, "CODIGO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
@@ -289,10 +289,12 @@ METHOD DetalheProdutosServicos() CLASS hbNFeDaNFCe
 
    // "cProd", "xProd", "qCom", "uCom", "vUnCom", "vProd"
    FOR nContX := 1 TO Len( ::aItem )
-      ::DrawTexto(  6, ::nLinhaPDF - 10, 220, NIL, ::aItem[ nContX, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
-
-      FOR EACH oElement IN ::FormatMemoAsArray( ::aItem[ nContx, 2 ], 45 )
-         ::DrawTexto( 40, ::nLinhaPDF - 10, 220, NIL, oElement, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
+      //::DrawTexto(  6, ::nLinhaPDF - 10, 220, NIL, ::aItem[ nContX, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
+      //FOR EACH oElement IN ::FormatMemoAsArray( ::aItem[ nContx, 2 ], 45 )
+      HPDF_Page_SetFontAndSize( ::oPDFPage, ::oPDFFontNormal, 7 )
+      cTexto := ::FormataMemo( ::aItem[ nContX, 1 ] + "  " + ::aItem[ nContx, 2 ], 200 )
+      FOR nCont = 1 TO MLCount( cTexto, 1000 )
+         ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, MemoLine( cTexto, 1000, nCont ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
          ::nLinhaPDF -= 10
       NEXT
 
