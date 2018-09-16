@@ -106,7 +106,6 @@ CREATE CLASS SefazClass
    METHOD NFeAddCancelamento( cXmlAssinado, cXmlCancelamento )
 
    /* Uso interno */
-   METHOD SetSoapURL()
    METHOD XmlSoapEnvelope()
    METHOD XmlSoapPost()
    METHOD MicrosoftXmlSoapPost()
@@ -146,31 +145,6 @@ METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-      //::aSoapActionList := { ;
-      //{ "**", WS_BPE_RECEPCAO,          "1.00", "BpeRecepcao",          "http://www.portalfiscal.inf.br/bpe/wsdl/BPeRecepcao/bpeRecepcao" } }
-      //::aSoapActionList := { ;
-      //{ "**", WS_BPE_RECEPCAOEVENTO,    "1.00", "BpeRecepcaoEvento",    "http://www.portalfiscal.inf.br/bpe/wsdl/bpeRecepcaoEvento" } }
-     //::aSoapUrlList := { ;
-         //{ "MS",   "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.fazenda.ms.gov.br/ws/BPeRecepcao" }, ;
-         //{ "SVRS", "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.svrs.rs.gov.br/ws/bpeRecepcao/bpeRecepcao.asmx" }, ;
-         //;
-         //{ "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.bpe.ms.gov.br/ws/BPeRecepcao" }, ;
-         //{ "SVRS", "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://bpe-homologacao.srvs.rs.gov.br/ws/bpeRecepcao/bpeRecepcao.asmx" } }
-
-      //::aSoapUrlList := { ;
-         //{ "MS",   "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.fazenda.ms.gov.br/ws/BPeRecepcaoEvento" }, ;
-         //{ "SVRS", "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.svrs.rs.gov.br/ms/bpeRecepcaoEvento/bpeRecepcaoEvento.asmx" }, ;
-         //;
-         //{ "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://homologacao.bpe.ms.gov.br/ws/BPeRecepcaoEvento" }, ;
-         //{ "SVRS", "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeRecepcaoEvento/bpeRecepcaoEvento.asmx" } }
-
-      //aSoapUrlList := { ;
-         //{ "MS",   "1.00", WS_AMBIENTE_PRODUCAO,     "http://dfe.ms.gov.br/bpe/qrcode" }, ;
-         //{ "SVRS", "1.00", WS_AMBIENTE_PRODUCAO,     "https://bpe.svrs.rs.gov.br/ws/bpeQrCode/qrCode.asmx" }, ;
-         //;
-         //{ "MS",   "1.00", WS_AMBIENTE_HOMOLOGACAO,  "http//www.dfe.ms.gov.br/bpe/qrcode" }, ;
-         //{ "SVRS", "1.00", WS_AMBIENTE_HOMOLOGACAO,  "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeQrCode/qrCode.asmx" } }
-
 METHOD BPeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cVersao, "1.00" )
@@ -187,9 +161,6 @@ METHOD BPeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::XmlSoapPost()
 
    RETURN ::cXmlRetorno
-
-      //::aSoapUrlList := { ;
-         //{ "MS",   "3.00", WS_AMBIENTE_PRODUCAO,    "https://producao.cte.ms.gov.br/ws/CadConsultaCadastro" } }
 
 METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -1341,6 +1312,8 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
 
 METHOD Setup( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
+   LOCAL cProjeto, cNFCe, cScan, cVersao
+
    DO CASE
    CASE cUF == NIL
    CASE Len( SoNumeros( cUF ) ) != 0
@@ -1350,15 +1323,6 @@ METHOD Setup( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ENDCASE
    ::cCertificado := iif( cCertificado == NIL, ::cCertificado, cCertificado )
    ::cAmbiente    := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
-
-   ::SetSoapURL()
-
-   RETURN NIL
-
-METHOD SetSoapURL() CLASS SefazClass
-
-   LOCAL cAmbiente, cUF, cProjeto, cNFCe, cScan, cVersao
-
    ::cSoapURL := ""
    cAmbiente  := ::cAmbiente
    cUF        := ::cUF
@@ -1849,7 +1813,7 @@ STATIC FUNCTION SoapUrlNFCe( aSoapList, cUf, cVersao )
 
    LOCAL cUrl, nPos
 
-   IF cUF $ "AC,RO,RR"
+   IF cUF $ "AC,ES,RO,RR"
       cUrl := SoapUrlNFCe( aSoapList, "SVRS", cVersao  )
    ELSE
       nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao + "C" == e[ 2 ] } )
