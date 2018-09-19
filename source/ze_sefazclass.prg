@@ -1032,13 +1032,13 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
-   hb_Default( @cCnpj, DfeEmitente( cChave ) ) // emitente não faz manifestação
+   hb_Default( @cCnpj, "00000000000000" )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_EVENTO
    ::cUF          := "AN"
    ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
    ::cSoapAction  := "nfeRecepcaoEventoNF"
-   ::Setup( cChave, cCertificado, cAmbiente )
+   ::Setup( "AN", cCertificado, cAmbiente )
 
    cVersaoEvento := "1.00"
    DO CASE
@@ -1563,7 +1563,7 @@ STATIC FUNCTION UFCodigo( cSigla )
    IF Val( cSigla ) > 0
       RETURN cSigla
    ENDIF
-   cUFs := "AC,12,AL,27,AM,13,AP,16,BA,29,CE,23,DF,53,ES,32,GO,52,MG,31,MS,50,MT,51,MA,21,PA,15,PB,25,PE,26,PI,22,PR,41,RJ,33,RO,11,RN,24,RR,14,RS,43,SC,42,SE,28,SP,35,TO,17,"
+   cUFs := "AN,91,AC,12,AL,27,AM,13,AP,16,BA,29,CE,23,DF,53,ES,32,GO,52,MG,31,MS,50,MT,51,MA,21,PA,15,PB,25,PE,26,PI,22,PR,41,RJ,33,RO,11,RN,24,RR,14,RS,43,SC,42,SE,28,SP,35,TO,17,"
    nPosicao := At( cSigla, cUfs )
    IF nPosicao < 1
       cCodigo := "99"
@@ -1581,7 +1581,7 @@ STATIC FUNCTION UFSigla( cCodigo )
    IF Val( cCodigo ) == 0 // não é número
       RETURN cCodigo
    ENDIF
-   cUFs := "AC,12,AL,27,AM,13,AP,16,BA,29,CE,23,DF,53,ES,32,GO,52,MG,31,MS,50,MT,51,MA,21,PA,15,PB,25,PE,26,PI,22,PR,41,RJ,33,RO,11,RN,24,RR,14,RS,43,SC,42,SE,28,SP,35,TO,17,"
+   cUFs := "AN,91,AC,12,AL,27,AM,13,AP,16,BA,29,CE,23,DF,53,ES,32,GO,52,MG,31,MS,50,MT,51,MA,21,PA,15,PB,25,PE,26,PI,22,PR,41,RJ,33,RO,11,RN,24,RR,14,RS,43,SC,42,SE,28,SP,35,TO,17,"
    nPosicao := At( cCodigo, cUfs )
    IF nPosicao < 1
       cSigla := "XX"
