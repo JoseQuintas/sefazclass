@@ -18,7 +18,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    LOCAL cCnpj := Space(14), cChave := Space(44), cXmlRetorno
    LOCAL oSefaz, cXml, oDanfe, cTempFile, nHandle, cRecibo := Space(20)
 
-   cVersao      := "3.10"
+   cVersao      := "4.00"
    cCertificado := ""
    cUF          := "SP"
    cAmbiente    := WS_AMBIENTE_HOMOLOGACAO
@@ -85,6 +85,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "Consulta Recibo"
       @ Row() + 1, 5 PROMPT "Envio de XML*"
       @ Row() + 1, 5 PROMPT "Assinatura arquivo externo (esocial,etc)"
+      @ Row() + 1, 5 PROMPT "Ciente da operação"
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
@@ -244,6 +245,14 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          ? oSefaz:cXmlRetorno
          ? oSefaz:cXmlDocumento
          hb_MemoWrit( "testassina.xml", oSefaz:cXmlDocumento )
+         Inkey(0)
+
+      CASE nOpc == nOpcTemp++
+         oSefaz:NfeEventoManifestacao( ;
+            "35180934274233005910550000022249381867740460", ;
+            "68331891000100", "210210" )
+         ? oSefaz:cXmlRetorno
+         hb_MemoWrit( "testeman.xml", oSefaz:cXmlDocumento )
          Inkey(0)
 
       CASE nOpc == nOpcTemp // pra não esquecer o ++, último não tem
