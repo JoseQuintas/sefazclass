@@ -10,12 +10,12 @@ REQUEST HB_CODEPAGE_PTISO
    #define WIN_SW_SHOWNORMAL 0
 #endif
 
-MEMVAR cVersao, cCertificado, cUF, cAmbiente, cNFCe
+MEMVAR cVersao, cCertificado, cUF, cAmbiente, cNFCe, cEvento, cCnpj, cChave
 
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    LOCAL nOpc := 1, GetList := {}, cTexto := "", nOpcTemp
-   LOCAL cCnpj := Space(14), cChave := Space(44), cXmlRetorno
+   LOCAL cXmlRetorno
    LOCAL oSefaz, cXml, oDanfe, cTempFile, nHandle, cRecibo := Space(20)
 
    cVersao      := "4.00"
@@ -23,6 +23,9 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    cUF          := "SP"
    cAmbiente    := WS_AMBIENTE_HOMOLOGACAO
    cNFCe        := "N"
+   cEvento      := "210210"
+   cCnpj        := Space(14)
+   cChave       := Space(44)
 
    SET DATE BRITISH
    SetupHarbour()
@@ -85,7 +88,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "Consulta Recibo"
       @ Row() + 1, 5 PROMPT "Envio de XML*"
       @ Row() + 1, 5 PROMPT "Assinatura arquivo externo (esocial,etc)"
-      @ Row() + 1, 5 PROMPT "Ciente da operação"
+      @ Row() + 1, 5 PROMPT "Manifestacao Destinatario"
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
@@ -248,12 +251,16 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          Inkey(0)
 
       CASE nOpc == nOpcTemp++
-         oSefaz:NfeEventoManifestacao( ;
-            "35180934274233005910550000022249381867740460", ;
-            "68331891000100", "210210" )
-         ? oSefaz:cXmlRetorno
-         hb_MemoWrit( "testeman.xml", oSefaz:cXmlDocumento )
-         Inkey(0)
+         Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
+         @  8, 1 GET cChave  PICTURE "@9"
+         @  9, 1 GET cCnpj   PICTURE "@9"
+         @ 10, 1 GET cEvento PICTURE "@9" VALID cEvento $ "210200,210210,210220,210240"
+         READ
+         IF LastKey() != K_ESC
+            oSefaz:NfeEventoManifestacao( cChave, cCnpj, cEvento )
+            ? oSefaz:cXmlRetorno
+            Inkey(0)
+         ENDIF
 
       CASE nOpc == nOpcTemp // pra não esquecer o ++, último não tem
       ENDCASE
