@@ -359,12 +359,14 @@
    { "SVCAN", "4.00H",  "https://hom.svc.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx" }, ;
    { "SVCRS", "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx" }, ;
    { "SVRS",  "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx" }, ;
+   ;
    { "AM",    "4.00HC", "https://homnfe.sefaz.am.gov.br/services2/services/RecepcaoEvento4" }, ;
    { "MS",    "4.00HC", "https://homologacao.nfce.fazenda.ms.gov.br/ws/NFeRecepcaoEvento4" }, ;
    { "PR",    "4.00HC", "https://homologacao.nfce.sefa.pr.gov.br/nfce/NFeRecepcaoEvento4" }, ;
    { "RS",    "4.00HC", "https://nfce-homologacao.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx" }, ;
    { "SP",    "4.00HC", "https://homologacao.nfce.fazenda.sp.gov.br/ws/NFeRecepcaoEvento4.asmx" }, ;
    { "SVRS",  "4.00HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx" }, ;
+   ;
    { "AM",    "4.00P",  "https://nfe.sefaz.am.gov.br/services2/services/RecepcaoEvento4" }, ;
    { "BA",    "4.00P",  "https://nfe.sefaz.ba.gov.br/webservices/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx" }, ;
    { "CE",    "4.00P",  "https://nfe.sefaz.ce.gov.br/nfe4/services/NFeRecepcaoEvento4" }, ;
@@ -380,6 +382,7 @@
    { "SVCAN", "4.00P",  "https://www.svc.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx" }, ;
    { "SVCRS", "4.00P",  "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx" }, ;
    { "SVRS",  "4.00P",  "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx" }, ;
+   ;
    { "AM",    "4.00PC", "https://nfce.sefaz.am.gov.br/nfce-services/services/RecepcaoEvento4" }, ;
    { "MS",    "4.00PC", "https://nfce.fazenda.ms.gov.br/ws/NFeRecepcaoEvento4" }, ;
    { "PR",    "4.00PC", "https://nfce.sefa.pr.gov.br/nfce/NFeRecepcaoEvento4" }, ;
