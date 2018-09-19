@@ -367,6 +367,7 @@
    { "SP",    "4.00HC", "https://homologacao.nfce.fazenda.sp.gov.br/ws/NFeRecepcaoEvento4.asmx" }, ;
    { "SVRS",  "4.00HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx" }, ;
    ;
+   { "AN",    "4.00",   "https://www.nfe.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx" }, ;
    { "AM",    "4.00P",  "https://nfe.sefaz.am.gov.br/services2/services/RecepcaoEvento4" }, ;
    { "BA",    "4.00P",  "https://nfe.sefaz.ba.gov.br/webservices/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx" }, ;
    { "CE",    "4.00P",  "https://nfe.sefaz.ce.gov.br/nfe4/services/NFeRecepcaoEvento4" }, ;

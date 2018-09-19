@@ -1035,16 +1035,12 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
    hb_Default( @cCnpj, DfeEmitente( cChave ) ) // emitente não faz manifestação
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_EVENTO
-   IF ::cVersao == "3.10"
-      ::cSoapAction  := "nfeRecepcaoEvento"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"
-   ELSE
-      ::cSoapAction  := "nfeRecepcaoEvento"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
-   ENDIF
+   ::cUF          := "AN"
+   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
+   ::cSoapAction  := "nfeRecepcaoEventoNF"
    ::Setup( cChave, cCertificado, cAmbiente )
-   cVersaoEvento := "1.00"
 
+   cVersaoEvento := "1.00"
    DO CASE
    CASE cCodigoEvento == "210200" ; cDescEvento := "Confirmacao da Operacao"
    CASE cCodigoEvento == "210210" ; cDescEvento := "Ciencia da Operacao"
@@ -1054,7 +1050,7 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
 
    ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cCodigoEvento + cChave + "01" + [">]
-   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
+   ::cXmlDocumento +=       XmlTag( "cOrgao", "91" )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", cCnpj )
    ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
