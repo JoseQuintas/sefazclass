@@ -95,7 +95,7 @@ CREATE CLASS SefazClass
    METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
-   METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertificado, cAmbiente )
+   METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado, cAmbiente )
    METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
@@ -1026,13 +1026,13 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    RETURN ::cXmlRetorno
 
-METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
    LOCAL cDescEvento, cVersaoEvento
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
-   hb_Default( @nSequencia, 1 )
+   hb_Default( @cCnpj, DfeEmitente( cChave ) ) // emitente não faz manifestação
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_EVENTO
    IF ::cVersao == "3.10"
@@ -1040,7 +1040,7 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"
    ELSE
       ::cSoapAction  := "nfeRecepcaoEvento"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEvento"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
    ENDIF
    ::Setup( cChave, cCertificado, cAmbiente )
    cVersaoEvento := "1.00"
@@ -1053,19 +1053,21 @@ METHOD NFeEventoManifestacao( cChave, nSequencia, xJust, cCodigoEvento, cCertifi
    ENDCASE
 
    ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID] + cCodigoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDocumento +=    [<infEvento Id="ID] + cCodigoEvento + cChave + "01" + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
+   ::cXmlDocumento +=       XmlTag( "CNPJ", cCnpj )
    ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", cCodigoEvento )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", StrZero( 1, 2 ) )
+   ::cXmlDocumento +=       XmlTag( "nSeqEvento", "1" ) // obrigatoriamente 1
    ::cXmlDocumento +=       XmlTag( "verEvento", cVersaoEvento )
    ::cXmlDocumento +=       [<detEvento versao="] + cVersaoEvento + [">]
    ::cXmlDocumento +=          XmlTag( "descEvento", cDescEvento )
    IF cCodigoEvento == "210240"
       ::cXmlDocumento +=          XmlTag( "xJust", xJust )
+   //ELSE
+      //::cXmlDocumento += XmlTag( "xJust", cDescEvento ) // ----teste-----
    ENDIF
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
