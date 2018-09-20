@@ -708,7 +708,7 @@
    { "SE",   "3.10P", "http://www.nfce.se.gov.br/portal/consultarNFCe.jsp?" }, ;
    { "SP",   "3.10P", "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx?" }, ;
    ;
-   { "AC",   "4.00H", "http://www.hml.sefaznet.ac.gov.br/nfce/qrcode" }, ;
+   { "AC",   "4.00H", "http://www.hml.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
    { "AL",   "4.00H", "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp" }, ;
    { "AM",   "4.00H", "http://homnfce.sefaz.am.gov.br/nfceweb/consultarNFCe.jsp" }, ;
    { "AP",   "4.00H", "https://www.sefaz.ap.gov.br/nfcehml/nfce.php" }, ;
@@ -733,7 +733,7 @@
    { "SP",   "4.00H", "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
    { "TO",   "4.00H", "http://apps.sefaz.to.gov.br/portal-nfce-homologacao/qrcodeNFCe"  }, ;
    ;
-   { "AC",   "4.00P", "http://www.sefaznet.ac.gov.br/nfce/qrcode" }, ;
+   { "AC",   "4.00P", "http://www.sefaznet.ac.gov.br/nfce/qrcode?" }, ;
    { "AL",   "4.00P", "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp?" }, ;
    { "BA",   "4.00P", "http://nfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
    { "DF",   "4.00P", "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
