@@ -755,18 +755,22 @@
    { "TO",   "4.00P", "http://apps.sefaz.to.gov.br/portal-nce/qrcodeNFCe" } }
 
 #define WS_NFE_CHAVE { ;
+   { "AC", "1.00P", "www.sefaznet.ac.gov.br/nfce/consulta" }, ;
    { "SP", "1.00P", "https://www.nfce.fazenda.sp.gov.br/consulta" }, ;
    { "PR", "1.00P", "http://www.fazenda.pr.gov.br" }, ;
    { "RR", "1.00P", "https://www.sefaz.rr.gov.br/nfce/servlet/wp_consulta_nfce" }, ;
    ;
+   { "AC", "1.00H", "http://hml.sefaznet.ac.gov.br/nfce/consulta" }, ;
    { "SP", "1.00H", "http://www.homologacao.nfce.fazenda.sp.gov.br/consulta" }, ;
    { "PR", "1.00H", "http://www.fazenda.pr.gov.br" }, ;
    { "RR", "1.00H", "http://www.sefaz.rr.gov.br/nfce/servlet/wp_consulta_nfce" }, ;
    ;
+   { "AC", "2.00H", "www.sefaznet.ac.gov.br/nfce/consulta" }, ;
    { "SP", "2.00H", "https://www.homologacao.nfce.fazenda.sp.gov.br/consulta" }, ;
    { "RR", "2.00H", "http://www.sefaz.rr.gov.br/nfce/consulta" }, ;
    { "PR", "2.00H", "http://www.fazenda.pr.gov.br/nfce/consulta" }, ;
    ;
+   { "AC", "2.00P", "www.sefaznet.ac.gov.br/nfce/consulta" }, ;
    { "SP", "2.00P", "https://www.nfce.fazenda.sp.gov.br/consulta" }, ;
    { "RR", "2.00P", "http://www.sefaz.rr.gov.br/nfce/consulta" }, ;
    { "PR", "2.00P", "http://www.fazenda.pr.gov.br/nfce/consulta" } }
