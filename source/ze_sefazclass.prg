@@ -101,6 +101,7 @@ CREATE CLASS SefazClass
    METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
    METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc )
    METHOD NFeStatusServico( cUF, cCertificado, cAmbiente )
+   METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente )
 
    METHOD CTeAddCancelamento( cXmlAssinado, cXmlCancelamento )
    METHOD NFeAddCancelamento( cXmlAssinado, cXmlCancelamento )
@@ -1126,6 +1127,22 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    RETURN ::cXmlRetorno
 
+// em teste
+METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass
+
+   hb_Default( @::cProjeto, WS_PROJETO_NFE )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
+   ::cUF           := iif( cUF == NIL, ::cUF, cUF )
+   ::cCertificado  := iif( cCertificado == NIL, ::cCertificado, cCertificado )
+   ::cAmbiente     := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
+   ::cXmlDocumento := iif( cXml == NIL, ::cXmlDocumento, cXml )
+   ::AssinaXml()
+   IF ::cNFCe == "S"
+      GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC, ::cVersao, ::cVersaoQrCode )
+   ENDIF
+
+   RETURN ::cXmlDocumento
+
 METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
@@ -1863,26 +1880,26 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
    QRCODE_digVal   := hb_StrToHex( XmlNode( XmlNode( XmlNode( cSignature, "SignedInfo" ), "Reference" ), "DigestValue" ) )
    QRCODE_cIdToken := cIdToken
    QRCODE_cCSC     := cCsc
-   QRCODE_tpEmis   := XmlNode( XmlNode( cInfNFe, "ide" ), "tpEmis" ) 
+   QRCODE_tpEmis   := XmlNode( XmlNode( cInfNFe, "ide" ), "tpEmis" )
 
    IF ! Empty( QRCODE_chNFe ) .AND. ! Empty( QRCODE_nVersao ) .AND. ! Empty( QRCODE_tpAmb ) .AND. ! Empty( QRCODE_dhEmi ) .AND. !Empty( QRCODE_vNF ) .AND.;
          ! Empty( QRCODE_vICMS ) .AND. ! Empty( QRCODE_digVal  ) .AND. ! Empty( QRCODE_cIdToken ) .AND. ! Empty( QRCODE_cCSC  )
 
 		IF cVersaoQRCode == "2.00"
 			IF QRCODE_tpEmis # "9"
-		
+
 				QRCODE_chNFe    := QRCODE_chNFe    + "|"
 				QRCODE_nVersao  := "2"             + "|"
 				QRCODE_tpAmb    := QRCODE_tpAmb    + "|"
-				QRCODE_cIdToken := QRCODE_cIdToken 
+				QRCODE_cIdToken := QRCODE_cIdToken
 
 				// 3¦ Parte (cHashQRCode)
 				QRCODE_cHash := ("|" + upper(hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cIdToken + QRCODE_cCSC )) )
 
 				// Resultado da URL formada a ser incluida na imagem QR Code
 				QRCODE_cTag  := "<![CDATA[" + QRCODE_Url + "p=" + QRCODE_chNFe + QRCODE_nVersao + ;
-				QRCODE_tpAmb + QRCODE_cIdToken  + QRCODE_cHash + "]]>"		
-			
+				QRCODE_tpAmb + QRCODE_cIdToken  + QRCODE_cHash + "]]>"
+
 			ELSE
 				QRCODE_chNFe    := QRCODE_chNFe   				+ "|"
 				QRCODE_nVersao  := "2"             				+ "|"
@@ -1898,10 +1915,10 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
 
 				// Resultado da URL formada a ser incluida na imagem QR Code
 				QRCODE_cTag  := "<![CDATA[" + QRCODE_Url + QRCODE_chNFe + QRCODE_nVersao + ;
-				QRCODE_tpAmb + QRCODE_dhEmi + QRCODE_vNF + QRCODE_digVal + QRCODE_cIdToken + ; 
-				QRCODE_cHash + "]]>"		
+				QRCODE_tpAmb + QRCODE_dhEmi + QRCODE_vNF + QRCODE_digVal + QRCODE_cIdToken + ;
+				QRCODE_cHash + "]]>"
 			ENDIF
-			
+
 		ELSE
 			QRCODE_chNFe    := "chNFe="    + QRCODE_chNFe    + "&"
 			QRCODE_nVersao  := "nVersao="  + QRCODE_nVersao  + "&"
@@ -1927,7 +1944,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
 			QRCODE_digVal + QRCODE_cIdToken + QRCODE_cHash + "]]>"
 
 		ENDIF
-				 
+
       // XML com a Tag do QRCode
       cXmlAssinado := [<NFe xmlns="http://www.portalfiscal.inf.br/nfe">]
       cXmlAssinado += cInfNFe
