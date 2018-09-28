@@ -83,7 +83,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "Protocolo CTE 3.00"
       @ Row() + 1, 5 PROMPT "Protocolo MDFE 3.00"
       @ Row() + 1, 5 PROMPT "Consulta Destinadas"
-      @ Row() + 1, 5 PROMPT "Valida XML"
+      @ Row() + 1, 5 PROMPT "Valida XML (Basico)"
       @ Row() + 1, 5 PROMPT "Teste de assinatura"
       @ Row() + 1, 5 PROMPT "Consulta Recibo"
       @ Row() + 1, 5 PROMPT "Envio de XML*"
