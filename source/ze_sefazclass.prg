@@ -1365,7 +1365,7 @@ METHOD Setup( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    CASE cProjeto == WS_PROJETO_NFE
       DO CASE
       CASE cNFCe == "S"
-         ::cSoapUrl := SoapUrlNFCe( ::aSoapUrlList, cUF, cVersao + "C" )
+         ::cSoapUrl := SoapUrlNFCe( ::aSoapUrlList, cUF, cVersao )
          IF Empty( ::cSoapUrl )
             ::cSoapUrl := SoapUrlNfe( ::aSoapUrlList, cUF, cVersao )
          ENDIF
