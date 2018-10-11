@@ -14,9 +14,9 @@ Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
 #include "hb2xhb.ch"
 
 #ifdef __XHARBOUR__
-   #define ALL_PARAMETERS P1, P2, P3, P4, P5, P6, P7, P8, P9, P10
+#define ALL_PARAMETERS P1, P2, P3, P4, P5, P6, P7, P8, P9, P10
 #else
-   #define ALL_PARAMETERS ...
+#define ALL_PARAMETERS ...
 #endif
 
 #define WS_NFE_DEFAULT "4.00"
@@ -406,8 +406,8 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    ::cXmlDocumento +=       XmlTag( "CNPJ", SoNumeros( cCnpj ) )
    ::cXmlDocumento +=       XmlTag( "mod", cMod )
    ::cXmlDocumento +=       XmlTag( "serie", cSerie )
-   ::cXmlDocumento +=       XmlTag( "nCTIni", Alltrim(Str(Val(cNumIni))) )
-   ::cXmlDocumento +=       XmlTag( "nCTFin", Alltrim(Str(Val(cNumFim))) )
+   ::cXmlDocumento +=       XmlTag( "nCTIni", LTrim( Str( Val( cNumIni ), 9, 0 ) ) )
+   ::cXmlDocumento +=       XmlTag( "nCTFin", LTrim( Str( Val( cNumFim ), 9, 0 ) ) )
    ::cXmlDocumento +=       XmlTag( "xJust", cJustificativa )
    ::cXmlDocumento +=    [</infInut>]
    ::cXmlDocumento += [</inutCTe>]
@@ -547,6 +547,7 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
    RETURN ::cXmlRetorno
 
    // 2016.01.31.2200 Iniciado apenas
+
 METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
@@ -1063,7 +1064,7 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
    ::cXmlDocumento +=          XmlTag( "descEvento", cDescEvento )
    IF cCodigoEvento == "210240"
       ::cXmlDocumento +=          XmlTag( "xJust", xJust )
-   //ELSE
+      //ELSE
       //::cXmlDocumento += XmlTag( "xJust", cDescEvento ) // ----teste-----
    ENDIF
    ::cXmlDocumento +=       [</detEvento>]
@@ -1127,7 +1128,8 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    RETURN ::cXmlRetorno
 
-// em teste
+   // em teste
+
 METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
@@ -1409,8 +1411,8 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
 
    LOCAL cXmlns := ;
       [xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ] + ;
-      [xmlns:xsd="http://www.w3.org/2001/XMLSchema" ] + ;
-      [xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"]
+   [xmlns:xsd="http://www.w3.org/2001/XMLSchema" ] + ;
+   [xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"]
    LOCAL cSoapVersion
 
    cSoapVersion := ::cVersao
@@ -1862,8 +1864,8 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
 
    // 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
    nPos       := AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
-                 ( e[ 2 ] == cVersao + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) .OR. ;
-                   e[ 2 ] == "4.00"  + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) ) } )
+      ( e[ 2 ] == cVersao + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) .OR. ;
+      e[ 2 ] == "4.00"  + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) ) } )
    QRCode_Url := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
 
    // 2¦ Parte (Parametros)
@@ -1874,7 +1876,8 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
    IF Empty( QRCODE_cDest )
       QRCODE_cDest := XmlNode( XmlNode( cInfNFe, "dest" ), "CNPJ" )
    ENDIF
-   QRCODE_dhEmi    := hb_StrToHex( XmlNode( XmlNode( cInfNFe, "ide" ), "dhEmi" ) )
+
+   QRCODE_dhEmi    := XmlNode( XmlNode( cInfNFe, "ide" ), "dhEmi" )
    QRCODE_vNF      := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vNF" )
    QRCODE_vICMS    := XmlNode( XmlNode( XmlNode( cInfNFe, "total" ), "ICMSTot" ), "vICMS" )
    QRCODE_digVal   := hb_StrToHex( XmlNode( XmlNode( XmlNode( cSignature, "SignedInfo" ), "Reference" ), "DigestValue" ) )
@@ -1882,80 +1885,80 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
    QRCODE_cCSC     := cCsc
    QRCODE_tpEmis   := XmlNode( XmlNode( cInfNFe, "ide" ), "tpEmis" )
 
-   IF ! Empty( QRCODE_chNFe ) .AND. ! Empty( QRCODE_nVersao ) .AND. ! Empty( QRCODE_tpAmb ) .AND. ! Empty( QRCODE_dhEmi ) .AND. !Empty( QRCODE_vNF ) .AND.;
+   IF ! Empty( QRCODE_chNFe ) .AND. ! Empty( QRCODE_nVersao ) .AND. ! Empty( QRCODE_tpAmb ) .AND. ! Empty( QRCODE_dhEmi ) .AND. !Empty( QRCODE_vNF ) .AND. ;
          ! Empty( QRCODE_vICMS ) .AND. ! Empty( QRCODE_digVal  ) .AND. ! Empty( QRCODE_cIdToken ) .AND. ! Empty( QRCODE_cCSC  )
 
-		IF cVersaoQRCode == "2.00"
-			IF QRCODE_tpEmis # "9"
+      IF cVersaoQRCode == "2.00"
+         IF QRCODE_tpEmis != "9"
+            QRCODE_chNFe    := QRCODE_chNFe    + "|"
+            QRCODE_nVersao  := "2"             + "|"
+            QRCODE_tpAmb    := QRCODE_tpAmb    + "|"
+            QRCODE_cIdToken := Ltrim( Str( Val( QRCODE_cIdToken ), 16, 0 ) )
 
-				QRCODE_chNFe    := QRCODE_chNFe    + "|"
-				QRCODE_nVersao  := "2"             + "|"
-				QRCODE_tpAmb    := QRCODE_tpAmb    + "|"
-				QRCODE_cIdToken := QRCODE_cIdToken
+            // 3¦ Parte (cHashQRCode)
+            QRCODE_cHash := ( "|" + Upper( hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cIdToken + QRCODE_cCSC ) ) )
 
-				// 3¦ Parte (cHashQRCode)
-				QRCODE_cHash := ("|" + upper(hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cIdToken + QRCODE_cCSC )) )
+            // Resultado da URL formada a ser incluida na imagem QR Code
+            QRCODE_cTag  := "<![CDATA[" + QRCODE_Url + "p=" + QRCODE_chNFe + QRCODE_nVersao + ;
+               QRCODE_tpAmb + QRCODE_cIdToken  + QRCODE_cHash + "]]>"
+         ELSE
+            QRCODE_chNFe    := QRCODE_chNFe                  + "|"
+            QRCODE_nVersao  := "2"                            + "|"
+            QRCODE_tpAmb    := QRCODE_tpAmb                   + "|"
+            QRCODE_dhEmi    := Substr( QRCODE_dhEmi, 9, 2 ) + "|"
+            QRCODE_vNF      := QRCODE_vNF                     + "|"
+            QRCODE_digVal   := QRCODE_digVal                  + "|"
+            QRCODE_cIdToken := LTrim( Str( Val( QRCODE_cIdToken ), 16, 0 ) )
+            QRCODE_cCSC     := QRCODE_cCSC
 
-				// Resultado da URL formada a ser incluida na imagem QR Code
-				QRCODE_cTag  := "<![CDATA[" + QRCODE_Url + "p=" + QRCODE_chNFe + QRCODE_nVersao + ;
-				QRCODE_tpAmb + QRCODE_cIdToken  + QRCODE_cHash + "]]>"
+            // 3¦ Parte (cHashQRCode)
+            //QRCODE_cHash := ( "|" + Upper(hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_dhEmi + QRCODE_vNF + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cCSC ) ) )
 
-			ELSE
-				QRCODE_chNFe    := QRCODE_chNFe   				+ "|"
-				QRCODE_nVersao  := "2"             				+ "|"
-				QRCODE_tpAmb    := QRCODE_tpAmb    				+ "|"
-				QRCODE_dhEmi    := SUBSTR(QRCODE_dhEmi,9,2)    	+ "|"
-				QRCODE_vNF      := QRCODE_vNF      				+ "|"
-				QRCODE_digVal   := QRCODE_digVal   				+ "|"
-				QRCODE_cIdToken := QRCODE_cIdToken
+            QRCODE_cHash := (  Upper(hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_dhEmi + QRCODE_vNF + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cCSC ) ) )
 
-				// 3¦ Parte (cHashQRCode)
-				QRCODE_cHash := ( "|" +;
-				UPPER(hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_dhEmi + QRCODE_vNF + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cCSC ) ) )
+            // Resultado da URL formada a ser incluida na imagem QR Code
+            QRCODE_cTag  := "<![CDATA[" + QRCODE_Url + "p=" + QRCODE_chNFe + QRCODE_nVersao + ;
+               QRCODE_tpAmb + QRCODE_dhEmi + QRCODE_vNF + QRCODE_digVal + QRCODE_cIdToken + "|" + ;
+               QRCODE_cHash + "]]>"
+         ENDIF
+      ELSE
+         QRCODE_chNFe    := "chNFe="    + QRCODE_chNFe    + "&"
+         QRCODE_nVersao  := "nVersao="  + QRCODE_nVersao  + "&"
+         QRCODE_tpAmb    := "tpAmb="    + QRCODE_tpAmb    + "&"
+         // Na hipotese do consumidor nao se identificar na NFC-e, nao existira o parametro cDest no QR Code
+         // e tambem nao devera ser incluido o parametro cDest na sequencia sobre a qual sera aplicado o hash do QR Code
+         IF !Empty( QRCODE_cDest )
+            QRCODE_cDest := "cDest="    + QRCODE_cDest    + "&"
+         ENDIF
+         QRCODE_dhEmi    := "dhEmi="    + QRCODE_dhEmi    + "&"
+         QRCODE_vNF      := "vNF="      + QRCODE_vNF      + "&"
+         QRCODE_vICMS    := "vICMS="    + QRCODE_vICMS    + "&"
+         QRCODE_digVal   := "digVal="   + QRCODE_digVal   + "&"
+         QRCODE_cIdToken := "cIdToken=" + QRCODE_cIdToken
 
-				// Resultado da URL formada a ser incluida na imagem QR Code
-				QRCODE_cTag  := "<![CDATA[" + QRCODE_Url + QRCODE_chNFe + QRCODE_nVersao + ;
-				QRCODE_tpAmb + QRCODE_dhEmi + QRCODE_vNF + QRCODE_digVal + QRCODE_cIdToken + ;
-				QRCODE_cHash + "]]>"
-			ENDIF
+         // 3¦ Parte (cHashQRCode)
+         QRCODE_cHash := ( "&cHashQRCode=" + ;
+            hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cCSC ) )
 
-		ELSE
-			QRCODE_chNFe    := "chNFe="    + QRCODE_chNFe    + "&"
-			QRCODE_nVersao  := "nVersao="  + QRCODE_nVersao  + "&"
-			QRCODE_tpAmb    := "tpAmb="    + QRCODE_tpAmb    + "&"
-			// Na hipotese do consumidor nao se identificar na NFC-e, nao existira o parametro cDest no QR Code
-			// e tambem nao devera ser incluido o parametro cDest na sequencia sobre a qual sera aplicado o hash do QR Code
-			IF !Empty( QRCODE_cDest )
-			 QRCODE_cDest := "cDest="    + QRCODE_cDest    + "&"
-			ENDIF
-			QRCODE_dhEmi    := "dhEmi="    + QRCODE_dhEmi    + "&"
-			QRCODE_vNF      := "vNF="      + QRCODE_vNF      + "&"
-			QRCODE_vICMS    := "vICMS="    + QRCODE_vICMS    + "&"
-			QRCODE_digVal   := "digVal="   + QRCODE_digVal   + "&"
-			QRCODE_cIdToken := "cIdToken=" + QRCODE_cIdToken
+         // Resultado da URL formada a ser incluida na imagem QR Code
+         QRCODE_cTag  := "<![CDATA[" + QRCODE_Url + QRCODE_chNFe + QRCODE_nVersao + ;
+            QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + ;
+            QRCODE_digVal + QRCODE_cIdToken + QRCODE_cHash + "]]>"
 
-			// 3¦ Parte (cHashQRCode)
-			QRCODE_cHash := ( "&cHashQRCode=" +;
-			hb_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + QRCODE_digVal + QRCODE_cIdToken + QRCODE_cCSC ) )
-
-			// Resultado da URL formada a ser incluida na imagem QR Code
-			QRCODE_cTag  := "<![CDATA[" + QRCODE_Url + QRCODE_chNFe + QRCODE_nVersao + ;
-			QRCODE_tpAmb + QRCODE_cDest + QRCODE_dhEmi + QRCODE_vNF + QRCODE_vICMS + ;
-			QRCODE_digVal + QRCODE_cIdToken + QRCODE_cHash + "]]>"
-
-		ENDIF
+      ENDIF
 
       // XML com a Tag do QRCode
       cXmlAssinado := [<NFe xmlns="http://www.portalfiscal.inf.br/nfe">]
       cXmlAssinado += cInfNFe
       cXmlAssinado += [<] + "infNFeSupl"+[>]
       cXmlAssinado += [<] + "qrCode"+[>] + QRCODE_cTag + [</] + "qrCode" + [>]
+
       IF cVersao == "4.00"
          aUrlList := WS_NFE_CHAVE
-         nPos := AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
-                 e[ 2 ] == cVersaoQrCode + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) } )
+         nPos     := AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
+            e[ 2 ] == cVersaoQrCode + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) } )
          QRCode_UrlChave := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
-         cXmlAssinado += "<urlChave>" + QRCode_UrlChave + [</urlChave>]
+         cXmlAssinado += XmlTag( "urlChave", QRCode_UrlChave )
       ENDIF
 
       cXmlAssinado += [</] + "infNFeSupl"+[>]
