@@ -34,6 +34,8 @@ CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
    METHOD IdentificacaoNFCeProtocolo()    // DIVISAO VII  - Informacoes de Identificacao da NFC-e e do Protocolo de Autorizacao
    METHOD AreaMensagemFiscal()            // DIVISAO VIII - Area de Mensagem Fiscal
    METHOD MensagemInteresseContribuinte() // DIVISAO IX   - Mensagem de Interesse do Contribuinte
+   METHOD MsgHomologacao()                // Mensagem ref emitida em homologacao
+   METHOD MsgContingencia()               // Mensagem ref emitida em contingencia
    METHOD FormatMemoAsArray( cText, nLarguraCol )
 
    VAR aIde
@@ -261,22 +263,12 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
    ::DrawTexto( 6, ::nLinhaPDF - 30, 220, NIL, "Nao permite aproveitamento de credito do ICMS" , HPDF_TALIGN_CENTER, ::oPDFFontNormal, 7 )
    ::nLinhaPDF -= 34
 
-   IF ::aIde[ "tpAmb" ] == WS_AMBIENTE_HOMOLOGACAO
-      ::DrawTexto( 6, ::nLinhaPDF -  5, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-      ::DrawTexto( 6, ::nLinhaPDF - 15, 220, NIL, "EMITIDA EM AMBIENTE DE HOMOLOGACAO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
-      ::DrawTexto( 6, ::nLinhaPDF - 25, 220, NIL, "SEM VALOR FISCAL", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
-      ::nLinhaPDF -= 25
-   ENDIF
+   ::MsgHomologacao()
 
-   IF ::aIde[ "tpEmis" ] == "9"
-      ::DrawTexto( 6, ::nLinhaPDF -  5, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-      ::DrawTexto( 6, ::nLinhaPDF - 15, 220, NIL, "EMITIDA EM CONTINGÊNCIA", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
-      ::DrawTexto( 6, ::nLinhaPDF - 25, 220, NIL, "PENDENTE DE AUTORIZAÇÃO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 7 )
-      ::nLinhaPDF -= 25
-   ENDIF   
-   
    ::DrawTexto( 6, ::nLinhaPDF - 5, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::nLinhaPDF -= 5
+
+   ::MsgContingencia()
 
    RETURN NIL
 
@@ -534,12 +526,7 @@ METHOD AreaMensagemFiscal() CLASS hbNFeDaNFCe
       ::nLinhaPDF -= 25
    ENDIF
 
-   IF ::aIde[ "tpEmis" ] == "9"
-      ::DrawTexto( 6, ::nLinhaPDF -  5, 220, NIL, "EMITIDA EM CONTINGÊNCIA", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
-      ::DrawTexto( 6, ::nLinhaPDF - 15, 220, NIL, "PENDENTE DE AUTORIZAÇÃO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 7 )
-      ::DrawTexto( 6, ::nLinhaPDF - 20, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-      ::nLinhaPDF -= 25
-   ENDIF
+   ::MsgContingencia()
 
    FOR nContX := 1 TO Len( aInfAdFisco )
       FOR EACH oElement IN ::FormatMemoAsArray( aInfAdFisco[ nContX ], 55 )
@@ -589,7 +576,7 @@ METHOD Desenvolvedor() CLASS hbNFeDaNFCe
 
    RETURN NIL
 
-METHOD FormatMemoAsArray( cText, nLarguraCol )
+METHOD FormatMemoAsArray( cText, nLarguraCol ) CLASS hbNFeDaNFCe
 
    LOCAL aText := {}, nCont, cLinha
 
@@ -604,3 +591,25 @@ METHOD FormatMemoAsArray( cText, nLarguraCol )
    NEXT
 
    RETURN aText
+
+METHOD MsgContingencia() CLASS hbNFeDaNFCe
+
+   IF ::aIde[ "tpEmis" ] == "9"
+      ::DrawTexto( 6, ::nLinhaPDF -  5, 220, NIL, "EMITIDA EM CONTINGÊNCIA", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
+      ::DrawTexto( 6, ::nLinhaPDF - 15, 220, NIL, "PENDENTE DE AUTORIZAÇÃO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 7 )
+      ::DrawTexto( 6, ::nLinhaPDF - 20, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+      ::nLinhaPDF -= 25
+   ENDIF
+
+   RETURN NIL
+
+METHOD MsgHomologacao() CLASS hbNFeDaNFCe
+
+   IF ::aIde[ "tpAmb" ] == WS_AMBIENTE_HOMOLOGACAO
+      ::DrawTexto( 6, ::nLinhaPDF -  5, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+      ::DrawTexto( 6, ::nLinhaPDF - 15, 220, NIL, "EMITIDA EM AMBIENTE DE HOMOLOGACAO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
+      ::DrawTexto( 6, ::nLinhaPDF - 25, 220, NIL, "SEM VALOR FISCAL", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
+      ::nLinhaPDF -= 25
+   ENDIF
+
+   RETURN NIL
