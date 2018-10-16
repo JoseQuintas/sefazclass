@@ -252,13 +252,9 @@ FUNCTION HorarioVeraoInicio( nAno )
 
    LOCAL dPrimeiroDeOutubro, dPrimeiroDomingoDeOutubro, dTerceiroDomingoDeOutubro
 
-   IF nAno == 2018
-      dTerceiroDomingoDeOutubro := Stod( "20181118" )
-   ELSE
-      dPrimeiroDeOutubro := Stod( StrZero( nAno, 4 ) + "1001" )
-      dPrimeiroDomingoDeOutubro := dPrimeiroDeOutubro + iif( Dow( dPrimeiroDeOutubro ) == DOW_DOMINGO, 0, ( 7 - Dow( dPrimeiroDeOutubro ) + 1 ) )
-      dTerceiroDomingoDeOutubro := dPrimeiroDomingoDeOutubro + 14
-   ENDIF
+   dPrimeiroDeOutubro := Stod( StrZero( nAno, 4 ) + "1001" )
+   dPrimeiroDomingoDeOutubro := dPrimeiroDeOutubro + iif( Dow( dPrimeiroDeOutubro ) == DOW_DOMINGO, 0, ( 7 - Dow( dPrimeiroDeOutubro ) + 1 ) )
+   dTerceiroDomingoDeOutubro := dPrimeiroDomingoDeOutubro + 14
 
    RETURN dTerceiroDomingoDeOutubro
 
