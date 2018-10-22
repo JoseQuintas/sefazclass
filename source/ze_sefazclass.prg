@@ -35,7 +35,7 @@ CREATE CLASS SefazClass
    VAR    ValidToDate     INIT ""                      // Validade do certificado
    VAR    cIndSinc        INIT WS_RETORNA_RECIBO       // Poucas UFs opção de protocolo
    VAR    nTempoEspera    INIT 7                       // intervalo entre envia lote e consulta recibo
-   VAR    cUFTimeZone     INIT "SP"                    // Para DateTimeXml() Obrigatório definir UF default
+   VAR    cUFTimeZone     INIT NIL                     // Para DateTimeXml() Obrigatório definir UF default
    VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
    VAR    cCSC            INIT ""                      // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
    VAR    cPassword       INIT ""                      // Senha de arquivo PFX
