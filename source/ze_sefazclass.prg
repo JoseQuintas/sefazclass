@@ -116,7 +116,7 @@ CREATE CLASS SefazClass
    METHOD TipoXml( cXml )                             INLINE TipoXml( cXml )
    METHOD UFCodigo( cSigla )                          INLINE UFCodigo( cSigla )
    METHOD UFSigla( cCodigo )                          INLINE UFSigla( cCodigo )
-   METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( ::cUFTimeZone == NIL, ::cUF, ::cUFTimeZone ), lUTC )
+   METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( ::cUFTimeZone == NIL .OR. Empty( ::cUFTimeZone ), ::cUF, ::cUFTimeZone ), lUTC )
    METHOD ValidaXml( cXml, cFileXsd )                 INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd )
    METHOD Setup( cUF, cCertificado, cAmbiente )
 
