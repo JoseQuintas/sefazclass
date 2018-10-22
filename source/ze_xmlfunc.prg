@@ -2,7 +2,7 @@
 ZE_XMLFUNC - Funções pra trabalhar com XML
 José Quintas
 
-2018.03.14 Uso diferente pela Petrobrás
+2018.10.16 - Horário de verão diferente em 2018
 */
 
 #ifndef DOW_DOMINGO
@@ -238,7 +238,7 @@ FUNCTION DomingoDePascoa( nAno )
    nI   := Int( nC / 4 )
    nK   := nC % 4
    nL   := ( 32 + 2 * nE + 2 * nI - nH - nK ) % 7
-   nM   := Int( ( nA + 11 * nH + 22 * nL) / 451 )
+   nM   := Int( ( nA + 11 * nH + 22 * nL ) / 451 )
    nMes := Int( ( nH + nL - 7 * nM + 114 ) / 31 )
    nDia := ( ( nH + nL - 7 * nM + 114 ) % 31 ) + 1
 
@@ -252,9 +252,13 @@ FUNCTION HorarioVeraoInicio( nAno )
 
    LOCAL dPrimeiroDeOutubro, dPrimeiroDomingoDeOutubro, dTerceiroDomingoDeOutubro
 
-   dPrimeiroDeOutubro := Stod( StrZero( nAno, 4 ) + "1001" )
-   dPrimeiroDomingoDeOutubro := dPrimeiroDeOutubro + iif( Dow( dPrimeiroDeOutubro ) == DOW_DOMINGO, 0, ( 7 - Dow( dPrimeiroDeOutubro ) + 1 ) )
-   dTerceiroDomingoDeOutubro := dPrimeiroDomingoDeOutubro + 14
+   IF nAno == 2018
+      dTerceiroDomingodeOutubro := Stod( "20181104" )
+   ELSE
+      dPrimeiroDeOutubro := Stod( StrZero( nAno, 4 ) + "1001" )
+      dPrimeiroDomingoDeOutubro := dPrimeiroDeOutubro + iif( Dow( dPrimeiroDeOutubro ) == DOW_DOMINGO, 0, ( 7 - Dow( dPrimeiroDeOutubro ) + 1 ) )
+      dTerceiroDomingoDeOutubro := dPrimeiroDomingoDeOutubro + 14
+   ENDIF
 
    RETURN dTerceiroDomingoDeOutubro
 

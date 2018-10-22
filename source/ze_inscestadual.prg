@@ -709,7 +709,7 @@ STATIC FUNCTION ValidIE_RS( cInscricao )
 
    IF Len( cInscricao ) != 10
       lOk := .F.
-   ELSEIF Val( Substr(cInscricao, 1, 3 ) ) < 1 .OR. Val( Substr( cInscricao, 1, 3 ) ) > 467
+   ELSEIF Val( Substr(cInscricao, 1, 3 ) ) < 1
       lOk := .F.
    ELSE
       nSoma := SomaModulo11( Substr( cInscricao, 1, 9 ) )
