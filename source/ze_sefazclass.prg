@@ -266,7 +266,7 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
    ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
+   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110110" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
@@ -320,14 +320,14 @@ METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente ) C
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
    ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml( , ,.F.) )
+   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "610110" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
    ::cXmlDocumento +=          [<evPrestDesacordo>]
    ::cXmlDocumento +=             XmlTag( "descEvento", "Prestacao do Servico em Desacordo" )
-   ::cXmlDocumento +=             XmlTag( "indDesacordoOper", "" )
-   ::cXmlDocumento +=             XmlTag( "xOBS", cObs )
+   ::cXmlDocumento +=             XmlTag( "indDesacordoOper", "1" )
+   ::cXmlDocumento +=             XmlTag( "xObs", cObs )
    ::cXmlDocumento +=          [</evPrestDesacordo>]
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
