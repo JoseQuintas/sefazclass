@@ -807,7 +807,7 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::aSoapUrlList := WS_NFE_CONSULTACADASTRO
    ::Setup( cUF, cCertificado, cAmbiente )
-   IF ::cVersao == "3.10"
+   IF ::cVersao == "3.10" .OR. ::cUF $ "AM,BA,MG,PE"
       ::cSoapAction  := "CadConsultaCadastro2"
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2"
    ELSE
