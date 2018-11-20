@@ -661,7 +661,7 @@ METHOD DadosTransporte() CLASS hbNFeDaNFe
    IF ::nFolha == 1
       ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "TRANSPORTADOR / VOLUMES TRANSPORTADOS", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
       ::nLinhaPdf -= 6
-      ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 215, 16, "NOME/RAZÃO SOCIAL", ::aTransp[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
+      ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 215, 16, "NOME/RAZÃO SOCIAL", XmlToString( ::aTransp[ "xNome" ] ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
       IF ::aTransp[ "modFrete" ] == "0"
          ::DrawBoxTituloTexto( 220, ::nLinhaPdf, 90, 16, "FRETE POR CONTA", "0-EMITENTE", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
       ELSEIF ::aTransp[ "modFrete" ] == "1"
