@@ -202,7 +202,7 @@ FUNCTION NumberXml( nValue, nDecimals )
 
    RETURN Ltrim( Str( nValue, 16, nDecimals ) )
 
-FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC )
+FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC, cUserTimeZone )
 
    LOCAL cText, lHorarioVerao
 
@@ -214,6 +214,7 @@ FUNCTION DateTimeXml( dDate, cTime, cUF, lUTC )
    lHorarioVerao := ( dDate >= HorarioVeraoInicio( Year( dDate ) ) .OR. dDate <= HorarioVeraoTermino( Year( dDate ) - 1 ) )
    cText := Transform( Dtos( dDate ), "@R 9999-99-99" ) + "T" + cTime
    DO CASE
+   CASE ! Empty( cUserTimeZone )                               ; cText += cUserTimeZone
    CASE ! lUTC ; cText += "" // no UTC
    CASE cUF $ "AC"                                             ; cText += "-05:00"
    CASE cUF $ "MT,MS" .AND. lHorarioVerao                      ; cText += "-03:00"

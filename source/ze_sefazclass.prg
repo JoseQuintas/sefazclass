@@ -35,7 +35,8 @@ CREATE CLASS SefazClass
    VAR    ValidToDate     INIT ""                      // Validade do certificado
    VAR    cIndSinc        INIT WS_RETORNA_RECIBO       // Poucas UFs opção de protocolo
    VAR    nTempoEspera    INIT 7                       // intervalo entre envia lote e consulta recibo
-   VAR    cUFTimeZone     INIT NIL                     // Para DateTimeXml() Obrigatório definir UF default
+   VAR    cUFTimeZone     INIT ""                      // Para TimeZone diferente da UF de comunicação
+   VAR    cUserTimeZone   INIT ""                      // Para TimeZone definido pelo usuário
    VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
    VAR    cCSC            INIT ""                      // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
    VAR    cPassword       INIT ""                      // Senha de arquivo PFX
@@ -116,7 +117,7 @@ CREATE CLASS SefazClass
    METHOD TipoXml( cXml )                             INLINE TipoXml( cXml )
    METHOD UFCodigo( cSigla )                          INLINE UFCodigo( cSigla )
    METHOD UFSigla( cCodigo )                          INLINE UFSigla( cCodigo )
-   METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( ::cUFTimeZone == NIL .OR. Empty( ::cUFTimeZone ), ::cUF, ::cUFTimeZone ), lUTC )
+   METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( Empty( ::cUFTimeZone ), ::cUF, ::cUFTimeZone ), lUTC, ::cUserTimeZone )
    METHOD ValidaXml( cXml, cFileXsd )                 INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd )
    METHOD Setup( cUF, cCertificado, cAmbiente )
 
