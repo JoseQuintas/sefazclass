@@ -3,7 +3,7 @@ sefaz_origem - origem de mercadorias
 */
 
 #define SEFAZ_ORIGEM { ;
-      { "0", "NACIONAL, EXCETO CODIGOS 3 A 5" }, ;
+      { "0", "NACIONAL, EXCETO CODIGOS 3 A 5 E 8" }, ;
       { "1", "ESTRANGEIRA IMP DIRETA, EXCETO 6" }, ;
       { "2", "ESTRANGEIRA ADQ MERC INT, EXCETO 7" }, ;
       { "3", "MERCADORIA CONTEUDO IMPORTACAO SUPERIOR 40 POR CENTO" }, ;
