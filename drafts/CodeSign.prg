@@ -19,5 +19,6 @@ PROCEDURE Main
    FOR EACH oElement IN oSignedCode:Certificates
       ? oElement:SubjectName
    NEXT
+   Inkey(0)
 
    RETURN
