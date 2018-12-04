@@ -11,7 +11,7 @@ José Quintas
 
 FUNCTION XmlTransform( cXml )
 
-   LOCAL nCont, cRemoveTag, lUtf8, cLetra
+   LOCAL nCont, cRemoveTag, cLetra, nPos
 
    cRemoveTag := { ;
       [<?xml version="1.0" encoding="utf-8"?>], ; // Petrobras inventou de usar assim
@@ -26,13 +26,11 @@ FUNCTION XmlTransform( cXml )
    IF ! ["] $ cXml // Pode ser usado aspas simples
       cXml := StrTran( cXml, ['], ["] )
    ENDIF
-
-   lUtf8 := .F.
    IF Chr(195) $ cXml
-      lUtf8 := .T.
-   ENDIF
-   IF lUtf8
-      cXml := hb_Utf8ToStr( cXml )
+      nPos := At( Chr(195), cXml )
+      IF Asc( Substr( cXml, nPos + 1 ) ) > 122
+         cXml := hb_Utf8ToStr( cXml )
+      ENDIF
    ENDIF
    FOR nCont = 1 TO 2
       cXml := StrTran( cXml, Chr(26), "" )
