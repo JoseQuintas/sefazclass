@@ -11,7 +11,7 @@ José Quintas
 
 FUNCTION XmlTransform( cXml )
 
-   LOCAL nCont, cRemoveTag, cLetra, nPos
+   LOCAL nCont, cRemoveTag, cLetra, nPos, lTroca, nAscii
 
    cRemoveTag := { ;
       [<?xml version="1.0" encoding="utf-8"?>], ; // Petrobras inventou de usar assim
@@ -94,28 +94,38 @@ FUNCTION XmlTransform( cXml )
       cXml := StrTran( cXml, "n" + Chr(227), "na" )
       cXml := StrTran( cXml, Chr(162), "o" )
       cXml := StrTran( cXml, " " + Chr(241) + " ", " " )
+      cXml := StrTran( cXml, Chr(176), "" ) // graus
+      cXml := StrTran( cXml, Chr(186), "o" ) // numero
    NEXT
    FOR nCont = 1 TO Len( cXml )
       cLetra := Substr( cXml, nCont, 1 )
+      nAscii := Asc( cLetra )
+      lTroca := .T.
       DO CASE
-      CASE cLetra $ "abcdefghijklmnopqrstuvwxyz"
-      CASE cLetra $ "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-      CASE cLetra $ "01234567889"
-      CASE cLetra $ ",.:/;%*$@?<>()+-#=:_" + Chr(34) + Chr(32)
-      CASE cLetra $ Chr(231) ; cLetra := "c"
-      CASE cLetra $ Chr(199) ; cLetra := "C"
-      CASE cLetra $ Chr(193) + Chr(194) + Chr(195) + Chr(192) ; cLetra := "A"
-      CASE cLetra $ Chr(224) + Chr(225) + Chr(226) + Chr(227) + Chr(228) + Chr(229)  ; cLetra := "a"
-      CASE cLetra $ Chr(242) + Chr(243) + Chr(244) + Chr(245) + Chr(246) ; cLetra := "o"
-      CASE cLetra $ Chr(210) + Chr(211) + Chr(212) + Chr(213) + Chr(214) ; cLetra := "O"
-      CASE cLetra $ Chr(200) + Chr(201) + Chr(202) + Chr(203) ; cLetra := "E"
-      CASE cLetra $ Chr(232) + Chr(233) + Chr(234) + Chr(235) ; cLetra := "e"
-      CASE cLetra $ Chr(236) + Chr(237) + Chr(238) + Chr(239) ; cLetra := "i"
-      CASE cLetra $ Chr(204) + Chr(205) + Chr(206) + Chr(207) ; cLetra := "I"
-      CASE cLetra $ Chr(249) + Chr(250) + Chr(251) + Chr(252) ; cLetra := "u"
-      CASE cLetra $ Chr(217) + Chr(218) + Chr(219) ; cLetra := "U"
+      CASE cLetra $ "abcdefghijklmnopqrstuvwxyz"; lTroca := .F.
+      CASE cLetra $ "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; lTroca := .F.
+      CASE cLetra $ "01234567889"; lTroca := .F.
+      CASE cLetra $ ",.:/;%*$@?<>()+-#=:_" + Chr(34) + Chr(32); lTroca := .F.
+      CASE nAscii == 231; cLetra := "c"
+      CASE nAscii == 199; cLetra := "C"
+      CASE AScan( { 193, 194, 195, 192 }, nAscii ) != 0 ; cLetra := "A"
+      CASE AScan( { 224, 225, 226, 227, 228, 229 }, nAscii ) != 0 ; cLetra := "a"
+      CASE AScan( { 242, 243, 244, 245, 246 }, nAscii ) != 0 ; cLetra := "o"
+      CASE AScan( { 210, 211, 212, 213, 214 }, nAscii ) != 0 ; cLetra := "O"
+      CASE AScan( { 200, 201, 202, 203 }, nAscii ) != 0 ; cLetra := "E"
+      CASE AScan( { 232, 233, 234, 235 }, nAscii ) != 0 ; cLetra := "e"
+      CASE AScan( { 236, 237, 238, 239 }, nAscii ) != 0 ; cLetra := "i"
+      CASE AScan( { 204, 205, 206, 207 }, nAscii ) != 0 ; cLetra := "I"
+      CASE AScan( { 249, 250, 251, 252 }, nAscii ) != 0 ; cLetra := "u"
+      CASE AScan( { 217, 218, 219 }, nAscii ) != 0 ; cLetra := "U"
+      CASE nAscii == 128 ; cLetra := "C" // experimental
+      CASE nAscii == 144 ; cLetra := "E" // experimental
+      CASE nAscii == 248 ; cLetra := "" // experimental
+      CASE nAscii == 167 ; cLetra := "o" // experimental
       ENDCASE
-      cXml := Substr( cXml, 1, nCont - 1 ) + cLetra + Substr( cXml, nCont + 1 )
+      IF lTroca
+         cXml := Substr( cXml, 1, nCont - 1 ) + cLetra + Substr( cXml, nCont + 1 )
+      ENDIF
    NEXT
 
    RETURN cXml
