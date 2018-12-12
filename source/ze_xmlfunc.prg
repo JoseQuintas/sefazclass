@@ -20,6 +20,7 @@ FUNCTION XmlTransform( cXml )
       [<?xml version="1.00"?>], ;
       [<?xml version="1.0"?>] }
 
+   cXml := AllTrim( cXml )
    FOR nCont = 1 TO Len( cRemoveTag )
       cXml := StrTran( cXml, cRemoveTag[ nCont ], "" )
    NEXT

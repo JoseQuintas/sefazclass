@@ -305,6 +305,10 @@ FUNCTION XmlToDoc( cXmlInput )
       oDocSped:cModFis := "55"
       oDocSped:cEvento  := "110110"
       XmlToDocNfeCCe( cXmlInput, @oDocSped )
+   CASE "<procEventoNFe" $ cXmlInput .AND. "<descEvento>EPEC" $ cXmlInput
+      oDocSped:cModFis := "55"
+      oDocSped:cEvento := "110140"
+      XmlToDocNfeCce( cXmlInput, @oDocSped )
    CASE "<procEventoMDFe" $ cXmlInput .AND. "<descEvento>Cancelamento" $ cXmlInput
       oDocSped:cModFis := "58"
       oDocSped:cEvento  := "110111"

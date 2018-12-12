@@ -31,6 +31,7 @@ STATIC FUNCTION ConsultaCep( cCep, cBairro, cCidade, cEndereco, cUF, cId )
       :cSoapUrl := cUrlWs
       :cXmlSoap := SoapEnvelope( cCep )
       :MicrosoftXmlSoapPost()
+      :cXmlRetorno := XmlTransform( :cXmlRetorno )
       cCep      := XmlNode( :cXmlRetorno, "cep" )
       cBairro   := XmlNode( :cXmlRetorno, "bairro" )
       cCidade   := XmlNode( :cXmlRetorno, "cidade" )
