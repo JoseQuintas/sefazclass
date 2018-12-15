@@ -87,7 +87,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "Teste de assinatura"
       @ Row() + 1, 5 PROMPT "Consulta Recibo"
       @ Row() + 1, 5 PROMPT "Envio de XML*"
-      @ Row() + 1, 5 PROMPT "Envio de arquivo NFE em disco"
+      @ Row() + 1, 5 PROMPT "Envio de arquivo NFe/CTe/MDFe em disco"
       @ Row() + 1, 5 PROMPT "Assinatura arquivo externo (esocial,etc)"
       @ Row() + 1, 5 PROMPT "Manifestacao Destinatario"
       MENU TO nOpc
@@ -244,14 +244,20 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          Inkey(0)
 
       CASE nOpc == nOpcTemp++
-         oSefaz:NfeLoteEnvia( MemoRead( win_GetOpenFileName(, "Arquivo a transmitir", "importa\", "XML", "*.XML", 1 ) ) )
+         cXml := MemoRead( win_GetOpenFileName(, "Arquivo a transmitir", ".\", "XML", "*.XML", 1 ) )
+         DO CASE
+         CASE "<infMDFe" $ cXml ; ? "autorizando CTE"; oSefaz:cVersao := "3.00"; oSefaz:CteLoteEnvia( cXml )
+         CASE "<infCTe"  $ cXml ; ? "autorizando MDFE"; oSefaz:cVersao := "3.00"; oSefaz:MDFeLoteEnvia( cXml )
+         CASE "<infNFe"  $ cXml ; ? "autorizando NFE"; oSefaz:NfeLoteEnvia( cXml )
+         OTHERWISE              ; ? "Documento não reconhecido"
+         ENDCASE
          ? oSefaz:cXmlRetorno
          hb_MemoWrit( "testeassinado.xml", oSefaz:cXmlDocumento )
          hb_MemoWrit( "testeautorizado.xml", oSefaz:cXmlAutorizado )
          Inkey(0)
 
       CASE nOpc == nOpcTemp++
-         oSefaz:cXmlDocumento := MemoRead( win_GetOpenFileName(, "Arquivo a assinar", "importa\", "XML", "*.XML", 1 ) )
+         oSefaz:cXmlDocumento := MemoRead( win_GetOpenFileName(, "Arquivo a assinar", ".\", "XML", "*.XML", 1 ) )
          oSefaz:AssinaXml()
          ? oSefaz:cXmlRetorno
          ? oSefaz:cXmlDocumento

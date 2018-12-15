@@ -678,7 +678,7 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
    ::Setup( cChave, cCertificado, cAmbiente )
 
    ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDocumento +=    [<infEvento Id="ID110114] + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
@@ -689,7 +689,7 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
    ::cXmlDocumento +=            [<evIncCondutorMDFe>]
    ::cXmlDocumento +=                XmlTag( "descEvento", "Inclusao Condutor" )
-   ::cXmlDocumento +=               [<Condutor>]
+   ::cXmlDocumento +=               [<condutor>]
    ::cXmlDocumento +=                  XmlTag( "xNome", cNome )
    ::cXmlDocumento +=                  XmlTag( "CPF", cCPF)
    ::cXmlDocumento +=               [</Condutor>]
