@@ -692,7 +692,7 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
    ::cXmlDocumento +=               [<condutor>]
    ::cXmlDocumento +=                  XmlTag( "xNome", cNome )
    ::cXmlDocumento +=                  XmlTag( "CPF", cCPF)
-   ::cXmlDocumento +=               [</Condutor>]
+   ::cXmlDocumento +=               [</condutor>]
    ::cXmlDocumento +=            [</evIncCondutorMDFe>]
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
