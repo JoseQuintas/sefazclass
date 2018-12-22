@@ -95,6 +95,7 @@ CREATE CLASS SefazClass
    METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
+   METHOD NFeEventoCancelaSubstituicao( cChave, cOrgaoAutor, cAutor, cVersaoAplicativo, cProtocolo, cJust, cNfRef, cCertificado, cAmbiente )
    METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
    METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado, cAmbiente )
    METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
@@ -1020,6 +1021,52 @@ METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    ::cXmlDocumento +=          XmlTag( "descEvento", "Cancelamento" )
    ::cXmlDocumento +=          XmlTag( "nProt", Ltrim( Str( nProt ) ) )
    ::cXmlDocumento +=          XmlTag( "xJust", xJust )
+   ::cXmlDocumento +=       [</detEvento>]
+   ::cXmlDocumento +=    [</infEvento>]
+   ::cXmlDocumento += [</evento>]
+   IF ::AssinaXml() == "OK"
+      ::cXmlEnvio := [<envEvento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
+      ::cXmlEnvio +=    XmlTag( "idLote", DfeNumero( cChave ) ) // usado numero da nota
+      ::cXmlEnvio +=    ::cXmlDocumento
+      ::cXmlEnvio += [</envEvento>]
+      ::XmlSoapPost()
+      ::cXmlProtocolo := ::cXmlRetorno
+      ::NFeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
+   ENDIF
+
+   RETURN ::cXmlRetorno
+
+METHOD NFeEventoCancelaSubstituicao( cChave, cOrgaoAutor, cAutor, cVersaoAplicativo, cProtocolo, cJust, cNFRef, cCertificado, cAmbiente ) CLASS SefazClass
+
+   LOCAL cVersaoEvento
+
+   hb_Default( @::cProjeto, WS_PROJETO_NFE )
+   hb_Default( @::cVersao, WS_NFE_DEFAULT )
+   ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
+   ::aSoapUrlList := WS_NFE_EVENTO
+   ::cSoapAction  := "nfeRecepcaoEvento"
+   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
+   ::Setup( cChave, cCertificado, cAmbiente )
+   cVersaoEvento := "1.00"
+
+   ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + "01" + [">]
+   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
+   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
+   ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
+   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
+   ::cXmlDocumento +=       XmlTag( "tpEvento", "110112" )
+   ::cXmlDocumento +=       XmlTag( "nSeqEvento", "1" )
+   ::cXmlDocumento +=       XmlTag( "verEvento", cVersaoEvento )
+   ::cXmlDocumento +=       [<detEvento versao="] + cVersaoEvento + [">]
+   ::cXmlDocumento +=          XmlTag( "descEvento", "Cancelamento por substituicao" ) // acentos?
+   ::cXmlDocumento +=          XmlTag( "cOrgaoAutor", cOrgaoAutor )
+   ::cXmlDocumento +=          XmlTag( "tpAutor", cAutor )
+   ::cXmlDocumento +=          XmlTag( "verAplic", cVersaoAplicativo )
+   ::cXmlDocumento +=          XmlTag( "nProt", cProtocolo )
+   ::cXmlDocumento +=          XmlTag( "xJust", cJust )
+   ::cXmlDocumento +=          XmlTag( "chNFeRef", cNfRef )
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
