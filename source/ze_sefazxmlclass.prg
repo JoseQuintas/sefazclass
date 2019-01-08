@@ -170,10 +170,12 @@ CREATE CLASS NfeProdutoClass STATIC
    VAR  GTINTRIB      INIT ""
    VAR  Anp           INIT ""
    VAR  Unidade       INIT ""
+   VAR  UnidTrib      INIT "" // 2019.01.08 Fernando Queiroz
    VAR  Pedido        INIT "" // 2018.01.23 Jackson
    VAR  Qtde          INIT 0
    VAR  QtdeTrib      INIT 0
    VAR  ValorUnitario INIT 0
+   VAR  ValUnitTrib   INIT 0 // 2019.01.08 Fernando Queiroz
    VAR  ValorTotal    INIT 0
    VAR  Desconto      INIT 0 // 2018.01.23 Jackson
    VAR  Icms
@@ -502,7 +504,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
             oDocSped:Produto[ nCont ]:GTINTrib := oDocSped:Produto[ nCont ]:GTIN
          ENDIF
          oDocSped:Produto[ nCont ]:Unidade         := Upper( XmlNode( cBlocoProd, "uCom" ) )
-         oDocSped:Produto[ nCont ]:UnidadeTrib     := Upper( XmlNode( cBlocoProd, "uTrib" ) ) // 2019.01.08 Fernando Queiroz
+         oDocSped:Produto[ nCont ]:UnidTrib        := Upper( XmlNode( cBlocoProd, "uTrib" ) ) // 2019.01.08 Fernando Queiroz
          oDocSped:Produto[ nCont ]:Qtde            := Val( XmlNode( cBlocoProd, "qCom" ) )
          oDocSped:Produto[ nCont ]:QtdeTrib        := Val( XmlNode( cBlocoProd, "qTrib" ) ) // 2019.01.08 Fernando Queiroz
          oDocSped:Produto[ nCont ]:ValorUnitario   := Val( XmlNode( cBlocoProd, "vUnCom" ) )
