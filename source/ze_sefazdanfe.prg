@@ -13,6 +13,8 @@ Os campos que podem ser colocados na mesma coluna são:
 - “Base de Cálculo do ICMS por Substituição Tributária” com “Valor do ICMS por Substituição Tributária”;
 - “Valor do ICMS Próprio” com “Valor do IPI”
 - “Alíquota do ICMS” com “Alíquota do IPI”.
+
+2019 - Quadros opcionais para Local de Coleta e Local de Entrega
 */
 
 #include "common.ch"
@@ -66,17 +68,19 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    METHOD GeraPDF( cFilePDF )
    METHOD NovaPagina()
    METHOD SaltaPagina()
-   METHOD CabecalhoRetrato()
-   METHOD Destinatario()
-   METHOD Duplicatas()
-   METHOD Canhoto()
-   METHOD DadosImposto()
-   METHOD DadosTransporte()
-   METHOD CabecalhoProdutos()
-   METHOD DesenhaBoxProdutos( nLinhaFinalProd, nAlturaQuadroProdutos )
-   METHOD Produtos()
-   METHOD TotalServico()
-   METHOD DadosAdicionais()
+   METHOD QuadroNotaFiscal()
+   METHOD QuadroDestinatario()
+   METHOD QuadroLocalColeta()
+   METHOD QuadroLocalEntrega()
+   METHOD QuadroDuplicatas()
+   METHOD QuadroCanhoto()
+   METHOD QuadroImposto()
+   METHOD QuadroTransporte()
+   METHOD QuadroProdutosTitulo()
+   METHOD QuadroProdutosDesenho( nLinhaFinalProd, nAlturaQuadroProdutos )
+   METHOD QuadroProdutos()
+   METHOD QuadroTotalServico()
+   METHOD QuadroDadosAdicionais()
    METHOD ProcessaItens( cXml, nItem )
    METHOD CalculaLayout()
    METHOD ItensDaFolha( nFolha )
@@ -297,16 +301,18 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFe
    HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontNormal, LAYOUT_FONTSIZE )
    ::CalculaLayout()
 
-   ::Canhoto()
-   ::CabecalhoRetrato()
-   ::Destinatario()
-   ::Duplicatas()
-   ::DadosImposto()
-   ::DadosTransporte()
-   ::CabecalhoProdutos()
-   ::Produtos()
-   ::TotalServico()
-   ::DadosAdicionais()
+   ::QuadroCanhoto()
+   ::QuadroNotaFiscal()
+   ::QuadroDestinatario()
+   ::QuadroLocalColeta()
+   ::QuadroLocalEntrega()
+   ::QuadroDuplicatas()
+   ::QuadroImposto()
+   ::QuadroTransporte()
+   ::QuadroProdutosTitulo()
+   ::QuadroProdutos()
+   ::QuadroTotalServico()
+   ::QuadroDadosAdicionais()
    ::Desenvolvedor()
 
    HPDF_SaveToFile( ::oPdf, cFilePDF )
@@ -342,22 +348,22 @@ METHOD SaltaPagina() CLASS hbNFeDaNFe
    LOCAL nLinhaFinalProd, nAlturaQuadroProdutos
 
    ::nLinhaPdf -= 2
-   ::TotalServico()
-   ::DadosAdicionais()
+   ::QuadroTotalServico()
+   ::QuadroDadosAdicionais()
    ::Desenvolvedor()
    ::NovaPagina()
    ::nFolha++
    ::nLinhaFolha := 1
-   ::Canhoto()
-   ::CabecalhoRetrato()
-   ::CabecalhoProdutos()
+   ::QuadroCanhoto()
+   ::QuadroNotaFiscal()
+   ::QuadroProdutosTitulo()
    nAlturaQuadroProdutos := ( ::ItensDaFolha() * LAYOUT_FONTSIZE ) + 2
    nLinhaFinalProd       := ::nLinhaPdf - nAlturaQuadroProdutos
-   ::DesenhaBoxProdutos( nLinhaFinalProd, nAlturaQuadroProdutos )
+   ::QuadroProdutosDesenho( nLinhaFinalProd, nAlturaQuadroProdutos )
 
    RETURN NIL
 
-METHOD Canhoto() CLASS hbNFeDaNFe
+METHOD QuadroCanhoto() CLASS hbNFeDaNFe
 
    LOCAL cTexto
 
@@ -395,7 +401,7 @@ METHOD Canhoto() CLASS hbNFeDaNFe
 
    RETURN NIL
 
-METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
+METHOD QuadroNotaFiscal() CLASS hbNFeDaNFe
 
    LOCAL cTexto
 
@@ -512,7 +518,7 @@ METHOD CabecalhoRetrato() CLASS hbNFeDaNFe
 
    RETURN NIL
 
-METHOD Destinatario() CLASS hbNFeDaNFe
+METHOD QuadroDestinatario() CLASS hbNFeDaNFe
 
    ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "DESTINATÁRIO/REMETENTE", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
    ::nLinhaPdf -= 6
@@ -540,7 +546,15 @@ METHOD Destinatario() CLASS hbNFeDaNFe
 
    RETURN NIL
 
-METHOD Duplicatas() CLASS hbNFeDaNFe
+METHOD QuadroLocalColeta() CLASS hbNFeDaNFe
+
+   RETURN NIL
+
+METHOD QuadroLocalEntrega() CLASS hbNFeDaNFe
+
+   RETURN NIL
+
+METHOD QuadroDuplicatas() CLASS hbNFeDaNFe
 
    LOCAL nICob, nItensCob, nLinhaFinalCob, nTamanhoCob, aList, cTPag, nPos
    LOCAL nTamForm, aDups, nColuna, cDup, cNumero, cVencimento, cValor, nCont
@@ -634,7 +648,7 @@ METHOD Duplicatas() CLASS hbNFeDaNFe
 
    RETURN NIL
 
-METHOD DadosImposto() CLASS hbNFeDaNFe
+METHOD QuadroImposto() CLASS hbNFeDaNFe
 
    IF ::nFolha == 1
       ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "CÁLCULO DO IMPOSTO", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
@@ -656,7 +670,7 @@ METHOD DadosImposto() CLASS hbNFeDaNFe
 
    RETURN NIL
 
-METHOD DadosTransporte() CLASS hbNFeDaNFe
+METHOD QuadroTransporte() CLASS hbNFeDaNFe
 
    IF ::nFolha == 1
       ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "TRANSPORTADOR / VOLUMES TRANSPORTADOS", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
@@ -700,13 +714,13 @@ METHOD DadosTransporte() CLASS hbNFeDaNFe
 
    RETURN NIL
 
-METHOD CabecalhoProdutos() CLASS hbNFeDaNFe
+METHOD QuadroProdutosTitulo() CLASS hbNFeDaNFe
 
    LOCAL oElement
 
    ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "DADOS DOS PRODUTOS / SERVIÇOS", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
    ::nLinhaPdf -= LAYOUT_FONTSIZE
-   FOR EACH oELement IN ::aLayout
+   FOR EACH oElement IN ::aLayout
       ::DrawBoxProduto( oElement:__EnumIndex, ::nLinhaPdf - ( LAYOUT_FONTSIZE * 2 + 1 ), ( LAYOUT_FONTSIZE * 2 + 1 ), ::nLarguraBox )
       ::DrawTextoProduto( oElement:__EnumIndex, ::nLinhaPdf - 1,                  LAYOUT_TITULO1, HPDF_TALIGN_CENTER )
       ::DrawTextoProduto( oElement:__EnumIndex, ::nLinhaPdf - LAYOUT_FONTSIZE, LAYOUT_TITULO2, HPDF_TALIGN_CENTER )
@@ -715,7 +729,7 @@ METHOD CabecalhoProdutos() CLASS hbNFeDaNFe
 
    RETURN NIL
 
-METHOD DesenhaBoxProdutos( nLinhaFinalProd, nAlturaQuadroProdutos ) CLASS hbNFeDaNFe
+METHOD QuadroProdutosDesenho( nLinhaFinalProd, nAlturaQuadroProdutos ) CLASS hbNFeDaNFe
 
    LOCAL oElement
 
@@ -726,13 +740,13 @@ METHOD DesenhaBoxProdutos( nLinhaFinalProd, nAlturaQuadroProdutos ) CLASS hbNFeD
 
    RETURN NIL
 
-METHOD Produtos() CLASS hbNFeDaNFe
+METHOD QuadroProdutos() CLASS hbNFeDaNFe
 
    LOCAL nLinhaFinalProd, nAlturaQuadroProdutos, nItem, nNumLinha, nCont
 
    nLinhaFinalProd := ::nLinhaPdf - ( ::ItensDaFolha() * LAYOUT_FONTSIZE ) - 2
    nAlturaQuadroProdutos := ( ::ItensDaFolha() * LAYOUT_FONTSIZE ) + 2
-   ::desenhaBoxProdutos( nLinhaFinalProd, nAlturaQuadroProdutos )
+   ::QuadroProdutosDesenho( nLinhaFinalProd, nAlturaQuadroProdutos )
 
    nItem := 1
    ::nLinhaFolha := 1
@@ -813,7 +827,7 @@ METHOD Produtos() CLASS hbNFeDaNFe
 
    RETURN NIL
 
-METHOD TotalServico() CLASS hbNFeDaNFe
+METHOD QuadroTotalServico() CLASS hbNFeDaNFe
 
    IF ::nFolha == 1
       IF Val( ::aISSTotal[ "vServ" ] ) > 0
@@ -835,7 +849,7 @@ METHOD TotalServico() CLASS hbNFeDaNFe
 
    RETURN NIL
 
-METHOD DadosAdicionais() CLASS hbNFeDaNFe
+METHOD QuadroDadosAdicionais() CLASS hbNFeDaNFe
 
    LOCAL cMemo, nCont
 
