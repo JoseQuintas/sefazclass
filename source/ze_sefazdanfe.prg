@@ -494,7 +494,7 @@ METHOD QuadroNotaFiscal() CLASS hbNFeDaNFe
       ::DrawTexto( 371, ::nLinhaPdf - 71, 589, NIL, "no site da Sefaz Autorizadora", HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
    ENDIF
    ::nLinhaPdf -= 80
-   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 365, 16, "NATUREZA DA OPERAÇÃO", ::aIde[ "natOp" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 365, 16, "NATUREZA DA OPERAÇÃO", Left( ::aIde[ "natOp" ], 50 ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    // PROTOCOLO
    ::DrawBox( 370, ::nLinhaPdf - 16, 220, 16, ::nLarguraBox )
    // ::DrawTexto(371, ::nLinhaPdf - 1, 589, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 5 )

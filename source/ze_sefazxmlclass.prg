@@ -168,6 +168,7 @@ CREATE CLASS NfeProdutoClass STATIC
    VAR  NCM           INIT ""
    VAR  GTIN          INIT ""
    VAR  GTINTRIB      INIT ""
+   VAR  CEST          INIT ""
    VAR  Anp           INIT ""
    VAR  Unidade       INIT ""
    VAR  UnidTrib      INIT "" // 2019.01.08 Fernando Queiroz
@@ -500,6 +501,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          oDocSped:Produto[ nCont ]:NCM             := XmlNode( cBlocoProd, "NCM" )
          oDocSped:Produto[ nCont ]:GTIN            := SoNumeros( XmlNode( cBlocoProd, "cEAN" ) )
          oDocSped:Produto[ nCont ]:GTINTrib        := SoNumeros( XmlNode( cBlocoProd, "cEANTrib" ) )
+         oDocSped:Produto[ nCont ]:CEST            := SoNumeros( XmlNode( cBLocoProd, "CEST" ) )
          IF Empty( oDocSped:Produto[ nCont ]:GTINTrib )
             oDocSped:Produto[ nCont ]:GTINTrib := oDocSped:Produto[ nCont ]:GTIN
          ENDIF

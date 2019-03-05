@@ -47,8 +47,7 @@ FUNCTION ValidIE( cInscricao, cUF )
 
 STATIC FUNCTION ValidIE_AC( cInscricao )
 
-   LOCAL lOk := .T.
-   LOCAL nSoma
+   LOCAL lOk := .T., nSoma
 
    IF Len( cInscricao ) != 13 .AND. Len( cInscricao ) != 9
       lOk := .F.
@@ -62,20 +61,10 @@ STATIC FUNCTION ValidIE_AC( cInscricao )
          lOk := .F.
       ENDIF
    ELSE // a partir de 11/99 - 13 digitos
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 11 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 12, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 11 ), "11" ) != Substr( cInscricao, 12, 1 )
          lOk := .F.
       ENDIF
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 12 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 13, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 12 ), "11" ) != Substr( cInscricao, 13, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -87,8 +76,7 @@ STATIC FUNCTION ValidIE_AC( cInscricao )
 
 STATIC FUNCTION ValidIE_AL( cInscricao )
 
-   LOCAL lOk := .T.
-   LOCAL nSoma
+   LOCAL lOk := .T., nSoma
 
    DO CASE
    CASE Len( cInscricao ) != 9
@@ -115,17 +103,11 @@ STATIC FUNCTION ValidIE_AL( cInscricao )
 STATIC FUNCTION ValidIE_AM( cInscricao )
 
    LOCAL lOk := .T.
-   LOCAL nSoma
 
    IF Len( cInscricao ) != 9
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -137,8 +119,7 @@ STATIC FUNCTION ValidIE_AM( cInscricao )
 
 STATIC FUNCTION ValidIE_AP( cInscricao )
 
-   LOCAL lOk := .T.
-   LOCAL nValor1, nValor2, nSoma
+   LOCAL lOk := .T., nValor1, nValor2, nSoma
 
    IF Len( cInscricao ) != 9
       lOk := .F.
@@ -174,8 +155,7 @@ STATIC FUNCTION ValidIE_AP( cInscricao )
 
 STATIC FUNCTION ValidIE_BA( cInscricao )
 
-   LOCAL lOk := .T.
-   LOCAL nSoma, oElement, nModulo, cTmp
+   LOCAL lOk := .T., nSoma, oElement, nModulo, cTmp
 
    IF Len( cInscricao ) != 8 .AND. Len( cInscricao ) != 9
       lOk := .F.
@@ -199,20 +179,10 @@ STATIC FUNCTION ValidIE_BA( cInscricao )
             ENDIF
          ENDIF
       ELSE // iniciando com 6,7,9
-         nSoma := SomaModulo11( Substr( cInscricao, 1, 6 ) )
-         nSoma := 11 - Mod( nSoma, 11 )
-         IF nSoma > 9
-            nSoma := 0
-         ENDIF
-         IF nSoma != Val( Substr( cInscricao, 8, 1 ) ) // Compara com 2o.digito
+         IF CalculaDigito( Substr( cInscricao, 1, 6 ), "11" ) != Substr( cInscricao, 8, 1 ) // Compara com 2o.digito
             lOk := .F.
-         ELSE                                   // Primeiro digito
-            nSoma := SomaModulo11( Substr( cInscricao, 1, 6 ) + Substr( cInscricao, 8, 1 ) )
-            nSoma := 11 - Mod( nSoma, 11 )
-            IF nSoma > 9
-               nSoma := 0
-            ENDIF
-            IF nSoma != Val( Substr( cInscricao, 7, 1 ) ) // Compara com 1o.digito
+         ELSE // Primeiro digito
+            IF CalculaDigito( Substr( cInscricao, 1, 6 ) + Substr( cInscricao, 8, 1 ), "11" ) != Substr( cInscricao, 7, 1 ) // Compara com 1o.digito
                lOk := .F.
             ENDIF
          ENDIF
@@ -253,17 +223,11 @@ STATIC FUNCTION ValidIE_BA( cInscricao )
 STATIC FUNCTION ValidIE_CE( cInscricao )
 
    LOCAL lOk := .T.
-   LOCAL nSoma
 
    IF Len( cInscricao ) != 9
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9 // Nao tem esta checagem no manual
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -276,27 +240,16 @@ STATIC FUNCTION ValidIE_CE( cInscricao )
 STATIC FUNCTION ValidIE_DF( cInscricao )
 
    LOCAL lOk := .T.
-   LOCAL nSoma
 
    IF Len( cInscricao ) != 13
       lOk := .F.
    ELSEIF Left( cInscricao, 2 ) != "07" // Alterado em 23/07 p/ 2 dig
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 11 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 12, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 11 ), "11" ) != Substr( cInscricao, 12, 1 )
          lOk := .F.
       ELSE
-         nSoma := SomaModulo11( Substr( cInscricao, 1, 12 ) )
-         nSoma := 11 - Mod( nSoma, 11 )
-         IF nSoma > 9
-            nSoma := 0
-         ENDIF
-         IF nSoma != Val( Substr( cInscricao, 13, 1 ) )
+         IF CalculaDigito( Substr( cInscricao, 1, 12 ), "11" ) != Substr( cInscricao, 13, 1 )
             lOk := .F.
          ENDIF
       ENDIF
@@ -309,17 +262,12 @@ STATIC FUNCTION ValidIE_DF( cInscricao )
 
 STATIC FUNCTION ValidIE_ES( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len( cInscricao ) != 9
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -432,19 +380,14 @@ STATIC FUNCTION ValidIE_MG( cInscricao )
 
 STATIC FUNCTION ValidIE_MS( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len( cInscricao ) != 9
       lOk := .F.
    ELSEIF Left( cInscricao, 2 ) != "28"
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -456,18 +399,13 @@ STATIC FUNCTION ValidIE_MS( cInscricao )
 
 STATIC FUNCTION ValidIE_MT( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len( cInscricao ) > 11
       lOk := .F.
    ELSE
       cInscricao := StrZero( Val( cInscricao ), 11 )
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 10 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 11, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 10 ), "11" ) != Substr( cInscricao, 11, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -479,19 +417,14 @@ STATIC FUNCTION ValidIE_MT( cInscricao )
 
 STATIC FUNCTION ValidIE_PA( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len( cInscricao ) != 9
       lOk := .F.
    ELSEIF Left( cInscricao, 2 ) != "15"
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -503,17 +436,12 @@ STATIC FUNCTION ValidIE_PA( cInscricao )
 
 STATIC FUNCTION ValidIE_PB( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len( cInscricao ) != 9
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9 // No manual nao trata esta condicao
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -525,25 +453,15 @@ STATIC FUNCTION ValidIE_PB( cInscricao )
 
 STATIC FUNCTION ValidIE_PE( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len( cInscricao ) != 9
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 7 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 8, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 7 ), "11" ) != Substr( cInscricao, 8, 1 )
          lOk := .F.
       ELSE
-         nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-         nSoma := 11 - Mod( nSoma, 11 )
-         IF nSoma > 9
-            nSoma := 0
-         ENDIF
-         IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+         IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
             lOk := .F.
          ENDIF
       ENDIF
@@ -556,17 +474,12 @@ STATIC FUNCTION ValidIE_PE( cInscricao )
 
 STATIC FUNCTION ValidIE_PI( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len( cInscricao ) != 9
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -634,17 +547,12 @@ STATIC FUNCTION ValidIE_RJ( cInscricao )
 
 STATIC FUNCTION ValidIE_RN( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len( cInscricao ) != 9
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -705,19 +613,14 @@ STATIC FUNCTION ValidIE_RR( cInscricao )
 
 STATIC FUNCTION ValidIE_RS( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len( cInscricao ) != 10
       lOk := .F.
    ELSEIF Val( Substr(cInscricao, 1, 3 ) ) < 1
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 9 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 10, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 9 ), "11" ) != Substr( cInscricao, 10, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -729,17 +632,12 @@ STATIC FUNCTION ValidIE_RS( cInscricao )
 
 STATIC FUNCTION ValidIE_SC( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len(cInscricao) != 9
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -751,17 +649,12 @@ STATIC FUNCTION ValidIE_SC( cInscricao )
 
 STATIC FUNCTION ValidIE_SE( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len( cInscricao ) != 9
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
-      nSoma := 11 - Mod(nSoma,11)
-      IF nSoma > 9 // No manual nao fala sobre isto
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
          lOk := .F.
       ENDIF
    ENDIF
@@ -853,7 +746,7 @@ STATIC FUNCTION ValidIE_SP( cInscricao )
 
 STATIC FUNCTION ValidIE_TO( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T.
 
    IF Len( cInscricao ) != 11
       lOk := .F.
@@ -862,12 +755,7 @@ STATIC FUNCTION ValidIE_TO( cInscricao )
    ELSEIF ! ( Substr( cInscricao, 3, 2 ) $ "01,02,03,99" )
       lOk := .F.
    ELSE
-      nSoma := SomaModulo11( Substr( cInscricao, 1, 2 ) + Substr( cInscricao, 5, 6 ) )
-      nSoma := 11 - Mod( nSoma, 11 )
-      IF nSoma > 9
-         nSoma := 0
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
+      IF CalculaDigito( Substr( cInscricao, 1, 2 ) + Substr( cInscricao, 5, 6 ), "11" ) != Substr( cInscricao, 9, 1 )
          lOk := .F.
       ENDIF
    ENDIF

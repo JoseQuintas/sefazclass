@@ -306,7 +306,9 @@
 #define WS_NFE_DISTRIBUICAO { ;
    { "AN",   "3.10P", "https://www1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx" }, ;
    ;
-   { "AM",   "4.00H", "https://hom.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx" } }
+   { "AN",   "4.00P", "https://www.nfe.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx" }, ;
+   ;
+   { "AN",   "4.00H", "https://hom.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx" } }
 
 #define WS_NFE_EVENTO { ;
    { "AM",   "3.10P", "https://nfe.sefaz.am.gov.br/services2/services/RecepcaoEvento" }, ;
