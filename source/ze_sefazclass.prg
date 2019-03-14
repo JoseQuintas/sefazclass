@@ -93,7 +93,7 @@ CREATE CLASS SefazClass
    METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente )
    METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
-   METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
+   METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmbiente )
    METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD NFeEventoCancelaSubstituicao( cChave, cOrgaoAutor, cAutor, cVersaoAplicativo, cProtocolo, cJust, cNfRef, cCertificado, cAmbiente )
    METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
@@ -903,30 +903,36 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    /* 2015.07.31.1400 Iniciado apenas */
 
-METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cNSU, "" )
+   hb_Default( @cChave, "" )
 
    ::aSoapUrlList := WS_NFE_DISTRIBUICAO
+   ::cUF          := "AN"
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "nfeDistDFeInteresse"
    ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe"
 
-   ::cXmlEnvio    := [<distDFeInt versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlEnvio    := [<distDFeInt versao="1.01" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
    ::cXmlEnvio    +=    XmlTag( "CNPJ", cCnpj ) // ou CPF
-   IF Empty( cNSU )
-      ::cXmlEnvio +=   [<distNSU>]
-      ::cXmlEnvio +=      XmlTag( "ultNSU", cUltNSU )
-      ::cXmlEnvio +=   [</distNSU>]
-   ELSE
+   IF ! Empty( cChave )
+      ::cXmlEnvio += [<consChNFe>]
+      ::cXmlEnvio +=    XmlTag( "chNFe", cChave )
+      ::cXmlEnvio += [</consChNFe>]
+   ELSEIF ! Empty( cNSU )
       ::cXmlEnvio +=   [<consNSU>]
       ::cXmlEnvio +=      XmlTag( "NSU", cNSU )
       ::cXmlEnvio +=   [</consNSU>]
+   ELSE
+      ::cXmlEnvio +=   [<distNSU>]
+      ::cXmlEnvio +=      XmlTag( "ultNSU", cUltNSU )
+      ::cXmlEnvio +=   [</distNSU>]
    ENDIF
    ::cXmlEnvio   += [</distDFeInt>]
    ::XmlSoapPost()
