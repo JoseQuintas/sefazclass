@@ -114,7 +114,7 @@ CREATE CLASS SefazClass
    METHOD MicrosoftXmlSoapPost()
 
    /* Apenas redirecionamento */
-   METHOD AssinaXml()                                 INLINE ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado,,::cPassword )
+   METHOD AssinaXml()
    METHOD TipoXml( cXml )                             INLINE TipoXml( cXml )
    METHOD UFCodigo( cSigla )                          INLINE UFCodigo( cSigla )
    METHOD UFSigla( cCodigo )                          INLINE UFSigla( cCodigo )
@@ -123,6 +123,16 @@ CREATE CLASS SefazClass
    METHOD Setup( cUF, cCertificado, cAmbiente )
 
    ENDCLASS
+
+METHOD AssinaXml()
+
+   ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado,,::cPassword )
+   IF ::cXmlRetorno != "OK"
+      ::cStatus := "999"
+      ::cMotivo := "Problemas com certificado e/ou assinatura"
+   ENDIF
+
+   RETURN ::cXmlRetorno
 
 METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -143,8 +153,10 @@ METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ELSE
       ::XmlSoapPost()
    ENDIF
-   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
-   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   IF ::cStatus != "999"
+      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   ENDIF
 
    RETURN ::cXmlRetorno
 
@@ -184,8 +196,10 @@ METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ELSE
       ::XmlSoapPost()
    ENDIF
-   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
-   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   IF ::cStatus != "999"
+      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   ENDIF
 
    RETURN ::cXmlRetorno
 
@@ -206,9 +220,11 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ::cXmlEnvio     +=    XmlTag( "nRec",  ::cRecibo )
    ::cXmlEnvio     += [</consReciCTe>]
    ::XmlSoapPost()
-   ::cXmlProtocolo := ::cXmlRetorno                                           // ? hb_Utf8ToStr()
-   ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
-   ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   ::cXmlProtocolo := ::cXmlRetorno  // ? hb_Utf8ToStr()
+   IF ::cStatus != "999"
+      ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
+      ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   ENDIF
 
    RETURN ::cXmlRetorno // ? hb_Utf8ToStr()
 
@@ -244,7 +260,9 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
       ::cXmlEnvio := ::cXmlDocumento
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
-      ::CTeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
+      IF ::cStatus != "999"
+         ::CTeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
+      ENDIF
    ENDIF
 
    RETURN ::cXmlRetorno
@@ -363,7 +381,7 @@ METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protCTe", .T. ) // ?hb_Utf8ToStr()
    ::cXmlAutorizado += [</cteProc>]
 
-   RETURN NIL
+   RETURN ::cXmlAutorizado
 
 METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
@@ -419,8 +437,10 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    IF ::AssinaXml() == "OK"
       ::cXmlEnvio := ::cXmlDocumento
       ::XmlSoapPost()
-      ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
-      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+      IF ::cStatus != "999"
+         ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+         ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+      ENDIF
       IF ::cStatus == "102"
          ::cXmlAutorizado := XML_UTF8
          ::cXmlAutorizado += [<ProcInutCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
@@ -459,7 +479,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
    ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
    ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
-   IF ! Empty( ::cRecibo )
+   IF ! Empty( ::cRecibo ) .AND. ::cStatus != "999"
       Inkey( ::nTempoEspera )
       ::CteConsultaRecibo()
       ::CteGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo ) // runner
@@ -499,8 +519,10 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlEnvio +=    XmlTag( "CNPJ", cCNPJ )
    ::cXmlEnvio += [</consMDFeNaoEnc>]
    ::XmlSoapPost()
-   ::cStatus := Pad( XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "cStat" ), 3 )
-   ::cMotivo := XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "xMotivo" )
+   IF ::cStatus != "999"
+      ::cStatus := Pad( XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "cStat" ), 3 )
+      ::cMotivo := XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "xMotivo" )
+   ENDIF
 
    RETURN ::cXmlRetorno
 
@@ -524,8 +546,10 @@ METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
    ENDIF
-   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
-   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   IF ::cStatus != "999"
+      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   ENDIF
 
    RETURN ::cXmlRetorno
 
@@ -547,8 +571,10 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
    ::cXmlEnvio += [</consReciMDFe>]
    ::XmlSoapPost()
    ::cXmlProtocolo := ::cXmlRetorno
-   ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
-   ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   IF ::cStatus != "999"
+      ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
+      ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   ENDIF
 
    RETURN ::cXmlRetorno
 
@@ -775,9 +801,11 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno
    ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
-   ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
-   ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
-   IF ! Empty( ::cRecibo )
+   IF ::cStatus != "999"
+      ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
+      ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
+   ENDIF
+   IF ! Empty( ::cRecibo ) .AND. ::cStatus != "999"
       Inkey( ::nTempoEspera )
       ::MDFeConsultaRecibo()
       ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
@@ -892,12 +920,17 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlEnvio    +=    XmlTag( "chNFe", cChave )
    ::cXmlEnvio    += [</consSitNFe>]
    IF ! DfeModFis( cChave ) $ "55,65"
-      ::cXmlRetorno := [<erro text="*ERRO* NfeConsultaProtocolo() Chave não se refere a NFE/NFCE" />]
+      ::cStatus     := "999"
+      ::cMotivo     := "Chave não se refere a NFE/NFCE"
+      ::cXmlRetorno := [<erro text="*ERRO* NfeConsultaProtocolo() ] + ::cMotivo + [" />]
+
    ELSE
       ::XmlSoapPost()
    ENDIF
-   ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
-   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   IF ::cStatus != "999"
+      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   ENDIF
 
    RETURN ::cXmlRetorno
 
@@ -1175,8 +1208,10 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    IF ::AssinaXml() == "OK"
       ::cXmlEnvio := ::cXmlDocumento
       ::XmlSoapPost()
-      ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
-      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+      IF ::cStatus != "999"
+         ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+         ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+      ENDIF
       IF ::cStatus == "102"
          ::cXmlAutorizado := XML_UTF8
          ::cXmlAutorizado += [<ProcInutNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
@@ -1260,11 +1295,13 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
    ELSE
       ::cXmlRecibo := ::cXmlRetorno
       ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
-      ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
-      ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
-      IF ! Empty( ::cRecibo )
-         ::cXmlProtocolo := ::cXmlRetorno
-         ::cXmlRetorno   := ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
+      IF ::cStatus != "999"
+         ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
+         ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
+         IF ! Empty( ::cRecibo )
+            ::cXmlProtocolo := ::cXmlRetorno
+            ::cXmlRetorno   := ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
+         ENDIF
       ENDIF
    ENDIF
 
@@ -1303,7 +1340,7 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF "<infProt" $ ::cXmlRetorno // 23/05/2018
       ::cStatus := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
       ::cMotivo := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
-   ELSE
+   ELSEIF ::cStatus != "999"
       ::cMotivo       := XmlNode( ::cXmlRetorno, "xMotivo" )
       ::cStatus       := XmlNode( ::cXmlRetorno, "cStat" )
    ENDIF
@@ -1372,8 +1409,10 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
-   ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "cStat" ), 3 )
-   ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "xMotivo" ) // runner
+   IF ::cStatus != "999"
+      ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "cStat" ), 3 )
+      ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "xMotivo" ) // runner
+   ENDIF
    IF ! ::cStatus $ "135,155"
       ::cXmlRetorno := [<erro text="*ERRO* NFEGeraEventoAutorizado() Status inválido pra autorização" />] + ::cXmlRetorno
       RETURN NIL
@@ -1453,19 +1492,22 @@ METHOD XmlSoapPost() CLASS SefazClass
    DO CASE
    CASE Empty( ::cSoapURL )
       ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há endereço de webservice" />]
+      ::cStatus     := "999"
+      ::cMotivo     := "Erro de comunicação: sem endereço de internet"
       RETURN NIL
    CASE Empty( ::cSoapService )
       ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há nome do serviço" />]
+      ::cStatus     := "999"
+      ::cMotivo     := "Erro de comunicação: sem nome de serviço"
       RETURN NIL
    CASE Empty( ::cSoapAction )
       ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há endereço de SOAP Action" />]
+      ::cStatus     := "999"
+      ::cMotivo     := "Erro de comunicação: sem SOAP Action"
       RETURN NIL
    ENDCASE
    ::XmlSoapEnvelope()
    ::MicrosoftXmlSoapPost()
-   IF "*ERRO*" $ Upper( ::cXmlRetorno )
-      RETURN NIL
-   ENDIF
 
    RETURN NIL
 
@@ -1561,23 +1603,28 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
          ::cXmlRetorno := cRetorno
       ELSEIF cRetorno == NIL
          ::cXmlRetorno := "Sem retorno do webservice"
-      ELSE
+      ELSEIF ValType( cRetorno ) == "A" // xharbour e harbour antigo???
          ::cXmlRetorno := ""
          FOR nCont = 1 TO Len( cRetorno )
             ::cXmlRetorno += Chr( cRetorno[ nCont ] )
          NEXT
       ENDIF
    END SEQUENCE
-   IF "<soap:Body" $ ::cXmlRetorno .AND. "</soap:Body>" $ ::cXmlRetorno
-      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" ) // hb_UTF8ToStr()
-   ELSEIF "<soapenv:Body" $ ::cXmlRetorno .AND. "</soapenv:Body>" $ ::cXmlRetorno
-      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soapenv:Body" ) // hb_UTF8ToStr()
-   ELSEIF "<env:Body" $ ::cXmlRetorno .AND. "</env:Body>" $ ::cXmlRetorno
+   DO CASE
+   CASE ! Empty( XmlNode( ::cXmlRetorno, "soap:Body" ) )
+      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" )
+   CASE ! Empty( XmlNode( ::cXmlRetorno, "soapenv:Body" ) )
+      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soapenv:Body" )
+   CASE ! Empty( XmlNode( ::cXmlRetorno, "env:Body" ) )
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "env:Body" )
-   ELSE
+   CASE "not have permission to view" $ ::cXmlRetorno
+      ::cStatus     := "999"
+      ::cMotivo     := "Certificado inválido, vencido, ou problemas na Sefaz"
+      ::cXmlRetorno := [<erro xml="] + "*ERRO*" + ::cMotivo + [" />]
+   OTHERWISE
       // teste usando procname(2)
       ::cXmlRetorno := [<erro text="*ERRO* Erro SOAP: ] + ProcName(2) + [ XML retorno não contém soapenv:Body" />] + ::cXmlRetorno
-   ENDIF
+   ENDCASE
 
    RETURN NIL
 

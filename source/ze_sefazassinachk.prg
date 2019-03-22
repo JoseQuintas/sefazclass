@@ -3,7 +3,9 @@ ZE_SPEDSSINACHK - Checagem de assinatura
 José Quintas
 */
 
-#include "hb2xhb.ch"
+#ifdef __XHARBOUR__
+   #include "hb2xhb.ch"
+#endif
 #define DSIGNS "xmlns:ds='http://www.w3.org/2000/09/xmldsig#'"
 
 FUNCTION ChkSignature( cXml, cCertificadoCN )

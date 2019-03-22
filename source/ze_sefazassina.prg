@@ -31,7 +31,9 @@ José Quintas
 
 #include "common.ch"
 #include "hbclass.ch"
-#include "hb2xhb.ch"
+#ifdef __XHARBOUR__
+   #include "hb2xhb.ch"
+#endif
 
 FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior, cPassword )
 
