@@ -18,6 +18,26 @@ ZE_EXTENSO - EXTENSO DE VALORES
 01/07/1994 a atual      R$   Real             1 R$  = 2750 CR$
 */
 
+#define EXTENSO_UNIDADE { "UM", "DOIS", "TRES", "QUATRO", "CINCO", "SEIS", ;
+      "SETE", "OITO", "NOVE", "DEZ", "ONZE", "DOZE", "TREZE", ;
+      "QUATORZE", "QUINZE", "DEZESSEIS", "DEZESSETE", "DEZOITO", ;
+      "DEZENOVE" }
+
+#define EXTENSO_DEZENA { "VINTE", "TRINTA", "QUARENTA", "CINQUENTA", "SESSENTA", ;
+      "SETENTA", "OITENTA", "NOVENTA" }
+
+#define EXTENSO_CENTENA { "CENTO", "DUZENTOS", "TREZENTOS", "QUATROCENTOS", ;
+      "QUINHENTOS", "SEISCENTOS", "SETECENTOS", "OITOCENTOS", ;
+      "NOVECENTOS" }
+
+#define EXTENSO_GRUPO { "MIL", "MILHAO", "BILHAO", "TRILHAO", "QUATRILHAO", ;
+      "QUINTILHAO", "SEPTILHAO", "OCTILHAO", "NONILHAO", "DECILHAO" }
+
+#define EXTENSO_MES { "JANEIRO", "FEVEREIRO", "MARCO", "ABRIL", "MAIO", "JUNHO", "JULHO", ;
+      "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO" }
+
+#define EXTENSO_SEMANA { "", "DOMINGO", "SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA", "SABADO" }
+
 FUNCTION ExtensoDolar( nValor )
 
    LOCAL cTxt
@@ -43,9 +63,6 @@ FUNCTION Extenso( xValue, xFull )
          cTxt := oExtenso:Extenso( Day( xValue ) )
          cTxt += " DE " + Nomemes( xValue ) + " DE "
          cTxt += oExtenso:Extenso( Year( xValue ) )
-         cTxt := StrTran( cTxt, "DE REAIS", "" )
-         cTxt := StrTran( cTxt, "REAIS", "" )
-         cTxt := StrTran( cTxt, "REAL", "" )
          DO WHILE Space(2) $ cTxt
             cTxt := StrTran( cTxt, Space(2), Space(1) )
          ENDDO
@@ -100,83 +117,37 @@ METHOD Extenso( nValor ) CLASS ExtensoClass
 
 METHOD ExtensoUnidade( nValor ) CLASS ExtensoClass
 
-   LOCAL cTxt := ""
+   IF nValor < 0 .OR. nValor > 19
+      RETURN ""
+   ENDIF
 
-   DO CASE
-   CASE nValor == 1;  cTxt := "UM"
-   CASE nValor == 2;  cTxt := "DOIS"
-   CASE nValor == 3;  cTxt := "TRES"
-   CASE nValor == 4;  cTxt := "QUATRO"
-   CASE nValor == 5;  cTxt := "CINCO"
-   CASE nValor == 6;  cTxt := "SEIS"
-   CASE nValor == 7;  cTxt := "SETE"
-   CASE nValor == 8;  cTxt := "OITO"
-   CASE nValor == 9;  cTxt := "NOVE"
-   CASE nValor == 10; cTxt := "DEZ"
-   CASE nValor == 11; cTxt := "ONZE"
-   CASE nValor == 12; cTxt := "DOZE"
-   CASE nValor == 13; cTxt := "TREZE"
-   CASE nValor == 14; cTxt := "QUATORZE"
-   CASE nValor == 15; cTxt := "QUINZE"
-   CASE nValor == 16; cTxt := "DEZESSEIS"
-   CASE nValor == 17; cTxt := "DEZESSETE"
-   CASE nValor == 18; cTxt := "DEZOITO"
-   CASE nValor == 19; cTxt := "DEZENOVE"
-   ENDCASE
-
-   RETURN cTxt
+   RETURN EXTENSO_UNIDADE[ nValor ]
 
 METHOD ExtensoDezena( nValor ) CLASS ExtensoClass
 
-   LOCAL cTxt := ""
+   IF nValor < 1 .OR. nValor > 9
+      RETURN ""
+   ENDIF
 
-   DO CASE
-   CASE nValor == 2; cTxt := "VINTE"
-   CASE nValor == 3; cTxt := "TRINTA"
-   CASE nValor == 4; cTxt := "QUARENTA"
-   CASE nValor == 5; cTxt := "CINQUENTA"
-   CASE nValor == 6; cTxt := "SESSENTA"
-   CASE nValor == 7; cTxt := "SETENTA"
-   CASE nValor == 8; cTxt := "OITENTA"
-   CASE nValor == 9; cTxt := "NOVENTA"
-   ENDCASE
-
-   RETURN cTxt
+   RETURN EXTENSO_DEZENA[ nValor ]
 
 METHOD ExtensoCentena( nValor ) CLASS ExtensoClass
 
-   LOCAL cTxt := ""
+   IF nValor < 1 .OR. nValor > 9
+      RETURN ""
+   ENDIF
 
-   DO CASE
-   CASE nValor == 1; cTxt := "CENTO"
-   CASE nValor == 2; cTxt := "DUZENTOS"
-   CASE nValor == 3; cTxt := "TREZENTOS"
-   CASE nValor == 4; cTxt := "QUATROCENTOS"
-   CASE nValor == 5; cTxt := "QUINHENTOS"
-   CASE nValor == 6; cTxt := "SEISCENTOS"
-   CASE nValor == 7; cTxt := "SETECENTOS"
-   CASE nValor == 8; cTxt := "OITOCENTOS"
-   CASE nValor == 9; cTxt := "NOVECENTOS"
-   ENDCASE
-
-   RETURN cTxt
+   RETURN EXTENSO_CENTENA[ nValor ]
 
 METHOD ExtensoGrupoMilhar( nPosicao, nValor ) CLASS ExtensoClass
 
-   LOCAL cTxt := ""
+   LOCAL cTxt
 
-   DO CASE
-   CASE nPosicao == 1;  cTxt := "MIL"
-   CASE nPosicao == 2;  cTxt := "MILHAO"
-   CASE nPosicao == 3;  cTxt := "BILHAO"
-   CASE nPosicao == 4;  cTxt := "TRILHAO"
-   CASE nPosicao == 5;  cTxt := "QUATRILHAO"
-   CASE nPosicao == 6;  cTxt := "QUINTILHAO"
-   CASE nPosicao == 7;  cTxt := "SEPTILHAO"
-   CASE nPosicao == 8;  cTxt := "OCTILHAO"
-   CASE nPosicao == 9;  cTxt := "NONILHAO"
-   CASE nPosicao == 10; cTxt := "DECILHAO"
-   ENDCASE
+   IF nPosicao < 1 .OR. nPosicao > 10
+      RETURN ""
+   ENDIF
+
+   cTxt := EXTENSO_GRUPO[ nPosicao ]
    IF nValor > 1
       cTxt := StrTran( cTxt, "LHAO", "LHOES" )
    ENDIF
@@ -211,9 +182,8 @@ METHOD ExtensoBloco( cValor ) CLASS ExtensoClass
 
 FUNCTION NomeMes( xMes )
 
-   LOCAL aMeses, cNomeMes := ""
+   LOCAL cNomeMes := ""
 
-   aMeses := { "JANEIRO", "FEVEREIRO", "MARCO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO" }
    IF ValType( xMes ) == "D"
       xMes := Month( xMes )
    ENDIF
@@ -221,13 +191,11 @@ FUNCTION NomeMes( xMes )
       xMes -= 12
    ENDDO
    IF xMes > 0
-      cNomeMes := aMeses[ xMes ]
+      cNomeMes := EXTENSO_MES[ xMes ]
    ENDIF
 
    RETURN cNomeMes
 
 FUNCTION NomeSemana( dData )
 
-   LOCAL acText := { "", "DOMINGO", "SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA", "SABADO" }
-
-   RETURN acText[ Dow( dData ) + 1 ]
+   RETURN EXTENSO_SEMANA[ Dow( dData ) + 1 ]
