@@ -129,7 +129,8 @@ METHOD AssinaXml()
    ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado,,::cPassword )
    IF ::cXmlRetorno != "OK"
       ::cStatus := "999"
-      ::cMotivo := "Problemas com certificado e/ou assinatura"
+      ::cMotivo := ::cXmlRetorno
+      ::cXmlRetorno := [<erro text="] + "*erro* " + ::cXmlRetorno + ["</erro>]
    ENDIF
 
    RETURN ::cXmlRetorno
