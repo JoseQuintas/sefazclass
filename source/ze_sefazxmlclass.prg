@@ -550,10 +550,10 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
    cBlocoCobranca := XmlNode( cXmlInput, "cobr" )
    aList := MultipleNodeToArray( cBlocoCobranca, "dup" )
    FOR EACH cBlocoDup IN aList
-      cBlocoDup := XmlNode( cBlocoCobranca, "dup" )
-      IF Len( Trim( cBlocoDup ) ) = 0
-         EXIT
-      ENDIF
+      //cBlocoDup := XmlNode( cBlocoCobranca, "dup" )
+      //IF Len( Trim( cBlocoDup ) ) = 0
+      //   EXIT
+      //ENDIF
       AAdd( oDocSped:Duplicata, NFEDuplicataClass():New() )
       nCont := Len( oDocSped:Duplicata )
       oDocSped:Duplicata[ nCont ]:Duplicata  := XmlNode( cBlocoDup, "nDup" ) // 2018.01.23 Jackson

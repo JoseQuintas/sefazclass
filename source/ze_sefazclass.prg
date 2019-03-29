@@ -1598,7 +1598,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       ENDIF
       oServer:SetRequestHeader( "Content-Type", "application/soap+xml; charset=utf-8" )
       oServer:Send( ::cXmlSoap )
-      oServer:WaitForResponse( 500 )
+      oServer:WaitForResponse( 1000 )
       cRetorno := oServer:ResponseBody()
       IF ValType( cRetorno ) == "C"
          ::cXmlRetorno := cRetorno
