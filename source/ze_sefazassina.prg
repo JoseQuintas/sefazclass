@@ -35,7 +35,7 @@ José Quintas
    #include "hb2xhb.ch"
 #endif
 
-FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior, cPassword )
+FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior, cPassword, lComURI )
 
    LOCAL oDOMDocument, xmldsig, oCert, oCapicomStore
    LOCAL SIGNEDKEY, DSIGKEY
@@ -43,12 +43,13 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior, cPassword )
    LOCAL cDllFile, acDllList := { "msxml5.dll", "msxml5r.dll", "capicom.dll" }
 
    hb_Default( @lRemoveAnterior, .T. )
+   hb_Default( @lComURI, .T. )
 
    AssinaRemoveAssinatura( @cTxtXml, lRemoveAnterior )
 
    AssinaRemoveDeclaracao( @cTxtXml )
 
-   IF ! AssinaAjustaInformacao( @cTxtXml, @cXmlTagInicial, @cXmlTagFinal, @cRetorno )
+   IF ! AssinaAjustaInformacao( @cTxtXml, @cXmlTagInicial, @cXmlTagFinal, @cRetorno, @lComURI )
       RETURN cRetorno
    ENDIF
 
@@ -105,15 +106,18 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior, cPassword )
 
    RETURN cRetorno
 
-STATIC FUNCTION AssinaBlocoAssinatura( cUri )
+STATIC FUNCTION AssinaBlocoAssinatura( cURI, lComURI )
 
    LOCAL cSignatureNode := ""
 
+   IF lComURI
+      cURI := "#" + cURI
+   ENDIF
    cSignatureNode += [<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">]
    cSignatureNode +=    [<SignedInfo>]
    cSignatureNode +=       [<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>]
    cSignatureNode +=       [<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />]
-   cSignatureNode +=       [<Reference URI="#] + cURI + [">]
+   cSignatureNode +=       [<Reference URI="] + cURI + [">]
    cSignatureNode +=       [<Transforms>]
    cSignatureNode +=          [<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />]
    cSignatureNode +=          [<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />]
@@ -157,7 +161,7 @@ STATIC FUNCTION AssinaRemoveDeclaracao( cTxtXml )
 
    RETURN cTxtXml
 
-STATIC FUNCTION AssinaAjustaInformacao( cTxtXml, cXmlTagInicial, cXmlTagFinal, cRetorno )
+STATIC FUNCTION AssinaAjustaInformacao( cTxtXml, cXmlTagInicial, cXmlTagFinal, cRetorno, lComURI )
 
    LOCAL aDelimitadores, nPos, nPosIni, nPosFim, cURI
 
@@ -175,6 +179,8 @@ STATIC FUNCTION AssinaAjustaInformacao( cTxtXml, cXmlTagInicial, cXmlTagFinal, c
       { "<infInut",               "</inutCTe>" }, ;
       { "<infEvento",             "</evento>" }, ;
       { "<evtInfoEmpregador",     "</eSocial>" }, ;
+      { "<PedidoEnvioLoteRPS",    "</RPS>" }, ;
+      { "<PedidoEnvioRPS",        "</RPS>" }, ;
       { "<infPedidoCancelamento", "</Pedido>" }, ;               // NFSE ABRASF Cancelamento
       { "<LoteRps",               "</EnviarLoteRpsEnvio>" }, ;   // NFSE ABRASF Lote
       { "<infRps",                "</Rps>" } }                   // NFSE ABRASF RPS
@@ -205,7 +211,7 @@ STATIC FUNCTION AssinaAjustaInformacao( cTxtXml, cXmlTagInicial, cXmlTagFinal, c
 
    // Adiciona bloco de assinatura no local apropriado
    IF cXmlTagFinal $ cTxtXml
-      cTxtXml := Substr( cTxtXml, 1, At( cXmlTagFinal, cTxtXml ) - 1 ) + AssinaBlocoAssinatura( cURI ) + cXmlTagFinal
+      cTxtXml := Substr( cTxtXml, 1, At( cXmlTagFinal, cTxtXml ) - 1 ) + AssinaBlocoAssinatura( cURI, lComURI ) + cXmlTagFinal
    ENDIF
 
    IF ! "</Signature>" $ cTxtXml
