@@ -935,8 +935,6 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-   /* 2015.07.31.1400 Iniciado apenas */
-
 METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
@@ -946,8 +944,7 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmb
    hb_Default( @cChave, "" )
 
    ::aSoapUrlList := WS_NFE_DISTRIBUICAO
-   ::cUF          := "AN"
-   ::Setup( cUF, cCertificado, cAmbiente )
+   ::Setup( "AN", cCertificado, cAmbiente )
    ::cSoapAction  := "nfeDistDFeInteresse"
    ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe"
 
