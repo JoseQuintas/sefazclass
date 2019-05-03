@@ -90,7 +90,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "Envio de arquivo NFe/CTe/MDFe em disco"
       @ Row() + 1, 5 PROMPT "Assinatura arquivo externo (esocial,etc)"
       @ Row() + 1, 5 PROMPT "Manifestacao Destinatario"
-      @ Row() + 1, 5 PROMPT "Download NFE"
+      @ Row() + 1, 5 PROMPT "Download DFE (Documentos)"
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
