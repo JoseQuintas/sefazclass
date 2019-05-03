@@ -950,7 +950,7 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmb
 
    ::cXmlEnvio    := [<distDFeInt versao="1.01" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio    +=    XmlTag( "cUFAutor", ::UFCodigo( ::cUF ) )
+   ::cXmlEnvio    +=    XmlTag( "cUFAutor", ::UFCodigo( cUF ) )
    ::cXmlEnvio    +=    XmlTag( "CNPJ", cCnpj ) // ou CPF
    IF ! Empty( cChave )
       ::cXmlEnvio += [<consChNFe>]
