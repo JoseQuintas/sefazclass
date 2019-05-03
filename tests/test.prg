@@ -90,6 +90,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "Envio de arquivo NFe/CTe/MDFe em disco"
       @ Row() + 1, 5 PROMPT "Assinatura arquivo externo (esocial,etc)"
       @ Row() + 1, 5 PROMPT "Manifestacao Destinatario"
+      @ Row() + 1, 5 PROMPT "Download NFE"
       MENU TO nOpc
       nOpcTemp := 1
       DO CASE
@@ -276,6 +277,16 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
             Inkey(0)
          ENDIF
 
+      CASE nOpc == nOpcTemp++
+         Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
+         @ 8, 1 GET cChave PICTURE "@9"
+         @ 9, 1 GET cCnpj  PICTURE "@9"
+         READ
+         IF LastKey() != K_ESC
+            oSefaz:NfeDownload( cCnpj, cChave, cCertificado, cAmbiente )
+            ? oSefaz:cXmlRetorno
+            Inkey(0)
+         ENDIF
       CASE nOpc == nOpcTemp // pra não esquecer o ++, último não tem
       ENDCASE
    ENDDO
