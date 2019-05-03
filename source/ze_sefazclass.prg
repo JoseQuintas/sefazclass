@@ -968,6 +968,9 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmb
    ENDIF
    ::cXmlEnvio   += [</distDFeInt>]
    ::XmlSoapPost()
+   IF ! Empty( XmlNode( ::cXmlRetorno, "cStat" ) )
+      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+   ENDIF
 
    RETURN ::cXmlRetorno
 

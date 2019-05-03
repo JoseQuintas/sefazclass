@@ -14,7 +14,7 @@ MEMVAR cVersao, cCertificado, cUF, cAmbiente, cNFCe, cEvento, cCnpj, cChave
 
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
-   LOCAL nOpc := 1, GetList := {}, cTexto := "", nOpcTemp
+   LOCAL nOpc := 1, GetList := {}, cTexto := ""
    LOCAL cXmlRetorno
    LOCAL oSefaz, cXml, oDanfe, cTempFile, nHandle, cRecibo := Space(20)
 
@@ -71,55 +71,54 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       oSefaz:cNFCe        := cNFCe
 
       CLS
-      @ Row() + 1, 5 PROMPT "00-Teste Danfe"
-      @ Row() + 1, 5 PROMPT "01-Seleciona certificado (atual=" + cCertificado + ")"
-      @ Row() + 1, 5 PROMPT "02-UF (atual=" + cUF + ")"
-      @ Row() + 1, 5 PROMPT "03-Versao NFE (atual=" + cVersao + ")"
-      @ Row() + 1, 5 PROMPT "04-Ambiente (atual=" + iif( cAmbiente == WS_AMBIENTE_PRODUCAO, "Produção", "Homologação" ) + ")"
-      @ Row() + 1, 5 PROMPT "05-Nota (atual=" + iif( cNFCe == "S", "NFCE", "NFE" ) + ")"
-      @ Row() + 1, 5 PROMPT "06-Consulta Status NFE"
-      @ Row() + 1, 5 PROMPT "07-Consulta Cadastro NFE"
-      @ Row() + 1, 5 PROMPT "08-Protocolo NFE"
-      @ Row() + 1, 5 PROMPT "09-Protocolo CTE 3.00"
-      @ Row() + 1, 5 PROMPT "10-Protocolo MDFE 3.00"
-      @ Row() + 1, 5 PROMPT "11-Consulta Destinadas"
-      @ Row() + 1, 5 PROMPT "12-Valida XML (Basico)"
-      @ Row() + 1, 5 PROMPT "13-Teste de assinatura"
-      @ Row() + 1, 5 PROMPT "14-Consulta Recibo"
-      @ Row() + 1, 5 PROMPT "15-Envio de XML*"
-      @ Row() + 1, 5 PROMPT "16-Envio de arquivo NFe/CTe/MDFe em disco"
-      @ Row() + 1, 5 PROMPT "17-Assinatura arquivo externo (esocial,etc)"
-      @ Row() + 1, 5 PROMPT "18-Manifestacao Destinatario"
-      @ Row() + 1, 5 PROMPT "19-Download DFE (Documentos)"
+      @ Row() + 1, 5 PROMPT "01-Teste Danfe"
+      @ Row() + 1, 5 PROMPT "02-Seleciona certificado (atual=" + cCertificado + ")"
+      @ Row() + 1, 5 PROMPT "03-UF (atual=" + cUF + ")"
+      @ Row() + 1, 5 PROMPT "04-Versao NFE (atual=" + cVersao + ")"
+      @ Row() + 1, 5 PROMPT "05-Ambiente (atual=" + iif( cAmbiente == WS_AMBIENTE_PRODUCAO, "Produção", "Homologação" ) + ")"
+      @ Row() + 1, 5 PROMPT "06-Nota (atual=" + iif( cNFCe == "S", "NFCE", "NFE" ) + ")"
+      @ Row() + 1, 5 PROMPT "07-Consulta Status NFE"
+      @ Row() + 1, 5 PROMPT "08-Consulta Cadastro NFE"
+      @ Row() + 1, 5 PROMPT "09-Protocolo NFE"
+      @ Row() + 1, 5 PROMPT "10-Protocolo CTE 3.00"
+      @ Row() + 1, 5 PROMPT "11-Protocolo MDFE 3.00"
+      @ Row() + 1, 5 PROMPT "12-Consulta Destinadas"
+      @ Row() + 1, 5 PROMPT "13-Valida XML (Basico)"
+      @ Row() + 1, 5 PROMPT "14-Teste de assinatura"
+      @ Row() + 1, 5 PROMPT "15-Consulta Recibo"
+      @ Row() + 1, 5 PROMPT "16-Envio de XML*"
+      @ Row() + 1, 5 PROMPT "17-Envio de arquivo NFe/CTe/MDFe em disco"
+      @ Row() + 1, 5 PROMPT "18-Assinatura arquivo externo (esocial,etc)"
+      @ Row() + 1, 5 PROMPT "19-Manifestacao Destinatario"
+      @ Row() + 1, 5 PROMPT "20-Download DFE (Documentos)"
       MENU TO nOpc
-      nOpcTemp := 1
       DO CASE
       CASE LastKey() == K_ESC
          EXIT
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 1
          TestDanfe()
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 2
          cCertificado := CapicomEscolheCertificado()
          wapi_MessageBox( , cCertificado )
          LOOP
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 3
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          @ 8, 0 SAY "Qual UF:" GET cUF PICTURE "@!"
          READ
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 4
          cVersao := iif( cVersao == "3.10", "4.00", "3.10" )
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 5
          cAmbiente := iif( cAmbiente == WS_AMBIENTE_PRODUCAO, WS_AMBIENTE_HOMOLOGACAO, WS_AMBIENTE_PRODUCAO )
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 6
          cNFCe := iif( cNFCe == "S", "N", "S" )
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 7
          cXmlRetorno := oSefaz:NfeStatusServico()
          //wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
          wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
@@ -132,7 +131,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          cTexto += "Tempo Médio:"       + XmlNode( cXmlRetorno, "tMed" ) + hb_Eol()
          wapi_MessageBox( , cTexto, "Informação Extraída" )
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 8
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          @ 8, 0 SAY "UF"   GET cUF PICTURE "@!"
          @ 9, 0 SAY "CNPJ" GET cCnpj PICTURE "@R 99.999.999/9999-99"
@@ -167,7 +166,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          cTexto += "Etc pode ter vários endereços..."
          wapi_MessageBox( , cTexto, "Informação Extraída" )
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 9
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          @ 8, 1 GET cChave PICTURE "@R 99-99/99-99.999.999/9999-99.99.999.999999999.9.99999999.9"
          READ
@@ -178,7 +177,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 10
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          @ 8, 1 GET cChave PICTURE "@R 99-99/99-99.999.999/9999-99.99.999.999999999.9.99999999.9"
          READ
@@ -190,7 +189,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 11
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          @ 8, 1 GET cChave PICTURE "@R 99-99/99-99.999.999/9999-99.99.999.999999999.9.99999999.9"
          READ
@@ -202,7 +201,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 12
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          @ 9, 1 GET cCnpj PICTURE "@9"
          READ
@@ -217,19 +216,19 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 13
          cXml := MemoRead( win_GetOpenFileName(, "Arquivo a assinar", "importa\", "XML", "*.XML", 1 ) )
          ? oSefaz:ValidaXml( cXml ) // , "d:\cdrom\fontes\integra\schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd" )
          Inkey(0)
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 14
          oSefaz:cXmlDocumento := [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>]
          oSefaz:AssinaXml()
          ? oSefaz:cXmlRetorno
          ? oSefaz:cXmlDocumento
          Inkey(0)
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 15
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          @ 8, 1 GET cRecibo PICTURE "@9"
          READ
@@ -239,12 +238,12 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
             Inkey(0)
          ENDIF
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 16
          oSefaz:NfeLoteEnvia( [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>] )
          ? oSefaz:cXmlRetorno
          Inkey(0)
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 17
          cXml := MemoRead( win_GetOpenFileName(, "Arquivo a transmitir", ".\", "XML", "*.XML", 1 ) )
          DO CASE
          CASE "<infMDFe" $ cXml ; ? "autorizando CTE"; oSefaz:cVersao := "3.00"; oSefaz:CteLoteEnvia( cXml )
@@ -257,7 +256,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          hb_MemoWrit( "testeautorizado.xml", oSefaz:cXmlAutorizado )
          Inkey(0)
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 18
          oSefaz:cXmlDocumento := MemoRead( win_GetOpenFileName(, "Arquivo a assinar", ".\", "XML", "*.XML", 1 ) )
          oSefaz:AssinaXml()
          ? oSefaz:cXmlRetorno
@@ -265,7 +264,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          hb_MemoWrit( "testassina.xml", oSefaz:cXmlDocumento )
          Inkey(0)
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 19
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          @  8, 1 GET cChave  PICTURE "@9"
          @  9, 1 GET cCnpj   PICTURE "@9"
@@ -277,7 +276,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
             Inkey(0)
          ENDIF
 
-      CASE nOpc == nOpcTemp++
+      CASE nOpc == 20
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          @ 8, 1 GET cChave PICTURE "@9"
          @ 9, 1 GET cCnpj  PICTURE "@9"
@@ -285,9 +284,11 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          IF LastKey() != K_ESC
             oSefaz:NfeDownload( cCnpj, cChave, cCertificado, cAmbiente )
             ? oSefaz:cXmlRetorno
+            IF oSefaz:cStatus == "138"
+               hb_MemoWrit( "arquivo.zip", hb_Base64Decode( XmlNode( oSefaz:cXmlRetorno, "docZip" ) ) )
+            ENDIF
             Inkey(0)
          ENDIF
-      CASE nOpc == nOpcTemp // pra não esquecer o ++, último não tem
       ENDCASE
    ENDDO
 
