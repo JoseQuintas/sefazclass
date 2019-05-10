@@ -90,11 +90,13 @@ CREATE CLASS SefazClass
 
    METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente )
 
+   // hb_MemoWrit( "arquivo.zip", XmlNode( ::cXmlRetorno, "docZip" ) )
+   METHOD NFeDownload( cCnpj, cChave, cCertificado, cAmbiente ) INLINE ::NfeDistribuicaoDfe( cCnpj, "", "", cChave, ::UFCodigo( Left( cChave, 2 ) ), cCertificado, cAmbiente )
+
    METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente )
    METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmbiente )
-   METHOD NFeDownload( cCnpj, cChave, cCertificado, cAmbiente ) INLINE ::NfeDistribuicaoDfe( cCnpj, "", "", cChave, ::UFCodigo( Left( cChave, 2 ) ), cCertificado, cAmbiente )
    METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD NFeEventoCancelaSubstituicao( cChave, cOrgaoAutor, cAutor, cVersaoAplicativo, cProtocolo, cJust, cNfRef, cCertificado, cAmbiente )
    METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
