@@ -10,27 +10,60 @@ REQUEST HB_CODEPAGE_PTISO
    #define WIN_SW_SHOWNORMAL 0
 #endif
 
-MEMVAR cVersao, cCertificado, cUF, cAmbiente, cNFCe, cEvento, cCnpj, cChave
+#define OPC_DANFE           1
+#define OPC_CERTIFICADO     2
+#define OPC_UF              3
+#define OPC_VERSAO_NFE      4
+#define OPC_AMBIENTE        5
+#define OPC_NFCE            6
+#define OPC_STATUS_NFE      7
+#define OPC_STATUS_CTE      8
+#define OPC_STATUS_MDFE     9
+#define OPC_CADASTRO        10
+#define OPC_PROTOCOLO_NFE   11
+#define OPC_PROTOCOLO_CTE   12
+#define OPC_PROTOCOLO_MDFE  13
+#define OPC_DESTINADAS      14
+#define OPC_VALIDA_XML      15
+#define OPC_ASSINA_TESTE    16
+#define OPC_CONSULTA_RECIBO 17
+#define OPC_ENVIO_TESTE     18
+#define OPC_ENVIO_USUARIO   19
+#define OPC_ASSINA_USUARIO  20
+#define OPC_MANIFESTACAO    21
+#define OPC_DOWNLOAD_NFE    22
+
+#define VAR_VERSAO      1
+#define VAR_CERTIFICADO 2
+#define VAR_UF          3
+#define VAR_AMBIENTE    4
+#define VAR_NFCE        5
+#define VAR_EVENTO      6
+#define VAR_CNPJ        7
+#define VAR_CHAVE       8
+#define VAR_RECIBO      9
+
+MEMVAR aVarList, oSefaz
 
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    LOCAL nOpc := 1, GetList := {}, cTexto := ""
-   LOCAL cXmlRetorno
-   LOCAL oSefaz, cXml, oDanfe, cTempFile, nHandle, cRecibo := Space(20)
+   LOCAL oDanfe, cTempFile, nHandle, cXml, cXmlRetorno
+   PRIVATE aVarList, oSefaz
 
-   cVersao      := "4.00"
-   cCertificado := ""
-   cUF          := "SP"
-   cAmbiente    := WS_AMBIENTE_HOMOLOGACAO
-   cNFCe        := "N"
-   cEvento      := "210210"
-   cCnpj        := Space(14)
-   cChave       := Space(44)
+   aVarList := Array( 11 )
+   aVarList[ VAR_VERSAO ]      := "4.00"
+   aVarList[ VAR_CERTIFICADO ] := ""
+   aVarList[ VAR_UF ]          := "SP"
+   aVarList[ VAR_AMBIENTE ]    := WS_AMBIENTE_HOMOLOGACAO
+   aVarList[ VAR_NFCE ]        := "N"
+   aVarList[ VAR_EVENTO ]      := "210210"
+   aVarList[ VAR_CNPJ ]        := Space(14)
+   aVarList[ VAR_CHAVE ]       := Space(44)
+   aVarList[ VAR_RECIBO ]      := Space(20)
 
-   SET DATE BRITISH
    SetupHarbour()
-   SetMode( 33, 80 )
-   Set( _SET_CODEPAGE, "PTISO" )
+
    SetColor( "W/B,N/W,,,W/B" )
 
    //? Extenso( Date(), .T. )
@@ -63,190 +96,220 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    ENDIF
 
    DO WHILE .T.
-      oSefaz              := SefazClass():New()
-      oSefaz:cUF          := cUF
-      oSefaz:cVersao      := cVersao
-      oSefaz:cCertificado := cCertificado
-      oSefaz:cAmbiente    := cAmbiente
-      oSefaz:cNFCe        := cNFCe
+      oSefaz := SefazClass():New()
+      oSefaz:cUF          := aVarList[ VAR_UF ]
+      oSefaz:cVersao      := aVarList[ VAR_VERSAO ]
+      oSefaz:cCertificado := aVarList[ VAR_CERTIFICADO ]
+      oSefaz:cAmbiente    := aVarList[ VAR_AMBIENTE ]
+      oSefaz:cNFCE        := aVarList[ VAR_NFCE ]
 
       CLS
-      @ Row() + 1, 5 PROMPT "01-Teste Danfe"
-      @ Row() + 1, 5 PROMPT "02-Seleciona certificado (atual=" + cCertificado + ")"
-      @ Row() + 1, 5 PROMPT "03-UF (atual=" + cUF + ")"
-      @ Row() + 1, 5 PROMPT "04-Versao NFE (atual=" + cVersao + ")"
-      @ Row() + 1, 5 PROMPT "05-Ambiente (atual=" + iif( cAmbiente == WS_AMBIENTE_PRODUCAO, "Produção", "Homologação" ) + ")"
-      @ Row() + 1, 5 PROMPT "06-Nota (atual=" + iif( cNFCe == "S", "NFCE", "NFE" ) + ")"
-      @ Row() + 1, 5 PROMPT "07-Consulta Status NFE"
-      @ Row() + 1, 5 PROMPT "08-Consulta Cadastro NFE"
-      @ Row() + 1, 5 PROMPT "09-Protocolo NFE"
-      @ Row() + 1, 5 PROMPT "10-Protocolo CTE 3.00"
-      @ Row() + 1, 5 PROMPT "11-Protocolo MDFE 3.00"
-      @ Row() + 1, 5 PROMPT "12-Consulta Destinadas"
-      @ Row() + 1, 5 PROMPT "13-Valida XML (Basico)"
-      @ Row() + 1, 5 PROMPT "14-Teste de assinatura"
-      @ Row() + 1, 5 PROMPT "15-Consulta Recibo"
-      @ Row() + 1, 5 PROMPT "16-Envio de XML*"
-      @ Row() + 1, 5 PROMPT "17-Envio de arquivo NFe/CTe/MDFe em disco"
-      @ Row() + 1, 5 PROMPT "18-Assinatura arquivo externo (esocial,etc)"
-      @ Row() + 1, 5 PROMPT "19-Manifestacao Destinatario"
-      @ Row() + 1, 5 PROMPT "20-Download DFE (Documentos)"
+      @ Row() + 1, 5 PROMPT Str( OPC_DANFE, 2 )           + "-Teste Danfe (path atual)"
+      @ Row() + 1, 5 PROMPT Str( OPC_CERTIFICADO, 2 )     + "-Seleciona certificado (atual=" + aVarList[ VAR_CERTIFICADO ] + ")"
+      @ Row() + 1, 5 PROMPT Str( OPC_UF, 2 )              + "-UF (atual=" + aVarList[ VAR_UF ] + ")"
+      @ Row() + 1, 5 PROMPT Str( OPC_VERSAO_NFE, 2 )      + "-Versao NFE (atual=" + aVarList[ VAR_VERSAO ] + ")"
+      @ Row() + 1, 5 PROMPT Str( OPC_AMBIENTE, 2 )        + "-Ambiente (atual=" + iif( aVarList[ VAR_AMBIENTE ] == WS_AMBIENTE_PRODUCAO, "Produção", "Homologação" ) + ")"
+      @ Row() + 1, 5 PROMPT Str( OPC_NFCE, 2 )            + "-Nota (atual=" + iif( aVarList[ VAR_NFCE ] == "S", "NFCE", "NFE" ) + ")"
+      @ Row() + 1, 5 PROMPT Str( OPC_STATUS_NFE, 2 )      + "-Consulta Status NFE"
+      @ Row() + 1, 5 PROMPT Str( OPC_STATUS_CTE, 2 )      + "-Consulta Status CTE"
+      @ Row() + 1, 5 PROMPT Str( OPC_STATUS_MDFE, 2 )     + "-Consulta Status MDFE"
+      @ Row() + 1, 5 PROMPT Str( OPC_CADASTRO, 2 )        + "-Consulta Cadastro NFE (digitado)"
+      @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_NFE, 2 )   + "-Protocolo NFE (digitado)"
+      @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_CTE, 2 )   + "-Protocolo CTE 3.00 (digitado)"
+      @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_MDFE, 2 )  + "-Protocolo MDFE 3.00 (digitado)"
+      @ Row() + 1, 5 PROMPT Str( OPC_DESTINADAS, 2 )      + "-Consulta Destinadas (digitado)"
+      @ Row() + 1, 5 PROMPT Str( OPC_VALIDA_XML, 2 )      + "-Valida XML (Basico) (disco)"
+      @ Row() + 1, 5 PROMPT Str( OPC_ASSINA_TESTE, 2 )    + "-Assinatura - arquivo teste"
+      @ Row() + 1, 5 PROMPT Str( OPC_ASSINA_USUARIO, 2 )  + "-Assinatura - arquivo do usuário (disco)"
+      @ Row() + 1, 5 PROMPT Str( OPC_CONSULTA_RECIBO, 2 ) + "-Consulta Recibo - número do usuário"
+      @ Row() + 1, 5 PROMPT Str( OPC_ENVIO_TESTE, 2 )     + "-Envio de XML de teste"
+      @ Row() + 1, 5 PROMPT Str( OPC_ENVIO_USUARIO, 2 )   + "-Envio de XML do usuário (disco)"
+      @ Row() + 1, 5 PROMPT Str( OPC_MANIFESTACAO, 2 )    + "-Manifestacao Destinatario (digitado)"
+      @ Row() + 1, 5 PROMPT Str( OPC_DOWNLOAD_NFE, 2 )    + "-Download DFE (Documentos) (digitado)"
       MENU TO nOpc
       DO CASE
       CASE LastKey() == K_ESC
          EXIT
 
-      CASE nOpc == 1
+      CASE nOpc == OPC_DANFE
          TestDanfe()
 
-      CASE nOpc == 2
-         cCertificado := CapicomEscolheCertificado()
-         wapi_MessageBox( , cCertificado )
+      CASE nOpc == OPC_CERTIFICADO
+         aVarList[ VAR_CERTIFICADO ] := CapicomEscolheCertificado()
+         wapi_MessageBox( , aVarList[ VAR_CERTIFICADO ] )
          LOOP
 
-      CASE nOpc == 3
+      CASE nOpc == OPC_UF
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
-         @ 8, 0 SAY "Qual UF:" GET cUF PICTURE "@!"
+         @ 8, 0 SAY "Qual UF:" GET aVarList[ VAR_UF ] PICTURE "@!"
          READ
 
-      CASE nOpc == 4
-         cVersao := iif( cVersao == "3.10", "4.00", "3.10" )
+      CASE nOpc == OPC_VERSAO_NFE
+         aVarList[ VAR_VERSAO ] := iif( aVarList[ VAR_VERSAO ] == "3.10", "4.00", "3.10" )
 
-      CASE nOpc == 5
-         cAmbiente := iif( cAmbiente == WS_AMBIENTE_PRODUCAO, WS_AMBIENTE_HOMOLOGACAO, WS_AMBIENTE_PRODUCAO )
+      CASE nOpc == OPC_AMBIENTE
+         aVarList[ VAR_AMBIENTE ] := iif( aVarList[ VAR_AMBIENTE ] == WS_AMBIENTE_PRODUCAO, WS_AMBIENTE_HOMOLOGACAO, WS_AMBIENTE_PRODUCAO )
 
-      CASE nOpc == 6
-         cNFCe := iif( cNFCe == "S", "N", "S" )
+      CASE nOpc == OPC_NFCE
+         aVarList[ VAR_NFCE ] := iif( aVarList[ VAR_NFCE ] == "S", "N", "S" )
 
-      CASE nOpc == 7
+      CASE nOpc == OPC_STATUS_NFE
          cXmlRetorno := oSefaz:NfeStatusServico()
          //wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
          wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
-         cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" ) + hb_Eol()
+         cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" )    + hb_Eol()
          cTexto += "Versão Aplicativo:" + XmlNode( cXmlRetorno, "verAplic" ) + hb_Eol()
-         cTexto += "Status:"            + XmlNode( cXmlRetorno, "cStat" ) + hb_Eol()
-         cTexto += "Motivo:"            + XmlNode( cXmlRetorno, "xMotivo" ) + hb_Eol()
-         cTexto += "UF:"                + XmlNode( cXmlRetorno, "cUF" ) + hb_Eol()
+         cTexto += "Status:"            + XmlNode( cXmlRetorno, "cStat" )    + hb_Eol()
+         cTexto += "Motivo:"            + XmlNode( cXmlRetorno, "xMotivo" )  + hb_Eol()
+         cTexto += "UF:"                + XmlNode( cXmlRetorno, "cUF" )      + hb_Eol()
          cTexto += "Data/Hora:"         + XmlNode( cXmlRetorno, "dhRecbto" ) + hb_Eol()
-         cTexto += "Tempo Médio:"       + XmlNode( cXmlRetorno, "tMed" ) + hb_Eol()
+         cTexto += "Tempo Médio:"       + XmlNode( cXmlRetorno, "tMed" )     + hb_Eol()
          wapi_MessageBox( , cTexto, "Informação Extraída" )
 
-      CASE nOpc == 8
+      CASE nOpc == OPC_STATUS_CTE
+         oSefaz:cVersao := "3.00"
+         cXmlRetorno := oSefaz:CteStatusServico()
+         //wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
+         wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
+         cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" )    + hb_Eol()
+         cTexto += "Versão Aplicativo:" + XmlNode( cXmlRetorno, "verAplic" ) + hb_Eol()
+         cTexto += "Status:"            + XmlNode( cXmlRetorno, "cStat" )    + hb_Eol()
+         cTexto += "Motivo:"            + XmlNode( cXmlRetorno, "xMotivo" )  + hb_Eol()
+         cTexto += "UF:"                + XmlNode( cXmlRetorno, "cUF" )      + hb_Eol()
+         cTexto += "Data/Hora:"         + XmlNode( cXmlRetorno, "dhRecbto" ) + hb_Eol()
+         cTexto += "Tempo Médio:"       + XmlNode( cXmlRetorno, "tMed" )     + hb_Eol()
+         wapi_MessageBox( , cTexto, "Informação Extraída" )
+
+      CASE nOpc == OPC_STATUS_MDFE
+         oSefaz:cVersao := "3.00"
+         cXmlRetorno := oSefaz:MdfeStatusServico()
+         //wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
+         wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
+         cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" )    + hb_Eol()
+         cTexto += "Versão Aplicativo:" + XmlNode( cXmlRetorno, "verAplic" ) + hb_Eol()
+         cTexto += "Status:"            + XmlNode( cXmlRetorno, "cStat" )    + hb_Eol()
+         cTexto += "Motivo:"            + XmlNode( cXmlRetorno, "xMotivo" )  + hb_Eol()
+         cTexto += "UF:"                + XmlNode( cXmlRetorno, "cUF" )      + hb_Eol()
+         cTexto += "Data/Hora:"         + XmlNode( cXmlRetorno, "dhRecbto" ) + hb_Eol()
+         cTexto += "Tempo Médio:"       + XmlNode( cXmlRetorno, "tMed" )     + hb_Eol()
+         wapi_MessageBox( , cTexto, "Informação Extraída" )
+
+      CASE nOpc == OPC_CADASTRO
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
-         @ 8, 0 SAY "UF"   GET cUF PICTURE "@!"
-         @ 9, 0 SAY "CNPJ" GET cCnpj PICTURE "@R 99.999.999/9999-99"
+         @ 8, 0 SAY "UF"   GET aVarList[ VAR_UF ] PICTURE "@!"
+         @ 9, 0 SAY "CNPJ" GET aVarList[ VAR_CNPJ ] PICTURE "@R 99.999.999/9999-99"
          READ
          IF LastKey() == K_ESC
             LOOP
          ENDIF
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          oSefaz:cProjeto := "nfe"
-         cXmlRetorno := oSefaz:NfeConsultaCadastro( cCnpj, cUF )
+         cXmlRetorno := oSefaz:NfeConsultaCadastro( aVarList[ VAR_CNPJ ], aVarList[ VAR_UF ] )
          wapi_MessageBox( , oSefaz:cXmlSoap, "XML Enviado" )
          wapi_MessageBox( , oSefaz:cXmlRetorno, "XML Retornado" )
-         cTexto := "versao:    " + XmlNode( cXmlRetorno, "versao" ) + hb_Eol()
+         cTexto := "versao:    " + XmlNode( cXmlRetorno, "versao" )   + hb_Eol()
          cTexto += "Aplicativo:" + XmlNode( cXmlRetorno, "verAplic" ) + hb_Eol()
-         cTexto += "Status:    " + XmlNode( cXmlRetorno, "cStat" ) + hb_Eol()
-         cTexto += "Motivo:    " + XmlNode( cXmlRetorno, "xMotivo" ) + hb_Eol()
-         cTexto += "UF:        " + XmlNode( cXmlRetorno, "UF" ) + hb_Eol()
-         cTexto += "IE:        " + XmlNode( cXmlRetorno, "IE" ) + hb_Eol()
-         cTexto += "CNPJ:      " + XmlNode( cXmlRetorno, "CNPJ" ) + hb_Eol()
-         cTexto += "CPF:       " + XmlNode( cXmlRetorno, "CPF" ) + hb_Eol()
-         cTexto += "Data/Hora: " + XmlNode( cXmlRetorno, "dhCons" ) + hb_Eol()
-         cTexto += "UF:        " + XmlNode( cXmlRetorno, "cUF" ) + hb_Eol()
-         cTexto += "Nome(1):   " + XmlNode( cXmlRetorno, "xNome" ) + hb_Eol()
-         cTexto += "CNAE(1):   " + XmlNode( cXmlRetorno, "CNAE" ) + hb_Eol()
-         cTexto += "Lograd(1): " + XmlNode( cXmlRetorno, "xLgr" ) + hb_Eol()
-         cTexto += "nro(1):    " + XmlNode( cXmlRetorno, "nro" ) + hb_Eol()
-         cTexto += "Compl(1):  " + XmlNode( cXmlRetorno, "xCpl" ) + hb_Eol()
-         cTexto += "Bairro(1): " + XmlNode( cXmlRetorno, "xBairro" ) + hb_Eol()
-         cTexto += "Cod.Mun(1):" + XmlNode( cXmlRetorno, "cMun" ) + hb_Eol()
-         cTexto += "Municip(1):" + XmlNode( cXmlRetorno, "xMun" ) + hb_Eol()
-         cTexto += "CEP(1):    " + XmlNode( cXmlRetorno, "CEP" ) + hb_Eol()
+         cTexto += "Status:    " + XmlNode( cXmlRetorno, "cStat" )    + hb_Eol()
+         cTexto += "Motivo:    " + XmlNode( cXmlRetorno, "xMotivo" )  + hb_Eol()
+         cTexto += "UF:        " + XmlNode( cXmlRetorno, "UF" )       + hb_Eol()
+         cTexto += "IE:        " + XmlNode( cXmlRetorno, "IE" )       + hb_Eol()
+         cTexto += "CNPJ:      " + XmlNode( cXmlRetorno, "CNPJ" )     + hb_Eol()
+         cTexto += "CPF:       " + XmlNode( cXmlRetorno, "CPF" )      + hb_Eol()
+         cTexto += "Data/Hora: " + XmlNode( cXmlRetorno, "dhCons" )   + hb_Eol()
+         cTexto += "UF:        " + XmlNode( cXmlRetorno, "cUF" )      + hb_Eol()
+         cTexto += "Nome(1):   " + XmlNode( cXmlRetorno, "xNome" )    + hb_Eol()
+         cTexto += "CNAE(1):   " + XmlNode( cXmlRetorno, "CNAE" )     + hb_Eol()
+         cTexto += "Lograd(1): " + XmlNode( cXmlRetorno, "xLgr" )     + hb_Eol()
+         cTexto += "nro(1):    " + XmlNode( cXmlRetorno, "nro" )      + hb_Eol()
+         cTexto += "Compl(1):  " + XmlNode( cXmlRetorno, "xCpl" )     + hb_Eol()
+         cTexto += "Bairro(1): " + XmlNode( cXmlRetorno, "xBairro" )  + hb_Eol()
+         cTexto += "Cod.Mun(1):" + XmlNode( cXmlRetorno, "cMun" )     + hb_Eol()
+         cTexto += "Municip(1):" + XmlNode( cXmlRetorno, "xMun" )     + hb_Eol()
+         cTexto += "CEP(1):    " + XmlNode( cXmlRetorno, "CEP" )      + hb_Eol()
          cTexto += "Etc pode ter vários endereços..."
          wapi_MessageBox( , cTexto, "Informação Extraída" )
 
-      CASE nOpc == 9
+      CASE nOpc == OPC_PROTOCOLO_NFE
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
-         @ 8, 1 GET cChave PICTURE "@R 99-99/99-99.999.999/9999-99.99.999.999999999.9.99999999.9"
+         @ 8, 1 GET aVarList[ VAR_CHAVE ] PICTURE "@R 99-99/99-99.999.999/9999-99.99.999.999999999.9.99999999.9"
          READ
          IF LastKey() == K_ESC
             EXIT
          ENDIF
-         oSefaz:NfeConsultaProtocolo( cChave )
+         oSefaz:NfeConsultaProtocolo( aVarList[ VAR_CHAVE ] )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
-      CASE nOpc == 10
+      CASE nOpc == OPC_PROTOCOLO_CTE
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
-         @ 8, 1 GET cChave PICTURE "@R 99-99/99-99.999.999/9999-99.99.999.999999999.9.99999999.9"
-         READ
-         IF LastKey() == K_ESC
-            EXIT
-         ENDIF
-         oSefaz:cVersao := "3.00"
-         oSefaz:CteConsultaProtocolo( cChave )
-         wapi_MessageBox( , oSefaz:cXmlSoap )
-         wapi_MessageBox( , oSefaz:cXmlRetorno )
-
-      CASE nOpc == 11
-         Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
-         @ 8, 1 GET cChave PICTURE "@R 99-99/99-99.999.999/9999-99.99.999.999999999.9.99999999.9"
+         @ 8, 1 GET aVarList[ VAR_CHAVE ] PICTURE "@R 99-99/99-99.999.999/9999-99.99.999.999999999.9.99999999.9"
          READ
          IF LastKey() == K_ESC
             EXIT
          ENDIF
          oSefaz:cVersao := "3.00"
-         oSefaz:MDFeConsultaProtocolo( cChave )
+         oSefaz:CteConsultaProtocolo( aVarList[ VAR_CHAVE ] )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
-      CASE nOpc == 12
+      CASE nOpc == OPC_PROTOCOLO_MDFE
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
-         @ 9, 1 GET cCnpj PICTURE "@9"
+         @ 8, 1 GET aVarList[ VAR_CHAVE ] PICTURE "@R 99-99/99-99.999.999/9999-99.99.999.999999999.9.99999999.9"
          READ
          IF LastKey() == K_ESC
             EXIT
          ENDIF
-         oSefaz:nfeDistribuicaoDFe( cCnpj, "0" )
+         oSefaz:cVersao := "3.00"
+         oSefaz:MDFeConsultaProtocolo( aVarList[ VAR_CHAVE ] )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
-         oSefaz:nfeConsultaDest( cCnpj, "0" )
+      CASE nOpc == OPC_DESTINADAS
+         Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
+         @ 9, 1 GET aVarList[ VAR_CNPJ ] PICTURE "@9"
+         READ
+         IF LastKey() == K_ESC
+            EXIT
+         ENDIF
+         oSefaz:nfeDistribuicaoDFe( aVarList[ VAR_CNPJ ], "0" )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
-      CASE nOpc == 13
+         oSefaz:nfeConsultaDest( aVarList[ VAR_CNPJ ] , "0" )
+         wapi_MessageBox( , oSefaz:cXmlSoap )
+         wapi_MessageBox( , oSefaz:cXmlRetorno )
+
+      CASE nOpc == OPC_VALIDA_XML
          cXml := MemoRead( win_GetOpenFileName(, "Arquivo a assinar", "importa\", "XML", "*.XML", 1 ) )
          ? oSefaz:ValidaXml( cXml ) // , "d:\cdrom\fontes\integra\schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd" )
          Inkey(0)
 
-      CASE nOpc == 14
+      CASE nOpc == OPC_ASSINA_TESTE
          oSefaz:cXmlDocumento := [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>]
          oSefaz:AssinaXml()
          ? oSefaz:cXmlRetorno
          ? oSefaz:cXmlDocumento
          Inkey(0)
 
-      CASE nOpc == 15
+      CASE nOpc == OPC_CONSULTA_RECIBO
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
-         @ 8, 1 GET cRecibo PICTURE "@9"
+         @ 8, 1 GET aVarList[ VAR_RECIBO ] PICTURE "@9"
          READ
-         IF LastKey() != K_ESC .AND. ! Empty( cRecibo )
-            oSefaz:NfeConsultaRecibo( cRecibo )
+         IF LastKey() != K_ESC .AND. ! Empty( aVarList[ VAR_RECIBO ] )
+            oSefaz:NfeConsultaRecibo( aVarList[ VAR_RECIBO ] )
             ? oSefaz:cXmlRetorno
             Inkey(0)
          ENDIF
 
-      CASE nOpc == 16
+      CASE nOpc == OPC_ENVIO_TESTE
          oSefaz:NfeLoteEnvia( [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>] )
          ? oSefaz:cXmlRetorno
          Inkey(0)
 
-      CASE nOpc == 17
+      CASE nOpc == OPC_ENVIO_USUARIO
          cXml := MemoRead( win_GetOpenFileName(, "Arquivo a transmitir", ".\", "XML", "*.XML", 1 ) )
          DO CASE
-         CASE "<infMDFe" $ cXml ; ? "autorizando CTE"; oSefaz:cVersao := "3.00"; oSefaz:CteLoteEnvia( cXml )
+         CASE "<infMDFe" $ cXml ; ? "autorizando CTE"; oSefaz:cVersao  := "3.00"; oSefaz:CteLoteEnvia( cXml )
          CASE "<infCTe"  $ cXml ; ? "autorizando MDFE"; oSefaz:cVersao := "3.00"; oSefaz:MDFeLoteEnvia( cXml )
          CASE "<infNFe"  $ cXml ; ? "autorizando NFE"; oSefaz:NfeLoteEnvia( cXml )
          OTHERWISE              ; ? "Documento não reconhecido"
@@ -256,7 +319,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          hb_MemoWrit( "testeautorizado.xml", oSefaz:cXmlAutorizado )
          Inkey(0)
 
-      CASE nOpc == 18
+      CASE nOpc == OPC_ASSINA_USUARIO
          oSefaz:cXmlDocumento := MemoRead( win_GetOpenFileName(, "Arquivo a assinar", ".\", "XML", "*.XML", 1 ) )
          oSefaz:AssinaXml()
          ? oSefaz:cXmlRetorno
@@ -264,25 +327,25 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          hb_MemoWrit( "testassina.xml", oSefaz:cXmlDocumento )
          Inkey(0)
 
-      CASE nOpc == 19
+      CASE nOpc == OPC_MANIFESTACAO
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
-         @  8, 1 GET cChave  PICTURE "@9"
-         @  9, 1 GET cCnpj   PICTURE "@9"
-         @ 10, 1 GET cEvento PICTURE "@9" VALID cEvento $ "210200,210210,210220,210240"
+         @  8, 1 GET aVarList[ VAR_CHAVE ]  PICTURE "@9"
+         @  9, 1 GET aVarList[ VAR_CNPJ ]   PICTURE "@9"
+         @ 10, 1 GET aVarList[ VAR_EVENTO ] PICTURE "@9" VALID aVarList[ VAR_EVENTO ] $ "210200,210210,210220,210240"
          READ
          IF LastKey() != K_ESC
-            oSefaz:NfeEventoManifestacao( cChave, cCnpj, cEvento )
+            oSefaz:NfeEventoManifestacao( aVarList[ VAR_CHAVE ], aVarList[ VAR_CNPJ ], aVarList[ VAR_EVENTO ] )
             ? oSefaz:cXmlRetorno
             Inkey(0)
          ENDIF
 
-      CASE nOpc == 20
+      CASE nOpc == OPC_DOWNLOAD_NFE
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
-         @ 8, 1 GET cChave PICTURE "@9"
-         @ 9, 1 GET cCnpj  PICTURE "@9"
+         @ 8, 1 GET aVarList[ VAR_CHAVE ] PICTURE "@9"
+         @ 9, 1 GET aVarList[ VAR_CNPJ ] PICTURE "@9"
          READ
          IF LastKey() != K_ESC
-            oSefaz:NfeDownload( cCnpj, cChave, cCertificado, cAmbiente )
+            oSefaz:NfeDownload( aVarList[ VAR_CNPJ ], aVarList[ VAR_CHAVE ], aVarList[ VAR_CERTIFICADO ], aVarList[ VAR_AMBIENTE ] )
             ? oSefaz:cXmlRetorno
             IF oSefaz:cStatus == "138"
                hb_MemoWrit( "arquivo.zip", hb_Base64Decode( XmlNode( oSefaz:cXmlRetorno, "docZip" ) ) )
@@ -296,11 +359,16 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
 FUNCTION SetupHarbour()
 
+   SetMode( 33, 80 )
+   CLS
+   SET DATE BRITISH
+   Set( _SET_CODEPAGE, "PTISO" )
+   Set( _SET_EVENTMASK, INKEY_ALL - INKEY_MOVE )
+   SET CONFIRM ON
+
 #ifndef __XHARBOUR__
    hb_gtInfo( HB_GTI_INKEYFILTER, { | nKey | MyInkeyFilter( nKey ) } ) // pra funcionar control-V
 #endif
-   SET( _SET_EVENTMASK, INKEY_ALL - INKEY_MOVE )
-   SET CONFIRM ON
 
    RETURN NIL
 

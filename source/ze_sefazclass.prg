@@ -823,12 +823,11 @@ METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    hb_Default( @::cVersao, "3.00" )
    ::aSoapUrlList := WS_MDFE_STATUSSERVICO
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "MDFeStatusServico"
-   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF"
+   ::cSoapAction  := "mdfeStatusServicoMDF"
+   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico"
 
    ::cXmlEnvio := [<consStatServMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
    ::cXmlEnvio +=    XmlTag( "xServ", "STATUS" )
    ::cXmlEnvio += [</consStatServMDFe>]
    ::XmlSoapPost()
