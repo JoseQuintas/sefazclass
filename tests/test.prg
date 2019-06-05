@@ -12,26 +12,27 @@ REQUEST HB_CODEPAGE_PTISO
 
 #define OPC_DANFE           1
 #define OPC_CERTIFICADO     2
-#define OPC_UF              3
-#define OPC_VERSAO_NFE      4
-#define OPC_AMBIENTE        5
-#define OPC_NFCE            6
-#define OPC_STATUS_NFE      7
-#define OPC_STATUS_CTE      8
-#define OPC_STATUS_MDFE     9
-#define OPC_CADASTRO        10
-#define OPC_PROTOCOLO_NFE   11
-#define OPC_PROTOCOLO_CTE   12
-#define OPC_PROTOCOLO_MDFE  13
-#define OPC_DESTINADAS      14
-#define OPC_VALIDA_XML      15
-#define OPC_ASSINA_TESTE    16
-#define OPC_CONSULTA_RECIBO 17
-#define OPC_ENVIO_TESTE     18
-#define OPC_ENVIO_USUARIO   19
-#define OPC_ASSINA_USUARIO  20
-#define OPC_MANIFESTACAO    21
-#define OPC_DOWNLOAD_NFE    22
+#define OPC_CERT_VALIDADE   3
+#define OPC_UF              4
+#define OPC_VERSAO_NFE      5
+#define OPC_AMBIENTE        6
+#define OPC_NFCE            7
+#define OPC_STATUS_NFE      8
+#define OPC_STATUS_CTE      9
+#define OPC_STATUS_MDFE     10
+#define OPC_CADASTRO        11
+#define OPC_PROTOCOLO_NFE   12
+#define OPC_PROTOCOLO_CTE   13
+#define OPC_PROTOCOLO_MDFE  14
+#define OPC_DESTINADAS      15
+#define OPC_VALIDA_XML      16
+#define OPC_ASSINA_TESTE    17
+#define OPC_CONSULTA_RECIBO 18
+#define OPC_ENVIO_TESTE     19
+#define OPC_ENVIO_USUARIO   20
+#define OPC_ASSINA_USUARIO  21
+#define OPC_MANIFESTACAO    22
+#define OPC_DOWNLOAD_NFE    23
 
 #define VAR_VERSAO      1
 #define VAR_CERTIFICADO 2
@@ -42,13 +43,14 @@ REQUEST HB_CODEPAGE_PTISO
 #define VAR_CNPJ        7
 #define VAR_CHAVE       8
 #define VAR_RECIBO      9
+#define VAR_VALIDFROM   10
 
 MEMVAR aVarList, oSefaz
 
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    LOCAL nOpc := 1, GetList := {}, cTexto := ""
-   LOCAL oDanfe, cTempFile, nHandle, cXml, cXmlRetorno
+   LOCAL oDanfe, cTempFile, nHandle, cXml, cXmlRetorno, dValidFrom, dValidTo
    PRIVATE aVarList, oSefaz
 
    aVarList := Array( 11 )
@@ -106,6 +108,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       CLS
       @ Row() + 1, 5 PROMPT Str( OPC_DANFE, 2 )           + "-Teste Danfe (path atual)"
       @ Row() + 1, 5 PROMPT Str( OPC_CERTIFICADO, 2 )     + "-Seleciona certificado (atual=" + aVarList[ VAR_CERTIFICADO ] + ")"
+      @ Row() + 1, 5 PROMPT Str( OPC_CERT_VALIDADE, 2 )   + "-Validade do certificado"
       @ Row() + 1, 5 PROMPT Str( OPC_UF, 2 )              + "-UF (atual=" + aVarList[ VAR_UF ] + ")"
       @ Row() + 1, 5 PROMPT Str( OPC_VERSAO_NFE, 2 )      + "-Versao NFE (atual=" + aVarList[ VAR_VERSAO ] + ")"
       @ Row() + 1, 5 PROMPT Str( OPC_AMBIENTE, 2 )        + "-Ambiente (atual=" + iif( aVarList[ VAR_AMBIENTE ] == WS_AMBIENTE_PRODUCAO, "Produção", "Homologação" ) + ")"
@@ -135,9 +138,22 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          TestDanfe()
 
       CASE nOpc == OPC_CERTIFICADO
-         aVarList[ VAR_CERTIFICADO ] := CapicomEscolheCertificado()
-         wapi_MessageBox( , aVarList[ VAR_CERTIFICADO ] )
+         cTexto := CapicomEscolheCertificado()
+         aVarList[ VAR_CERTIFICADO ] := cTexto
+         dValidFrom := CapicomCertificado( cTexto ):ValidFromDate
+         dValidTo   := CapicomCertificado( cTexto ):ValidToDate
+         wapi_MessageBox( , "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
+            iif( dValidTo < Date(), "VENCIDO!!!!!!", "" ) )
+
          LOOP
+
+      CASE nOpc == OPC_CERT_VALIDADE
+         cTexto := aVarList[ VAR_CERTIFICADO ]
+         dValidFrom := CapicomCertificado( cTexto ):ValidFromDate
+         dValidTo   := CapicomCertificado( cTexto ):ValidToDate
+         wapi_MessageBox( , cTexto + hb_Eol() + ;
+            "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
+            iif( dValidTo < Date(), "VENCIDO!!!!!!", "" ) )
 
       CASE nOpc == OPC_UF
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
