@@ -52,6 +52,19 @@ FUNCTION CapicomCertificado( cNomeCertificado )
 
    RETURN oCertificado
 
+FUNCTION CapicomRemoveCertificado( cNomeCertificado )
+
+   LOCAL oCertificado, oStore
+
+   oCertificado := CapicomCertificado( cNomeCertificado )
+   IF ValType( oCertificado ) == "O"
+      oStore := win_OleCreateObject( "CAPICOM.Store" )
+      oStore:open( CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_READ_WRITE )
+      oStore:Remove( oCertificado )
+   ENDIF
+
+   RETURN NIL
+
 FUNCTION CapicomInstalaPFX( cFileName, cPassword, lREMOVER )
 
 	LOCAL oCertificado, oStore, cID
@@ -60,7 +73,7 @@ FUNCTION CapicomInstalaPFX( cFileName, cPassword, lREMOVER )
 
    BEGIN SEQUENCE WITH __BreakBlock()
 
-   oCertificado := win_OleCreateObject( "CAPICOM.Certificate" )
+      oCertificado := win_OleCreateObject( "CAPICOM.Certificate" )
       oCertificado:Load( cFileName, cPassword, CAPICOM_KEY_STORAGE_DEFAULT, 0 )
       cID := oCertificado:SubjectName
 

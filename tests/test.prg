@@ -33,6 +33,7 @@ REQUEST HB_CODEPAGE_PTISO
 #define OPC_ASSINA_USUARIO  21
 #define OPC_MANIFESTACAO    22
 #define OPC_DOWNLOAD_NFE    23
+#define OPC_CERT_REMOVE     24
 
 #define VAR_VERSAO      1
 #define VAR_CERTIFICADO 2
@@ -129,6 +130,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT Str( OPC_ENVIO_USUARIO, 2 )   + "-Envio de XML do usuário (disco)"
       @ Row() + 1, 5 PROMPT Str( OPC_MANIFESTACAO, 2 )    + "-Manifestacao Destinatario (digitado)"
       @ Row() + 1, 5 PROMPT Str( OPC_DOWNLOAD_NFE, 2 )    + "-Download DFE (Documentos) (digitado)"
+      @ Row() + 1, 5 PROMPT Str( OPC_CERT_REMOVE, 2 )     + "-Remove Certificado"
       MENU TO nOpc
       DO CASE
       CASE LastKey() == K_ESC
@@ -368,6 +370,10 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
             ENDIF
             Inkey(0)
          ENDIF
+
+      CASE nOpc == OPC_CERT_REMOVE
+         CapicomRemoveCertificado( aVarList[ VAR_CERTIFICADO ] )
+
       ENDCASE
    ENDDO
 
