@@ -18,25 +18,13 @@ ZE_EXTENSO - EXTENSO DE VALORES
 01/07/1994 a atual      R$   Real             1 R$  = 2750 CR$
 */
 
-#define EXTENSO_UNIDADE { "UM", "DOIS", "TRES", "QUATRO", "CINCO", "SEIS", ;
-      "SETE", "OITO", "NOVE", "DEZ", "ONZE", "DOZE", "TREZE", ;
-      "QUATORZE", "QUINZE", "DEZESSEIS", "DEZESSETE", "DEZOITO", ;
-      "DEZENOVE" }
+FUNCTION NomeMes( dData )
 
-#define EXTENSO_DEZENA { "DEZ", "VINTE", "TRINTA", "QUARENTA", "CINQUENTA", "SESSENTA", ;
-      "SETENTA", "OITENTA", "NOVENTA" }
+   RETURN ze_ExtensoMes( dData )
 
-#define EXTENSO_CENTENA { "CENTO", "DUZENTOS", "TREZENTOS", "QUATROCENTOS", ;
-      "QUINHENTOS", "SEISCENTOS", "SETECENTOS", "OITOCENTOS", ;
-      "NOVECENTOS" }
+FUNCTION NomeSemana( dData )
 
-#define EXTENSO_GRUPO { "MIL", "MILHAO", "BILHAO", "TRILHAO", "QUATRILHAO", ;
-      "QUINTILHAO", "SEPTILHAO", "OCTILHAO", "NONILHAO", "DECILHAO" }
-
-#define EXTENSO_MES { "JANEIRO", "FEVEREIRO", "MARCO", "ABRIL", "MAIO", "JUNHO", "JULHO", ;
-      "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO" }
-
-#define EXTENSO_SEMANA { "", "DOMINGO", "SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA", "SABADO" }
+   RETURN ze_ExtensoSemana( dData )
 
 FUNCTION ExtensoDolar( nValor )
 
@@ -50,19 +38,19 @@ FUNCTION ExtensoDolar( nValor )
 
 FUNCTION Extenso( xValue, xFull )
 
-   LOCAL cTxt := "", oExtenso := ExtensoClass():New()
+   LOCAL cTxt := ""
 
    hb_Default( @xFull, .F. )
 
    IF ValType( xValue ) == "N"
-      cTxt := oExtenso:Extenso( xValue )
+      cTxt := ze_ExtensoDinheiro( xValue )
    ELSEIF ValType( xValue ) == "D"
       IF ! xFull
-         cTxt := StrZero( Day( xValue ), 2 ) + " de " + NomeMes( xValue ) + " de " + StrZero( Year( xValue ), 4 )
+         cTxt := StrZero( Day( xValue ), 2 ) + " de " + ze_ExtensoMes( xValue ) + " de " + StrZero( Year( xValue ), 4 )
       ELSE
-         cTxt := oExtenso:Extenso( Day( xValue ) )
-         cTxt += " DE " + Nomemes( xValue ) + " DE "
-         cTxt += oExtenso:Extenso( Year( xValue ) )
+         cTxt := ze_ExtensoNumero( Day( xValue ) )
+         cTxt += " DE " + ze_ExtensoMes( xValue ) + " DE "
+         cTxt += ze_ExtensoNumero( Year( xValue ) )
          DO WHILE Space(2) $ cTxt
             cTxt := StrTran( cTxt, Space(2), Space(1) )
          ENDDO
@@ -71,118 +59,121 @@ FUNCTION Extenso( xValue, xFull )
 
    RETURN cTxt
 
-CREATE CLASS ExtensoClass STATIC
+FUNCTION ze_ExtensoDinheiro( nValor )
 
-   METHOD Extenso( nValor )
-   METHOD ExtensoUnidade( nValor )
-   METHOD ExtensoDezena( nValor )
-   METHOD ExtensoCentena( nValor )
-   METHOD ExtensoGrupoMilhar( nPosicao, nValor )
-   METHOD ExtensoBloco( cValor )
+   LOCAL cTxt := "", cStrValor, nInteiro, nDecimal
 
-   ENDCLASS
-
-METHOD Extenso( nValor ) CLASS ExtensoClass
-
-   LOCAL cTxt, cStrValor, cBlocoValor, nCont, lNegativo
-
-   cTxt      := ""
-   lNegativo := ( nValor < 0 )
    nValor    := Abs( nValor )
    cStrValor := Str( nValor, 18, 2 )
-   FOR nCont = 1 TO 6
-      cBlocoValor := Substr( cStrValor, nCont * 3 - 2, 3 )
-      IF Val( cBlocoValor ) != 0
-         cTxt += ::ExtensoBloco( cBlocoValor ) + ::ExtensoGrupoMilhar( 5 - nCont, Val( cBlocoValor ) ) + iif( nCont > 4, "", " " )
+   nInteiro  := Val( Substr( cStrValor, 1, At( ".", cStrValor ) - 1 ) )
+   nDecimal  := Val( Substr( cStrValor, At( ".", cStrValor ) + 1 ) )
+   IF nInteiro != 0 .OR. nDecimal == 0
+      cTxt += ze_ExtensoNumero( nInteiro ) + " " + iif( nInteiro == 1, "REAL", "REAIS" )
+   ENDIF
+   IF nDecimal != 0
+      IF nInteiro != 0
+         cTxt += " E "
       ENDIF
-      IF nCont == 5
-         IF Int( nValor ) > 0
-            cTxt += iif( int( nValor ) == 1, "REAL", "REAIS" ) + " "
-         ENDIF
-      ELSEIF nCont == 6
-         IF Val( cBlocoValor ) > 0
-            cTxt += iif( Val( cBlocoValor ) == 1, "CENTAVO", "CENTAVOS" ) +  " "
-         ENDIF
-      ENDIF
-   NEXT
-   IF "ILHAO REAIS" $ cTxt .OR. "ILHOES REAIS" $ cTxt
-      cTxt := StrTran( cTxt, "REAIS", "DE REAIS" )
-   ENDIF
-   IF Left( cTxt, 2 ) == "E "
-      cTxt := Substr( cTxt, 3 )
-   ENDIF
-   cTxt := iif( lNegativo, "*NEGATIVO*", "" ) + cTxt
-
-   RETURN cTxt
-
-METHOD ExtensoUnidade( nValor ) CLASS ExtensoClass
-
-   IF nValor < 0 .OR. nValor > 19
-      RETURN ""
-   ENDIF
-
-   RETURN EXTENSO_UNIDADE[ nValor ]
-
-METHOD ExtensoDezena( nValor ) CLASS ExtensoClass
-
-   IF nValor < 1 .OR. nValor > 9
-      RETURN ""
-   ENDIF
-
-   RETURN EXTENSO_DEZENA[ nValor ]
-
-METHOD ExtensoCentena( nValor ) CLASS ExtensoClass
-
-   IF nValor < 1 .OR. nValor > 9
-      RETURN ""
-   ENDIF
-
-   RETURN EXTENSO_CENTENA[ nValor ]
-
-METHOD ExtensoGrupoMilhar( nPosicao, nValor ) CLASS ExtensoClass
-
-   LOCAL cTxt
-
-   IF nPosicao < 1 .OR. nPosicao > 10
-      RETURN ""
-   ENDIF
-
-   cTxt := EXTENSO_GRUPO[ nPosicao ]
-   IF nValor > 1
-      cTxt := StrTran( cTxt, "LHAO", "LHOES" )
+      cTxt += ze_ExtensoNumero( nDecimal ) + " " + iif( nDecimal == 1, "CENTAVO", "CENTAVOS" )
    ENDIF
 
    RETURN cTxt
 
-METHOD ExtensoBloco( cValor ) CLASS ExtensoClass
+STATIC FUNCTION ze_ExtensoNumero( nValor, nGrupo )
 
-   LOCAL nCentena, nDezena, nUnidade, cTxt
+   LOCAL cTxt := "", cStrValor, nCentena, nResto, cTxtGrupo := "", lNegativo
+   LOCAL aList := { "", "MIL", "MILHAO", "BILHAO", "TRILHAO", "QUATRILHAO", ;
+      "QUINTILHAO", "SEPTILHAO", "OCTILHAO", "NONILHAO", "DECILHAO" }
 
-   nCentena := Val( Substr( cValor, 1, 1 ) )
-   nDezena  := Val( Substr( cValor, 2, 1 ) )
-   nUnidade := Val( Substr( cValor, 3, 1 ) )
-   cTxt = ""
-   IF nDezena == 0 .AND. nUnidade == 0
-      cTxt += "E " + iif( nCentena == 1, "CEM", ::ExtensoCentena( nCentena ) ) + " "
-   ELSE
+   hb_Default( @nGrupo, 1 )
+   lNegativo := ( nValor < 0 )
+   nValor    := Abs( nValor )
+   cStrValor := StrZero( nValor, 16 )
+   nCentena  := Val( Right( cStrValor, 3 ) )
+   nResto    := Val( Substr( cStrValor, 1, Len( cStrValor ) - 3 ) )
+   IF nCentena != 0
       IF nCentena > 0
-         cTxt += "E " + ::ExtensoCentena( nCentena ) + " "
+         cTxtGrupo := aList[ nGrupo ]
+         IF nCentena > 1
+            cTxtGrupo := StrTran( cTxtGrupo, "LHAO", "LHOES" )
+         ENDIF
       ENDIF
-      IF nDezena < 2
-         cTxt += "E " + ::ExtensoUnidade( nDezena * 10 + nUnidade ) + " "
+      cTxt := ze_ExtensoCentena( nCentena ) + " " + cTxtGrupo
+   ENDIF
+   IF nResto != 0 .AND. nGrupo < Len( aList )
+      cTxt := ze_ExtensoNumero( nResto, nGrupo + 1 ) + " E " + cTxt
+   ENDIF
+   IF nGrupo == 1
+      IF nValor == 0
+         cTxt := "ZERO"
+      ENDIF
+      cTxt := iif( lNegativo, "*NEGATIVO* ", "" ) + AllTrim( cTxt )
+   ENDIF
+
+   RETURN cTxt
+
+STATIC FUNCTION ze_ExtensoUnidade( nValor )
+
+   LOCAL aList := { "UM", "DOIS", "TRES", "QUATRO", "CINCO", "SEIS", ;
+      "SETE", "OITO", "NOVE", "DEZ", "ONZE", "DOZE", "TREZE", ;
+      "QUATORZE", "QUINZE", "DEZESSEIS", "DEZESSETE", "DEZOITO", ;
+      "DEZENOVE" }
+
+   RETURN aList[ nValor ]
+
+STATIC FUNCTION ze_ExtensoDezena( nValor )
+
+   LOCAL aList := { "DEZ", "VINTE", "TRINTA", "QUARENTA", "CINQUENTA", "SESSENTA", ;
+      "SETENTA", "OITENTA", "NOVENTA" }
+   LOCAL cTxt := "", nDezena, nUnidade
+
+   IF nValor > 0
+      nDezena := Int( nValor / 10 )
+      nUnidade := Mod( nValor, 10 )
+      IF nValor < 20
+         cTxt += ze_ExtensoUnidade( nValor )
       ELSE
-         cTxt += "E " + ::ExtensoDezena( nDezena )  + " "
-         IF nUnidade > 0
-            cTxt += "E " + ::ExtensoUnidade( nUnidade ) + " "
+         cTxt += aList[ nDezena ]
+         IF nUnidade != 0
+            cTxt += " E " + ze_ExtensoUnidade( nUnidade )
          ENDIF
       ENDIF
    ENDIF
 
    RETURN cTxt
 
-FUNCTION NomeMes( xMes )
+STATIC FUNCTION ze_ExtensoCentena( nValor )
+
+   LOCAL aList := { "CENTO", "DUZENTOS", "TREZENTOS", "QUATROCENTOS", ;
+      "QUINHENTOS", "SEISCENTOS", "SETECENTOS", "OITOCENTOS", ;
+      "NOVECENTOS" }
+   LOCAL nCentena, nDezena, cTxt := ""
+
+   nCentena := Int( nValor / 100 )
+   nDezena  := Mod( nValor, 100 )
+   IF nValor > 0
+      IF nCentena == 1 .AND. nDezena == 0
+         cTxt += "CEM"
+      ELSE
+         IF nCentena != 0
+            cTxt += aList[ nCentena ]
+         ENDIF
+         IF nDezena != 0
+            IF nCentena != 0
+               cTxt += " E "
+            ENDIF
+            cTxt += ze_ExtensoDezena( nDezena )
+         ENDIF
+      ENDIF
+   ENDIF
+
+   RETURN cTxt
+
+STATIC FUNCTION ze_ExtensoMes( xMes )
 
    LOCAL cNomeMes := ""
+   LOCAL aList := { "JANEIRO", "FEVEREIRO", "MARCO", "ABRIL", "MAIO", "JUNHO", "JULHO", ;
+      "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO" }
 
    IF ValType( xMes ) == "D"
       xMes := Month( xMes )
@@ -191,11 +182,14 @@ FUNCTION NomeMes( xMes )
       xMes -= 12
    ENDDO
    IF xMes > 0
-      cNomeMes := EXTENSO_MES[ xMes ]
+      cNomeMes := aList[ xMes ]
    ENDIF
 
    RETURN cNomeMes
 
-FUNCTION NomeSemana( dData )
+STATIC FUNCTION ze_ExtensoSemana( dData )
 
-   RETURN EXTENSO_SEMANA[ Dow( dData ) + 1 ]
+   LOCAL aList := { "", "DOMINGO", "SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA", "SABADO" }
+
+   RETURN aList[ Dow( dData ) + 1 ]
+

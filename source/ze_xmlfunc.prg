@@ -97,6 +97,7 @@ FUNCTION XmlTransform( cXml )
       cXml := StrTran( cXml, " " + Chr(241) + " ", " " )
       cXml := StrTran( cXml, Chr(176), "" ) // graus
       cXml := StrTran( cXml, Chr(186), "o" ) // numero
+      cXml := StrTran( cXml, Chr(220), "U" ) // u com trema
    NEXT
    FOR nCont = 1 TO Len( cXml )
       cLetra := Substr( cXml, nCont, 1 )
