@@ -213,7 +213,7 @@ METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel ) CLASS hbNFeDaNFe
 
 METHOD BuscaDadosXML() CLASS hbNFeDaNFe
 
-   LOCAL cText
+   LOCAL cText, aNFRef, oElement
 
    ::aIde := XmlToHash( XmlNode( ::cXml, "ide" ), { "cUF", "cNF", "natOp", "indPag", "mod", "serie", "nNF", "dhEmi", "dhSaiEnt", "tpNF", "cMunFG", "tpImp", "tpEmis", ;
       "cDV", "tpAmb", "finNFe", "procEmi", "verProc" } )
@@ -265,6 +265,14 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    IF ! Empty( ::aInfAdic[ "infAdFisco" ] )
       ::aInfAdic[ "infCpl" ]     := ::aInfAdic[ "infAdFisco" ] + hb_Eol() + ::aInfAdic[ "infCpl" ]
       ::aInfAdic[ "infAdFisco" ] := ""
+   ENDIF
+   aNFRef := MultipleNodeToArray( ::cXml, "refNFe" )
+   IF ! Empty( aNFRef )
+      cText := "NFe Referenciadas: "
+      FOR EACH oElement IN aNFRef
+         cText += oElement + iif( oElement:__EnumIndex == oElement:__EnumIsLast, "", ", " )
+      NEXT
+      ::ainfAdic[ "infCpl" ] := cText + " " + ::aInfAdic[ "infCpl" ]
    ENDIF
 
    RETURN .T.
