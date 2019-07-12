@@ -270,7 +270,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    IF ! Empty( aNFRef )
       cText := "NFe Referenciadas: "
       FOR EACH oElement IN aNFRef
-         cText += oElement + iif( oElement:__EnumIndex == oElement:__EnumIsLast, "", ", " )
+         cText += oElement + iif( oElement:__EnumIsLast, "", ", " )
       NEXT
       ::ainfAdic[ "infCpl" ] := cText + " " + ::aInfAdic[ "infCpl" ]
    ENDIF

@@ -86,6 +86,7 @@ CREATE CLASS SefazClass
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
+   METHOD MDFeRecepcaoSinc( cXml, cUF, cCertificado, cAmbiente )
    METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente )
 
    METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente )
@@ -813,6 +814,31 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
       Inkey( ::nTempoEspera )
       ::MDFeConsultaRecibo()
       ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
+   ENDIF
+
+   RETURN ::cXmlRetorno
+
+METHOD MDFeRecepcaoSinc( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass
+
+   hb_Default( @::cProjeto, WS_PROJETO_MDFE )
+   hb_Default( @::cVersao, "3.00" )
+   ::aSoapUrlList := WS_MDFE_RECEPCAOSINC
+   ::Setup( cUF, cCertificado, cAmbiente )
+   ::cSoapAction := ""
+   ::cSoapService := ""
+
+   IF cXml != NIL
+      ::cXmlDocumento := cXml
+   ENDIF
+   IF ::AssinaXml() != "OK"
+      RETURN ::cXmlRetorno
+   ENDIF
+   ::cXmlEnvio := "falta definir aqui"
+   ::XmlSoapPost()
+   IF ::cXmlStatus != "999"
+      ::cStatus := XmlNode( ::cXmlRetorno, "cStatus" )
+      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+      ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlRetorno )
    ENDIF
 
    RETURN ::cXmlRetorno
