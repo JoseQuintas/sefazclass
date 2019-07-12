@@ -53,7 +53,7 @@ FUNCTION ze_Feriado( dDate, cUF )
 
    hb_Default( @cUF, "" )
 
-   lFeriado := AScan( aList, { | e | e[ 1 ] == "BR" .OR. e[ 1 ] == cUF .AND. e[ 2 ] == Right( Dtos( dDate ), 4 ) } ) != 0
+   lFeriado := AScan( aList, { | e | ( e[ 1 ] == "BR" .OR. e[ 1 ] == cUF ) .AND. e[ 2 ] == Right( Dtos( dDate ), 4 ) } ) != 0
    IF ! lFeriado
       IF AScan( { 0, 1 }, dDate - TercaDeCarnaval( Year( dDate ) ) ) != 0
          lFeriado := .T.
