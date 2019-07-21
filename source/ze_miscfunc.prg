@@ -95,7 +95,7 @@ FUNCTION ze_Feriado( dDate, cUF )
 
    hb_Default( @cUF, "BR" )
    FOR EACH oElement IN aEclesiasticos
-      AAdd( aList, { oElement[ 2 ], Right( Dtos( TercaDeCarnaval( Year( dDate ) ) + oElement[ 1 ] ), 4 ), oElement[ 3 ] } )
+      AAdd( aList, { Right( Dtos( TercaDeCarnaval( Year( dDate ) ) + oElement[ 1 ] ), 4 ), oElement[ 2 ], oElement[ 3 ] } )
    NEXT
    nPos := AScan( aList, { | e | ( "BR" $ e[ 2 ] .OR. cUF $ e[ 2 ] ) .AND. e[ 1 ] == Right( Dtos( dDate ), 4 ) } )
    IF nPos != 0
