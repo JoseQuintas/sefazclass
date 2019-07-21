@@ -46,7 +46,7 @@ FUNCTION Extenso( xValue, xFull )
       cTxt := ze_ExtensoDinheiro( xValue )
    ELSEIF ValType( xValue ) == "D"
       IF ! xFull
-         cTxt := StrZero( Day( xValue ), 2 ) + " de " + ze_ExtensoMes( xValue ) + " de " + StrZero( Year( xValue ), 4 )
+         cTxt := StrZero( Day( xValue ), 2 ) + " DE " + ze_ExtensoMes( xValue ) + " DE " + StrZero( Year( xValue ), 4 )
       ELSE
          cTxt := ze_ExtensoNumero( Day( xValue ) )
          cTxt += " DE " + ze_ExtensoMes( xValue ) + " DE "
