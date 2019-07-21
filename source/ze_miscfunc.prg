@@ -86,7 +86,7 @@ FUNCTION ze_Feriado( dDate, cUF )
       { "1219", "PR", "PR Emancipação política do estado do PR" }, ;
       { "1225", "BR", "Natal" } }
 
-   LOCAL aEclesiasticos := { ; // baseados no domingo de pascoa
+   LOCAL aEclesiasticos := { ; // baseados no domingo de páscoa
       {  0,  "BR", "Domingo de Páscoa" }, ;
       { -2,  "BR", "Paixao de Cristo" }, ;
       { -47, "BR", "Terça de Carnaval" }, ;
