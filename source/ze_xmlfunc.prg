@@ -186,19 +186,26 @@ FUNCTION XmlDate( cData )
 
    RETURN dDate
 
-FUNCTION XmlTag( cTag, cValue )
+FUNCTION XmlTag( cTag, xValue, nDecimals, lConvert )
 
    LOCAL cXml
 
-   hb_Default( @cValue, "" )
-   cValue := AllTrim( cValue )
-   IF Len( cValue ) == 0
+   hb_Default( @nDecimals, 2 )
+   hb_Default( lConvert, .T. )
+
+   IF lConvert
+      IF ValType( xValue ) == "D"
+         xValue := DateXml( xValue )
+      ENDIF
+      IF ValType( xValue ) == "N"
+         xValue := NumberXml( xValue, nDecimals )
+      ENDIF
+      xValue := StringToXml( xValue )
+   ENDIF
+   IF Len( xValue ) == 0
       cXml := [<]+ cTag + [/>]
    ELSE
-      IF Len( cValue ) == 0
-         cValue := " "
-      ENDIF
-      cXml := [<] + cTag + [>] + cValue + [</] + cTag + [>]
+      cXml := [<] + cTag + [>] + xValue + [</] + cTag + [>]
    ENDIF
 
    RETURN cXml
