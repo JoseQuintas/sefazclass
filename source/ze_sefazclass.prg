@@ -33,8 +33,10 @@ CREATE CLASS SefazClass
    VAR    cCertificado    INIT ""                      // Nome do certificado
    VAR    ValidFromDate   INIT ""                      // Validade do certificado
    VAR    ValidToDate     INIT ""                      // Validade do certificado
+   VAR    cCertificadoCN  INIT ""                      // Subject do certificado
    VAR    cIndSinc        INIT WS_RETORNA_RECIBO       // Poucas UFs opção de protocolo
    VAR    nTempoEspera    INIT 7                       // intervalo entre envia lote e consulta recibo
+   VAR    nSoapTimeOut    INIT 5000                    // Limite de espera por resposta
    VAR    cUFTimeZone     INIT ""                      // Para TimeZone diferente da UF de comunicação
    VAR    cUserTimeZone   INIT ""                      // Para TimeZone definido pelo usuário
    VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
@@ -125,26 +127,8 @@ CREATE CLASS SefazClass
    METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( Empty( ::cUFTimeZone ), ::cUF, ::cUFTimeZone ), lUTC, ::cUserTimeZone )
    METHOD ValidaXml( cXml, cFileXsd )                 INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd )
    METHOD Setup( cUF, cCertificado, cAmbiente )
-   METHOD CertificadoInfo( cCertificado )
 
    ENDCLASS
-
-METHOD CertificadoInfo( cCertificado ) CLASS SefazClass
-
-   LOCAL oCertificado, cTxt := ""
-
-   IF ! Empty( cCertificado )
-      ::cCertificado := cCertificado
-   ENDIF
-   oCertificado := CapicomCertificado( cCertificado )
-   IF ! Empty( oCertificado )
-      cTxt += oCertificado:SubjectName
-      cTxt += " Valido de " + Dtoc( oCertificado:ValidFromDate )
-      cTxt += " até " + Dtoc( oCertificado:ValidToDate )
-   ENDIF
-
-   RETURN cTxt
-
 
 METHOD AssinaXml() CLASS SefazClass
 
@@ -1489,6 +1473,7 @@ METHOD Setup( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::cCertificado := iif( cCertificado == NIL, ::cCertificado, cCertificado )
    ::cAmbiente    := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
    ::cSoapURL := ""
+   CapicomCertificado( ::cCertificado, @::cCertificadoCN, @::ValidFromDate, @::ValidToDate )
    cAmbiente  := ::cAmbiente
    cUF        := ::cUF
    cProjeto   := ::cProjeto
@@ -1644,7 +1629,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       ENDIF
       oServer:SetRequestHeader( "Content-Type", "application/soap+xml; charset=utf-8" )
       oServer:Send( ::cXmlSoap )
-      oServer:WaitForResponse( 1000 )
+      oServer:WaitForResponse( ::nSoapTimeOut )
       cRetorno := oServer:ResponseBody()
       IF ValType( cRetorno ) == "C"
          ::cXmlRetorno := cRetorno
@@ -1666,7 +1651,8 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "env:Body" )
    CASE "not have permission to view" $ ::cXmlRetorno
       ::cStatus     := "999"
-      ::cMotivo     := "Certificado inválido, vencido, ou problemas na Sefaz. Certificado: " + ::CertificadoInfo()
+      ::cMotivo     := "problemas com Sefaz e/ou certificado"
+      // ::CertificadoInfo()
       ::cXmlRetorno := [<erro xml="] + "*ERRO*" + ::cMotivo + [" />]
    OTHERWISE
       // teste usando procname(2)

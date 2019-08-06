@@ -155,7 +155,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          dValidTo   := CapicomCertificado( cTexto ):ValidToDate
          wapi_MessageBox( , cTexto + hb_Eol() + ;
             "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
-            iif( dValidTo < Date(), "VENCIDO!!!!!!", "" ) )
+            iif( dValidTo < Date(), " VENCIDO!!!!!!", "" ) )
 
       CASE nOpc == OPC_UF
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
