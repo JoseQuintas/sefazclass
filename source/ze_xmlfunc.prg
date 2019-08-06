@@ -191,7 +191,7 @@ FUNCTION XmlTag( cTag, xValue, nDecimals, lConvert )
    LOCAL cXml
 
    hb_Default( @nDecimals, 2 )
-   hb_Default( lConvert, .T. )
+   hb_Default( @lConvert, .T. )
 
    IF lConvert
       IF ValType( xValue ) == "D"

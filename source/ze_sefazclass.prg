@@ -125,10 +125,28 @@ CREATE CLASS SefazClass
    METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( Empty( ::cUFTimeZone ), ::cUF, ::cUFTimeZone ), lUTC, ::cUserTimeZone )
    METHOD ValidaXml( cXml, cFileXsd )                 INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd )
    METHOD Setup( cUF, cCertificado, cAmbiente )
+   METHOD CertificadoInfo( cCertificado )
 
    ENDCLASS
 
-METHOD AssinaXml()
+METHOD CertificadoInfo( cCertificado ) CLASS SefazClass
+
+   LOCAL oCertificado, cTxt := ""
+
+   IF ! Empty( cCertificado )
+      ::cCertificado := cCertificado
+   ENDIF
+   oCertificado := CapicomCertificado( cCertificado )
+   IF ! Empty( oCertificado )
+      cTxt += oCertificado:SubjectName
+      cTxt += " Valido de " + Dtoc( oCertificado:ValidFromDate )
+      cTxt += " até " + Dtoc( oCertificado:ValidToDate )
+   ENDIF
+
+   RETURN cTxt
+
+
+METHOD AssinaXml() CLASS SefazClass
 
    ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado,,::cPassword )
    IF ::cXmlRetorno != "OK"
@@ -1648,7 +1666,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "env:Body" )
    CASE "not have permission to view" $ ::cXmlRetorno
       ::cStatus     := "999"
-      ::cMotivo     := "Certificado inválido, vencido, ou problemas na Sefaz"
+      ::cMotivo     := "Certificado inválido, vencido, ou problemas na Sefaz. Certificado: " + ::CertificadoInfo()
       ::cXmlRetorno := [<erro xml="] + "*ERRO*" + ::cMotivo + [" />]
    OTHERWISE
       // teste usando procname(2)
