@@ -1473,7 +1473,7 @@ METHOD Setup( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::cCertificado := iif( cCertificado == NIL, ::cCertificado, cCertificado )
    ::cAmbiente    := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
    ::cSoapURL := ""
-   CapicomCertificado( ::cCertificado, @::cCertificadoCN, @::ValidFromDate, @::ValidToDate )
+   //CapicomCertificado( ::cCertificado, @::cCertificadoCN, @::ValidFromDate, @::ValidToDate )
    cAmbiente  := ::cAmbiente
    cUF        := ::cUF
    cProjeto   := ::cProjeto

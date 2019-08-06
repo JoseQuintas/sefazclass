@@ -35,24 +35,16 @@ FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
 
    RETURN cNomeCertificado
 
-FUNCTION CapicomCertificado( cNomeCertificado, cCN, dValidFrom, dValidTo )
+FUNCTION CapicomCertificado( cNomeCertificado )
 
    LOCAL oCapicomStore, oColecao, oCertificado, nCont
 
-   cCn := ""
-   dValidFrom := Ctod("")
-   dValidTo   := Ctod("")
    oCapicomStore := Win_OleCreateObject( "CAPICOM.Store" )
    oCapicomStore:Open( CAPICOM_CURRENT_USER_STORE, "My", CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
    oColecao := oCapicomStore:Certificates()
    FOR nCont = 1 TO oColecao:Count()
       IF cNomeCertificado $ oColecao:Item( nCont ):SubjectName
-         BEGIN SEQUENCE WITH __BreakBlock()
-            oCertificado := oColecao:Item( nCont )
-            cCn          := oCertificado:SubjectName
-            dValidFrom   := oCertificado:ValidFromDate
-            dValidTo     := oCertificado:ValidToDate
-         ENDSEQUENCE
+         oCertificado := oColecao:Item( nCont )
          EXIT
       ENDIF
    NEXT
