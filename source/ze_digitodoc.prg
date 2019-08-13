@@ -167,8 +167,10 @@ FUNCTION ValidGTIN( cCodigo )
 
    LOCAL lOk := .T., nSoma := 0, nCont, nMultiplicador
 
-   cCodigo := AllTrim( cCodigo )
-   IF Len( cCodigo ) != 0
+   IF Val( cCodigo ) == 0
+      cCodigo := Pad( "SEM GTIN", 14 )
+   ELSE
+      cCodigo := SoNumeros( cCodigo )
       cCodigo := Padl( cCodigo, 14, "0" )
       nMultiplicador = 3
       nSoma := 0
