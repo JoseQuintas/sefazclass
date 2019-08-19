@@ -448,11 +448,11 @@ METHOD CTEEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cUF, cCert
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110181" )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
-   ::cXmlDocumento +=            [<evCECTe>]
+   ::cXmlDocumento +=            [<evCancCECTe>]
    ::cXmlDocumento +=                XmlTag( "descEvento", "Cancelamento do Comprovante de Entrega do CT-e" )
    ::cXmlDocumento +=                  XmlTag( "nProt", Ltrim( Str( nProt ) ) )
    ::cXmlDocumento +=                  XmlTag( "nProtCE", nProtEntrega )
-   ::cXmlDocumento +=            [</evCECTe>]
+   ::cXmlDocumento +=            [</evCancCECTe>]
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</eventoCTe>]
