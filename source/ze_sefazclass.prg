@@ -72,7 +72,7 @@ CREATE CLASS SefazClass
    METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente )
    METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente )
-   METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aInfEntrega, nLatitude, nLongitude, cCertificado, cAmbiente )
+   METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aNfeList, nLatitude, nLongitude, cCertificado, cAmbiente )
    METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
@@ -369,7 +369,9 @@ METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente ) C
 
    RETURN ::cXmlRetorno
 
-METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aInfEntrega, nLatitude, nLongitude, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aNfeList, nLatitude, nLongitude, cCertificado, cAmbiente ) CLASS SefazClass
+
+   LOCAL oElement
 
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
    hb_Default( @::cVersao, "3.00" )
@@ -393,25 +395,24 @@ METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, 
    ::cXmlDocumento +=            [<evCECTe>]
    ::cXmlDocumento +=                XmlTag( "descEvento", "Comprovante de Entrega do CT-e" )
    ::cXmlDocumento +=                  XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   // *************** falta ajustar horario
-   ::cXmlDocumento +=                  XmlTag( "dhEntrega", DateXml( dDataEntrega ) + cHoraEntrega )
+   ::cXmlDocumento +=                  XmlTag( "dhEntrega", DateTimeXml( dDataEntrega, cHoraEntrega, ::cUF )
    ::cXmlDocumento +=                  XmlTag( "nDoc", cDoc )
    ::cXmlDocumento +=                  XmlTag( "xNome", cNome )
    IF nLatitude != 0 .AND. nLongitude != 0
       ::cXmlDocumento +=                  XmlTag( "latitute", NumberXml( nLatitude, 16, 6 ) )
       ::cXmlDocumento +=                  XmlTag( "longitude", NumberXml( nLongitude, 16, 6 ) )
    ENDIF
-   // **************falta calculo do hash
-   ::cXmlDocumento +=                  XmlTag( "hashEntrega", "XXX" )
-   ::cXmlDocumento +=                  XmlTag( "dhHashEntrega", "XXX" )
-   ::cXmlDocumento +=                  "<InfEntrega>"
-   IF .F.
-      ::cXmlDocumento += XmlTag( "", aInfEntrega )
-      // ********** falta bloco infEntrega
+   IF .F. // hash da imagem que não existe no xml ?????
+      ::cXmlDocumento +=                  XmlTag( "hashEntrega", "XXX" )
+      ::cXmlDocumento +=                  XmlTag( "dhHashEntrega", "XXX" )
    ENDIF
-   ::cXmlDocumento +=                  "</InfEntrega>"
-   ::cXmlDocumento +=                  XmlTag( "chNFe", cChave )
-
+   IF Len( aNfeList ) > 0
+      ::cXmlDocumento +=               "<InfEntrega>"
+      FOR EACH oElement IN aNfeList
+         ::cXmlDocumento +=               XmlTag( "chNFe", oElement )
+      NEXT
+      ::cXmlDocumento +=               "</InfEntrega>"
+   ENDIF
    ::cXmlDocumento +=            [</evCECTe>]
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
