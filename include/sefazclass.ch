@@ -153,6 +153,12 @@
    ;
    { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" } }
 
+#define WS_MDFE_QRCODE { ;
+   { "**", "3.00", "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode" }, ;
+   ;
+   { "**", "3.00", "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode" } }
+
+
 #define WS_NFE_CONSULTACADASTRO { ;
    { "BA",   "3.10P", "https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx" }, ;
    { "CE",   "3.10P", "https://nfe.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2?wsdl" }, ;

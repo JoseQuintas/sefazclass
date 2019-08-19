@@ -72,6 +72,7 @@ CREATE CLASS SefazClass
    METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente )
    METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente )
+   METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aInfEntrega, nLatitude, nLongitude, cCertificado, cAmbiente )
    METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
@@ -368,6 +369,62 @@ METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente ) C
 
    RETURN ::cXmlRetorno
 
+METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aInfEntrega, nLatitude, nLongitude, cCertificado, cAmbiente ) CLASS SefazClass
+
+   hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @nSequencia, 1 )
+
+   ::aSoapUrlList := WS_CTE_ENVIAEVENTO
+   ::cSoapAction  := "cteRecepcaoEvento"
+   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/CteRecepcaoEvento"
+   ::Setup( cChave, cCertificado, cAmbiente )
+
+   ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
+   ::cXmlDocumento +=    [<infEvento Id="ID110180] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
+   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
+   ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
+   ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
+   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
+   ::cXmlDocumento +=       XmlTag( "tpEvento", "110180" )
+   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
+   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
+   ::cXmlDocumento +=            [<evCECTe>]
+   ::cXmlDocumento +=                XmlTag( "descEvento", "Comprovante de Entrega do CT-e" )
+   ::cXmlDocumento +=                  XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   // *************** falta ajustar horario
+   ::cXmlDocumento +=                  XmlTag( "dhEntrega", DateXml( dDataEntrega ) + cHoraEntrega )
+   ::cXmlDocumento +=                  XmlTag( "nDoc", cDoc )
+   ::cXmlDocumento +=                  XmlTag( "xNome", cNome )
+   IF nLatitude != 0 .AND. nLongitude != 0
+      ::cXmlDocumento +=                  XmlTag( "latitute", NumberXml( nLatitude, 16, 6 ) )
+      ::cXmlDocumento +=                  XmlTag( "longitude", NumberXml( nLongitude, 16, 6 ) )
+   ENDIF
+   // **************falta calculo do hash
+   ::cXmlDocumento +=                  XmlTag( "hashEntrega", "XXX" )
+   ::cXmlDocumento +=                  XmlTag( "dhHashEntrega", "XXX" )
+   ::cXmlDocumento +=                  "<InfEntrega>"
+   IF .F.
+      ::cXmlDocumento += XmlTag( "", aInfEntrega )
+      // ********** falta bloco infEntrega
+   ENDIF
+   ::cXmlDocumento +=                  "</InfEntrega>"
+   ::cXmlDocumento +=                  XmlTag( "chNFe", cChave )
+
+   ::cXmlDocumento +=            [</evCECTe>]
+   ::cXmlDocumento +=       [</detEvento>]
+   ::cXmlDocumento +=    [</infEvento>]
+   ::cXmlDocumento += [</eventoCTe>]
+   IF ::AssinaXml() == "OK"
+      ::cXmlEnvio := ::cXmlDocumento
+      ::XmlSoapPost()
+      ::cXmlProtocolo := ::cXmlRetorno
+      ::CTeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo ) // hb_Utf8ToStr(
+   ENDIF
+
+   RETURN ::cXmlRetorno
+
 METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
@@ -660,7 +717,7 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
 
    RETURN ::cXmlRetorno
 
-METHOD MDFeEventoEncerramento( cChave, nSequencia , nProt, cUFFim , cMunCarrega , cCertificado, cAmbiente ) CLASS SefazClass
+METHOD MDFeEventoEncerramento( cChave, nSequencia, nProt, cUFFim , cMunCarrega , cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
    hb_Default( @::cVersao, "3.00" )

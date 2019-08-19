@@ -24,7 +24,7 @@ source/ze_inscestadual.prg
 -beep
 -q
 
--o${hb_addons}/josequintas/lib/${hb_plat}/${hb_comp}/${hb_name}
+-o${hb_addons}/josequintas/${hb_plat}/${hb_comp}/${hb_name}
 
 sefazclass.hbc
 

@@ -5,6 +5,7 @@ Nota: XML emissao, cancelamento, e eventos
 */
 
 #include "hbclass.ch"
+#include "hb2xhb.ch"
 
 CREATE CLASS ATMSeguroClass
 
