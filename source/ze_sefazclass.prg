@@ -70,10 +70,11 @@ CREATE CLASS SefazClass
    METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
+   METHOD CTeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
    METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente )
    METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente )
-   METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aNfeList, nLatitude, nLongitude, cUF, cCertificado, cAmbiente )
-   METHOD CTEEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cUF, cCertificado, cAmbiente )
+   METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aNfeList, nLatitude, nLongitude, cCertificado, cAmbiente )
+   METHOD CTeEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cCertificado, cAmbiente )
    METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
@@ -84,6 +85,7 @@ CREATE CLASS SefazClass
    METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
+   METHOD MDFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
    METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD MDFeEventoEncerramento( cChave, nSequencia, nProt, cUFFim, cMunCarrega, cCertificado, cAmbiente )
    METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado, cAmbiente )
@@ -102,6 +104,7 @@ CREATE CLASS SefazClass
    METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmbiente )
+   METHOD NFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
    METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD NFeEventoCancelaSubstituicao( cChave, cOrgaoAutor, cAutor, cVersaoAplicativo, cProtocolo, cJust, cNfRef, cCertificado, cAmbiente )
    METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente )
@@ -237,7 +240,7 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    RETURN ::cXmlRetorno // ? hb_Utf8ToStr()
 
-METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD CTeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cVersao, "3.00" )
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
@@ -248,21 +251,15 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    ::Setup( cChave, cCertificado, cAmbiente )
 
    ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
    ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
+   ::cXmlDocumento +=       XmlTag( "tpEvento", cTipoEvento )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
-   ::cXmlDocumento +=            [<evCancCTe>]
-   ::cXmlDocumento +=                XmlTag( "descEvento", "Cancelamento" )
-   ::cXmlDocumento +=                XmlTag( "nProt", Ltrim( Str( nProt, 16 ) ) )
-   ::cXmlDocumento +=                XmlTag( "xJust", xJust )
-   ::cXmlDocumento +=            [</evCancCTe>]
-   ::cXmlDocumento +=       [</detEvento>]
+   ::cXmlDocumento +=       cXml
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</eventoCTe>]
    IF ::AssinaXml() == "OK"
@@ -276,192 +273,116 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    RETURN ::cXmlRetorno
 
+METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
+
+   LOCAL cXml := ""
+
+   cXml += [<detEvento versaoEvento="1.00">]
+   cXml +=    [<evCancCTe>]
+   cXml +=       XmlTag( "descEvento", "Cancelamento" )
+   cXml +=       XmlTag( "nProt", Ltrim( Str( nProt, 16 ) ) )
+   cXml +=       XmlTag( "xJust", xJust )
+   cXml +=    [</evCancCTe>]
+   cXml += [</detEvento>]
+
+   ::CTeEvento( cChave, nSequencia, "110111", cXml, cCertificado, cAmbiente )
+
+   RETURN ::cXmlRetorno
+
 METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL oElement
+   LOCAL oElement, cXml := ""
 
-   hb_Default( @::cVersao, "3.00" )
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
-   hb_Default( @nSequencia, 1 )
-
-   ::aSoapUrlList := WS_CTE_ENVIAEVENTO
-   ::cSoapAction  := "cteRecepcaoEvento"
-   ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento"
-   ::Setup( cChave, cCertificado, cAmbiente )
-
-   ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
-   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
-   ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110110" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
-   ::cXmlDocumento +=            [<evCCeCTe>]
-   ::cXmlDocumento +=                XmlTag( "descEvento", "Carta de Correcao" )
+   cXml += [<detEvento versaoEvento="1.00">]
+   cXml +=      [<evCCeCTe>]
+   cXml +=          XmlTag( "descEvento", "Carta de Correcao" )
    FOR EACH oElement IN aAlteracoes
-      ::cXmlDocumento +=                     [<infCorrecao>]
-      ::cXmlDocumento +=                      XmlTag( "grupoAlterado", oElement[ 1 ] )
-      ::cXmlDocumento +=                      XmlTag( "campoAlterado", oElement[ 2 ] )
-      ::cXmlDocumento +=                      XmlTag( "valorAlterado", oElement[ 3 ] )
-      ::cXmlDocumento +=                     [</infCorrecao>]
+      cXml +=       [<infCorrecao>]
+      cXml +=          XmlTag( "grupoAlterado", oElement[ 1 ] )
+      cXml +=          XmlTag( "campoAlterado", oElement[ 2 ] )
+      cXml +=          XmlTag( "valorAlterado", oElement[ 3 ] )
+      cXml +=       [</infCorrecao>]
    NEXT
-   ::cXmlDocumento +=                [<xCondUso>]
-   ::cXmlDocumento +=                   "A Carta de Correcao e disciplinada pelo Art. 58-B "
-   ::cXmlDocumento +=                   "do CONVENIO/SINIEF 06/89: Fica permitida a utilizacao de carta "
-   ::cXmlDocumento +=                   "de correcao, para regularizacao de erro ocorrido na emissao de "
-   ::cXmlDocumento +=                   "documentos fiscais relativos a prestacao de servico de transporte, "
-   ::cXmlDocumento +=                   "desde que o erro nao esteja relacionado com: I - as variaveis que "
-   ::cXmlDocumento +=                   "determinam o valor do imposto tais como: base de calculo, aliquota, "
-   ::cXmlDocumento +=                   "diferenca de preco, quantidade, valor da prestacao;II - a correcao "
-   ::cXmlDocumento +=                   "de dados cadastrais que implique mudanca do emitente, tomador, "
-   ::cXmlDocumento +=                   "remetente ou do destinatario;III - a data de emissao ou de saida."
-   ::cXmlDocumento +=                [</xCondUso>]
-   ::cXmlDocumento +=          [</evCCeCTe>]
-   ::cXmlDocumento +=       [</detEvento>]
-   ::cXmlDocumento +=    [</infEvento>]
-   ::cXmlDocumento += [</eventoCTe>]
-   IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := ::cXmlDocumento
-      ::XmlSoapPost()
-      ::cXmlProtocolo := ::cXmlRetorno
-      ::CTeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
-   ENDIF
+   cXml +=       [<xCondUso>]
+   cXml +=          "A Carta de Correcao e disciplinada pelo Art. 58-B "
+   cXml +=          "do CONVENIO/SINIEF 06/89: Fica permitida a utilizacao de carta "
+   cXml +=          "de correcao, para regularizacao de erro ocorrido na emissao de "
+   cXml +=          "documentos fiscais relativos a prestacao de servico de transporte, "
+   cXml +=          "desde que o erro nao esteja relacionado com: I - as variaveis que "
+   cXml +=          "determinam o valor do imposto tais como: base de calculo, aliquota, "
+   cXml +=          "diferenca de preco, quantidade, valor da prestacao;II - a correcao "
+   cXml +=          "de dados cadastrais que implique mudanca do emitente, tomador, "
+   cXml +=          "remetente ou do destinatario;III - a data de emissao ou de saida."
+   cXml +=       [</xCondUso>]
+   cXml +=    [</evCCeCTe>]
+   cXml += [</detEvento>]
+
+   ::CTeEvento( cChave, nSequencia, "110110", cXml, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 
 METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente ) CLASS SefazClass
 
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
-   hb_Default( @::cVersao, "3.00" )
-   hb_Default( @nSequencia, 1 )
+   LOCAL cXml := ""
 
-   ::aSoapUrlList := WS_CTE_ENVIAEVENTO
-   ::cSoapAction  := "cteRecepcaoEvento"
-   ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento"
-   ::Setup( cChave, cCertificado, cAmbiente )
+   cXml += [<detEvento versaoEvento="1.00">]
+   cXml +=    [<evPrestDesacordo>]
+   cXml +=       XmlTag( "descEvento", "Prestacao do Servico em Desacordo" )
+   cXml +=       XmlTag( "indDesacordoOper", "1" )
+   cXml +=       XmlTag( "xObs", cObs )
+   cXml +=    [</evPrestDesacordo>]
+   cXml += [</detEvento>]
 
-   ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID610110] + cChave + StrZero( nSequencia, 2 ) + [">]
-   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
-   ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "610110" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
-   ::cXmlDocumento +=          [<evPrestDesacordo>]
-   ::cXmlDocumento +=             XmlTag( "descEvento", "Prestacao do Servico em Desacordo" )
-   ::cXmlDocumento +=             XmlTag( "indDesacordoOper", "1" )
-   ::cXmlDocumento +=             XmlTag( "xObs", cObs )
-   ::cXmlDocumento +=          [</evPrestDesacordo>]
-   ::cXmlDocumento +=       [</detEvento>]
-   ::cXmlDocumento +=    [</infEvento>]
-   ::cXmlDocumento += [</eventoCTe>]
-   IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := ::cXmlDocumento
-      ::XmlSoapPost()
-      ::cXmlProtocolo := ::cXmlRetorno
-      ::CTeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
-   ENDIF
+   ::CTeEvento( cChave, nSequencia, "610110", cXml, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 
-METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aNfeList, nLatitude, nLongitude, cUF, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aNfeList, nLatitude, nLongitude, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL oElement
+   LOCAL oElement, cXml := ""
 
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
-   hb_Default( @::cVersao, "3.00" )
-   hb_Default( @nSequencia, 1 )
-
-   ::aSoapUrlList := WS_CTE_ENVIAEVENTO
-   ::cSoapAction  := "cteRecepcaoEvento"
-   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/CteRecepcaoEvento"
-   ::Setup( cChave, cCertificado, cAmbiente )
-
-   ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110180] + cChave + StrZero( nSequencia, 2 ) + [">]
-   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
-   ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110180" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
-   ::cXmlDocumento +=            [<evCECTe>]
-   ::cXmlDocumento +=                XmlTag( "descEvento", "Comprovante de Entrega do CT-e" )
-   ::cXmlDocumento +=                  XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   ::cXmlDocumento +=                  XmlTag( "dhEntrega", DateTimeXml( dDataEntrega, cHoraEntrega, ::cUF )
-   ::cXmlDocumento +=                  XmlTag( "nDoc", cDoc )
-   ::cXmlDocumento +=                  XmlTag( "xNome", cNome )
+   cXml += [<detEvento versaoEvento="1.00">]
+   cXml +=    [<evCECTe>]
+   cXml +=       XmlTag( "descEvento", "Comprovante de Entrega do CT-e" )
+   cXml +=       XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   cXml +=       XmlTag( "dhEntrega", DateTimeXml( dDataEntrega, cHoraEntrega, ::cUF ) )
+   cXml +=       XmlTag( "nDoc", cDoc )
+   cXml +=       XmlTag( "xNome", cNome )
    IF nLatitude != 0 .AND. nLongitude != 0
-      ::cXmlDocumento +=                  XmlTag( "latitute", NumberXml( nLatitude, 16, 6 ) )
-      ::cXmlDocumento +=                  XmlTag( "longitude", NumberXml( nLongitude, 16, 6 ) )
+      cXml +=    XmlTag( "latitute", NumberXml( nLatitude, 16, 6 ) )
+      cXml +=    XmlTag( "longitude", NumberXml( nLongitude, 16, 6 ) )
    ENDIF
    IF .F. // hash da imagem que não existe no xml ?????
-      ::cXmlDocumento +=                  XmlTag( "hashEntrega", "XXX" )
-      ::cXmlDocumento +=                  XmlTag( "dhHashEntrega", "XXX" )
+      cXml +=    XmlTag( "hashEntrega", "XXX" )
+      cXml +=    XmlTag( "dhHashEntrega", "XXX" )
    ENDIF
    IF Len( aNfeList ) > 0
-      ::cXmlDocumento +=               "<InfEntrega>"
+      cXml +=    "<InfEntrega>"
       FOR EACH oElement IN aNfeList
-         ::cXmlDocumento +=               XmlTag( "chNFe", oElement )
+         cXml +=    XmlTag( "chNFe", oElement )
       NEXT
-      ::cXmlDocumento +=               "</InfEntrega>"
+      cXml +=    "</InfEntrega>"
    ENDIF
-   ::cXmlDocumento +=            [</evCECTe>]
-   ::cXmlDocumento +=       [</detEvento>]
-   ::cXmlDocumento +=    [</infEvento>]
-   ::cXmlDocumento += [</eventoCTe>]
-   IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := ::cXmlDocumento
-      ::XmlSoapPost()
-      ::cXmlProtocolo := ::cXmlRetorno
-      ::CTeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo ) // hb_Utf8ToStr(
-   ENDIF
+   cXml +=    [</evCECTe>]
+   cXml += [</detEvento>]
+
+   ::CTeEvento( cChave, nSequencia, "110180", cXml, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 
-METHOD CTEEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cUF, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD CTeEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cCertificado, cAmbiente ) CLASS SefazClass
 
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
-   hb_Default( @::cVersao, "3.00" )
-   hb_Default( @nSequencia, 1 )
+   LOCAL cXml := ""
 
-   ::aSoapUrlList := WS_CTE_ENVIAEVENTO
-   ::cSoapAction  := "cteRecepcaoEvento"
-   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/CteRecepcaoEvento"
-   ::Setup( cChave, cCertificado, cAmbiente )
+   cXml += [<detEvento versaoEvento="1.00">]
+   cXml +=    [<evCancCECTe>]
+   cXml +=       XmlTag( "descEvento", "Cancelamento do Comprovante de Entrega do CT-e" )
+   cXml +=       XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   cXml +=       XmlTag( "nProtCE", nProtEntrega )
+   cXml +=    [</evCancCECTe>]
+   cXml += [</detEvento>]
 
-   ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110181] + cChave + StrZero( nSequencia, 2 ) + [">]
-   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
-   ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110181" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
-   ::cXmlDocumento +=            [<evCancCECTe>]
-   ::cXmlDocumento +=                XmlTag( "descEvento", "Cancelamento do Comprovante de Entrega do CT-e" )
-   ::cXmlDocumento +=                  XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   ::cXmlDocumento +=                  XmlTag( "nProtCE", nProtEntrega )
-   ::cXmlDocumento +=            [</evCancCECTe>]
-   ::cXmlDocumento +=       [</detEvento>]
-   ::cXmlDocumento +=    [</infEvento>]
-   ::cXmlDocumento += [</eventoCTe>]
-   IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := ::cXmlDocumento
-      ::XmlSoapPost()
-      ::cXmlProtocolo := ::cXmlRetorno
-      ::CTeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo ) // hb_Utf8ToStr(
-   ENDIF
+   ::CTeEvento( cChave, nSequencia, "110181", cXml, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 
@@ -719,7 +640,7 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
 
    RETURN NIL
 
-METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD MDFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
    hb_Default( @::cVersao, "3.00" )
@@ -731,21 +652,15 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
    ::Setup( cChave, cCertificado, cAmbiente )
 
    ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
    ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
+   ::cXmlDocumento +=       XmlTag( "tpEvento", cTipoEvento )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
-   ::cXmlDocumento +=            [<evCancMDFe>]
-   ::cXmlDocumento +=                XmlTag( "descEvento", "Cancelamento" )
-   ::cXmlDocumento +=                XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   ::cXmlDocumento +=                XmlTag( "xJust", xJust )
-   ::cXmlDocumento +=            [</evCancMDFe>]
-   ::cXmlDocumento +=       [</detEvento>]
+   ::cXmlDocumento +=       cXml
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</eventoMDFe>]
    IF ::AssinaXml() == "OK"
@@ -757,83 +672,56 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
 
    RETURN ::cXmlRetorno
 
+
+METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
+
+   LOCAL cXml := ""
+
+   cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
+   cXml +=    [<evCancMDFe>]
+   cXml +=       XmlTag( "descEvento", "Cancelamento" )
+   cXml +=       XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   cXml +=       XmlTag( "xJust", xJust )
+   cXml +=    [</evCancMDFe>]
+   cXml += [</detEvento>]
+
+   ::MDFeEvento( cChave, nSequencia, "110111", cXml, cCertificado, cAmbiente )
+
+   RETURN ::cXmlRetorno
+
 METHOD MDFeEventoEncerramento( cChave, nSequencia, nProt, cUFFim , cMunCarrega , cCertificado, cAmbiente ) CLASS SefazClass
 
-   hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-   hb_Default( @::cVersao, "3.00" )
-   hb_Default( @nSequencia, 1 )
+   LOCAL cXml := ""
 
-   ::aSoapUrlList := WS_MDFE_EVENTO
-   ::cSoapAction  := "mdfeRecepcaoEvento"
-   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento"
-   ::Setup( cChave, cCertificado, cAmbiente )
+   cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
+   cXml +=    [<evEncMDFe>]
+   cXml +=       XmlTag( "descEvento", "Encerramento" )
+   cXml +=       XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   cXml +=       XmlTag( "dtEnc", DateXml( Date() ) )
+   cXml +=       XmlTag( "cUF", ::UFCodigo( cUFFim ) )
+   cXml +=       XmlTag( "cMun", cMunCarrega )
+   cXml +=    [</evEncMDFe>]
+   cXml += [</detEvento>]
 
-   ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110112] + cChave + StrZero( nSequencia, 2 ) + [">]
-   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
-   ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110112" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
-   ::cXmlDocumento +=            [<evEncMDFe>]
-   ::cXmlDocumento +=                XmlTag( "descEvento", "Encerramento" )
-   ::cXmlDocumento +=                  XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   ::cXmlDocumento +=                  XmlTag( "dtEnc", DateXml( Date() ) )
-   ::cXmlDocumento +=                  XmlTag( "cUF", ::UFCodigo( cUFFim ) )
-   ::cXmlDocumento +=                  XmlTag( "cMun", cMunCarrega )
-   ::cXmlDocumento +=            [</evEncMDFe>]
-   ::cXmlDocumento +=       [</detEvento>]
-   ::cXmlDocumento +=    [</infEvento>]
-   ::cXmlDocumento += [</eventoMDFe>]
-   IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := ::cXmlDocumento
-      ::XmlSoapPost()
-      ::cXmlProtocolo := ::cXmlRetorno
-      ::MDFeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo ) // hb_Utf8ToStr(
-   ENDIF
+   ::MDFeEvento( cChave, nSequencia, "110112", cXml, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 
 METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado, cAmbiente )
 
-   hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-   hb_Default( @::cVersao, "3.00" )
-   hb_Default( @nSequencia, 1 )
+   LOCAL cXml := ""
 
-   ::aSoapUrlList := WS_MDFE_EVENTO
-   ::cSoapAction  := "mdfeRecepcaoEvento"
-   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento"
-   ::Setup( cChave, cCertificado, cAmbiente )
+   cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
+   cXml +=    [<evIncCondutorMDFe>]
+   cXml +=       XmlTag( "descEvento", "Inclusao Condutor" )
+   cXml +=       [<condutor>]
+   cXml +=          XmlTag( "xNome", cNome )
+   cXml +=          XmlTag( "CPF", cCPF)
+   cXml +=       [</condutor>]
+   cXml +=    [</evIncCondutorMDFe>]
+   cXml += [</detEvento>]
 
-   ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110114] + cChave + StrZero( nSequencia, 2 ) + [">]
-   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
-   ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110114" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       [<detEvento versaoEvento="] + ::cVersao + [">]
-   ::cXmlDocumento +=            [<evIncCondutorMDFe>]
-   ::cXmlDocumento +=                XmlTag( "descEvento", "Inclusao Condutor" )
-   ::cXmlDocumento +=               [<condutor>]
-   ::cXmlDocumento +=                  XmlTag( "xNome", cNome )
-   ::cXmlDocumento +=                  XmlTag( "CPF", cCPF)
-   ::cXmlDocumento +=               [</condutor>]
-   ::cXmlDocumento +=            [</evIncCondutorMDFe>]
-   ::cXmlDocumento +=       [</detEvento>]
-   ::cXmlDocumento +=    [</infEvento>]
-   ::cXmlDocumento += [</eventoMDFe>]
-   IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := ::cXmlDocumento
-      ::XmlSoapPost()
-      ::cXmlProtocolo := ::cXmlRetorno
-      ::MDFeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo ) // hb_Utf8ToStr(
-   ENDIF
+   ::MDFeEvento( cChave, nSequencia, "110114", cXml, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 
@@ -965,7 +853,7 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::aSoapUrlList := WS_NFE_CONSULTACADASTRO
    ::Setup( cUF, cCertificado, cAmbiente )
-   IF ::cVersao == "3.10" .OR. ::cUF $ "AM,BA,MG,PE"
+   IF ::cUF $ "AM,BA,MG,PE"
       ::cSoapAction  := "CadConsultaCadastro2"
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2"
    ELSE
@@ -1019,28 +907,14 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
-   IF ::cVersao == "3.10"
-      DO CASE
-      CASE ::cUF == "BA"
-         ::cSoapAction  := "nfeConsultaNF"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta"
-      CASE ::cUF $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO"
-         ::cSoapAction  := "nfeConsultaNF2"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2"
-      OTHERWISE
-         ::cSoapAction  := "NfeConsulta2"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2"
-      ENDCASE
-   ELSE
-      DO CASE
-      CASE ::cUF $ "AC,AL,AP,DF,ES,PB,PI,RJ,RN,RO,RR,SC,SE,TO" // TODOS que usam SVRS
-         ::cSoapAction := "nfeConsultaNF"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeConsultaProtocolo4"
-      OTHERWISE
-         ::cSoapAction := "nfeConsultaNF"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaProtocolo4"
-      ENDCASE
-   ENDIF
+   DO CASE
+   CASE ::cUF $ "AC,AL,AP,DF,ES,PB,PI,RJ,RN,RO,RR,SC,SE,TO" // TODOS que usam SVRS
+      ::cSoapAction := "nfeConsultaNF"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeConsultaProtocolo4"
+   OTHERWISE
+      ::cSoapAction := "nfeConsultaNF"
+      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaProtocolo4"
+   ENDCASE
 
    ::cXmlEnvio    := [<consSitNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -1100,51 +974,31 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmb
 
    RETURN ::cXmlRetorno
 
-METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS SefazClass
-
-   LOCAL cVersaoEvento
+METHOD NFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente ) CLASS Sefazclass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    hb_Default( @nSequencia, 1 )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_EVENTO
-   IF ::cVersao == "3.10"
-      ::cSoapAction  := "nfeRecepcaoEvento"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"
-   ELSE
-      ::cSoapAction  := "nfeRecepcaoEvento"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
-   ENDIF
+   ::cSoapAction  := "nfeRecepcaoEvento"
+   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
    ::Setup( cChave, cCertificado, cAmbiente )
-   cVersaoEvento := "1.00"
-   ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110110] + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDocumento := [<evento versao="1.00" ] + WS_XMLNS_NFE + [>]
+   ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
    ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110110" )
+   ::cXmlDocumento +=       XmlTag( "tpEvento", cTipoEvento )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", LTrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       XmlTag( "verEvento", cVersaoEvento )
-   ::cXmlDocumento +=       [<detEvento versao="] + cVersaoEvento + [">]
-   ::cXmlDocumento +=          XmlTag( "descEvento", "Carta de Correcao" )
-   ::cXmlDocumento +=          XmlTag( "xCorrecao", cTexto )
-   ::cXmlDocumento +=          [<xCondUso>]
-   ::cXmlDocumento +=          "A Carta de Correcao e disciplinada pelo paragrafo 1o-A do art. 7o do Convenio S/N, "
-   ::cXmlDocumento +=          "de 15 de dezembro de 1970 e pode ser utilizada para regularizacao de erro ocorrido na "
-   ::cXmlDocumento +=          "emissao de documento fiscal, desde que o erro nao esteja relacionado com: "
-   ::cXmlDocumento +=          "I - as variaveis que determinam o valor do imposto tais como: base de calculo, aliquota, "
-   ::cXmlDocumento +=          "diferenca de preco, quantidade, valor da operacao ou da prestacao; "
-   ::cXmlDocumento +=          "II - a correcao de dados cadastrais que implique mudanca do remetente ou do destinatario; "
-   ::cXmlDocumento +=          "III - a data de emissao ou de saida."
-   ::cXmlDocumento +=         [</xCondUso>]
-   ::cXmlDocumento +=       [</detEvento>]
+   ::cXmlDocumento +=       XmlTag( "verEvento", "1.00" )
+   ::cXmlDocumento +=       cXml
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := [<envEvento versao="] + cVersaoEvento + [" xmlns="http://www.portalfiscal.inf.br/nfe">]
+      ::cXmlEnvio := [<envEvento versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
       ::cXmlEnvio +=    XmlTag( "idLote", DfeNumero( cChave ) ) // usado numero da nota
       ::cXmlEnvio +=    ::cXmlDocumento
       ::cXmlEnvio += [</envEvento>]
@@ -1155,103 +1009,63 @@ METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLA
 
    RETURN ::cXmlRetorno
 
+METHOD NFeEventoCarta( cChave, nSequencia, cTexto, cCertificado, cAmbiente ) CLASS SefazClass
+
+   LOCAL cXml := ""
+
+   cXml += [<detEvento versao="1.00">]
+   cXml +=    XmlTag( "descEvento", "Carta de Correcao" )
+   cXml +=    XmlTag( "xCorrecao", cTexto )
+   cXml +=    [<xCondUso>]
+   cXml +=    "A Carta de Correcao e disciplinada pelo paragrafo 1o-A do art. 7o do Convenio S/N, "
+   cXml +=    "de 15 de dezembro de 1970 e pode ser utilizada para regularizacao de erro ocorrido na "
+   cXml +=    "emissao de documento fiscal, desde que o erro nao esteja relacionado com: "
+   cXml +=    "I - as variaveis que determinam o valor do imposto tais como: base de calculo, aliquota, "
+   cXml +=    "diferenca de preco, quantidade, valor da operacao ou da prestacao; "
+   cXml +=    "II - a correcao de dados cadastrais que implique mudanca do remetente ou do destinatario; "
+   cXml +=    "III - a data de emissao ou de saida."
+   cXml +=    [</xCondUso>]
+   cXml += [</detEvento>]
+
+   ::NFeEvento( cChave, nSequencia, "110110", cXml, cCertificado, cAmbiente )
+
+   RETURN ::cXmlRetorno
+
 METHOD NFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL cVersaoEvento
+   LOCAL cXml := ""
 
-   hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, WS_NFE_DEFAULT )
-   hb_Default( @nSequencia, 1 )
-   ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
-   ::aSoapUrlList := WS_NFE_EVENTO
-   IF ::cVersao == "3.10"
-      ::cSoapAction  := "nfeRecepcaoEvento"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"
-   ELSE
-      ::cSoapAction  := "nfeRecepcaoEvento"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
-   ENDIF
-   ::Setup( cChave, cCertificado, cAmbiente )
-   cVersaoEvento := "1.00"
+   cXml += [<detEvento versao="1.00">]
+   cXml +=    XmlTag( "descEvento", "Cancelamento" )
+   cXml +=    XmlTag( "nProt", Ltrim( Str( nProt ) ) )
+   cXml +=    XmlTag( "xJust", xJust )
+   cXml += [</detEvento>]
 
-   ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + StrZero( nSequencia, 2 ) + [">]
-   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
-   ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110111" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
-   ::cXmlDocumento +=       XmlTag( "verEvento", cVersaoEvento )
-   ::cXmlDocumento +=       [<detEvento versao="] + cVersaoEvento + [">]
-   ::cXmlDocumento +=          XmlTag( "descEvento", "Cancelamento" )
-   ::cXmlDocumento +=          XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   ::cXmlDocumento +=          XmlTag( "xJust", xJust )
-   ::cXmlDocumento +=       [</detEvento>]
-   ::cXmlDocumento +=    [</infEvento>]
-   ::cXmlDocumento += [</evento>]
-   IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := [<envEvento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
-      ::cXmlEnvio +=    XmlTag( "idLote", DfeNumero( cChave ) ) // usado numero da nota
-      ::cXmlEnvio +=    ::cXmlDocumento
-      ::cXmlEnvio += [</envEvento>]
-      ::XmlSoapPost()
-      ::cXmlProtocolo := ::cXmlRetorno
-      ::NFeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
-   ENDIF
+   ::NFeEvento( cChave, nSequencia, "110111", cXml, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 
 METHOD NFeEventoCancelaSubstituicao( cChave, cOrgaoAutor, cAutor, cVersaoAplicativo, cProtocolo, cJust, cNFRef, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL cVersaoEvento
+   LOCAL cXml := "", nSequencia := 1
 
-   hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, WS_NFE_DEFAULT )
-   ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
-   ::aSoapUrlList := WS_NFE_EVENTO
-   ::cSoapAction  := "nfeRecepcaoEvento"
-   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4"
-   ::Setup( cChave, cCertificado, cAmbiente )
-   cVersaoEvento := "1.00"
+   cXml += [<detEvento versao="1.00">]
+   cXml +=    XmlTag( "descEvento", "Cancelamento por substituicao" ) // acentos?
+   cXml +=    XmlTag( "cOrgaoAutor", cOrgaoAutor )
+   cXml +=    XmlTag( "tpAutor", cAutor )
+   cXml +=    XmlTag( "verAplic", cVersaoAplicativo )
+   cXml +=    XmlTag( "nProt", cProtocolo )
+   cXml +=    XmlTag( "xJust", cJust )
+   cXml +=    XmlTag( "chNFeRef", cNfRef )
+   cXml += [</detEvento>]
 
-   ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110111] + cChave + "01" + [">]
-   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
-   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( "CNPJ", DfeEmitente( cChave ) )
-   ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110112" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", "1" )
-   ::cXmlDocumento +=       XmlTag( "verEvento", cVersaoEvento )
-   ::cXmlDocumento +=       [<detEvento versao="] + cVersaoEvento + [">]
-   ::cXmlDocumento +=          XmlTag( "descEvento", "Cancelamento por substituicao" ) // acentos?
-   ::cXmlDocumento +=          XmlTag( "cOrgaoAutor", cOrgaoAutor )
-   ::cXmlDocumento +=          XmlTag( "tpAutor", cAutor )
-   ::cXmlDocumento +=          XmlTag( "verAplic", cVersaoAplicativo )
-   ::cXmlDocumento +=          XmlTag( "nProt", cProtocolo )
-   ::cXmlDocumento +=          XmlTag( "xJust", cJust )
-   ::cXmlDocumento +=          XmlTag( "chNFeRef", cNfRef )
-   ::cXmlDocumento +=       [</detEvento>]
-   ::cXmlDocumento +=    [</infEvento>]
-   ::cXmlDocumento += [</evento>]
-   IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := [<envEvento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
-      ::cXmlEnvio +=    XmlTag( "idLote", DfeNumero( cChave ) ) // usado numero da nota
-      ::cXmlEnvio +=    ::cXmlDocumento
-      ::cXmlEnvio += [</envEvento>]
-      ::XmlSoapPost()
-      ::cXmlProtocolo := ::cXmlRetorno
-      ::NFeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
-   ENDIF
+   ::NFeEvento( cChave, nSequencia, "110111", cXml, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 
 METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL cDescEvento, cVersaoEvento
+   LOCAL cDescEvento
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
@@ -1263,7 +1077,6 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
    ::cSoapAction  := "nfeRecepcaoEventoNF"
    ::Setup( "AN", cCertificado, cAmbiente )
 
-   cVersaoEvento := "1.00"
    DO CASE
    CASE cCodigoEvento == "210200" ; cDescEvento := "Confirmacao da Operacao"
    CASE cCodigoEvento == "210210" ; cDescEvento := "Ciencia da Operacao"
@@ -1271,7 +1084,7 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
    CASE cCodigoEvento == "210240" ; cDescEvento := "Operacao Nao Realizada"
    ENDCASE
 
-   ::cXmlDocumento := [<evento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlDocumento := [<evento versao="1.00" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cCodigoEvento + cChave + "01" + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", "91" )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
@@ -1280,8 +1093,8 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", cCodigoEvento )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", "1" ) // obrigatoriamente 1
-   ::cXmlDocumento +=       XmlTag( "verEvento", cVersaoEvento )
-   ::cXmlDocumento +=       [<detEvento versao="] + cVersaoEvento + [">]
+   ::cXmlDocumento +=       XmlTag( "verEvento", "1.00" )
+   ::cXmlDocumento +=       [<detEvento versao="1.00">]
    ::cXmlDocumento +=          XmlTag( "descEvento", cDescEvento )
    IF cCodigoEvento == "210240"
       ::cXmlDocumento +=          XmlTag( "xJust", xJust )
@@ -1292,7 +1105,7 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := [<envEvento versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
+      ::cXmlEnvio := [<envEvento versao="1.00" ] + WS_XMLNS_NFE + [>]
       ::cXmlEnvio +=    XmlTag( "idLote", DfeNumero( cChave ) ) // usado numero da nota
       ::cXmlEnvio +=    ::cXmlDocumento
       ::cXmlEnvio += [</envEvento>]
@@ -1309,13 +1122,8 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::aSoapUrlList := WS_NFE_INUTILIZA
    ::Setup( cUF, cCertificado, cAmbiente )
-   IF ::cVersao == "3.10"
-      ::cSoapAction  := "NfeInutilizacaoNF2"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2"
-   ELSE
-      ::cSoapAction  := "nfeInutilizacaoNF"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeInutilizacao4"
-   ENDIF
+   ::cSoapAction  := "nfeInutilizacaoNF"
+   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeInutilizacao4"
 
    ::cXmlDocumento := [<inutNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + Right( cAno, 2 ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
@@ -1376,18 +1184,8 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
 
    ::aSoapUrlList := WS_NFE_AUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
-   IF ::cVersao == "3.10"
-      IF ::cUF $ "AC,AL,AP,DF,ES,PB,PR,RJ,RN,RO,RR,SC,SE,TO"
-         ::cSoapAction := "nfeAutorizacaoLote"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao"
-      ELSE
-         ::cSoapAction := "NfeAutorizacao"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeAutorizacao"
-      ENDIF
-   ELSE
-      ::cSoapAction  := "nfeAutorizacaoLote"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4"
-   ENDIF
+   ::cSoapAction  := "nfeAutorizacaoLote"
+   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4"
 
    IF Empty( cLote )
       cLote := "1"
@@ -1445,19 +1243,8 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    ::aSoapUrlList := WS_NFE_RETAUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
-   IF ::cVersao == "3.10"
-      DO CASE
-      CASE ::cUF == "PR"
-         ::cSoapAction  := "NfeRetAutorizacaoLote"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao3"
-      OTHERWISE
-         ::cSoapAction  := "NfeRetAutorizacao"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetAutorizacao"
-      ENDCASE
-   ELSE
-      ::cSoapAction  := "nfeRetAutorizacaoLote"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRetAutorizacao4"
-   ENDIF
+   ::cSoapAction  := "nfeRetAutorizacaoLote"
+   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRetAutorizacao4"
 
    ::cXmlEnvio     := [<consReciNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio     +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -1481,19 +1268,8 @@ METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::aSoapUrlList := WS_NFE_STATUSSERVICO
    ::Setup( cUF, cCertificado, cAmbiente )
-   IF ::cVersao == "3.10"
-      DO CASE
-      CASE ::cUF == "BA"
-         ::cSoapAction  := "nfeStatusServicoNF"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico"
-      OTHERWISE
-         ::cSoapAction  := "nfeStatusServicoNF2"
-         ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2"
-      ENDCASE
-   ELSE
-      ::cSoapAction  := "nfeStatusServicoNF"
-      ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4"
-   ENDIF
+   ::cSoapAction  := "nfeStatusServicoNF"
+   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4"
 
    ::cXmlEnvio    := [<consStatServ versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -1528,11 +1304,8 @@ METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
 METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass // runner
 
-   LOCAL cVersaoEvento
-
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
-   cVersaoEvento := "1.00"
 
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
@@ -1546,9 +1319,9 @@ METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass /
       RETURN NIL
    ENDIF
    ::cXmlAutorizado := XML_UTF8
-   ::cXmlAutorizado += [<procEventoNFe versao="] + cVersaoEvento + [" ] + WS_XMLNS_NFE + [>]
+   ::cXmlAutorizado += [<procEventoNFe versao="1.00" ] + WS_XMLNS_NFE + [>]
    ::cXmlAutorizado +=    cXmlAssinado
-   ::cXmlAutorizado += [<retEvento versao="] + cVersaoEvento + [">]
+   ::cXmlAutorizado += [<retEvento versao="1.00">]
    ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "retEvento" ) // hb_UTF8ToStr()
    ::cXmlAutorizado += [</retEvento>] // runner
    ::cXmlAutorizado += [</procEventoNFe>]
