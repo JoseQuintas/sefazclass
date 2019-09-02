@@ -2,11 +2,8 @@
 ZE_SEFAZCLASS - Rotinas pra comunicação com SEFAZ
 José Quintas
 
-Nota: CTE 2.00 vale até 10/2017, CTE 2.00 até 12/2017, NFE 3.10 até 04/2018
-
-2017.11.27 Aceita arquivo PFX pra assinatura somente
-2018.03.13 SoapList de CTE e MDFE nos métodos
-2018.05.13 Default NFE 4.0 exceto autorização/recibo/protocolo
+2019.07 - Início de desativação 3.10
+2019.09 - TODO: cMsg e xMsg no retorno da Fazenda com avisos da Sefaz
 */
 
 #include "hbclass.ch"
