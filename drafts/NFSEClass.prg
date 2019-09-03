@@ -154,4 +154,3 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    ENDIF
 
    RETURN NIL
-

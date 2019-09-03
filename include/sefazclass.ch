@@ -158,7 +158,6 @@
    ;
    { "**", "3.00", "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode" } }
 
-
 #define WS_NFE_CONSULTACADASTRO { ;
    { "MG",   "4.00P",  "https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2" }, ;
    { "MS",   "4.00PC", "https://nfce.fazenda.ms.gov.br/ws/CadConsultaCadastro4" }, ;

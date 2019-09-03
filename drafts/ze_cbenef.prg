@@ -5,7 +5,6 @@
 // 1 dígito finalidade (8=controle)
 // 1 dígito 0=imunidade ou não incidência, 1=isenção, 2=redução da base, 3=diferimento, 4=suspensão
 // 4 dígitos 0006=número sequencial
-//
 // Atualizado NT 2019.001 V 1.30
 
 FUNCTION PR_CBenef()
@@ -419,8 +418,8 @@ FUNCTION PR_CBenef()
 
    RETURN aList
 
-// RJ
-// CÓDIGO, CST 00, CST 10, CST 20, CST 30, CST 40, CST 41, CST 50, CST 51, CST 60, CST 70, CST 90, DATA INÍCIO, DATA FIM, DESCRIÇÃO, OBSERVAÇÃO, F17
+   // RJ
+   // CÓDIGO, CST 00, CST 10, CST 20, CST 30, CST 40, CST 41, CST 50, CST 51, CST 60, CST 70, CST 90, DATA INÍCIO, DATA FIM, DESCRIÇÃO, OBSERVAÇÃO, F17
 
 FUNCTION RJ_CBenef()
 
@@ -1011,8 +1010,8 @@ FUNCTION RJ_CBenef()
 
    RETURN aList
 
-// RS
-// CÓDIGO, CST 00, CST 10, CST 20, CST 30, CST 40, CST 41, CST 50, CST 51, CST 60, CST 70, CST 90, DATA INÍCIO, DATA FIM, DESCRIÇÃO, OBSERVAÇÃO
+   // RS
+   // CÓDIGO, CST 00, CST 10, CST 20, CST 30, CST 40, CST 41, CST 50, CST 51, CST 60, CST 70, CST 90, DATA INÍCIO, DATA FIM, DESCRIÇÃO, OBSERVAÇÃO
 
 FUNCTION SP_CBenef()
 
@@ -1458,4 +1457,3 @@ FUNCTION SP_CBenef()
    AAdd( aList, { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" } )
 
    RETURN aList
-

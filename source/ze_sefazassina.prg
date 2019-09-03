@@ -302,7 +302,7 @@ STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cPassword,
    BEGIN SEQUENCE WITH __BreakBlock()
 
 #ifdef __XHARBOUR__
-   oCapicomStore := xhb_CreateObject( "CAPICOM.Store" )
+      oCapicomStore := xhb_CreateObject( "CAPICOM.Store" )
 #else
       oCapicomStore := win_OleCreateObject( "CAPICOM.Store" )
 #endif
@@ -333,7 +333,6 @@ STATIC FUNCTION AssinaAjustaAssinado( cXml )
       nPosFim := hb_At( "</X509Data>", cXml, nPosIni + 5 )
       cXml    := Substr( cXml, 1, nPosIni - 1 ) + Substr( cXml, nPosFim )
    ENDIF
-
 
    //nPosIni := hb_At( [<X509Certificate>], cXml, nPosIni ) - 1
    //nP      := nPosIni + 1

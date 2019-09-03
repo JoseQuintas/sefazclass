@@ -67,10 +67,10 @@ METHOD ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar ) CLASS hbnfeDaEvento
       ::cXmlDocumento := cXmlAuxiliar
    ENDIF
    ::cXmlEvento   := cXmlEvento
-   ::cChaveEvento := SubStr( ::cXmlEvento, At( "Id=", ::cXmlEvento ) + 3 + 9, 44 )
+   ::cChaveEvento := Substr( ::cXmlEvento, At( "Id=", ::cXmlEvento ) + 3 + 9, 44 )
 
    IF ! Empty( ::cXmlDocumento )
-      ::cChaveNFe := SubStr( ::cXmlDocumento, At( "Id=", ::cXmlDocumento ) + 3 + 4, 44 )
+      ::cChaveNFe := Substr( ::cXmlDocumento, At( "Id=", ::cXmlDocumento ) + 3 + 4, 44 )
       IF ::cChaveEvento != ::cChaveNFe
          ::cRetorno := "Arquivos XML com Chaves diferentes. Chave Doc: " + ::cChaveNFe + " Chave Evento: " + ::cChaveEvento
          RETURN ::cRetorno
@@ -105,7 +105,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaEvento
    ENDIF
    ::aIde := hb_Hash()
    ::aIde[ "mod" ]   := DfeModFis( ::cChaveEvento ) // XmlNode( cIde, "mod" )
-   ::aIde[ "serie" ] := SubStr( ::cChaveEvento, 23, 3 ) // XmlNode( cIde, "serie" )
+   ::aIde[ "serie" ] := Substr( ::cChaveEvento, 23, 3 ) // XmlNode( cIde, "serie" )
    ::aIde[ "nNF" ]   := DfeNumero( ::cChaveEvento ) // XmlNode( cIde, "nNF" )
    ::aIde[ "dhEmi" ] := XmlNode( XmlNode( ::cXmlDocumento, "ide" ), "dhEmi" )
 
@@ -180,7 +180,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
 
    ::DrawBox( 290, ::nLinhaPDF -106,  275,  110, ::nLarguraBox )    // Quadro CC-e, Chave de Acesso e Codigo de Barras
    ::DrawTexto( 30, ::nLinhaPdf + 2,     274, Nil, "IDENTIFICAÇÃO DO EMITENTE", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 6 )
-   // alert( 'nLogoStyle: ' + ::nLogoStyle +'; LAYOUT_LOGO_ESQUERDA: ' + LAYOUT_LOGO_ESQUERDA )
+   // Alert( 'nLogoStyle: ' + ::nLogoStyle +'; LAYOUT_LOGO_ESQUERDA: ' + LAYOUT_LOGO_ESQUERDA )
    IF ::cLogoFile == NIL .OR. Empty( ::cLogoFile )
       ::DrawTexto( 30, ::nLinhaPDF -6,  289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 14 )
       ::DrawTexto( 30, ::nLinhaPDF -20,  289, Nil, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 14 )
@@ -218,7 +218,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
    ENDIF
 
    /*
-   IF EMPTY( ::cLogoFile )
+   IF Empty( ::cLogoFile )
    ::DrawTexto( 71, ::nLinhaPdf   , 399, Nil, "IDENTIFICAÇÃO DO EMITENTE" , HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
    ::DrawTexto( 71, ::nLinhaPDF - 6 , 399, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,1)) , HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
    ::DrawTexto( 71, ::nLinhaPDF - 18, 399, Nil, TRIM( MemoLine( ::aEmit[ "xNome" ],30,2)), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
@@ -308,16 +308,16 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
    IF DfeModFis( ::cChaveEvento ) == "57" // At( "retEventoCTe",::cXmlEvento) > 0
       // NUMERO CTE
       ::DrawTexto( 391, ::nLinhaPdf,     480, Nil, "NUMERO DO CT-e", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 6 )
-      ::DrawTexto( 391, ::nLinhaPDF -6,   480, Nil, SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
+      ::DrawTexto( 391, ::nLinhaPDF -6,   480, Nil, Substr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + Substr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + Substr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
    ELSE
       // NUMERO NFE
       ::DrawTexto( 391, ::nLinhaPdf,     480, Nil, "NUMERO DA NF-e", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 6 )
-      ::DrawTexto( 391, ::nLinhaPDF -6,   480, Nil, SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + SubStr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
+      ::DrawTexto( 391, ::nLinhaPDF -6,   480, Nil, Substr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 1, 3 ) + "." + Substr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 4, 3 ) + "." + Substr( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), 7, 3 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
    ENDIF
    // DATA DE EMISSAO DA NFE
    ::DrawBox( 480, ::nLinhaPDF -20,   85,  20, ::nLarguraBox )
    ::DrawTexto( 481, ::nLinhaPdf,     565, Nil, "DATA DE EMISSÃO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 6 )
-   ::DrawTexto( 481, ::nLinhaPDF -6,   565, Nil, SubStr( ::aIde[ "dhEmi" ], 9, 2 ) + '/' + SubStr( ::aIde[ "dhEmi" ], 6, 2 ) + '/' + Left( ::aIde[ "dhEmi" ], 4 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
+   ::DrawTexto( 481, ::nLinhaPDF -6,   565, Nil, Substr( ::aIde[ "dhEmi" ], 9, 2 ) + '/' + Substr( ::aIde[ "dhEmi" ], 6, 2 ) + '/' + Left( ::aIde[ "dhEmi" ], 4 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
 
    RETURN NIL
 
@@ -416,10 +416,10 @@ METHOD Eventos() CLASS hbnfeDaEvento
 
    // DATA E HORA DO REGISTRO
    ::DrawTexto( 272, ::nLinhaPdf,  429, Nil, "DATA DO REGISTRO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 6 )
-   cDataHoraReg := SubStr( ::aInfEvento[ "dhRegEvento" ], 9, 2 ) + '/'
-   cDataHoraReg += SubStr( ::aInfEvento[ "dhRegEvento" ], 6, 2 ) + '/'
+   cDataHoraReg := Substr( ::aInfEvento[ "dhRegEvento" ], 9, 2 ) + '/'
+   cDataHoraReg += Substr( ::aInfEvento[ "dhRegEvento" ], 6, 2 ) + '/'
    cDataHoraReg += Left( ::aInfEvento[ "dhRegEvento" ], 4 ) + '  '
-   cDataHoraReg += SubStr( ::aInfEvento[ "dhRegEvento" ], 12, 8 )
+   cDataHoraReg += Substr( ::aInfEvento[ "dhRegEvento" ], 12, 8 )
    ::DrawTexto( 272, ::nLinhaPDF -6, 429, Nil, cDataHoraReg, HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
 
    // NUMERO DO PROTOCOLO

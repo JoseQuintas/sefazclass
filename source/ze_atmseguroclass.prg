@@ -16,7 +16,7 @@ CREATE CLASS ATMSeguroClass
    METHOD NFE( cXml, cUsuario, cSenha, cCodigo )
    METHOD EnviaXML( cXml, cSoapAction )
 
-   END CLASS
+   ENDCLASS
 
 METHOD CTE( cXml, cUsuario, cSenha, cCodigo ) CLASS ATMSeguroClass
 

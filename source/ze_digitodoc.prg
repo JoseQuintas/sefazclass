@@ -107,7 +107,7 @@ FUNCTION ValidCnhAtual( cCnh )
    LOCAL Result, Cnh_Forn, Dig_Forn, Incr_Dig2, Soma, Mult, J, Digito1, Digito2, Dig_Enc
 
    Result := .F.
-   IF ! ( len( allTrim( cCnh ) ) ) = 11
+   IF ! ( Len( AllTrim( cCnh ) ) ) = 11
       RETURN Result
    ENDIF
    CNH_Forn := Substr( cCnh, 1, 9 )
@@ -116,10 +116,10 @@ FUNCTION ValidCnhAtual( cCnh )
    Soma := 0
    Mult := 9
    FOR j := 1 to 9
-      Soma := Soma + ( val( substr( CNH_Forn, j, 1 ) ) * Mult )
+      Soma := Soma + ( Val( Substr( CNH_Forn, j, 1 ) ) * Mult )
       Mult := Mult - 1
    NEXT
-   Digito1 := int( mod( Soma, 11 ) )
+   Digito1 := Int( mod( Soma, 11 ) )
    IF Digito1 = 10
       Incr_Dig2 := -2
    ENDIF
@@ -129,10 +129,10 @@ FUNCTION ValidCnhAtual( cCnh )
    Soma := 0
    Mult := 1
    FOR j := 1 to 9
-      Soma := Soma + ( val( substr( CNH_Forn, j, 1 ) ) * Mult)
+      Soma := Soma + ( Val( Substr( CNH_Forn, j, 1 ) ) * Mult)
       Mult := Mult + 1
    NEXT
-   IF int( mod( Soma, 11 ) ) + Incr_Dig2 < 0
+   IF Int( mod( Soma, 11 ) ) + Incr_Dig2 < 0
       Digito2 := 11 + Int( Mod( Soma, 11 ) ) + Incr_Dig2
    ELSE
       Digito2 := Int( Mod( Soma, 11 ) ) + Incr_Dig2
@@ -140,7 +140,7 @@ FUNCTION ValidCnhAtual( cCnh )
    IF Digito2 > 9
       Digito2 := 0
    ENDIF
-   Dig_Enc := allTrim( str( Digito1 ) ) + AllTrim( Str( Digito2 ) )
+   Dig_Enc := AllTrim( Str( Digito1 ) ) + AllTrim( Str( Digito2 ) )
    IF Dig_Forn = Dig_enc
       Result := .T.
    ENDIF

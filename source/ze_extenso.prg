@@ -192,4 +192,3 @@ STATIC FUNCTION ze_ExtensoSemana( dData )
    LOCAL aList := { "", "DOMINGO", "SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA", "SABADO" }
 
    RETURN aList[ Dow( dData ) + 1 ]
-

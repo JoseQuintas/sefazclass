@@ -126,7 +126,7 @@ METHOD Desenvolvedor( nLinhaPDF ) CLASS hbNFeDaGeral
    hb_Default( @nLinhaPDF, 10 )
    ::DrawTexto( 1, nLinhaPDF, 590, NIL, ::cDesenvolvedor, HPDF_TALIGN_RIGHT, ::oPdfFontBold, 6 )
    IF .F.
-      ::DrawTexto( 20, nLinhaPDF, 300, NIL, "DATA DA IMPRESSÃO: " + DToC( Date() ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
+      ::DrawTexto( 20, nLinhaPDF, 300, NIL, "DATA DA IMPRESSÃO: " + Dtoc( Date() ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
    ENDIF
 
    RETURN NIL
@@ -243,7 +243,6 @@ METHOD DrawAviso( cTexto ) CLASS hbNFeDaGeral
 
    RETURN NIL
 
-
 STATIC FUNCTION hbNFe_Texto_Hpdf( oPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
 
    LOCAL nRadiano
@@ -335,7 +334,7 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
    IF Len( cCodigoBarra ) > 0    // Verifica se os caracteres são válidos (somente números)
       IF Int( Len( cCodigoBarra ) / 2 ) == Len( cCodigoBarra ) / 2    // Tem ser par o tamanho do código de barras
          FOR nI = 1 TO Len( cCodigoBarra )
-            IF ( Asc( SubStr( cCodigoBarra, nI, 1 ) ) < 48 .OR. Asc( SubStr( cCodigoBarra, nI, 1 ) ) > 57 )
+            IF ( Asc( Substr( cCodigoBarra, nI, 1 ) ) < 48 .OR. Asc( Substr( cCodigoBarra, nI, 1 ) ) > 57 )
                nI := 0
                EXIT
             ENDIF
@@ -345,7 +344,7 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
          nI := 1 // nI é o índice da cadeia
          cCode128 := Chr( 155 )
          DO WHILE nI <= Len( cCodigoBarra )
-            nValorCar := Val( SubStr( cCodigoBarra, nI, 2 ) )
+            nValorCar := Val( Substr( cCodigoBarra, nI, 2 ) )
             IF nValorCar == 0
                nValorCar += 128
             ELSEIF nValorCar < 95
@@ -358,7 +357,7 @@ STATIC FUNCTION hbnfe_Codifica_Code128c( pcCodigoBarra )
          ENDDO
          // Calcula o checksum
          FOR nI = 1 TO Len( cCode128 )
-            nValorCar := Asc ( SubStr( cCode128, nI, 1 ) )
+            nValorCar := Asc ( Substr( cCode128, nI, 1 ) )
             IF nValorCar == 128
                nValorCar := 0
             ELSEIF nValorCar < 127

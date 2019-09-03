@@ -5,22 +5,29 @@ ZE_XHARBOUR - compatibilidade xHarbour
 */
 
 #ifdef __XHARBOUR__
+
 FUNCTION hb_MemoWrit( cFile, cText )
-   RETURN Memowrit( cFile, cText, .T. )
+
+   RETURN MemoWrit( cFile, cText, .T. )
 
 FUNCTION hb_At( cText, nStart, nEnd )
+
    RETURN At( cText, nStart, nEnd )
 
 FUNCTION hb_Eol()
+
    RETURN Chr(13) + Chr(10)
 
 FUNCTION wapi_MessageBox( nHwnd, cText, cTitle )
+
    RETURN Alert( cText )
 
 FUNCTION hb_Hash()
+
    RETURN Hash()
 
 FUNCTION HB_SYMBOL_UNUSED( x )
+
    RETURN NIL
 
 FUNCTION hb_Default( xVar, xValue )
@@ -32,6 +39,7 @@ FUNCTION hb_Default( xVar, xValue )
    RETURN NIL
 
 FUNCTION HPDF_LOADJPEGIMAGEFROMMEM()
+
    // Isto vai impedir de usar imagens em memória,
    // mas se no XHarbour não tem, sem opção
 

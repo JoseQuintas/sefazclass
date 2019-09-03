@@ -67,7 +67,7 @@ FUNCTION CapicomRemoveCertificado( cNomeCertificado )
 
 FUNCTION CapicomInstalaPFX( cFileName, cPassword, lREMOVER )
 
-	LOCAL oCertificado, oStore, cID
+   LOCAL oCertificado, oStore, cID
 
    hb_Default( @lREMOVER, .F. )
 

@@ -43,7 +43,7 @@ CREATE CLASS CapicomClass
    METHOD PublicKey( oCAPICOMCert )
    METHOD Sign( cDigestValue, oCAPICOMcert, nEncode, cPublicKey )
 
-   END CLASS
+   ENDCLASS
 
 METHOD SelectCertificate() CLASS CapicomClass
 
@@ -78,7 +78,7 @@ METHOD HashData( cData, nAlgorithm ) CLASS CapicomClass
    LOCAL oCapicom, oUtil
 
    IF cData = NIL
-      cData := DToS( Date() ) + Time()
+      cData := Dtos( Date() ) + Time()
    ENDIF
 
    IF nAlgorithm = NIL
@@ -129,8 +129,8 @@ METHOD Sign( cDigestValue, oCAPICOMCert, nEncode, cPublicKey ) CLASS CapicomClas
    ENDIF
 
    IF ! ( oCAPICOMSigner:Certificate:HasPrivateKey ;
-         .AND. DToS( oCAPICOMSigner:Certificate:ValidFromDate ) <= DToS( Date() ) ;
-         .AND. DToS( oCAPICOMSigner:Certificate:ValidToDate ) >= DToS( Date() ) )
+         .AND. Dtos( oCAPICOMSigner:Certificate:ValidFromDate ) <= Dtos( Date() ) ;
+         .AND. Dtos( oCAPICOMSigner:Certificate:ValidToDate ) >= Dtos( Date() ) )
       RETURN NIL
    ENDIF
 

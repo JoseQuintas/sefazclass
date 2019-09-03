@@ -669,7 +669,6 @@ METHOD MDFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbient
 
    RETURN ::cXmlRetorno
 
-
 METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente ) CLASS SefazClass
 
    LOCAL cXml := ""

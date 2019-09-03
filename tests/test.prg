@@ -7,7 +7,7 @@ REQUEST HB_CODEPAGE_PTISO
 #include "sefazclass.ch"
 
 #ifndef WIN_SW_SHOWNORMAL
-   #define WIN_SW_SHOWNORMAL 0
+#define WIN_SW_SHOWNORMAL 0
 #endif
 
 #define OPC_DANFE           1
@@ -448,4 +448,3 @@ FUNCTION JPEGImage()
 #pragma __binarystreaminclude "jpatecnologia.jpg"        | RETURN %s
 
 #endif
-

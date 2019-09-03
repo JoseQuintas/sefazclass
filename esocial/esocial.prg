@@ -34,7 +34,7 @@ METHOD ConsultaRetornoLote( cChave, cCertificado ) CLASS ESocialClass
    ::cXmlDocumento := ;
       [<eSocial xmlns="http://www.esocial.gov.br/schema/lote/eventos/envio/consulta/retornoProcessamento/v1_0_0">] + ;
          [<consultaLoteEventos>] + ;
-           [<protocoloEnvio>] + cChave + [</protocoloEnvio>] + ;
+            [<protocoloEnvio>] + cChave + [</protocoloEnvio>] + ;
          [</consultaLoteEventos>] + ;
       [</eSocial>]
    ::cXmlEnvelope := XML_UTF8 + ;

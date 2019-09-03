@@ -95,7 +95,7 @@ METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel ) CLASS hbnfeDaMdfe
 
    ::cXML       := cXmlMDFE
    ::cXmlCancel := cXmlCancel
-   ::cChave     := SubStr( ::cXml, At( 'Id=', ::cXml ) + 8, 44 )
+   ::cChave     := Substr( ::cXml, At( 'Id=', ::cXml ) + 8, 44 )
 
    IF !::buscaDadosXML()
       RETURN ::cRetorno
@@ -128,7 +128,7 @@ METHOD buscaDadosXML() CLASS hbnfeDaMdfe
    cText     := XmlNode( ::cXml, "infCTe" )
    DO WHILE "<chCT" $ cText
       cchCT := XmlNode( cText, "chCT" )
-      cText := SubStr( cText, At( "</chCT", cText ) + 7 )
+      cText := Substr( cText, At( "</chCT", cText ) + 7 )
       AAdd( ::ainfCTe, cchCT )
    ENDDO
 
@@ -137,7 +137,7 @@ METHOD buscaDadosXML() CLASS hbnfeDaMdfe
    cText    := cInfNF
    DO WHILE "<infNF" $ cText .AND. "</infNF" $ cText // precaucao inicio/fim
       cNF   := XmlNode( cText, "infNF" )
-      cText := SubStr( cText, At( "</infNF", cText ) + 8 )
+      cText := Substr( cText, At( "</infNF", cText ) + 8 )
       AAdd( ::ainfNF, { ;
          XmlNode( cNF, "CNPJ" ), ;
          XmlNode( cNF, "UF" ), ;
@@ -267,7 +267,7 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    // box do No. do Protocolo
    ::DrawTexto( 025, ::nLinhaPdf - 281, 575, Nil, "Protocolo de autorização de uso", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 12 )
    IF ! Empty( ::aProtocolo[ "nProt" ] )
-      ::DrawTexto( 025, ::nLinhaPdf - 296, 575, Nil, ::aProtocolo[ "nProt" ] + ' - ' + SubStr( ::aProtocolo[ "dhRecbto" ], 9, 2 ) + "/" + SubStr( ::aProtocolo[ "dhRecbto" ], 6, 2 ) + "/" + SubStr( ::aProtocolo[ "dhRecbto" ], 1, 4 ) + ' ' + SubStr( ::aProtocolo[ "dhRecbto" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+      ::DrawTexto( 025, ::nLinhaPdf - 296, 575, Nil, ::aProtocolo[ "nProt" ] + ' - ' + Substr( ::aProtocolo[ "dhRecbto" ], 9, 2 ) + "/" + Substr( ::aProtocolo[ "dhRecbto" ], 6, 2 ) + "/" + Substr( ::aProtocolo[ "dhRecbto" ], 1, 4 ) + ' ' + Substr( ::aProtocolo[ "dhRecbto" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
    ELSE
       ::DrawTexto( 025, ::nLinhaPdf - 296, 575, Nil, 'MDFe sem Autorização de Uso da SEFAZ', HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
    ENDIF
@@ -295,7 +295,7 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    // box do data e hora
    ::DrawLine( 285, ::nLinhaPdf - 355, 285, ::nLinhaPdf - 320, ::nLarguraBox )
    ::DrawTexto( 290, ::nLinhaPdf - 320, 440, Nil, "Data e Hora de Emissão", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 12 )
-   ::DrawTexto( 290, ::nLinhaPdf - 335, 440, Nil, SubStr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + SubStr( ::aIde[ "dhEmi" ], 1, 4 ) + ' ' + SubStr( ::aIde[ "dhEmi" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawTexto( 290, ::nLinhaPdf - 335, 440, Nil, Substr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 1, 4 ) + ' ' + Substr( ::aIde[ "dhEmi" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
 
    // UF de carregamento
    ::DrawLine( 440, ::nLinhaPdf - 355, 440, ::nLinhaPdf - 320, ::nLarguraBox )

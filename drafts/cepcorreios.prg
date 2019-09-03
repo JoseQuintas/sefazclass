@@ -38,7 +38,7 @@ STATIC FUNCTION ConsultaCep( cCep, cBairro, cCidade, cEndereco, cUF, cId )
       cEndereco := XmlNode( :cXmlRetorno, "end" )
       cUF       := XmlNode( :cXmlRetorno, "uf" )
       cID       := XmlNode( :cXmlRetorno, "id" )
-   END WITH
+   ENDWITH
    ? oSefaz:cXmlRetorno
 
    RETURN NIL
@@ -68,7 +68,7 @@ STATIC FUNCTION SoapEnvelope( cCEP )
    //:SetRequestHeader( "Content-Length", hb_NtoS( hb_BLen( cXML ) ) )
    //:Send( cXML )
    //:WaitForResponse( 500 )
-   //END WITH
+   //ENDWITH
    //hb_MemoWrit( "cep.htm", oMSXML:Responsebody )
    //WITH OBJECT oDOMDoc
    //   :aSync := .F.
@@ -79,4 +79,4 @@ STATIC FUNCTION SoapEnvelope( cCEP )
    //   cEndereco := :getElementsByTagName( "end" ):item(0):Text
    //   cUF       := :getElementsByTagName( "uf" ):item(0):Text
    //   cID       := :getElementsByTagName( "id" ):item(0):Text
-   //END WITH
+   //ENDWITH

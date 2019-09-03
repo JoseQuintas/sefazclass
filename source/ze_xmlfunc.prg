@@ -340,7 +340,7 @@ FUNCTION MultipleNodeToArray( cXml, cNode )
    LOCAL aNodes := {}
 
    DO WHILE "<" + cNode + " " $ cXml .OR. "<" + cNode + ">" $ cXml
-      Aadd( aNodes , XmlNode( cXml , cNode ) )
+      AAdd( aNodes , XmlNode( cXml , cNode ) )
       IF ! "</" + cNode $ cXml
          cXml := ""
       ELSE
@@ -358,14 +358,3 @@ FUNCTION TrimXml( cTexto )
    ENDDO
 
    RETURN cTexto
-
-/*
-nItem := Mod( x, 19 ) + 1
-aList := { "0414", "0403", "0323", "0411", "0331", "0418", "0408", ;
-           "0328", "0416", "0405", "0325", "0413", "0402", "0322", ;
-           "0410", "0330", "0417", "0407", "0327" }
-d := Stod( StrZero( x, 4 ) + aList[ nItem ]
-DO WHILE ! Dow( d ) == DOW_DOMINGO
-   d += 1
-ENDDO
-*/
