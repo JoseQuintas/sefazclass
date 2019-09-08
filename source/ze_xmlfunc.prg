@@ -196,11 +196,11 @@ FUNCTION XmlTag( cTag, xValue, nDecimals, lConvert )
    IF lConvert
       IF ValType( xValue ) == "D"
          xValue := DateXml( xValue )
-      ENDIF
-      IF ValType( xValue ) == "N"
+      ELSEIF ValType( xValue ) == "N"
          xValue := NumberXml( xValue, nDecimals )
+      ELSE
+         xValue := StringToXml( xValue )
       ENDIF
-      xValue := StringToXml( xValue )
    ENDIF
    IF Len( xValue ) == 0
       cXml := [<]+ cTag + [/>]
