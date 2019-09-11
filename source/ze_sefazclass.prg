@@ -97,7 +97,7 @@ CREATE CLASS SefazClass
    // hb_MemoWrit( "arquivo.zip", XmlNode( ::cXmlRetorno, "docZip" ) )
    METHOD NFeDownload( cCnpj, cChave, cCertificado, cAmbiente ) INLINE ::NfeDistribuicaoDfe( cCnpj, "", "", cChave, ::UFCodigo( Left( cChave, 2 ) ), cCertificado, cAmbiente )
 
-   METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente )
+   //METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente )
    METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
    METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmbiente )
@@ -868,33 +868,32 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    RETURN ::cXmlRetorno
 
-   /* Iniciado apenas 2015.07.31.1400 */
-
-METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente ) CLASS SefazClass
-
-   hb_Default( @::cProjeto, WS_PROJETO_NFE )
-   hb_Default( @::cVersao, WS_NFE_DEFAULT )
-   hb_Default( @cUltNSU, "0" )
-   hb_Default( @cIndNFe, "0" )
-   hb_Default( @cIndEmi, "0" )
-
-   ::aSoapUrlList := WS_NFE_CONSULTADEST
-   ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction := "nfeConsultaNFDest"
-   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest"
-
-   ::cXmlEnvio    := [<consNFeDest versao="] + ::cVersao + [">]
-   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR NFE DEST" )
-   ::cXmlEnvio    +=    XmlTag( "CNPJ", SoNumeros( cCnpj ) )
-   ::cXmlEnvio    +=    XmlTag( "indNFe", "0" ) // 0=todas,1=sem manif,2=sem nada
-   ::cXmlEnvio    +=    XmlTag( "indEmi", "0" ) // 0=todas, 1=sem cnpj raiz(sem matriz/filial)
-   ::cXmlEnvio    +=    XmlTag( "ultNSU", cUltNsu )
-   ::cXmlEnvio    += [</consNFeDest>]
-
-   ::XmlSoapPost()
-
-   RETURN ::cXmlRetorno
+//* Iniciado apenas 2015.07.31.1400 */
+//METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente ) CLASS SefazClass
+//
+//   hb_Default( @::cProjeto, WS_PROJETO_NFE )
+//   hb_Default( @::cVersao, WS_NFE_DEFAULT )
+//   hb_Default( @cUltNSU, "0" )
+//   hb_Default( @cIndNFe, "0" )
+//   hb_Default( @cIndEmi, "0" )
+//
+//   ::aSoapUrlList := WS_NFE_CONSULTADEST
+//   ::Setup( cUF, cCertificado, cAmbiente )
+//   ::cSoapAction := "nfeConsultaNFDest"
+//   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest"
+//
+//   ::cXmlEnvio    := [<consNFeDest versao="] + ::cVersao + [">]
+//   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
+//   ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR NFE DEST" )
+//   ::cXmlEnvio    +=    XmlTag( "CNPJ", SoNumeros( cCnpj ) )
+//   ::cXmlEnvio    +=    XmlTag( "indNFe", "0" ) // 0=todas,1=sem manif,2=sem nada
+//   ::cXmlEnvio    +=    XmlTag( "indEmi", "0" ) // 0=todas, 1=sem cnpj raiz(sem matriz/filial)
+//   ::cXmlEnvio    +=    XmlTag( "ultNSU", cUltNsu )
+//   ::cXmlEnvio    += [</consNFeDest>]
+//
+//   ::XmlSoapPost()
+//
+//   RETURN ::cXmlRetorno
 
 METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -939,15 +938,18 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmb
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cNSU, "" )
    hb_Default( @cChave, "" )
+   hb_Default( @cUF, "" )
 
    ::aSoapUrlList := WS_NFE_DISTRIBUICAO
    ::Setup( "AN", cCertificado, cAmbiente )
    ::cSoapAction  := "nfeDistDFeInteresse"
    ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe"
 
-   ::cXmlEnvio    := [<distDFeInt versao="1.01" ] + WS_XMLNS_NFE + [>]
+   ::cXmlEnvio    := [<distDFeInt ] + WS_XMLNS_NFE + [ versao="1.01">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio    +=    XmlTag( "cUFAutor", ::UFCodigo( cUF ) )
+   IF ! Empty( cUF )
+      ::cXmlEnvio    +=    XmlTag( "cUFAutor", ::UFCodigo( cUF ) )
+   ENDIF
    ::cXmlEnvio    +=    XmlTag( "CNPJ", cCnpj ) // ou CPF
    IF ! Empty( cChave )
       ::cXmlEnvio += [<consChNFe>]
@@ -955,11 +957,11 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmb
       ::cXmlEnvio += [</consChNFe>]
    ELSEIF ! Empty( cNSU )
       ::cXmlEnvio +=   [<consNSU>]
-      ::cXmlEnvio +=      XmlTag( "NSU", cNSU )
+      ::cXmlEnvio +=      XmlTag( "NSU", StrZero( Val( cNSU ), 15 ) )
       ::cXmlEnvio +=   [</consNSU>]
    ELSE
       ::cXmlEnvio +=   [<distNSU>]
-      ::cXmlEnvio +=      XmlTag( "ultNSU", cUltNSU )
+      ::cXmlEnvio +=      XmlTag( "ultNSU", StrZero( Val( cUltNSU ), 15 ) )
       ::cXmlEnvio +=   [</distNSU>]
    ENDIF
    ::cXmlEnvio   += [</distDFeInt>]
