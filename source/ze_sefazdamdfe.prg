@@ -260,7 +260,7 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
 #else
    ::DrawBarcode128( ::cChave, 150, ::nLinhaPDF - 242, 0.9, 40 )
 #endif
-   ::DrawBarcodeQrcode( 450, ::nLinhaPDF - 185, 1.6, "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode&chMDFe=" + ::cChave + "&tpAmb=" + ::aIde[ "tpAmb" ] )
+   ::DrawBarcodeQrcode( 450, ::nLinhaPDF - 185, 1.6, "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode?chMDFe=" + ::cChave + "&tpAmb=" + ::aIde[ "tpAmb" ] )
    ::DrawLine( 020, ::nLinhaPdf - 247, 575, ::nLinhaPdf - 247, ::nLarguraBox )
    ::DrawTexto( 025, ::nLinhaPdf - 248, 575, Nil, "Chave de acesso para consulta de autenticidade no site www.mdfe.fazenda.gov.br", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 12 )
    ::DrawTexto( 040, ::nLinhaPdf - 263, 575, Nil, TRANSF( ::cChave, "@R 99.9999.99.999.999/9999-99-99-999-999.999.999-999.999.999-9" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
