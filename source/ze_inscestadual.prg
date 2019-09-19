@@ -748,19 +748,21 @@ STATIC FUNCTION ValidIE_TO( cInscricao )
 
    LOCAL lOk := .T.
 
-   IF Len( cInscricao ) != 11
+   IF Len( cInscricao ) != 11 .AND. Len( cInscricao ) != 9
       lOk := .F.
    ELSEIF Substr( cInscricao, 1, 2 ) <> "29"
       lOk := .F.
-   ELSEIF ! ( Substr( cInscricao, 3, 2 ) $ "01,02,03,99" )
+   ELSEIF Len( cInscricao ) == 11 .AND. ! Substr( cInscricao, 3, 2 ) $ "01,02,03,99"
       lOk := .F.
    ELSE
-      IF CalculaDigito( Substr( cInscricao, 1, 2 ) + Substr( cInscricao, 5, 6 ), "11" ) != Substr( cInscricao, 9, 1 )
+      IF CalculaDigito( Substr( cInscricao, 1, 2 ) + Substr( cInscricao, Len( cInscricao ) - 6, 6 ), "11" ) != Right( cInscricao, 1 )
          lOk := .F.
       ENDIF
-   ENDIF
-   IF lOk
-      cInscricao := Transform( cInscricao, "@R 99.99.999999-9" )
+      IF Len( cInscricao ) == 11
+         cInscricao := Transform( cInscricao, "@R 99.99.999999-9" )
+      ELSE
+         cInscricao := Transform( cInscricao, "@R 99.999.999-9" )
+      ENDIF
    ENDIF
 
    RETURN lOk
