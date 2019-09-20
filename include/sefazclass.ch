@@ -246,6 +246,7 @@
    { "AN",   "4.00H", "https://hom.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx" } }
 
 #define WS_NFE_EVENTO { ;
+   { "AN",    "4.00H",  "https://hom.nfe.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx" }, ;
    { "AM",    "4.00H",  "https://homnfe.sefaz.am.gov.br/services2/services/RecepcaoEvento4" }, ;
    { "BA",    "4.00H",  "https://hnfe.sefaz.ba.gov.br/webservices/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx" }, ;
    { "CE",    "4.00H",  "https://nfeh.sefaz.ce.gov.br/nfe4/services/NFeRecepcaoEvento4" }, ;
