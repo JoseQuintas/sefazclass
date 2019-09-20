@@ -1057,7 +1057,7 @@ METHOD NFeEventoCancelaSubstituicao( cChave, cOrgaoAutor, cAutor, cVersaoAplicat
    cXml +=    XmlTag( "chNFeRef", cNfRef )
    cXml += [</detEvento>]
 
-   ::NFeEvento( cChave, nSequencia, "110111", cXml, cCertificado, cAmbiente )
+   ::NFeEvento( cChave, nSequencia, "110112", cXml, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 
