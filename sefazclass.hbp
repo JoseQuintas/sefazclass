@@ -1,3 +1,7 @@
+#
+# sefazclass.hbp
+#
+
 source/ze_atmseguroclass.prg
 source/ze_sefazclass.prg
 source/ze_sefazcapicom.prg

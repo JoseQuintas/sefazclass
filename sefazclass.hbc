@@ -1,8 +1,13 @@
-Description=any
+#
+# sefazclass.hbc
+#
+
 libs=sefazclass
-{!xhb}libs=hbhpdf.hbc hbzebra.hbc hbwin.hbc hbct.hbc
 libpaths=${hb_addons}/josequintas/${hb_plat}/${hb_comp}
 incpaths=include
-{xhb}incpaths=d:\xharbour\contrib\hbhpdf
-{xhb}incpaths=d:\xharbour\contrib\hbzebra
-{xhb}-D__XHARBOUR__
+libs=hbhpdf.hbc hbzebra.hbc hbwin.hbc hbct.hbc
+
+#{!xhb}libs=hbhpdf.hbc hbzebra.hbc hbwin.hbc hbct.hbc
+#{xhb}incpaths=${hb_path}\contrib\hbhpdf
+#{xhb}incpaths=${hb_path}\contrib\hbzebra
+#{xhb}-D__XHARBOUR__
