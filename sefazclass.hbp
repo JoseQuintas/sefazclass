@@ -26,6 +26,8 @@ source/ze_inscestadual.prg
 -Iinclude
 hbhpdf.hbc
 hbzebra.hbc
+hbct.hbc
+hbwin.hbc
 
 -w3
 -es2
