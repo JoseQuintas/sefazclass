@@ -2,6 +2,8 @@
 # sefazclass.hbp
 #
 
+-stop{!allwin}
+
 source/ze_atmseguroclass.prg
 source/ze_sefazclass.prg
 source/ze_sefazcapicom.prg
