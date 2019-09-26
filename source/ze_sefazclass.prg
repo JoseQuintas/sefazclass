@@ -2014,7 +2014,7 @@ STATIC FUNCTION SmallValidate( cXml )
 
    RETURN "OK"
 
-FUNCTION ProcFecha( cTag, aTagsAbre )
+STATIC FUNCTION ProcFecha( cTag, aTagsAbre )
 
    LOCAL oElement
    MEMVAR cTxtErro
