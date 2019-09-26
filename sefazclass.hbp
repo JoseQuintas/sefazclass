@@ -21,6 +21,10 @@ source/ze_digitodoc.prg
 source/ze_extenso.prg
 source/ze_inscestadual.prg
 
+-Iinclude
+hbhpdf.hbc
+hbzebra.hbc
+
 -w3
 -es2
 -m
@@ -28,9 +32,9 @@ source/ze_inscestadual.prg
 -beep
 -q
 
--o${hb_addons}/josequintas/${hb_plat}/${hb_comp}/${hb_name}
-
-sefazclass.hbc
+-olib/sefazclass
 
 -hblib
--hbx=${hb_addons}/josequintas/${hb_name}
+-hbx=sefazclass
+
+$hb_pkg_install.hbm
