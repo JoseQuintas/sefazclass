@@ -53,7 +53,7 @@ FUNCTION ChkSignature( cXml, cCertificadoCN )
       ENDIF
       cXmlRetorno := "OK"
 
-   END SEQUENCE
+   ENDSEQUENCE
    IF cXmlRetorno == "OK" // pelo temo que demora, melhor não usar
       oCapicomChain:Build( oVerifiedKey:GetVerifyingCertificate )
       cCertificadoCN := oCapicomChain:Certificates[ 1 ]:SubjectName()

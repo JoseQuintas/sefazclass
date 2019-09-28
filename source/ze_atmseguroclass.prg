@@ -84,7 +84,7 @@ METHOD EnviaXml( cXml, cSoapAction ) CLASS ATMSeguroClass
       oServer:send( cXmlEnvio )
       oServer:WaitForResponse( 1000 )
       cRetorno := oServer:responseText
-   END SEQUENCE
+   ENDSEQUENCE
 
    IF ValType( cRetorno ) != "C"
       cRetorno := ""

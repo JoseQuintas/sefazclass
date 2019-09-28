@@ -53,7 +53,7 @@ METHOD SelectCertificate() CLASS CapicomClass
    oCapicom:Open( CAPICOM_CURRENT_USER_STORE, "My", CAPICOM_STORE_OPEN_READ_ONLY )
    BEGIN SEQUENCE WITH { || __BreakBlock() }
       oCertificate := oCapicom:Certificates:Select( "Selecione um certificado digital", "Algoritmo de Assinatura SHA256RSA" )
-   END SEQUENCE
+   ENDSEQUENCE
    IF oCapicom:Certificates:Count() == 0
       RETURN NIL
    ENDIF

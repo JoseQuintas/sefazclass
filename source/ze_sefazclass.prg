@@ -1509,7 +1509,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
             ::cXmlRetorno += Chr( cRetorno[ nCont ] )
          NEXT
       ENDIF
-   END SEQUENCE
+   ENDSEQUENCE
    DO CASE
    CASE ! Empty( XmlNode( ::cXmlRetorno, "soap:Body" ) )
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" )
@@ -1714,7 +1714,7 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
       ENDIF
       cRetorno := "OK"
 
-   END SEQUENCE
+   ENDSEQUENCE
 
    RETURN cRetorno
 
