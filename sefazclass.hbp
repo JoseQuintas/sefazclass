@@ -24,7 +24,6 @@ source/ze_extenso.prg
 source/ze_inscestadual.prg
 
 -Iinclude
-sefazclass.hbc
 hbhpdf.hbc
 hbzebra.hbc
 hbct.hbc

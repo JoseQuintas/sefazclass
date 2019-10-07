@@ -390,8 +390,13 @@ METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
-   ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
-   ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
+      ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
+      ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   ELSE
+      ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   ENDIF
    //::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protCTe" ), "cStat" ), 3 )
    IF ! ::cStatus $ "100,101,150,301,302"
       ::cXmlRetorno := [<erro text="*ERRO* CTEGeraAutorizado() Não autorizado" />] + cXmlProtocolo
@@ -594,8 +599,13 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
    ::XmlSoapPost()
    ::cXmlProtocolo := ::cXmlRetorno
    IF ::cStatus != "999"
-      ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
-      ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+      IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
+         ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
+         ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+      ELSE
+         ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+         ::cMotivo  := XmlNode( ::cXmlRetorno, "xMotivo" )
+      ENDIF
    ENDIF
 
    RETURN ::cXmlRetorno
@@ -728,8 +738,13 @@ METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
-   ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
-   ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
+      ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
+      ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   ELSE
+      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   ENDIF
    //::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protMDFe" ), "cStat" ), 3 )
    IF ! ::cStatus $ "100,101,150,301,302"
       ::cXmlRetorno := [<erro text="*ERRO* MDFEGeraAutorizado() Não autorizado" />] + ::cXmlProtocolo
@@ -769,8 +784,11 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
 METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
+   LOCAL oDoc, cXmlCode
+
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
    hb_Default( @::cVersao, "3.00" )
+   hb_Default( @cLote, "1" )
    ::aSoapUrlList := WS_MDFE_AUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "MDFeRecepcao"
@@ -782,6 +800,15 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
+   oDoc := XmlToDoc( cXml )
+   cXmlCode := "<infMDFeSupl>"
+   cXmlCode += "<qrCodMDFe>"
+   cXmlCode += "<![CDATA["
+   cXmlCode += "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode?chMDFe=" + oDoc:cChave + "&tpAmb=1"
+   cXmlCode += "]]>"
+   cXmlCode += "</qrCodMDFe>"
+   cXmlCode += "</infMDFeSupl>"
+   ::cXmlDocumento := StrTran( ::cXmlDocumento, "</infMDFe>", "</infMDFe>" + cXmlCode )
    ::cXmlEnvio  := [<enviMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio  +=    XmlTag( "idLote", cLote )
    ::cXmlEnvio  +=    ::cXmlDocumento
@@ -1250,7 +1277,7 @@ METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ::cXmlEnvio     += [</consReciNFe>]
    ::XmlSoapPost()
    ::cXmlProtocolo := ::cXmlRetorno
-   IF "<infProt" $ ::cXmlRetorno // 23/05/2018
+   IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
       ::cStatus := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
       ::cMotivo := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
    ELSEIF ::cStatus != "999"
@@ -1285,8 +1312,13 @@ METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
-   ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
-   ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
+      ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
+      ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
+   ELSE
+      ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   ENDIF
    //::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protNFe" ), "cStat" ), 3 ) // Pad() garante 3 caracteres
    IF ! ::cStatus $ "100,101,150,301,302"
       ::cXmlRetorno := [<erro text="*ERRO* NFeGeraAutorizado() Não autorizado" />] + ::cXmlProtocolo
