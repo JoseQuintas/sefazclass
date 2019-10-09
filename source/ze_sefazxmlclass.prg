@@ -272,9 +272,11 @@ METHOD Init() CLASS DocSpedClass
 
    RETURN SELF
 
-FUNCTION XmlToDoc( cXmlInput )
+FUNCTION XmlToDoc( cXmlInput, lAutorizado )
 
    LOCAL oDocSped
+
+   hb_Default( @lAutorizado, .T. )
 
    IF ! ["] $ cXmlInput  // Petrobras usa aspas simples
       cXmlInput := StrTran( cXmlInput, ['], ["] )
@@ -346,7 +348,7 @@ FUNCTION XmlToDoc( cXmlInput )
    oDocSped:cChave := SoNumeros( oDocSped:cChave )
    IF Len( oDocSped:cChave ) == 44
       oDocSped:cModFis := DfeModFis( oDocSped:cChave )
-      oDocSped:cSerie       := Substr( oDocSped:cChave, 23, 3 )
+      oDocSped:cSerie  := Substr( oDocSped:cChave, 23, 3 )
    ENDIF
    DO CASE
    CASE ! Empty( oDocSped:cErro )
@@ -358,9 +360,9 @@ FUNCTION XmlToDoc( cXmlInput )
       oDocSped:cErro := "Mes da chave inválido"
    CASE ! ValidCnpjCpf( DfeEmitente( oDocSped:cChave ) )
       oDocSped:cErro := "CNPJ inválido na chave de acesso"
-   CASE Val( oDocSped:Protocolo ) == 0
+   CASE Val( oDocSped:Protocolo ) == 0 .AND. lAutorizado
       oDocSped:cErro := "Sem protocolo"
-   CASE Empty( oDocSped:cAssinatura )
+   CASE Empty( oDocSped:cAssinatura ) .AND. lAutorizado
       oDocSped:cErro := "Sem assinatura"
    CASE oDocSped:cAmbiente != WS_AMBIENTE_PRODUCAO
       oDocSped:cErro := "Não é ambiente de produção"
@@ -369,7 +371,7 @@ FUNCTION XmlToDoc( cXmlInput )
    ENDCASE
    IF ! Empty( oDocSped:cErro )
       oDocSped:cModFis := "XX"
-      oDocSped:cEvento      := "XXXXXX"
+      oDocSped:cEvento := "XXXXXX"
    ENDIF
 
    RETURN oDocSped
@@ -749,7 +751,11 @@ STATIC FUNCTION XmlToDocCteEmi( XmlInput, oDocSped )
 
    IF Empty( XmlProc := XmlNode( XmlInput, "cteProc" ) )
       XmlProc := XmlNode( XmlInput, "procCTe" )
+      IF Empty( XmlProc )
+         XmlProc := XmlInput
+      ENDIF
    ENDIF
+
       XmlCte := XmlNode( XmlProc, "CTe" )
          XmlInfCteComTag := XmlNode( XmlProc, "CTe", .T. )
          XmlInfCte := XmlNode( XmlCte, "infCte" )

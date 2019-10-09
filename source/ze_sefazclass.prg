@@ -481,6 +481,8 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
 METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
+   LOCAL oDoc, cBlocoXml
+
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
    hb_Default( @::cVersao, "3.00" )
    IF Empty( cLote )
@@ -497,6 +499,17 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
+
+   oDoc := XmlToDoc( cXml, .F. )
+	cBlocoXml := "<infCTeSupl>"
+	cBlocoXml += "<qrCodCTe>"
+	cBlocoXml += "<![CDATA["
+	cBlocoXml += "https://nfe.fazenda.sp.gov.br/CTeConsulta/qrCode?chCTe=" + oDoc:cChave + "&tpAmb=" + ::cAmbiente
+	cBlocoXml += "]]>"
+	cBlocoXml += "</qrCodCTe>"
+	cBlocoXml += "</infCTeSupl>"
+	::cXmlDocumento := StrTran( ::cXmlDocumento, "</infCte>", "</infCte>" + cBlocoXml )
+
    ::cXmlEnvio    := [<enviCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio    +=    XmlTag( "idLote", cLote )
    ::cXmlEnvio    +=    ::cXmlDocumento
@@ -683,6 +696,7 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
 
    LOCAL cXml := ""
 
+   hb_Default( @::cVersao, "3.00" )
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evCancMDFe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento" )
@@ -699,6 +713,7 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia, nProt, cUFFim , cMunCarrega ,
 
    LOCAL cXml := ""
 
+   hb_Default( @::cVersao, "3.00" )
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evEncMDFe>]
    cXml +=       XmlTag( "descEvento", "Encerramento" )
@@ -717,6 +732,7 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
 
    LOCAL cXml := ""
 
+   hb_Default( @::cVersao, "3.00" )
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evIncCondutorMDFe>]
    cXml +=       XmlTag( "descEvento", "Inclusao Condutor" )
@@ -784,7 +800,7 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
 METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL oDoc, cXmlCode
+   LOCAL oDoc, cBlocoXml
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
    hb_Default( @::cVersao, "3.00" )
@@ -800,15 +816,15 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
-   oDoc := XmlToDoc( cXml )
-   cXmlCode := "<infMDFeSupl>"
-   cXmlCode += "<qrCodMDFe>"
-   cXmlCode += "<![CDATA["
-   cXmlCode += "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode?chMDFe=" + oDoc:cChave + "&tpAmb=1"
-   cXmlCode += "]]>"
-   cXmlCode += "</qrCodMDFe>"
-   cXmlCode += "</infMDFeSupl>"
-   ::cXmlDocumento := StrTran( ::cXmlDocumento, "</infMDFe>", "</infMDFe>" + cXmlCode )
+   oDoc := XmlToDoc( cXml, .F. )
+   cBlocoXml := "<infMDFeSupl>"
+   cBlocoXml += "<qrCodMDFe>"
+   cBlocoXml += "<![CDATA["
+   cBlocoXml += "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode?chMDFe=" + oDoc:cChave + "&tpAmb=" + ::cAmbiente
+   cBlocoXml += "]]>"
+   cBlocoXml += "</qrCodMDFe>"
+   cBlocoXml += "</infMDFeSupl>"
+   ::cXmlDocumento := StrTran( ::cXmlDocumento, "</infMDFe>", "</infMDFe>" + cBlocoXml )
    ::cXmlEnvio  := [<enviMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio  +=    XmlTag( "idLote", cLote )
    ::cXmlEnvio  +=    ::cXmlDocumento
