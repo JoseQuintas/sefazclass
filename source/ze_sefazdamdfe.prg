@@ -1,5 +1,5 @@
 /*
-ZE_SPEDDAMDFE - Documento Auxiliar de Manifesto Eletrônico de Documentos Fiscais
+ZE_SEFAZDAMDFE - Documento Auxiliar de Manifesto Eletrônico de Documentos Fiscais
 Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 Contrbuição DaMdfe:MSouzaRunner
 */
@@ -7,6 +7,7 @@ Contrbuição DaMdfe:MSouzaRunner
 #include "common.ch"
 #include "hbclass.ch"
 #include "harupdf.ch"
+#include "sefazclass.ch"
 
 #define LAYOUT_LOGO_ESQUERDA        1      /* apenas anotado, mas não usado */
 #define LAYOUT_LOGO_DIREITA         2
@@ -231,7 +232,7 @@ METHOD NovaPagina() CLASS hbnfeDaMdfe
 
 METHOD cabecalho() CLASS hbnfeDaMdfe
 
-   LOCAL nCont
+   LOCAL nCont, aList, nPos, cURLConsulta := "http:"
 
    // box do logotipo e dados do emitente
 
@@ -260,7 +261,12 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
 #else
    ::DrawBarcode128( ::cChave, 150, ::nLinhaPDF - 242, 0.9, 40 )
 #endif
-   ::DrawBarcodeQrcode( 450, ::nLinhaPDF - 185, 1.6, "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode?chMDFe=" + ::cChave + "&tpAmb=" + ::aIde[ "tpAmb" ] )
+   aList := WS_MDFE_QRCODE
+   nPos := ASCan( aList, { | e | e[ 2 ] == "3.00P" } )
+   IF nPos != 0
+      cURLConsulta := aList[ nPos, 3 ]
+   ENDIF
+   ::DrawBarcodeQrcode( 450, ::nLinhaPDF - 185, 1.6, cURLConsulta + "?chMDFe=" + ::cChave + "&" + "tpAmb=" + ::aIde[ "tpAmb" ] )
    ::DrawLine( 020, ::nLinhaPdf - 247, 575, ::nLinhaPdf - 247, ::nLarguraBox )
    ::DrawTexto( 025, ::nLinhaPdf - 248, 575, Nil, "Chave de acesso para consulta de autenticidade no site www.mdfe.fazenda.gov.br", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 12 )
    ::DrawTexto( 040, ::nLinhaPdf - 263, 575, Nil, TRANSF( ::cChave, "@R 99.9999.99.999.999/9999-99-99-999-999.999.999-999.999.999-9" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )

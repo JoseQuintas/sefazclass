@@ -7,6 +7,7 @@ Contribuição DaCTE: MSouzaRunner
 #include "common.ch"
 #include "hbclass.ch"
 #include "harupdf.ch"
+#include "sefazclass.ch"
 #define LAYOUT_LOGO_ESQUERDA        1      /* apenas anotado, mas não usado */
 #define LAYOUT_LOGO_DIREITA         2
 #define LAYOUT_LOGO_EXPANDIDO       3
@@ -379,103 +380,109 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    LOCAL nReduc     := ''
    LOCAL nST        := ''
    LOCAL DASH_MODE3 := { 8, 7, 2, 7 }
-   LOCAL nCont, oElement, cTexto
+   LOCAL nCont, oElement, cTexto, nPos
+   LOCAL aList, cUrlConsulta := "http"
 
    // box do logotipo e dados do emitente
-   ::DrawBox( 003, ::nLinhaPdf - 119, 295, 119, ::nLarguraBox )
+   ::DrawBox( 003, ::nLinhaPdf - 119, 245, 119, ::nLarguraBox )
 
    ::DrawJPEGImage( ::cLogoFile, 115, ::nLinhaPdf - ( 52 + 1 ), 100, 052 )
    IF Len( ::aEmit[ "xNome" ] ) <= 25
-      ::DrawTexto( 3, ::nLinhaPdf - 056, 295, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+      ::DrawTexto( 3, ::nLinhaPdf - 056, 245, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
    ELSE
-      ::DrawTexto( 3, ::nLinhaPdf - 056, 295, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+      ::DrawTexto( 3, ::nLinhaPdf - 056, 245, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
    ENDIF
-   ::DrawTexto( 6, ::nLinhaPdf - 070, 295, Nil, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ] + " " + ::aEmit[ "xCpl" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 6, ::nLinhaPdf - 078, 295, Nil, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 6, ::nLinhaPdf - 086, 295, Nil, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 6, ::nLinhaPdf - 094, 295, Nil, iif( Empty( ::aEmit[ "fone" ] ), "", "Fone/Fax:" + ::FormataTelefone( ::aEmit[ "fone" ] ) ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 6, ::nLinhaPdf - 107, 295, Nil, 'CNPJ/CPF:' + Transform( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscr.Estadual:' + ::FormataIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 6, ::nLinhaPdf - 070, 245, Nil, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ] + " " + ::aEmit[ "xCpl" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 6, ::nLinhaPdf - 078, 245, Nil, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 6, ::nLinhaPdf - 086, 245, Nil, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 6, ::nLinhaPdf - 094, 245, Nil, iif( Empty( ::aEmit[ "fone" ] ), "", "Fone/Fax:" + ::FormataTelefone( ::aEmit[ "fone" ] ) ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 6, ::nLinhaPdf - 107, 245, Nil, 'CNPJ/CPF:' + Transform( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscr.Estadual:' + ::FormataIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
 
    // box do nome do documento
-   ::DrawBox( 303, ::nLinhaPdf - 032, 145, 032, ::nLarguraBox )
-   ::DrawTexto( 303, ::nLinhaPdf - 001, 448, Nil, "DACTE", HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
-   ::DrawTexto( 303, ::nLinhaPdf - 010, 448, Nil, "Documento Auxiliar do", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 303, ::nLinhaPdf - 016, 448, Nil, "Conhecimento de Transporte", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 303, ::nLinhaPdf - 022, 448, Nil, "Eletrônico", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawBox( 253, ::nLinhaPdf - 032, 131, 032, ::nLarguraBox )
+   ::DrawTexto( 253, ::nLinhaPdf - 001, 384, Nil, "DACTE", HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+   ::DrawTexto( 253, ::nLinhaPdf - 010, 384, Nil, "Documento Auxiliar do", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 253, ::nLinhaPdf - 016, 384, Nil, "Conhecimento de Transporte", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 253, ::nLinhaPdf - 022, 384, Nil, "Eletrônico", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
 
    // box do modal
-   ::DrawBox( 453, ::nLinhaPdf - 032, 140, 032, ::nLarguraBox )
-   ::DrawTexto( 453, ::nLinhaPdf - 001, 588, Nil, "MODAL", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ::DrawTexto( 453, ::nLinhaPdf - 015, 588, Nil, aModal[ Val( ::aIde[ "modal" ] ) ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+   ::DrawBox( 384, ::nLinhaPdf - 032, 127, 032, ::nLarguraBox )
+   ::DrawTexto( 384, ::nLinhaPdf - 001, 513, Nil, "MODAL", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+   ::DrawTexto( 384, ::nLinhaPdf - 015, 513, Nil, aModal[ Val( ::aIde[ "modal" ] ) ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
 
    // box do modelo
-   ::DrawBox( 303, ::nLinhaPdf - 060, 035, 025, ::nLarguraBox )
-   ::DrawTexto( 303, ::nLinhaPdf - 040, 338, Nil, "Modelo", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 303, ::nLinhaPdf - 047, 338, Nil, ::aIde[ "mod" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawBox( 253, ::nLinhaPdf - 060, 035, 025, ::nLarguraBox )
+   ::DrawTexto( 253, ::nLinhaPdf - 040, 288, Nil, "Modelo", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 253, ::nLinhaPdf - 047, 288, Nil, ::aIde[ "mod" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
 
    // box da serie
-   ::DrawBox( 338, ::nLinhaPdf - 060, 035, 025, ::nLarguraBox )
-   ::DrawTexto( 338, ::nLinhaPdf - 040, 373, Nil, "Série", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 338, ::nLinhaPdf - 047, 373, Nil, ::aIde[ "serie" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawBox( 288, ::nLinhaPdf - 060, 035, 025, ::nLarguraBox )
+   ::DrawTexto( 288, ::nLinhaPdf - 040, 323, Nil, "Série", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 288, ::nLinhaPdf - 047, 323, Nil, ::aIde[ "serie" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
 
    // box do numero
-   ::DrawBox( 373, ::nLinhaPdf - 060, 060, 025, ::nLarguraBox )
-   ::DrawTexto( 373, ::nLinhaPdf - 040, 433, Nil, "Número", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 373, ::nLinhaPdf - 047, 433, Nil, ::aIde[ "nCT" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawBox( 323, ::nLinhaPdf - 060, 060, 025, ::nLarguraBox )
+   ::DrawTexto( 323, ::nLinhaPdf - 040, 383, Nil, "Número", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 323, ::nLinhaPdf - 047, 383, Nil, ::aIde[ "nCT" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
 
    // box do fl
-   ::DrawBox( 433, ::nLinhaPdf - 060, 035, 025, ::nLarguraBox )
-   ::DrawTexto( 433, ::nLinhaPdf - 040, 468, Nil, "FL", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 433, ::nLinhaPdf - 047, 468, Nil, "1/1", HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawBox( 383, ::nLinhaPdf - 060, 035, 025, ::nLarguraBox )
+   ::DrawTexto( 383, ::nLinhaPdf - 040, 418, Nil, "FL", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 383, ::nLinhaPdf - 047, 418, Nil, "1/1", HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
 
    // box do data e hora
-   ::DrawBox( 468, ::nLinhaPdf - 060, 125, 025, ::nLarguraBox )
-   ::DrawTexto( 468, ::nLinhaPdf - 040, 588, Nil, "Data e Hora de Emissão", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 468, ::nLinhaPdf - 047, 588, Nil, Substr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 1, 4 ) + ' ' + Substr( ::aIde[ "dhEmi" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawBox( 418, ::nLinhaPdf - 060, 095, 025, ::nLarguraBox )
+   ::DrawTexto( 418, ::nLinhaPdf - 040, 513, Nil, "Data e Hora de Emissão", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 418, ::nLinhaPdf - 047, 513, Nil, Substr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 1, 4 ) + ' ' + Substr( ::aIde[ "dhEmi" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
 
    // box do controle do fisco
-   ::DrawBox( 303, ::nLinhaPdf - 129, 290, 066, ::nLarguraBox )
-   ::DrawTexto( 303, ::nLinhaPdf - 065, 588, Nil, "CONTROLE DO FISCO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 09 )
+   ::DrawBox( 253, ::nLinhaPdf - 129, 260, 066, ::nLarguraBox )
+   ::DrawTexto( 253, ::nLinhaPdf - 065, 398, Nil, "CONTROLE DO FISCO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 09 )
 #ifdef __XHARBOUR__
-   ::DrawTexto( 303, ::nLinhaPdf - 075, 588, Nil, ::xHarbourCode128c( ::cChave ), HPDF_TALIGN_CENTER, ::cFonteCode128F, 17 )
+   ::DrawTexto( 253, ::nLinhaPdf - 075, 538, Nil, ::xHarbourCode128c( ::cChave ), HPDF_TALIGN_CENTER, ::cFonteCode128F, 17 )
 #else
-   // atenção - chute inicial
-   ::DrawBarcode128( ::cChave, 320, ::nLinhaPDF -110, 0.9, 30 )
+   ::DrawBarcode128( ::cChave, 260, ::nLinhaPDF - 110, 0.9, 30 )
+   aList := WS_CTE_QRCODE
+   nPos := Ascan( aList, { | e | e[ 1 ] == DfeUF( ::cChave ) .AND. e[ 2 ] == "3.00" + iif( ::aIde[ "tpAmb" ] == "1", "P", "H" ) } )
+   IF nPos != 0
+      cURLConsulta := aList[ nPos, 3 ]
+   ENDIF
+   ::DrawBarcodeQrCode( 520, ::nLinhaPDF - 60, 1.6, cURLConsulta + "?chCTe=" + ::cChave + "&" + "tpAmb=" + ::aIde[ "tpAmb" ] )
 #endif
-   ::DrawTexto( 303, ::nLinhaPdf - 110, 588, Nil, "Chave de acesso para consulta de autenticidade no site www.cte.fazenda.gov.br", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 303, ::nLinhaPdf - 119, 588, Nil, TRANSF( ::cChave, "@R 99.9999.99.999.999/9999-99-99-999-999.999.999-999.999.999-9" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
+   ::DrawTexto( 235, ::nLinhaPdf - 110, 538, Nil, "Chave de acesso p/consulta de autenticidade no site www.cte.fazenda.gov.br", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 235, ::nLinhaPdf - 119, 538, Nil, Transform( ::cChave, "@R 99.9999.99.999.999/9999-99-99-999-999.999.999-999.999.999-9" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
 
    // box do tipo do cte
-   ::DrawBox( 003, ::nLinhaPdf - 154, 060, 032, ::nLarguraBox )
-   ::DrawTexto( 003, ::nLinhaPdf - 125, 060, Nil, "Tipo do CTe", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 003, ::nLinhaPdf - 135, 060, Nil, aTipoCte[ Val( ::aIde[ "tpCTe" ] ) + 1 ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawBox( 003, ::nLinhaPdf - 154, 050, 032, ::nLarguraBox )
+   ::DrawTexto( 003, ::nLinhaPdf - 125, 053, Nil, "Tipo do CTe", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 003, ::nLinhaPdf - 135, 053, Nil, aTipoCte[ Val( ::aIde[ "tpCTe" ] ) + 1 ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
 
    // box do tipo do servico
-   ::DrawBox( 063, ::nLinhaPdf - 154, 070, 032, ::nLarguraBox )
-   ::DrawTexto( 063, ::nLinhaPdf - 125, 133, Nil, "Tipo Serviço", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 063, ::nLinhaPdf - 135, 133, Nil, aTipoServ[ Val( ::aIde[ "tpServ" ] ) + 1 ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawBox( 053, ::nLinhaPdf - 154, 060, 032, ::nLarguraBox )
+   ::DrawTexto( 053, ::nLinhaPdf - 125, 113, Nil, "Tipo Serviço", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 053, ::nLinhaPdf - 135, 113, Nil, aTipoServ[ Val( ::aIde[ "tpServ" ] ) + 1 ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
 
    // box do tipo do Tomador do Servico
-   ::DrawBox( 133, ::nLinhaPdf - 154, 070, 032, ::nLarguraBox )
-   ::DrawTexto( 133, ::nLinhaPdf - 125, 203, Nil, "Tomador", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 133, ::nLinhaPdf - 135, 203, Nil, aTomador[ Val( ::aIde[ "toma" ] ) + 1 ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawBox( 113, ::nLinhaPdf - 154, 060, 032, ::nLarguraBox )
+   ::DrawTexto( 113, ::nLinhaPdf - 125, 173, Nil, "Tomador", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 113, ::nLinhaPdf - 135, 173, Nil, aTomador[ Val( ::aIde[ "toma" ] ) + 1 ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
 
    // box do tipo Forma de Pagamento
-   ::DrawBox( 203, ::nLinhaPdf - 154, 095, 032, ::nLarguraBox )
-   ::DrawTexto( 203, ::nLinhaPdf - 125, 298, Nil, "Forma de Pagamento", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 203, ::nLinhaPdf - 135, 298, Nil, aPagto[ Val( ::aIde[ "forPag" ] ) + 1 ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawBox( 173, ::nLinhaPdf - 154, 075, 032, ::nLarguraBox )
+   ::DrawTexto( 173, ::nLinhaPdf - 125, 248, Nil, "Forma de Pagamento", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 173, ::nLinhaPdf - 135, 248, Nil, aPagto[ Val( ::aIde[ "forPag" ] ) + 1 ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
    // box do No. do Protocolo
-   ::DrawBox( 303, ::nLinhaPdf - 154, 165, 022, ::nLarguraBox )
-   ::DrawTexto( 303, ::nLinhaPdf - 135, 468, Nil, "No. PROTOCOLO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawBox( 253, ::nLinhaPdf - 154, 145, 022, ::nLarguraBox )
+   ::DrawTexto( 253, ::nLinhaPdf - 135, 398, Nil, "No. PROTOCOLO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    IF ! Empty( ::aInfProt[ "nProt" ] )
-      ::DrawTexto( 303, ::nLinhaPdf - 143, 468, Nil, ::aInfProt[ "nProt" ] + ' - ' + Substr( ::aInfProt[ "dhRecbto" ], 9, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 6, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 1, 4 ) + ' ' + Substr( ::aInfProt[ "dhRecbto" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
+      ::DrawTexto( 253, ::nLinhaPdf - 143, 398, Nil, ::aInfProt[ "nProt" ] + ' - ' + Substr( ::aInfProt[ "dhRecbto" ], 9, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 6, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 1, 4 ) + ' ' + Substr( ::aInfProt[ "dhRecbto" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
    ENDIF
 
    // box da Insc. da Suframa
-   ::DrawBox( 468, ::nLinhaPdf - 154, 125, 022, ::nLarguraBox )
-   ::DrawTexto( 468, ::nLinhaPdf - 135, 588, Nil, "INSC. SUFRAMA DO DEST.", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   // ::DrawTexto( 468 , ::nLinhaPdf-145 , 568, Nil, ::aDest[ "ISUF" ] , HPDF_TALIGN_CENTER, ::oPDFFontBold, 6 )
-   ::DrawTexto( 468, ::nLinhaPdf - 143, 588, Nil, 'xxxxx xxxxxxxxxxxxxxx', HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
+   ::DrawBox( 398, ::nLinhaPdf - 154, 115, 022, ::nLarguraBox )
+   ::DrawTexto( 398, ::nLinhaPdf - 135, 508, Nil, "INSC. SUFRAMA DO DEST.", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   // ::DrawTexto( 398 , ::nLinhaPdf-143 , 538, Nil, ::aDest[ "ISUF" ] , HPDF_TALIGN_CENTER, ::oPDFFontBold, 6 )
+   //::DrawTexto( 398, ::nLinhaPdf - 143, 508, Nil, 'xxxxx xxxxxxxxxxxxxxx', HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
 
    ::DrawBoxTituloTexto( 003, ::nLinhaPdf - 157, 590, 022, "CFOP - Natureza da Prestação", ::aIde[ "CFOP" ] + ' - ' + ::aIde[ "natOp" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
 

@@ -121,6 +121,9 @@
    { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
    { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" } }
 
+#define WS_CTE_QRCODE { ;
+   { "SP", "3.00P", "https://nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" } }
+
 #define WS_MDFE_CONSULTANAOENCERRADOS { ;
    { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/mdfeConsNaoEnc/mdfeConsNaoenc.asmx" }, ;
    { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsNaoEnc/MDFeConsNaoEnc.asmx" } }
@@ -154,9 +157,9 @@
    { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" } }
 
 #define WS_MDFE_QRCODE { ;
-   { "**", "3.00", "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode" }, ;
+   { "**", "3.00P", "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode" }, ;
    ;
-   { "**", "3.00", "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode" } }
+   { "**", "3.00H", "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode" } }
 
 #define WS_NFE_CONSULTACADASTRO { ;
    { "MG",   "4.00P",  "https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2" }, ;

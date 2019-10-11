@@ -838,7 +838,7 @@ STATIC FUNCTION XmlToDocCteCancel( cXmlInput, oDocSped )
       mProtocolo  := XmlNode( mXmlInfCanc, "nProt" )
    ENDIF
    IF Len( Trim( mChave ) ) != 0
-      oDocSped:cChave   := mChave
+      oDocSped:cChave        := mChave
       oDocSped:Protocolo     := mProtocolo
       oDocSped:cAmbiente     := XmlNode( cXmlInput, "tpAmb" )
       oDocSped:Emitente:Cnpj := Transform( DfeEmitente( mChave ), "@R 99.999.999/9999-99" )
@@ -868,3 +868,7 @@ FUNCTION DfeNumero( cKey )
 FUNCTION DfeEmitente( cKey )
 
    RETURN Substr( cKey, 7, 14 )
+
+FUNCTION DFeUF( cKey )
+
+   RETURN SefazClass():UFSigla( cKey )

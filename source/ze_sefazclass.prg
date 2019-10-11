@@ -481,7 +481,7 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
 METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL oDoc, cBlocoXml
+   LOCAL oDoc, cBlocoXml, aList, cURLConsulta := "http:", nPos
 
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
    hb_Default( @::cVersao, "3.00" )
@@ -501,10 +501,15 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    ENDIF
 
    oDoc := XmlToDoc( cXml, .F. )
+   aList := WS_CTE_QRCODE
+   nPos := ASCan( aList, { | e | e[ 1 ] == DfeUF( oDoc:cChave ) .AND. e[ 2 ] == "3.00" + iif( oDoc:TpAmb == "1", "P", "H" ) } )
+   IF nPos != 0
+      cURLConsulta := aList[ nPos, 3 ]
+   ENDIF
 	cBlocoXml := "<infCTeSupl>"
 	cBlocoXml += "<qrCodCTe>"
 	cBlocoXml += "<![CDATA["
-	cBlocoXml += "https://nfe.fazenda.sp.gov.br/CTeConsulta/qrCode?chCTe=" + oDoc:cChave + "&tpAmb=" + ::cAmbiente
+	cBlocoXml += cURLConsulta + "?chCTe=" + oDoc:cChave + "&" + "tpAmb=" + oDoc:cAmbiente
 	cBlocoXml += "]]>"
 	cBlocoXml += "</qrCodCTe>"
 	cBlocoXml += "</infCTeSupl>"
@@ -800,7 +805,7 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
 METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL oDoc, cBlocoXml
+   LOCAL oDoc, cBlocoXml, aList, nPos, cURLConsulta := "http:"
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
    hb_Default( @::cVersao, "3.00" )
@@ -817,10 +822,15 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
       RETURN ::cXmlRetorno
    ENDIF
    oDoc := XmlToDoc( cXml, .F. )
+   aList := WS_MDFE_QRCODE
+   nPos := ASCan( aList, { | e | e[ 2 ] == "3.00" + iif( oDoc:cAmbiente == "1", "P", "H" ) } )
+   IF nPos != 0
+      cURLConsulta := aList[ nPos, 3 ]
+   ENDIF
    cBlocoXml := "<infMDFeSupl>"
    cBlocoXml += "<qrCodMDFe>"
    cBlocoXml += "<![CDATA["
-   cBlocoXml += "https://dfe-portal.svrs.rs.gov.br/mdfe/qrCode?chMDFe=" + oDoc:cChave + "&tpAmb=" + ::cAmbiente
+   cBlocoXml += cURLConsulta + "?chMDFe=" + oDoc:cChave + "&" + "tpAmb=" + ::cAmbiente
    cBlocoXml += "]]>"
    cBlocoXml += "</qrCodMDFe>"
    cBlocoXml += "</infMDFeSupl>"
