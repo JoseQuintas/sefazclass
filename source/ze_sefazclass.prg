@@ -502,7 +502,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
 
    oDoc := XmlToDoc( cXml, .F. )
    aList := WS_CTE_QRCODE
-   nPos := ASCan( aList, { | e | e[ 1 ] == DfeUF( oDoc:cChave ) .AND. e[ 2 ] == "3.00" + iif( oDoc:TpAmb == "1", "P", "H" ) } )
+   nPos := ASCan( aList, { | e | e[ 1 ] == DfeUF( oDoc:cChave ) .AND. e[ 2 ] == "3.00" + iif( oDoc:cAmbiente == "1", "P", "H" ) } )
    IF nPos != 0
       cURLConsulta := aList[ nPos, 3 ]
    ENDIF
