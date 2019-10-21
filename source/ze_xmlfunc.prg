@@ -17,6 +17,7 @@ FUNCTION XmlTransform( cXml )
       [<?xml version="1.0" encoding="utf-8"?>], ; // Petrobras inventou de usar assim
       [<?xml version="1.0" encoding="ISO-8859-1"?>], ; // Petrobras agora assim
       [<?xml version="1.0" encoding="UTF-8"?>], ; // o mais correto
+      [<?xml version="1.0" encoding="UTF-8" standalone="yes"?>], ;
       [<?xml version="1.00"?>], ;
       [<?xml version="1.0"?>] }
 
