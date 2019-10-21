@@ -283,7 +283,11 @@ FUNCTION XmlToDoc( cXmlInput, lAutorizado )
    ENDIF
    oDocSped := DocSpedClass():New()
    DO CASE
-   CASE "<nfeProc"      $ cXmlInput
+   CASE "<ProcInutNFe" $ cXmlInput
+      oDocSped:cModFis := "55"
+      oDocSped:cEvento := "110999"
+      XmlToDocNfeInut( cXmlInput, @oDocSped )
+   CASE "<nfeProc" $ cXmlInput
       oDocSped:cModFis := "55"
       oDocSped:cEvento  := "110100"
       XmlToDocNfeEmi( cXmlInput, @oDocSped )
@@ -740,6 +744,25 @@ STATIC FUNCTION XmlToDocMDFECancel( cXmlInput, oDocSped )
       oDocSPed:cNumDoc       := DfeNumero( mChave )
       oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
       oDocSped:Status        := "111"
+   ENDIF
+
+   RETURN NIL
+
+STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
+
+   LOCAL nPosIni
+
+   oDocSped:cAmbiente := XmlNode( cXmlInput, "tpAmb" )
+   nPosIni := At( cXmlInput, ["ID] ) + 3
+   IF nPosIni != 0
+      oDocSped:cChave        := Pad( SoNumeros( Substr( cXmlInput, nPosIni, 44 ) ), 44, "0" )
+      oDocSped:Emitente:Cnpj := Transform( DfeEmitente( oDocSped:cChave ), "@R 99.999.999/9999-99" )
+      oDocSped:cNumDoc       := DfeNumero( oDocSped:cChave )
+      oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
+      oDocSped:cSequencia    := "01"
+      oDocSped:Protocolo     := XmlNode( cXmlInput, "infInut" )
+      oDocSped:Status        := "999"
+      oDocSped:DataEmissao   := Stod( Left( SoNumeros( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
    ENDIF
 
    RETURN NIL
