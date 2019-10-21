@@ -1,4 +1,5 @@
 /*
+/*
 ZE_SEFAZCLASS - Rotinas pra comunicação com SEFAZ
 José Quintas
 
@@ -127,7 +128,7 @@ CREATE CLASS SefazClass
    METHOD UFCodigo( cSigla )                          INLINE UFCodigo( cSigla )
    METHOD UFSigla( cCodigo )                          INLINE UFSigla( cCodigo )
    METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( Empty( ::cUFTimeZone ), ::cUF, ::cUFTimeZone ), lUTC, ::cUserTimeZone )
-   METHOD ValidaXml( cXml, cFileXsd )                 INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd )
+   METHOD ValidaXml( cXml, cFileXsd, cIgnoreList )    INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd, cIgnoreList )
    METHOD Setup( cUF, cCertificado, cAmbiente )
 
    ENDCLASS
@@ -274,7 +275,7 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    LOCAL cXml := ""
 
-   cXml += [<detEvento versaoEvento="1.00">]
+   cXml += [<detEvento versaoEvento="3.00">]
    cXml +=    [<evCancCTe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento" )
    cXml +=       XmlTag( "nProt", Ltrim( Str( nProt, 16 ) ) )
@@ -290,7 +291,7 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
 
    LOCAL oElement, cXml := ""
 
-   cXml += [<detEvento versaoEvento="1.00">]
+   cXml += [<detEvento versaoEvento="3.00">]
    cXml +=      [<evCCeCTe>]
    cXml +=          XmlTag( "descEvento", "Carta de Correcao" )
    FOR EACH oElement IN aAlteracoes
@@ -322,7 +323,7 @@ METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente ) C
 
    LOCAL cXml := ""
 
-   cXml += [<detEvento versaoEvento="1.00">]
+   cXml += [<detEvento versaoEvento="3.00">]
    cXml +=    [<evPrestDesacordo>]
    cXml +=       XmlTag( "descEvento", "Prestacao do Servico em Desacordo" )
    cXml +=       XmlTag( "indDesacordoOper", "1" )
@@ -338,7 +339,7 @@ METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, 
 
    LOCAL oElement, cXml := ""
 
-   cXml += [<detEvento versaoEvento="1.00">]
+   cXml += [<detEvento versaoEvento="3.00">]
    cXml +=    [<evCECTe>]
    cXml +=       XmlTag( "descEvento", "Comprovante de Entrega do CT-e" )
    cXml +=       XmlTag( "nProt", Ltrim( Str( nProt ) ) )
@@ -371,7 +372,7 @@ METHOD CTeEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cCertifica
 
    LOCAL cXml := ""
 
-   cXml += [<detEvento versaoEvento="1.00">]
+   cXml += [<detEvento versaoEvento="3.00">]
    cXml +=    [<evCancCECTe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento do Comprovante de Entrega do CT-e" )
    cXml +=       XmlTag( "nProt", Ltrim( Str( nProt ) ) )
@@ -1715,7 +1716,7 @@ STATIC FUNCTION TipoXml( cXml )
 
    RETURN cTipoXml
 
-STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
+STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd, cIgnoreList )
 
    LOCAL oXmlDomDoc, oXmlSchema, oXmlErro, cRetorno := "ERRO"
 
@@ -1726,7 +1727,7 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd )
    ENDIF
 
    IF Empty( cFileXsd )
-      RETURN SmallValidate( cXml )
+      RETURN SingleXmlValidate( cXml, cIgnoreList )
    ENDIF
    IF ! File( cFileXSD )
       RETURN "Erro não encontrado arquivo " + cFileXSD
@@ -2038,12 +2039,11 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
 
    RETURN "OK"
 
-STATIC FUNCTION SmallValidate( cXml )
+STATIC FUNCTION SingleXmlValidate( cXml, cIgnoreList )
 
-   LOCAL nPos, aTagsAbre := {}, cTmp, oElement
-   MEMVAR cTxtErro
-   PRIVATE cTxtErro := ""
+   LOCAL nPos, aTagsAbre := {}, cTmp, oElement, cLetra, cTxt := ""
 
+   hb_Default( @cIgnoreList, "" )
    DO WHILE .T.
       nPos := hb_At( "<", cXml, nPos )
       IF nPos < 1
@@ -2063,13 +2063,31 @@ STATIC FUNCTION SmallValidate( cXml )
       nPos := nPos + 3
    ENDDO
    IF Len( aTagsAbre ) != 0
-      cTxtErro += "Em aberto" + Space(3)
+      cTxt += "Em aberto" + Space(3)
       FOR EACH oElement IN aTagsAbre
-         cTxtErro += oElement + Space(3)
+         cTxt += oElement + Space(3)
       NEXT
-      RETURN "*ERRO* " + cTxtErro
+      RETURN "*ERRO* " + cTxt
    ENDIF
-
+   FOR EACH cLetra IN cXml
+      DO CASE
+      CASE cLetra $ "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      CASE cLetra $ "abcdefghijklmnopqrstuvwxyz"
+      CASE cLetra $ "0123456789"
+      CASE cLetra $ " <>=:/.,-+#$()_@;%"
+      CASE cLetra == ["]
+      CASE cLetra $ cIgnoreList
+      OTHERWISE
+         cTxt += "Caractere " + cLetra + " posição " + Ltrim( Str( cLetra:__EnumIndex ) ) + ;
+            " aproximadamente aqui " + Substr( cXml, Max( 0, cLetra:__EnumIndex - 10 ), 20 ) + ", "
+      ENDCASE
+   NEXT
+   IF " <" $ cXml .OR. "> " $ cXml
+      cTxt += "espaços em branco antes de < ou depois de >"
+   ENDIF
+   IF Len( cTxt ) > 0
+      RETURN "*ERRO* " + cTxt
+   ENDIF
    RETURN "OK"
 
 STATIC FUNCTION ProcFecha( cTag, aTagsAbre )
