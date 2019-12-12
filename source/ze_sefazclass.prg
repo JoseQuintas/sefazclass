@@ -2050,7 +2050,7 @@ STATIC FUNCTION SingleXmlValidate( cXml, cIgnoreList )
          EXIT
       ENDIF
       IF Substr( cXml, nPos + 1, 1 ) == "/"
-         IF ! ProcFecha( Substr( cXml, nPos, hb_At( ">", cXml, nPos ) - nPos ), aTagsAbre )
+         IF ! ProcFecha( Substr( cXml, nPos, hb_At( ">", cXml, nPos ) - nPos ), aTagsAbre, @cTxt )
             EXIT
          ENDIF
       ELSE
@@ -2090,10 +2090,9 @@ STATIC FUNCTION SingleXmlValidate( cXml, cIgnoreList )
    ENDIF
    RETURN "OK"
 
-STATIC FUNCTION ProcFecha( cTag, aTagsAbre )
+STATIC FUNCTION ProcFecha( cTag, aTagsAbre, cTxt )
 
    LOCAL oElement
-   MEMVAR cTxtErro
 
    FOR EACH oElement IN aTagsAbre
       IF " " $ oElement
@@ -2115,7 +2114,7 @@ STATIC FUNCTION ProcFecha( cTag, aTagsAbre )
       hb_ADel( aTagsAbre, Len( aTagsAbre ), .T. )
    ELSE
       IF Len( aTagsAbre ) != 0
-         cTxtErro += "erro fechada " + cTag + " esperada " + Atail( aTagsAbre ) + Space(3)
+         cTxt += "erro fechada " + cTag + " esperada " + Atail( aTagsAbre ) + Space(3)
       ENDIF
       RETURN .F.
    ENDIF

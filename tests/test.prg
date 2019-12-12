@@ -91,7 +91,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       nHandle := hb_FTempCreateEx( @cTempFile, hb_DirTemp(), "", ".PDF" )
       fClose( nHandle )
       oDanfe := hbNFeDaGeral():New()
-      oDanfe:cDesenvolvedor := "JoséQuintas"
+      oDanfe:cDesenvolvedor := "hbnfe/sefazclass"
       oDanfe:cLogoFile      := cLogoFile
       oDanfe:ToPDF( cXmlDocumento, cTempFile, cXmlAuxiliar )
       PDFOpen( cTempFile )
@@ -281,6 +281,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          oSefaz:MDFeConsultaProtocolo( aVarList[ VAR_CHAVE ] )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
+         hb_MemoWrit( "consultamdfe.xml", oSefaz:cXmlRetorno )
 
       CASE nOpc == OPC_DESTINADAS
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
@@ -327,8 +328,8 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       CASE nOpc == OPC_ENVIO_USUARIO
          cXml := MemoRead( win_GetOpenFileName(, "Arquivo a transmitir", ".\", "XML", "*.XML", 1 ) )
          DO CASE
-         CASE "<infMDFe" $ cXml ; ? "autorizando CTE"; oSefaz:cVersao  := "3.00"; oSefaz:CteLoteEnvia( cXml )
-         CASE "<infCTe"  $ cXml ; ? "autorizando MDFE"; oSefaz:cVersao := "3.00"; oSefaz:MDFeLoteEnvia( cXml )
+         CASE "<infMDFe" $ cXml ; ? "autorizando MDFE"; oSefaz:cVersao  := "3.00"; oSefaz:MDFeLoteEnvia( cXml )
+         CASE "<infCTe"  $ cXml ; ? "autorizando CTE"; oSefaz:cVersao := "3.00"; oSefaz:CTeLoteEnvia( cXml )
          CASE "<infNFe"  $ cXml ; ? "autorizando NFE"; oSefaz:NfeLoteEnvia( cXml )
          OTHERWISE              ; ? "Documento não reconhecido"
          ENDCASE
@@ -448,3 +449,6 @@ FUNCTION JPEGImage()
 #pragma __binarystreaminclude "jpatecnologia.jpg"        | RETURN %s
 
 #endif
+
+FUNCTION AppUserName(); RETURN ""
+FUNCTION AppVersaoExe(); RETURN ""
