@@ -491,7 +491,7 @@ STATIC FUNCTION ValidIE_PI( cInscricao )
 
 STATIC FUNCTION ValidIE_PR( cInscricao )
 
-   LOCAL lOk := .T., nSoma
+   LOCAL lOk := .T., nSoma, nAdicao, nDig11
 
    IF Len( cInscricao ) != 10
       lOk := .F.
@@ -505,11 +505,22 @@ STATIC FUNCTION ValidIE_PR( cInscricao )
       IF nSoma != Val( Substr( cInscricao, 9, 1 ) )
          lOk := .F.
       ELSE
-         // Peso 2 a 7 e nao 2 a 9 como nas demais
-         nSoma := SomaModulo11( Substr( cInscricao, 1, 3 ) ) + SomaModulo11( Substr( cInscricao, 4, 6 ) )
+         IF cInscricao < '301700100'
+            nAdicao := 5
+            nDig11  := 0
+         ELSEIF cInscricao < '30190230'
+            nAdicao := 9
+            nDig11  := 1
+         ELSE
+            nAdicao := 5
+            nDig11  := 0
+         ENDIF
+         nSoma := nAdicao + SomaModulo11( Substr( cInscricao, 1, 8 ) )
          nSoma := 11 - Mod( nSoma, 11 )
-         IF nSoma > 9
+         IF nSoma == 10
             nSoma := 0
+         ELSEIF nSoma == 1
+            nSoma := nDig11
          ENDIF
          IF nSoma != Val( Substr( cInscricao, 10, 1 ) )
             lOk := .F.
