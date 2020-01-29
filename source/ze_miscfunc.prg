@@ -90,12 +90,12 @@ FUNCTION ze_Feriado( dDate, cUF )
       {  0,  "BR", "Domingo de Páscoa" }, ;
       { -2,  "BR", "Paixao de Cristo" }, ;
       { -47, "BR", "Terça de Carnaval" }, ;
-      { -48, "BR", "Quarta Feira de Cinzas" }, ;
+      { -46, "BR", "Quarta Feira de Cinzas" }, ;
       {  60, "BR", "Corpus Christi" } }
 
    hb_Default( @cUF, "BR" )
    FOR EACH oElement IN aEclesiasticos
-      AAdd( aList, { Right( Dtos( TercaDeCarnaval( Year( dDate ) ) + oElement[ 1 ] ), 4 ), oElement[ 2 ], oElement[ 3 ] } )
+      AAdd( aList, { Right( Dtos( DomingoDePascoa( Year( dDate ) ) + oElement[ 1 ] ), 4 ), oElement[ 2 ], oElement[ 3 ] } )
    NEXT
    nPos := AScan( aList, { | e | ( "BR" $ e[ 2 ] .OR. cUF $ e[ 2 ] ) .AND. e[ 1 ] == Right( Dtos( dDate ), 4 ) } )
    IF nPos != 0
