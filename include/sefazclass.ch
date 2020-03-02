@@ -257,7 +257,7 @@
    { "MG",    "4.00H",  "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeRecepcaoEvento4" }, ;
    { "MS",    "4.00H",  "https://hom.nfe.sefaz.ms.gov.br/ws/NFeRecepcaoEvento4" }, ;
    { "MT",    "4.00H",  "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento4" }, ;
-   { "PE",    "4.00H",  "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento4" }, ;
+   { "PE",    "4.00H",  "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NFeRecepcaoEvento4" }, ;
    { "PR",    "4.00H",  "https://homologacao.nfe.sefa.pr.gov.br/nfe/NFeRecepcaoEvento4" }, ;
    { "RS",    "4.00H",  "https://nfe-homologacao.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx" }, ;
    { "SP",    "4.00H",  "https://homologacao.nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" }, ;
@@ -281,7 +281,7 @@
    { "MG",    "4.00P",  "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeRecepcaoEvento4" }, ;
    { "MS",    "4.00P",  "https://nfe.fazenda.ms.gov.br/ws/NFeRecepcaoEvento4" }, ;
    { "MT",    "4.00P",  "https://nfe.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento4" }, ;
-   { "PE",    "4.00P",  "https://nfe.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento4" }, ;
+   { "PE",    "4.00P",  "https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeRecepcaoEvento4" }, ;
    { "PR",    "4.00P",  "https://nfe.sefa.pr.gov.br/nfe/NFeRecepcaoEvento4" }, ;
    { "RS",    "4.00P",  "https://nfe.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx" }, ;
    { "SP",    "4.00P",  "https://nfe.fazenda.sp.gov.br/ws/nferecepcaoevento4.asmx" }, ;

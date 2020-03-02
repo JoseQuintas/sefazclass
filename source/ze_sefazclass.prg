@@ -957,7 +957,7 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::aSoapUrlList := WS_NFE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
    DO CASE
-   CASE ::cUF $ "AC,AL,AP,DF,ES,PB,PI,RJ,RN,RO,RR,SC,SE,TO" // TODOS que usam SVRS
+   CASE ::cUF $ "AC,AL,AP,DF,ES,PB,PE,PI,RJ,RN,RO,RR,SC,SE,TO" // TODOS que usam SVRS
       ::cSoapAction := "nfeConsultaNF"
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeConsultaProtocolo4"
    OTHERWISE
