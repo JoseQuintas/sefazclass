@@ -140,12 +140,14 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          TestDanfe()
 
       CASE nOpc == OPC_CERTIFICADO
-         cTexto := CapicomEscolheCertificado()
-         aVarList[ VAR_CERTIFICADO ] := cTexto
-         dValidFrom := CapicomCertificado( cTexto ):ValidFromDate
-         dValidTo   := CapicomCertificado( cTexto ):ValidToDate
-         wapi_MessageBox( , "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
-            iif( dValidTo < Date(), "VENCIDO!!!!!!", "" ) )
+         BEGIN SEQUENCE WITH __BreakBlock()
+            cTexto := CapicomEscolheCertificado()
+            aVarList[ VAR_CERTIFICADO ] := cTexto
+            dValidFrom := CapicomCertificado( cTexto ):ValidFromDate
+            dValidTo   := CapicomCertificado( cTexto ):ValidToDate
+            wapi_MessageBox( , "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
+               iif( dValidTo < Date(), "VENCIDO!!!!!!", "" ) )
+         ENDSEQUENCE
 
          LOOP
 
