@@ -87,6 +87,7 @@ CREATE CLASS SefazClass
    METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD MDFeEventoEncerramento( cChave, nSequencia, nProt, cUFFim, cMunCarrega, cCertificado, cAmbiente )
    METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado, cAmbiente )
+   METHOD MDFeEventoPagamento( cChave, nSequencia, cXmlPagamento, cCertificado, cAmbiente )
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
@@ -750,6 +751,19 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
    cXml += [</detEvento>]
 
    ::MDFeEvento( cChave, nSequencia, "110114", cXml, cCertificado, cAmbiente )
+
+   RETURN ::cXmlRetorno
+
+METHOD MDFeEventoPagamento( cChave, nSequencia, cXmlPagamento, cCertificado, cAmbiente )
+
+   LOCAL cXml := ""
+
+   hb_Default( @::cVersao, "3.00" )
+   cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
+   cXml += cXmlPagamento
+   cXml += [</detEvento>]
+
+   ::MDFeEvento( cChave, nSequencia, "110116", cXml, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 
