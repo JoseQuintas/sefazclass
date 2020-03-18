@@ -26,7 +26,7 @@ CREATE CLASS SefazClass
    VAR    cAmbiente       INIT WS_AMBIENTE_PRODUCAO
    VAR    cVersao         INIT NIL
    VAR    cVersaoQrCode   INIT "2.00"                  // Versao do QRCode
-   VAR    cScan           INIT "N"                     // Indicar se for SCAN/SVAN, ainda não testado
+   VAR    cScan           INIT "N"                     // TPEMIS = SCAN/SVAN/SVRS testes iniciais
    VAR    cUF             INIT "SP"                    // Modificada conforme método
    VAR    cCertificado    INIT ""                      // Nome do certificado
    VAR    ValidFromDate   INIT ""                      // Validade do certificado
