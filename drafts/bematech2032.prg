@@ -8,18 +8,18 @@ PROCEDURE Main
    ? oPrinter:Le_Status()
    ? oPrinter:IniciaPorta()
    ? oPrinter:ComandoTx( "sei la" )
-   ? oPrinter:nHandle
+   ? oPrinter:hDLL
    oPrinter:Destroy()
 
    RETURN
 
 CREATE CLASS MP2032
 
-   VAR    nHandle
+   VAR    hDLL
 
-   METHOD Init()                                          INLINE ::nHandle := hb_LibLoad( "mp2032.dll" )
-   METHOD Destroy()                                       INLINE hb_LibFree( ::nHandle )
-   METHOD CallDllStd( cName, ... )                        INLINE hb_DynCall( { cName, ::nHandle, HB_DYN_CALLCONV_STDCALL }, ... )
+   METHOD Init()                                          INLINE ::hDLL := hb_LibLoad( "mp2032.dll" )
+   METHOD Destroy()                                       INLINE hb_LibFree( ::hDLL )
+   METHOD CallDllStd( cName, ... )                        INLINE hb_DynCall( { cName, ::hDLL, HB_DYN_CALLCONV_STDCALL }, ... )
    METHOD IniciaPorta( cPorta )                           INLINE ::CallDllStd( "IniciaPorta", cPorta )
    METHOD BematechTx( cComando )                          INLINE ::CallDllStd( "BematechTX", cComando )
    METHOD ComandoTx( cBufTrans, nFlag )                   INLINE ::CallDllStd( "ComandoTX", cBufTrans, nFlag )
