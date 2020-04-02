@@ -51,7 +51,7 @@ MEMVAR aVarList, oSefaz
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    LOCAL nOpc := 1, GetList := {}, cTexto := ""
-   LOCAL oDanfe, cTempFile, nHandle, cXml, cXmlRetorno, dValidFrom, dValidTo
+   LOCAL oDanfe, cTempFile, hFileOutput, cXml, cXmlRetorno, dValidFrom, dValidTo
    PRIVATE aVarList, oSefaz
 
    aVarList := Array( 11 )
@@ -88,8 +88,8 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
             cLogoFile := MemoRead( cLogoFile )
          ENDIF
       ENDIF
-      nHandle := hb_FTempCreateEx( @cTempFile, hb_DirTemp(), "", ".PDF" )
-      fClose( nHandle )
+      hFileOutput := hb_FTempCreateEx( @cTempFile, hb_DirTemp(), "", ".PDF" )
+      fClose( hFileOutput )
       oDanfe := hbNFeDaGeral():New()
       oDanfe:cDesenvolvedor := "hbnfe/sefazclass"
       oDanfe:cLogoFile      := cLogoFile
@@ -388,7 +388,7 @@ FUNCTION SetupHarbour()
    CLS
    SET DATE BRITISH
    Set( _SET_CODEPAGE, "PTISO" )
-   Set( _SET_EVENTMASK, INKEY_ALL - INKEY_MOVE )
+   Set( _SET_EVENTMASK, HB_INKEY_ALL - INKEY_MOVE + HB_INKEY_GTEVENT )
    SET CONFIRM ON
 
 #ifndef __XHARBOUR__
