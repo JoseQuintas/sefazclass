@@ -33,7 +33,7 @@ CREATE CLASS SefazClass
    VAR    ValidToDate     INIT ""                      // Validade do certificado
    VAR    cCertificadoCN  INIT ""                      // Subject do certificado
    VAR    cIndSinc        INIT WS_RETORNA_RECIBO       // Poucas UFs opção de protocolo
-   VAR    nTempoEspera    INIT 7                       // intervalo entre envia lote e consulta recibo
+   VAR    nTempoEspera    INIT 10                      // intervalo entre envia lote e consulta recibo
    VAR    nSoapTimeOut    INIT 5000                    // Limite de espera por resposta
    VAR    cUFTimeZone     INIT ""                      // Para TimeZone diferente da UF de comunicação
    VAR    cUserTimeZone   INIT ""                      // Para TimeZone definido pelo usuário
@@ -1244,6 +1244,8 @@ METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass
 
+   LOCAL oDoc, cChave
+
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    hb_Default( @cIndSinc, ::cIndSinc )
@@ -1282,6 +1284,15 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       IF ! Empty( ::cRecibo )
          Inkey( ::nTempoEspera )
          ::NfeConsultaRecibo()
+         IF ASCan( { "104", "105" }, { | e | e == ::cStatus } ) != 0
+            oDoc   := XmlToDoc( ::cXmlDocumento, .F. )
+            cChave := oDoc:cChave
+            Inkey( ::nTempoEspera )
+            ::NfeConsultaProtocolo( cChave, ::cUF, ::cCertificado, ::cAbmiente )
+            IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
+               ::cXmlProtocolo := ::cXmlRetorno
+            ENDIF
+         ENDIF
          ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
       ENDIF
    ELSE
