@@ -971,8 +971,12 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::aSoapUrlList := WS_NFE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
    DO CASE
-   CASE ::cUF $ "AC,AL,AP,DF,ES,PB,PE,PI,RJ,RN,RO,RR,SC,SE,TO" // TODOS que usam SVRS
-      ::cSoapAction := "nfeConsultaNF"
+   CASE ::cUF $ "AC,AL,AP,DF,ES,MS,PB,PE,PI,RJ,RN,RO,RR,SC,SE,TO" // TODOS que usam SVRS
+      IF ::cUF == "MS" .AND. DfeModFis( cChave ) == "65"
+         ::cSoapAction := "NfeConsultaProtocolo"
+      ELSE
+         ::cSoapAction := "nfeConsultaNF"
+      ENDIF
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeConsultaProtocolo4"
    OTHERWISE
       ::cSoapAction := "nfeConsultaNF"
@@ -1188,7 +1192,11 @@ METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::aSoapUrlList := WS_NFE_INUTILIZA
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "nfeInutilizacaoNF"
+   IF ::cUF == "MS"
+      ::cSoapAction := "NfeInutilizacao"
+   ELSE
+      ::cSoapAction := "nfeInutilizacaoNF"
+   ENDIF
    ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeInutilizacao4"
 
    ::cXmlDocumento := [<inutNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]

@@ -176,7 +176,7 @@
    { "SP",   "4.00P",  "https://nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" }, ;
    { "SVRS", "4.00P",  "https://cad.svrs.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro4.asmx" }, ;
    ;
-   { "MS",   "4.00HC", "https://homologacao.nfce.fazenda.ms.gov.br/ws/CadConsultaCadastro4" }, ;
+   { "MS",   "4.00HC", "https://hom.nfce.fazenda.ms.gov.br/ws/CadConsultaCadastro4" }, ;
    { "PR",   "4.00HC", "https://homologacao.nfce.sefa.pr.gov.br/nfce/CadConsultaCadastro4" }, ;
    { "AM",   "4.00H",  "https://hnfe.sefaz.ba.gov.br/webservices/CadConsultaCadastro4/CadConsultaCadastro4.asmx" }, ;
    { "BA",   "4.00H",  "https://hnfe.sefaz.ba.gov.br/webservices/CadConsultaCadastro4/CadConsultaCadastro4.asmx" }, ;
@@ -228,7 +228,7 @@
    { "SVRS",  "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta4.asmx" }, ;
    ;
    { "AM",    "4.00HC", "https://homnfe.sefaz.am.gov.br/services2/services/NfeConsulta4" }, ;
-   { "MS",    "4.00HC", "https://homologacao.nfce.fazenda.ms.gov.br/ws/NFeConsultaProtocolo4" }, ;
+   { "MS",    "4.00HC", "https://hom.nfce.fazenda.ms.gov.br/ws/NFeConsultaProtocolo4" }, ;
    { "PR",    "4.00HC", "https://homologacao.nfce.sefa.pr.gov.br/nfce/NFeConsultaProtocolo4" }, ;
    { "RS",    "4.00HC", "https://nfce-homologacao.sefazrs.rs.gov.br/ws/NfeConsulta/NfeConsulta4.asmx" }, ;
    { "SP",    "4.00HC", "https://homologacao.nfce.fazenda.sp.gov.br/ws/NFeConsultaProtocolo4.asmx" }, ;
@@ -267,7 +267,7 @@
    { "SVRS",  "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx" }, ;
    ;
    { "AM",    "4.00HC", "https://homnfe.sefaz.am.gov.br/services2/services/RecepcaoEvento4" }, ;
-   { "MS",    "4.00HC", "https://homologacao.nfce.fazenda.ms.gov.br/ws/NFeRecepcaoEvento4" }, ;
+   { "MS",    "4.00HC", "https://hom.nfce.fazenda.ms.gov.br/ws/NFeRecepcaoEvento4" }, ;
    { "PR",    "4.00HC", "https://homologacao.nfce.sefa.pr.gov.br/nfce/NFeRecepcaoEvento4" }, ;
    { "RS",    "4.00HC", "https://nfce-homologacao.sefazrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx" }, ;
    { "SP",    "4.00HC", "https://homologacao.nfce.fazenda.sp.gov.br/ws/NFeRecepcaoEvento4.asmx" }, ;
@@ -314,7 +314,7 @@
    { "SVRS",  "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
    ;
    { "AM",    "4.00HC", "https://homnfe.sefaz.am.gov.br/services2/services/NfeInutilizacao4" }, ;
-   { "MS",    "4.00HC", "https://homologacao.nfce.fazenda.ms.gov.br/ws/NFeInutilizacao4" }, ;
+   { "MS",    "4.00HC", "https://hom.nfce.fazenda.ms.gov.br/ws/NFeInutilizacao4" }, ;
    { "PR",    "4.00HC", "https://homologacao.nfce.sefa.pr.gov.br/nfce/NFeInutilizacao4" }, ;
    { "RS",    "4.00HC", "https://nfce-homologacao.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
    { "SP",    "4.00HC", "https://homologacao.nfce.fazenda.sp.gov.br/ws/NFeInutilizacao4.asmx" }, ;
@@ -359,7 +359,7 @@
    { "SVCRS", "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
    { "SVRS",  "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
    { "AM",    "4.00HC", "https://homnfe.sefaz.am.gov.br/services2/services/NfeAutorizacao4" }, ;
-   { "MS",    "4.00HC", "https://homologacao.nfce.fazenda.ms.gov.br/ws/NFeAutorizacao4" }, ;
+   { "MS",    "4.00HC", "https://hom.nfce.fazenda.ms.gov.br/ws/NFeAutorizacao4" }, ;
    { "PR",    "4.00HC", "https://homologacao.nfce.sefa.pr.gov.br/nfce/NFeAutorizacao4" }, ;
    { "RS",    "4.00HC", "https://nfce-homologacao.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
    { "SP",    "4.00HC", "https://homologacao.nfce.fazenda.sp.gov.br/ws/NFeAutorizacao4.asmx" }, ;
@@ -403,7 +403,7 @@
    { "SVCRS", "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao4.asmx" }, ;
    { "SVRS",  "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao4.asmx" }, ;
    { "AM",    "4.00HC", "https://homnfe.sefaz.am.gov.br/services2/services/NfeRetAutorizacao4" }, ;
-   { "MS",    "4.00HC", "https://homologacao.nfce.fazenda.ms.gov.br/ws/NFeRetAutorizacao4" }, ;
+   { "MS",    "4.00HC", "https://hom.nfce.fazenda.ms.gov.br/ws/NFeRetAutorizacao4" }, ;
    { "PR",    "4.00HC", "https://homologacao.nfce.sefa.pr.gov.br/nfce/NFeRetAutorizacao4" }, ;
    { "RS",    "4.00HC", "https://nfce-homologacao.sefazrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao4.asmx" }, ;
    { "SP",    "4.00HC", "https://homologacao.nfce.fazenda.sp.gov.br/ws/NFeRetAutorizacao4.asmx" }, ;
@@ -447,7 +447,7 @@
    { "SVCRS", "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico4.asmx" }, ;
    { "SVRS",  "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico4.asmx" }, ;
    { "AM",    "4.00HC", "https://homnfe.sefaz.am.gov.br/services2/services/NfeStatusServico4" }, ;
-   { "MS",    "4.00HC", "https://homologacao.nfce.fazenda.ms.gov.br/ws/NFeStatusServico4" }, ;
+   { "MS",    "4.00HC", "https://hom.nfce.fazenda.ms.gov.br/ws/NFeStatusServico4" }, ;
    { "PR",    "4.00HC", "https://homologacao.nfce.sefa.pr.gov.br/nfce/NFeStatusServico4" }, ;
    { "RS",    "4.00HC", "https://nfce-homologacao.sefazrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico4.asmx" }, ;
    { "SP",    "4.00HC", "https://homologacao.nfce.fazenda.sp.gov.br/ws/NFeStatusServico4.asmx" }, ;
@@ -493,7 +493,7 @@
    { "ES",   "4.00H", "http://homologacao.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?" }, ;
    { "GO",   "4.00H", "http://homolog.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
    { "MA",   "4.00H", "http://homologacao.sefaz.ma.gov.br/portal/consultarNFCe.jsp" }, ;
-   { "MS",   "4.00H", "http://www.dfe.ms.gov.br/nfce/qrcode" }, ;
+   { "MS",   "4.00H", "http://www.dfe.ms.gov.br/nfce/qrcode?" }, ;
    { "MT",   "4.00H", "http://homologacao.sefaz.mt.gov.br/nfce/consultanfce" }, ;
    { "PA",   "4.00H", "https://appnfc.sefa.pa.gov.br/portal-homologacao/view/consultas/nfce/nfceForm.seam" }, ;
    { "PB",   "4.00H", "http://www.receita.pb.gov.br/nfcehom" }, ;
