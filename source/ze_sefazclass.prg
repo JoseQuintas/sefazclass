@@ -1296,7 +1296,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
             oDoc   := XmlToDoc( ::cXmlDocumento, .F. )
             cChave := oDoc:cChave
             Inkey( ::nTempoEspera )
-            ::NfeConsultaProtocolo( cChave, ::cUF, ::cCertificado, ::cAbmiente )
+            ::NfeConsultaProtocolo( cChave, ::cUF, ::cCertificado, ::cAmbiente )
             IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
                ::cXmlProtocolo := ::cXmlRetorno
             ENDIF

@@ -9,6 +9,8 @@ FUNCTION Main()
    LOCAL cCep, cBairro, cCidade, cEndereco, cUF, cID
 
    Set( _SET_CODEPAGE, "PTISO" )
+   SetMode( 25, 80 )
+   CLS
    cCep := "03676080"
    ConsultaCep( cCep, @cBairro, @cCidade, @cEndereco, @cUF, @cId )
 
@@ -59,24 +61,5 @@ STATIC FUNCTION SoapEnvelope( cCEP )
 
    RETURN cxMLSoap
 
-   //cXml    := SoapEnvelope( cCep )
-   //oMSXML  := win_OleCreateObject( "MSXML2.ServerXMLHTTP" )
-   //oDOMDoc := win_OleCreateObject( "MSXML2.DOMDocument" )
-   //WITH OBJECT oMSXML
-   //:Open( "POST", cUrlWs, .F. )
-   //:SetRequestHeader( "Content-Type", 'text/xml; charset="utf-8"' )
-   //:SetRequestHeader( "Content-Length", hb_NtoS( hb_BLen( cXML ) ) )
-   //:Send( cXML )
-   //:WaitForResponse( 500 )
-   //ENDWITH
-   //hb_MemoWrit( "cep.htm", oMSXML:Responsebody )
-   //WITH OBJECT oDOMDoc
-   //   :aSync := .F.
-   //   :Load( oMSXML:responseXML )
-   //   cCEP      := :getElementsByTagName( "cep" ):item(0):Text
-   //   cBairro   := :getElementsByTagName( "bairro" ):item(0):Text
-   //   cCidade   := :getElementsByTagName( "cidade" ):item(0):Text
-   //   cEndereco := :getElementsByTagName( "end" ):item(0):Text
-   //   cUF       := :getElementsByTagName( "uf" ):item(0):Text
-   //   cID       := :getElementsByTagName( "id" ):item(0):Text
-   //ENDWITH
+FUNCTION AppVersaoExe(); RETURN ""
+FUNCTION AppUserName(); RETURN ""

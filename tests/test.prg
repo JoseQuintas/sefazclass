@@ -14,48 +14,45 @@ REQUEST HB_CODEPAGE_PTISO
 #define OPC_CERTIFICADO     2
 #define OPC_CERT_VALIDADE   3
 #define OPC_UF              4
-#define OPC_VERSAO_NFE      5
-#define OPC_AMBIENTE        6
-#define OPC_NFCE            7
-#define OPC_STATUS_NFE      8
-#define OPC_STATUS_CTE      9
-#define OPC_STATUS_MDFE     10
-#define OPC_CADASTRO        11
-#define OPC_PROTOCOLO_NFE   12
-#define OPC_PROTOCOLO_CTE   13
-#define OPC_PROTOCOLO_MDFE  14
-#define OPC_DESTINADAS      15
-#define OPC_VALIDA_XML      16
-#define OPC_ASSINA_TESTE    17
-#define OPC_ASSINA_USUARIO  18
-#define OPC_CONSULTA_RECIBO 19
-#define OPC_ENVIO_TESTE     20
-#define OPC_ENVIO_USUARIO   21
-#define OPC_MANIFESTACAO    22
-#define OPC_DOWNLOAD_NFE    23
-#define OPC_CERT_REMOVE     24
+#define OPC_AMBIENTE        5
+#define OPC_NFCE            6
+#define OPC_STATUS_NFE      7
+#define OPC_STATUS_CTE      8
+#define OPC_STATUS_MDFE     9
+#define OPC_CADASTRO        10
+#define OPC_PROTOCOLO_NFE   11
+#define OPC_PROTOCOLO_CTE   12
+#define OPC_PROTOCOLO_MDFE  13
+#define OPC_DESTINADAS      14
+#define OPC_VALIDA_XML      15
+#define OPC_ASSINA_TESTE    16
+#define OPC_ASSINA_USUARIO  17
+#define OPC_CONSULTA_RECIBO 18
+#define OPC_ENVIO_TESTE     19
+#define OPC_ENVIO_USUARIO   20
+#define OPC_MANIFESTACAO    21
+#define OPC_DOWNLOAD_NFE    22
+#define OPC_CERT_REMOVE     23
 
-#define VAR_VERSAO      1
-#define VAR_CERTIFICADO 2
-#define VAR_UF          3
-#define VAR_AMBIENTE    4
-#define VAR_NFCE        5
-#define VAR_EVENTO      6
-#define VAR_CNPJ        7
-#define VAR_CHAVE       8
-#define VAR_RECIBO      9
-#define VAR_VALIDFROM   10
+#define VAR_CERTIFICADO 1
+#define VAR_UF          2
+#define VAR_AMBIENTE    3
+#define VAR_NFCE        4
+#define VAR_EVENTO      5
+#define VAR_CNPJ        6
+#define VAR_CHAVE       7
+#define VAR_RECIBO      8
+#define VAR_VALIDFROM   9
 
 MEMVAR aVarList, oSefaz
 
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    LOCAL nOpc := 1, GetList := {}, cTexto := ""
-   LOCAL oDanfe, cTempFile, hFileOutput, cXml, cXmlRetorno, dValidFrom, dValidTo
+   LOCAL oDanfe, cTempFile, hFileOutput, cXml, cXmlRetorno
    PRIVATE aVarList, oSefaz
 
    aVarList := Array( 11 )
-   aVarList[ VAR_VERSAO ]      := "4.00"
    aVarList[ VAR_CERTIFICADO ] := ""
    aVarList[ VAR_UF ]          := "SP"
    aVarList[ VAR_AMBIENTE ]    := WS_AMBIENTE_HOMOLOGACAO
@@ -69,11 +66,6 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    SetColor( "W/B,N/W,,,W/B" )
 
-   //? Extenso( Date(), .T. )
-   //? Extenso( Date() )
-   //? Extenso( 545454.54 )
-   //? Extenso( 1000000 )
-   //Inkey(0)
    IF cXmlDocumento != NIL
       IF File( cXmlDocumento )
          cXmlDocumento := MemoRead( cXmlDocumento )
@@ -101,7 +93,6 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    DO WHILE .T.
       oSefaz := SefazClass():New()
       oSefaz:cUF          := aVarList[ VAR_UF ]
-      oSefaz:cVersao      := aVarList[ VAR_VERSAO ]
       oSefaz:cCertificado := aVarList[ VAR_CERTIFICADO ]
       oSefaz:cAmbiente    := aVarList[ VAR_AMBIENTE ]
       oSefaz:cNFCE        := aVarList[ VAR_NFCE ]
@@ -111,7 +102,6 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT Str( OPC_CERTIFICADO, 2 )     + "-Seleciona certificado (atual=" + aVarList[ VAR_CERTIFICADO ] + ")"
       @ Row() + 1, 5 PROMPT Str( OPC_CERT_VALIDADE, 2 )   + "-Validade do certificado"
       @ Row() + 1, 5 PROMPT Str( OPC_UF, 2 )              + "-UF (atual=" + aVarList[ VAR_UF ] + ")"
-      @ Row() + 1, 5 PROMPT Str( OPC_VERSAO_NFE, 2 )      + "-Versao NFE (atual=" + aVarList[ VAR_VERSAO ] + ")"
       @ Row() + 1, 5 PROMPT Str( OPC_AMBIENTE, 2 )        + "-Ambiente (atual=" + iif( aVarList[ VAR_AMBIENTE ] == WS_AMBIENTE_PRODUCAO, "Produção", "Homologação" ) + ")"
       @ Row() + 1, 5 PROMPT Str( OPC_NFCE, 2 )            + "-Nota (atual=" + iif( aVarList[ VAR_NFCE ] == "S", "NFCE", "NFE" ) + ")"
       @ Row() + 1, 5 PROMPT Str( OPC_STATUS_NFE, 2 )      + "-Consulta Status NFE"
@@ -140,32 +130,14 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          TestDanfe()
 
       CASE nOpc == OPC_CERTIFICADO
-         BEGIN SEQUENCE WITH __BreakBlock()
-            cTexto := CapicomEscolheCertificado()
-            aVarList[ VAR_CERTIFICADO ] := cTexto
-            dValidFrom := CapicomCertificado( cTexto ):ValidFromDate
-            dValidTo   := CapicomCertificado( cTexto ):ValidToDate
-            wapi_MessageBox( , "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
-               iif( dValidTo < Date(), "VENCIDO!!!!!!", "" ) )
-         ENDSEQUENCE
-
+         CertificadoEscolhe( @aVarList[ VAR_CERTIFICADO ] )
          LOOP
 
       CASE nOpc == OPC_CERT_VALIDADE
-         cTexto := aVarList[ VAR_CERTIFICADO ]
-         dValidFrom := CapicomCertificado( cTexto ):ValidFromDate
-         dValidTo   := CapicomCertificado( cTexto ):ValidToDate
-         wapi_MessageBox( , cTexto + hb_Eol() + ;
-            "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
-            iif( dValidTo < Date(), " VENCIDO!!!!!!", "" ) )
+         CertificadoValidade( aVarList[ VAR_CERTIFICADO ] )
 
       CASE nOpc == OPC_UF
-         Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
-         @ 8, 0 SAY "Qual UF:" GET aVarList[ VAR_UF ] PICTURE "@!"
-         READ
-
-      CASE nOpc == OPC_VERSAO_NFE
-         aVarList[ VAR_VERSAO ] := iif( aVarList[ VAR_VERSAO ] == "3.10", "4.00", "3.10" )
+         DigitaUF( @avarList[ VAR_UF ] )
 
       CASE nOpc == OPC_AMBIENTE
          aVarList[ VAR_AMBIENTE ] := iif( aVarList[ VAR_AMBIENTE ] == WS_AMBIENTE_PRODUCAO, WS_AMBIENTE_HOMOLOGACAO, WS_AMBIENTE_PRODUCAO )
@@ -332,7 +304,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          DO CASE
          CASE "<infMDFe" $ cXml ; ? "autorizando MDFE"; oSefaz:cVersao  := "3.00"; oSefaz:MDFeLoteEnvia( cXml )
          CASE "<infCTe"  $ cXml ; ? "autorizando CTE"; oSefaz:cVersao := "3.00"; oSefaz:CTeLoteEnvia( cXml )
-         CASE "<infNFe"  $ cXml ; ? "autorizando NFE"; oSefaz:NfeLoteEnvia( cXml )
+         CASE "<infNFe"  $ cXml ; ? "autorizando NFE"; oSefaz:cVersao := "4.00"; oSefaz:NfeLoteEnvia( cXml )
          OTHERWISE              ; ? "Documento não reconhecido"
          ENDCASE
          ? oSefaz:cXmlRetorno
@@ -454,3 +426,41 @@ FUNCTION JPEGImage()
 
 FUNCTION AppUserName(); RETURN ""
 FUNCTION AppVersaoExe(); RETURN ""
+
+STATIC FUNCTION CertificadoEscolhe( cCertificado )
+
+   LOCAL dValidFrom, dValidTo
+
+   BEGIN SEQUENCE WITH __BreakBlock()
+      cCertificado := CapicomEscolheCertificado()
+      dValidFrom   := CapicomCertificado( cCertificado ):ValidFromDate
+      dValidTo     := CapicomCertificado( cCertificado ):ValidToDate
+      wapi_MessageBox( , "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
+               iif( dValidTo < Date(), "VENCIDO!!!!!!", "" ) )
+   ENDSEQUENCE
+
+   RETURN NIL
+
+STATIC FUNCTION CertificadoValidade( cCertificado )
+
+   LOCAL dValidFrom, dValidTo
+
+   BEGIN SEQUENCE WITH __BreakBlock()
+      dValidFrom := CapicomCertificado( cCertificado ):ValidFromDate
+      dValidTo   := CapicomCertificado( cCertificado ):ValidToDate
+      wapi_MessageBox( , cCertificado + hb_Eol() + ;
+         "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
+         iif( dValidTo < Date(), " VENCIDO!!!!!!", "" ) )
+   ENDSEQUENCE
+
+   RETURN NIL
+
+STATIC FUNCTION DigitaUF( cUF )
+
+   LOCAL GetList := {}
+
+   Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
+   @ 8, 0 SAY "Qual UF:" GET cUF PICTURE "@!"
+   READ
+
+   RETURN NIL
