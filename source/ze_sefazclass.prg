@@ -936,33 +936,6 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    RETURN ::cXmlRetorno
 
-//* Iniciado apenas 2015.07.31.1400 */
-//METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente ) CLASS SefazClass
-//
-//   hb_Default( @::cProjeto, WS_PROJETO_NFE )
-//   hb_Default( @::cVersao, WS_NFE_DEFAULT )
-//   hb_Default( @cUltNSU, "0" )
-//   hb_Default( @cIndNFe, "0" )
-//   hb_Default( @cIndEmi, "0" )
-//
-//   ::aSoapUrlList := WS_NFE_CONSULTADEST
-//   ::Setup( cUF, cCertificado, cAmbiente )
-//   ::cSoapAction := "nfeConsultaNFDest"
-//   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest"
-//
-//   ::cXmlEnvio    := [<consNFeDest versao="] + ::cVersao + [">]
-//   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
-//   ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR NFE DEST" )
-//   ::cXmlEnvio    +=    XmlTag( "CNPJ", SoNumeros( cCnpj ) )
-//   ::cXmlEnvio    +=    XmlTag( "indNFe", "0" ) // 0=todas,1=sem manif,2=sem nada
-//   ::cXmlEnvio    +=    XmlTag( "indEmi", "0" ) // 0=todas, 1=sem cnpj raiz(sem matriz/filial)
-//   ::cXmlEnvio    +=    XmlTag( "ultNSU", cUltNsu )
-//   ::cXmlEnvio    += [</consNFeDest>]
-//
-//   ::XmlSoapPost()
-//
-//   RETURN ::cXmlRetorno
-
 METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
