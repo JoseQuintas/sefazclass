@@ -1526,25 +1526,14 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    LOCAL oServer, nCont, cRetorno
    LOCAL cSoapAction
 
-   //IF ::cSoapAction == "nfeDistDFeInteresse" .OR. ::cSoapAction == "nfeConsultaNFDest"
-   //cSoapAction := ::cSoapService + "/" + ::cSoapAction
-   //ELSE
    cSoapAction := ::cSoapAction
-   //ENDIF
    BEGIN SEQUENCE WITH __BreakBlock()
       ::cXmlRetorno := [<erro text="*ERRO* Erro: Criando objeto MSXML2.ServerXMLHTTP" />]
-#ifdef __XHARBOUR__
-      //IF ::cUF == "GO" .AND. ::cAmbiente == "2"
-      ::cXmlRetorno := [<erro text="*ERRO* Erro: Criando objeto MSXML2.ServerXMLHTTP.5.0" /?]
-      oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.5.0" )
-      //ELSE
-      //   ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP.6.0"
-      //   oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
-      //ENDIF
-#else
+//#ifdef __XHARBOUR__
+//      oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.5.0" )
+//#else
       oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
-      //oServer:SetOption( 2, 13056 ) // uma das tentativas de TLS 1.2 mas não fez diferença
-#endif
+//#endif
       ::cXmlRetorno := [erro text="*ERRO* Erro: No uso do objeto MSXML2.ServerXmlHTTP.6.0" />]
       IF ::cCertificado != NIL
          oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
@@ -1561,6 +1550,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
          oServer:SetRequestHeader( "SOAPAction", cSoapAction )
       ENDIF
       oServer:SetRequestHeader( "Content-Type", "application/soap+xml; charset=utf-8" )
+      // webservice json: "Content-Type", "application/json"
       oServer:Send( ::cXmlSoap )
       oServer:WaitForResponse( ::nSoapTimeOut )
       cRetorno := oServer:ResponseBody()
