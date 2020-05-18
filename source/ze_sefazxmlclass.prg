@@ -204,7 +204,7 @@ METHOD Init() CLASS NfeProdutoClass
 
    RETURN SELF
 
-CREATE CLASS NfePagamentosClass
+CREATE CLASS NfePagamentosClass STATIC
 
    VAR  TipoPago    INIT ""  // 2018.01.23 Jackson
    VAR  ValorPago   INIT 0   // 2018.01.23 Jackson

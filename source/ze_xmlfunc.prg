@@ -200,7 +200,7 @@ FUNCTION XmlTag( cTag, xValue, nDecimals, lConvert )
       ELSEIF ValType( xValue ) == "N"
          xValue := NumberXml( xValue, nDecimals )
       ELSE
-         xValue := StringToXml( xValue )
+         xValue := StringXML( xValue )
       ENDIF
    ENDIF
    IF Len( xValue ) == 0
@@ -309,7 +309,7 @@ FUNCTION XmlToString( cTexto )
 
    RETURN cTexto
 
-FUNCTION StringToXml( cTexto )
+FUNCTION StringXML( cTexto )
 
    cTexto := AllTrim( cTexto )
    DO WHILE Space(2) $ cTexto
