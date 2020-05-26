@@ -186,7 +186,7 @@ STATIC FUNCTION AssinaAjustaInformacao( cTxtXml, cXmlTagInicial, cXmlTagFinal, c
       { "<infRps",                "</Rps>" } }                   // NFSE ABRASF RPS
 
    // Define Tipo de Documento
-   IF ( nPos := AScan( aDelimitadores, { | oElement | oElement[ 1 ] $ cTxtXml .AND. oElement[ 2 ] $ cTxtXml } ) ) == 0
+   IF ( nPos := hb_AScan( aDelimitadores, { | oElement | oElement[ 1 ] $ cTxtXml .AND. oElement[ 2 ] $ cTxtXml } ) ) == 0
       cRetorno := "Erro Assinatura: Não identificado documento"
       RETURN .F.
    ENDIF

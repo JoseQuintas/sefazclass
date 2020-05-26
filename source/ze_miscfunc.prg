@@ -97,7 +97,7 @@ FUNCTION ze_Feriado( dDate, cUF )
    FOR EACH oElement IN aEclesiasticos
       AAdd( aList, { Right( Dtos( DomingoDePascoa( Year( dDate ) ) + oElement[ 1 ] ), 4 ), oElement[ 2 ], oElement[ 3 ] } )
    NEXT
-   nPos := AScan( aList, { | e | ( "BR" $ e[ 2 ] .OR. cUF $ e[ 2 ] ) .AND. e[ 1 ] == Right( Dtos( dDate ), 4 ) } )
+   nPos := hb_AScan( aList, { | e | ( "BR" $ e[ 2 ] .OR. cUF $ e[ 2 ] ) .AND. e[ 1 ] == Right( Dtos( dDate ), 4 ) } )
    IF nPos != 0
       cFeriado := aList[ nPos, 3 ]
    ENDIF

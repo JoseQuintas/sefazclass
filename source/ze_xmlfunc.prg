@@ -112,16 +112,16 @@ FUNCTION XmlTransform( cXml )
       CASE cLetra $ ",.:/;%*$@?<>()+-#=:_" + Chr(34) + Chr(32); lTroca := .F.
       CASE nAscii == 231; cLetra := "c"
       CASE nAscii == 199; cLetra := "C"
-      CASE AScan( { 193, 194, 195, 192 }, nAscii ) != 0 ; cLetra := "A"
-      CASE AScan( { 224, 225, 226, 227, 228, 229 }, nAscii ) != 0 ; cLetra := "a"
-      CASE AScan( { 242, 243, 244, 245, 246 }, nAscii ) != 0 ; cLetra := "o"
-      CASE AScan( { 210, 211, 212, 213, 214 }, nAscii ) != 0 ; cLetra := "O"
-      CASE AScan( { 200, 201, 202, 203 }, nAscii ) != 0 ; cLetra := "E"
-      CASE AScan( { 232, 233, 234, 235 }, nAscii ) != 0 ; cLetra := "e"
-      CASE AScan( { 236, 237, 238, 239 }, nAscii ) != 0 ; cLetra := "i"
-      CASE AScan( { 204, 205, 206, 207 }, nAscii ) != 0 ; cLetra := "I"
-      CASE AScan( { 249, 250, 251, 252 }, nAscii ) != 0 ; cLetra := "u"
-      CASE AScan( { 217, 218, 219 }, nAscii ) != 0 ; cLetra := "U"
+      CASE hb_AScan( { 193, 194, 195, 192 }, nAscii ) != 0 ; cLetra := "A"
+      CASE hb_AScan( { 224, 225, 226, 227, 228, 229 }, nAscii ) != 0 ; cLetra := "a"
+      CASE hb_AScan( { 242, 243, 244, 245, 246 }, nAscii ) != 0 ; cLetra := "o"
+      CASE hb_AScan( { 210, 211, 212, 213, 214 }, nAscii ) != 0 ; cLetra := "O"
+      CASE hb_AScan( { 200, 201, 202, 203 }, nAscii ) != 0 ; cLetra := "E"
+      CASE hb_AScan( { 232, 233, 234, 235 }, nAscii ) != 0 ; cLetra := "e"
+      CASE hb_AScan( { 236, 237, 238, 239 }, nAscii ) != 0 ; cLetra := "i"
+      CASE hb_AScan( { 204, 205, 206, 207 }, nAscii ) != 0 ; cLetra := "I"
+      CASE hb_AScan( { 249, 250, 251, 252 }, nAscii ) != 0 ; cLetra := "u"
+      CASE hb_AScan( { 217, 218, 219 }, nAscii ) != 0 ; cLetra := "U"
       CASE nAscii == 128 ; cLetra := "C" // experimental
       CASE nAscii == 144 ; cLetra := "E" // experimental
       CASE nAscii == 248 ; cLetra := "" // experimental

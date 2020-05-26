@@ -67,7 +67,7 @@ METHOD Setup( cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
    IF nWsServico == NIL
       RETURN NIL
    ENDIF
-   IF ( nPos := AScan( aSoapList, { | oElement | oElement[ 1 ] == nWsServico } ) ) != 0
+   IF ( nPos := hb_AScan( aSoapList, { | oElement | oElement[ 1 ] == nWsServico } ) ) != 0
       ::cSoapService := aSoapList[ nPos, 2 ]
       ::cSoapAction  := aSoapList[ nPos, 3 ]
       ::cSoapURL     := aSoapList[ nPos, 4 ]

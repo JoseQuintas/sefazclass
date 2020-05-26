@@ -262,7 +262,7 @@ METHOD cabecalho() CLASS hbnfeDaMdfe
    ::DrawBarcode128( ::cChave, 150, ::nLinhaPDF - 242, 0.9, 40 )
 #endif
    aList := WS_MDFE_QRCODE
-   nPos := ASCan( aList, { | e | e[ 2 ] == "3.00P" } )
+   nPos := hb_ASCan( aList, { | e | e[ 2 ] == "3.00P" } )
    IF nPos != 0
       cURLConsulta := aList[ nPos, 3 ]
    ENDIF

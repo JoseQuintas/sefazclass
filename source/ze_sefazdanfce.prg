@@ -135,7 +135,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFCe
          EXIT
       ENDIF
       cValorPgto := XmlNode( cFPags, "vPag" )
-      IF ( nPosX := AScan( aFPagsList, { | oElement | oElement[ 1 ] $ cTipoPgto } ) ) != 0
+      IF ( nPosX := hb_AScan( aFPagsList, { | oElement | oElement[ 1 ] $ cTipoPgto } ) ) != 0
          cDescPgto := aFPagsList[ nPosX, 2 ]
       ELSE
          cDescPgto := "99"

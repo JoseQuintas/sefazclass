@@ -504,7 +504,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
 
    oDoc := XmlToDoc( cXml, .F. )
    aList := WS_CTE_QRCODE
-   nPos := ASCan( aList, { | e | e[ 1 ] == DfeUF( oDoc:cChave ) .AND. e[ 2 ] == "3.00" + iif( oDoc:cAmbiente == "1", "P", "H" ) } )
+   nPos := hb_ASCan( aList, { | e | e[ 1 ] == DfeUF( oDoc:cChave ) .AND. e[ 2 ] == "3.00" + iif( oDoc:cAmbiente == "1", "P", "H" ) } )
    IF nPos != 0
       cURLConsulta := aList[ nPos, 3 ]
    ENDIF
@@ -838,7 +838,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ENDIF
    oDoc := XmlToDoc( cXml, .F. )
    aList := WS_MDFE_QRCODE
-   nPos := ASCan( aList, { | e | e[ 2 ] == "3.00" + iif( oDoc:cAmbiente == "1", "P", "H" ) } )
+   nPos := hb_ASCan( aList, { | e | e[ 2 ] == "3.00" + iif( oDoc:cAmbiente == "1", "P", "H" ) } )
    IF nPos != 0
       cURLConsulta := aList[ nPos, 3 ]
    ENDIF
@@ -1265,7 +1265,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       IF ! Empty( ::cRecibo )
          Inkey( ::nTempoEspera )
          ::NfeConsultaRecibo()
-         IF ASCan( { "104", "105" }, { | e | e == ::cStatus } ) != 0
+         IF hb_ASCan( { "104", "105" }, ::cStatus,,, .T. ) != 0
             oDoc   := XmlToDoc( ::cXmlDocumento, .F. )
             cChave := oDoc:cChave
             Inkey( ::nTempoEspera )
@@ -1836,7 +1836,7 @@ STATIC FUNCTION SoapUrlBpe( aSoapList, cUF, cVersao )
 
    LOCAL nPos, cUrl
 
-   nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
+   nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
    IF nPos != 0
       cUrl := aSoapList[ nPos, 3 ]
    ENDIF
@@ -1847,7 +1847,7 @@ STATIC FUNCTION SoapUrlNfe( aSoapList, cUF, cVersao )
 
    LOCAL nPos, cUrl
 
-   nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
+   nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
    IF nPos != 0
       cUrl := aSoapList[ nPos, 3 ]
    ENDIF
@@ -1865,7 +1865,7 @@ STATIC FUNCTION SoapUrlCte( aSoapList, cUF, cVersao )
 
    LOCAL nPos, cUrl
 
-   nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
+   nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
    IF nPos != 0
       cUrl := aSoapList[ nPos, 3 ]
    ENDIF
@@ -1883,7 +1883,7 @@ STATIC FUNCTION SoapUrlMdfe( aSoapList, cUF, cVersao )
 
    LOCAL cUrl, nPos
 
-   nPos := AScan( aSoapList, { | e | cVersao == e[ 2 ] } )
+   nPos := hb_AScan( aSoapList, { | e | cVersao == e[ 2 ] } )
    IF nPos != 0
       cUrl := aSoapList[ nPos, 3 ]
    ENDIF
@@ -1898,7 +1898,7 @@ STATIC FUNCTION SoapUrlNFCe( aSoapList, cUf, cVersao )
    IF cUF $ "AC,ES,RO,RR"
       cUrl := SoapUrlNFCe( aSoapList, "SVRS", cVersao  )
    ELSE
-      nPos := AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao + "C" == e[ 2 ] } )
+      nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao + "C" == e[ 2 ] } )
       IF nPos != 0
          cUrl := aSoapList[ nPos, 3 ]
       ENDIF
@@ -1928,7 +1928,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
    cUF        := UFSigla( XmlNode( XmlNode( cInfNFe, "ide" ), "cUF" ) )
 
    // 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
-   nPos       := AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
+   nPos       := hb_AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
       ( e[ 2 ] == cVersao + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) .OR. ;
       e[ 2 ] == "4.00"  + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) ) } )
    QRCode_Url := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
@@ -2020,7 +2020,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
 
       IF cVersao == "4.00"
          aUrlList := WS_NFE_CHAVE
-         nPos     := AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
+         nPos     := hb_AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
             e[ 2 ] == cVersaoQrCode + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) } )
          QRCode_UrlChave := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
          cXmlAssinado += XmlTag( "urlChave", QRCode_UrlChave )

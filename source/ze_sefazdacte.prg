@@ -443,7 +443,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
 #else
    ::DrawBarcode128( ::cChave, 260, ::nLinhaPDF - 110, 0.9, 30 )
    aList := WS_CTE_QRCODE
-   nPos := Ascan( aList, { | e | e[ 1 ] == DfeUF( ::cChave ) .AND. e[ 2 ] == "3.00" + iif( ::aIde[ "tpAmb" ] == "1", "P", "H" ) } )
+   nPos := hb_Ascan( aList, { | e | e[ 1 ] == DfeUF( ::cChave ) .AND. e[ 2 ] == "3.00" + iif( ::aIde[ "tpAmb" ] == "1", "P", "H" ) } )
    IF nPos != 0
       cURLConsulta := aList[ nPos, 3 ]
    ENDIF
