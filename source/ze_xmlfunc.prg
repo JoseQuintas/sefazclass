@@ -70,7 +70,7 @@ FUNCTION XmlTransform( cXml )
       cxml := StrTran( cxml, Chr(226) + Chr(128) + Chr(153), [ ] ) // caixa d'agua
       cxml := StrTran( cxml, Chr(226) + Chr(128) + Chr(147), [-] ) // - mesmo
       cxml := StrTran( cxml, Chr(194) + Chr(179), [3] ) // m3
-      // so pra corrigir no MySql
+      // so pra corrigir no SQL
       cXml := StrTran( cXml, "+" + Chr(129), "A" )
       cXml := StrTran( cXml, "+" + Chr(137), "E" )
       cXml := StrTran( cXml, "+" + Chr(131), "A" )
