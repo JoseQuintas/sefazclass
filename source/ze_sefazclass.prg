@@ -34,7 +34,7 @@ CREATE CLASS SefazClass
    VAR    cCertificadoCN  INIT ""                      // Subject do certificado
    VAR    cIndSinc        INIT WS_RETORNA_RECIBO       // Poucas UFs opção de protocolo
    VAR    nTempoEspera    INIT 10                      // intervalo entre envia lote e consulta recibo
-   VAR    nSoapTimeOut    INIT 5000                    // Limite de espera por resposta
+   VAR    nSoapTimeOut    INIT 15000                  // Limite de espera por resposta em segundos * 1000
    VAR    cUFTimeZone     INIT ""                      // Para TimeZone diferente da UF de comunicação
    VAR    cUserTimeZone   INIT ""                      // Para TimeZone definido pelo usuário
    VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
