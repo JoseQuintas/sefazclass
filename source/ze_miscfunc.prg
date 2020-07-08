@@ -103,3 +103,37 @@ FUNCTION ze_Feriado( dDate, cUF )
    ENDIF
 
    RETURN cFeriado
+
+FUNCTION ze_DateAdd( dDate, nValue, cType )
+
+   LOCAL nDay, nMonth, nYear
+
+   hb_Default( @cType, "D" )
+   cType := iif( cType $ "DMY", cType, "D" )
+
+   DO CASE
+   CASE cType == "D"
+      dDate += nValue
+   CASE cType == "Y"
+      dDate := Stod( StrZero( Year( dDate ) + nValue, 4 ) + Substr( Dtos( dDate ), 5 ) )
+   CASE cType == "M"
+      nDay   := Day( dDate )
+      nMonth := Month( dDate ) + nValue
+      nYear  := Year( dDate )
+      IF nMonth < 1
+         nYear -= Int( Abs( nMonth ) / 12 ) + 1
+         nMonth += ( Int( Abs( nMonth ) / 12 ) + 1 ) * 12
+      ENDIF
+      IF nMonth > 12
+         nYear  += Int( ( nMonth - 1 ) / 12 )
+         nMonth := Mod( ( nMonth - 1 ), 12 )
+      ENDIF
+      DO WHILE Empty( dDate := Stod( StrZero( nYear, 4 ) + StrZero( nMonth, 2 ) + StrZero( nDay, 2 ) ) )
+         nDay -= 1
+      ENDDO
+   ENDCASE
+
+   RETURN dDate
+
+
+
