@@ -128,9 +128,10 @@ FUNCTION ze_DateAdd( dDate, nValue, cType )
          nYear  += Int( ( nMonth - 1 ) / 12 )
          nMonth := Mod( ( nMonth - 1 ), 12 )
       ENDIF
-      DO WHILE Empty( dDate := Stod( StrZero( nYear, 4 ) + StrZero( nMonth, 2 ) + StrZero( nDay, 2 ) ) )
-         nDay -= 1
-      ENDDO
+      dDate := Stod( StrZero( nYear, 4 ) + StrZero( nMonth, 2 ) + "01" ) + nDay - 1
+      IF Month( dDate ) != nMonth
+         dDate := dDate - Day( dDate )
+      ENDIF
    ENDCASE
 
    RETURN dDate
