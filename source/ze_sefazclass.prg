@@ -1124,7 +1124,7 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
    CASE cCodigoEvento == "210200" ; cDescEvento := "Confirmacao da Operacao"
    CASE cCodigoEvento == "210210" ; cDescEvento := "Ciencia da Operacao"
    CASE cCodigoEvento == "210220" ; cDescEvento := "Desconhecimento da Operacao"
-   CASE cCodigoEvento == "210240" ; cDescEvento := "Operacao Nao Realizada"
+   CASE cCodigoEvento == "210240" ; cDescEvento := "Operacao nao Realizada"
    ENDCASE
 
    ::cXmlDocumento := [<evento versao="1.00" ] + WS_XMLNS_NFE + [>]

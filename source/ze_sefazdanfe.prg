@@ -947,6 +947,9 @@ METHOD CalculaLayout() CLASS hbNFeDaNFe
       ENDIF
       nItem += 1
    ENDDO
+   IF ::lLayoutEspacoDuplo
+      nQtdLinhas -= 1
+   ENDIF
 
    // Linhas extras pra informações adicionais
    IF MLCount( ::ainfAdic[ "infCpl" ], 1000 ) > Int( 78 / LAYOUT_FONTSIZE )
