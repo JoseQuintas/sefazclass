@@ -757,7 +757,7 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
    ::QuadroProdutosDesenho( nLinhaFinalProd, nAlturaQuadroProdutos )
 
    nItem := 1
-   ::nLinhaFolha := 1
+   ::nLinhaFolha := 0
    DO WHILE .T.
       IF ! ::ProcessaItens( ::cXml, nItem )
          EXIT
@@ -930,7 +930,7 @@ METHOD CalculaLayout() CLASS hbNFeDaNFe
    ::DefineColunasProdutos()
    ::aInfAdic[ "infCpl" ] := ::FormataMemo( ::aInfAdic[ "infCpl" ], 392 )
    // Linhas necessárias pra imprimir ítens
-   nQtdLinhas := 1
+   nQtdLinhas := 0
    nItem      := 1
    DO WHILE .T.
       IF ! ::ProcessaItens( ::cXml, nItem )
