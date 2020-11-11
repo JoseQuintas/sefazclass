@@ -1539,6 +1539,8 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
          oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
       ENDIF
       ::cXmlRetorno := [erro text="*ERRO* Erro: Na conexão com webservice ] + ::cSoapURL + [" />]
+      //setTimeouts( long resolveTimeout, long connectTimeout, long sendTimeout, long receiveTimeout )
+      oServer:SetTimeOuts( ::nSoapTimeOut, ::nSoapTimeOut, ::nSoapTimeOut, ::nSoapTimeOut )
       oServer:Open( "POST", ::cSoapURL, .F. )
       IF ! Empty( ::cProxyUrl )
          oServer:SetProxy( 2, ::cProxyUrl )
