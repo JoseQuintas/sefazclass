@@ -45,3 +45,10 @@ A Sefazclass não inventa nada, tudo está dentro dos manuais do governo.
 Para entregar os XMLs, cada UF ou serviço é para um endereço de internet diferente.
 Nos fontes da Sefazclass já tem muitos desses endereços, mas não significa que tem todos, ou que estão atualizados.
 Cabe ao usuário da classe fazer os testes finais e informar algum endereço errado ou inexistente.
+
+Atualizada até:
+
+NFE 4.00
+NFCE 4.00
+CTE 3.00
+MDFE 3.00
