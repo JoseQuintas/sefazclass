@@ -1,8 +1,0 @@
-#
-# sefazclass.hbc
-#
-
-incpaths=include
-libs=hbhpdf.hbc hbzebra.hbc hbwin.hbc hbct.hbc
-libs=sefazclass
-libpaths=${hb_addons}/josequintas/lib/${hb_plat}/${hb_comp}

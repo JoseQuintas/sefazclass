@@ -1,0 +1,93 @@
+#
+# use:    JoseQuintas/harbour_34/hb34_0703
+# create: hbsefazclass
+#
+
+name: hbsefazclass
+
+on:
+  push:
+  schedule:
+   - cron: "0 12 1 * *"
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'hbsefazclass'
+        default: 'hbsefazclass'
+        required: true
+
+jobs:
+
+  Build:
+    runs-on: windows-latest
+    steps:
+
+    - name: Harbour
+      uses: JoseQuintas/action-download-artifact@v2
+      with:
+         workflow: hb34_0703.yml
+         workflow_conclusion: success
+         name: hb34_0703
+         path: c:\temp
+         repo: JoseQuintas/harbour_34
+
+    - name: Mingw
+      uses: JoseQuintas/action-download-artifact@v2
+      with:
+         workflow: hb34_0703.yml
+         workflow_conclusion: success
+         name: mingw_0703
+         path: c:\temp
+         repo: JoseQuintas/harbour_34
+
+    - name: Unzip
+      run: |
+         c:
+         dir c:\temp
+         md c:\temp\harbour
+         md c:\temp\harbour\comp
+         7z x -y c:\temp\hb34_0703.7z -oc:\temp\harbour
+         7z x -y c:\temp\mingw_0703.7z -oc:\temp\mingw
+         dir c:\temp\mingw
+
+    - name: Install Source Code
+      env:
+         REPO: ${{ github.repository }}
+      run: |
+         c:
+         md \temp\hbsefazclass
+         git clone https://github.com/$env:repo c:\temp\hbsefazclass\ --depth 10
+
+    - name: Build 32 bits
+      env:
+         HB_COMPILER: mingw
+         HB_INSTALL_PREFIX: c:\temp\harbour
+         PATH: c:\temp\harbour\bin;c:\temp\mingw\mingw64\bin
+      run: |
+         c:
+         cd c:\temp\hbsefazclass
+         hbmk2 *.hbp -workdir=c:\temp
+
+    - name: Build 64 bits
+      env:
+         HB_COMPILER: mingw64
+         HB_INSTALL_PREFIX: c:\temp\harbour
+         PATH: c:\temp\harbour\bin;c:\temp\mingw\mingw64\bin
+      run: |
+         c:
+         cd \temp\hbsefazclass
+         hbmk2 *.hbp
+
+    - name: Zip
+      env:
+         PATH: c:\program files\7-zip
+      run: |
+         c:
+         cd \temp\hbsefazclass
+         7z a -r c:\temp\hbsefazclass.7z c:\temp\hbsefazclass\*.*  -xr'!.git' -xr'!.github' -xr'!.hbmk'
+
+    - name: Save
+      uses: actions/upload-artifact@v2
+      with:
+         name: hbsefazclass
+         path: c:\temp\hbsefazclass.7z

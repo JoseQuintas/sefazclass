@@ -1,8 +1,22 @@
 #
-# sefazclass.hbp
+# hbsefazclass.hbp
 #
 
+hbsefazclass.hbc
+
 -stop{!allwin}
+
+hbhpdf.hbc
+hbzebra.hbc
+hbct.hbc
+hbwin.hbc
+-w3 -es2 -m -n -q
+
+-hblib
+
+-olib/${hb_plat}/${hb_comp}/hbsefazclass
+
+-hbx=hbsefazclass.hbx
 
 source/ze_atmseguroclass.prg
 source/ze_sefazclass.prg
@@ -23,20 +37,3 @@ source/ze_digitodoc.prg
 source/ze_extenso.prg
 source/ze_inscestadual.prg
 
--Iinclude
-hbhpdf.hbc
-hbzebra.hbc
-hbct.hbc
-hbwin.hbc
-
--w3
--es2
--m
--n
--beep
--q
-
--o${hb_addons}/josequintas/lib/${hb_plat}/${hb_comp}/${hb_name}
-
--hblib
--hbx=${hb_addons}/josequintas/sefazclass
