@@ -2,12 +2,7 @@ test.prg
 sefazclass.hbc
 -L..
 
--m
--n
--w3
--es2
--compr
+-q -m -n -w3 -es2
 -strip
--jobs=1
 -workdir=c:\temp
 d:\cdrom\fontes\integra\libjpa\prg\errorsys.prg
