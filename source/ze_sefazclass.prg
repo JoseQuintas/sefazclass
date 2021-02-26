@@ -1340,27 +1340,35 @@ METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
+   LOCAL cValue
+
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
-   cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
+   cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlRetorno, cXmlProtocolo )
 
-   IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
-      ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
-      ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
-   ELSE
-      ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
-      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+   IF [<infProt>] $ cXmlProtocolo
+      cValue := XmlNode( XmlNode( cXmlProtocolo, "infProt" ), "nProt" )
+      IF ! Empty( cValue )
+         cXmlProtocolo := StrTran( cXmlProtocolo, [<infProt>], [<infProt Id="ID] + cValue + [">] )
+      ENDIF
    ENDIF
-   //::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protNFe" ), "cStat" ), 3 ) // Pad() garante 3 caracteres
+
+   IF ! Empty( XmlNode( cXmlProtocolo, "infProt" ) )
+      ::cStatus       := Pad( XmlNode( XmlNode( cXmlProtocolo, "infProt" ), "cStat" ), 3 )
+      ::cMotivo       := XmlNode( XmlNode( cXmlProtocolo, "infProt" ), "xMotivo" )
+   ELSE
+      ::cStatus := Pad( XmlNode( cXmlProtocolo, "cStat" ), 3 )
+      ::cMotivo := XmlNode( cXmlProtocolo, "xMotivo" )
+   ENDIF
    IF ! ::cStatus $ "100,101,150,301,302"
-      ::cXmlRetorno := [<erro text="*ERRO* NFeGeraAutorizado() Não autorizado" />] + ::cXmlProtocolo
-      RETURN NIL
+      ::cXmlRetorno := [<erro text="*ERRO* NFeGeraAutorizado() Não autorizado" />] + cXmlProtocolo
+      RETURN Nil
    ENDIF
    ::cXmlAutorizado := XML_UTF8
    ::cXmlAutorizado += [<nfeProc versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlAutorizado +=    cXmlAssinado
-   ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protNFe", .T. ) // hb_UTF8ToStr()
+   ::cXmlAutorizado +=    XmlNode( cXmlProtocolo, "protNFe", .T. )
    ::cXmlAutorizado += [</nfeProc>]
 
    RETURN NIL
