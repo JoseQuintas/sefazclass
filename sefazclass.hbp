@@ -1,8 +1,8 @@
 #
-# hbsefazclass.hbp
+# sefazclass.hbp
 #
 
-hbsefazclass.hbc
+sefazclass.hbc
 
 -stop{!allwin}
 
@@ -14,9 +14,9 @@ hbwin.hbc
 
 -hblib
 
--olib/${hb_plat}/${hb_comp}/hbsefazclass
+-olib/${hb_plat}/${hb_comp}/sefazclass
 
--hbx=hbsefazclass.hbx
+-hbx=sefazclass.hbx
 
 source/ze_atmseguroclass.prg
 source/ze_sefazclass.prg
