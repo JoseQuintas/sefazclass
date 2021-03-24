@@ -33,6 +33,7 @@ REQUEST HB_CODEPAGE_PTISO
 #define OPC_MANIFESTACAO    21
 #define OPC_DOWNLOAD_NFE    22
 #define OPC_CERT_REMOVE     23
+#define OPC_STATUSGERAL     24
 
 #define VAR_CERTIFICADO 1
 #define VAR_UF          2
@@ -48,7 +49,7 @@ MEMVAR aVarList, oSefaz
 
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
-   LOCAL nOpc := 1, GetList := {}, cTexto := ""
+   LOCAL nOpc := 1, GetList := {}, cTexto := "", cUF, cAmbiente
    LOCAL oDanfe, cTempFile, hFileOutput, cXml, cXmlRetorno
    PRIVATE aVarList, oSefaz
 
@@ -121,6 +122,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT Str( OPC_MANIFESTACAO, 2 )    + "-Manifestacao Destinatario (digitado)"
       @ Row() + 1, 5 PROMPT Str( OPC_DOWNLOAD_NFE, 2 )    + "-Download DFE (Documentos) (digitado)"
       @ Row() + 1, 5 PROMPT Str( OPC_CERT_REMOVE, 2 )     + "-Remove Certificado"
+      @ Row() + 1, 5 PROMPT Str( OPC_STATUSGERAL, 2 )     + "-Status Geral"
       MENU TO nOpc
       DO CASE
       CASE LastKey() == K_ESC
@@ -348,6 +350,19 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
       CASE nOpc == OPC_CERT_REMOVE
          CapicomRemoveCertificado( aVarList[ VAR_CERTIFICADO ] )
+
+      CASE nOpc == OPC_STATUSGERAL
+         FOR EACH cAmbiente IN { "1", "2" }
+            FOR EACH cUF IN { "AM", "BA", "CE", "GO", "MG", "MS", "MT", "PE", "PR", "RS", "SP" }
+               oSefaz:cUF       := cUF
+               oSefaz:cAmbiente := cAmbiente
+               oSefaz:NfeStatusServico()
+               //? oSefaz:cXmlRetorno
+               ? oSefaz:cAmbiente, oSefaz:cUF, oSefaz:cStatus
+               Inkey(2)
+            NEXT
+         NEXT
+         Inkey(0)
 
       ENDCASE
    ENDDO

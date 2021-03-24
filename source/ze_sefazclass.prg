@@ -1335,6 +1335,7 @@ METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
    ::cXmlEnvio    += [</consStatServ>]
    ::XmlSoapPost()
+   ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
 
    RETURN ::cXmlRetorno
 

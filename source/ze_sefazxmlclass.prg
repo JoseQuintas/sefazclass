@@ -761,7 +761,7 @@ STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
       oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
       oDocSped:cSequencia    := "01"
       oDocSped:Protocolo     := XmlNode( cXmlInput, "infInut" )
-      oDocSped:Status        := "999"
+      oDocSped:Status        := "111"
       oDocSped:DataEmissao   := Stod( Left( SoNumeros( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
    ENDIF
 
