@@ -12,8 +12,8 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        description: 'hbsefazclass'
-        default: 'hbsefazclass'
+        description: 'sefazclass'
+        default: 'sefazclass'
         required: true
 
 jobs:
@@ -55,8 +55,8 @@ jobs:
          REPO: ${{ github.repository }}
       run: |
          c:
-         md \temp\hbsefazclass
-         git clone https://github.com/$env:repo c:\temp\hbsefazclass\ --depth 10
+         md \temp\sefazclass
+         git clone https://github.com/$env:repo c:\temp\sefazclass\ --depth 10
 
     - name: Build 32 bits
       env:
@@ -65,7 +65,7 @@ jobs:
          PATH: c:\temp\harbour\bin;c:\temp\mingw\mingw64\bin
       run: |
          c:
-         cd c:\temp\hbsefazclass
+         cd c:\temp\sefazclass
          hbmk2 *.hbp -workdir=c:\temp
 
     - name: Build 64 bits
@@ -75,7 +75,7 @@ jobs:
          PATH: c:\temp\harbour\bin;c:\temp\mingw\mingw64\bin
       run: |
          c:
-         cd \temp\hbsefazclass
+         cd \temp\sefazclass
          hbmk2 *.hbp
 
     - name: Zip
@@ -83,11 +83,11 @@ jobs:
          PATH: c:\program files\7-zip
       run: |
          c:
-         cd \temp\hbsefazclass
-         7z a -r c:\temp\hbsefazclass.7z c:\temp\hbsefazclass\*.*  -xr'!.git' -xr'!.github' -xr'!.hbmk'
+         cd \temp\sefazclass
+         7z a -r c:\temp\sefazclass.7z c:\temp\sefazclass\*.*  -xr'!.git' -xr'!.github' -xr'!.hbmk'
 
     - name: Save
       uses: actions/upload-artifact@v2
       with:
-         name: hbsefazclass
-         path: c:\temp\hbsefazclass.7z
+         name: sefazclass
+         path: c:\temp\sefazclass.7z
