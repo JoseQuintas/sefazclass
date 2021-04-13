@@ -83,7 +83,7 @@ STATIC FUNCTION ValidIE_AL( cInscricao )
       lOk := .F.
    CASE Left( cInscricao, 2 ) != "24" // Sempre 24
       lOk := .F.
-   CASE ! Substr( cInscricao, 3, 1 ) $ "03578" // o=normal,3=prod.rural,8=ME
+   CASE ! Substr( cInscricao, 3, 1 ) $ "023578" // o=normal,3=prod.rural,8=ME
       lOk := .F.                       // 5=substituta 7=ME ambulante
    OTHERWISE
       nSoma := SomaModulo11( Substr( cInscricao, 1, 8 ) )
