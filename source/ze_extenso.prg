@@ -74,41 +74,50 @@ FUNCTION ze_ExtensoDinheiro( nValor )
       IF nInteiro != 0
          cTxt += " E "
       ENDIF
-      cTxt += ze_ExtensoNumero( nDecimal ) + " " + iif( nDecimal == 1, "CENTAVO", "CENTAVOS" )
+      cTxt += ze_ExtensoNumero( nDecimal )
+      cTxt += " " + iif( nDecimal == 1, "CENTAVO", "CENTAVOS" )
+      cTxt += iif( nInteiro == 0, " DE REAL", "" )
    ENDIF
+   cTxt := StrTran( cTxt, "ILHAO REAIS", "ILHAO DE REAIS" )
+   cTxt := StrTran( cTxt, "ILHOES REAIS", "ILHOES DE REAIS" )
 
    RETURN cTxt
 
-STATIC FUNCTION ze_ExtensoNumero( nValor, nGrupo )
+STATIC FUNCTION ze_ExtensoNumero( nValor )
 
-   LOCAL cTxt := "", cStrValor, nCentena, nResto, cTxtGrupo := "", lNegativo
+   LOCAL cTxt := "", cStrValor, nCentena, lNegativo, cTxtGrupo, nGrupo
    LOCAL aList := { "", "MIL", "MILHAO", "BILHAO", "TRILHAO", "QUATRILHAO", ;
       "QUINTILHAO", "SEPTILHAO", "OCTILHAO", "NONILHAO", "DECILHAO" }
 
-   hb_Default( @nGrupo, 1 )
+   IF nValor == 0
+      RETURN "=ZERO"
+   ENDIF
    lNegativo := ( nValor < 0 )
    nValor    := Abs( nValor )
-   cStrValor := StrZero( nValor, 16 )
-   nCentena  := Val( Right( cStrValor, 3 ) )
-   nResto    := Val( Substr( cStrValor, 1, Len( cStrValor ) - 3 ) )
-   IF nCentena != 0
-      IF nCentena > 0
-         cTxtGrupo := aList[ nGrupo ]
-         IF nCentena > 1
-            cTxtGrupo := StrTran( cTxtGrupo, "LHAO", "LHOES" )
+   cStrValor := StrZero( nValor, 15 )
+   FOR nGrupo = 1 TO 5
+      nCentena  := Val( Substr( cStrValor, nGrupo * 3 - 2, 3 ) )
+      cTxtGrupo := ""
+      IF nCentena != 0
+         IF nCentena > 0
+            cTxtGrupo := aList[ 6 - nGrupo ]
+            IF nCentena > 1
+               cTxtGrupo := StrTran( cTxtGrupo, "LHAO", "LHOES" )
+            ENDIF
          ENDIF
+         IF Len( cTxt ) != 0
+            cTxt += " "
+            IF nCentena == Int( nCentena / 100 ) * 100
+               cTxt += "E "
+            ENDIF
+         ENDIF
+         IF ! ( nGrupo == 4 .AND. nCentena == 1 ) // grupo milhar valor 1 diferente
+            cTxt += ze_ExtensoCentena( nCentena )
+         ENDIF
+         cTxt += " " + cTxtGrupo
       ENDIF
-      cTxt := ze_ExtensoCentena( nCentena ) + " " + cTxtGrupo
-   ENDIF
-   IF nResto != 0 .AND. nGrupo < Len( aList )
-      cTxt := ze_ExtensoNumero( nResto, nGrupo + 1 ) + " E " + cTxt
-   ENDIF
-   IF nGrupo == 1
-      IF nValor == 0
-         cTxt := "ZERO"
-      ENDIF
-      cTxt := iif( lNegativo, "*NEGATIVO* ", "" ) + AllTrim( cTxt )
-   ENDIF
+   NEXT
+   cTxt := iif( lNegativo, "*NEGATIVO* ", "" ) + AllTrim( cTxt )
 
    RETURN cTxt
 
