@@ -42,11 +42,6 @@ FUNCTION ze_AliquotaICMS( cUF1, cUF2 )
       { "PE", "PE", 18 }, ;
       { "PI", "PI", 18 }, ;
       { "PR", "PR", 18 }, ;
-      { "RJ", "RJ", 12 }, ;
-      { "RJ", "RS", 12 }, ;
-      { "SC", "SC", 12 }, ;
-      { "SC", "SP", 12 }, ;
-      { "SC", "**", 7 }, ;
       { "RJ", "RJ", 20 }, ;
       { "RJ", "MG", 12 }, ;
       { "RJ", "PR", 12 }, ;
