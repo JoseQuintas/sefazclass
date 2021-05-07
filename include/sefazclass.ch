@@ -168,7 +168,7 @@
    { "BA",   "4.00P",  "https://nfe.sefaz.ba.gov.br/webservices/CadConsultaCadastro4/CadConsultaCadastro4.asmx" }, ;
    { "CE",   "4.00P",  "https://nfe.sefaz.ce.gov.br/nfe4/services/CadConsultaCadastro4" }, ;
    { "GO",   "4.00P",  "https://nfe.sefaz.go.gov.br/nfe/services/CadConsultaCadastro4" }, ;
-   { "MS",   "4.00P",  "https://nfe.fazenda.ms.gov.br/ws/CadConsultaCadastro4" }, ;
+   { "MS",   "4.00P",  "https://nfe.sefaz.ms.gov.br/ws/CadConsultaCadastro4" }, ;
    { "MT",   "4.00P",  "https://nfe.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro4" }, ;
    { "PE",   "4.00P",  "https://nfe.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro4" }, ;
    { "PR",   "4.00P",  "https://nfe.sefa.pr.gov.br/nfe/CadConsultaCadastro4" }, ;
@@ -200,7 +200,7 @@
    { "CE",    "4.00P",  "https://nfe.sefaz.ce.gov.br/nfe4/services/NFeConsultaProtocolo4" }, ;
    { "GO",    "4.00P",  "https://nfe.sefaz.go.gov.br/nfe/services/NFeConsultaProtocolo4" }, ;
    { "MG",    "4.00P",  "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeConsultaProtocolo4" }, ;
-   { "MS",    "4.00P",  "https://nfe.fazenda.ms.gov.br/ws/NFeConsultaProtocolo4" }, ;
+   { "MS",    "4.00P",  "https://nfe.sefaz.ms.gov.br/ws/NFeConsultaProtocolo4" }, ;
    { "MT",    "4.00P",  "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta4" }, ;
    { "PE",    "4.00P",  "https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeConsultaProtocolo4" }, ;
    { "PR",    "4.00P",  "https://nfe.sefa.pr.gov.br/nfe/NFeConsultaProtocolo4" }, ;
@@ -279,7 +279,7 @@
    { "CE",    "4.00P",  "https://nfe.sefaz.ce.gov.br/nfe4/services/NFeRecepcaoEvento4" }, ;
    { "GO",    "4.00P",  "https://nfe.sefaz.go.gov.br/nfe/services/NFeRecepcaoEvento4" }, ;
    { "MG",    "4.00P",  "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeRecepcaoEvento4" }, ;
-   { "MS",    "4.00P",  "https://nfe.fazenda.ms.gov.br/ws/NFeRecepcaoEvento4" }, ;
+   { "MS",    "4.00P",  "https://nfe.sefaz.ms.gov.br/ws/NFeRecepcaoEvento4" }, ;
    { "MT",    "4.00P",  "https://nfe.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento4" }, ;
    { "PE",    "4.00P",  "https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeRecepcaoEvento4" }, ;
    { "PR",    "4.00P",  "https://nfe.sefa.pr.gov.br/nfe/NFeRecepcaoEvento4" }, ;
@@ -325,7 +325,7 @@
    { "CE",    "4.00P",  "https://nfe.sefaz.ce.gov.br/nfe4/services/NFeInutilizacao4" }, ;
    { "GO",    "4.00P",  "https://nfe.sefaz.go.gov.br/nfe/services/NFeInutilizacao4" }, ;
    { "MG",    "4.00P",  "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeInutilizacao4" }, ;
-   { "MS",    "4.00P",  "https://nfe.fazenda.ms.gov.br/ws/NFeInutilizacao4" }, ;
+   { "MS",    "4.00P",  "https://nfe.sefaz.ms.gov.br/ws/NFeInutilizacao4" }, ;
    { "MT",    "4.00P",  "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao4" }, ;
    { "PE",    "4.00P",  "https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeInutilizacao4" }, ;
    { "PR",    "4.00P",  "https://nfe.sefa.pr.gov.br/nfe/NFeInutilizacao4" }, ;
@@ -369,7 +369,7 @@
    { "CE",    "4.00P",  "https://nfe.sefaz.ce.gov.br/nfe4/services/NFeAutorizacao4" }, ;
    { "GO",    "4.00P",  "https://nfe.sefaz.go.gov.br/nfe/services/NFeAutorizacao4" }, ;
    { "MG",    "4.00P",  "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeAutorizacao4" }, ;
-   { "MS",    "4.00P",  "https://nfe.fazenda.ms.gov.br/ws/NFeAutorizacao4" }, ;
+   { "MS",    "4.00P",  "https://nfe.sefaz.ms.gov.br/ws/NFeAutorizacao4" }, ;
    { "MT",    "4.00P",  "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeAutorizacao4" }, ;
    { "PE",    "4.00P",  "https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeAutorizacao4" }, ;
    { "PR",    "4.00P",  "https://nfe.sefa.pr.gov.br/nfe/NFeAutorizacao4" }, ;
@@ -413,7 +413,7 @@
    { "CE",    "4.00P",  "https://nfe.sefaz.ce.gov.br/nfe4/services/NFeRetAutorizacao4" }, ;
    { "GO",    "4.00P",  "https://nfe.sefaz.go.gov.br/nfe/services/NFeRetAutorizacao4" }, ;
    { "MG",    "4.00P",  "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeRetAutorizacao4" }, ;
-   { "MS",    "4.00P",  "https://nfe.fazenda.ms.gov.br/ws/NFeRetAutorizacao4" }, ;
+   { "MS",    "4.00P",  "https://nfe.sefaz.ms.gov.br/ws/NFeRetAutorizacao4" }, ;
    { "MT",    "4.00P",  "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRetAutorizacao4" }, ;
    { "PE",    "4.00P",  "https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeRetAutorizacao4" }, ;
    { "PR",    "4.00P",  "https://nfe.sefa.pr.gov.br/nfe/NFeRetAutorizacao4" }, ;
@@ -457,7 +457,7 @@
    { "CE",    "4.00P",  "https://nfe.sefaz.ce.gov.br/nfe4/services/NFeStatusServico4" }, ;
    { "GO",    "4.00P",  "https://nfe.sefaz.go.gov.br/nfe/services/NFeStatusServico4" }, ;
    { "MG",    "4.00P",  "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeStatusServico4" }, ;
-   { "MS",    "4.00P",  "https://nfe.fazenda.ms.gov.br/ws/NFeStatusServico4" }, ;
+   { "MS",    "4.00P",  "https://nfe.sefaz.ms.gov.br/ws/NFeStatusServico4" }, ;
    { "MT",    "4.00P",  "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico4" }, ;
    { "PE",    "4.00P",  "https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeStatusServico4" }, ;
    { "PR",    "4.00P",  "https://nfe.sefa.pr.gov.br/nfe/NFeStatusServico4" }, ;
