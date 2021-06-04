@@ -11,7 +11,7 @@ FUNCTION Main()
    Set( _SET_CODEPAGE, "PTISO" )
    SetMode( 25, 80 )
    CLS
-   cCep := "16571510"
+   cCep := "99980-000"
    ConsultaCep( cCep, @cBairro, @cCidade, @cEndereco, @cUF, @cId )
 
    ? cCep
