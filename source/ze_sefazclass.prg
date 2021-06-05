@@ -686,7 +686,7 @@ METHOD MDFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbient
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( iif( ::cEmitenteCPF, "CPF", "CNPJ" ), DfeEmitente( cChave ) )
    ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml(),,,,::cUserTimeZone )
+   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml(,,,,::cUserTimeZone ) )
    ::cXmlDocumento +=       XmlTag( "tpEvento", cTipoEvento )
    ::cXmlDocumento +=       XmlTag( "nSeqEvento", Ltrim( Str( nSequencia, 4 ) ) )
    ::cXmlDocumento +=       cXml
