@@ -28,11 +28,10 @@ CREATE CLASS SefazClass
    VAR    cVersaoQrCode   INIT "2.00"                  // Versao do QRCode
    VAR    cScan           INIT "N"                     // Indicar SCAN/SVAN/SVRS testes iniciais
    VAR    cUF             INIT "SP"                    // Modificada conforme método
-   VAR    cCertificado    INIT ""                      // Nome do certificado
+   VAR    cCertificado    INIT ""                      // CN (NOME) do certificado
    VAR    lEmitenteCPF    INIT .F.                     // Para o caso de CPF ao invés de CNPJ
    VAR    ValidFromDate   INIT ""                      // Validade do certificado
    VAR    ValidToDate     INIT ""                      // Validade do certificado
-   VAR    cCertificadoCN  INIT ""                      // Subject do certificado
    VAR    cIndSinc        INIT WS_RETORNA_RECIBO       // Poucas UFs opção de protocolo
    VAR    nTempoEspera    INIT 10                      // intervalo entre envia lote e consulta recibo
    VAR    nSoapTimeOut    INIT 15000                  // Limite de espera por resposta em segundos * 1000
@@ -92,7 +91,7 @@ CREATE CLASS SefazClass
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
-   METHOD MDFeRecepcaoSinc( cXml, cUF, cCertificado, cAmbiente )
+   //METHOD MDFeRecepcaoSinc( cXml, cUF, cCertificado, cAmbiente )
    METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente )
 
    METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente )
@@ -565,7 +564,7 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlEnvio := [<consMDFeNaoEnc versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=    XmlTag( "xServ", "CONSULTAR NÃO ENCERRADOS" )
-   ::cXmlEnvio +=    XmlTag( "CNPJ", cCNPJ )
+   ::cXmlEnvio +=    XmlTag( iif( ::lEmitenteCPF, "CPF", "CNPJ" ), cCNPJ )
    ::cXmlEnvio += [</consMDFeNaoEnc>]
    ::XmlSoapPost()
    IF ::cStatus != "999"
@@ -844,14 +843,16 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    IF nPos != 0
       cURLConsulta := aList[ nPos, 3 ]
    ENDIF
-   cBlocoXml := "<infMDFeSupl>"
-   cBlocoXml += "<qrCodMDFe>"
-   cBlocoXml += "<![CDATA["
-   cBlocoXml += cURLConsulta + "?chMDFe=" + oDoc:cChave + "&" + "tpAmb=" + ::cAmbiente
-   cBlocoXml += "]]>"
-   cBlocoXml += "</qrCodMDFe>"
-   cBlocoXml += "</infMDFeSupl>"
-   ::cXmlDocumento := StrTran( ::cXmlDocumento, "</infMDFe>", "</infMDFe>" + cBlocoXml )
+   IF ! "<infMDFeSupl>" $ ::cXmlDocumento
+      cBlocoXml := "<infMDFeSupl>"
+      cBlocoXml += "<qrCodMDFe>"
+      cBlocoXml += "<![CDATA["
+      cBlocoXml += cURLConsulta + "?chMDFe=" + oDoc:cChave + "&" + "tpAmb=" + ::cAmbiente
+      cBlocoXml += "]]>"
+      cBlocoXml += "</qrCodMDFe>"
+      cBlocoXml += "</infMDFeSupl>"
+      ::cXmlDocumento := StrTran( ::cXmlDocumento, "</infMDFe>", "</infMDFe>" + cBlocoXml )
+   ENDIF
    ::cXmlEnvio  := [<enviMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio  +=    XmlTag( "idLote", cLote )
    ::cXmlEnvio  +=    ::cXmlDocumento
@@ -871,30 +872,30 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    RETURN ::cXmlRetorno
 
-METHOD MDFeRecepcaoSinc( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass
+// METHOD MDFeRecepcaoSinc( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass
+//
+//   hb_Default( @::cProjeto, WS_PROJETO_MDFE )
+//   hb_Default( @::cVersao, "3.00" )
+//   ::aSoapUrlList := WS_MDFE_RECEPCAOSINC
+//   ::Setup( cUF, cCertificado, cAmbiente )
+//   ::cSoapAction := ""
+//   ::cSoapService := ""
+//
+//   IF cXml != NIL
+//      ::cXmlDocumento := cXml
+//   ENDIF
+//   IF ::AssinaXml() != "OK"
+//      RETURN ::cXmlRetorno
+///   ENDIF
+//   ::cXmlEnvio := "falta definir aqui"
+//   ::XmlSoapPost()
+//   IF ::cXmlStatus != "999"
+//      ::cStatus := XmlNode( ::cXmlRetorno, "cStatus" )
+//      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
+//      ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlRetorno )
+//   ENDIF
 
-   hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-   hb_Default( @::cVersao, "3.00" )
-   ::aSoapUrlList := WS_MDFE_RECEPCAOSINC
-   ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction := ""
-   ::cSoapService := ""
-
-   IF cXml != NIL
-      ::cXmlDocumento := cXml
-   ENDIF
-   IF ::AssinaXml() != "OK"
-      RETURN ::cXmlRetorno
-   ENDIF
-   ::cXmlEnvio := "falta definir aqui"
-   ::XmlSoapPost()
-   IF ::cXmlStatus != "999"
-      ::cStatus := XmlNode( ::cXmlRetorno, "cStatus" )
-      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
-      ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlRetorno )
-   ENDIF
-
-   RETURN ::cXmlRetorno
+//   RETURN ::cXmlRetorno
 
 METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
@@ -907,6 +908,7 @@ METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::cXmlEnvio := [<consStatServMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
+   //::cXmlEnvio += XmlTag( "cUF", ::UFCodigo( ::cUF ) ) // MDFE não importa UF
    ::cXmlEnvio +=    XmlTag( "xServ", "STATUS" )
    ::cXmlEnvio += [</consStatServMDFe>]
    ::XmlSoapPost()
@@ -957,7 +959,6 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
       ::cSoapAction := "nfeConsultaNF"
       ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaProtocolo4"
    ENDCASE
-
    ::cXmlEnvio    := [<consSitNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR" )
@@ -967,7 +968,6 @@ METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
       ::cStatus     := "999"
       ::cMotivo     := "Chave não se refere a NFE/NFCE"
       ::cXmlRetorno := [<erro text="*ERRO* NfeConsultaProtocolo() ] + ::cMotivo + [" />]
-
    ELSE
       ::XmlSoapPost()
    ENDIF
@@ -1454,7 +1454,6 @@ METHOD Setup( cUF, cCertificado, cAmbiente ) CLASS SefazClass
    ::cCertificado := iif( cCertificado == NIL, ::cCertificado, cCertificado )
    ::cAmbiente    := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
    ::cSoapURL := ""
-   //CapicomCertificado( ::cCertificado, @::cCertificadoCN, @::ValidFromDate, @::ValidToDate )
    cAmbiente  := ::cAmbiente
    cUF        := ::cUF
    cProjeto   := ::cProjeto

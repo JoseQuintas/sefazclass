@@ -11,19 +11,20 @@ FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
 
    LOCAL oCertificado, oCapicomStore, cNomeCertificado := "NENHUM", oColecao
 
-   oCapicomStore        := win_oleCreateObject( "CAPICOM.Store" )
+   oCapicomStore := win_oleCreateObject( "CAPICOM.Store" )
    oCapicomStore:Open( CAPICOM_CURRENT_USER_STORE, 'My', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
-   oColecao         := oCapicomStore:Certificates()
+   oColecao := oCapicomStore:Certificates()
    DO CASE
    CASE oColecao:Count() == 1
-      dValidFrom       := oColecao:item(1):ValidFromDate
-      dValidTo         := oColecao:item(1):ValidToDate
-      cNomeCertificado := oColecao:item(1):SubjectName
+      oCertificado     := oColecao:item(1)
+      dValidFrom       := oCertificado:ValidFromDate
+      dValidTo         := oCertificado:ValidToDate
+      cNomeCertificado := oCertificado:SubjectName
    CASE oColecao:Count() > 1
       oCertificado     := oColecao:Select( "Selecione o certificado para uso da Nfe","Selecione o certificado", .F. )
-      dValidFrom       := oCertificado:item(1):ValidFromDate
-      dValidTo         := oCertificado:item(1):ValidToDate
-      cNomeCertificado := oCertificado:item(1):SubjectName
+      dValidFrom       := oCertificado:ValidFromDate
+      dValidTo         := oCertificado:ValidToDate
+      cNomeCertificado := oCertificado:SubjectName
    ENDCASE
    IF "CN=" $ cNomeCertificado
       cNomeCertificado := Substr( cNomeCertificado, At( "CN=", cNomeCertificado ) + 3 )
@@ -35,7 +36,7 @@ FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
 
    RETURN cNomeCertificado
 
-FUNCTION CapicomCertificado( cNomeCertificado )
+FUNCTION CapicomCertificado( cNomeCertificado, dValidFrom, dValidTo )
 
    LOCAL oCapicomStore, oColecao, oCertificado, nCont
 
@@ -45,6 +46,8 @@ FUNCTION CapicomCertificado( cNomeCertificado )
    FOR nCont = 1 TO oColecao:Count()
       IF cNomeCertificado $ oColecao:Item( nCont ):SubjectName
          oCertificado := oColecao:Item( nCont )
+         dValidFrom   := oCertificado:ValidFromDate
+         dValidTo     := oCertificado:ValidToDate
          EXIT
       ENDIF
    NEXT
