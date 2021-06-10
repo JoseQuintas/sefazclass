@@ -44,7 +44,7 @@ METHOD ConsultaRetornoLote( cChave, cCertificado ) CLASS ESocialClass
          [<soapenv:Body>] + ;
             [<consultaLoteEventos>] + ;
                [<consulta>] + ::cXmlDocumento + [</consulta>] + ;
-            [</consultaLoteEentos>] + ;
+            [</consultaLoteEventos>] + ;
          [</soapenv:Body>] + ;
       [</soapenv:Envelope>]
    ::MicrosoftXmlSoapPost()
