@@ -9,13 +9,13 @@ STATIC FUNCTION ValidCnpj( cCnpj )
 
    LOCAL cNumero, lOk, cPicture := "@R 99.999.999/9999-99"
 
-   cNumero := SoNumeros( cCnpj )
-   cNumero := Left( cNumero + Replicate( "0", 12 ), 12 )
+   cNumero := StrZero( Val( SoNumeros( cCnpj ) ), 14 )
+   cNumero := Left( cNumero, 12 )
    cNumero := cNumero + CalculaDigito( cNumero, "11" )
    cNumero := cNumero + CalculaDigito( cNumero, "11" )
    lOk     := ( SoNumeros( cNumero ) == SoNumeros( cCnpj ) )
    IF lOk
-      cCnpj := Pad( Transform( cCnpj, cPicture ), Max( 18, Len( cCnpj ) ) )
+      cCnpj := Pad( Transform( cNumero, cPicture ), Max( 18, Len( cCnpj ) ) )
    ENDIF
 
    RETURN lOk
@@ -24,13 +24,13 @@ STATIC FUNCTION ValidCpf( cCpf )
 
    LOCAL cNumero, lOk, cPicture := "@R 999.999.999-99"
 
-   cNumero := SoNumeros( cCpf )
-   cNumero := Left( cNumero + Replicate( "0", 9 ), 9 )
+   cNumero := StrZero( Val( SoNumeros( cCpf ) ), 11 )
+   cNumero := Left( cNumero, 9 )
    cNumero := cNumero + CalculaDigito( cNumero, "10" )
    cNumero := cNumero + CalculaDigito( cNumero, "10" )
    lOk     := ( SoNumeros( cCpf ) == SoNumeros( cNumero ) )
    IF lOk
-      cCpf := Pad( Transform( cCpf, cPicture ), Max( 14, Len( cCpf ) ) )
+      cCpf := Pad( Transform( cNumero, cPicture ), Max( 14, Len( cCpf ) ) )
    ENDIF
 
    RETURN lOk
@@ -214,60 +214,42 @@ FUNCTION CalculaDigito( cNumero, cModulo )
 
    LOCAL nFator, nCont, nSoma, nResto, nModulo, cCalculo
 
+   hb_Default( @cModulo, "11" )
    IF Empty( cNumero )
       RETURN ""
    ENDIF
    cCalculo := AllTrim( cNumero )
-   IF cModulo $ "10,11"
-      nModulo := Val( cModulo )
-      nFator  := 2
-      nSoma   := 0
-      IF nModulo == 10
-         FOR nCont = Len( cCalculo ) To 1 Step -1
-            nSoma += Val( Substr( cCalculo, nCont, 1 ) ) * nFator
+   nModulo  := Val( cModulo )
+   nFator   := 2
+   nSoma    := 0
+   IF nModulo == 10
+      FOR nCont = Len( cCalculo ) To 1 Step -1
+         nSoma += Val( Substr( cCalculo, nCont, 1 ) ) * nFator
+         nFator += 1
+      NEXT
+   ELSE
+      FOR nCont = Len( cCalculo ) To 1 Step -1
+         nSoma += Val( Substr( cCalculo, nCont, 1 ) ) * nFator
+         IF nFator == 9
+            nFator := 2
+         ELSE
             nFator += 1
-         NEXT
-      ELSE
-         FOR nCont = Len( cCalculo ) To 1 Step -1
-            nSoma += Val( Substr( cCalculo, nCont, 1 ) ) * nFator
-            IF nFator == 9
-               nFator := 2
-            ELSE
-               nFator += 1
-            ENDIF
-         NEXT
-      ENDIF
-      nResto := nSoma - ( Int( nSoma / 11 ) * 11 )
-      nResto := 11 - nResto
-      IF nResto > 9
-         nResto := 0
-      ENDIF
-      cCalculo := Str(nResto,1)
+         ENDIF
+      NEXT
    ENDIF
+   nResto := 11 - Mod( nSoma, 11 )
+   IF nResto > 9
+      nResto := 0
+   ENDIF
+   cCalculo := Str( nResto, 1 )
 
    RETURN cCalculo
 
 FUNCTION ValidPis( cPis )
-
-   LOCAL nTotal, nPeso, nResto, nCont, lOk
 
    cPis := SoNumeros( cPis )
    IF Len( cPis ) != 11
       RETURN .F.
    ENDIF
 
-   nTotal := 0
-   nPeso  := 2
-   FOR nCont = 10 TO 1 STEP -1
-      nTotal += Val( Substr( cPis, nCont, 1 ) ) * nPeso
-      nPeso := iif( nPeso == 9, 2, nPeso + 1 )
-   NEXT
-   nResto := Mod( nTotal, 11 )
-   IF nResto <= 1
-      nResto := 0
-   ELSE
-      nResto := 11 - Mod( nTotal, 11 )
-   ENDIF
-   lOk    := Right( cPis, 1 ) == Str( nResto, 1 )
-
-   RETURN lOk
+   RETURN Right( cPis, 1 ) == CalculaDigito( Substr( cPis, 1, 10 ), "11" )
