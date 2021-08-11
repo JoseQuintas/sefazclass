@@ -414,7 +414,7 @@ FUNCTION TestDanfe()
       cFilePdf := Substr( oFile[ F_NAME ], 1, At( ".", oFile[ F_NAME ] ) ) + "pdf"
       fErase( cFilePdf )
       //oDanfe:cLogoFile := JPEGImage()
-      oDanfe:cDesenvolvedor := "www.josequintas.com.br"
+      oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:ToPDF( oFile[ F_NAME ], cFilePdf )
       ? oFile[ F_NAME ], oDanfe:cRetorno
       PDFOpen( cFilePdf )

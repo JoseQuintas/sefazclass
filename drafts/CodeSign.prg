@@ -11,7 +11,7 @@ PROCEDURE Main
 
    oSignedCode:FileName       := "d:\temp\test2.exe"
    oSignedCode:Description    := "José M. C. Quintas"
-   oSignedCode:DescriptionURL := "www.josequintas.com.br"
+   oSignedCode:DescriptionURL := "www.jpatecnologia.com.br"
    ? oSignedCode:Sign( oSigner )
    ? oSignedCode:TimeStamp( URL )
    ? oSignedCode:Verify()
