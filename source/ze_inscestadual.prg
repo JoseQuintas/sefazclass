@@ -243,8 +243,8 @@ STATIC FUNCTION ValidIE_DF( cInscricao )
 
    IF Len( cInscricao ) != 13
       lOk := .F.
-   ELSEIF Left( cInscricao, 2 ) != "07" // Alterado em 23/07 p/ 2 dig
-      lOk := .F.
+   //ELSEIF Left( cInscricao, 2 ) != "07" // Alterado em 23/07 p/ 2 dig
+   //   lOk := .F.
    ELSE
       IF CalculaDigito( Substr( cInscricao, 1, 11 ), "11" ) != Substr( cInscricao, 12, 1 )
          lOk := .F.
