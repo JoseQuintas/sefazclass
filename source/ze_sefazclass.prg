@@ -71,7 +71,7 @@ CREATE CLASS SefazClass
    METHOD CTeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
    METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente )
    METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente )
-   METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aNfeList, nLatitude, nLongitude, cCertificado, cAmbiente )
+   METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aNfeList, nLatitude, nLongitude, cStrImagem, cCertificado, cAmbiente )
    METHOD CTeEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cCertificado, cAmbiente )
    METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
@@ -337,10 +337,12 @@ METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente ) C
 
    RETURN ::cXmlRetorno
 
-METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aNfeList, nLatitude, nLongitude, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, cDoc, cNome, aNfeList, nLatitude, nLongitude, cStrImagem, cCertificado, cAmbiente ) CLASS SefazClass
 
-   LOCAL oElement, cXml := ""
+   LOCAL oElement, cXml := "", cHash
 
+   cHash := hb_Sha1( cChave + hb_Base64Encode( cStrImagem ), .T. )
+   cHash := hb_Base64Encode( cHash )
    cXml += [<detEvento versaoEvento="3.00">]
    cXml +=    [<evCECTe>]
    cXml +=       XmlTag( "descEvento", "Comprovante de Entrega do CT-e" )
@@ -349,12 +351,12 @@ METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, 
    cXml +=       XmlTag( "nDoc", cDoc )
    cXml +=       XmlTag( "xNome", cNome )
    IF nLatitude != 0 .AND. nLongitude != 0
-      cXml +=    XmlTag( "latitute", NumberXml( nLatitude, 16, 6 ) )
+      cXml +=    XmlTag( "latitude", NumberXml( nLatitude, 16, 6 ) )
       cXml +=    XmlTag( "longitude", NumberXml( nLongitude, 16, 6 ) )
    ENDIF
    IF .F. // hash da imagem que não existe no xml ?????
-      cXml +=    XmlTag( "hashEntrega", "XXX" )
-      cXml +=    XmlTag( "dhHashEntrega", "XXX" )
+      cXml +=    XmlTag( "hashEntrega", cHash )
+      cXml +=    XmlTag( "dhHashEntrega", DateTimeXml( Date(), Time(), ::cUF ) )
    ENDIF
    IF Len( aNfeList ) > 0
       cXml +=    "<InfEntrega>"
@@ -378,7 +380,7 @@ METHOD CTeEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cCertifica
    cXml +=    [<evCancCECTe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento do Comprovante de Entrega do CT-e" )
    cXml +=       XmlTag( "nProt", Ltrim( Str( nProt ) ) )
-   cXml +=       XmlTag( "nProtCE", nProtEntrega )
+   cXml +=       XmlTag( "nProtCE", LTrim( Str( nProtEntrega ) ) )
    cXml +=    [</evCancCECTe>]
    cXml += [</detEvento>]
 
