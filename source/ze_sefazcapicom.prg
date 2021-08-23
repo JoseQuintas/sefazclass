@@ -22,9 +22,9 @@ FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
       cNomeCertificado := oCertificado:SubjectName
    CASE oColecao:Count() > 1
       oCertificado     := oColecao:Select( "Selecione o certificado para uso da Nfe","Selecione o certificado", .F. )
-      dValidFrom       := oCertificado:ValidFromDate
-      dValidTo         := oCertificado:ValidToDate
-      cNomeCertificado := oCertificado:SubjectName
+      dValidFrom       := oCertificado:item(1):ValidFromDate
+      dValidTo         := oCertificado:item(1):ValidToDate
+      cNomeCertificado := oCertificado:item(1):SubjectName
    ENDCASE
    IF "CN=" $ cNomeCertificado
       cNomeCertificado := Substr( cNomeCertificado, At( "CN=", cNomeCertificado ) + 3 )

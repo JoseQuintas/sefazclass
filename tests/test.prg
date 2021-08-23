@@ -1,3 +1,9 @@
+/*
+test
+
+2021.08.23 - BEGIN SEQUENCE estava impedindo seleção de certificado
+*/
+
 REQUEST HB_CODEPAGE_PTISO
 
 #include "inkey.ch"
@@ -50,7 +56,7 @@ MEMVAR aVarList, oSefaz
 FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    LOCAL nOpc := 1, GetList := {}, cTexto := "", cUF, cAmbiente
-   LOCAL oDanfe, cTempFile, hFileOutput, cXml, cXmlRetorno
+   LOCAL cXml, cXmlRetorno, cFileName
    PRIVATE aVarList, oSefaz
 
    aVarList := Array( 11 )
@@ -68,27 +74,8 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    SetColor( "W/B,N/W,,,W/B" )
 
    IF cXmlDocumento != NIL
-      IF File( cXmlDocumento )
-         cXmlDocumento := MemoRead( cXmlDocumento )
-      ENDIF
-      IF cXmlAuxiliar != NIL
-         IF File( cXmlAuxiliar )
-            cXmlAuxiliar := MemoRead( cXmlAuxiliar )
-         ENDIF
-      ENDIF
-      IF cLogoFile != NIL
-         IF File( cLogoFile )
-            cLogoFile := MemoRead( cLogoFile )
-         ENDIF
-      ENDIF
-      hFileOutput := hb_FTempCreateEx( @cTempFile, hb_DirTemp(), "", ".PDF" )
-      fClose( hFileOutput )
-      oDanfe := hbNFeDaGeral():New()
-      oDanfe:cDesenvolvedor := "hbnfe/sefazclass"
-      oDanfe:cLogoFile      := cLogoFile
-      oDanfe:ToPDF( cXmlDocumento, cTempFile, cXmlAuxiliar )
-      PDFOpen( cTempFile )
-      RETURN NIL
+      DanfeAutomatico( cXmlDocumento, cLogoFile, cXmlAuxiliar )
+      RETURN Nil
    ENDIF
 
    DO WHILE .T.
@@ -124,6 +111,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT Str( OPC_CERT_REMOVE, 2 )     + "-Remove Certificado"
       @ Row() + 1, 5 PROMPT Str( OPC_STATUSGERAL, 2 )     + "-Status Geral"
       MENU TO nOpc
+      Altd()
       DO CASE
       CASE LastKey() == K_ESC
          EXIT
@@ -275,7 +263,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
       CASE nOpc == OPC_VALIDA_XML
-         cXml := MemoRead( win_GetOpenFileName(, "Arquivo a assinar", "importa\", "XML", "*.XML", 1 ) )
+         cXml := MemoRead( win_GetOpenFileName(, "Arquivo a validar", "importa\", "XML", "*.XML", 1 ) )
          ? oSefaz:ValidaXml( cXml ) // , "d:\cdrom\fontes\integra\schemmas\pl_008i2_cfop_externo\nfe_v3.10.xsd" )
          Inkey(0)
 
@@ -315,11 +303,12 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          Inkey(0)
 
       CASE nOpc == OPC_ASSINA_USUARIO
-         oSefaz:cXmlDocumento := MemoRead( win_GetOpenFileName(, "Arquivo a assinar", ".\", "XML", "*.XML", 1 ) )
+         cFileName := win_GetOpenFileName(, "Arquivo a assinar", ".\", "XML", "*.XML", 1 )
+         oSefaz:cXmlDocumento := MemoRead( cFileName )
          oSefaz:AssinaXml()
          ? oSefaz:cXmlRetorno
          ? oSefaz:cXmlDocumento
-         hb_MemoWrit( "testassina.xml", oSefaz:cXmlDocumento )
+         hb_MemoWrit( Substr( cFileName, 1, Rat( ".", cFileName ) - 1 ) + "-assinado.xml", oSefaz:cXmlDocumento )
          Inkey(0)
 
       CASE nOpc == OPC_MANIFESTACAO
@@ -367,7 +356,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       ENDCASE
    ENDDO
 
-   RETURN NIL
+   RETURN Nil
 
 FUNCTION SetupHarbour()
 
@@ -382,7 +371,7 @@ FUNCTION SetupHarbour()
    hb_gtInfo( HB_GTI_INKEYFILTER, { | nKey | MyInkeyFilter( nKey ) } ) // pra funcionar control-V
 #endif
 
-   RETURN NIL
+   RETURN Nil
 
 #ifndef __XHARBOUR__
    // rotina do ctrl-v
@@ -420,7 +409,7 @@ FUNCTION TestDanfe()
       PDFOpen( cFilePdf )
    NEXT
 
-   RETURN NIL
+   RETURN Nil
 
 FUNCTION PDFOpen( cFile )
 
@@ -429,7 +418,7 @@ FUNCTION PDFOpen( cFile )
       Inkey(1)
    ENDIF
 
-   RETURN NIL
+   RETURN Nil
 
 #ifndef __XHARBOUR__
 
@@ -440,6 +429,7 @@ FUNCTION JPEGImage()
 #endif
 
 FUNCTION AppUserName(); RETURN ""
+
 FUNCTION AppVersaoExe(); RETURN ""
 
 STATIC FUNCTION CertificadoEscolhe( cCertificado )
@@ -451,24 +441,24 @@ STATIC FUNCTION CertificadoEscolhe( cCertificado )
       dValidFrom   := CapicomCertificado( cCertificado ):ValidFromDate
       dValidTo     := CapicomCertificado( cCertificado ):ValidToDate
       wapi_MessageBox( , "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
-               iif( dValidTo < Date(), "VENCIDO!!!!!!", "" ) )
+         iif( dValidTo < Date(), "VENCIDO!!!!!!", "" ) )
    ENDSEQUENCE
 
-   RETURN NIL
+   RETURN Nil
 
 STATIC FUNCTION CertificadoValidade( cCertificado )
 
    LOCAL dValidFrom, dValidTo
 
-   BEGIN SEQUENCE WITH __BreakBlock()
-      dValidFrom := CapicomCertificado( cCertificado ):ValidFromDate
-      dValidTo   := CapicomCertificado( cCertificado ):ValidToDate
-      wapi_MessageBox( , cCertificado + hb_Eol() + ;
-         "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
-         iif( dValidTo < Date(), " VENCIDO!!!!!!", "" ) )
-   ENDSEQUENCE
+   //BEGIN SEQUENCE WITH __BreakBlock()
+   dValidFrom := CapicomCertificado( cCertificado ):ValidFromDate
+   dValidTo   := CapicomCertificado( cCertificado ):ValidToDate
+   wapi_MessageBox( , cCertificado + hb_Eol() + ;
+      "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
+      iif( dValidTo < Date(), " VENCIDO!!!!!!", "" ) )
+   //ENDSEQUENCE
 
-   RETURN NIL
+   RETURN Nil
 
 STATIC FUNCTION DigitaUF( cUF )
 
@@ -478,4 +468,31 @@ STATIC FUNCTION DigitaUF( cUF )
    @ 8, 0 SAY "Qual UF:" GET cUF PICTURE "@!"
    READ
 
-   RETURN NIL
+   RETURN Nil
+
+STATIC FUNCTION DanfeAutomatico( cXmlDocumento, cLogoFile, cXmlAuxiliar )
+
+   LOCAL hFileOutput, oDanfe, cTempFile
+
+   IF File( cXmlDocumento )
+      cXmlDocumento := MemoRead( cXmlDocumento )
+   ENDIF
+   IF cXmlAuxiliar != NIL
+      IF File( cXmlAuxiliar )
+         cXmlAuxiliar := MemoRead( cXmlAuxiliar )
+      ENDIF
+   ENDIF
+   IF cLogoFile != NIL
+      IF File( cLogoFile )
+         cLogoFile := MemoRead( cLogoFile )
+      ENDIF
+   ENDIF
+   hFileOutput := hb_FTempCreateEx( @cTempFile, hb_DirTemp(), "", ".PDF" )
+   fClose( hFileOutput )
+   oDanfe := hbNFeDaGeral():New()
+   oDanfe:cDesenvolvedor := "hbnfe/sefazclass"
+   oDanfe:cLogoFile      := cLogoFile
+   oDanfe:ToPDF( cXmlDocumento, cTempFile, cXmlAuxiliar )
+   PDFOpen( cTempFile )
+
+   RETURN Nil

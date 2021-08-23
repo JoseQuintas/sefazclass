@@ -1,5 +1,6 @@
 test.prg
 ../sefazclass.hbc
+hbct.hbc
 
 -q -m -n -w3 -es2
 -strip
