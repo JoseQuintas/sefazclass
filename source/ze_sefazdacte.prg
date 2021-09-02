@@ -151,12 +151,13 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
 
    LOCAL cIde, cCompl, cEmit, cDest, cToma, cPrest, cImp, cinfCTeNorm, cRodo, cExped, cReceb, oElement
 
-   cIde := XmlNode( ::cXml, "ide" )
+   cIde   := XmlNode( ::cXml, "ide" )
    ::aIde := XmlToHash( cIde, { "cUF", "cCT", "CFOP", "natOp", "forPag", "mod", "serie", ;
-      "nCT", "dhEmi", "tpImp", "tpEmis", "cDV", "tpAmb", "tpCTe", "procEmi", "verProc", ;
-      "cMunEnv", "xMunEnv", "UFEnv", "modal", "tpServ", "cMunIni", "xMunIni", "UFIni", ;
-      "cMunFim", "xMunFim", "UFFim", "retira", "xDetRetira" } )
-   ::aIde[ "toma" ] := XmlNode( XmlNode( cIde, "toma03" ), "toma" )
+                                "nCT", "dhEmi", "tpImp", "tpEmis", "cDV", "tpAmb", "tpCTe", "procEmi", "verProc", ;
+                                "cMunEnv", "xMunEnv", "UFEnv", "modal", "tpServ", "cMunIni", "xMunIni", "UFIni", ;
+                                "cMunFim", "xMunFim", "UFFim", "retira", "xDetRetira", "indGlobalizado" } )
+
+   ::aIde[ "toma" ] := XmlNode( XmlNode( cIde, "toma3" ), "toma" )
 
    cCompl := XmlNode( ::cXml, "compl" )
    ::aCompl := hb_Hash()
@@ -364,7 +365,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    LOCAL aModal     := { 'Rodoviário', 'Aéreo', 'Aquaviário', 'Ferroviário', 'Dutoviário' }
    LOCAL aTipoCte   := { 'Normal', 'Compl.Val', 'Anul.Val.', 'Substituto' }
    LOCAL aTipoServ  := { 'Normal', 'Subcontratação', 'Redespacho', 'Redesp. Int.' }
-   LOCAL aTomador   := { 'Remetente', 'Expedidor', 'Recebedor', 'Destinatário' }
+   LOCAL aTomador   := { 'Remetente', 'Expedidor', 'Recebedor', 'Destinatário', 'Outro' }
    LOCAL aPagto     := { 'Pago', 'A pagar', 'Outros' }
    LOCAL aUnid      := { 'M3', 'KG', 'TON', 'UN', 'LI', 'MMBTU' }
    LOCAL aResp      := { 'Remetente', 'Expedidor', 'Recebedor', 'Destinatário', 'Emitente do CT-e', 'Tomador de Serviço' }
@@ -406,7 +407,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ::DrawTexto( 253, ::nLinhaPdf - 022, 384, Nil, "Eletrônico", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
 
    // box do modal
-   ::DrawBox( 384, ::nLinhaPdf - 032, 127, 032, ::nLarguraBox )
+   ::DrawBox( 384, ::nLinhaPdf - 032, 129, 032, ::nLarguraBox )
    ::DrawTexto( 384, ::nLinhaPdf - 001, 513, Nil, "MODAL", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
    ::DrawTexto( 384, ::nLinhaPdf - 015, 513, Nil, aModal[ Val( ::aIde[ "modal" ] ) ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
 
@@ -467,10 +468,10 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    ::DrawTexto( 113, ::nLinhaPdf - 125, 173, Nil, "Tomador", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::DrawTexto( 113, ::nLinhaPdf - 135, 173, Nil, aTomador[ Val( ::aIde[ "toma" ] ) + 1 ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
 
-   // box do tipo Forma de Pagamento
+   // box do tipo globalizado
    ::DrawBox( 173, ::nLinhaPdf - 154, 075, 032, ::nLarguraBox )
-   ::DrawTexto( 173, ::nLinhaPdf - 125, 248, Nil, "Forma de Pagamento", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 173, ::nLinhaPdf - 135, 248, Nil, aPagto[ Val( ::aIde[ "forPag" ] ) + 1 ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawTexto( 173, ::nLinhaPdf - 125, 248, Nil, "CT-e Globalizado", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 173, ::nLinhaPdf - 135, 248, Nil, IIf(Empty(::aIde[ "indGlobalizado"]), 'Não', 'Sim'), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
    // box do No. do Protocolo
    ::DrawBox( 253, ::nLinhaPdf - 154, 145, 022, ::nLarguraBox )
    ::DrawTexto( 253, ::nLinhaPdf - 135, 398, Nil, "No. PROTOCOLO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
