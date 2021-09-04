@@ -73,7 +73,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
    SetColor( "W/B,N/W,,,W/B" )
 
-   IF cXmlDocumento != NIL
+   IF cXmlDocumento != Nil
       DanfeAutomatico( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       RETURN Nil
    ENDIF
@@ -414,7 +414,7 @@ FUNCTION TestDanfe()
 FUNCTION PDFOpen( cFile )
 
    IF File( cFile )
-      WAPI_ShellExecute( NIL, "open", cFile, "",, WIN_SW_SHOWNORMAL )
+      WAPI_ShellExecute( Nil, "open", cFile, "",, WIN_SW_SHOWNORMAL )
       Inkey(1)
    ENDIF
 
@@ -477,12 +477,12 @@ STATIC FUNCTION DanfeAutomatico( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    IF File( cXmlDocumento )
       cXmlDocumento := MemoRead( cXmlDocumento )
    ENDIF
-   IF cXmlAuxiliar != NIL
+   IF cXmlAuxiliar != Nil
       IF File( cXmlAuxiliar )
          cXmlAuxiliar := MemoRead( cXmlAuxiliar )
       ENDIF
    ENDIF
-   IF cLogoFile != NIL
+   IF cLogoFile != Nil
       IF File( cLogoFile )
          cLogoFile := MemoRead( cLogoFile )
       ENDIF

@@ -61,11 +61,11 @@ METHOD Setup( cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
       { WS_CANCELAMENTONFE,  "CancelamentoNFe", "http://www.prefeitura.sp.gov.br/nfe/ws/cancelamentoNFe", "https://naosei" }, ;
       { WS_ENVIOLOTERPS,     "EnvioLoteRPS",    "http://www.prefeitura.sp.gov.br/nfe/ws/envioLoteRPS", "https://nfe.prefeitura.sp.gov.br/ws/lotenfe.asmx" } }
 
-   ::cCertificado := iif( cCertificado == NIL, ::cCertificado, cCertificado )
-   ::cAmbiente    := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
+   ::cCertificado := iif( cCertificado == Nil, ::cCertificado, cCertificado )
+   ::cAmbiente    := iif( cAmbiente == Nil, ::cAmbiente, cAmbiente )
 
-   IF nWsServico == NIL
-      RETURN NIL
+   IF nWsServico == Nil
+      RETURN Nil
    ENDIF
    IF ( nPos := hb_AScan( aSoapList, { | oElement | oElement[ 1 ] == nWsServico } ) ) != 0
       ::cSoapService := aSoapList[ nPos, 2 ]
@@ -73,28 +73,28 @@ METHOD Setup( cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
       ::cSoapURL     := aSoapList[ nPos, 4 ]
    ENDIF
 
-   RETURN NIL
+   RETURN Nil
 
 METHOD XmlSoapPost() CLASS SefazClass
 
    DO CASE
    CASE Empty( ::cSoapURL )
       ::cXmlRetorno := "Erro SOAP: Não há endereço de webservice"
-      RETURN NIL
+      RETURN Nil
    CASE Empty( ::cSoapService )
       ::cXmlRetorno := "Erro SOAP: Não há nome do serviço"
-      RETURN NIL
+      RETURN Nil
    CASE Empty( ::cSoapAction )
       ::cXmlRetorno := "Erro SOAP: Não há endereço de SOAP Action"
-      RETURN NIL
+      RETURN Nil
    ENDCASE
    ::XmlSoapEnvelope()
    ::MicrosoftXmlSoapPost()
    IF Upper( Left( ::cXmlRetorno, 4 ) )  == "ERRO"
-      RETURN NIL
+      RETURN Nil
    ENDIF
 
-   RETURN NIL
+   RETURN Nil
 
 METHOD XmlSoapEnvelope() CLASS SefazClass
 
@@ -112,7 +112,7 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ::cXmlSoap    +=   [</soap12:Body>]
    ::cXmlSoap    += [</soap12:Envelope>]
 
-   RETURN NIL
+   RETURN Nil
 
 METHOD MicrosoftXmlSoapPost() CLASS SefazClass
 
@@ -124,7 +124,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       ::cXmlRetorno := "Erro: Criando objeto MSXML2.ServerXMLHTTP"
       oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP" )
       ::cXmlRetorno := "Erro: No uso do objeto MSXML2.ServerXmlHTTP"
-      IF ::cCertificado != NIL
+      IF ::cCertificado != Nil
          oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
       ENDIF
       ::cXmlRetorno := "Erro: Na conexão com webservice " + ::cSoapURL
@@ -136,7 +136,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       cRetorno := oServer:ResponseBody
       IF ValType( cRetorno ) == "C"
          ::cXmlRetorno := cRetorno
-      ELSEIF cRetorno == NIL
+      ELSEIF cRetorno == Nil
          ::cXmlRetorno := "Erro: Sem retorno do webservice"
       ELSE
          ::cXmlRetorno := ""
@@ -153,4 +153,4 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       ::cXmlRetorno := "Erro SOAP: XML retorno não contém soapenv:Body " + ::cXmlRetorno
    ENDIF
 
-   RETURN NIL
+   RETURN Nil

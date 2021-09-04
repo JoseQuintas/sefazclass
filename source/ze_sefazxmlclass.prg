@@ -395,7 +395,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
    cBlocoChave := AllTrim( cBlocoChave )
    IF Len( cBlocoChave ) <> 44
       oDocSped:cErro := "Chave de Acesso Inválida"
-      RETURN NIL
+      RETURN Nil
    ENDIF
    oDocSped:cChave := cBlocoChave
    oDocSped:cAssinatura := XmlNode( cXmlInput, "Signature" )
@@ -403,7 +403,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
       oDocSped:cNumDoc := XmlNode( cBlocoIde, "nNF" )
       IF Empty( oDocSped:cNumDoc )
          oDocSped:cErro := "Sem número de documento"
-         RETURN NIL
+         RETURN Nil
       ENDIF
       oDocSped:cNumDoc          := StrZero( Val( oDocSped:cNumDoc ), 9 )
       oDocSped:TipoNFe          := XmlNode( cBlocoIde, "tpNF" )  // 2018.02.23 Jackson
@@ -586,7 +586,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
    oDocSped:Protocolo := XmlNode( cXmlInput, "nProt" )
    oDocSped:Status    := XmlNode( cXmlInput, "cStat" )
 
-   RETURN NIL
+   RETURN Nil
 
 STATIC FUNCTION XmlToDocNfeCancel( cXmlInput, oDocSped )
 
@@ -627,7 +627,7 @@ STATIC FUNCTION XmlToDocNfeCancel( cXmlInput, oDocSped )
       oDocSped:Status        := "111"
    ENDIF
 
-   RETURN NIL
+   RETURN Nil
 
 STATIC FUNCTION XmlToDocNfeCce( XmlInput, oDocSped )
 
@@ -650,7 +650,7 @@ STATIC FUNCTION XmlToDocNfeCce( XmlInput, oDocSped )
             //oDocSped:Status          := XmlNode( mXmlInfEvento, "cStat" )
             oDocSped:Protocolo         := XmlNode( mXmlInfEvento, "nProt" )
 
-   RETURN NIL
+   RETURN Nil
 
 STATIC FUNCTION XmlToDocMDFEEmi( cXmlInput, oMDFE )
 
@@ -666,7 +666,7 @@ STATIC FUNCTION XmlToDocMDFEEmi( cXmlInput, oMDFE )
    cBlocoChave := AllTrim( cBlocoChave )
    IF Len( cBlocoChave ) <> 44
       oMDFE:cErro := "Chave de acesso inválida"
-      RETURN NIL
+      RETURN Nil
    ENDIF
    oMDFE:cChave := cBlocoChave
    oMDFE:cAssinatura := XmlNode( cXmlInput, "Signature" )
@@ -674,7 +674,7 @@ STATIC FUNCTION XmlToDocMDFEEmi( cXmlInput, oMDFE )
       oMDFE:cNumDoc := XmlNode( cBlocoIde, "nMDF" )
       IF Len( Trim( oMDFE:cNumDoc ) ) = 0
          oMDFE:cErro := "Sem número de documento"
-         RETURN NIL
+         RETURN Nil
       ENDIF
       oMDFE:cNumDoc     := StrZero( Val( oMDFE:cNumDoc ), 9 )
       oMDFE:DataEmissao := XmlDate( XmlNode( cBlocoIde, "dhEmi" ) )
@@ -701,7 +701,7 @@ STATIC FUNCTION XmlToDocMDFEEmi( cXmlInput, oMDFE )
    oMDFE:Protocolo := XmlNode( cXmlInput, "nProt" )
    oMDFE:Status    := XmlNode( cXmlInput, "cStat" )
 
-   RETURN NIL
+   RETURN Nil
 
 STATIC FUNCTION XmlToDocMDFEEnc( XmlInput, oDocSped )
 
@@ -721,7 +721,7 @@ STATIC FUNCTION XmlToDocMDFEEnc( XmlInput, oDocSped )
          oDocSped:cAssinatura          := XmlNode( mXmlEvento, "Signature" )
       oDocSped:Protocolo               := XmlNode( mXmlEvento, "nProt" )
 
-   RETURN NIL
+   RETURN Nil
 
 STATIC FUNCTION XmlToDocMDFECancel( cXmlInput, oDocSped )
 
@@ -746,7 +746,7 @@ STATIC FUNCTION XmlToDocMDFECancel( cXmlInput, oDocSped )
       oDocSped:Status        := "111"
    ENDIF
 
-   RETURN NIL
+   RETURN Nil
 
 STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
 
@@ -765,7 +765,7 @@ STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
       oDocSped:DataEmissao   := Stod( Left( SoNumeros( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
    ENDIF
 
-   RETURN NIL
+   RETURN Nil
 
 STATIC FUNCTION XmlToDocCteEmi( XmlInput, oDocSped )
 
