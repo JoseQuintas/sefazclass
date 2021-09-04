@@ -28,7 +28,7 @@ FUNCTION hb_Hash()
 
 FUNCTION HB_SYMBOL_UNUSED( x )
 
-   RETURN NIL
+   RETURN Nil
 
 FUNCTION hb_Default( xVar, xValue )
 
@@ -36,13 +36,13 @@ FUNCTION hb_Default( xVar, xValue )
       xVar := xValue
    ENDIF
 
-   RETURN NIL
+   RETURN Nil
 
 FUNCTION HPDF_LOADJPEGIMAGEFROMMEM()
 
    // Isto vai impedir de usar imagens em memória,
    // mas se no XHarbour não tem, sem opção
 
-   RETURN NIL
+   RETURN Nil
 
 #endif

@@ -366,7 +366,7 @@ METHOD Cabecalho() CLASS hbnfeDaCte
    LOCAL aTipoCte   := { 'Normal', 'Compl.Val', 'Anul.Val.', 'Substituto' }
    LOCAL aTipoServ  := { 'Normal', 'Subcontratação', 'Redespacho', 'Redesp. Int.' }
    LOCAL aTomador   := { 'Remetente', 'Expedidor', 'Recebedor', 'Destinatário', 'Outro' }
-   LOCAL aPagto     := { 'Pago', 'A pagar', 'Outros' }
+   //LOCAL aPagto     := { 'Pago', 'A pagar', 'Outros' }
    LOCAL aUnid      := { 'M3', 'KG', 'TON', 'UN', 'LI', 'MMBTU' }
    LOCAL aResp      := { 'Remetente', 'Expedidor', 'Recebedor', 'Destinatário', 'Emitente do CT-e', 'Tomador de Serviço' }
    LOCAL aTipoCar   := { 'não aplicável', 'Aberta', 'Fechada/Baú', 'Granelera', 'Porta Container', 'Sider' }
