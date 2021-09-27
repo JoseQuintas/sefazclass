@@ -753,9 +753,9 @@ STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
    LOCAL nPosIni
 
    oDocSped:cAmbiente := XmlNode( cXmlInput, "tpAmb" )
-   nPosIni := At( cXmlInput, ["ID] ) + 3
+   nPosIni := At( cXmlInput, [<InfInut] )
    IF nPosIni != 0
-      oDocSped:cChave        := Pad( SoNumeros( Substr( cXmlInput, nPosIni, 44 ) ), 44, "0" )
+      oDocSped:cChave        := Pad( SoNumeros( Substr( cXmlInput, nPosIni, 60 ) ), 44, "0" )
       oDocSped:Emitente:Cnpj := Transform( DfeEmitente( oDocSped:cChave ), "@R 99.999.999/9999-99" )
       oDocSped:cNumDoc       := DfeNumero( oDocSped:cChave )
       oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
