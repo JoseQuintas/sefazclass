@@ -1288,7 +1288,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       ::cXmlRecibo := ::cXmlRetorno
       ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
       ::cStatus    := Pad( XmlNode( XmlNode( ::cXmlRecibo, "infProt" ), "cStat" ), 3 )
-      ::cMotivo    := XmlNode( XmlNode( ::cXmlRecibo, , "infProt" ), "xMotivo" )
+      ::cMotivo    := XmlNode( XmlNode( ::cXmlRecibo, "infProt" ), "xMotivo" )
       IF Empty( ::cStatus )
          ::cStatus := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
          ::cMotivo := XmlNode( ::cXmlRecibo, "xMotivo" )
