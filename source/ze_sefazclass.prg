@@ -1294,10 +1294,10 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
          ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
       ENDIF
       IF ::cStatus != "999"
-         IF ! Empty( ::cRecibo )
+         //IF ! Empty( ::cRecibo )
             ::cXmlProtocolo := ::cXmlRetorno
             ::cXmlRetorno   := ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
-         ENDIF
+         //ENDIF
       ENDIF
    ENDIF
 
