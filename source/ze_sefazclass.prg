@@ -1287,11 +1287,11 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
    ELSE
       ::cXmlRecibo := ::cXmlRetorno
       ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
-      ::cStatus    := Pad( XmlNode( XmlNode( ::cXmlRecibo, "infProt" ), "cStat" ), 3 )
-      ::cMotivo    := XmlNode( XmlNode( ::cXmlRecibo, "infProt" ), "xMotivo" )
+      ::cStatus    := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
+      ::cMotivo    := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
       IF Empty( ::cStatus )
-         ::cStatus := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
-         ::cMotivo := XmlNode( ::cXmlRecibo, "xMotivo" )
+         ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStatus" ), 3 )
+         ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
       ENDIF
       IF ::cStatus != "999"
          IF ! Empty( ::cRecibo )
