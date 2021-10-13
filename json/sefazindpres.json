@@ -1,0 +1,10 @@
+[
+[ "0", "Não se aplica, ex. NF complementar ou ajuste" ],
+[ "1", "Operação presencial" ],
+[ "2", "Operação não presencial, pela internet" ],
+[ "3", "Operação não presencial, teleatendimento" ],
+[ "4", "NFCe em operação com entrega a domicílio" ],
+[ "5", "Operação presencial, fora do estabelecimento" ],
+[ "9", "Operação não presencial, outros" ]
+]
+

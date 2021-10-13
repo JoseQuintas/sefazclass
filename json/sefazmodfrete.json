@@ -1,0 +1,9 @@
+[
+[ "0", "Contratação do frete por conta do remetente (CIF)" ],
+[ "1", "Contratação do frete por conta do destinatário (FOB)" ],
+[ "2", "Contratação do frete por conta de terceiros" ],
+[ "3", "Transporte próprio por conta do remetente" ],
+[ "4", "Transporte próprio por conta do destinatário" ],
+[ "9", "Sem ocorrência de transporte" ]
+]
+

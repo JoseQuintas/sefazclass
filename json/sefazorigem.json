@@ -1,11 +1,11 @@
 [
-[ "0", "NACIONAL, EXCETO CODIGOS 3 A 5 E 8" ],
-[ "1", "ESTRANGEIRA IMP DIRETA, EXCETO 6" ],
-[ "2", "ESTRANGEIRA ADQ MERC INT, EXCETO 7" ],
-[ "3", "MERCADORIA CONTEUDO IMPORTACAO SUPERIOR 40 POR CENTO" ],
-[ "4", "NACIONAL DECRETO 288-67 LEIS 8.248-91, 8.387-91, 10.176-01 e 11.484-07" ],
-[ "5", "MERCADORIA CONTEUDO IMP INFERIOR 40 POR CENTO" ],
-[ "6", "IMPORTACAO DIRETA, SEM SIMILAR NAC, RESOLUCAO CAMEX" ],
-[ "7", "IMPORTADA, SEM SIMILAR NACIONAL, RESOLUCAO CAMEX" ],
-[ "8", "NACIONAL COM CONTEUDO IMPORTACAO SUPERIOR 70 POR CENTO" ]
+[ "0", "Nacional, exceto as indicadas nos códigos 3, 4, 5 e 8" ],
+[ "1", "Estrangeira importação direta, exceto a indicada no código 6" ],
+[ "2", "Estrangeira adquirida no mercado interno, exceto a indicada no código 7" ],
+[ "3", "Nacional, mercadoria ou bem com conteúdo de importação superior a 40% e inferior ou igual a 70%" ],
+[ "4", "Nacional, produção em conformidade com os processos básicos de que tratam as ligislações citadas nos ajustes" ],
+[ "5", "Nacional, mercadoria ou bem com conteúdo de importação inferior ou igual a 40%" ],
+[ "6", "Estrangeira, importação direta, sem similar nacional, constante em lista da CAMEX e gás natural" ],
+[ "7", "Estrangeira, adquirida no mercado interno, sem similar nacional, constante em lista da CAMEX e gás natural" ],
+[ "8", "Nacional, mercadoria ou bem com conteúdo de importação superior a 70%" ]
 ]
