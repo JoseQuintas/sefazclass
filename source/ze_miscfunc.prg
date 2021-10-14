@@ -104,7 +104,7 @@ FUNCTION ze_Feriado( dDate, cUF )
 
    RETURN cFeriado
 
-FUNCTION ze_DateAdd( dDate, nValue, cType )
+FUNCTION Date_Add( dDate, nValue, cType )
 
    LOCAL nDay, nMonth, nYear
 
