@@ -894,4 +894,4 @@ FUNCTION DfeEmitente( cKey )
 
 FUNCTION DFeUF( cKey )
 
-   RETURN SefazClass():UFSigla( cKey )
+   RETURN SefazClass():New():UFSigla( cKey )
