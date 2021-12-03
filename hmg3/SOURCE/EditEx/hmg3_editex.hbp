@@ -1,0 +1,13 @@
+h_edit_ex.prg
+
+-hblib
+-o../../lib/${hb_plat}/${hb_comp}/hmg3_editex
+
+-Iinclude
+-D__HBIDE__
+-w2 -es2
+-hbx=../../hmg3_editex.hbx
+
+-L../../
+hmg3.hbc
+

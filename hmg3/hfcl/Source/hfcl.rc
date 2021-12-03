@@ -1,0 +1,2 @@
+additem BITMAP ..\resources\additem.bmp
+delitem BITMAP ..\hfcl\resources\delitem.bmp

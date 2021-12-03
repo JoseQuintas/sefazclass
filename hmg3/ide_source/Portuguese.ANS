@@ -1,0 +1,295 @@
+001 Novo Projeto
+002 Abrir Projeto
+003 Fechar Projeto
+004 Salvar Formulario
+005 Fechar Formulario
+006 Sair
+007 Excluir
+008 Ordem dos Objetos
+009 Alinhar ao Grid
+010 Excluir Especial
+011 Menu Principal
+012 Barra de Ferramentas
+013 Menu de Contexto
+014 Barra de Status
+015 Notify Menu
+016 SplitBox
+017 Visualizar
+018 Codigo do Formulário
+019 Projeto
+020 HMG Reference
+021 Executar
+022 Depurar
+023 Iniciar dados incrementais do projeto
+024 Novo Formulario
+025 Adicionar Formulario
+026 Novo Módulo
+027 Importar Arquivo
+028 Novo Relatório
+029 Atualizar gerenciador de Objetos
+030 Editar Arquivo
+031 Excluir Arquivo
+032 Definir como Principal (MAIN)
+033 Ferramentas
+034 Assistentes
+035 Menu Principal
+036 Barra de Status
+037 Context Menu
+038 Barra de Ferramentas
+039 DropDown Menu
+040 Notify Menu
+041 SplitBox
+042 Preferencias
+043 Ajuda
+044 Sobre...
+045 Arquivo
+046 Editar
+047 HMG-IDE deve ser reiniciada para que todas mudanças tenham efeito
+048 Mover objeto: canto superior esquerdo / Redimensionar: canto inferior direito
+049 Novo Projeto
+050 Abrir Projeto
+051 Fechar Projeto
+052 Novo Formulário'
+053 Novo Módulo
+054 Executar
+055 Selecionar Objeto
+056 Excluir Objeto
+057 Ordem dos Objetos
+058 Assistente Menu Principal
+059 Assistente Menu de Contexto
+060 Assistente Barra de Status
+061 Assistente Barra de Ferramentas
+062 Assistente Notify Menu
+063 Assistente Dropdown Menu
+064 Assistente SplitBox
+065 Gerenciador de Projeto []
+066 Módulos
+067 Formulários
+068 Recursos
+069 Relatórios
+070 Duplo clique para editar
+071 Editar Evento (Criar Novo Modulo de função)
+072 Sintaxe do Arquivo de Recursos: <NomeRecurso> <TipoRecurso> <NomeArquivo>
+073 Deseja excluir o evento atual?
+074 Gerenciador de Objetos []
+075 Propriedades
+076 Eventos
+077 Propriedade
+078 Valor
+079 Duplo clique para editar
+080 Evento
+081 Valor
+082 Duplo clique para editar
+083 Carregando... Espere Por Favor...
+084 Compilando... Espere Por Favor...
+085 Não exite um Projeto Ativo!
+086 Selecione um Formulário!
+087 Editor de Módulos:
+088 Pasta HMG:
+089 Erro de sintax no relatorio
+090 <duplo click>/<Enter> para editar/alterar a linha selecionada
+091 Lista de Erros
+092 Build Log
+093 Linguagem da IDE:
+094 Preferências
+095 DBF´s
+096 Nova Tabela
+097 Nome de tabela duplicado
+098 Esta operação obrigará à proxima compilação ser incremental
+099 Tem Certeza?
+100 O Objeto Não Existe
+101 Assistente Dropdown Menu
+102 Novo Menu...
+103 Editar Menu...
+104 Excluir Menu
+105 Nome...
+106 Fechar
+107 Nome
+108 Nome do botão da ToolBar
+109 Excluir Objeto
+110 Novo Menu DropDown
+111 Assistente Menu Principal
+112 &Próximo
+113 &Anterior
+114 &Incluir
+115 &Excluir
+116 Aceitar
+117 Cancelar
+118 O Item do Menu Pulou um Nivel
+119 Não pode especificar ações para um Popup
+120 Não pode especificar imagens para um Popup
+121 Não se usa o tipo Checked' em um Popup
+122 Não se usa Name' em um Popup
+123 Não se especifica ações para Separadores
+124 Não se especifica imagens para Separadores
+125 Não se usa o tipo Checked' em Separadores
+126 Ação não especificada para um Item do Menu
+127 Assistente Notify Menu
+128 Assistente Menu de Contexto
+129 Editor DropDown Menu [
+130 Editar Propriedade
+131 Editar Eventos
+132 Assistente de Barra de Status
+133 Use $CLOCK, $DATE, $KEYBOARD Para Items Especiais
+134 Fonte...
+135 Pos. Sup.
+136 Não se usa ícones em um item do tipo 'DATE'
+137 Não se usa estilos em um item do tipo 'DATE'
+138 Não se usa ícones em um item do tipo 'CLOCK'
+139 Não se usa estilos em um item do tipo 'CLOCK'
+140 Não se usa ícones em um item do tipo 'KEYBOARD'
+141 Não se usa estilos em um item do tipo 'KEYBOARD'
+142 Propriedades...
+143 O Botão deve conter um Nome
+144 Os Estilos DropDown e WholeDropDown São Mutuamente Exclusivos (Item:
+145 Picture não pode estar vazio (Item:
+146 Propriedades de Barra de Ferramentas
+147 Nome TlBar:
+148 Lar. Botão:
+149 Alt. Botão:
+150 Lar. Imagem:
+151 Alt. Imagem:
+152 Nome:
+153 Novo Formulário
+154 Gerenciador de Objetos [
+155 Novo Módulo
+156 Nome do Módulo Duplicado
+157 Nome de Formulario Duplicado
+158 Novo Relatório
+159 Adicionar Formulario (Deve estar na Pasta do Projeto)
+160 O Formulário adicionado deve estar na Pasta do Projeto. Operação Cancelada
+161 O Formulário já Pertence ao Projeto. Operação Cancelada
+162 Arquivo Não Encontrado!!!
+163 Pasta de origem deve ser diferente da pasta do projeto para arquivos não .prg (módulo)
+164 O Formulário adicionado deve estar na Pasta do Projeto. Operação Cancelada
+165 O Formulário já Pertenece ao Projeto. Operação Cancelada
+166 Arquivo não encontrado!!!
+167 Delete
+168 Deseja excluir este arquivo?
+169 Use as Setas para mudar as posições dos Objetos
+170 Ordem dos Objetos
+171 Esta Aba tem uma Barra de ferramentas que deve ser excluída antes de criar um SplitBox.
+172 Assistente SplitBox
+173 Objetos SplitChild
+174 Nome
+175 Tipo
+176 Propriedades do SplitBox
+177 Adicionar
+178 Excluir
+179 Para cima
+180 Para baixo
+181 Editar
+182 Editar Objeto [
+183 Propriedades
+184 Propriedade
+185 Valor
+186 Duplo clique para editar
+187 Eventos
+188 Editar
+189 A janela pertence ao SplitBox
+190 Nome do Objeto Duplicado
+191 Tipo
+192 Nome Inválido
+193 Não há itens selecionados
+194 Adicionar Objeto SplitChild
+195 Propriedades da Barra de ferramentas SplitChild
+196 Assistente SplitChild Barra de ferramentas [
+197 Evento
+198 Valor
+199 ToolBar Deve ter um nome
+200 Gerenciador de Projeto [
+201 Não podem conter espaços nos nomes dos Módulos ou Formulários
+202 Compilar Projeto
+203 Geral
+204 Arquivo do Projeto:
+205 Pasta do Projeto:
+206 Pasta HMG:
+207 Adicionar Biblioteca.:
+208 Adicionar Funções.:
+209 Tipo de Compilação:
+210 Info Depur.:
+211 Sim
+212 Modo Console / Misto:
+213 Arquivos Modificados / Dependencias:
+214 Relatório da Compilação:
+215 Estado: Compilando...
+216 Salvar Relat.
+217 Fechar
+218 Estado: Finalizado Ok
+219 Estado: Finalizado Com Erros
+220 Inglês
+221 Espanhol
+222 Nome do projeto ou caminho inválido (espaços e caracteres especiais não são permitidos)
+223 As páginas à excluir devem estar vazias
+224 Padrão (Nil)
+225 Personalizado
+226 Arquivo do projeto vazio, inválido ou não está especificado no módulo principal
+227  Ja existe. Sobrescrever?
+228 HMG Gerador de relatórios: Etapa 1: Selecionar Campos
+229 Tabelas:
+230 Campos Disponíveis:
+231 Campos Selecionados:
+232 Selecionar uma tabela e os campos que se deseja incluir no relatorio.
+233 Arrastar os items para trocar a ordem dos campos selecionados
+234 Usar [+] / [-] para adicionar/eliminar as expressões nos campos personalizados
+235 Cancelar
+236 Próximo >
+237 HMG Gerador de relatórios: Etapa 2: Aparência
+238 Tipo do Papel:
+239 Orientação:
+240 Selecionar o tamanho do papel e a orientação do relatório
+241 < Voltar
+242 HMG Gerador de relatórios: Etapa 2: Concluir
+243 Título do relatório:
+244 Títulos...
+245 Totais...
+246 Formatos...
+247 Fonte
+248 Visualizar
+249 Para salvar o relatório e fechar o assistente, clique em [Finalizar]
+250 Procesando o relatório...
+251 Fechar a pré-visualização e retornar ao assitente
+253 (O conteúdo dos campos personalizados não estão disponíveis na pré-visualização)
+254 Finalizar
+255 Editar Títulos dos Campos
+256 Duplo clique para editar o título
+257 Fechar
+258 Totalizar Campos
+259 Selecionar Campos Para Totalizar
+260 (Duplo clique para trocar)
+261 Editar Formato dos Campos
+262 Duplo clique para editar o formato do campo
+263 Usar Formato <cSayPicture> da Função Transform()
+264 Campo
+265 Máscara
+266 Totalizar
+267 Título
+268 Adicionar um campo
+269 Adicionar todos os campos
+270 Remover Campo
+271 Remover todos os campos
+272 Adicionar um campo/expressão pensonalisando
+273 Remover um campo/expressão pensonalisando
+274 Totalizar Campos Personalizados: Somente campos individuais podem ser totalizados. Continuar?
+275 Não é uma expressão/campo personalizado. Use [<] para removê-lo.
+276 Editar Formato do Campo
+277 Editar Título do Campo
+278 Configuração
+279 Includes
+280 Novo Include
+281 Novo Valor
+282 Editar Valor
+283 Agrupar...
+284 Agrupar por:
+285 Cabeçalho:
+286 Rodapé:
+287 Editar Tabela
+288 Browse
+289 Modificar Estrutura
+290 Largura
+291 Decimais
+292 Modificar Tabela
+293 Add. Campo
+294 Del. Campo
+295 Salvar
+296 BROWSE é um Objeto obsoleto, portanto não é recomendado o seu uso. Esse objeto foi substituído pelo controle GRID. Você deseja utilizá-lo mesmo assim?

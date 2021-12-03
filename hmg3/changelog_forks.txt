@@ -1,0 +1,66 @@
+/* Encoding: UTF-8 (No BOM)  Notation (in 5th position):
+     * Change, ! Fix, % Optimization, + Addition, - Removal, ; Comment
+   Entries may not always be in chronological/commit order.
+   See license at the end of file. */
+
+
+2020-07-21 Carlos Britos asistex /at/ yahoo.com.ar
+2020-07-25 Carlos Britos asistex /at/ yahoo.com.ar
+  * source\*.prg
+    * removed ending spaces
+    * pacified warnings. -w3
+
+2020-09-28 Carlos Britos asistex /at/ yahoo.com.ar
+  * source\*.c
+    * removed ending spaces
+
+  * source\h_graphbitmap.prg
+    ! RGB2HSL()
+    ! HSL2RGB()
+      ; Replaced with new, more accurate functions.
+        Checked at https://www.w3schools.com/colors/colors_converter.asp
+        Added via #define PARAM_IS_3_NUMBERS the possibility to use
+           3 numerical parameters or 1 parameter array.
+
+2020-10-11 Carlos Britos asistex /at/ yahoo.com.ar
+  + c:\bcd\prg\asistex\hmg\workflows\
+    + hb32_mgw930_32b.yml
+    + hmg34offi_all_hb32_mgw930_32b_uni.yml
+    + hmg34offi_full_hb32_mgw930_32b_uni.yml
+    + hmg34offi_hb32_mgw930_32b_uni.yml
+    + hmg34_hb32_mgw930_32b_uni.yml
+    + hmg34_hb32_mgw102_32b_uni.yml
+    + hb32_mgw102_32b.yml
+    + readme.md
+
+    + hb32_mgw930_32b_2020_10_11.zip
+
+2020-10-11 Carlos Britos asistex /at/ yahoo.com.ar
+  * source\BosTaurus\*.prg ; *.c
+  * source\Class\*.prg ; *.c
+  * source\Crypt\*.prg ; *.c
+  * source\Debugger\*.prg ; *.c
+  * source\Edit\*.prg ; *.c
+  * source\EditEx\*.prg ; *.c
+  * source\Graph\*.prg ; *.c
+  * source\hbvpdf\*.prg ; *.c
+  * source\HMGSQL\*.prg ; *.c
+  * source\Ini\*.prg ; *.c
+  * source\Report\*.prg ; *.c
+    * revert changes
+
+2020-10-13 Carlos Britos asistex /at/ yahoo.com.ar
+  * source\BosTaurus\*.prg ; *.c
+  * source\Class\*.prg ; *.c
+  * source\Crypt\*.prg ; *.c
+  * source\Debugger\*.prg ; *.c
+  * source\Edit\*.prg ; *.c
+  * source\EditEx\*.prg ; *.c
+  * source\Graph\*.prg ; *.c
+  * source\hbvpdf\*.prg ; *.c
+  * source\HMGSQL\*.prg ; *.c
+  * source\Ini\*.prg ; *.c
+  * source\Report\*.prg ; *.c
+    * removed prg warnings
+    * removed ending spaces
+

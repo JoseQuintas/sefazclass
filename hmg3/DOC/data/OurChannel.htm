@@ -1,0 +1,157 @@
+<html>
+<head>
+<style>
+</style>
+<meta charset="utf-8" />
+<script>
+function YTGetWidth()
+{
+ var newwidth;
+ var id = "video";
+ if(document.getElementById)
+  {
+    newwidth = document.getElementById(id).contentWindow.document.body.scrollWidth;
+  }
+  return (newwidth-20);
+}
+function YTGetHeight()
+{
+ var newheight;
+ var id = "video";
+ if(document.getElementById)
+  {
+    newheight = document.getElementById(id).contentWindow.document.body.scrollHeight;
+  }
+  return (newheight-20);
+}
+function YTHeader()
+{
+  var page = '<html><head>';
+  page += '<style>';
+  page += 'div.img img';
+  page += '{';
+  page += ' width: 100%;';
+  page += ' max-height: 92px;';
+  page += '}';
+  page += '.inner-image_left';
+  page += '{';
+  page += ' position: absolute;';
+  page += ' top: 14px;';
+  page += ' left: 15px;';
+  page += ' width: 80px;';
+  page += ' height: 80px;';
+  page += '}';
+  page += '.inner-image_right';
+  page += '{';
+  page += ' position: absolute;';
+  page += ' top: 16px;';
+  page += ' right: 15px;';
+  page += ' width: 233px;';
+  page += ' height: 75px;';
+  page += '}';
+  page += '.inner-text_center';
+  page += '{';
+  page += ' position: absolute;';
+  page += ' top: 12px;';
+  page += ' left: 45%;';
+  page += ' transform: translate(-45%, 0);';
+  page += '}';
+  page += '</style>';
+  page += '</head>';
+  page += '<body>';
+  page += '<div style="color:#0000FF">';
+  page += ' <div class="img">';
+  page += '  <img src="../assets/img/SourceCode.jpg" id="SourceCode"><br>';
+  page += '  <div class="inner-text_center">';
+  page += '   <font size="+4" color="00ff00">Tutorial videos</font><br>';
+  page += '   <center><font size="+2" color="00ff00">Looking into the future</font></center>';
+  page += '  </div>';
+  page += ' </div>';
+  page += '</div>';
+  page += '<a href="http://www.hmgforum.com/index.php" target="_blank"><img src="../assets/img/HMGForum.jpg" alt="" class="inner-image_left"/></a>';
+  page += '<a href="https://www.youtube.com/channel/UCcINdVHnB_76DRFmf1D88QA" target="_blank"><img src="../assets/img/YouTube_Logo.png" alt="" class="inner-image_right"/></a>';
+  page += '</body>';
+  page += '</html>';
+  return page;
+}
+function YTMenu()
+{
+  var page = '<html><head>';
+  page += '<base target="_blank">';
+  page += '</head>';
+  page += '<body>';
+  page += ' <h2 style="margin-left: 0.4em;color:red"><center><u>HMG PlayList in YouTube</u>:</center></h2>';
+  page += ' <h4 title="InputWindow implementation &amp; Build.bat/ViewError demo"><a href="https://www.youtube.com/embed/9EBC-GjJINA" target="Video">InputWindow implementation &amp; Build.bat/ViewError demo</a></h3>';
+  page += ' <p style="font-size: small; margin-left: 0.8em;">Posted by: <b>Pablo César</b> on Mar 6, 2015</p>';
+  page += ' <p style="font-size: small; margin-left: 0.8em;" align="justify">This is to show how is easy to implement InputWindow for Grid editing.<br>Also is showing how to compile app in line command using Build.bat and ViewError for source displaying/editing and re-Build ap...</p>';
+  page += ' <hr>';
+  page += ' <h4 title="Modal window, loose focus"><a href="https://www.youtube.com/embed/sBZUmqWWbP0" target="Video">Modal window, loose focus</a></h3>';
+  page += ' <p style="font-size: small; margin-left: 0.8em;">Posted by: <b>Pablo César</b> on Apr 20, 2014</p>';
+  page += ' <p style="font-size: small; margin-left: 0.8em;" align="justify">This video it just to show loosing focus in modal window.</p>';
+  page += ' <hr>';
+  page += ' <h4 title="QuickText demo"><a href="https://www.youtube.com/embed/OkxvxV6s97Q" target="Video">QuickText demo</a></h3>';
+  page += ' <p style="font-size: small; margin-left: 0.8em;">Posted by: <b>Pablo César</b> on Aug 17, 2013</p>';
+  page += ' <p style="font-size: small; margin-left: 0.8em;" align="justify">Quicktext is a Notepad++ plugin for text substitution with multi field inputs. Using TAB allows code segment to be inserted quickly. The plug-ins also has option for Add/Modify quick tags. Which ch...</p>';
+  page += ' <hr>';
+  page += ' <h4 title="Tutorial IDE / HMG - Main Menu Builder"><a href="https://www.youtube.com/embed/d7-RdRkhEoM" target="Video">Tutorial IDE / HMG - Main Menu Builder</a></h3>';
+  page += ' <p style="font-size: small; margin-left: 0.8em;">Posted by: <b>Pablo César</b> on Aug 6, 2013</p>';
+  page += ' <p style="font-size: small; margin-left: 0.8em;" align="justify">Using wizard of IDE / HMG to create the Main Menu</p>';
+  page += ' <hr>';
+  page += ' <h4 title="Visual Effects on Windows in HMG"><a href="https://www.youtube.com/embed/ymRWs-2eFig" target="Video">Visual Effects on Windows in HMG</a></h3>';
+  page += ' <p style="font-size: small; margin-left: 0.8em;">Posted by: <b>Pablo César</b> on Aug 6, 2013</p>';
+  page += ' <p  style="font-size: small; margin-left: 0.8em;" align="justify">Visual Effects on Windows in Win XP thank to Dr. Claudio Soto contribution.<br>For further details, please click <a href="http://hmgforum.com/viewtopic.php?p=28069#p28069" target="_blank">here</a> to access the topic at forum.</p>';
+  page += ' <hr>';
+  page += '</body>';
+  page += '</html>';
+  return page;
+}
+function YTVideo(url)
+{
+  var page = '<html><head>';
+  page += '</head>';
+  page += '<body bgcolor="white">';
+  page += '  <iframe name="ytvideo" id="YouTubeVideo" width="'+YTGetWidth()+'" height="'+YTGetHeight()+'" src="'+url+'" frameborder="0" allowfullscreen></iframe>';
+  page += '</body>';
+  page += '</html>';
+  return page;
+}
+function YTTips()
+{
+  var page = '<html><body bgcolor="#6ea364">';
+  page += '<p><font size="5" color="yellow"><img src="../assets/img/LightOn.gif" height="36" width="36" align="top" style="background-color:#6ea364;" hspace="20"></img> <u>Tips & Tricks for creating video tutorials</u>:</font></p><font size="3">';
+  page += '<p align="justify"><span lang=EN style="font-family:Symbol">·</span> For technical videos is not necessary to include background music and also recording voice is dismissed, better not and when is included try in English.</p>';
+  page += '<p align="justify"><span lang=EN style="font-family:Symbol">·</span> Use a simple "Screen Record" as aTube Catcher, install and define your screen area.</p>';
+  page += '<p align="justify"><span lang=EN style="font-family:Symbol">·</span> Close all your windows unnecessary, to keep a calm environment.</p>';
+  page += '<p align="justify"><span lang=EN style="font-family:Symbol">·</span> Prepare the outline for your video. Read it many times over and familiarize yourself with it. Arrange the text to suit the flow of the message you are trying to deliver.</p>';
+  page += '<p align="justify"><span lang=EN style="font-family:Symbol">·</span> Keep mouse cursor visible and recording.</font></p>';
+  page += '</body>';
+  page += '</html>';
+  return page;
+}
+function YTBottom()
+{
+  var page = '<html><head>';
+  page += '</head>';
+  page += '<body bgcolor="#a1a1af">';
+  page += '<p align="justify">HMG has a YouTube channel to host tutorial videos that any one can contribute for technical explanations in HMG.';
+  page += '   In case you wish to share any video regarding HMG functions, IDE features or any tutorial video for HMG, please send a email to:';
+  page += '<a href="mailto:hmg@gmail.com" target="_top">S.Rathinagiri</a> or <a href="mailto:pcarrascaeta@gmail.com" target="_top">Pablo César</a>.</p>';
+  page += '</body>';
+  page += '</html>';
+  return page;
+}
+</script>
+</head>
+
+<frameset rows="12%,82%,7%" border="1" frameborder="2" framespacing="2">
+ <frame name="Header" src="javascript:parent.YTHeader();">
+ <frameset cols="40%,60%">
+  <frame name="Menu" id="menu" src="javascript:parent.YTMenu();">
+  <frameset rows="76%,24%">
+   <frame name="Video" id= "video" src="javascript:parent.YTVideo('https://www.youtube.com/embed/9EBC-GjJINA');">
+   <frame name="Tips" id="tips" src="javascript:parent.YTTips();">
+  </frameset>
+ </frameset>
+ <frame name="Bottom" src="javascript:parent.YTBottom();">
+</frameset>
+</html>

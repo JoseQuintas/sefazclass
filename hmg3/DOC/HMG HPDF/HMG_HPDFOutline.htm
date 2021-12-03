@@ -1,0 +1,193 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+.MsoChpDefault
+	{font-family:"Calibri","sans-serif";}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:107%;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:35.45pt 56.65pt 70.85pt 2.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=WordSection1>
+
+<p class=MsoNormal style='text-align:justify;text-autospace:none'><span
+lang=EN-US>&nbsp;</span></p>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:14.0pt;font-family:"Courier New";color:white'>&nbsp;Outline</span></b></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><i><span
+lang=EN-US style='font-family:"Courier New";color:white'>&nbsp;ROOTOUTLINE / PAGEOUTLINE</span></i></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><i><span
+lang=EN-US style='font-family:"Courier New";color:white'> </span></i><span
+lang=EN-US style='font-family:"Courier New";color:white'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal style='text-align:justify;text-autospace:none'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>ROOTOUTLINE</span></u></b><b><span lang=EN-US style='font-size:
+14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:2.85pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>Outlines are like Tree control of
+the PDF pages. It is easy for navigation and arrangement of the whole doc. This
+command is used to create a simple ROOT. It will not point/refer any page in
+the PDF doc. NAME clause should be used to refer the name of the root in the
+future. If you omit PARENT, the outline will be a ROOT node. Otherwise, it will
+be a sub-root of a parent root/node.</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>SET HPDFDOC ROOTOUTLINE TITLE cTitle ;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>NAME cName ;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>[ PARENT cParent ]</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>SET HPDFDOC ROOTOUTLINE TITLE
+&quot;Index&quot; NAME &quot;INDEX&quot;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>SET HPDFDOC ROOTOUTLINE TITLE &quot;Sub
+Index&quot; NAME &quot;SUBINDEX&quot; PARENT &quot;INDEX&quot;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>PAGEOUTLINE</span></u></b><b><span lang=EN-US style='font-size:
+14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>Outlines are like Tree control of
+the PDF pages. It is easy for navigation and arrangement of the whole doc. This
+command is used to create the outline reference of the current page in the doc.
+</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>If the PARENT clause is omitted, the
+current page will be placed as a root. Use PARENT clause to make the current
+page reference to be inside a root. </span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>The root can be a ROOTOUTLINE or a
+PAGEOUTLINE referenced by its NAME. If you specify NAME clause, the page
+reference can be used as a ROOT and can be parent of other ROOTOUTLINE or
+PAGEOUTLINE. </span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>The current page can be referred
+in multiple outlines also. This command can be called only between START HPDFPAGE
+and END HPDFPAGE.</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>SET HPDFDOC PAGEOUTLINE TITLE cTitle ;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>[ NAME cName ];</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>[ PARENT cParent ]</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>SET HPDFDOC PAGEOUTLINE TITLE &quot;Index
+Page&quot; NAME &quot;INDEX&quot;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>SET HPDFDOC PAGEOUTLINE TITLE &quot;Node
+Page&quot; PARENT &quot;INDEX&quot;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'><span lang=EN-US
+style='font-family:"Courier New"'>SET HPDFDOC PAGEOUTLINE TITLE
+&quot;Intermediate Index Page&quot; NAME &quot;IIP&quot; PARENT
+&quot;INDEX&quot;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

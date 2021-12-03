@@ -1,0 +1,23 @@
+* NOAUTORELEASE clause, makes that, when the user closes the windows 
+* interactively they are hide instead released from memory, then, there is 
+* no need to reload / redefine prior to show it again.
+*
+* NOSHOW clause makes that the windows be not displayed at activation.
+
+DEFINE WINDOW TEMPLATE ;
+	AT 300,300 ;
+	WIDTH 320 ;
+	HEIGHT 240 ;
+	TITLE 'Standard Form' ;
+	NOSHOW ;
+	NOAUTORELEASE 
+
+	DEFINE BUTTON Button_1
+		ROW	10
+		COL	10
+		CAPTION 'Hide Form'
+		ACTION	ThisWindow.Hide
+	END BUTTON
+
+END WINDOW
+

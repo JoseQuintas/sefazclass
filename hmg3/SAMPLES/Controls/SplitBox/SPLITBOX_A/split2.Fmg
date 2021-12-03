@@ -1,0 +1,31 @@
+* Harbour MiniGUI IDE Two-Way Form Designer Generated Code
+* (c)2004-2007 Roberto Lopez <harbourminigui@gmail.com>
+* http://harbourminigui.googlepages.com
+
+DEFINE WINDOW TEMPLATE  WIDTH 217 HEIGHT 300 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "Split2" SPLITCHILD CURSOR NIL GRIPPERTEXT "Split2" ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE MONTHCALENDAR MonthCal_1
+        ROW    60
+        COL    10
+        WIDTH  227
+        HEIGHT 162
+        VALUE CTOD(" / / ")
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        ONCHANGE Nil
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        TABSTOP .T.
+        VISIBLE .T.
+        NOTODAY .F.
+        NOTODAYCIRCLE .F.
+        WEEKNUMBERS .F.
+    END MONTHCALENDAR
+
+END WINDOW
+
+

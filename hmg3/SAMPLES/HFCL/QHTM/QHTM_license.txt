@@ -1,0 +1,22 @@
+QHTM - Quick, light HTML control.
+Copyright © 1998-2006 Gipsysoft. All Rights Reserved.
+
+Non-Commercial use of QHTM
+
+You cannot use this version of QHTM in a commercial product unless
+you have purchased a licence to do so.
+I define a commercial product as one that makes money, either through
+direct sales or through service or support of the product.
+Commercial products include, but not restricted to, software sold direct,
+shareware, software requiring paid support or associated services,
+software given away with hardware or bundled with other paid for products.
+
+You must place the following notice in the application and in the documentation:
+"This product uses QHTM, available from http://www.gipsysoft.com/"
+
+You must let me know of any applications you have written that use QHTM.
+
+I reserve my rights to modify this agreement in the future.
+
+A commercial licence is available on a case by case basis. Source code is
+also available.

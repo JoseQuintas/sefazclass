@@ -1,0 +1,12 @@
+h_graph.prg
+c_graph.c
+
+-hblib
+-o../../lib/${hb_plat}/${hb_comp}/hmg3_graph
+
+-Iinclude
+-D__HBIDE__
+-w2 -es2
+-L../../
+hmg3.hbc
+

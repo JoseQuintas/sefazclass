@@ -1,0 +1,18 @@
+DEFINE REPORT TEMPLATE
+	TITLE 'INFORME DE CAJA|' + wempresa 
+	HEADERS {'',' ',' ',' '} ,  {'USUARIO','TIEMPO','FECHA','VALOR'} 
+	FIELDS {'usuario','tiempo','fecha','valor'} 
+	WIDTHS {15,15,15,14} 
+	TOTALS {.F.,.F.,.F.,.T.} 
+	NFORMATS { , , ,'999,999,999.99'} 
+	WORKAREA mtiempo 
+	LPP 50 
+	CPL 80 
+	LMARGIN 2 
+        PAPERSIZE DMPAPER_LEGAL
+	PREVIEW  
+	SELECT  
+	IMAGE {'rosa.jpg',10,10,20,20 }
+	GROUPED BY 'USUARIO' 
+	HEADRGRP 'Usuario:' 
+END REPORT

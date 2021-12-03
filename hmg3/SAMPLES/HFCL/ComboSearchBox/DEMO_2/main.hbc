@@ -1,0 +1,6 @@
+incpaths=c:\hmg.3.0.45\hfcl\include
+libpaths=
+libs=hfcl
+gt=
+mt=no
+instpaths=

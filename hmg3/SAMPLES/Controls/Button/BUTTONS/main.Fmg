@@ -1,0 +1,84 @@
+* Harbour MiniGUI IDE Two-Way Form Designer Generated Code
+* (c)2004-2007 Roberto Lopez <harbourminigui@gmail.com>
+* http://harbourminigui.googlepages.com
+
+DEFINE WINDOW TEMPLATE AT 132 , 257 WIDTH 251 HEIGHT 358 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "" ICON NIL MAIN CURSOR NIL ON INIT Nil ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON MAXIMIZE Nil ON MINIMIZE Nil ON PAINT Nil BACKCOLOR Nil NOTIFYICON NIL NOTIFYTOOLTIP NIL ON NOTIFYCLICK Nil ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE BUTTON Text_And_Image_Button
+        ROW    90
+        COL    20
+        WIDTH  190
+        HEIGHT 100
+        ACTION MsgInfo('Text And Image Button')
+        CAPTION "Text And Image"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP "Text And Image Button"
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        HELPID Nil
+        FLAT .F.
+        TABSTOP .T.
+        VISIBLE .T.
+        TRANSPARENT .F.
+        PICTURE "BUTTON.BMP"
+        PICTALIGNMENT TOP
+    END BUTTON
+
+    DEFINE BUTTON Text_Only_Button
+        ROW    20
+        COL    20
+        WIDTH  190
+        HEIGHT 60
+        ACTION MsgInfo('Text Only Button')
+        CAPTION "Text Only"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP "Text Only Button"
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        HELPID Nil
+        FLAT .F.
+        TABSTOP .T.
+        VISIBLE .T.
+        TRANSPARENT .F.
+        PICTURE Nil
+        PICTALIGNMENT TOP
+    END BUTTON
+
+    DEFINE BUTTON Image_Only_Button
+        ROW    200
+        COL    20
+        WIDTH  190
+        HEIGHT 100
+        ACTION MsgInfo ('Image Only Button')
+        CAPTION Nil
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP "Image Only Button"
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        HELPID Nil
+        FLAT .F.
+        TABSTOP .T.
+        VISIBLE .T.
+        TRANSPARENT .F.
+        PICTURE "button.bmp"
+        PICTALIGNMENT TOP
+    END BUTTON
+
+END WINDOW
+
+

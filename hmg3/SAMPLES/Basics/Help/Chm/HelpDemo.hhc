@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+</head><body>
+
+<object type="text/site properties">
+  <param name="ExWindow Styles" value="0x800225">
+  <param name="Window Styles" value="0x800225">
+</object>
+
+<ul>
+<li><object type="text/sitemap">
+  <param name="Name" value="Help Edit Demo for HMG">
+  <param name="Local" value="HelpDemo.html">
+  <param name="ImageNumber" value="11">
+</object></li>
+<li><object type="text/sitemap">
+  <param name="Name" value="Topic 1: Hypertext">
+  <param name="Local" value="HelpDemo1.html">
+  <param name="ImageNumber" value="11">
+</object></li>
+<li><object type="text/sitemap">
+  <param name="Name" value="Topic 2: Graphics">
+  <param name="Local" value="HelpDemo2.html">
+  <param name="ImageNumber" value="11">
+</object></li>
+</ul>
+
+</body></html>

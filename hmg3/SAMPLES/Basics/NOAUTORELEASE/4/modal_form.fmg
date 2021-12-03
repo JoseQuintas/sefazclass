@@ -1,0 +1,16 @@
+DEFINE WINDOW TEMPLATE ;
+	AT 200,200 ;
+	WIDTH 320 ;
+	HEIGHT 240 ;
+	TITLE 'Modal Form' ;
+	MODAL 
+
+	DEFINE BUTTON Button_1
+		ROW	10
+		COL	10
+		CAPTION 'Hide Form'
+		ACTION	ThisWindow.Hide
+	END BUTTON
+
+END WINDOW
+

@@ -1,0 +1,66 @@
+# flags
+
+#####PRGFLAGS=-DCOMPILE_HMG_UNICODE
+#####CFLAGS=-DCOMPILE_HMG_UNICODE
+RESFLAGS=-DWIN32
+
+# paths
+
+gt=gtwvg
+incpaths=./
+incpaths=./include
+libpaths=./lib/${hb_plat}/${hb_comp}/
+
+# main hmg libs
+
+{!hblib}libs=hmg3_core
+{!hblib}libs=hmg3_edit
+{!hblib}libs=hmg3_editex
+{!hblib}libs=hmg3_graph
+{!hblib}libs=hmg3_ini
+{!hblib}libs=hmg3_report
+{!hblib}libs=hmg3_hfcl
+libs=hbhpdf.hbc
+libs=hbmzip.hbc
+libs=hbmisc.hbc
+libs=hbct.hbc
+libs=xhb.hbc
+
+# system libs
+
+{!hblib}libs=msvfw32
+{!hblib}libs=vfw32
+
+# if your application need them
+
+#libs=hbmysql
+#libs=mysql
+#libs=hbfimage
+#libs=hbpgsql
+#libs=sddmy
+
+#libs=hbvpdf
+
+#libs=hbct
+#libs=hbwin
+#libs=hbmzip
+#libs=minizip
+#libs=hbmemio
+#libs=hbmisc
+#libs=hbtip
+#libs=sqlite3
+#libs=hbsqlit3
+#libs=sddodbc
+#libs=rddsql
+#libs=hbodbc
+#libs=odbc32
+#libs=hbhpdf
+#libs=hbnetio
+#libs=xhb
+#libs=png
+#libs=libhpdf
+#libs=hbzebra
+
+# link compiled resources
+
+#{!hblib}sources=resources/hmg3.rc

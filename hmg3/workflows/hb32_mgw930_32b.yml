@@ -1,0 +1,81 @@
+name: Harbour binaries 32b MinGW 930
+
+on:
+    push:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    if: github.actor == github.event.repository.owner.login
+
+    steps:
+    - name: Checkout harbour/core repo
+      uses: actions/checkout@v2
+      with:
+       repository: harbour/core
+       path: harbour
+
+    - name: Install dependencies
+      run: |
+        (new-object System.Net.WebClient).DownloadFile('https://bitbucket.org/lorenzodla/mod_harbour_actions_resources/downloads/mingw32.zip', 'C:\temp\mingw32.zip')
+        Expand-Archive -LiteralPath C:\temp\mingw32.zip -DestinationPath C:\mingw32 -Force
+        choco install openssl
+        choco install curl
+        (new-object System.Net.WebClient).DownloadFile('https://bitbucket.org/lorenzodla/mod_harbour_actions_resources/downloads/acesdk.zip', 'C:\temp\acesdk.zip')
+        Expand-Archive -LiteralPath C:\temp\acesdk.zip -DestinationPath C:\acesdk -Force
+
+    - name: Compile Harbour
+      shell: cmd
+      run: |
+        cd harbour
+        set HB_BUILD_MODE=c
+        set HB_USER_PRGFLAGS=-l-
+        set HB_BUILD_PARTS=all
+        set HB_BUILD_CONTRIBS=
+        set HB_WITH_OPENSSL=C:\OpenSSL\include
+        set HB_WITH_CURL=C:\curl\include
+        set HB_WITH_ADS=C:\acesdk
+        set HB_STATIC_OPENSSL=yes
+        set HB_STATIC_CURL=yes
+        set HB_COMPILER=mingw
+        set HB_BUILD_CONTRIB_DYN=no
+        set HB_BUILD_DYN=no
+        set HB_WITH_LIBHARU=c:\harbour\contrib\hbhpdf
+        set path=c:\mingw32\mingw32\bin;c:\program Files\OpenSSL-Win64\bin;%path%
+        win-make.exe
+
+    - name: Create output folders
+      shell: cmd
+      run: |
+        mkdir output
+        mkdir output\bin
+        copy harbour\bin\win\mingw\*.exe output\bin
+
+        mkdir output\lib
+        robocopy harbour\lib\ output\lib\ /E
+        if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+        mkdir output\include
+        copy harbour\include output\include
+
+        mkdir output\contrib
+        robocopy harbour\contrib\ output\contrib\ /E
+        if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+        copy harbour\contrib\hbhpdf\*.ch output\include
+        if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+    - name: Get current time
+      uses: srfrnk/current-time@master
+      id: current-time
+      with:
+        format: YYYY_MM_DD
+
+    - name: Upload Harbour to artifact
+      env:
+         TIME: "${{ steps.current-time.outputs.formattedTime }}"
+      uses: actions/upload-artifact@v2
+      with:
+       name: hb32_mgw930_32b_${{ env.TIME }}
+       path: output

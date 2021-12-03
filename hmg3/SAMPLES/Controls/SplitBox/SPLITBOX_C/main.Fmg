@@ -1,0 +1,113 @@
+* Harbour MiniGUI IDE Two-Way Form Designer Generated Code
+* (c)2004-2007 Roberto Lopez <harbourminigui@gmail.com>
+* http://harbourminigui.googlepages.com
+
+DEFINE WINDOW TEMPLATE AT 132 , 235 WIDTH 550 HEIGHT 350 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "SplitBox Demo" ICON NIL MAIN CURSOR NIL ON INIT Nil ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON MAXIMIZE Nil ON MINIMIZE Nil ON PAINT Nil BACKCOLOR Nil NOTIFYICON NIL NOTIFYTOOLTIP NIL ON NOTIFYCLICK Nil ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE SPLITBOX
+        DEFINE TOOLBAR tool1 BUTTONSIZE 64,64 FONT "Arial" SIZE 9 FLAT
+            BUTTON tool1_Btn1 PICTURE "MINIGUI_EDIT_NEW" ACTION MsgInfo("Button 1")
+            BUTTON tool1_btn2 CAPTION "Button 2" PICTURE "MINIGUI_EDIT_CLOSE" ACTION MsgInfo("Button 1")
+        END TOOLBAR
+        DEFINE BROWSE brow1
+            ALLOWAPPEND .F.
+            ALLOWDELETE .F.
+            ALLOWEDIT .F.
+            BACKCOLOR NIL
+            BREAK .F.
+            COL Nil
+            DYNAMICBACKCOLOR Nil
+            DYNAMICFORECOLOR Nil
+            FIELDS {''}
+            FONTBOLD .F.
+            FONTCOLOR NIL
+            FONTITALIC .F.
+            FONTNAME "Arial"
+            FONTUNDERLINE .F.
+            FONTSIZE 9
+            FONTSTRIKEOUT .F.
+            FORMAT Nil
+            HEADERS {''}
+            HEIGHT 120
+            HELPID Nil
+            IMAGE Nil
+            INPUTMASK Nil
+            JUSTIFY Nil
+            NOLINES .F.
+            LOCK .F.
+            READONLYFIELDS Nil
+            ROW Nil
+            VALID Nil
+            VALIDMESSAGES Nil
+            VALUE 0
+            VSCROLLBAR .F.
+            TOOLTIP ""
+            WHEN Nil
+            WIDTH 120
+            WIDTHS {0}
+            WORKAREA Nil
+            ONCHANGE Nil
+            ONDBLCLICK Nil
+            ONGOTFOCUS Nil
+            ONHEADCLICK Nil
+            ONLOSTFOCUS Nil
+        END BROWSE
+        DEFINE EDITBOX edit1
+            BACKCOLOR NIL
+            BREAK .F.
+            COL Nil
+            FONTBOLD .F.
+            FONTCOLOR NIL
+            FONTITALIC .F.
+            FONTNAME "Arial"
+            FONTUNDERLINE .F.
+            FONTSIZE 9
+            FONTSTRIKEOUT .F.
+            HEIGHT 120
+            HELPID Nil
+            HSCROLLBAR .T.
+            MAXLENGTH Nil
+            READONLY .F.
+            ROW Nil
+            TABSTOP .T.
+            TOOLTIP ""
+            VALUE ""
+            VISIBLE .T.
+            VSCROLLBAR .T.
+            WIDTH 120
+            ONCHANGE Nil
+            ONGOTFOCUS Nil
+            ONLOSTFOCUS Nil
+        END EDITBOX
+        DEFINE LISTBOX list1
+            BACKCOLOR NIL
+            BREAK .F.
+            COL Nil
+            FONTBOLD .F.
+            FONTCOLOR NIL
+            FONTITALIC .F.
+            FONTNAME "Arial"
+            FONTUNDERLINE .F.
+            FONTSIZE 9
+            FONTSTRIKEOUT .F.
+            HEIGHT 120
+            HELPID Nil
+            ITEMS {""}
+            MULTISELECT .F.
+            ROW Nil
+            SORT .F.
+            TABSTOP .T.
+            TOOLTIP ""
+            VALUE 0
+            VISIBLE .T.
+            WIDTH 100
+            ONCHANGE Nil
+            ONDBLCLICK Nil
+            ONGOTFOCUS Nil
+            ONLOSTFOCUS Nil
+        END LISTBOX
+    END SPLITBOX
+
+END WINDOW
+
+

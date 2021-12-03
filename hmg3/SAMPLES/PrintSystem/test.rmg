@@ -1,0 +1,256 @@
+DEFINE REPORT TEMPLATE
+
+    BEGIN LAYOUT
+
+        PAPERSIZE   PRINTER_PAPER_LETTER
+        ORIENTATION PRINTER_ORIENT_PORTRAIT
+
+    END LAYOUT
+
+    BEGIN HEADER
+
+        BANDHEIGHT 27
+
+        BEGIN TEXT
+            EXPRESSION  "Test"
+            ROW         11
+            COL         10
+            WIDTH       100
+            HEIGHT      10
+            FONTNAME    "Arial"
+            FONTSIZE    20
+            FONTBOLD    .F.
+        END TEXT
+
+        BEGIN LINE
+            FROMROW     21
+            FROMCOL     10
+            TOROW       21
+            TOCOL       203
+            PENWIDTH    0.2
+        END LINE
+
+        BEGIN TEXT
+            EXPRESSION "Code"
+            ROW         22
+            COL         12
+            WIDTH       36
+            HEIGHT      8
+            FONTNAME    "Arial"
+            FONTSIZE    9
+            FONTBOLD    .T.
+            ALIGNMENT RIGHT
+        END TEXT
+
+        BEGIN TEXT
+            EXPRESSION "First"
+            ROW         22
+            COL         50
+            WIDTH       36
+            HEIGHT      8
+            FONTNAME    "Arial"
+            FONTSIZE    9
+            FONTBOLD    .T.
+        END TEXT
+
+        BEGIN TEXT
+            EXPRESSION "Last"
+            ROW         22
+            COL         88
+            WIDTH       36
+            HEIGHT      8
+            FONTNAME    "Arial"
+            FONTSIZE    9
+            FONTBOLD    .T.
+        END TEXT
+
+        BEGIN TEXT
+            EXPRESSION "Country"
+            ROW         22
+            COL         126
+            WIDTH       36
+            HEIGHT      8
+            FONTNAME    "Arial"
+            FONTSIZE    9
+            FONTBOLD    .T.
+        END TEXT
+
+        BEGIN TEXT
+            EXPRESSION "Salary"
+            ROW         22
+            COL         164
+            WIDTH       36
+            HEIGHT      8
+            FONTNAME    "Arial"
+            FONTSIZE    9
+            FONTBOLD    .T.
+            ALIGNMENT RIGHT
+        END TEXT
+
+        BEGIN LINE
+            FROMROW     27
+            FROMCOL     10
+            TOROW       27
+            TOCOL       203
+            PENWIDTH    0.2
+        END LINE
+
+    END HEADER
+
+    BEGIN DETAIL
+
+        BANDHEIGHT      4
+
+        BEGIN TEXT
+            EXPRESSION Transform( TEST->CODE , "99999")
+            ROW         2
+            COL         12
+            WIDTH       36
+            HEIGHT      4
+            FONTNAME    "Arial"
+            FONTSIZE    9
+            FONTBOLD    .F.
+            FONTITALIC  .F.
+            ALIGNMENT   RIGHT
+        END TEXT
+
+        BEGIN TEXT
+            EXPRESSION TEST->FIRST
+            ROW         2
+            COL         50
+            WIDTH       36
+            HEIGHT      4
+            FONTNAME    "Arial"
+            FONTSIZE    9
+            FONTBOLD    .F.
+            FONTITALIC  .F.
+        END TEXT
+
+        BEGIN TEXT
+            EXPRESSION TEST->LAST
+            ROW         2
+            COL         88
+            WIDTH       36
+            HEIGHT      4
+            FONTNAME    "Arial"
+            FONTSIZE    9
+            FONTBOLD    .F.
+            FONTITALIC  .F.
+        END TEXT
+
+        BEGIN TEXT
+            EXPRESSION TEST->COUNTRY
+            ROW         2
+            COL         126
+            WIDTH       36
+            HEIGHT      4
+            FONTNAME    "Arial"
+            FONTSIZE    9
+            FONTBOLD    .F.
+            FONTITALIC  .F.
+        END TEXT
+
+        BEGIN TEXT
+            EXPRESSION TEST->SALARY
+            ROW         2
+            COL         164
+            WIDTH       36
+            HEIGHT      4
+            FONTNAME    "Arial"
+            FONTSIZE    9
+            FONTBOLD    .F.
+            FONTITALIC  .F.
+            ALIGNMENT   RIGHT
+        END TEXT
+
+    END DETAIL
+
+    BEGIN FOOTER
+
+        BANDHEIGHT	23
+
+        BEGIN LINE
+            FROMROW     4
+            FROMCOL     10
+            TOROW       4
+            TOCOL       203
+            PENWIDTH    0.1
+        END LINE
+
+        BEGIN TEXT
+            EXPRESSION  Str(_PageNo)
+            ROW         6
+            COL         190.9
+            WIDTH       100
+            HEIGHT      10
+            FONTNAME   "Arial"
+            FONTSIZE    9
+            FONTBOLD    .T.
+        END TEXT
+
+        BEGIN TEXT
+            EXPRESSION  dtoc(Date())
+            ROW         6
+            COL         10
+            WIDTH       100
+            HEIGHT      10
+            FONTNAME   "Arial"
+            FONTSIZE    9
+            FONTBOLD    .T.
+        END TEXT
+
+    END FOOTER
+
+END REPORT
+
+*_REPORT_BUILDER_DATA_BEGIN____________________________________
+*
+*_STEP_1_SELECTED_TABLE_________TEST
+*_STEP_1_SELECTED_FIELDS________TEST->CODE
+*_STEP_1_SELECTED_FIELDS________TEST->FIRST
+*_STEP_1_SELECTED_FIELDS________TEST->LAST
+*_STEP_1_SELECTED_FIELDS________TEST->COUNTRY
+*_STEP_1_SELECTED_FIELDS________TEST->SALARY
+*_STEP_2_SELECTED_PAPER_SIZE____1
+*_STEP_2_SELECTED_ORIENTATION___1
+*_STEP_3_REPORT_TITLE___________Test
+*_STEP_3_TITLES_FIELD___________TEST->CODE
+*_STEP_3_TITLES_TITLE___________Code
+*_STEP_3_TITLES_FIELD___________TEST->FIRST
+*_STEP_3_TITLES_TITLE___________First
+*_STEP_3_TITLES_FIELD___________TEST->LAST
+*_STEP_3_TITLES_TITLE___________Last
+*_STEP_3_TITLES_FIELD___________TEST->COUNTRY
+*_STEP_3_TITLES_TITLE___________Country
+*_STEP_3_TITLES_FIELD___________TEST->SALARY
+*_STEP_3_TITLES_TITLE___________Salary
+*_STEP_3_TOTALS_FIELD___________TEST->CODE
+*_STEP_3_TOTALS_TOTALIZE________.F.
+*_STEP_3_TOTALS_FIELD___________TEST->FIRST
+*_STEP_3_TOTALS_TOTALIZE________.F.
+*_STEP_3_TOTALS_FIELD___________TEST->LAST
+*_STEP_3_TOTALS_TOTALIZE________.F.
+*_STEP_3_TOTALS_FIELD___________TEST->COUNTRY
+*_STEP_3_TOTALS_TOTALIZE________.F.
+*_STEP_3_TOTALS_FIELD___________TEST->SALARY
+*_STEP_3_TOTALS_TOTALIZE________.F.
+*_STEP_3_FORMATS_FIELD__________TEST->CODE
+*_STEP_3_FORMATS_MASK___________99999
+*_STEP_3_FORMATS_FIELD__________TEST->FIRST
+*_STEP_3_FORMATS_MASK___________
+*_STEP_3_FORMATS_FIELD__________TEST->LAST
+*_STEP_3_FORMATS_MASK___________
+*_STEP_3_FORMATS_FIELD__________TEST->COUNTRY
+*_STEP_3_FORMATS_MASK___________
+*_STEP_3_FORMATS_FIELD__________TEST->SALARY
+*_STEP_3_FORMATS_MASK___________
+*_STEP_3_FONT_NAME______________Arial
+*_STEP_3_FONT_SIZE______________9
+*_STEP_3_FONT_BOLD______________.F.
+*_STEP_3_FONT_ITALIC____________.F.
+*_STEP_3_GROUPEXPRESSION________
+*_STEP_3_GROUPHEADER____________
+*_STEP_3_GROUPFOOTER____________
+*
+*_REPORT_BUILDER_DATA_END______________________________________
+

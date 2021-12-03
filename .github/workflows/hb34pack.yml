@@ -1,0 +1,117 @@
+#
+# use: mingw_0703.yml
+# use: hb34_0703.yml
+
+name: hb34pack
+
+on:
+#  push:
+  schedule:
+   - cron: "45 5 2 * *"
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'hb34pack'
+        default: 'hb34pack'
+        required: true
+
+jobs:
+
+  Build:
+    runs-on: windows-latest
+    steps:
+
+    - name: mingw 7.3
+      uses: dawidd6/action-download-artifact@v2
+      with:
+         workflow: mingw_0703.yml
+         workflow_conclusion: success
+         name: mingw_0703
+         path: c:\temp
+         repo: JoseQuintas/addons
+
+    - name: harbour 3.4
+      uses: dawidd6/action-download-artifact@v2
+      with:
+         workflow: hb34_0703.yml
+         workflow_conclusion: success
+         name: hb34_0703
+         path: c:\temp
+         repo: JoseQuintas/addons
+
+    - name: Unzip
+      env:
+         PATH: c:\program files\7-zip
+      run: |
+         c:
+         7z x -y c:\temp\hb34_0703.7z -oc:\temp\harbour
+         7z x -y c:\temp\mingw_0703.7z -oc:\temp\mingw
+
+    - name: Load Source Code
+      env:
+         REPO_ADDONS:     https://github.com/JoseQuintas/addons
+         REPO_HWGUI:      https://github.com/JoseQuintas/hwgui
+         REPO_HMGE:       https://github.com/JoseQuintas/hmge
+         REPO_SEFAZCLASS: https://github.com/JoseQuintas/sefazclass
+         REPO_WVGTST:     https://github.com/JoseQuintas/wvgtst
+         PATH_ADDONS:     c:\temp\harbour\addons
+         PATH_HWGUI:      c:\temp\harbour\addons\hwgui
+         PATH_HMGE:       c:\temp\harbour\addons\hmge
+         PATH_SEFAZCLASS: c:\temp\harbour\addons\sefazclass
+         PATH_WVGTST:     c:\temp\harbour\addons\wvgtst
+      run: |
+         c:
+         git clone $env:REPO_ADDONS     $env:PATH_ADDONS     --depth 1
+         git clone $env:REPO_HWGUI      $env:PATH_HWGUI      --depth 1
+         git clone $env:REPO_HMGE       $env:PATH_HMGE       --depth 1
+         git clone $env:REPO_SEFAZCLASS $env:PATH_SEFAZCLASS --depth 1
+         git clone $env:REPO_WVGTST     $env:PATH_WVGTST     --depth 1
+
+    - name: Build All
+      env:
+         HB_BUILD_STRIP: all
+         HB_COMPILER: mingw
+         HB_INSTALL_PREFIX: c:\temp\harbour
+         HBMK_CMD: -workdir=c:\temp -q -quiet
+         PATH: c:\temp\mingw\mingw64\bin;c:\temp\harbour\bin
+      run: |
+         c:
+         cd c:\temp\harbour\addons\hwgui
+         hbmk2 hwgui.hbp
+         hbmk2 hwgui.hbp -comp=mingw64
+
+         cd c:\temp\harbour\addons\hmge
+         hbmk2 hmge.hbp
+         hbmk2 hmge.hbp -comp=mingw64
+
+         cd c:\temp\harbour\addons\sefazclass
+         hbmk2 sefazclass.hbp
+         hbmk2 sefazclass.hbp  -comp=mingw64
+
+         cd c:\temp\harbour\addons\hmg3
+         hbmk2 hmg3.hbp -workdir=c:\temp -quiet
+         hbmk2 hmg3.hbp -workdir=c:\temp -comp=mingw64 -quiet
+
+         cd c:\temp\harbour\addons\wvgtst
+         hbmk2 wvgtst.hbp
+         hbmk2 wvgtst.hbp -comp=mingw64
+
+    - name: Zip
+      env:
+         PATH: c:\program files\7-zip
+      run: |
+         c:
+         7z a -r c:\temp\hb34pack.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
+
+#    - name: upload
+#      uses: actions/upload-artifact@v2
+#      with:
+#         name: assets-for-download
+#         path: c:\temp\harbour
+
+    - name: Save
+      uses: actions/upload-artifact@v3
+      with:
+         name: harbour
+         path: c:\temp\hb34pack.7z
+

@@ -1,0 +1,58 @@
+<html> 
+<head>
+<title></title> 
+<style>
+input, button 
+{
+   vertical-align:middle;
+}
+
+BODY
+{ 
+   background-color: #D0D0D0; 
+   padding: 1px 0px 1px 0px;
+   vertical-align:middle;
+}
+
+div#main
+{
+    position:absolute;
+    top:30%;
+    right:0;
+    left:0;
+}
+</style>
+<script language="JavaScript">
+
+function BackBtnOff()
+{
+// parent.MNUBOTTOM.location.href = "about:blank" ;
+parent.MNUBOTTOM.location.href = "javascript:blank();" ;
+// parent.MNUBOTTOM.style.visibility = "hidden";
+}
+
+function blank()
+{
+    return "<html><body bgcolor='#D0D0D0'></body></html>";
+}
+
+function LoadAtPage(htm)
+{
+  parent.DETAILS.location.href = "init.htm";
+}
+
+function RefreshDetails()
+{
+  parent.SIDEBAR.location.href = "navigator.htm";
+}
+</script> 
+</head> 
+
+<body>
+<div id="main">
+<center>
+<input type="button" name="back" value="Back to Tree Menu" onclick="javascript:BackBtnOff();RefreshDetails();LoadAtPage();return false;">
+</center>
+</div>
+</body>
+</html>

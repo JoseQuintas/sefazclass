@@ -1,0 +1,302 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+.MsoChpDefault
+	{font-family:"Calibri","sans-serif";}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:107%;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:35.45pt 49.55pt 70.85pt 2.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=WordSection1>
+
+<p class=MsoNormal style='text-align:justify;text-autospace:none'><span
+lang=EN-US>&nbsp;</span></p>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:14.0pt;font-family:"Courier New";color:white'>&nbsp;Page
+Handling</span></b></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><i><span
+lang=EN-US style='font-family:"Courier New";color:white'>&nbsp;START / END /
+INSERT / SELECT / PAGENO / PAGECOUNT</span></i></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><i><span
+lang=EN-US style='font-family:"Courier New";color:white'> </span></i><span
+lang=EN-US style='font-family:"Courier New";color:white'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal style='text-align:justify;text-autospace:none'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>START HPDFPAGE</span></u></b><b><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to add a new
+page to the HPDFDOC. The added page will be the current page until END HPDFPAGE
+is called. Please note that, PAGE once added can not be deleted or removed or
+moved afterwards. This command can be called only after START HPDFDOC.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span style='font-family:
+"Courier New"'>Syntax</span></u></b><b><span style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>START
+HPDFPAGE</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span style='font-family:
+"Courier New"'>Source code example</span></u></b><b><span style='font-family:
+"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>START
+HPDFPAGE</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>END HPDFPAGE</span></u></b><b><span lang=EN-US style='font-size:
+14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to close the
+current page of the HPDFDOC.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span style='font-family:
+"Courier New"'>Syntax</span></u></b><b><span style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>END
+HPDFPAGE</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>END HPDFPAGE</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>INSERT HPDFPAGE</span></u></b><b><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to insert a
+new page before the page number specified. The inserted page will be selected
+as the current page after this command. All the pages will be shifted down.
+This command can not be called inside a current page selection. Please call END
+HPDFPAGE to close the current page before calling this command.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>INSERT HPDFPAGE BEFORE PAGE nPage</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span style='font-family:
+"Courier New"'>Source code example</span></u></b><b><span style='font-family:
+"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>INSERT
+HPDFPAGE BEFORE PAGE 3</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>SELECT HPDFPAGE</span></u></b><b><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to select an
+existing page as the current page. This command can not be called inside a
+current page selection. Please call END HPDFPAGE to close the current page
+before calling this command.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>SELECT HPDFPAGE nPage</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span style='font-family:
+"Courier New"'>Source code example</span></u></b><b><span style='font-family:
+"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>SELECT
+HPDFPAGE 3</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>HMG_HPDF_PAGENO</span></u></b><b><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>():</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This function is used to retrieve
+the current page number. This command shall be called in between the commands
+START HPDFPAGE and END HPDFPAGE.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span style='font-family:
+"Courier New"'>Syntax</span></u></b><b><span style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>HMG_HPDF_PAGENO()
+-&gt; nCurrentPage</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>nCurrentPage := HMG_HPDF_PageNo()</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><u><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>HMG_HPDF_PAGECOUNT</span></u></b><b><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>():</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This function is used to retrieve
+the total pages inside the HPDFDOC at the moment.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>HMG_HPDF_PAGECOUNT() -&gt; nTotPages</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Examples</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>nTotalPages := HMG_HPDF_PageCount()</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,523 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"MS Mincho";
+	panose-1:2 2 6 9 4 2 5 8 3 4;
+	mso-font-alt:"\FF2D\FF33 \660E\671D";
+	mso-font-charset:128;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-536870145 1791491579 18 0 131231 0;}
+@font-face
+	{font-family:"MS Mincho";
+	panose-1:2 2 6 9 4 2 5 8 3 4;
+	mso-font-alt:"\FF2D\FF33 \660E\671D";
+	mso-font-charset:128;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-536870145 1791491579 18 0 131231 0;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-536870145 1073786111 1 0 415 0;}
+@font-face
+	{font-family:"\@MS Mincho";
+	panose-1:2 2 6 9 4 2 5 8 3 4;
+	mso-font-charset:128;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-536870145 1791491579 18 0 131231 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;
+	mso-bidi-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;}
+span.TextosinformatoCar
+	{mso-style-name:"Texto sin formato Car";
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Texto sin formato";
+	font-family:"Courier New";
+	mso-ascii-font-family:"Courier New";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Courier New";}
+p.msopapdefault, li.msopapdefault, div.msopapdefault
+	{mso-style-name:msopapdefault;
+	mso-style-unhide:no;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	mso-style-unhide:no;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;}
+p.msoplaintext1, li.msoplaintext1, div.msoplaintext1
+	{mso-style-name:msoplaintext1;
+	mso-style-unhide:no;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;}
+p.msoplaintext12, li.msoplaintext12, div.msoplaintext12
+	{mso-style-name:msoplaintext12;
+	mso-style-unhide:no;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;}
+p.msoplaintext11, li.msoplaintext11, div.msoplaintext11
+	{mso-style-name:msoplaintext11;
+	mso-style-unhide:no;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;}
+span.msoplaintext13
+	{mso-style-name:msoplaintext13;
+	mso-style-unhide:no;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	mso-default-props:yes;
+	font-size:10.0pt;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 3.0cm 70.85pt 3.0cm;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US-UY link=blue vlink=purple style='tab-interval:35.4pt'>
+
+<div class=WordSection1>
+
+<div style='mso-element:para-border-div;border:solid windowtext 1.0pt;
+mso-border-alt:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+
+<p class=MsoPlainText style='background:#339966;color:white;border:none;mso-border-alt:
+solid windowtext .5pt;padding:0cm;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span
+lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText style='background:#339966;color:white;border:none;mso-border-alt:
+solid windowtext .5pt;padding:0cm;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><b><span
+lang=EN-US style='font-size:12.0pt;mso-ansi-language:EN-US'>@...LABEL / DEFINE
+LABEL<span style='background:#339966;color:white;color:white'><br>
+</span></span></b><b><i><span lang=EN-US style='mso-ansi-language:EN-US'>Creates
+a label control</span></i></b><span lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoPlainText style='background:#339966;color:white;border:none;mso-border-alt:
+solid windowtext .5pt;padding:0cm;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span
+lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><strong><span lang=EN-US style='font-family:"Courier New";
+mso-ansi-language:EN-US'>Standard Syntax (<span class=SpellE>xBase</span>
+Style):</span></strong><span lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+@ &lt;<span class=SpellE>nRow</span><span class=GramE>&gt; ,</span>&lt;<span
+class=SpellE>nCol</span>&gt; <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+LABEL &lt;<span class=SpellE>ControlName</span>&gt; <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span class=GramE>[ OF</span> | PARENT &lt;<span class=SpellE>ParentWindowName</span>&gt;
+]<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VALUE &lt;<span class=SpellE>cValue</span>&gt; <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ACTION&nbsp; | ONCLICK | <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ON CLICK&nbsp; &lt;<span class=SpellE>ActionProcedureName</span>&gt; | &lt;<span
+class=SpellE>bBlock</span>&gt; ]<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ WIDTH &lt;<span class=SpellE>nWidth</span>&gt; ] <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ HEIGHT &lt;<span class=SpellE>nHeight</span>&gt; ] <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ AUTOSIZE ]<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span class=GramE>[ FONT</span> &lt;<span class=SpellE>cFontname</span>&gt;
+SIZE &lt;<span class=SpellE>nFontsize</span>&gt; ] <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span class=GramE>[ BOLD</span> ] <span class=GramE>[ ITALIC</span> ] <span
+class=GramE>[ UNDERLINE</span> ] <span class=GramE>[ STRIKEOUT</span> ]<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span class=GramE>[ TOOLTIP</span> &lt;<span class=SpellE>cToolTipText</span>&gt;
+] <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span class=GramE>[ BACKCOLOR</span> &lt;<span class=SpellE>anBackColor</span>&gt;
+] <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span class=GramE>[ FONTCOLOR</span> &lt;<span class=SpellE>anFontColor</span>&gt;]&nbsp;&nbsp;
+<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span class=GramE>[ TRANSPARENT</span> ]<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span class=GramE>[ RIGHTALIGN</span> | CENTERALIGN ]<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span class=GramE>[ HELPID</span> &lt;<span class=SpellE>nHelpId</span>&gt; ] <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span class=GramE>[ INVISIBLE</span> ] <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>            </span><span class=GramE>[ ENDELLIPSES</span>
+]<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>            </span><span class=GramE>[ NOPREFIX</span>
+]<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><strong><span lang=EN-US style='font-family:"Courier New";
+mso-ansi-language:EN-US'>Alternate Syntax:</span></strong><span lang=EN-US
+style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+DEFINE LABEL &lt;<span class=SpellE>ControlName</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PARENT &lt;<span class=SpellE>ParentWindowName</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext12><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ROW &lt;<span class=SpellE>nValue</span>&gt;&nbsp; <o:p></o:p></span></p>
+
+<p class=msoplaintext12><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+COL &lt;<span class=SpellE>nValue</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext12><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VALUE &lt;<span class=SpellE>cValue</span>&gt; <o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ONCLICK<span class=GramE>&nbsp; &lt;</span><span class=SpellE>ActionProcedureName</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+WIDTH &lt;<span class=SpellE>nWidth</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HEIGHT &lt;<span class=SpellE>nHeight</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+AUTOSIZE &lt;<span class=SpellE>lValue</span>&gt; <o:p></o:p></span></p>
+
+<p class=msoplaintext11><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FONTNAME &lt;<span class=SpellE>cValue</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext11><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FONTSIZE &lt;<span class=SpellE>nValue</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext11><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FONTBOLD &lt;<span class=SpellE>lValue</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext11><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FONTITALIC &lt;<span class=SpellE>lValue</span>&gt; <o:p></o:p></span></p>
+
+<p class=msoplaintext11><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FONTUNDERLINE &lt;<span class=SpellE>lValue</span>&gt; <o:p></o:p></span></p>
+
+<p class=msoplaintext11><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FONTSTRIKEOUT &lt;<span class=SpellE>lValue</span>&gt; <o:p></o:p></span></p>
+
+<p class=msoplaintext11><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TOOLTIP &lt;<span class=SpellE>cToolTipText</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+BACKCOLOR &lt;<span class=SpellE>anBackColor</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FONTCOLOR &lt;<span class=SpellE>anFontColor</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+TRANSPARENT &lt;<span class=SpellE>lValue</span>&gt; <o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ALIGNMENT Left | Right | Center <o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HELPID &lt;<span class=SpellE>nHelpId</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VISIBLE &lt;<span class=SpellE>lValue</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>            </span>ENDELLIPSES &lt;<span class=SpellE>lValue</span>&gt;<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>            </span>NOPREFIX &lt;<span class=SpellE>lValue</span>&gt;
+<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+END LABEL<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><b><span lang=EN-US style='mso-ansi-language:EN-US'>Properties:</span></b><span
+lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="value.htm">Value</a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="enabled.htm">Enabled</a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="visible.htm">Visible</a> <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="row.htm">Row</a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="col.htm">Col</a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="width.htm">Width</a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="height.htm">Height</a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="fontname.htm"><span class=SpellE>FontName</span></a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="fontsize.htm"><span class=SpellE>FontSize</span></a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="fontbold.htm"><span class=SpellE>FontBold</span></a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="fontitalic.htm"><span class=SpellE>FontItalic</span></a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="fontunderline.htm"><span class=SpellE>FontUnderline</span></a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="fontstrikeout.htm"><span class=SpellE>FontStrikeout</span></a> <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="autosize.htm"><span class=SpellE>AutoSize</span></a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="name.htm">Name</a> (R)<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="parent.htm">Parent</a> (D)<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="backcolor.htm"><span class=SpellE>BackColor</span></a> <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="fontcolor.htm"><span class=SpellE>FontColor</span></a> <o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="helpid.htm"><span class=SpellE>HelpId</span></a> (D)<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="alignment.htm">Alignment</a> (D)<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE>EndEllipses</span>
+(D)<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE>NoPrefix</span> (D)<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+D: Available at control definition only<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+R: Read-Only<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><b><span lang=EN-US style='mso-ansi-language:EN-US'>Events:</span></b><span
+lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="onclick.htm"><span class=SpellE>OnClick</span></a><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><b><span lang=EN-US style='mso-ansi-language:EN-US'>Methods:</span></b><span
+lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="show.htm">Show</a></span><span lang=EN-US style='mso-ansi-language:
+ES-AR'><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="hide.htm">Hide</a></span><span lang=EN-US style='mso-ansi-language:
+ES-AR'><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+- <a href="release.htm">Release</a></span><span lang=EN-US style='mso-ansi-language:
+ES-AR'><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:ES-AR'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoPlainText><i style='mso-bidi-font-style:normal'><u><span
+lang=EN-US style='mso-ansi-language:ES-AR'>Note:<o:p></o:p></span></u></i></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>   </span><b style='mso-bidi-font-weight:normal'>ENDELLIPSES</b>
+--&gt; <span class=GramE>If</span> the string does not fit in the size of the
+Label control, the string is truncated and ellipses (...) are added.<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>   </span><span class=GramE><b style='mso-bidi-font-weight:
+normal'>NOPREFIX</b> --&gt; Prevents interpretation of any ampersand (&amp;)
+characters in the control's text as accelerator prefix characters.</span> These
+are displayed with the ampersand removed and the next character in the string
+underlined.<o:p></o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,632 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+span.TextosinformatoCar
+	{mso-style-name:"Texto sin formato Car";
+	mso-style-link:"Texto sin formato";
+	font-family:"Courier New";}
+p.msopapdefault, li.msopapdefault, div.msopapdefault
+	{mso-style-name:msopapdefault;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";}
+.MsoChpDefault
+	{font-size:10.0pt;}
+.MsoPapDefault
+	{margin-bottom:10.0pt;
+	line-height:115%;}
+@page Section1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 3.0cm 70.85pt 3.0cm;}
+div.Section1
+	{page:Section1;}
+div.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+li.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=Section1>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+
+<p class=MsoPlainText style='background:#339966;color:white;border:none;padding:0cm'>&nbsp;</p>
+
+<p class=MsoPlainText style='background:#339966;color:white;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:12.0pt'>@...BROWSE / DEFINE BROWSE<span
+style='background:#339966;color:white;color:white'><br>
+</span></span></b><b><i><span lang=EN-US>Creates a browse control</span></i></b></p>
+
+<p class=MsoPlainText style='background:#339966;color:white;border:none;padding:0cm'>&nbsp;</p>
+
+</div>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><strong>Standard Syntax (xBase Style): </strong></p>
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @
+&lt;nRow&gt; ,&lt;nCol&gt;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+BROWSE &lt;ControlName&gt; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ OF | PARENT &lt;ParentWindowName&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+WIDTH &lt;nWidth&gt; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HEIGHT &lt;nHeight&gt; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HEADERS &lt;acHeaders&gt; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+WIDTHS &lt;anWidths&gt; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+WORKAREA &lt;WorkAreaName&gt;&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+FIELDS &lt;acFields&gt; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ VALUE &lt;nValue&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ FONT &lt;cFontname&gt; SIZE &lt;nFontsize&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ BOLD ] [ ITALIC ] [ UNDERLINE ] [ STRIKEOUT ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ TOOLTIP &lt;cToolTipText&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ DYNAMICBACKCOLOR &lt;aDynamicBackColor&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ DYNAMICFORECOLOR &lt;aDynamicBackColor&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ INPUTMASK &lt;acInputMask&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ FORMAT &lt;acFormat&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ INPUTITEMS &lt;aInputItems&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ DISPLAYITEMS &lt;aDisplayItems&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ BACKCOLOR &lt;aBackColor&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ FONTCOLOR &lt;aFontColor&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ON GOTFOCUS &lt;OnGotFocusProcedur&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ON CHANGE &lt;OnChangeProcedure&gt; | &lt;bBlock&gt; ]&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ON LOSTFOCUS &lt;OnGotFocusProcedur&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ [ ON DBLCLICK &lt;OnDblClickProcedure&gt; | &lt;bBlock&gt; ] | </span><span lang=EN-US>
+[ EDIT  ] [ APPEND ]</span> ] </p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ON HEADCLICK &lt;abBlock&gt; ]&nbsp;&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ WHEN &lt;abBlock&gt; ]&nbsp;&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ VALID &lt;abBlock&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ VALIDMESSAGES &lt;acValidationMessages&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ READONLY &lt;alReadOnlyFields&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ LOCK ]&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ DELETE ]&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ NOLINES ]&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ IMAGE &lt;acImageNames&gt; ]&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ JUSTIFY &lt;anJustifyValue&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ NOVSCROLL ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ HELPID &lt;nHelpId&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ BREAK ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ HEADERIMAGES &lt;acHeaderImages&gt; ]</span></p>
+
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><strong>Alternate Syntax: </strong></p>
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DEFINE
+BROWSE &lt;ControlName&gt;</span></p>
+
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  PARENT &lt;xcValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ROW &lt;nValue&gt;&nbsp; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+COL &lt;nValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  WIDTH &lt;nValue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  HEIGHT &lt;nValue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  HEADERS &lt;acValue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  WIDTHS &lt;anValue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  WORKAREA &lt;xcValue&gt;&nbsp; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  FIELDS &lt;acValue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  VALUE &lt;nValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  FONTNAME &lt;cValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  FONTSIZE &lt;nValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  FONTBOLD </span>&lt;lValue&gt;</p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   FONTITALIC &lt;lValue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  FONTUNDERLINE &lt;lValue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  FONTSTRIKEOUT</span> &lt;lValue&gt; </p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  TOOLTIP &lt;cValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  DYNAMICBACKCOLOR &lt;abValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  DYNAMICFORECOLOR &lt;abValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  INPUTMASK &lt;acValue&gt; ]</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  FORMAT &lt;acValues&gt; ]</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  INPUTITEMS &lt;aaValues</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   DISPLAYITEMS &lt;aaValues&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   BACKCOLOR &lt;anValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  FONTCOLOR &lt;anValues</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  ONGOTFOCUS &lt;ActionProcedure&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  ONCHANGE &lt;ActionProcedure&nbsp; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  ONLOSTFOCUS &lt;ActionProcedure</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  ONDBLCLICK &lt;ActionProcedure&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  ALLWEDIT &lt;lvalue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  ALLWEAPPEND &lt;lvalue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  ON HEADCLICK &lt;abBlock&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  WHEN &lt;abBlock&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  VALID &lt;abBlock&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  VALIDMESSAGES &lt;acValues&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  READONLY &lt;anValues&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  LOCK &lt;lValue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  ALLOWDELETE &lt;lValue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  LINES &lt;lValue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  IMAGE &lt;acValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  JUSTIFY &lt;anJustifyValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  VSCROLL</span>BAR &lt;lValue&gt; </p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  HELPID &lt;nValue&gt;</span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  BREAK &lt;lValue&gt; </span></p>
+<p class=MsoPlainText1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  HEADERIMAGES &lt;acValue&gt;</span></p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; END
+  BROWSE</span></p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><b><span lang=EN-US> Properties:</span></b></p>
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="allowappend.htm">AllowAppend</a> </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="allowedit.htm">AllowEdit</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="allowdelete.htm">AllowDelete</a> </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="value.htm">Value</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="enabled.htm">Enabled</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="visible.htm">Visible</a> </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="row.htm">Row</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="col.htm">Col</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="width.htm">Width</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="height.htm">Height</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="header.htm">Header (nColumnIndex)</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="headerimages.htm">HeaderImages (nColumnNumber)</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontname.htm">FontName</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontsize.htm">FontSize</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontbold.htm">FontBold</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontitalic.htm">FontItalic</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontunderline.htm">FontUnderline</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontstrikeout.htm">FontStrikeout</a> </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="tooltip.htm">ToolTip</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="backcolor.htm">BackColor</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontcolor.htm">FontColor</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="inputitems.htm">InputItems</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="displayitems.htm">DisplayItems</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="name.htm">Name</a> (R)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="parent.htm">Parent</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="widths.htm">Widths</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fields.htm">Fields</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="workarea.htm">WorkArea</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="valid.htm">Valid</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="validmessages.htm">ValidMessages</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="readonlyfields.htm">ReadOnlyFields</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="lock.htm">Lock</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="lines.htm">Lines</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="imageproperty.htm">Image</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="justify.htm">Justify</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="vscrollbar.htm">VScrollBar</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="helpid.htm">HelpId</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="when.htm">When</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="dynamicbackcolor.htm">DynamicBackColor</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="dynamicforecolor.htm">DynamicForeColor</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="inputmask.htm">InputMask</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="format.htm">Format</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D:
+Available at control definition only</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; R:
+Read-Only</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><b><span lang=EN-US> Events:</span></b></p>
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="ongotfocus.htm">OnGotFocus</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="onchange.htm">OnChange</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="onlostfocus.htm">OnLostFocus</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="ondblclick.htm">OnDblClick</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="onheadclick.htm">OnHeadClick</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><b><span lang=EN-US> Methods:</span></b></p>
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="show.htm">Show</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="hide.htm">Hide</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="setfocus.htm">SetFocus</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="refresh.htm">Refresh</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="release.htm">Release</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><b><span lang=EN-US> Hints: </span></b></p>
+<p class=MsoPlainText>&nbsp;</p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Value
+property selects a record by its number (RecNo())</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Value property
+returns selected record number (recNo())</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Browse
+control does not change the active work area </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Browse
+control does not change the record pointer in any area </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (nor
+change selection when it changes) when SET BROWSESYNC is OFF </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (the
+default)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - You can
+programatically refresh it using refresh method.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -
+Variables called &lt;MemVar&gt;.&lt;WorkAreaName&gt;.&lt;FieldName&gt; are
+created for </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+validation in browse editing window. You can use it in VALID array.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Using
+APPEND clause you can add records to table associated with </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WORKAREA
+clause. The hotkey to add records is Alt+A. Append Clause </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Can't Be
+Used With Fields Not Belonging To Browse WorkArea</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Using
+DELETE clause allows to mark selected record for deletion </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pressing
+&lt;Del&gt; key</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - The
+leftmost column in a browse control must be left aligned. </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - When
+used in control definition, Header property must be loaded with </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a
+character array containing as elements as control columns.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - SET
+BROWSESYNC: When is set to ON, BROWSE control will move the </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; record
+pointer in its workarea according to user selection or value </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; property
+programatic setting. </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Setting
+'Value' to reccount()+1 (EOF) will cause that browse windows </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get empty
+(no records will be showed). </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -
+Vscrollbar can't be used with splitbox child browse.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -
+'InputItems' property allows to control data input in the control.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This
+property is an array (one element for each browse column).</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; each
+element (if specified) must be a two dimensional array. The </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; first
+column in the array must contain the data to be shown to the user. </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the
+second column must contain the data to be stored in the table (ID)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for each
+text row in the array.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -
+'DisplayItems' property allows to control data display in the control.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This
+property is an array (one element for each browse column).</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; each
+element (if specified) must be a two dimensional array. </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the first
+column in the array must contain the text to be shown to the </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; user. The
+second column must contain the ID for each array row.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the array
+will be searched for a corresponding ID in the table to show </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the right
+text in each cell. If no correspondence is found, the cell </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; will be
+blank.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+</div>
+
+</body>
+
+</html>

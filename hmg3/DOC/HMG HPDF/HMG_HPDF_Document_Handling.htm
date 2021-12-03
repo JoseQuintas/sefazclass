@@ -1,0 +1,364 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msolistparagraphcxspfirst, li.msolistparagraphcxspfirst, div.msolistparagraphcxspfirst
+	{mso-style-name:msolistparagraphcxspfirst;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msolistparagraphcxspmiddle, li.msolistparagraphcxspmiddle, div.msolistparagraphcxspmiddle
+	{mso-style-name:msolistparagraphcxspmiddle;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msolistparagraphcxsplast, li.msolistparagraphcxsplast, div.msolistparagraphcxsplast
+	{mso-style-name:msolistparagraphcxsplast;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msopapdefault, li.msopapdefault, div.msopapdefault
+	{mso-style-name:msopapdefault;
+	margin-right:0cm;
+	margin-bottom:8.0pt;
+	margin-left:0cm;
+	line-height:106%;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+.MsoChpDefault
+	{font-size:10.0pt;}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:106%;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 3.0cm 70.85pt 3.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=WordSection1>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><b><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New";color:white'>&nbsp;Document
+Handling</span></b></p>
+
+<p class=MsoNormal style='background:#339966'><i><span lang=EN-US
+style='font-family:"Courier New";color:white'>&nbsp;SELECT HPDFDOC /</span></i><span
+lang=EN-US> </span><i><span lang=EN-US style='font-family:"Courier New";
+color:white'>START HPDFDOC /</span></i><span lang=EN-US> </span><i><span
+lang=EN-US style='font-family:"Courier New";color:white'>END HPDFDOC /</span></i><span
+lang=EN-US> </span><i><span lang=EN-US style='font-family:"Courier New";
+color:white'>ABORT HPDFDOC</span></i></p>
+
+<p class=MsoNormal style='background:#339966'><span lang=EN-US
+style='font-family:"Courier New";color:white'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><b><u><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>SELECT HPDFDOC</span></u></b><b><span
+lang=EN-US style='font-size:14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This is the command to initialize
+the HPDFDOC. This is the first command to be used it for HMG_HPDF invoke. If
+you call any other command before calling this command, you will get an error
+that PDF object is not founding. </span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>User can specify his own paper
+length and width also. The maximum paper length/width is 5080 mm.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>All the available paper sizes it
+has listed in hmg_hpdf.ch. </span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>SELECT HPDFDOC cPDFFile ;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>[ ORIENTATION nOrientation ] ;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>[ PAPERSIZE nPaperSize ] ;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>[ PAPERLENGTH nPaperLength ] ;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>[ PAPERWIDTH nPaperWidth ]</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code Example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>SELECT HPDFDOC &quot;sample.pdf&quot;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>SELECT HPDFDOC &quot;sample.pdf&quot; ORIENTATION HPDF_ORIENT_LANDSCAPE</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>SELECT HPDFDOC &quot;sample.pdf&quot; PAPERSIZE HPDF_PAPER_LEGAL</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>SELECT HPDFDOC &quot;sample.pdf&quot; PAPERLENGTH 300 PAPERWIDTH
+300</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><b><u><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>START HPDFDOC</span></u></b><b><span
+lang=EN-US style='font-size:14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>This command is been used to start
+the HPDFDOC.</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><b><u><span
+lang=EN-US style='font-family:"Courier New"'>Syntax</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>START HPDFDOC</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><b><u><span
+lang=EN-US style='font-family:"Courier New"'>Source code Example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>START HPDFDOC</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><b><u><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>END HPDFDOC</span></u></b><b><span
+lang=EN-US style='font-size:14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is been used to close
+the HPDFDOC and create the PDF file as mentioned in the SELECT HPDFDOC command.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>Until this command is been executed
+the PDF file will not be created.</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><b><u><span
+lang=EN-US style='font-family:"Courier New"'>Syntax</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>END HPDFDOC</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><b><u><span
+lang=EN-US style='font-family:"Courier New"'>Source code Example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><b><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-right:9.95pt;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>END HPDFDOC</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><b><u><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>ABORT HPDFDOC</span></u></b><b><span
+lang=EN-US style='font-size:14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is been used to close
+the HPDFDOC and abort the PDF file creation process. </span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>If this command is executed the
+PDF file will not be created.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>ABORT HPDFDOC</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code Example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>ABORT HPDFDOC</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

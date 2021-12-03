@@ -1,0 +1,635 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+  {font-family:"Cambria Math";
+  panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+  {font-family:Calibri;
+  panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+  {margin-top:0cm;
+  margin-right:0cm;
+  margin-bottom:10.0pt;
+  margin-left:0cm;
+  line-height:115%;
+  font-size:11.0pt;
+  font-family:"Calibri","sans-serif";}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+  {mso-style-link:"Texto sin formato Car";
+  margin:0cm;
+  margin-bottom:.0001pt;
+  font-size:10.0pt;
+  font-family:"Courier New";}
+span.TextosinformatoCar
+  {mso-style-name:"Texto sin formato Car";
+  mso-style-link:"Texto sin formato";
+  font-family:"Courier New";}
+.MsoPapDefault
+  {margin-bottom:10.0pt;
+  line-height:115%;}
+@page Section1
+  {size:612.0pt 792.0pt;
+  margin:70.85pt 3.0cm 70.85pt 3.0cm;}
+div.Section1
+  {page:Section1;}
+div.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+  margin:0cm;
+  margin-bottom:.0001pt;
+  font-size:10.0pt;
+  font-family:"Courier New";}
+li.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+  margin:0cm;
+  margin-bottom:.0001pt;
+  font-size:10.0pt;
+  font-family:"Courier New";}
+p.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+  margin:0cm;
+  margin-bottom:.0001pt;
+  font-size:10.0pt;
+  font-family:"Courier New";}
+p.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+  margin:0cm;
+  margin-bottom:.0001pt;
+  font-size:10.0pt;
+  font-family:"Courier New";}
+p.MsoPlainText2 {mso-style-link:"Texto sin formato Car";
+  margin:0cm;
+  margin-bottom:.0001pt;
+  font-size:10.0pt;
+  font-family:"Courier New";}
+table.MsoPlainText2 {mso-style-link:"Texto sin formato Car";
+  margin:0cm;
+  margin-bottom:.0001pt;
+  font-size:10.0pt;
+  font-family:"Courier New";}
+table.MsoPlainText2 th, td {mso-style-link:"Texto sin formato Car";
+  text-align:left;
+  padding-right:0.5cm;
+  white-space:pre;}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+  <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'>&nbsp;</p>
+  <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:14.0pt'>Color Array</span></b><b><span lang=EN-US
+style='font-size:12.0pt;background:#339966'><br>
+  </span></b><b><i><span lang=EN-US>Specifies a color for a color property</span></i></b></p>
+  <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'>&nbsp;</p>
+</div>
+<div class=Section1>
+  <p class=MsoPlainText1><span lang=EN-US>&nbsp;</span></p>
+  <p class=MsoPlainText2><span lang=EN-US>&nbsp;</span><span lang=EN-US>&nbsp;</span></p>
+  <p class=MsoPlainText2><strong><span lang=EN-US>Syntax:</span></strong></p>
+  <blockquote>
+    <p class="MsoPlainText2">&nbsp;</p>
+    <p class="MsoPlainText2">{ &lt;nRed&gt; , &lt;nGreen&gt; , &lt;nBlue&gt; }</p>
+    <p class="MsoPlainText2">&nbsp;</p>
+    <p class="MsoPlainText2">where each element ranges from 0 to 255</p>
+    <p class="MsoPlainText2">&nbsp;</p>
+  </blockquote>
+  <p class=MsoPlainText2>&nbsp;</p>
+  <p class=MsoPlainText2>The following color arrays have predefined names in HMG.</p>
+  <p class=MsoPlainText2>&nbsp;</p>
+  <p class=MsoPlainText2>In many cases, HMG color names match those used in HTML. There are a few exceptions:</p>
+  <p class=MsoPlainText2>&nbsp;</p>
+  <p class=MsoPlainText2>&bull; <span style="color:rgb(   0 , 255 ,   0 )">&#x2588;&#x2588;</span> { 0 , 255 , 0 } is called <b>Lime</b> in HTML but is called <b>GREEN</b>, <b>COLOR_Green</b>, <b>LIME</b>, or <b>COLOR_Lime</b> in HMG.</p>
+  <p class=MsoPlainText2>&nbsp;</p>
+  <p class=MsoPlainText2>&bull; <span style="color:rgb(   0 , 128 ,   0 )">&#x2588;&#x2588;</span> { 0 , 128 , 0 } is called <b>Green</b> in HTML but is called <b>LGREEN</b> in HMG, even though it is darker than <b>GREEN</b>.</p>
+  <p class=MsoPlainText2>&nbsp;</p>
+  <p class=MsoPlainText2>&bull; HTML <b>Brown</b> is <span style="color:rgb( 165 ,  42 ,  42 )">&#x2588;&#x2588;</span> { 165 ,  42 ,  42 }, but HMG <b>BROWN</b> is <span style="color:rgb( 128 ,  64 ,  64 )">&#x2588;&#x2588;</span> { 128 ,  64 ,  64 }.</p>
+  <p class=MsoPlainText2>&nbsp;</p>
+  <p class=MsoPlainText2>&bull; HTML <b>Orange</b> is <span style="color:rgb( 255 , 165 ,   0 )">&#x2588;&#x2588;</span> { 255 , 165 ,   0 }, but HMG <b>ORANGE</b> is <span style="color:rgb( 255 , 128 ,  64 )">&#x2588;&#x2588;</span> { 255 , 128 ,  64 }.</p>
+  <p class=MsoPlainText2>&nbsp;</p>
+  <p class=MsoPlainText2>&bull; HTML <b>Pink</b> is <span style="color:rgb( 255 , 192 , 203 )">&#x2588;&#x2588;</span> { 255 , 192 , 203 }, but HMG <b>PINK</b> is <span style="color:rgb( 255 , 128 , 192 )">&#x2588;&#x2588;</span> { 255 , 128 , 192 }.</p>
+  <p class=MsoPlainText2>&nbsp;</p>
+  <p class=MsoPlainText2>&bull; <span style="color:rgb( 128 ,   0 , 128 )">&#x2588;&#x2588;</span> { 128 ,   0 , 128 } is called <b>Purple</b> in HMTL and <b>PURPLE</b> in HMG, but HMG <b>COLOR_Purple</b> is <span style="color:rgb( 160 ,  32 , 240 )">&#x2588;&#x2588;</span> { 160 ,  32 , 240 }.</p>
+  <p class=MsoPlainText2>&nbsp;</p>
+  <table class="MsoPlainText2">
+    <tr><th>                          </th><th>Case     </th><th                                     >                </th><th>                   </th><th>                       </th></tr>
+    <tr><th>HMG name                  </th><th>sensitive</th><th                                     >Swatch          </th><th>Value              </th><th>HTML name              </th></tr>
+    <tr><td>                          </td><td>         </td><td                                     >                </td><td>                   </td><td>                       </td></tr>
+    <tr><td>AQUA                      </td><td>   *     </td><td style="color:Aqua                  ">&#x2588;&#x2588;</td><td>{   0 , 255 , 255 }</td><td>Aqua                   </td></tr>
+    <tr><td>BLACK                     </td><td>   *     </td><td style="color:Black                 ">&#x2588;&#x2588;</td><td>{   0 ,   0 ,   0 }</td><td>Black                  </td></tr>
+    <tr><td>BLUE                      </td><td>   *     </td><td style="color:Blue                  ">&#x2588;&#x2588;</td><td>{   0 ,   0 , 255 }</td><td>Blue                   </td></tr>
+    <tr><td>BROWN                     </td><td>   *     </td><td style="color:rgb( 128 ,  64 ,  64 )">&#x2588;&#x2588;</td><td>{ 128 ,  64 ,  64 }</td><td>                       </td></tr>
+    <tr><td>CYAN                      </td><td>   *     </td><td style="color:rgb( 153 , 217 , 234 )">&#x2588;&#x2588;</td><td>{ 153 , 217 , 234 }</td><td>                       </td></tr>
+    <tr><td>FUCHSIA                   </td><td>   *     </td><td style="color:Fuchsia               ">&#x2588;&#x2588;</td><td>{ 255 ,   0 , 255 }</td><td>Fuchsia                </td></tr>
+    <tr><td>GRAY                      </td><td>   *     </td><td style="color:Gray                  ">&#x2588;&#x2588;</td><td>{ 128 , 128 , 128 }</td><td>Gray                   </td></tr>
+    <tr><td>GREY                      </td><td>   *     </td><td style="color:Grey                  ">&#x2588;&#x2588;</td><td>{ 128 , 128 , 128 }</td><td>Grey                   </td></tr>
+    <tr><td>GREEN                     </td><td>   *     </td><td style="color:Lime                  ">&#x2588;&#x2588;</td><td>{   0 , 255 ,   0 }</td><td>Lime                   </td></tr>
+    <tr><td>LGREEN                    </td><td>   *     </td><td style="color:Green                 ">&#x2588;&#x2588;</td><td>{   0 , 128 ,   0 }</td><td>Green                  </td></tr>
+    <tr><td>LIME                      </td><td>   *     </td><td style="color:Lime                  ">&#x2588;&#x2588;</td><td>{   0,  255 ,   0 }</td><td>Lime                   </td></tr>
+    <tr><td>MAROON                    </td><td>   *     </td><td style="color:rgb( 128 ,   0 ,   0 )">&#x2588;&#x2588;</td><td>{ 128 ,   0 ,   0 }</td><td>Maroon                 </td></tr>
+    <tr><td>NAVY                      </td><td>   *     </td><td style="color:Navy                  ">&#x2588;&#x2588;</td><td>{   0 ,   0 , 128 }</td><td>Navy                   </td></tr>
+    <tr><td>OLIVE                     </td><td>   *     </td><td style="color:Olive                 ">&#x2588;&#x2588;</td><td>{ 128 , 128 ,   0 }</td><td>Olive                  </td></tr>
+    <tr><td>ORANGE                    </td><td>   *     </td><td style="color:rgb( 255 , 128 ,  64 )">&#x2588;&#x2588;</td><td>{ 255 , 128 ,  64 }</td><td>                       </td></tr>
+    <tr><td>PINK                      </td><td>   *     </td><td style="color:rgb( 255 , 128 , 192 )">&#x2588;&#x2588;</td><td>{ 255 , 128 , 192 }</td><td>                       </td></tr>
+    <tr><td>PURPLE                    </td><td>   *     </td><td style="color:rgb( 128 ,   0 , 128 )">&#x2588;&#x2588;</td><td>{ 128 ,   0 , 128 }</td><td>Purple                 </td></tr>
+    <tr><td>RED                       </td><td>   *     </td><td style="color:Red                   ">&#x2588;&#x2588;</td><td>{ 255 ,   0 ,   0 }</td><td>Red                    </td></tr>
+    <tr><td>SILVER                    </td><td>   *     </td><td style="color:Silver                ">&#x2588;&#x2588;</td><td>{ 192 , 192 , 192 }</td><td>Silver                 </td></tr>
+    <tr><td>TEAL                      </td><td>   *     </td><td style="color:Teal                  ">&#x2588;&#x2588;</td><td>{   0 , 128 , 128 }</td><td>Teal                   </td></tr>
+    <tr><td>WHITE                     </td><td>   *     </td><td style="color:White                 ">&#x2588;&#x2588;</td><td>{ 255 , 255 , 255 }</td><td>White                  </td></tr>
+    <tr><td>YELLOW                    </td><td>   *     </td><td style="color:Yellow                ">&#x2588;&#x2588;</td><td>{ 255 , 255 ,   0 }</td><td>Yellow                 </td></tr>
+    <tr><td>                          </td><td>         </td><td                                     >                </td><td>                   </td><td>                       </td></tr>
+    <tr><td>COLOR_AliceBlue           </td><td>         </td><td style="color:AliceBlue             ">&#x2588;&#x2588;</td><td>{ 240 , 248 , 255 }</td><td>AliceBlue              </td></tr>
+    <tr><td>COLOR_AntiqueWhite        </td><td>         </td><td style="color:AntiqueWhite          ">&#x2588;&#x2588;</td><td>{ 250 , 235 , 215 }</td><td>AntiqueWhite           </td></tr>
+    <tr><td>COLOR_Aqua                </td><td>         </td><td style="color:Aqua                  ">&#x2588;&#x2588;</td><td>{   0 , 255 , 255 }</td><td>Aqua                   </td></tr>
+    <tr><td>COLOR_Aquamarine          </td><td>         </td><td style="color:Aquamarine            ">&#x2588;&#x2588;</td><td>{ 127 , 255 , 212 }</td><td>AquaMarine             </td></tr>
+    <tr><td>COLOR_Azure               </td><td>         </td><td style="color:Azure                 ">&#x2588;&#x2588;</td><td>{ 240 , 255 , 255 }</td><td>Azure                  </td></tr>
+    <tr><td>COLOR_Beige               </td><td>         </td><td style="color:Beige                 ">&#x2588;&#x2588;</td><td>{ 245 , 245 , 220 }</td><td>Beige                  </td></tr>
+    <tr><td>COLOR_Bisque              </td><td>         </td><td style="color:Bisque                ">&#x2588;&#x2588;</td><td>{ 255 , 228 , 196 }</td><td>Bisque                 </td></tr>
+    <tr><td>COLOR_Black               </td><td>         </td><td style="color:Black                 ">&#x2588;&#x2588;</td><td>{   0 ,   0 ,   0 }</td><td>Black                  </td></tr>
+    <tr><td>COLOR_BlanchedAlmond      </td><td>         </td><td style="color:BlanchedAlmond        ">&#x2588;&#x2588;</td><td>{ 255 , 235 , 205 }</td><td>BlanchedAlmond         </td></tr>
+    <tr><td>COLOR_Blue                </td><td>         </td><td style="color:Blue                  ">&#x2588;&#x2588;</td><td>{   0 ,   0 , 255 }</td><td>Blue                   </td></tr>
+    <tr><td>COLOR_BlueViolet          </td><td>         </td><td style="color:BlueViolet            ">&#x2588;&#x2588;</td><td>{ 138 ,  43 , 226 }</td><td>BlueViolet             </td></tr>
+    <tr><td>COLOR_Brown               </td><td>         </td><td style="color:Brown                 ">&#x2588;&#x2588;</td><td>{ 165 ,  42 ,  42 }</td><td>Brown                  </td></tr>
+    <tr><td>COLOR_Burlywood           </td><td>         </td><td style="color:Burlywood             ">&#x2588;&#x2588;</td><td>{ 222 , 184 , 135 }</td><td>BurlyWood              </td></tr>
+    <tr><td>COLOR_CadetBlue           </td><td>         </td><td style="color:CadetBlue             ">&#x2588;&#x2588;</td><td>{  95 , 158 , 160 }</td><td>CadetBlue              </td></tr>
+    <tr><td>COLOR_Chartreuse          </td><td>         </td><td style="color:Chartreuse            ">&#x2588;&#x2588;</td><td>{ 127 , 255 ,   0 }</td><td>ChartReuse             </td></tr>
+    <tr><td>COLOR_Chocolate           </td><td>         </td><td style="color:Chocolate             ">&#x2588;&#x2588;</td><td>{ 210 , 105 ,  30 }</td><td>Chocolate              </td></tr>
+    <tr><td>COLOR_Coral               </td><td>         </td><td style="color:Coral                 ">&#x2588;&#x2588;</td><td>{ 255 , 127 ,  80 }</td><td>Coral                  </td></tr>
+    <tr><td>COLOR_CornflowerBlue      </td><td>         </td><td style="color:CornflowerBlue        ">&#x2588;&#x2588;</td><td>{ 100 , 149 , 237 }</td><td>CornFlowerBlue         </td></tr>
+    <tr><td>COLOR_Cornsilk            </td><td>         </td><td style="color:Cornsilk              ">&#x2588;&#x2588;</td><td>{ 255 , 248 , 220 }</td><td>CornSilk               </td></tr>
+    <tr><td>COLOR_Crimson             </td><td>         </td><td style="color:Crimson               ">&#x2588;&#x2588;</td><td>{ 220 ,  20 ,  60 }</td><td>Crimson                </td></tr>
+    <tr><td>COLOR_Cyan                </td><td>         </td><td style="color:Cyan                  ">&#x2588;&#x2588;</td><td>{   0 , 255 , 255 }</td><td>Cyan                   </td></tr>
+    <tr><td>COLOR_DarkBlue            </td><td>         </td><td style="color:DarkBlue              ">&#x2588;&#x2588;</td><td>{   0 ,   0 , 139 }</td><td>DarkBlue               </td></tr>
+    <tr><td>COLOR_DarkCyan            </td><td>         </td><td style="color:DarkCyan              ">&#x2588;&#x2588;</td><td>{   0 , 139 , 139 }</td><td>DarkCyan               </td></tr>
+    <tr><td>COLOR_DarkGoldenrod       </td><td>         </td><td style="color:DarkGoldenrod         ">&#x2588;&#x2588;</td><td>{ 184 , 134 ,  11 }</td><td>DarkGoldenRod          </td></tr>
+    <tr><td>COLOR_DarkGray            </td><td>         </td><td style="color:DarkGray              ">&#x2588;&#x2588;</td><td>{ 169 , 169 , 169 }</td><td>DarkGray               </td></tr>
+    <tr><td>COLOR_DarkGreen           </td><td>         </td><td style="color:DarkGreen             ">&#x2588;&#x2588;</td><td>{   0 , 100 ,   0 }</td><td>DarkGreen              </td></tr>
+    <tr><td>COLOR_DarkGrey            </td><td>         </td><td style="color:DarkGrey              ">&#x2588;&#x2588;</td><td>{ 169 , 169 , 169 }</td><td>DarkGrey               </td></tr>
+    <tr><td>COLOR_DarkKhaki           </td><td>         </td><td style="color:DarkKhaki             ">&#x2588;&#x2588;</td><td>{ 189 , 183 , 107 }</td><td>DarkKhaki              </td></tr>
+    <tr><td>COLOR_DarkMagenta         </td><td>         </td><td style="color:DarkMagenta           ">&#x2588;&#x2588;</td><td>{ 139 ,   0 , 139 }</td><td>DarkMagenta            </td></tr>
+    <tr><td>COLOR_DarkOliveGreen      </td><td>         </td><td style="color:DarkOliveGreen        ">&#x2588;&#x2588;</td><td>{  85 , 107 ,  47 }</td><td>DarkOliveGreen         </td></tr>
+    <tr><td>COLOR_DarkOrange          </td><td>         </td><td style="color:DarkOrange            ">&#x2588;&#x2588;</td><td>{ 255 , 140 ,   0 }</td><td>DarkOrange             </td></tr>
+    <tr><td>COLOR_DarkOrchid          </td><td>         </td><td style="color:DarkOrchid            ">&#x2588;&#x2588;</td><td>{ 153 ,  50 , 204 }</td><td>DarkOrchid             </td></tr>
+    <tr><td>COLOR_DarkRed             </td><td>         </td><td style="color:DarkRed               ">&#x2588;&#x2588;</td><td>{ 139 ,   0 ,   0 }</td><td>DarkRed                </td></tr>
+    <tr><td>COLOR_DarkSalmon          </td><td>         </td><td style="color:DarkSalmon            ">&#x2588;&#x2588;</td><td>{ 233 , 150 , 122 }</td><td>DarkSalmon             </td></tr>
+    <tr><td>COLOR_DarkSeaGreen        </td><td>         </td><td style="color:DarkSeaGreen          ">&#x2588;&#x2588;</td><td>{ 143 , 188 , 143 }</td><td>DarkSeaGreen           </td></tr>
+    <tr><td>COLOR_DarkSlateBlue       </td><td>         </td><td style="color:DarkSlateBlue         ">&#x2588;&#x2588;</td><td>{  72 ,  61 , 139 }</td><td>DarkSlateBlue          </td></tr>
+    <tr><td>COLOR_DarkSlateGray       </td><td>         </td><td style="color:DarkSlateGray         ">&#x2588;&#x2588;</td><td>{  47 ,  79 ,  79 }</td><td>DarkSlateGray          </td></tr>
+    <tr><td>COLOR_DarkSlateGrey       </td><td>         </td><td style="color:DarkSlateGrey         ">&#x2588;&#x2588;</td><td>{  47 ,  79 ,  79 }</td><td>DarkSlateGrey          </td></tr>
+    <tr><td>COLOR_DarkTurquoise       </td><td>         </td><td style="color:DarkTurquoise         ">&#x2588;&#x2588;</td><td>{   0 , 206 , 209 }</td><td>DarkTurquoise          </td></tr>
+    <tr><td>COLOR_DarkViolet          </td><td>         </td><td style="color:DarkViolet            ">&#x2588;&#x2588;</td><td>{ 148 ,   0 , 211 }</td><td>DarkViolet             </td></tr>
+    <tr><td>COLOR_DeepPink            </td><td>         </td><td style="color:DeepPink              ">&#x2588;&#x2588;</td><td>{ 255 ,  20 , 147 }</td><td>DeepPink               </td></tr>
+    <tr><td>COLOR_DeepSkyBlue         </td><td>         </td><td style="color:DeepSkyBlue           ">&#x2588;&#x2588;</td><td>{   0 , 191 , 255 }</td><td>DeepSkyBlue            </td></tr>
+    <tr><td>COLOR_DimGray             </td><td>         </td><td style="color:DimGray               ">&#x2588;&#x2588;</td><td>{ 105 , 105 , 105 }</td><td>DimGray                </td></tr>
+    <tr><td>COLOR_DimGrey             </td><td>         </td><td style="color:DimGrey               ">&#x2588;&#x2588;</td><td>{ 105 , 105 , 105 }</td><td>DimGrey                </td></tr>
+    <tr><td>COLOR_DodgerBlue          </td><td>         </td><td style="color:DodgerBlue            ">&#x2588;&#x2588;</td><td>{  30 , 144 , 255 }</td><td>DodgerBlue             </td></tr>
+    <tr><td>COLOR_Firebrick           </td><td>         </td><td style="color:Firebrick             ">&#x2588;&#x2588;</td><td>{ 178 ,  34 ,  34 }</td><td>Firebrick              </td></tr>
+    <tr><td>COLOR_FloralWhite         </td><td>         </td><td style="color:FloralWhite           ">&#x2588;&#x2588;</td><td>{ 255 , 250 , 240 }</td><td>FloralWhite            </td></tr>
+    <tr><td>COLOR_ForestGreen         </td><td>         </td><td style="color:ForestGreen           ">&#x2588;&#x2588;</td><td>{  34 , 139 ,  34 }</td><td>ForestGreen            </td></tr>
+    <tr><td>COLOR_Fuchsia             </td><td>         </td><td style="color:Fuchsia               ">&#x2588;&#x2588;</td><td>{ 255 ,   0 , 255 }</td><td>Fuchsia                </td></tr>
+    <tr><td>COLOR_Gainsboro           </td><td>         </td><td style="color:Gainsboro             ">&#x2588;&#x2588;</td><td>{ 220 , 220 , 220 }</td><td>Gainsboro              </td></tr>
+    <tr><td>COLOR_GhostWhite          </td><td>         </td><td style="color:GhostWhite            ">&#x2588;&#x2588;</td><td>{ 248 , 248 , 255 }</td><td>GhostWhite             </td></tr>
+    <tr><td>COLOR_Gold                </td><td>         </td><td style="color:Gold                  ">&#x2588;&#x2588;</td><td>{ 255 , 215 ,   0 }</td><td>Gold                   </td></tr>
+    <tr><td>COLOR_Goldenrod           </td><td>         </td><td style="color:Goldenrod             ">&#x2588;&#x2588;</td><td>{ 218 , 165 ,  32 }</td><td>GoldenRod              </td></tr>
+    <tr><td>COLOR_Gray                </td><td>         </td><td style="color:Gray                  ">&#x2588;&#x2588;</td><td>{ 128 , 128 , 128 }</td><td>Gray                   </td></tr>
+    <tr><td>COLOR_Green               </td><td>         </td><td style="color:Lime                  ">&#x2588;&#x2588;</td><td>{   0 , 255 ,   0 }</td><td>Green                  </td></tr>
+    <tr><td>COLOR_GreenYellow         </td><td>         </td><td style="color:GreenYellow           ">&#x2588;&#x2588;</td><td>{ 173 , 255 ,  47 }</td><td>GreenYellow            </td></tr>
+    <tr><td>COLOR_Grey                </td><td>         </td><td style="color:Grey                  ">&#x2588;&#x2588;</td><td>{ 190 , 190 , 190 }</td><td>Grey                   </td></tr>
+    <tr><td>COLOR_Honeydew            </td><td>         </td><td style="color:Honeydew              ">&#x2588;&#x2588;</td><td>{ 240 , 255 , 240 }</td><td>Honeydew               </td></tr>
+    <tr><td>COLOR_HotPink             </td><td>         </td><td style="color:HotPink               ">&#x2588;&#x2588;</td><td>{ 255 , 105 , 180 }</td><td>HotPink                </td></tr>
+    <tr><td>COLOR_IndianRed           </td><td>         </td><td style="color:IndianRed             ">&#x2588;&#x2588;</td><td>{ 205 ,  92 ,  92 }</td><td>IndianRed              </td></tr>
+    <tr><td>COLOR_Indigo              </td><td>         </td><td style="color:Indigo                ">&#x2588;&#x2588;</td><td>{  75 ,   0 , 130 }</td><td>Indigo                 </td></tr>
+    <tr><td>COLOR_Ivory               </td><td>         </td><td style="color:Ivory                 ">&#x2588;&#x2588;</td><td>{ 255 , 255 , 240 }</td><td>Ivory                  </td></tr>
+    <tr><td>COLOR_Khaki               </td><td>         </td><td style="color:Khaki                 ">&#x2588;&#x2588;</td><td>{ 240 , 230 , 140 }</td><td>Khaki                  </td></tr>
+    <tr><td>COLOR_Lavender            </td><td>         </td><td style="color:Lavender              ">&#x2588;&#x2588;</td><td>{ 230 , 230 , 250 }</td><td>Lavender               </td></tr>
+    <tr><td>COLOR_LavenderBlush       </td><td>         </td><td style="color:LavenderBlush         ">&#x2588;&#x2588;</td><td>{ 255 , 240 , 245 }</td><td>LavenderBlush          </td></tr>
+    <tr><td>COLOR_LawnGreen           </td><td>         </td><td style="color:LawnGreen             ">&#x2588;&#x2588;</td><td>{ 124 , 252 ,   0 }</td><td>LawnGreen              </td></tr>
+    <tr><td>COLOR_LemonChiffon        </td><td>         </td><td style="color:LemonChiffon          ">&#x2588;&#x2588;</td><td>{ 255 , 250 , 205 }</td><td>LemonChiffon           </td></tr>
+    <tr><td>COLOR_LightBlue           </td><td>         </td><td style="color:LightBlue             ">&#x2588;&#x2588;</td><td>{ 173 , 216 , 230 }</td><td>LightBlue              </td></tr>
+    <tr><td>COLOR_LightCoral          </td><td>         </td><td style="color:LightCoral            ">&#x2588;&#x2588;</td><td>{ 240 , 128 , 128 }</td><td>LightCoral             </td></tr>
+    <tr><td>COLOR_LightCyan           </td><td>         </td><td style="color:LightCyan             ">&#x2588;&#x2588;</td><td>{ 224 , 255 , 255 }</td><td>LightCyan              </td></tr>
+    <tr><td>COLOR_LightGoldenrod      </td><td>         </td><td style="color:LightGoldenrod        ">&#x2588;&#x2588;</td><td>{ 238 , 221 , 130 }</td><td>LightGoldenrod         </td></tr>
+    <tr><td>COLOR_LightGoldenrodYellow</td><td>         </td><td style="color:LightGoldenrodYellow  ">&#x2588;&#x2588;</td><td>{ 250 , 250 , 210 }</td><td>LightGoldenRodYellow   </td></tr>
+    <tr><td>COLOR_LightGray           </td><td>         </td><td style="color:LightGray             ">&#x2588;&#x2588;</td><td>{ 211 , 211 , 211 }</td><td>LightGray              </td></tr>
+    <tr><td>COLOR_LightGreen          </td><td>         </td><td style="color:LightGreen            ">&#x2588;&#x2588;</td><td>{ 144 , 238 , 144 }</td><td>LightGreen             </td></tr>
+    <tr><td>COLOR_LightGrey           </td><td>         </td><td style="color:LightGrey             ">&#x2588;&#x2588;</td><td>{ 211 , 211 , 211 }</td><td>LightGrey              </td></tr>
+    <tr><td>COLOR_LightPink           </td><td>         </td><td style="color:LightPink             ">&#x2588;&#x2588;</td><td>{ 255 , 182 , 193 }</td><td>LightPink              </td></tr>
+    <tr><td>COLOR_LightSalmon         </td><td>         </td><td style="color:LightSalmon           ">&#x2588;&#x2588;</td><td>{ 255 , 160 , 122 }</td><td>LightSalmon            </td></tr>
+    <tr><td>COLOR_LightSeaGreen       </td><td>         </td><td style="color:LightSeaGreen         ">&#x2588;&#x2588;</td><td>{  32 , 178 , 170 }</td><td>LightSeaGreen          </td></tr>
+    <tr><td>COLOR_LightSkyBlue        </td><td>         </td><td style="color:LightSkyBlue          ">&#x2588;&#x2588;</td><td>{ 135 , 206 , 250 }</td><td>LightSkyBlue           </td></tr>
+    <tr><td>COLOR_LightSlateBlue      </td><td>         </td><td style="color:rgb( 132 , 112 , 255 )">&#x2588;&#x2588;</td><td>{ 132 , 112 , 255 }</td><td>                       </td></tr>
+    <tr><td>COLOR_LightSlateGray      </td><td>         </td><td style="color:LightSlateGray        ">&#x2588;&#x2588;</td><td>{ 119 , 136 , 153 }</td><td>LightSlateGray         </td></tr>
+    <tr><td>COLOR_LightSlateGrey      </td><td>         </td><td style="color:LightSlateGrey        ">&#x2588;&#x2588;</td><td>{ 119 , 136 , 153 }</td><td>LightSlateGrey         </td></tr>
+    <tr><td>COLOR_LightSteelBlue      </td><td>         </td><td style="color:LightSteelBlue        ">&#x2588;&#x2588;</td><td>{ 176 , 196 , 222 }</td><td>LightSteelBlue         </td></tr>
+    <tr><td>COLOR_LightYellow         </td><td>         </td><td style="color:LightYellow           ">&#x2588;&#x2588;</td><td>{ 255 , 255 , 224 }</td><td>LightYellow            </td></tr>
+    <tr><td>COLOR_Lime                </td><td>         </td><td style="color:Lime                  ">&#x2588;&#x2588;</td><td>{   0,  255 ,   0 }</td><td>Lime                   </td></tr>
+    <tr><td>COLOR_LimeGreen           </td><td>         </td><td style="color:LimeGreen             ">&#x2588;&#x2588;</td><td>{  50 , 205 ,  50 }</td><td>LimeGreen              </td></tr>
+    <tr><td>COLOR_Linen               </td><td>         </td><td style="color:Linen                 ">&#x2588;&#x2588;</td><td>{ 250 , 240 , 230 }</td><td>Linen                  </td></tr>
+    <tr><td>COLOR_Magenta             </td><td>         </td><td style="color:Magenta               ">&#x2588;&#x2588;</td><td>{ 255 ,   0 , 255 }</td><td>Magenta                </td></tr>
+    <tr><td>COLOR_Maroon              </td><td>         </td><td style="color:Maroon                ">&#x2588;&#x2588;</td><td>{ 176 ,  48 ,  96 }</td><td>Maroon                 </td></tr>
+    <tr><td>COLOR_MediumAquamarine    </td><td>         </td><td style="color:MediumAquamarine      ">&#x2588;&#x2588;</td><td>{ 102 , 205 , 170 }</td><td>MediumAquaMarine       </td></tr>
+    <tr><td>COLOR_MediumBlue          </td><td>         </td><td style="color:MediumBlue            ">&#x2588;&#x2588;</td><td>{   0 ,   0 , 205 }</td><td>MediumBlue             </td></tr>
+    <tr><td>COLOR_MediumOrchid        </td><td>         </td><td style="color:MediumOrchid          ">&#x2588;&#x2588;</td><td>{ 186 ,  85 , 211 }</td><td>MediumOrchid           </td></tr>
+    <tr><td>COLOR_MediumPurple        </td><td>         </td><td style="color:MediumPurple          ">&#x2588;&#x2588;</td><td>{ 147 , 112 , 219 }</td><td>MediumPurple           </td></tr>
+    <tr><td>COLOR_MediumSeaGreen      </td><td>         </td><td style="color:MediumSeaGreen        ">&#x2588;&#x2588;</td><td>{  60 , 179 , 113 }</td><td>MediumSeaGreen         </td></tr>
+    <tr><td>COLOR_MediumSlateBlue     </td><td>         </td><td style="color:MediumSlateBlue       ">&#x2588;&#x2588;</td><td>{ 123 , 104 , 238 }</td><td>MediumSlateBlue        </td></tr>
+    <tr><td>COLOR_MediumSpringGreen   </td><td>         </td><td style="color:MediumSpringGreen     ">&#x2588;&#x2588;</td><td>{   0 , 250 , 154 }</td><td>MediumSpringGreen      </td></tr>
+    <tr><td>COLOR_MediumTurquoise     </td><td>         </td><td style="color:MediumTurquoise       ">&#x2588;&#x2588;</td><td>{  72 , 209 , 204 }</td><td>MediumTurquoise        </td></tr>
+    <tr><td>COLOR_MediumVioletRed     </td><td>         </td><td style="color:MediumVioletRed       ">&#x2588;&#x2588;</td><td>{ 199 ,  21 , 133 }</td><td>MediumVioletRed        </td></tr>
+    <tr><td>COLOR_MidnightBlue        </td><td>         </td><td style="color:MidnightBlue          ">&#x2588;&#x2588;</td><td>{  25 ,  25 , 112 }</td><td>MidnightBlue           </td></tr>
+    <tr><td>COLOR_MintCream           </td><td>         </td><td style="color:MintCream             ">&#x2588;&#x2588;</td><td>{ 245 , 255 , 250 }</td><td>MintCream              </td></tr>
+    <tr><td>COLOR_MistyRose           </td><td>         </td><td style="color:MistyRose             ">&#x2588;&#x2588;</td><td>{ 255 , 228 , 225 }</td><td>MistyRose              </td></tr>
+    <tr><td>COLOR_Moccasin            </td><td>         </td><td style="color:Moccasin              ">&#x2588;&#x2588;</td><td>{ 255 , 228 , 181 }</td><td>Moccasin               </td></tr>
+    <tr><td>COLOR_NavajoWhite         </td><td>         </td><td style="color:NavajoWhite           ">&#x2588;&#x2588;</td><td>{ 255 , 222 , 173 }</td><td>NavajoWhite            </td></tr>
+    <tr><td>COLOR_Navy                </td><td>         </td><td style="color:Navy                  ">&#x2588;&#x2588;</td><td>{   0 ,   0 , 128 }</td><td>Navy                   </td></tr>
+    <tr><td>COLOR_NavyBlue            </td><td>         </td><td style="color:Navy                  ">&#x2588;&#x2588;</td><td>{   0 ,   0 , 128 }</td><td>Navy                   </td></tr>
+    <tr><td>COLOR_OldLace             </td><td>         </td><td style="color:OldLace               ">&#x2588;&#x2588;</td><td>{ 253 , 245 , 230 }</td><td>OldLace                </td></tr>
+    <tr><td>COLOR_Olive               </td><td>         </td><td style="color:Olive                 ">&#x2588;&#x2588;</td><td>{ 128 , 128 ,   0 }</td><td>Olive                  </td></tr>
+    <tr><td>COLOR_OliveDrab           </td><td>         </td><td style="color:OliveDrab             ">&#x2588;&#x2588;</td><td>{ 107 , 142 ,  35 }</td><td>OliveDrab              </td></tr>
+    <tr><td>COLOR_Orange              </td><td>         </td><td style="color:Orange                ">&#x2588;&#x2588;</td><td>{ 255 , 165 ,   0 }</td><td>Orange                 </td></tr>
+    <tr><td>COLOR_OrangeRed           </td><td>         </td><td style="color:OrangeRed             ">&#x2588;&#x2588;</td><td>{ 255 ,  69 ,   0 }</td><td>OrangeRed              </td></tr>
+    <tr><td>COLOR_Orchid              </td><td>         </td><td style="color:Orchid                ">&#x2588;&#x2588;</td><td>{ 218 , 112 , 214 }</td><td>Orchid                 </td></tr>
+    <tr><td>COLOR_PaleGoldenrod       </td><td>         </td><td style="color:PaleGoldenrod         ">&#x2588;&#x2588;</td><td>{ 238 , 232 , 170 }</td><td>PaleGoldenRod          </td></tr>
+    <tr><td>COLOR_PaleGreen           </td><td>         </td><td style="color:PaleGreen             ">&#x2588;&#x2588;</td><td>{ 152 , 251 , 152 }</td><td>PaleGreen              </td></tr>
+    <tr><td>COLOR_PaleTurquoise       </td><td>         </td><td style="color:PaleTurquoise         ">&#x2588;&#x2588;</td><td>{ 175 , 238 , 238 }</td><td>PaleTurquoise          </td></tr>
+    <tr><td>COLOR_PaleVioletRed       </td><td>         </td><td style="color:PaleVioletRed         ">&#x2588;&#x2588;</td><td>{ 219 , 112 , 147 }</td><td>PaleVioletRed          </td></tr>
+    <tr><td>COLOR_PapayaWhip          </td><td>         </td><td style="color:PapayaWhip            ">&#x2588;&#x2588;</td><td>{ 255 , 239 , 213 }</td><td>PapayaWhip             </td></tr>
+    <tr><td>COLOR_PeachPuff           </td><td>         </td><td style="color:PeachPuff             ">&#x2588;&#x2588;</td><td>{ 255 , 218 , 185 }</td><td>PeachPuff              </td></tr>
+    <tr><td>COLOR_Peru                </td><td>         </td><td style="color:Peru                  ">&#x2588;&#x2588;</td><td>{ 205 , 133 ,  63 }</td><td>Peru                   </td></tr>
+    <tr><td>COLOR_Pink                </td><td>         </td><td style="color:Pink                  ">&#x2588;&#x2588;</td><td>{ 255 , 192 , 203 }</td><td>Pink                   </td></tr>
+    <tr><td>COLOR_Plum                </td><td>         </td><td style="color:Plum                  ">&#x2588;&#x2588;</td><td>{ 221 , 160 , 221 }</td><td>Plum                   </td></tr>
+    <tr><td>COLOR_PowderBlue          </td><td>         </td><td style="color:PowderBlue            ">&#x2588;&#x2588;</td><td>{ 176 , 224 , 230 }</td><td>PowderBlue             </td></tr>
+    <tr><td>COLOR_Purple              </td><td>         </td><td style="color:rgb( 160 ,  32 , 240 )">&#x2588;&#x2588;</td><td>{ 160 ,  32 , 240 }</td><td>                       </td></tr>
+    <tr><td>COLOR_RebeccaPurple       </td><td>         </td><td style="color:RebeccaPurple         ">&#x2588;&#x2588;</td><td>{ 102 ,  51 , 153 }</td><td>RebeccaPurple          </td></tr>
+    <tr><td>COLOR_Red                 </td><td>         </td><td style="color:Red                   ">&#x2588;&#x2588;</td><td>{ 255 ,   0 ,   0 }</td><td>Red                    </td></tr>
+    <tr><td>COLOR_RosyBrown           </td><td>         </td><td style="color:RosyBrown             ">&#x2588;&#x2588;</td><td>{ 188 , 143 , 143 }</td><td>RosyBrown              </td></tr>
+    <tr><td>COLOR_RoyalBlue           </td><td>         </td><td style="color:RoyalBlue             ">&#x2588;&#x2588;</td><td>{  65 , 105 , 225 }</td><td>RoyalBlue              </td></tr>
+    <tr><td>COLOR_SaddleBrown         </td><td>         </td><td style="color:SaddleBrown           ">&#x2588;&#x2588;</td><td>{ 139 ,  69 ,  19 }</td><td>SaddleBrown            </td></tr>
+    <tr><td>COLOR_Salmon              </td><td>         </td><td style="color:Salmon                ">&#x2588;&#x2588;</td><td>{ 250 , 128 , 114 }</td><td>Salmon                 </td></tr>
+    <tr><td>COLOR_SandyBrown          </td><td>         </td><td style="color:SandyBrown            ">&#x2588;&#x2588;</td><td>{ 244 , 164 ,  96 }</td><td>SandyBrown             </td></tr>
+    <tr><td>COLOR_SeaGreen            </td><td>         </td><td style="color:SeaGreen              ">&#x2588;&#x2588;</td><td>{  46 , 139 ,  87 }</td><td>SeaGreen               </td></tr>
+    <tr><td>COLOR_Seashell            </td><td>         </td><td style="color:Seashell              ">&#x2588;&#x2588;</td><td>{ 255 , 245 , 238 }</td><td>SeaShell               </td></tr>
+    <tr><td>COLOR_Sienna              </td><td>         </td><td style="color:Sienna                ">&#x2588;&#x2588;</td><td>{ 160 ,  82 ,  45 }</td><td>Sienna                 </td></tr>
+    <tr><td>COLOR_Silver              </td><td>         </td><td style="color:Silver                ">&#x2588;&#x2588;</td><td>{ 192 , 192 , 192 }</td><td>Silver                 </td></tr>
+    <tr><td>COLOR_SkyBlue             </td><td>         </td><td style="color:SkyBlue               ">&#x2588;&#x2588;</td><td>{ 135 , 206 , 235 }</td><td>SkyBlue                </td></tr>
+    <tr><td>COLOR_SlateBlue           </td><td>         </td><td style="color:SlateBlue             ">&#x2588;&#x2588;</td><td>{ 106 ,  90 , 205 }</td><td>SlateBlue              </td></tr>
+    <tr><td>COLOR_SlateGray           </td><td>         </td><td style="color:SlateGray             ">&#x2588;&#x2588;</td><td>{ 112 , 128 , 144 }</td><td>SlateGray              </td></tr>
+    <tr><td>COLOR_SlateGrey           </td><td>         </td><td style="color:SlateGrey             ">&#x2588;&#x2588;</td><td>{ 112 , 128 , 144 }</td><td>SlateGrey              </td></tr>
+    <tr><td>COLOR_Snow                </td><td>         </td><td style="color:Snow                  ">&#x2588;&#x2588;</td><td>{ 255 , 250 , 250 }</td><td>Snow                   </td></tr>
+    <tr><td>COLOR_SpringGreen         </td><td>         </td><td style="color:SpringGreen           ">&#x2588;&#x2588;</td><td>{   0 , 255 , 127 }</td><td>SpringGreen            </td></tr>
+    <tr><td>COLOR_SteelBlue           </td><td>         </td><td style="color:SteelBlue             ">&#x2588;&#x2588;</td><td>{  70 , 130 , 180 }</td><td>SteelBlue              </td></tr>
+    <tr><td>COLOR_Tan                 </td><td>         </td><td style="color:Tan                   ">&#x2588;&#x2588;</td><td>{ 210 , 180 , 140 }</td><td>Tan                    </td></tr>
+    <tr><td>COLOR_Teal                </td><td>         </td><td style="color:Teal                  ">&#x2588;&#x2588;</td><td>{   0 , 128 , 128 }</td><td>Teal                   </td></tr>
+    <tr><td>COLOR_Thistle             </td><td>         </td><td style="color:Thistle               ">&#x2588;&#x2588;</td><td>{ 216 , 191 , 216 }</td><td>Thistle                </td></tr>
+    <tr><td>COLOR_Tomato              </td><td>         </td><td style="color:Tomato                ">&#x2588;&#x2588;</td><td>{ 255 ,  99 ,  71 }</td><td>Tomato                 </td></tr>
+    <tr><td>COLOR_Turquoise           </td><td>         </td><td style="color:Turquoise             ">&#x2588;&#x2588;</td><td>{  64 , 224 , 208 }</td><td>Turquoise              </td></tr>
+    <tr><td>COLOR_Violet              </td><td>         </td><td style="color:Violet                ">&#x2588;&#x2588;</td><td>{ 238 , 130 , 238 }</td><td>Violet                 </td></tr>
+    <tr><td>COLOR_VioletRed           </td><td>         </td><td style="color:VioletRed             ">&#x2588;&#x2588;</td><td>{ 208 ,  32 , 144 }</td><td>                       </td></tr>
+    <tr><td>COLOR_Wheat               </td><td>         </td><td style="color:Wheat                 ">&#x2588;&#x2588;</td><td>{ 245 , 222 , 179 }</td><td>Wheat                  </td></tr>
+    <tr><td>COLOR_White               </td><td>         </td><td style="color:White                 ">&#x2588;&#x2588;</td><td>{ 255 , 255 , 255 }</td><td>White                  </td></tr>
+    <tr><td>COLOR_WhiteSmoke          </td><td>         </td><td style="color:WhiteSmoke            ">&#x2588;&#x2588;</td><td>{ 245 , 245 , 245 }</td><td>WhiteSmoke             </td></tr>
+    <tr><td>COLOR_Yellow              </td><td>         </td><td style="color:Yellow                ">&#x2588;&#x2588;</td><td>{ 255 , 255 ,   0 }</td><td>Yellow                 </td></tr>
+    <tr><td>COLOR_YellowGreen         </td><td>         </td><td style="color:YellowGreen           ">&#x2588;&#x2588;</td><td>{ 154 , 205 ,  50 }</td><td>YellowGreen            </td></tr>
+    <tr><td>                          </td><td>         </td><td                                     >                </td><td>                   </td><td>                       </td></tr>
+    <tr><td>COLOR_AntiqueWhite1       </td><td>         </td><td style="color:rgb( 255 , 239 , 219 )">&#x2588;&#x2588;</td><td>{ 255 , 239 , 219 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_AntiqueWhite2       </td><td>         </td><td style="color:rgb( 238 , 223 , 204 )">&#x2588;&#x2588;</td><td>{ 238 , 223 , 204 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_AntiqueWhite3       </td><td>         </td><td style="color:rgb( 205 , 192 , 176 )">&#x2588;&#x2588;</td><td>{ 205 , 192 , 176 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_AntiqueWhite4       </td><td>         </td><td style="color:rgb( 139 , 131 , 120 )">&#x2588;&#x2588;</td><td>{ 139 , 131 , 120 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Aquamarine1         </td><td>         </td><td style="color:rgb( 127 , 255 , 212 )">&#x2588;&#x2588;</td><td>{ 127 , 255 , 212 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Aquamarine2         </td><td>         </td><td style="color:rgb( 118 , 238 , 198 )">&#x2588;&#x2588;</td><td>{ 118 , 238 , 198 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Aquamarine3         </td><td>         </td><td style="color:rgb( 102 , 205 , 170 )">&#x2588;&#x2588;</td><td>{ 102 , 205 , 170 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Aquamarine4         </td><td>         </td><td style="color:rgb(  69 , 139 , 116 )">&#x2588;&#x2588;</td><td>{  69 , 139 , 116 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Azure1              </td><td>         </td><td style="color:rgb( 240 , 255 , 255 )">&#x2588;&#x2588;</td><td>{ 240 , 255 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Azure2              </td><td>         </td><td style="color:rgb( 224 , 238 , 238 )">&#x2588;&#x2588;</td><td>{ 224 , 238 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Azure3              </td><td>         </td><td style="color:rgb( 193 , 205 , 205 )">&#x2588;&#x2588;</td><td>{ 193 , 205 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Azure4              </td><td>         </td><td style="color:rgb( 131 , 139 , 139 )">&#x2588;&#x2588;</td><td>{ 131 , 139 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Bisque1             </td><td>         </td><td style="color:rgb( 255 , 228 , 196 )">&#x2588;&#x2588;</td><td>{ 255 , 228 , 196 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Bisque2             </td><td>         </td><td style="color:rgb( 238 , 213 , 183 )">&#x2588;&#x2588;</td><td>{ 238 , 213 , 183 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Bisque3             </td><td>         </td><td style="color:rgb( 205 , 183 , 158 )">&#x2588;&#x2588;</td><td>{ 205 , 183 , 158 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Bisque4             </td><td>         </td><td style="color:rgb( 139 , 125 , 107 )">&#x2588;&#x2588;</td><td>{ 139 , 125 , 107 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Blue1               </td><td>         </td><td style="color:rgb(   0 ,   0 , 255 )">&#x2588;&#x2588;</td><td>{   0 ,   0 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Blue2               </td><td>         </td><td style="color:rgb(   0 ,   0 , 238 )">&#x2588;&#x2588;</td><td>{   0 ,   0 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Blue3               </td><td>         </td><td style="color:rgb(   0 ,   0 , 205 )">&#x2588;&#x2588;</td><td>{   0 ,   0 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Blue4               </td><td>         </td><td style="color:rgb(   0 ,   0 , 139 )">&#x2588;&#x2588;</td><td>{   0 ,   0 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Brown1              </td><td>         </td><td style="color:rgb( 255 ,  64 ,  64 )">&#x2588;&#x2588;</td><td>{ 255 ,  64 ,  64 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Brown2              </td><td>         </td><td style="color:rgb( 238 ,  59 ,  59 )">&#x2588;&#x2588;</td><td>{ 238 ,  59 ,  59 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Brown3              </td><td>         </td><td style="color:rgb( 205 ,  51 ,  51 )">&#x2588;&#x2588;</td><td>{ 205 ,  51 ,  51 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Brown4              </td><td>         </td><td style="color:rgb( 139 ,  35 ,  35 )">&#x2588;&#x2588;</td><td>{ 139 ,  35 ,  35 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Burlywood1          </td><td>         </td><td style="color:rgb( 255 , 211 , 155 )">&#x2588;&#x2588;</td><td>{ 255 , 211 , 155 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Burlywood2          </td><td>         </td><td style="color:rgb( 238 , 197 , 145 )">&#x2588;&#x2588;</td><td>{ 238 , 197 , 145 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Burlywood3          </td><td>         </td><td style="color:rgb( 205 , 170 , 125 )">&#x2588;&#x2588;</td><td>{ 205 , 170 , 125 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Burlywood4          </td><td>         </td><td style="color:rgb( 139 , 115 ,  85 )">&#x2588;&#x2588;</td><td>{ 139 , 115 ,  85 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_CadetBlue1          </td><td>         </td><td style="color:rgb( 152 , 245 , 255 )">&#x2588;&#x2588;</td><td>{ 152 , 245 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_CadetBlue2          </td><td>         </td><td style="color:rgb( 142 , 229 , 238 )">&#x2588;&#x2588;</td><td>{ 142 , 229 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_CadetBlue3          </td><td>         </td><td style="color:rgb( 122 , 197 , 205 )">&#x2588;&#x2588;</td><td>{ 122 , 197 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_CadetBlue4          </td><td>         </td><td style="color:rgb(  83 , 134 , 139 )">&#x2588;&#x2588;</td><td>{  83 , 134 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Chartreuse1         </td><td>         </td><td style="color:rgb( 127 , 255 ,   0 )">&#x2588;&#x2588;</td><td>{ 127 , 255 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Chartreuse2         </td><td>         </td><td style="color:rgb( 118 , 238 ,   0 )">&#x2588;&#x2588;</td><td>{ 118 , 238 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Chartreuse3         </td><td>         </td><td style="color:rgb( 102 , 205 ,   0 )">&#x2588;&#x2588;</td><td>{ 102 , 205 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Chartreuse4         </td><td>         </td><td style="color:rgb(  69 , 139 ,   0 )">&#x2588;&#x2588;</td><td>{  69 , 139 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Chocolate1          </td><td>         </td><td style="color:rgb( 255 , 127 ,  36 )">&#x2588;&#x2588;</td><td>{ 255 , 127 ,  36 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Chocolate2          </td><td>         </td><td style="color:rgb( 238 , 118 ,  33 )">&#x2588;&#x2588;</td><td>{ 238 , 118 ,  33 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Chocolate3          </td><td>         </td><td style="color:rgb( 205 , 102 ,  29 )">&#x2588;&#x2588;</td><td>{ 205 , 102 ,  29 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Chocolate4          </td><td>         </td><td style="color:rgb( 139 ,  69 ,  19 )">&#x2588;&#x2588;</td><td>{ 139 ,  69 ,  19 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Coral1              </td><td>         </td><td style="color:rgb( 255 , 114 ,  86 )">&#x2588;&#x2588;</td><td>{ 255 , 114 ,  86 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Coral2              </td><td>         </td><td style="color:rgb( 238 , 106 ,  80 )">&#x2588;&#x2588;</td><td>{ 238 , 106 ,  80 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Coral3              </td><td>         </td><td style="color:rgb( 205 ,  91 ,  69 )">&#x2588;&#x2588;</td><td>{ 205 ,  91 ,  69 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Coral4              </td><td>         </td><td style="color:rgb( 139 ,  62 ,  47 )">&#x2588;&#x2588;</td><td>{ 139 ,  62 ,  47 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Cornsilk1           </td><td>         </td><td style="color:rgb( 255 , 248 , 220 )">&#x2588;&#x2588;</td><td>{ 255 , 248 , 220 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Cornsilk2           </td><td>         </td><td style="color:rgb( 238 , 232 , 205 )">&#x2588;&#x2588;</td><td>{ 238 , 232 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Cornsilk3           </td><td>         </td><td style="color:rgb( 205 , 200 , 177 )">&#x2588;&#x2588;</td><td>{ 205 , 200 , 177 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Cornsilk4           </td><td>         </td><td style="color:rgb( 139 , 136 , 120 )">&#x2588;&#x2588;</td><td>{ 139 , 136 , 120 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Cyan1               </td><td>         </td><td style="color:rgb(   0 , 255 , 255 )">&#x2588;&#x2588;</td><td>{   0 , 255 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Cyan2               </td><td>         </td><td style="color:rgb(   0 , 238 , 238 )">&#x2588;&#x2588;</td><td>{   0 , 238 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Cyan3               </td><td>         </td><td style="color:rgb(   0 , 205 , 205 )">&#x2588;&#x2588;</td><td>{   0 , 205 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Cyan4               </td><td>         </td><td style="color:rgb(   0 , 139 , 139 )">&#x2588;&#x2588;</td><td>{   0 , 139 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkGoldenrod1      </td><td>         </td><td style="color:rgb( 255 , 185 ,  15 )">&#x2588;&#x2588;</td><td>{ 255 , 185 ,  15 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkGoldenrod2      </td><td>         </td><td style="color:rgb( 238 , 173 ,  14 )">&#x2588;&#x2588;</td><td>{ 238 , 173 ,  14 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkGoldenrod3      </td><td>         </td><td style="color:rgb( 205 , 149 ,  12 )">&#x2588;&#x2588;</td><td>{ 205 , 149 ,  12 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkGoldenrod4      </td><td>         </td><td style="color:rgb( 139 , 101 ,   8 )">&#x2588;&#x2588;</td><td>{ 139 , 101 ,   8 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOliveGreen1     </td><td>         </td><td style="color:rgb( 202 , 255 , 112 )">&#x2588;&#x2588;</td><td>{ 202 , 255 , 112 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOliveGreen2     </td><td>         </td><td style="color:rgb( 188 , 238 , 104 )">&#x2588;&#x2588;</td><td>{ 188 , 238 , 104 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOliveGreen3     </td><td>         </td><td style="color:rgb( 162 , 205 ,  90 )">&#x2588;&#x2588;</td><td>{ 162 , 205 ,  90 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOliveGreen4     </td><td>         </td><td style="color:rgb( 110 , 139 ,  61 )">&#x2588;&#x2588;</td><td>{ 110 , 139 ,  61 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOrange1         </td><td>         </td><td style="color:rgb( 255 , 127 ,   0 )">&#x2588;&#x2588;</td><td>{ 255 , 127 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOrange2         </td><td>         </td><td style="color:rgb( 238 , 118 ,   0 )">&#x2588;&#x2588;</td><td>{ 238 , 118 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOrange3         </td><td>         </td><td style="color:rgb( 205 , 102 ,   0 )">&#x2588;&#x2588;</td><td>{ 205 , 102 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOrange4         </td><td>         </td><td style="color:rgb( 139 ,  69 ,   0 )">&#x2588;&#x2588;</td><td>{ 139 ,  69 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOrchid1         </td><td>         </td><td style="color:rgb( 191 ,  62 , 255 )">&#x2588;&#x2588;</td><td>{ 191 ,  62 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOrchid2         </td><td>         </td><td style="color:rgb( 178 ,  58 , 238 )">&#x2588;&#x2588;</td><td>{ 178 ,  58 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOrchid3         </td><td>         </td><td style="color:rgb( 154 ,  50 , 205 )">&#x2588;&#x2588;</td><td>{ 154 ,  50 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkOrchid4         </td><td>         </td><td style="color:rgb( 104 ,  34 , 139 )">&#x2588;&#x2588;</td><td>{ 104 ,  34 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSeaGreen1       </td><td>         </td><td style="color:rgb( 193 , 255 , 193 )">&#x2588;&#x2588;</td><td>{ 193 , 255 , 193 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSeaGreen2       </td><td>         </td><td style="color:rgb( 180 , 238 , 180 )">&#x2588;&#x2588;</td><td>{ 180 , 238 , 180 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSeaGreen3       </td><td>         </td><td style="color:rgb( 155 , 205 , 155 )">&#x2588;&#x2588;</td><td>{ 155 , 205 , 155 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSeaGreen4       </td><td>         </td><td style="color:rgb( 105 , 139 , 105 )">&#x2588;&#x2588;</td><td>{ 105 , 139 , 105 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSlateGray1      </td><td>         </td><td style="color:rgb( 151 , 255 , 255 )">&#x2588;&#x2588;</td><td>{ 151 , 255 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSlateGray2      </td><td>         </td><td style="color:rgb( 141 , 238 , 238 )">&#x2588;&#x2588;</td><td>{ 141 , 238 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSlateGray3      </td><td>         </td><td style="color:rgb( 121 , 205 , 205 )">&#x2588;&#x2588;</td><td>{ 121 , 205 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSlateGray4      </td><td>         </td><td style="color:rgb(  82 , 139 , 139 )">&#x2588;&#x2588;</td><td>{  82 , 139 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSlateGrey1      </td><td>         </td><td style="color:rgb( 151 , 255 , 255 )">&#x2588;&#x2588;</td><td>{ 151 , 255 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSlateGrey2      </td><td>         </td><td style="color:rgb( 141 , 238 , 238 )">&#x2588;&#x2588;</td><td>{ 141 , 238 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSlateGrey3      </td><td>         </td><td style="color:rgb( 121 , 205 , 205 )">&#x2588;&#x2588;</td><td>{ 121 , 205 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DarkSlateGrey4      </td><td>         </td><td style="color:rgb(  82 , 139 , 139 )">&#x2588;&#x2588;</td><td>{  82 , 139 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DeepPink1           </td><td>         </td><td style="color:rgb( 255 ,  20 , 147 )">&#x2588;&#x2588;</td><td>{ 255 ,  20 , 147 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DeepPink2           </td><td>         </td><td style="color:rgb( 238 ,  18 , 137 )">&#x2588;&#x2588;</td><td>{ 238 ,  18 , 137 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DeepPink3           </td><td>         </td><td style="color:rgb( 205 ,  16 , 118 )">&#x2588;&#x2588;</td><td>{ 205 ,  16 , 118 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DeepPink4           </td><td>         </td><td style="color:rgb( 139 ,  10 ,  80 )">&#x2588;&#x2588;</td><td>{ 139 ,  10 ,  80 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DeepSkyBlue1        </td><td>         </td><td style="color:rgb(   0 , 191 , 255 )">&#x2588;&#x2588;</td><td>{   0 , 191 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DeepSkyBlue2        </td><td>         </td><td style="color:rgb(   0 , 178 , 238 )">&#x2588;&#x2588;</td><td>{   0 , 178 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DeepSkyBlue3        </td><td>         </td><td style="color:rgb(   0 , 154 , 205 )">&#x2588;&#x2588;</td><td>{   0 , 154 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DeepSkyBlue4        </td><td>         </td><td style="color:rgb(   0 , 104 , 139 )">&#x2588;&#x2588;</td><td>{   0 , 104 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DodgerBlue1         </td><td>         </td><td style="color:rgb(  30 , 144 , 255 )">&#x2588;&#x2588;</td><td>{  30 , 144 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DodgerBlue2         </td><td>         </td><td style="color:rgb(  28 , 134 , 238 )">&#x2588;&#x2588;</td><td>{  28 , 134 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DodgerBlue3         </td><td>         </td><td style="color:rgb(  24 , 116 , 205 )">&#x2588;&#x2588;</td><td>{  24 , 116 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_DodgerBlue4         </td><td>         </td><td style="color:rgb(  16 ,  78 , 139 )">&#x2588;&#x2588;</td><td>{  16 ,  78 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Firebrick1          </td><td>         </td><td style="color:rgb( 255 ,  48 ,  48 )">&#x2588;&#x2588;</td><td>{ 255 ,  48 ,  48 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Firebrick2          </td><td>         </td><td style="color:rgb( 238 ,  44 ,  44 )">&#x2588;&#x2588;</td><td>{ 238 ,  44 ,  44 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Firebrick3          </td><td>         </td><td style="color:rgb( 205 ,  38 ,  38 )">&#x2588;&#x2588;</td><td>{ 205 ,  38 ,  38 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Firebrick4          </td><td>         </td><td style="color:rgb( 139 ,  26 ,  26 )">&#x2588;&#x2588;</td><td>{ 139 ,  26 ,  26 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Gold1               </td><td>         </td><td style="color:rgb( 255 , 215 ,   0 )">&#x2588;&#x2588;</td><td>{ 255 , 215 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Gold2               </td><td>         </td><td style="color:rgb( 238 , 201 ,   0 )">&#x2588;&#x2588;</td><td>{ 238 , 201 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Gold3               </td><td>         </td><td style="color:rgb( 205 , 173 ,   0 )">&#x2588;&#x2588;</td><td>{ 205 , 173 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Gold4               </td><td>         </td><td style="color:rgb( 139 , 117 ,   0 )">&#x2588;&#x2588;</td><td>{ 139 , 117 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Goldenrod1          </td><td>         </td><td style="color:rgb( 255 , 193 ,  37 )">&#x2588;&#x2588;</td><td>{ 255 , 193 ,  37 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Goldenrod2          </td><td>         </td><td style="color:rgb( 238 , 180 ,  34 )">&#x2588;&#x2588;</td><td>{ 238 , 180 ,  34 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Goldenrod3          </td><td>         </td><td style="color:rgb( 205 , 155 ,  29 )">&#x2588;&#x2588;</td><td>{ 205 , 155 ,  29 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Goldenrod4          </td><td>         </td><td style="color:rgb( 139 , 105 ,  20 )">&#x2588;&#x2588;</td><td>{ 139 , 105 ,  20 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Green1              </td><td>         </td><td style="color:rgb(   0 , 255 ,   0 )">&#x2588;&#x2588;</td><td>{   0 , 255 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Green2              </td><td>         </td><td style="color:rgb(   0 , 238 ,   0 )">&#x2588;&#x2588;</td><td>{   0 , 238 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Green3              </td><td>         </td><td style="color:rgb(   0 , 205 ,   0 )">&#x2588;&#x2588;</td><td>{   0 , 205 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Green4              </td><td>         </td><td style="color:rgb(   0 , 139 ,   0 )">&#x2588;&#x2588;</td><td>{   0 , 139 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Grey11              </td><td>         </td><td style="color:rgb(  28 ,  28 ,  28 )">&#x2588;&#x2588;</td><td>{  28 ,  28 ,  28 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Grey21              </td><td>         </td><td style="color:rgb(  54 ,  54 ,  54 )">&#x2588;&#x2588;</td><td>{  54 ,  54 ,  54 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Grey31              </td><td>         </td><td style="color:rgb(  79 ,  79 ,  79 )">&#x2588;&#x2588;</td><td>{  79 ,  79 ,  79 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Grey41              </td><td>         </td><td style="color:rgb( 105 , 105 , 105 )">&#x2588;&#x2588;</td><td>{ 105 , 105 , 105 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Grey51              </td><td>         </td><td style="color:rgb( 130 , 130 , 130 )">&#x2588;&#x2588;</td><td>{ 130 , 130 , 130 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Grey61              </td><td>         </td><td style="color:rgb( 156 , 156 , 156 )">&#x2588;&#x2588;</td><td>{ 156 , 156 , 156 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Grey71              </td><td>         </td><td style="color:rgb( 181 , 181 , 181 )">&#x2588;&#x2588;</td><td>{ 181 , 181 , 181 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Grey81              </td><td>         </td><td style="color:rgb( 207 , 207 , 207 )">&#x2588;&#x2588;</td><td>{ 207 , 207 , 207 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Grey91              </td><td>         </td><td style="color:rgb( 232 , 232 , 232 )">&#x2588;&#x2588;</td><td>{ 232 , 232 , 232 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Honeydew1           </td><td>         </td><td style="color:rgb( 240 , 255 , 240 )">&#x2588;&#x2588;</td><td>{ 240 , 255 , 240 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Honeydew2           </td><td>         </td><td style="color:rgb( 224 , 238 , 224 )">&#x2588;&#x2588;</td><td>{ 224 , 238 , 224 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Honeydew3           </td><td>         </td><td style="color:rgb( 193 , 205 , 193 )">&#x2588;&#x2588;</td><td>{ 193 , 205 , 193 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Honeydew4           </td><td>         </td><td style="color:rgb( 131 , 139 , 131 )">&#x2588;&#x2588;</td><td>{ 131 , 139 , 131 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_HotPink1            </td><td>         </td><td style="color:rgb( 255 , 110 , 180 )">&#x2588;&#x2588;</td><td>{ 255 , 110 , 180 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_HotPink2            </td><td>         </td><td style="color:rgb( 238 , 106 , 167 )">&#x2588;&#x2588;</td><td>{ 238 , 106 , 167 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_HotPink3            </td><td>         </td><td style="color:rgb( 205 ,  96 , 144 )">&#x2588;&#x2588;</td><td>{ 205 ,  96 , 144 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_HotPink4            </td><td>         </td><td style="color:rgb( 139 ,  58 ,  98 )">&#x2588;&#x2588;</td><td>{ 139 ,  58 ,  98 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_IndianRed1          </td><td>         </td><td style="color:rgb( 255 , 106 , 106 )">&#x2588;&#x2588;</td><td>{ 255 , 106 , 106 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_IndianRed2          </td><td>         </td><td style="color:rgb( 238 ,  99 ,  99 )">&#x2588;&#x2588;</td><td>{ 238 ,  99 ,  99 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_IndianRed3          </td><td>         </td><td style="color:rgb( 205 ,  85 ,  85 )">&#x2588;&#x2588;</td><td>{ 205 ,  85 ,  85 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_IndianRed4          </td><td>         </td><td style="color:rgb( 139 ,  58 ,  58 )">&#x2588;&#x2588;</td><td>{ 139 ,  58 ,  58 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Ivory1              </td><td>         </td><td style="color:rgb( 255 , 255 , 240 )">&#x2588;&#x2588;</td><td>{ 255 , 255 , 240 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Ivory2              </td><td>         </td><td style="color:rgb( 238 , 238 , 224 )">&#x2588;&#x2588;</td><td>{ 238 , 238 , 224 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Ivory3              </td><td>         </td><td style="color:rgb( 205 , 205 , 193 )">&#x2588;&#x2588;</td><td>{ 205 , 205 , 193 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Ivory4              </td><td>         </td><td style="color:rgb( 139 , 139 , 131 )">&#x2588;&#x2588;</td><td>{ 139 , 139 , 131 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Khaki1              </td><td>         </td><td style="color:rgb( 255 , 246 , 143 )">&#x2588;&#x2588;</td><td>{ 255 , 246 , 143 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Khaki2              </td><td>         </td><td style="color:rgb( 238 , 230 , 133 )">&#x2588;&#x2588;</td><td>{ 238 , 230 , 133 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Khaki3              </td><td>         </td><td style="color:rgb( 205 , 198 , 115 )">&#x2588;&#x2588;</td><td>{ 205 , 198 , 115 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Khaki4              </td><td>         </td><td style="color:rgb( 139 , 134 ,  78 )">&#x2588;&#x2588;</td><td>{ 139 , 134 ,  78 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LavenderBlush1      </td><td>         </td><td style="color:rgb( 255 , 240 , 245 )">&#x2588;&#x2588;</td><td>{ 255 , 240 , 245 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LavenderBlush2      </td><td>         </td><td style="color:rgb( 238 , 224 , 229 )">&#x2588;&#x2588;</td><td>{ 238 , 224 , 229 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LavenderBlush3      </td><td>         </td><td style="color:rgb( 205 , 193 , 197 )">&#x2588;&#x2588;</td><td>{ 205 , 193 , 197 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LavenderBlush4      </td><td>         </td><td style="color:rgb( 139 , 131 , 134 )">&#x2588;&#x2588;</td><td>{ 139 , 131 , 134 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LemonChiffon1       </td><td>         </td><td style="color:rgb( 255 , 250 , 205 )">&#x2588;&#x2588;</td><td>{ 255 , 250 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LemonChiffon2       </td><td>         </td><td style="color:rgb( 238 , 233 , 191 )">&#x2588;&#x2588;</td><td>{ 238 , 233 , 191 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LemonChiffon3       </td><td>         </td><td style="color:rgb( 205 , 201 , 165 )">&#x2588;&#x2588;</td><td>{ 205 , 201 , 165 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LemonChiffon4       </td><td>         </td><td style="color:rgb( 139 , 137 , 112 )">&#x2588;&#x2588;</td><td>{ 139 , 137 , 112 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightBlue1          </td><td>         </td><td style="color:rgb( 191 , 239 , 255 )">&#x2588;&#x2588;</td><td>{ 191 , 239 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightBlue2          </td><td>         </td><td style="color:rgb( 178 , 223 , 238 )">&#x2588;&#x2588;</td><td>{ 178 , 223 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightBlue3          </td><td>         </td><td style="color:rgb( 154 , 192 , 205 )">&#x2588;&#x2588;</td><td>{ 154 , 192 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightBlue4          </td><td>         </td><td style="color:rgb( 104 , 131 , 139 )">&#x2588;&#x2588;</td><td>{ 104 , 131 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightCyan1          </td><td>         </td><td style="color:rgb( 224 , 255 , 255 )">&#x2588;&#x2588;</td><td>{ 224 , 255 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightCyan2          </td><td>         </td><td style="color:rgb( 209 , 238 , 238 )">&#x2588;&#x2588;</td><td>{ 209 , 238 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightCyan3          </td><td>         </td><td style="color:rgb( 180 , 205 , 205 )">&#x2588;&#x2588;</td><td>{ 180 , 205 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightCyan4          </td><td>         </td><td style="color:rgb( 122 , 139 , 139 )">&#x2588;&#x2588;</td><td>{ 122 , 139 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightGoldenrod1     </td><td>         </td><td style="color:rgb( 255 , 236 , 139 )">&#x2588;&#x2588;</td><td>{ 255 , 236 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightGoldenrod2     </td><td>         </td><td style="color:rgb( 238 , 220 , 130 )">&#x2588;&#x2588;</td><td>{ 238 , 220 , 130 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightGoldenrod3     </td><td>         </td><td style="color:rgb( 205 , 190 , 112 )">&#x2588;&#x2588;</td><td>{ 205 , 190 , 112 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightGoldenrod4     </td><td>         </td><td style="color:rgb( 139 , 129 ,  76 )">&#x2588;&#x2588;</td><td>{ 139 , 129 ,  76 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightPink1          </td><td>         </td><td style="color:rgb( 255 , 174 , 185 )">&#x2588;&#x2588;</td><td>{ 255 , 174 , 185 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightPink2          </td><td>         </td><td style="color:rgb( 238 , 162 , 173 )">&#x2588;&#x2588;</td><td>{ 238 , 162 , 173 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightPink3          </td><td>         </td><td style="color:rgb( 205 , 140 , 149 )">&#x2588;&#x2588;</td><td>{ 205 , 140 , 149 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightPink4          </td><td>         </td><td style="color:rgb( 139 ,  95 , 101 )">&#x2588;&#x2588;</td><td>{ 139 ,  95 , 101 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSalmon1        </td><td>         </td><td style="color:rgb( 255 , 160 , 122 )">&#x2588;&#x2588;</td><td>{ 255 , 160 , 122 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSalmon2        </td><td>         </td><td style="color:rgb( 238 , 149 , 114 )">&#x2588;&#x2588;</td><td>{ 238 , 149 , 114 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSalmon3        </td><td>         </td><td style="color:rgb( 205 , 129 ,  98 )">&#x2588;&#x2588;</td><td>{ 205 , 129 ,  98 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSalmon4        </td><td>         </td><td style="color:rgb( 139 ,  87 ,  66 )">&#x2588;&#x2588;</td><td>{ 139 ,  87 ,  66 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSkyBlue1       </td><td>         </td><td style="color:rgb( 176 , 226 , 255 )">&#x2588;&#x2588;</td><td>{ 176 , 226 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSkyBlue2       </td><td>         </td><td style="color:rgb( 164 , 211 , 238 )">&#x2588;&#x2588;</td><td>{ 164 , 211 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSkyBlue3       </td><td>         </td><td style="color:rgb( 141 , 182 , 205 )">&#x2588;&#x2588;</td><td>{ 141 , 182 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSkyBlue4       </td><td>         </td><td style="color:rgb(  96 , 123 , 139 )">&#x2588;&#x2588;</td><td>{  96 , 123 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSteelBlue1     </td><td>         </td><td style="color:rgb( 202 , 225 , 255 )">&#x2588;&#x2588;</td><td>{ 202 , 225 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSteelBlue2     </td><td>         </td><td style="color:rgb( 188 , 210 , 238 )">&#x2588;&#x2588;</td><td>{ 188 , 210 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSteelBlue3     </td><td>         </td><td style="color:rgb( 162 , 181 , 205 )">&#x2588;&#x2588;</td><td>{ 162 , 181 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightSteelBlue4     </td><td>         </td><td style="color:rgb( 110 , 123 , 139 )">&#x2588;&#x2588;</td><td>{ 110 , 123 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightYellow1        </td><td>         </td><td style="color:rgb( 255 , 255 , 224 )">&#x2588;&#x2588;</td><td>{ 255 , 255 , 224 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightYellow2        </td><td>         </td><td style="color:rgb( 238 , 238 , 209 )">&#x2588;&#x2588;</td><td>{ 238 , 238 , 209 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightYellow3        </td><td>         </td><td style="color:rgb( 205 , 205 , 180 )">&#x2588;&#x2588;</td><td>{ 205 , 205 , 180 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_LightYellow4        </td><td>         </td><td style="color:rgb( 139 , 139 , 122 )">&#x2588;&#x2588;</td><td>{ 139 , 139 , 122 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Magenta1            </td><td>         </td><td style="color:rgb( 255 ,   0 , 255 )">&#x2588;&#x2588;</td><td>{ 255 ,   0 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Magenta2            </td><td>         </td><td style="color:rgb( 238 ,   0 , 238 )">&#x2588;&#x2588;</td><td>{ 238 ,   0 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Magenta3            </td><td>         </td><td style="color:rgb( 205 ,   0 , 205 )">&#x2588;&#x2588;</td><td>{ 205 ,   0 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Magenta4            </td><td>         </td><td style="color:rgb( 139 ,   0 , 139 )">&#x2588;&#x2588;</td><td>{ 139 ,   0 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Maroon1             </td><td>         </td><td style="color:rgb( 255 ,  52 , 179 )">&#x2588;&#x2588;</td><td>{ 255 ,  52 , 179 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Maroon2             </td><td>         </td><td style="color:rgb( 238 ,  48 , 167 )">&#x2588;&#x2588;</td><td>{ 238 ,  48 , 167 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Maroon3             </td><td>         </td><td style="color:rgb( 205 ,  41 , 144 )">&#x2588;&#x2588;</td><td>{ 205 ,  41 , 144 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Maroon4             </td><td>         </td><td style="color:rgb( 139 ,  28 ,  98 )">&#x2588;&#x2588;</td><td>{ 139 ,  28 ,  98 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MediumOrchid1       </td><td>         </td><td style="color:rgb( 224 , 102 , 255 )">&#x2588;&#x2588;</td><td>{ 224 , 102 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MediumOrchid2       </td><td>         </td><td style="color:rgb( 209 ,  95 , 238 )">&#x2588;&#x2588;</td><td>{ 209 ,  95 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MediumOrchid3       </td><td>         </td><td style="color:rgb( 180 ,  82 , 205 )">&#x2588;&#x2588;</td><td>{ 180 ,  82 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MediumOrchid4       </td><td>         </td><td style="color:rgb( 122 ,  55 , 139 )">&#x2588;&#x2588;</td><td>{ 122 ,  55 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MediumPurple1       </td><td>         </td><td style="color:rgb( 171 , 130 , 255 )">&#x2588;&#x2588;</td><td>{ 171 , 130 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MediumPurple2       </td><td>         </td><td style="color:rgb( 159 , 121 , 238 )">&#x2588;&#x2588;</td><td>{ 159 , 121 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MediumPurple3       </td><td>         </td><td style="color:rgb( 137 , 104 , 205 )">&#x2588;&#x2588;</td><td>{ 137 , 104 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MediumPurple4       </td><td>         </td><td style="color:rgb(  93 ,  71 , 139 )">&#x2588;&#x2588;</td><td>{  93 ,  71 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MistyRose1          </td><td>         </td><td style="color:rgb( 255 , 228 , 225 )">&#x2588;&#x2588;</td><td>{ 255 , 228 , 225 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MistyRose2          </td><td>         </td><td style="color:rgb( 238 , 213 , 210 )">&#x2588;&#x2588;</td><td>{ 238 , 213 , 210 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MistyRose3          </td><td>         </td><td style="color:rgb( 205 , 183 , 181 )">&#x2588;&#x2588;</td><td>{ 205 , 183 , 181 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_MistyRose4          </td><td>         </td><td style="color:rgb( 139 , 125 , 123 )">&#x2588;&#x2588;</td><td>{ 139 , 125 , 123 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_NavajoWhite1        </td><td>         </td><td style="color:rgb( 255 , 222 , 173 )">&#x2588;&#x2588;</td><td>{ 255 , 222 , 173 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_NavajoWhite2        </td><td>         </td><td style="color:rgb( 238 , 207 , 161 )">&#x2588;&#x2588;</td><td>{ 238 , 207 , 161 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_NavajoWhite3        </td><td>         </td><td style="color:rgb( 205 , 179 , 139 )">&#x2588;&#x2588;</td><td>{ 205 , 179 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_NavajoWhite4        </td><td>         </td><td style="color:rgb( 139 , 121 ,  94 )">&#x2588;&#x2588;</td><td>{ 139 , 121 ,  94 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_OliveDrab1          </td><td>         </td><td style="color:rgb( 192 , 255 ,  62 )">&#x2588;&#x2588;</td><td>{ 192 , 255 ,  62 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_OliveDrab2          </td><td>         </td><td style="color:rgb( 179 , 238 ,  58 )">&#x2588;&#x2588;</td><td>{ 179 , 238 ,  58 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_OliveDrab3          </td><td>         </td><td style="color:rgb( 154 , 205 ,  50 )">&#x2588;&#x2588;</td><td>{ 154 , 205 ,  50 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_OliveDrab4          </td><td>         </td><td style="color:rgb( 105 , 139 ,  34 )">&#x2588;&#x2588;</td><td>{ 105 , 139 ,  34 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Orange1             </td><td>         </td><td style="color:rgb( 255 , 165 ,   0 )">&#x2588;&#x2588;</td><td>{ 255 , 165 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Orange2             </td><td>         </td><td style="color:rgb( 238 , 154 ,   0 )">&#x2588;&#x2588;</td><td>{ 238 , 154 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Orange3             </td><td>         </td><td style="color:rgb( 205 , 133 ,   0 )">&#x2588;&#x2588;</td><td>{ 205 , 133 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Orange4             </td><td>         </td><td style="color:rgb( 139 ,  90 ,   0 )">&#x2588;&#x2588;</td><td>{ 139 ,  90 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_OrangeRed1          </td><td>         </td><td style="color:rgb( 255 ,  69 ,   0 )">&#x2588;&#x2588;</td><td>{ 255 ,  69 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_OrangeRed2          </td><td>         </td><td style="color:rgb( 238 ,  64 ,   0 )">&#x2588;&#x2588;</td><td>{ 238 ,  64 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_OrangeRed3          </td><td>         </td><td style="color:rgb( 205 ,  55 ,   0 )">&#x2588;&#x2588;</td><td>{ 205 ,  55 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_OrangeRed4          </td><td>         </td><td style="color:rgb( 139 ,  37 ,   0 )">&#x2588;&#x2588;</td><td>{ 139 ,  37 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Orchid1             </td><td>         </td><td style="color:rgb( 255 , 131 , 250 )">&#x2588;&#x2588;</td><td>{ 255 , 131 , 250 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Orchid2             </td><td>         </td><td style="color:rgb( 238 , 122 , 233 )">&#x2588;&#x2588;</td><td>{ 238 , 122 , 233 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Orchid3             </td><td>         </td><td style="color:rgb( 205 , 105 , 201 )">&#x2588;&#x2588;</td><td>{ 205 , 105 , 201 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Orchid4             </td><td>         </td><td style="color:rgb( 139 ,  71 , 137 )">&#x2588;&#x2588;</td><td>{ 139 ,  71 , 137 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleGreen1          </td><td>         </td><td style="color:rgb( 154 , 255 , 154 )">&#x2588;&#x2588;</td><td>{ 154 , 255 , 154 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleGreen2          </td><td>         </td><td style="color:rgb( 144 , 238 , 144 )">&#x2588;&#x2588;</td><td>{ 144 , 238 , 144 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleGreen3          </td><td>         </td><td style="color:rgb( 124 , 205 , 124 )">&#x2588;&#x2588;</td><td>{ 124 , 205 , 124 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleGreen4          </td><td>         </td><td style="color:rgb(  84 , 139 ,  84 )">&#x2588;&#x2588;</td><td>{  84 , 139 ,  84 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleTurquoise1      </td><td>         </td><td style="color:rgb( 187 , 255 , 255 )">&#x2588;&#x2588;</td><td>{ 187 , 255 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleTurquoise2      </td><td>         </td><td style="color:rgb( 174 , 238 , 238 )">&#x2588;&#x2588;</td><td>{ 174 , 238 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleTurquoise3      </td><td>         </td><td style="color:rgb( 150 , 205 , 205 )">&#x2588;&#x2588;</td><td>{ 150 , 205 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleTurquoise4      </td><td>         </td><td style="color:rgb( 102 , 139 , 139 )">&#x2588;&#x2588;</td><td>{ 102 , 139 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleVioletRed1      </td><td>         </td><td style="color:rgb( 255 , 130 , 171 )">&#x2588;&#x2588;</td><td>{ 255 , 130 , 171 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleVioletRed2      </td><td>         </td><td style="color:rgb( 238 , 121 , 159 )">&#x2588;&#x2588;</td><td>{ 238 , 121 , 159 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleVioletRed3      </td><td>         </td><td style="color:rgb( 205 , 104 , 137 )">&#x2588;&#x2588;</td><td>{ 205 , 104 , 137 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PaleVioletRed4      </td><td>         </td><td style="color:rgb( 139 ,  71 ,  93 )">&#x2588;&#x2588;</td><td>{ 139 ,  71 ,  93 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PeachPuff1          </td><td>         </td><td style="color:rgb( 255 , 218 , 185 )">&#x2588;&#x2588;</td><td>{ 255 , 218 , 185 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PeachPuff2          </td><td>         </td><td style="color:rgb( 238 , 203 , 173 )">&#x2588;&#x2588;</td><td>{ 238 , 203 , 173 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PeachPuff3          </td><td>         </td><td style="color:rgb( 205 , 175 , 149 )">&#x2588;&#x2588;</td><td>{ 205 , 175 , 149 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_PeachPuff4          </td><td>         </td><td style="color:rgb( 139 , 119 , 101 )">&#x2588;&#x2588;</td><td>{ 139 , 119 , 101 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Pink1               </td><td>         </td><td style="color:rgb( 255 , 181 , 197 )">&#x2588;&#x2588;</td><td>{ 255 , 181 , 197 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Pink2               </td><td>         </td><td style="color:rgb( 238 , 169 , 184 )">&#x2588;&#x2588;</td><td>{ 238 , 169 , 184 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Pink3               </td><td>         </td><td style="color:rgb( 205 , 145 , 158 )">&#x2588;&#x2588;</td><td>{ 205 , 145 , 158 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Pink4               </td><td>         </td><td style="color:rgb( 139 ,  99 , 108 )">&#x2588;&#x2588;</td><td>{ 139 ,  99 , 108 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Plum1               </td><td>         </td><td style="color:rgb( 255 , 187 , 255 )">&#x2588;&#x2588;</td><td>{ 255 , 187 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Plum2               </td><td>         </td><td style="color:rgb( 238 , 174 , 238 )">&#x2588;&#x2588;</td><td>{ 238 , 174 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Plum3               </td><td>         </td><td style="color:rgb( 205 , 150 , 205 )">&#x2588;&#x2588;</td><td>{ 205 , 150 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Plum4               </td><td>         </td><td style="color:rgb( 139 , 102 , 139 )">&#x2588;&#x2588;</td><td>{ 139 , 102 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Purple1             </td><td>         </td><td style="color:rgb( 155 ,  48 , 255 )">&#x2588;&#x2588;</td><td>{ 155 ,  48 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Purple2             </td><td>         </td><td style="color:rgb( 145 ,  44 , 238 )">&#x2588;&#x2588;</td><td>{ 145 ,  44 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Purple3             </td><td>         </td><td style="color:rgb( 125 ,  38 , 205 )">&#x2588;&#x2588;</td><td>{ 125 ,  38 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Purple4             </td><td>         </td><td style="color:rgb(  85 ,  26 , 139 )">&#x2588;&#x2588;</td><td>{  85 ,  26 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Red1                </td><td>         </td><td style="color:rgb( 255 ,   0 ,   0 )">&#x2588;&#x2588;</td><td>{ 255 ,   0 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Red2                </td><td>         </td><td style="color:rgb( 238 ,   0 ,   0 )">&#x2588;&#x2588;</td><td>{ 238 ,   0 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Red3                </td><td>         </td><td style="color:rgb( 205 ,   0 ,   0 )">&#x2588;&#x2588;</td><td>{ 205 ,   0 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Red4                </td><td>         </td><td style="color:rgb( 139 ,   0 ,   0 )">&#x2588;&#x2588;</td><td>{ 139 ,   0 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_RosyBrown1          </td><td>         </td><td style="color:rgb( 255 , 193 , 193 )">&#x2588;&#x2588;</td><td>{ 255 , 193 , 193 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_RosyBrown2          </td><td>         </td><td style="color:rgb( 238 , 180 , 180 )">&#x2588;&#x2588;</td><td>{ 238 , 180 , 180 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_RosyBrown3          </td><td>         </td><td style="color:rgb( 205 , 155 , 155 )">&#x2588;&#x2588;</td><td>{ 205 , 155 , 155 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_RosyBrown4          </td><td>         </td><td style="color:rgb( 139 , 105 , 105 )">&#x2588;&#x2588;</td><td>{ 139 , 105 , 105 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_RoyalBlue1          </td><td>         </td><td style="color:rgb(  72 , 118 , 255 )">&#x2588;&#x2588;</td><td>{  72 , 118 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_RoyalBlue2          </td><td>         </td><td style="color:rgb(  67 , 110 , 238 )">&#x2588;&#x2588;</td><td>{  67 , 110 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_RoyalBlue3          </td><td>         </td><td style="color:rgb(  58 ,  95 , 205 )">&#x2588;&#x2588;</td><td>{  58 ,  95 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_RoyalBlue4          </td><td>         </td><td style="color:rgb(  39 ,  64 , 139 )">&#x2588;&#x2588;</td><td>{  39 ,  64 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Salmon1             </td><td>         </td><td style="color:rgb( 255 , 140 , 105 )">&#x2588;&#x2588;</td><td>{ 255 , 140 , 105 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Salmon2             </td><td>         </td><td style="color:rgb( 238 , 130 ,  98 )">&#x2588;&#x2588;</td><td>{ 238 , 130 ,  98 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Salmon3             </td><td>         </td><td style="color:rgb( 205 , 112 ,  84 )">&#x2588;&#x2588;</td><td>{ 205 , 112 ,  84 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Salmon4             </td><td>         </td><td style="color:rgb( 139 ,  76 ,  57 )">&#x2588;&#x2588;</td><td>{ 139 ,  76 ,  57 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SeaGreen1           </td><td>         </td><td style="color:rgb(  84 , 255 , 159 )">&#x2588;&#x2588;</td><td>{  84 , 255 , 159 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SeaGreen2           </td><td>         </td><td style="color:rgb(  78 , 238 , 148 )">&#x2588;&#x2588;</td><td>{  78 , 238 , 148 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SeaGreen3           </td><td>         </td><td style="color:rgb(  67 , 205 , 128 )">&#x2588;&#x2588;</td><td>{  67 , 205 , 128 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SeaGreen4           </td><td>         </td><td style="color:rgb(  46 , 139 ,  87 )">&#x2588;&#x2588;</td><td>{  46 , 139 ,  87 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Seashell1           </td><td>         </td><td style="color:rgb( 255 , 245 , 238 )">&#x2588;&#x2588;</td><td>{ 255 , 245 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Seashell2           </td><td>         </td><td style="color:rgb( 238 , 229 , 222 )">&#x2588;&#x2588;</td><td>{ 238 , 229 , 222 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Seashell3           </td><td>         </td><td style="color:rgb( 205 , 197 , 191 )">&#x2588;&#x2588;</td><td>{ 205 , 197 , 191 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Seashell4           </td><td>         </td><td style="color:rgb( 139 , 134 , 130 )">&#x2588;&#x2588;</td><td>{ 139 , 134 , 130 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Sienna1             </td><td>         </td><td style="color:rgb( 255 , 130 ,  71 )">&#x2588;&#x2588;</td><td>{ 255 , 130 ,  71 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Sienna2             </td><td>         </td><td style="color:rgb( 238 , 121 ,  66 )">&#x2588;&#x2588;</td><td>{ 238 , 121 ,  66 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Sienna3             </td><td>         </td><td style="color:rgb( 205 , 104 ,  57 )">&#x2588;&#x2588;</td><td>{ 205 , 104 ,  57 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Sienna4             </td><td>         </td><td style="color:rgb( 139 ,  71 ,  38 )">&#x2588;&#x2588;</td><td>{ 139 ,  71 ,  38 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SkyBlue1            </td><td>         </td><td style="color:rgb( 135 , 206 , 255 )">&#x2588;&#x2588;</td><td>{ 135 , 206 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SkyBlue2            </td><td>         </td><td style="color:rgb( 126 , 192 , 238 )">&#x2588;&#x2588;</td><td>{ 126 , 192 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SkyBlue3            </td><td>         </td><td style="color:rgb( 108 , 166 , 205 )">&#x2588;&#x2588;</td><td>{ 108 , 166 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SkyBlue4            </td><td>         </td><td style="color:rgb(  74 , 112 , 139 )">&#x2588;&#x2588;</td><td>{  74 , 112 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateBlue1          </td><td>         </td><td style="color:rgb( 131 , 111 , 255 )">&#x2588;&#x2588;</td><td>{ 131 , 111 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateBlue2          </td><td>         </td><td style="color:rgb( 122 , 103 , 238 )">&#x2588;&#x2588;</td><td>{ 122 , 103 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateBlue3          </td><td>         </td><td style="color:rgb( 105 ,  89 , 205 )">&#x2588;&#x2588;</td><td>{ 105 ,  89 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateBlue4          </td><td>         </td><td style="color:rgb(  71 ,  60 , 139 )">&#x2588;&#x2588;</td><td>{  71 ,  60 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateGray1          </td><td>         </td><td style="color:rgb( 198 , 226 , 255 )">&#x2588;&#x2588;</td><td>{ 198 , 226 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateGray2          </td><td>         </td><td style="color:rgb( 185 , 211 , 238 )">&#x2588;&#x2588;</td><td>{ 185 , 211 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateGray3          </td><td>         </td><td style="color:rgb( 159 , 182 , 205 )">&#x2588;&#x2588;</td><td>{ 159 , 182 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateGray4          </td><td>         </td><td style="color:rgb( 108 , 123 , 139 )">&#x2588;&#x2588;</td><td>{ 108 , 123 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateGrey1          </td><td>         </td><td style="color:rgb( 198 , 226 , 255 )">&#x2588;&#x2588;</td><td>{ 198 , 226 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateGrey2          </td><td>         </td><td style="color:rgb( 185 , 211 , 238 )">&#x2588;&#x2588;</td><td>{ 185 , 211 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateGrey3          </td><td>         </td><td style="color:rgb( 159 , 182 , 205 )">&#x2588;&#x2588;</td><td>{ 159 , 182 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SlateGrey4          </td><td>         </td><td style="color:rgb( 108 , 123 , 139 )">&#x2588;&#x2588;</td><td>{ 108 , 123 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Snow1               </td><td>         </td><td style="color:rgb( 255 , 250 , 250 )">&#x2588;&#x2588;</td><td>{ 255 , 250 , 250 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Snow2               </td><td>         </td><td style="color:rgb( 238 , 233 , 233 )">&#x2588;&#x2588;</td><td>{ 238 , 233 , 233 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Snow3               </td><td>         </td><td style="color:rgb( 205 , 201 , 201 )">&#x2588;&#x2588;</td><td>{ 205 , 201 , 201 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Snow4               </td><td>         </td><td style="color:rgb( 139 , 137 , 137 )">&#x2588;&#x2588;</td><td>{ 139 , 137 , 137 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SpringGreen1        </td><td>         </td><td style="color:rgb(   0 , 255 , 127 )">&#x2588;&#x2588;</td><td>{   0 , 255 , 127 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SpringGreen2        </td><td>         </td><td style="color:rgb(   0 , 238 , 118 )">&#x2588;&#x2588;</td><td>{   0 , 238 , 118 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SpringGreen3        </td><td>         </td><td style="color:rgb(   0 , 205 , 102 )">&#x2588;&#x2588;</td><td>{   0 , 205 , 102 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SpringGreen4        </td><td>         </td><td style="color:rgb(   0 , 139 ,  69 )">&#x2588;&#x2588;</td><td>{   0 , 139 ,  69 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SteelBlue1          </td><td>         </td><td style="color:rgb(  99 , 184 , 255 )">&#x2588;&#x2588;</td><td>{  99 , 184 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SteelBlue2          </td><td>         </td><td style="color:rgb(  92 , 172 , 238 )">&#x2588;&#x2588;</td><td>{  92 , 172 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SteelBlue3          </td><td>         </td><td style="color:rgb(  79 , 148 , 205 )">&#x2588;&#x2588;</td><td>{  79 , 148 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_SteelBlue4          </td><td>         </td><td style="color:rgb(  54 , 100 , 139 )">&#x2588;&#x2588;</td><td>{  54 , 100 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Tan1                </td><td>         </td><td style="color:rgb( 255 , 165 ,  79 )">&#x2588;&#x2588;</td><td>{ 255 , 165 ,  79 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Tan2                </td><td>         </td><td style="color:rgb( 238 , 154 ,  73 )">&#x2588;&#x2588;</td><td>{ 238 , 154 ,  73 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Tan3                </td><td>         </td><td style="color:rgb( 205 , 133 ,  63 )">&#x2588;&#x2588;</td><td>{ 205 , 133 ,  63 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Tan4                </td><td>         </td><td style="color:rgb( 139 ,  90 ,  43 )">&#x2588;&#x2588;</td><td>{ 139 ,  90 ,  43 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Thistle1            </td><td>         </td><td style="color:rgb( 255 , 225 , 255 )">&#x2588;&#x2588;</td><td>{ 255 , 225 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Thistle2            </td><td>         </td><td style="color:rgb( 238 , 210 , 238 )">&#x2588;&#x2588;</td><td>{ 238 , 210 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Thistle3            </td><td>         </td><td style="color:rgb( 205 , 181 , 205 )">&#x2588;&#x2588;</td><td>{ 205 , 181 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Thistle4            </td><td>         </td><td style="color:rgb( 139 , 123 , 139 )">&#x2588;&#x2588;</td><td>{ 139 , 123 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Tomato1             </td><td>         </td><td style="color:rgb( 255 ,  99 ,  71 )">&#x2588;&#x2588;</td><td>{ 255 ,  99 ,  71 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Tomato2             </td><td>         </td><td style="color:rgb( 238 ,  92 ,  66 )">&#x2588;&#x2588;</td><td>{ 238 ,  92 ,  66 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Tomato3             </td><td>         </td><td style="color:rgb( 205 ,  79 ,  57 )">&#x2588;&#x2588;</td><td>{ 205 ,  79 ,  57 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Tomato4             </td><td>         </td><td style="color:rgb( 139 ,  54 ,  38 )">&#x2588;&#x2588;</td><td>{ 139 ,  54 ,  38 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Turquoise1          </td><td>         </td><td style="color:rgb(   0 , 245 , 255 )">&#x2588;&#x2588;</td><td>{   0 , 245 , 255 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Turquoise2          </td><td>         </td><td style="color:rgb(   0 , 229 , 238 )">&#x2588;&#x2588;</td><td>{   0 , 229 , 238 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Turquoise3          </td><td>         </td><td style="color:rgb(   0 , 197 , 205 )">&#x2588;&#x2588;</td><td>{   0 , 197 , 205 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Turquoise4          </td><td>         </td><td style="color:rgb(   0 , 134 , 139 )">&#x2588;&#x2588;</td><td>{   0 , 134 , 139 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_VioletRed1          </td><td>         </td><td style="color:rgb( 255 ,  62 , 150 )">&#x2588;&#x2588;</td><td>{ 255 ,  62 , 150 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_VioletRed2          </td><td>         </td><td style="color:rgb( 238 ,  58 , 140 )">&#x2588;&#x2588;</td><td>{ 238 ,  58 , 140 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_VioletRed3          </td><td>         </td><td style="color:rgb( 205 ,  50 , 120 )">&#x2588;&#x2588;</td><td>{ 205 ,  50 , 120 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_VioletRed4          </td><td>         </td><td style="color:rgb( 139 ,  34 ,  82 )">&#x2588;&#x2588;</td><td>{ 139 ,  34 ,  82 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Wheat1              </td><td>         </td><td style="color:rgb( 255 , 231 , 186 )">&#x2588;&#x2588;</td><td>{ 255 , 231 , 186 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Wheat2              </td><td>         </td><td style="color:rgb( 238 , 216 , 174 )">&#x2588;&#x2588;</td><td>{ 238 , 216 , 174 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Wheat3              </td><td>         </td><td style="color:rgb( 205 , 186 , 150 )">&#x2588;&#x2588;</td><td>{ 205 , 186 , 150 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Wheat4              </td><td>         </td><td style="color:rgb( 139 , 126 , 102 )">&#x2588;&#x2588;</td><td>{ 139 , 126 , 102 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Yellow1             </td><td>         </td><td style="color:rgb( 255 , 255 ,   0 )">&#x2588;&#x2588;</td><td>{ 255 , 255 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Yellow2             </td><td>         </td><td style="color:rgb( 238 , 238 ,   0 )">&#x2588;&#x2588;</td><td>{ 238 , 238 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Yellow3             </td><td>         </td><td style="color:rgb( 205 , 205 ,   0 )">&#x2588;&#x2588;</td><td>{ 205 , 205 ,   0 }</td><td>                       </td></tr>        
+    <tr><td>COLOR_Yellow4             </td><td>         </td><td style="color:rgb( 139 , 139 ,   0 )">&#x2588;&#x2588;</td><td>{ 139 , 139 ,   0 }</td><td>                       </td></tr>        
+  </table>
+
+</div>
+<div class=Section1></div>
+
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+h_ini.prg
+c_ini.c
+
+-hblib
+-o../../lib/${hb_plat}/${hb_comp}/hmg3_ini
+
+-hbx=../../hmg3_ini.hbx
+-Iinclude
+-D__HBIDE__
+-w2 -es2
+-L../../
+hmg3.hbc

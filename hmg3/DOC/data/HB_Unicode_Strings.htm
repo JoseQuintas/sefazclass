@@ -1,0 +1,512 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+  {font-family:Calibri;
+  panose-1:2 15 5 2 2 2 4 3 2 4;
+  mso-font-charset:0;
+  mso-generic-font-family:swiss;
+  mso-font-pitch:variable;
+  mso-font-signature:-536870145 1073786111 1 0 415 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+  {mso-style-unhide:no;
+  mso-style-qformat:yes;
+  mso-style-parent:"";
+  margin-top:0cm;
+  margin-right:0cm;
+  margin-bottom:10.0pt;
+  margin-left:0cm;
+  line-height:115%;
+  mso-pagination:widow-orphan;
+  font-size:11.0pt;
+  font-family:"Calibri","sans-serif";
+  mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast;
+  mso-bidi-font-family:"Times New Roman";}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+  {mso-style-noshow:yes;
+  mso-style-priority:99;
+  mso-style-link:"Texto sin formato Car";
+  margin:0cm;
+  margin-bottom:.0001pt;
+  mso-pagination:widow-orphan;
+  font-size:10.0pt;
+  font-family:"Courier New";
+  mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+  {mso-style-priority:34;
+  mso-style-unhide:no;
+  mso-style-qformat:yes;
+  margin-top:0cm;
+  margin-right:0cm;
+  margin-bottom:10.0pt;
+  margin-left:36.0pt;
+  mso-add-space:auto;
+  line-height:115%;
+  mso-pagination:widow-orphan;
+  font-size:11.0pt;
+  font-family:"Calibri","sans-serif";
+  mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast;
+  mso-bidi-font-family:"Times New Roman";}
+p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+  {mso-style-priority:34;
+  mso-style-unhide:no;
+  mso-style-qformat:yes;
+  mso-style-type:export-only;
+  margin-top:0cm;
+  margin-right:0cm;
+  margin-bottom:0cm;
+  margin-left:36.0pt;
+  margin-bottom:.0001pt;
+  mso-add-space:auto;
+  line-height:115%;
+  mso-pagination:widow-orphan;
+  font-size:11.0pt;
+  font-family:"Calibri","sans-serif";
+  mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast;
+  mso-bidi-font-family:"Times New Roman";}
+p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagraphCxSpMiddle
+  {mso-style-priority:34;
+  mso-style-unhide:no;
+  mso-style-qformat:yes;
+  mso-style-type:export-only;
+  margin-top:0cm;
+  margin-right:0cm;
+  margin-bottom:0cm;
+  margin-left:36.0pt;
+  margin-bottom:.0001pt;
+  mso-add-space:auto;
+  line-height:115%;
+  mso-pagination:widow-orphan;
+  font-size:11.0pt;
+  font-family:"Calibri","sans-serif";
+  mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast;
+  mso-bidi-font-family:"Times New Roman";}
+p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+  {mso-style-priority:34;
+  mso-style-unhide:no;
+  mso-style-qformat:yes;
+  mso-style-type:export-only;
+  margin-top:0cm;
+  margin-right:0cm;
+  margin-bottom:10.0pt;
+  margin-left:36.0pt;
+  mso-add-space:auto;
+  line-height:115%;
+  mso-pagination:widow-orphan;
+  font-size:11.0pt;
+  font-family:"Calibri","sans-serif";
+  mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast;
+  mso-bidi-font-family:"Times New Roman";}
+span.TextosinformatoCar
+  {mso-style-name:"Texto sin formato Car";
+  mso-style-noshow:yes;
+  mso-style-priority:99;
+  mso-style-unhide:no;
+  mso-style-locked:yes;
+  mso-style-link:"Texto sin formato";
+  font-family:"Courier New";
+  mso-ascii-font-family:"Courier New";
+  mso-hansi-font-family:"Courier New";
+  mso-bidi-font-family:"Courier New";}
+p.msoplaintext1, li.msoplaintext1, div.msoplaintext1
+  {mso-style-name:msoplaintext1;
+  mso-style-unhide:no;
+  margin:0cm;
+  margin-bottom:.0001pt;
+  mso-pagination:widow-orphan;
+  font-size:10.0pt;
+  font-family:"Courier New";
+  mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast;}
+p.msoplaintext2, li.msoplaintext2, div.msoplaintext2
+  {mso-style-name:msoplaintext2;
+  mso-style-unhide:no;
+  margin:0cm;
+  margin-bottom:.0001pt;
+  mso-pagination:widow-orphan;
+  font-size:10.0pt;
+  font-family:"Courier New";
+  mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast;}
+p.msoplaintext3, li.msoplaintext3, div.msoplaintext3
+  {mso-style-name:msoplaintext3;
+  mso-style-unhide:no;
+  margin:0cm;
+  margin-bottom:.0001pt;
+  mso-pagination:widow-orphan;
+  font-size:10.0pt;
+  font-family:"Courier New";
+  mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast;}
+p.msopapdefault, li.msopapdefault, div.msopapdefault
+  {mso-style-name:msopapdefault;
+  mso-style-unhide:no;
+  mso-margin-top-alt:auto;
+  margin-right:0cm;
+  margin-bottom:10.0pt;
+  margin-left:0cm;
+  line-height:115%;
+  mso-pagination:widow-orphan;
+  font-size:12.0pt;
+  font-family:"Times New Roman","serif";
+  mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast;}
+span.apple-converted-space
+  {mso-style-name:apple-converted-space;
+  mso-style-unhide:no;}
+span.SpellE
+  {mso-style-name:"";
+  mso-spl-e:yes;}
+span.GramE
+  {mso-style-name:"";
+  mso-gram-e:yes;}
+.MsoChpDefault
+  {mso-style-type:export-only;
+  mso-default-props:yes;
+  font-size:10.0pt;
+  mso-ansi-font-size:10.0pt;
+  mso-bidi-font-size:10.0pt;}
+@page WordSection1
+  {size:612.0pt 792.0pt;
+  margin:70.85pt 3.0cm 70.85pt 3.0cm;
+  mso-header-margin:35.4pt;
+  mso-footer-margin:35.4pt;
+  mso-paper-source:0;}
+div.WordSection1
+  {page:WordSection1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US-UY style='tab-interval:35.4pt'>
+
+<div class=WordSection1>
+
+<div class=WordSection1>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;background:#339966;color:white;font-size:12.0pt;'>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=msoplaintext1 style='font-size:12.0pt;'><b><u>HARBOUR</u> string functions that support Unicode</b></p>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+</div>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:black;'><b>Unicode string functions</b></p>
+
+<p class=msoplaintext2 style='text-align:justify'>The following functions 
+actually work on CESU-8 strings.  CESU-8 is identical to UTF-8 for BMP 
+characters (code points 0 to 0xFFFF) but is different for supplemental plane 
+characters.  See <a href="HMG_Unicode_Supplemental_Plane.htm">CESU-8 and 
+Unicode Supplemental Plane Characters in HMG</a>.  HMG has analogs for these 
+functions that work for all UTF-8 characters.  See <a 
+href="HMG_Unicode_Strings.htm">HMG Unicode String Functions</a>.</p>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_UTF8ASC( &lt;cText&gt; ) -&gt; &lt;nCode&gt;</b></br>
+<span style='color:black;'>Returns code point of first CESU-8 character (not byte) of &lt;cText&gt;</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_UTF8AT( &lt;cSubString&gt;, &lt;cString&gt;, [&lt;nFrom&gt;], [&lt;nTo&gt;] ) -&gt; &lt;nChar&gt;</b></br>
+<span style='color:black;'>Returns character position of first occurence of &lt;cSubString&gt; within &lt;cString&gt;.</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_UTF8CHR( &lt;nCode&gt; ) -> &lt;cText&gt;</b></br>
+<span style='color:black;'>Returns CESU-8 character with code point &lt;nCode&gt;</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_UTF8LEFT( &lt;cString&gt;, &lt;nCount&gt; ) -&gt; &lt;cSubstring&gt;</b></br>
+<span style='color:black;'>Returns first &lt;nCount&gt; characters of &lt;cString&gt;</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_UTF8LEN( &lt;cText&gt; ) -&gt; &lt;nChars&gt;</b></br>
+<span style='color:black;'>Returns CESU-8 string length in characters</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_UTF8PEEK( &lt;cText&gt;, &lt;n&gt; ) -&gt; &lt;nCode&gt;</b></br>
+<span style='color:black;'>Returns CESU-8 value of &lt;n&gt;-th character in given string</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_UTF8POKE( [@]&lt;cText&gt;, &lt;n&gt;, &lt;nVal&gt; ) -&gt; &lt;cText&gt;</b></br>
+<span style='color:black;'>Changes &lt;n&gt;-th CESU-8 character in given string to unicode &lt;nVal&gt; one and return modified text</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_UTF8RAT( &lt;cSubString&gt;, &lt;cString&gt;, [&lt;nFrom&gt;], [&lt;nTo&gt;] ) -&gt; &lt;nChar&gt;</b></br>
+<span style='color:black;'>Returns character position of last occurence of substring within string.</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_UTF8RIGHT( &lt;cString&gt;, &lt;nCount&gt; ) -&gt; &lt;cSubstring&gt;</b></br>
+<span style='color:black;'>Returns last &lt;nCount&gt; characters of &lt;cString&gt;</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_UTF8SUBSTR( &lt;cString&gt;, &lt;nStart&gt;, &lt;nCount&gt; ) -&gt; &lt;cSubstring&gt;</b></br>
+<span style='color:black;'>Starting at the &lt;nStart&gt;-th character, returns &lt;nCount&gt; characters of &lt;cString&gt;</span></p>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:black;'><b>Byte string functions</b></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>ASC( &lt;cText&gt; ) -&gt; &lt;nCode&gt;</b></br>
+<span style='color:black;'>Returns numeric value of first byte of string</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>AT( &lt;cSubString&gt;, &lt;cString&gt;, [&lt;nFrom&gt;], [&lt;nTo&gt;] ) -&gt; &lt;nByte&gt;</b></br>
+<span style='color:black;'>Returns byte position of first occurence of &lt;cSubString&gt; within &lt;cString&gt;.</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>CHR( &lt;nCode&gt; ) -> &lt;cText&gt;</b></br>
+<span style='color:black;'>Returns one-byte ASCII/ANSI character with numeric code &lt;nCode&gt;</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>LEFT( &lt;cString&gt;, &lt;nCount&gt; ) -&gt; &lt;cSubstring&gt;</b></br>
+<span style='color:black;'>Returns first &lt;nCount&gt; bytes of &lt;cString&gt;</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>LEN( &lt;cText&gt; ) -&gt; &lt;nBytes&gt;</b></br>
+<span style='color:black;'>Returns string length in bytes</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_BPEEK( &lt;cText&gt;, &lt;n&gt; ) -&gt; &lt;nCode&gt;</b></br>
+<span style='color:black;'>Returns value of &lt;n&gt;-th byte in given string</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_BPOKE( [@]&lt;cText&gt;, &lt;n&gt;, &lt;nVal&gt; ) -&gt; &lt;cText&gt;</b></br>
+<span style='color:black;'>Changes &lt;n&gt;-th byte in given string to &lt;nVal&gt; and returns modified text</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>RAT( &lt;cSubString&gt;, &lt;cString&gt;, [&lt;nFrom&gt;], [&lt;nTo&gt;] ) -&gt; &lt;nByte&gt;</b></br>
+<span style='color:black;'>Returns byte position of last occurence of substring within string.</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>RIGHT( &lt;cString&gt;, &lt;nCount&gt; ) -&gt; &lt;cSubstring&gt;</b></br>
+<span style='color:black;'>Returns last &lt;nCount&gt; bytes of &lt;cString&gt;</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>SUBSTR( &lt;cString&gt;, &lt;nStart&gt;, &lt;nCount&gt; ) -&gt; &lt;cSubstring&gt;</b></br>
+<span style='color:black;'>Starting at the &lt;nStart&gt;-th byte, returns &lt;nCount&gt; bytes of &lt;cString&gt;</span></p>
+
+<p class=msoplaintext1>&nbsp;</p>
+ 
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:black;'><b>Token functions</b></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_ATOKENS( &lt;cString&gt;, &lt;cDelimiter&gt;, &lt;lSkipQuote&gt;, &lt;lSkipDoubleQuote&gt; ) -&gt; &lt;aSubStrings&gt;</b></br>
+<span style='color:black;'>Returns array of substrings delimited by &lt;cDelimiter&gt; in &lt;cString&gt;</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_TOKENCOUNT( &lt;cString&gt;, &lt;cDelimiter&gt;, &lt;lSkipQuote&gt;, &lt;lSkipDoubleQuote&gt; ) -&gt; &lt;nSubStrings&gt;</b></br>
+<span style='color:black;'>Returns number of substrings delimited by &lt;cDelimiter&gt; in &lt;cString&gt;</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_TOKENGET( &lt;cString&gt;, &lt;nToken&gt;, &lt;cDelimiter&gt;, &lt;lSkipQuote&gt;, &lt;lSkipDoubleQuote&gt; ) -&gt; &lt;cSubString&gt;</b></br>
+<span style='color:black;'>Returns &lt;nToken&gt;-th substring delimited by &lt;cDelimiter&gt; in &lt;cString&gt;</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_TOKENPTR( &lt;cString&gt;, @&lt;nByte&gt;, &lt;cDelimiter&gt;, &lt;lSkipQuote&gt;, &lt;lSkipDoubleQuote&gt; )</b></br>
+<span style='color:black;'>Updates byte pointer to substring delimited by &lt;cDelimiter&gt; in &lt;cString&gt;</span></p>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:black;'><b>Memo functions</b></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>MEMOREAD( &lt;cFileName&gt; ) -&gt; &lt;cFileContents&gt;</b></br>
+<span style='color:black;'>Returns contents of file</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_MEMOREAD( &lt;cFileName&gt; ) -&gt; &lt;cFileContents&gt;</b></br>
+<span style='color:black;'>Returns contents of file without ending Ctrl-Z</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>MEMOWRIT( &lt;cFileName&gt;, &lt;cFileContents&gt; ) -&gt; &lt;lSuccess&gt;</b></br>
+<span style='color:black;'>Writes file contents to file with ending Ctrl-Z</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_MEMOWRIT( &lt;cFileName&gt;, &lt;cFileContents&gt; ) -&gt; &lt;lSuccess&gt;</b></br>
+<span style='color:black;'>Writes file contents to file without ending Ctrl-Z</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>MEMOLINE( &lt;cString&gt;, [ &lt;nLineLength&gt;=79 ], [ &lt;nLineNumber&gt;=1 ], [ &lt;nTabSize&gt;=4 ], [ &lt;lWrap&gt;=.T. ], [ &lt;cEOL&gt;|&lt;acEOLs&gt; ] ) -&gt; &lt;cLine&gt;</b></br>
+<span style='color:black;'>Returns line within string using byte counts</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>MLCOUNT( &lt;cString&gt;, [ &lt;nLineLength&gt;=79 ], [ &lt;nTabSize&gt;=4 ], [ &lt;lWrap&gt;=.T. ], [ &lt;cEOL&gt;|&lt;acEOLs&gt; ] ) -&gt; &lt;nLines&gt;</b></br>
+<span style='color:black;'>Returns number of lines within string using byte counts</span></p>
+ 
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>MLPOS( &lt;cString&gt;, [ &lt;nLineLength&gt;=79 ], [ &lt;nLineNumber&gt;=1 ], [ &lt;nTabSize&gt;=4 ], [ &lt;lWrap&gt;=.T. ], [ &lt;cEOL&gt;|&lt;acEOLs&gt; ] ) -&gt; &lt;nLinePos&gt;</b></br>
+<span style='color:black;'>Returns byte position of line within string using byte counts.</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>MLCTOPOS()</b></br>
+<span style='color:black;'>Does NOT support UTF-8</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>MPOSTOLC()</b></br>
+<span style='color:black;'>Does NOT support UTF-8</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>MEMOTRAN( &lt;cOldString&gt;, [&lt;cHardNewlineReplace&gt;], [&lt;cSoftNewlineReplace&gt; ) -&gt; &lt;cNewString&gt;</b></br>
+<span style='color:black;'>Within string, replaces hard and soft newlines with other characters</span></p>
+ 
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:black;'><b>String pattern functions</b></p>
+ 
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_STRDECODESCAPE( &lt;cEscSeqStr&gt; ) -&gt; &lt;cStr&gt;</b></br>
+<span style='color:black;'>Decodes string with escape sequences</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_WILDMATCH( cPattern, cValue [, lExact] ) -&gt; &lt;lMatch&gt;</b></br>
+<span style='color:black;'>Compares cValue with wildcard pattern cPattern, which may contain wildcard characters (?*).
+When lExact is TRUE then it checks if whole cValue is covered by cPattern.
+Otherwise it checks if cValue starts with cPattern.</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_WILDMATCHI(cPattern, cValue) -&gt; &lt;lMatch&gt;</b></br>
+<span style='color:black;'>Does a case-insensitive comparison of cValue with cPattern.</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_FILEMATCH(cFileName, cPattern) -&gt; &lt;lMatch&gt;</b></br>
+<span style='color:black;'>Returns TRUE if the file exists and the file name matches the pattern.</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_STRTOEXP( &lt;cString&gt;) -&gt; &lt;cExpression&gt;</b></br>
+<span style='color:black;'>Replaces nonprinting characters in string with escape sequences</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>STRTRAN( &lt;cOldString&gt;, &lt;cSearch&gt;, &lt;cReplace&gt;, &lt;nPos&gt;, &lt;nReps&gt; ) -&gt; &lt;cNewString&gt;</b></br>
+<span style='color:black;'>Replaces substrings in string with another substring</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>&lt;cSubStr&gt; $ &lt;cStr&gt; -&gt; &lt;lFound&gt;</b></br>
+<span style='color:black;'>Returns TRUE if &lt;cSubStr&gt; is contained in &lt;cStr&gt;</span></p>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:black;'><b>String trim functions</b></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>LTRIM( &lt;cString&gt; ) -&gt; &lt;cTrimmedString&gt;</b></br>
+<span style='color:black;'>Removes spaces and control characters from left side of string</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>RTRIM( &lt;cString&gt; ) -&gt; &lt;cTrimmedString&gt;</b></br>
+<span style='color:black;'>Removes spaces and control characters from right side of string</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>TRIM( &lt;cString&gt; ) -&gt; &lt;cTrimmedString&gt;</b></br>
+<span style='color:black;'>Synonymn for RTRIM()</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>ALLTRIM( &lt;cString&gt; ) -&gt; &lt;cTrimmedString&gt;</b></br>
+<span style='color:black;'>Removes spaces and control characters from both sides of string</span></p>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:black;'><b>String conversion functions</b></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_STRTOUTF8 (&lt;cStr&gt;, [ &lt;cCPID&gt; ] ) -&gt; &lt;cUTF8Str&gt;</b></br>
+<span style='color:black;'>Converts string from codepage to CESU-8</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_UTF8TOSTR (&lt;cUTF8Str&gt;, [ &lt;cCPID&gt; ] ) -&gt; &lt;cStr&gt;</b></br>
+<span style='color:black;'>Converts string from CESU-8 to codepage.
+&lt;cCPID&gt; is Harbour codepage ID, e.g. "EN", "ES", "ESWIN", "PLISO", "PLMAZ", "PL852", "PLWIN".
+Default codepage is set by HB_SETCODEPAGE().</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_TRANSLATE ( &lt;cSrcText&gt;, [&lt;cPageFrom&gt;], [&lt;cPageTo&gt;] ) --&gt; cDstText </b></br>
+<span style='color:black;'>Converts string from one codepage to another.
+Usually used to convert between DOS and Windows code pages of the same language.</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_VALTOSTR( &lt;xValue&gt; ) -&gt; &lt;cString&gt;</b></br>
+<span style='color:black;'>Converts value of any data type to string</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_VALTOEXP( &lt;xValue&gt; ) -&gt; &lt;cExpression&gt;</b></br>
+<span style='color:black;'>Converts value of any data type to expression</span></p>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:black;'><b>Miscellaneous string functions</b></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>DATE and TIME string functions</b></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>REPLICATE( &lt;cString&gt;, &lt;nReps&gt; ) -&gt; &lt;cExpandedString&gt;</b></br>
+<span style='color:black;'>Returns &lt;nReps&gt; copies of given string</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>SPACE( &lt;nSpaces&gt; ) -&gt; &lt;&gt;</b></br>
+<span style='color:black;'>Returns string of &lt;nSpaces&gt; spaces</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>STR( &lt;nValue&gt;, &lt;nLength&gt; ) -&gt; &lt;cValue&gt;</b></br>
+<span style='color:black;'>Converts numeric value to string</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>STRZERO( &lt;nValue&gt;, &lt;nLength&gt; ) -&gt; &lt;cValue&gt;</b></br>
+<span style='color:black;'>Converts numeric value to string with leading zeroes</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>TYPE( &lt;cExpression&gt; ) -&gt; &lt;cType&gt;</b></br>
+<span style='color:black;'>Determines data type of expression in string</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>VAL( &lt;cString&gt; ) -&gt; &lt;nValue&gt;</b></br>
+<span style='color:black;'>Converts string to numeric value</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>VALTYPE( &lt;xValue&gt; ) -&gt; &lt;cType&gt;</b></br>
+<span style='color:black;'>Determines data type of value</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_ISSTRING( &lt;xValue&gt; ) -&gt; &lt;lIsString&gt;</b></br>
+<span style='color:black;'>Determines whether value is character or memo</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_ISCHAR( &lt;xValue&gt; ) -&gt; &lt;lIsChar&gt;</b></br>
+<span style='color:black;'>Determines whether value is character</span></p>
+
+<p class=MsoNormal style='font-size:10.0pt;font-family:"Courier New";
+color:blue;'><b>HB_ISMEMO( &lt;xValue&gt; ) -&gt; &lt;lIsMemo&gt;</b></br>
+<span style='color:black;'>Determines whether value is memo</span></p>
+
+</div>
+
+</body>
+
+</html>

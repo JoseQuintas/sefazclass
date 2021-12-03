@@ -1,0 +1,10 @@
+-hbcontainer
+source/hmg3_core.hbp
+source/edit/hmg3_edit.hbp
+source/editex/hmg3_editex.hbp
+source/graph/hmg3_graph.hbp
+source/hbvpdf/hmg3_hbvpdf.hbp
+source/ini/hmg3_ini.hbp
+source/report/hmg3_report.hbp
+hfcl/source/hmg3_hfcl.hbp
+ide_source/hmg3_ide.hbp

@@ -1,0 +1,26 @@
+DEFINE WINDOW TEMPLATE ;
+	AT 0,0 ;
+	WIDTH 540 HEIGHT 380 ;
+	TITLE 'NoAutoRelease Style Demo' ;
+	ICON 'DEMO.ICO' ;
+	MAIN ;
+	FONT 'Arial' SIZE 10
+
+	DEFINE MAIN MENU 
+		POPUP '&File'
+			ITEM 'Show Standard Form' ACTION Std_Form.Show
+			ITEM 'Hide Standard Form' ACTION Std_Form.Hide
+			SEPARATOR
+			ITEM 'Show Child Form' ACTION Child_Form.Show
+			ITEM 'Hide Child Form' ACTION Child_Form.Hide
+			SEPARATOR
+			ITEM 'Show Topmost Form' ACTION Topmost_Form.Show
+			ITEM 'Hide Topmost Form' ACTION Topmost_Form.Hide
+			SEPARATOR
+			ITEM 'Show Modal Form' ACTION Modal_Form.Show
+			SEPARATOR
+			ITEM 'Exit'		ACTION Main_Form.Release
+		END POPUP
+	END MENU
+
+END WINDOW

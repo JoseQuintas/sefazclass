@@ -1,0 +1,295 @@
+001 Neues Projekt
+002 Projekt öffnen
+003 Projekt schließen
+004 Formular speichern
+005 Form schließen
+006 Beenden
+007 Löschen
+008 Control Reihenfolge
+009 Am Gitter ausrichten
+010 Löschen Spezial
+011 Hauptmenü
+012 Symbolleiste
+013 Kontextmenü
+014 Statusleiste
+015 Benachrichtigungsmenü
+016 SplitBox
+017 Ansicht
+018 Formular Quellcode
+019 Projekt
+020 HMG Reference
+021 Starten
+022 Debug
+023 Inkrementelle Projektdaten löschen
+024 Neues Formular
+025 Formular hinzufügen
+026 Neues Modul
+027 Datei importieren
+028 Neuer Report
+029 Projektfenster aktualisieren
+030 Datei bearbeiten
+031 Datei löschen
+032 Modul als Hauptmodul festlegen
+033 Werkzeuge
+034 Builder
+035 Hauptmenü
+036 Statusleiste
+037 Kontextmenü
+038 Symbolleiste
+039 DropDown-Menü
+040 Benachrichtigungsmenü
+041 SplitBox
+042 Einstellungen
+043 Hilfe
+044 Über
+045 Datei
+046 Bearbeiten
+047 You must restart HMG-IDE for language changes has effect
+048 Auswählen: klicken / Bewegen: obere, linke Ecke ziehen / Größe: untere, rechte Ecke ziehen
+049 Neues Projekt
+050 Projekt öffnen
+051 Projekt schließen
+052 Neues Formular
+053 Neues Modul
+054 Starten
+055 Objekt auswählen
+056 Control löschen
+057 Control Reihenfolge
+058 Hauptmenü Builder
+059 Kontextenü Builder
+060 Statusleiste Builder
+061 Symbolleiste Builder
+062 Benachrichtigungsmenü Builder
+063 Dropdown-Menü Builder
+064 SplitBox Builder
+065 Projekt Browser []
+066 Module
+067 Formulare
+068 Ressourcen
+069 Reports
+070 Zum Bearbeiten Doppelklicken
+071 
+072 Ressourcen-Datei Syntax: <RessourceName> <RessourceTyp> <DateiName>
+073 
+074 Objektinspektor []
+075 Eigenschaften
+076 Ereignisse
+077 Eigenschaft
+078 Wert
+079 Zum Bearbeiten Doppelklicken
+080 Ereignis
+081 Wert
+082 Zum Bearbeiten Doppelklicken
+083 Laden... Bitte warten...
+084 Building... Bitte warten...
+085 Kein aktives Projekt
+086 Kein aktives Formular
+087 Moduleditor:
+088 HMG Ordner:
+089 Syntax Fehler im Report
+090 <Doppelklick>/<Eingabe> um den gewählten Quelltext zu ändern
+091 Fehlerliste
+092 Build Log
+093 IDE Interface Language:
+094 Einstellungen
+095 Tabellen
+096 Neue Tabelle
+097 doppelter Tabellenname
+098 Das Löschen von inkrementellen Projektdaten erzwingt einen vollständigen Build beim nächsten mal.
+099 Sind Sie sicher?
+100 Control existiert nicht
+101 Dropdown-Menü Builder
+102 Neues Menü...
+103 Menü bearbeiten...
+104 Menü löschen
+105 Name...
+106 schließen
+107 Name für Symbolleisten-Schaltfläche:
+108 Name für DropDown-Menü Symbolleisten-Schaltfläche
+109 Control löschen
+110 Neues DropDown-Menü
+111 Hauptmenü Builder
+112 &weiter
+113 &zurück
+114 &einfügen
+115 &löschen
+116 Ok
+117 Abbrechen
+118 Eine Ebene der Menüeinträge fehlt 
+119 Aktionen können für popups nicht festgelegt werden
+120 Grafiken können für popups nicht festgelegt werden
+121 Markiert kann für popups nicht festgelegt werden
+122 Name kann für Separator nicht festgelegt werden
+123 Aktionen können für Separator nicht festgelegt werden
+124 Grafiken können für Separator nicht festgelegt werden
+125 Markiert kann für Separator nicht festgelegt werden
+126 Aktion ist für einen Menüeintrag nicht festgelegt
+127 Benachrichtigungsmenü Builder
+128 Kontextmenü Builder
+129 DropDown-Menü Editor [
+130 Eigenschaften bearbeiten
+131 Ereignis bearbeiten
+132 Statuszeile Builder
+133 Benutze $CLOCK, $DATE, $KEYBOARD als Überschrift für Spezialeinträge
+134 Schriftart...
+135 Top Pos.
+136 Ikons können für 'DATE'-Items nicht festgelegt werden
+137 Stile können für 'DATE'-Items nicht festgelegt werden
+138 Ikons können für 'CLOCK'-Items nicht festgelegt werden
+139 Stile können für 'CLOCK'-Items nicht festgelegt werdenems
+140 Ikons können für 'KEYBOARD'-Items nicht festgelegt werden
+141 Stile lönnen für 'KEYBOARD'-Items nicht festgelegt werden
+142 Eigenschaften...
+143 Symbolleisten-Schaltenflächen müssen einen Namen haben
+144 DropDown und WholeDropDown Stile schließen sich aus (Item: 
+145 Grafik kann nicht leer sein (Item: 
+146 Symbollleiste-Eigenschaften
+147 Syb.lst Name:
+148 Button Breite:
+149 Button Höhe:
+150 Grafik Breite:
+151 Grafik Höhe:
+152 Namen Eingeben:
+153 Neues Formular
+154 Objekt Inspektor [
+155 Neues Modul
+156 doppelter Modulname
+157 doppelter Formularname
+158 Neuer Report
+159 Formular hinzufügen (muss im Projektordner liegen)
+160 hinzugefügtes Formular muss im Projektordner liegen. Abgebrochen
+161 Formular schon im Projekt vorhanden. Abgebrochen
+162 Datei nicht gefunden!!!
+163 Source folder must be different from project folder for no .prg (module) files
+164 hinzugefügtes Modul muss im Projektordner liegen. Abgebrochen
+165 Modul schon im Projekt vorhanden. Abgebrochen
+166 Datei nicht gefunden!!!
+167 Delete 
+168 Möchten Sie die ausgewählte Datei löschen?
+169 Benutzen Sie die Pfeiltasten um die Position zu ändern
+170 Control Reihenfolge
+171 Dieses Fenster hat eine Haupt-Symbolleiste. Bevor Sie eine SplitBox anlegen, müssen Sie diese löschen.
+172 SplitBox Builder
+173 SplitChild Objekte
+174 Name
+175 Typ
+176 SplitBox Eigenschaften
+177 Hinzufügen
+178 Entfernen
+179 Auf
+180 Ab
+181 bearbeiten
+182 Objekt bearbeiten [
+183 Eigenschaften
+184 Eigenschaft
+185 Wert
+186 zum Bearbeiten Doppelklicken
+187 Ereignisse
+188 bearbeiten
+189 Fenster gehört schon zu dieser SplitBox
+190 doppelter Control-Name
+191 Typ
+192 ungültiger Name
+193 Kein Item ausgewählt
+194 SplitChild-Objekt hinzufügen
+195 SplitChild-Symbolleiste Eigenschaften
+196 SplitChild-Symbolleiste Builder [
+197 Ereignis
+198 Wert
+199 Symbolleiste muss einen Namen haben
+200 Projekt Browser [
+201 Leerzeichen in Modul-, Formularnamen or Pfaden nicht erlaubt
+202 Build Projekt
+203 Zusammenfassung
+204 Projekt Datei: 
+205 Projekt Ordner: 
+206 HMG Ordner: 
+207 Zusätzliche Bibliotheken: 
+208 Zusätzliche Inc. Pfade: 
+209 Build Typ: 
+210 Debug Info:
+211 Ja
+212 Console / Mixed Mode: 
+213 geänderte Dateien / Abhängigkeiten:'
+214 Build Log:
+215 Status: Building...'
+216 Log speichern.
+217 Schließen
+218 Status: Fertig Ok
+219 Status: Fertig mit Fehlern
+220 Englisch
+221 Spanisch
+222 Ungültiger Projektname/-pfad (Leerzeichen und Sonderzeichen nicht erlaubt)
+223 Tab-Seiten können nur gelöscht werden, wenn sie leer sind.
+224 Default (Nil)
+225 Custom
+226 Projektdatei ist leer, ungültig oder kein Hauptmodul festgelegt
+227 Existiert bereits. Überschreiben?
+228 HMG Report Builder: Schritt 1: Datei auswählen
+229 Tabellen:
+230 verfügbare Felder:
+231 ausgewählte Felder:
+232 Wählen Sei eine Tabelle und die Felder, die Sie in den Report aufnehmen möchten.
+233 Ziehen Sie die Einträge um ihre Reihenfolge zu ändern
+234 Benutzen Sie [+] / [-] um eigene Felder oder Ausdrücke hinzuzufügen oder zu entfernen
+235 Abbrechen
+236 Weiter >
+237 HMG Report Builder: Schritt 2: Report Layout
+238 Papierformat:
+239 Ausrichtung:
+240 Wählen Sie die Papiergröße und die Ausrichtung für den Report
+241 < Zurück
+242 HMG Report Builder: Schritt 3: Fertigstellen
+243 Report Titel:
+244 Titel...
+245 Summen...
+246 Formate...
+247 Schriftarten
+248 Vorschau
+249 Um Ihren Report zu speichern und den Builder zu schließen, clicken Sie [Fertigstellen]
+250 Report verarbeiten...
+251 Schließen Sie Preview, um zum Builder zurückzukehren
+253 (Inhalt von benutzerdefinierten Feldern ist in der Vorschau nicht verfügbar)
+254 Fertigstellen
+255 Feld-Titel bearbeiten
+256 Doppelklicken zum Bearbeiten des Feld-Titels
+257 Schließen
+258 Summen der Felder bilden
+259 Felder für Summen auswählen
+260 (Doppelklicken zum Ändern)
+261 Feld-Format bearbeiten
+262 Um Feld-Format zu ändern, doppelklicken.
+263 Benutzen Sie <cSayPicture> Format der Transform() Funktion
+264 Feld
+265 Maske
+266 Summe bilden
+267 Titel
+268 Feld hinzufügen
+269 Alle Felder hinzufügen
+270 Feld entfernen
+271 Alle Felder entfernen
+272 Benutzerdefiniertes Feld oder Ausdruck hinzufügen
+273 Benutzerdefiniertes Feld oder Ausdruck entfernen
+274 Summe von Benutzerdefiniertem Feld bilden: Nur einzelne Felder von Tabellen können summiert werden. Fortsetzen?
+275 Kein Benutzerdefiniertes Feld oder Ausdruck. Benutzen Sie Taste [<] zum Entfernen
+276 Feld-Format bearbeiten
+277 Feld-Titel bearbeiten
+278 Konfiguration
+279 Includes
+280 Neue Include-Datei
+281 Neuer Wert
+282 Value bearbeiten
+283 Gruppierung...
+284 gruppieren nach:
+285 Gruppenkopf:
+286 Gruppenfuß:
+287 Tabelle bearbeiten
+288 Browse
+289 Struktur ändern
+290 Länge
+291 Dezimalstellen
+292 Tabellen ändern
+293 Feld hinzufügen
+294 Feld löschen
+295 Speichern
+296 BROWSE is a compatibility (obsolete) control and therefore not recommended. It is superseded by the GRID control. Do you want to use it anyway?

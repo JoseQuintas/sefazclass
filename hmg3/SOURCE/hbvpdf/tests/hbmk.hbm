@@ -1,0 +1,7 @@
+#
+# $Id: hbmk.hbm 12734 2009-10-19 23:21:43Z vszakats $
+#
+
+../hbvpdf.hbc
+
+-w3 -es2

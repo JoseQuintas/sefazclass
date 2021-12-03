@@ -1,0 +1,295 @@
+001 New Project
+002 Open Project
+003 Close Project
+004 Save Form
+005 Close Form
+006 Exit
+007 Delete
+008 Control Order
+009 Snap To Grid
+010 Delete Special
+011 Main Menu
+012 ToolBar
+013 Context Menu
+014 Status Bar
+015 Notify Menu
+016 SplitBox
+017 View
+018 Form Code
+019 Project
+020 HMG Reference
+021 Run
+022 Debug
+023 Reset Project Incremental Data
+024 New Form
+025 Add Form
+026 New Module
+027 Import File
+028 New Report
+029 Refresh Project Window
+030 Edit File
+031 Delete File
+032 Set Module As Main
+033 Tools
+034 Builders
+035 Main Menu
+036 StatusBar
+037 Context Menu
+038 ToolBar
+039 DropDown Menu
+040 Notify Menu
+041 SplitBox
+042 Preferences
+043 Help
+044 About
+045 File
+046 Edit
+047 You must restart HMG-IDE for language changes has effect
+048 Select: click / Move: drag upper left corner / Size: drag lower right corner 
+049 New Project
+050 Open Project
+051 Close Project
+052 New Form'
+053 New Module
+054 Run
+055 Select Object
+056 Delete Control
+057 Control Order
+058 Main Menu Builder
+059 Context Menu Builder
+060 StatusBar Builder
+061 ToolBar Builder
+062 Notify Menu Builder
+063 Dropdown Menu Builder
+064 SplitBox Builder
+065 Project Browser []
+066 Modules
+067 Forms
+068 Resources
+069 Reports
+070 Double Click To Edit
+071 Event Edit (Create New Function Module)
+072 Resource File Syntax: <ResourceName> <ResourceType> <FileName>
+073 Do you want to delete currently assigned event module?
+074 Object Inspector []
+075 Properties
+076 Events
+077 Property
+078 Value
+079 Double Click To Edit
+080 Event
+081 Value
+082 Double Click To Edit
+083 Loading... Please Wait...
+084 Building... Please Wait...
+085 No Active Project
+086 No Active Form!
+087 Module Editor:
+088 HMG Folder:
+089 Syntax Error in Report
+090 <double click>/<return> to edit selected source code line
+091 Error List
+092 Build Log
+093 IDE Interface Language:
+094 Preferences
+095 Tables
+096 New Table
+097 Table Name Duplicated
+098 Resetting project incremental build data will force next build as full
+099 Are you sure?
+100 Control Does Not Exist
+101 Dropdown Menu Builder
+102 New Menu...
+103 Edit Menu...
+104 Delete Menu
+105 Name...
+106 Close
+107 Enter owner toolbar button name:
+108 DropDown Menu Owner ToolBar Button Name
+109 Delete Control
+110 New DropDown Menu
+111 Main Menu Builder
+112 &Next
+113 &Prior
+114 &Insert
+115 &Delete
+116 Ok
+117 Cancel
+118 Menu Items Skipped a Level
+119 Actions can't be specified for popups
+120 Images can't be specified for popups
+121 Checked' can't be specified for popups
+122 Name' can't be specified for Separators
+123 Actions can't be specified for Separators
+124 Images can't be specified for Separators
+125 Checked' can't be specified for Separators
+126 Action Not Specified For a Menu Item
+127 Notify Menu Builder
+128 Context Menu Builder
+129 DropDown Menu Editor [
+130 Property Edit
+131 Event Edit
+132 StatusBar Builder
+133 Use $CLOCK, $DATE, $KEYBOARD as caption for special items
+134 Font...
+135 Top Pos.
+136 Icons can't be specified for 'DATE' items
+137 Styles can't be specified for 'DATE' items
+138 Icons can't be specified for 'CLOCK' items
+139 Styles can't be specified for 'CLOCK' items
+140 Icons can't be specified for 'KEYBOARD' items
+141 Styles can't be specified for 'KEYBOARD' items
+142 Properties...
+143 ToolBar Button Must Have a Name
+144 DropDown and WholeDropDown Styles Are Mutually Exclusive (Item: 
+145 Picture can't be empty (Item: 
+146 ToolBar Properties
+147 TlBar Name:
+148 Button Width:
+149 Button Height:
+150 Image Width:
+151 Image Height:
+152 Enter Name:
+153 New Form
+154 Object Inspector [
+155 New Module
+156 Module Name Duplicated
+157 Form Name Duplicated
+158 New Report
+159 Add Form (Must Be Located At Project Folder)
+160 Added Form Must Be Located At Project Folder. Aborted
+161 Form Already in Project. Aborted
+162 File Not Found!!!
+163 Source folder must be different from project folder for no .prg (module) files
+164 Added Module Must Be Located At Project Folder. Aborted
+165 Module Already in Project. Aborted
+166 File Not Found!!!
+167 Delete 
+168 Do you want to delete selected file from disk?
+169 Use Arrows To Change Control Position
+170 Control Order
+171 This Window has a Main ToolBar. You must delete it prior to create a SplitBox.
+172 SplitBox Builder
+173 SplitChild Objects
+174 Name
+175 Type
+176 SplitBox Properties
+177 Add
+178 Remove
+179 Up
+180 Down
+181 Edit
+182 Object Edit [
+183 Properties
+184 Property
+185 Value
+186 Double Click To Edit
+187 Events
+188 Edit
+189 Window Already Belongs To This SplitBox
+190 Control Name Duplicated
+191 Type
+192 Invalid Name
+193 No Item Selected
+194 Add SplitChild Object
+195 SplitChild ToolBar Properties
+196 SplitChild ToolBar Builder [
+197 Event
+198 Value
+199 ToolBar must have a name
+200 Project Browser [
+201 Spaces Not Allowed in Module names, form names or paths
+202 Build Project
+203 Summary
+204 Project File: 
+205 Project Folder: 
+206 HMG Folder: 
+207 Additional Libraries: 
+208 Additional Inc. Path: 
+209 Build Type: 
+210 Debug Info:
+211 Yes
+212 Console / Mixed Mode: 
+213 Modified Files / Dependences:'
+214 Build Log:
+215 Status: Building...'
+216 Save Log.
+217 Close
+218 Status: Finished Ok
+219 Status: Finished With Errors
+220 English
+221 Spanish
+222 Invalid Project Name/Path (Spaces And Special Chatacters Not Allowed)
+223 Tab pages to delete must be empty
+224 Default (Nil)
+225 Custom
+226 Project File is empty, invalid or no main module specified
+227 Already Exists. Overwrite?
+228 HMG Report Builder: Step 1: Select Fields
+229 Tables:
+230 Available Fields:
+231 Selected Fields:
+232 Select a Table and then select the fields you want to include in the report.
+233 Drag Items To Change Selected Fields Order
+234 Use [+] / [-] to add / remove custom fields or expressions
+235 Cancel
+236 Next >
+237 HMG Report Builder: Step 2: Report Layout
+238 Paper Size:
+239 Orientation:
+240 Select Paper size and orientation for the report
+241 < Back
+242 HMG Report Builder: Step 3: Finish
+243 Report Title:
+244 Titles...
+245 Totals...
+246 Formats...
+247 Font
+248 Preview
+249 To save your report and close the builder, click [Finish]
+250 Processing Report...
+251 Close Preview To Return To Builder
+253 (Custom fields content is not available in preview)
+254 Finish
+255 Edit Field Titles
+256 Double Click To Edit a Field Title
+257 Close
+258 Totalize Fields
+259 Select Fields To Totalize
+260 (Double Click To Change)
+261 Edit Fields Format
+262 Double Click To Edit a Field Format
+263 Use <cSayPicture> Format From Transform() Function
+264 Field
+265 Mask
+266 Totalize
+267 Title
+268 Add a Field
+269 Add all fields
+270 Remove field
+271 Remove all fields
+272 Add a custom field or expression
+273 Remove a custom field or expression
+274 Totalize Custom Field: Only single table fields can be totalized. Continue?
+275 Not a Custom Field or Expression. Use [<] button to Remove it
+276 Edit Field Format
+277 Edit Field Title
+278 Configuration
+279 Includes
+280 New Include
+281 New Value
+282 Edit Value
+283 Grouping...
+284 Group by:
+285 Group Header:
+286 Group Footer:
+287 Table Edit
+288 Browse
+289 Modify Structure
+290 Width
+291 Decimals
+292 Table Modify
+293 Add Field
+294 Delete Field
+295 Save
+296 BROWSE is a compatibility (obsolete) control and therefore not recommended. It is superseded by the GRID control. Do you want to use it anyway?

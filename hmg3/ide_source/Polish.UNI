@@ -1,0 +1,295 @@
+001 Nowy Projekt
+002 Otwórz Projekt
+003 Zamknij Project
+004 Zapisz formatkę
+005 Zamknij formatkę
+006 Wyjście
+007 Usuń
+008 Kolejność kontrolek
+009 Dopasuj do siatki
+010 Usuń Specjalne
+011 Główne Menu
+012 Pasek Narzędzi
+013 Menu Kontekstowe
+014 Pasek Stanu
+015 Notify Menu
+016 SplitBox
+017 Podgląd
+018 Kod źródłowy formatki
+019 Projekt
+020 HMG Reference
+021 Uruchom
+022 Debuguj
+023 Resetuj dane inkrementacyjne projektu
+024 Nowa formatka
+025 Dodaj formatkę
+026 Nowy moduł
+027 Importuj plik
+028 Nowy raport
+029 Odśwież okno projektu
+030 Edytuj plik
+031 Usuń plik
+032 Ustaw Moduł jako główny
+033 Narzędzia
+034 Kreatorzy
+035 Menu główne
+036 pasek stanu
+037 Menu kontekstowe
+038 Pasek stanu
+039 Menu rozwijane
+040 Menu powiadomień
+041 SplitBox
+042 Preferencje
+043 Pomoc
+044 O...
+045 Plik
+046 Edycja
+047 Musisz zrestartować HMG-IDE, aby zmiana języka odniosła skutek
+048 Wybierz: klik / Przesuń: ciągnij górny lewy róg / Rozmiar: ciągnij dolny prawy róg
+049 Nowy projekt
+050 Otwórz projekt
+051 Zamknij projekt
+052 Nowa formatka
+053 Nowy moduł
+054 Uruchom
+055 Wybierz obiekt
+056 Usuń kontrolkę
+057 Kolejność kontrolek
+058 Kreator menu głównego
+059 Kreator menu kontekstowego
+060 Kreator paska stanu
+061 Kreator paska narzędzi
+062 Kreator menu powiadomień
+063 Kreator menu rozwijanego
+064 Kreator SplitBox'a
+065 Przeglądarka projektu []
+066 Moduły
+067 Formatki
+068 Zasoby
+069 Raporty
+070 Kliknij dwa razy, aby edytować
+071 Edycja funkcji Event (Tworzy nowy moduł z funkcją)
+072 Składnia pliku zasobów: <NazwaZasobu> <TypZasobu> <NazwaPliku>
+073 Czy chcesz usunąć aktualnie przypisany moduł z funkcją Event?
+074 Inspektor obiektu []
+075 Właściwości
+076 Funkcje
+077 Cecha
+078 Wartość
+079 Kliknij dwa razy aby edytować
+080 Funkcja
+081 Wartość
+082 Kliknij dwa razy aby edytować
+083 Ładowanie... Proszę czekać...
+084 Kompilacja... Proszę czekać...
+085 Brak aktywnego projektu!
+086 Brak aktywnej formatki!
+087 Edytor kodu źródłowego:
+088 HMG Folder:
+089 Błąd składni w raporcie
+090 <kliknij 2 razy>/<nac. Enter> aby edytować wybraną linię kodu źródłowego
+091 Lista błędów
+092 Dziennik kompilacji
+093 Język interfejsu IDE:
+094 Preferencje
+095 Tables
+096 New Table
+097 Table Name Duplicated
+098 Zresetowanie danych inkrementacyjnych projektu wymusi następną kompilację jako pełną
+099 Czy jesteś pewien?
+100 Kontrolka nie jest zdefiniowana
+101 Kreator menu rozwijanego
+102 Nowe menu...
+103 Edycja menu...
+104 Usuń menu
+105 Nazwa...
+106 Zamknij
+107 Wprowadź nazwę przycisku wywołującego pasek stanu:
+108 Nazwa przycisku paska stanu wywołującego menu rozwijane
+109 Usuń konktrolkę
+110 Nowemenu rozwijane
+111 Kreator menu głównego
+112 &Następny
+113 &Poprzedni
+114 &Wstaw
+115 &Usuń
+116 Ok
+117 Anuluj
+118 Elementy menu opuszczają poziom
+119 Akcja nie może być zdefiniowana dla popup's
+120 Ikona nie może być zdefiniowana dla popup's
+121 Potwierdzenie' nie może być zdefiniowane dla popup's
+122 Nazwa nie może być zdefiniowana dla separatora
+123 Akcja nie może być zdefiniowana dla separatora
+124 Ikona nie może być zdefiniowana dla separatora
+125 Potwierdzenie' nie może być zdefiniowane dla separatora
+126 Niezdefiniowana akcja dla elementu menu
+127 Kreator menu powiadomień
+128 Kreator menu kontekstowego
+129 Kreator menu rozwijanego [
+130 Edycja cechy
+131 Edycja funkcji
+132 Kreator paska stanu
+133 Użyj $CLOCK, $DATE, $KEYBOARD as podpis elementów specjalnych
+134 Czcionka...
+135 Górna Pozycja.
+136 Nie można zdefiniować ikony dla elementów typu 'DATE'
+137 Nie można zdefiniować stylu dla elementów typu 'DATE'
+138 Nie można zdefiniować ikony dla elementów typu 'CLOCK'
+139 Nie można zdefiniować stylu dla elementów typu 'CLOCK'
+140 Nie można zdefiniować ikony dla elementów typu 'KEYBOARD'
+141 Nie można zdefiniować stylu dla elementów typu 'KEYBOARD'
+142 Cechy...
+143 Przycisk paska narzędzi musi posiadać nazwę
+144 Rozwijane i całkowicie rozwijane style wykluczają się wzajemnie(Element: 
+145 Obraz nie może być pusty (Element: 
+146 Właściwości paska narzędzi
+147 nazwa paska narzędzi:
+148 Szerokość przycisku:
+149 Wysokość przycisku:
+150 Wysokość obrazu:
+151 Szerokość obrazu:
+152 Wprowadź nazwę:
+153 Nowa formatka
+154 Inspektor obiektu [
+155 Nowy moduł
+156 Nazwa modułu się powtarza
+157 nazwa formatki się powtarza
+158 Nowy raport
+159 dodaj formatkę (musi się znajdować w folderze projektu)
+160 Dodawana formatka musi się znajdować w folderze projektu. Przerwano
+161 Formatka jest już w projekcie. Przerwano
+162 Nie odnaleziono pliku!!!
+163 Source folder must be different from project folder for no .prg (module) files
+164 Dodawany moduł musi się znajdować w folderze projektu. Przerwano
+165 Moduł jest już w projekcie. Przerwano
+166 Nie odnaleziono pliku!!!
+167 Delete
+168 Czy chcesz usunąć wybrany plik z dysku?
+169 Użyj strzałek aby zmienić pozycję kontrolki
+170 Kolejność kontrolek
+171 To oknoposiada już główny pasek narzędzi. Musisz go wcześniej usunąć, aby utworzyć SplitBox.
+172 Kreator SplitBox'a
+173 Obiekty SplitChild 
+174 Nazwa
+175 Typ
+176 Cechy SplitBox'a
+177 Dodaj
+178 Usuń
+179 W górę
+180 W dół
+181 Edytuj
+182 Edytuj obiekt [
+183 Właściwości
+184 Właściwość
+185 Wartość
+186 Kliknij dwa azy aby edytować
+187 Fukcje Event
+188 Edycja
+189 Okno należy już do tego SplitBox'a
+190 Powielona nazwa kontrolki
+191 Typ
+192 Błędna nazwa
+193 Nie wybrano elementu
+194 dodaj obiekt SplitChild
+195 Właściwości paska narzędzi SplitChild
+196 Kreator paska narzędzi SplitChild [
+197 Funkcja Event
+198 Wartość 
+199 Pasek narzędzi musi mieć zdefiniowaną nazwę
+200 Przeglądarka obiektu [
+201 Spacje są zabronione w nazwach modułów, formatek i ścieżkach
+202 Kompiluj projekt
+203 Podsumowanie
+204 Plik projektu: 
+205 Folder projektu: 
+206 Folder HMG: 
+207 Dodatkowe biblioteki: 
+208 ścieżka dodatkowych plików Include: 
+209 Typ kompilacji: 
+210 Informacje Debuggera:
+211 Tak
+212 Konsola / Tryb mieszany: 
+213 Zmodyfikowane pliki / Zależności:'
+214 Log kompilacji:
+215 Status: Kompilacja...'
+216 Zapisz Log.
+217 Zamknij
+218 Status: Ukończono bez błędów
+219 Status: Ukończono z błędami
+220 Angielski
+221 Hiszpański
+222 Błęna nazwa/ścieżka projektu (Spacje oraz znaki specjalne są niedozwolone)
+223 Strony Tab'a do usunięcia muszą być puste
+224 Domyślnie (Nil)
+225 Użytkownika
+226 Plik projektu jest pusty, błędny lub nie zdefionowano modułu głównego
+227 Już istnieje. Nadpisać?
+228 Kreator raportów HMG: Krok 1: Wybierz pola
+229 tabele:
+230 Dostępne pola:
+231 Wybrane pola:
+232 Wybierz tabelę a następnie wybierz pola, które chcesz dołączyć do raportu.
+233 Przeciągnij elementy, aby zmienić kolejność wybranych pól
+234 Użyj [+] / [-] aby dodać / usunąć własne pola lub wyrażenia
+235 Anuluj
+236 Następny >
+237 Kreator raportów HMG: Krok 2: Layout raportu
+238 Rozmiar papieru:
+239 Orientacja:
+240 Wybierz rozmiar i orientację papieru dla raportu
+241 < Powrót
+242 Kreator raportów HMG: Krok 3: Koniec
+243 Tytuł raportu:
+244 Tytuły...
+245 Sumy...
+246 Formaty...
+247 Czcionka
+248 Podgląd
+249 Aby zapisać raport i zamknąć kreatora, naciśnij [Koniec]
+250 Przetwarzanie raportu...
+251 Zamknij podgląd aby wrócić do kreatora
+253 (Pola użytkownika są niedostępne w podglądzie)
+254 Koniec
+255 Edycja tytułów pól
+256 Kliknij dwa razy aby edytować tytuł pola
+257 Zamknij
+258 Sumuj pola
+259 Wybierz pola do sumowania
+260 (kliknij dwa razy aby zmienić)
+261 Edytuj formaty pól
+262 Kliknij dwa razy, aby edytować format pola
+263 Użyj <cSayPicture> format z funkcji Transform()
+264 Pole
+265 Maska
+266 Sumuj
+267 Tytuł
+268 Dodaj pole
+269 dodaj wszystkie pola
+270 Usuń pole
+271 Usuń wszystkie pola
+272 Dodaj własne pole lub wyrażenie
+273 Usuń własne pole lub wyrażenie
+274 Sumuj pole użytkownika: tylko pojedyncze pola tabeli mogą być sumowane. Kontynuować?
+275 To nie jest pole użytkownika ani wyrażenie. Użyj przycisku [<] aby usunąć
+276 Edytuj format pola
+277 Edytuj tytuł pola
+278 Konfiguracja
+279 Includes
+280 Nowy Include
+281 Nowa wartość
+282 Edytuj wartość
+283 Grupowanie...
+284 Grupuj według:
+285 Nagłówek grupy:
+286 Stopka grupy:
+287 Edycja tabeli
+288 Przegląd
+289 Modyfikacja struktury
+290 Szerokość
+291 Dziesiętne
+292 Modyfikacja tabeli
+293 Dodaj Pole
+294 Usuń Pole
+295 Zapisz
+296 BROWSE jest kontrolką nie rozwijaną, zastępowaną przez GRID. Niemniej czasem lepiej się sprawdza. Chcesz jej użyć?

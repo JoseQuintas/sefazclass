@@ -1,0 +1,285 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<title>HMG Reference</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Consolas;
+	panose-1:2 11 6 9 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+span.TextosinformatoCar
+	{mso-style-name:"Texto sin formato Car";
+	mso-style-link:"Texto sin formato";
+	font-family:Consolas;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 57.6pt 70.85pt 57.6pt;}
+div.Section1
+	{page:Section1;}
+p.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+  <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'>&nbsp;</p>
+  <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:14.0pt'>USER COMPONENTS INTERFACE</span></b><b><span lang=EN-US
+style='font-size:12.0pt;background:#339966'><br>
+  </span></b><b><i><span lang=EN-US>Standard Interface To Allow HMG Users Create Its Own Components</span></i></b></p>
+  <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'>&nbsp;</p>
+</div>
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+
+<p class=MsoPlainText><strong><span lang=EN-US>- InstallEventHandler (
+&lt;cEventHandlerFunctionName&gt; )</span></strong></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Every time
+that an event is triggered by the system the specified</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; function
+will be called.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This
+function will receive the following parameters:</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+hWnd, nMsg, wParam, lParam</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If your
+function process the message, it must return a not NIL</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; value. If
+not, it must return NIL.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><strong><span lang=EN-US>-
+InstallMethodHandler(&lt;cMethodName&gt;,&lt;cMethodHandlerProcName&gt;)</span></strong></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Every time
+that specified method is called, your procedure will</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; be executed.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If your
+procedure process the method, you must set the 'user</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; process
+flag' ( _HMG_SYSDATA [63] ) to .T. If not, you must </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set it to
+.F.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><strong><span lang=EN-US>-
+InstallPropertyHandler(&lt;cPropName&gt;,&lt;cSetFucName&gt;,&lt;cGetFuncName&gt;)</span></strong></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When the
+specified property is set, &lt;cSetFucName&gt; is called </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; with all the
+original parameters&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When the
+specified property is value retrieved &lt;cGetFucName&gt; is </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; called with
+all the original parameters.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In both
+cases if your functions process the property, you must </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; set the
+'user process flag' ( _HMG_SYSDATA [63] ) to .T. </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If not, you
+must set it to .F.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><b><u><span lang=EN-US>Other Considerations:</span></u></b></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If you've
+created components that requires #command directives</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (ie. a
+control) you must add these definitions to i_UsrInit.ch</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file located
+at HMG's INCLUDE folder.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The
+definitions must include start and end markers that will be</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used to
+allow the creation of automated installation and </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; maintenance
+procedures for components. </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The format
+for start marker is:</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define
+BASEDEF_&lt;YourComponentTypeName&gt;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The format
+for end marker is:</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #undef
+BASEDEF_&lt;YourComponentTypeName&gt;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If you've
+created methods or properties with new names (not</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; currently
+specified in i_windows.ch, DECLARE WINDOW command</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; definition)
+you must add translation directives for them in </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+'i_UsrSOOP.ch' file, located at HMG's INCLUDE folder.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The
+definitions must include start and end markers too and the </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; translation
+directives must follow special rules.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The format
+for start marker is:</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #define
+SOOP_&lt;YourComponentTypeName&gt; ;;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The format
+for translation directives for methods is:</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #xtranslate
+&lt;Window&gt; . \&lt;Control\&gt; . MethodName&nbsp; =&gt; Domethod (
+&lt;&quot;Window&quot;&gt;, \&lt;&quot;Control&quot;\&gt; ,
+&quot;MethodName&quot; ) ;;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The format
+for translation directives for properties is:</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #xtranslate
+&lt;Window&gt; . \&lt;Control\&gt; . PropName&nbsp; =&gt; GetProperty (
+&lt;&quot;Window&quot;&gt;, \&lt;&quot;Control&quot;\&gt; ,
+&quot;PropName&quot; )&nbsp; ;;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #xtranslate
+&lt;Window&gt; . \&lt;Control\&gt; . PropName&nbsp; := \&lt;v\&gt; =&gt;
+SetProperty ( &lt;&quot;Window&quot;&gt;, \&lt;&quot;Control&quot;\&gt; ,
+&quot;PropName&quot; , \&lt;v\&gt; )&nbsp; ;;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The format
+for end marker is:</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #undef
+SOOP_&lt;YourComponentTypeName&gt; ;;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>- Sample:</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+c:\hmg\samples\user_components</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

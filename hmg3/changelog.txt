@@ -1,0 +1,5091 @@
+-HMG 3.4.4 2017/03/29
+   - Fixed bug in BrowseUpdate function of Browse control(contrib by Marek)
+   - Fixed bug in _ActivateWindow when use debug with modal window
+   - Fixed bug in grid onquery event
+   - Fixed bug in grid when load NIL values(hb_ValToStr)
+   - Fixed bug in grid inplace column (contrib by ASESORMIX)
+   - Implemented GetProperty ReadOnly EditBox and TextBox
+   - Fixed bug in BT_BitmapSaveFile() function (reported by Roberto Lopez)
+   - Fixed problem in Navigator.htm file of documentation (contrib by Roberto Lopez)
+   - Fixed bug in GetLastActiveFormIndex() and GetLastActiveControlIndex() functions (contrib by Pablo Cesar)
+   - Fixed bug in GetMainFormName() and GetMainFormHandle() functions (contrib by KDJ)
+   - Fixed leak memory in HMG_UPPER and HMG_LOWER functions (reported by KDJ)
+   - Fixed bug in HMG_EditControlGetSel() function (contrib by KDJ)
+   - Fixed bug in HMG_ISALPHA, HMG_ISDIGIT, HMG_ISLOWER, HMG_ISUPPER, HMG_ISALPHANUMERIC functions (reported by Esgici)
+   - Fixed functions BT_DrawTextXXX, BT_DrawTextEx ( see SaveDC in the code )
+   - New: BT_DrawEMF ( [ hDC ] , cFileNameOld , cFileNameNew , cFuncNameCallBack )  ---> Return nError, e.g. Zero is OK
+   - New: BT_BitmapIsValidFileImage( cFileName ) 
+   - Fixed bug in WM_NEXTDLGCTL message ( reported by KDJ )
+   - Fixed bug in COLUMNCONTROLS (allow lower case labels) in Grid control ( reported by Miszler.zoltan )
+   - Fixed bug in InplaceEdit cell with press ENTER in Grid Control ( reported by Marek )
+   - Fixed bug in filter data in Grid with Rowsource ( reported by Tonton2 ) 
+   - Fixed bug in change recno() when mouse move over of Grid with Rowsource ( reported by KDJ ) 
+   - Fixed bug when call DeleteColumn( 1 ) with a Grid with only one column ( reported by t57042 )
+   - Fixed bug when change image in Button control ( reported by Chrisjx2002 )
+   - Fixed bugs in DOC files ( contrib by Pablo Cesar )
+   - Fixed bug in virtual grid in HMG ANSI version with Chinese characters ( contrib by Huiyi_ch )
+   - Fixed bug in GetStartUpFolder() function ( contrib by Pablo Cesar )
+   - New methods BLen, BLeft, BRight, BSubStr in HMG_TString class ( contrib by huiyi_ch )
+   - Now for default SET WINDOW MAIN FIRST is OFF
+   NOTE: The RECNO property of the Grid control not changes the current physical record number of the DBF file, only convert between the row of grid and the recno of the DBF.
+      - Get Grid.RECNO --> convert Logical  record ( grid row ) to Physical record ( DBF recno )
+      - Set Grid.RECNO := XXX --> convert the Physical record XXX ( recno ) to Logical  record ( grid row )
+   - Enhanced SET HELP FILE and HELP BUTTON for support .CHM file format (see SAMPLES\Basics\Help ) ( contrib by Kevin Carmody )
+   - Added CHM compile and decompile batch file makechm.bat ( see in SAMPLES\Basics\Help ) ( contrib by Kevin Carmody )
+   - Added ON KEY, RELEASE KEY, and STORE KEY commands to i_keybd.ch ( contrib by Kevin Carmody )
+   - Updated SAMPLES\Events\On_Key\ON_KEY1 and ON_KEY3 ( contrib by Kevin Carmody )
+   - Upgraded HFCL sample WordScribe ( see SAMPLES\HFCL\WordScribe ) ( contrib by Kevin Carmody )
+   - Added new HFCL sample WordWriter ( see SAMPLES\HFCL\WordWriter ) ( contrib by Kevin Carmody )
+   - NEW HMG Multi-Thread:
+      - Added directive -ldflag="-pthread -static -lpthread" in HBMK2 for static link of pthread library in the files Build.bat and Build64.bat
+      - For default HMG compile with the directive -mt of the HBMK2 ( for default Muti-thread is yes )
+      - Now HMG support the same behaviour that Harbour for Thread manager: allow run without INHERIT PUBLIC vars, see demos in folder samples/MultiThread 
+      - New many functions for Thread manager( see files source\c_thread.c and include\i_thread.ch): GetCurrentThreadId, GetCurrentThreadHandle,
+         AttachThreadInput, SuspendThread, ResumeThread, SwitchToThread, Sleep, SetThreadPriority, GetThreadPriority, EnumThreadID, 
+         HMG_ThreadHBtoWinHandle, HMG_ThreadHBtoWinID, HMG_ThreadShareData 
+   - New: IDE ver 1.2a, now the option menu delete file not delete file of the disk, only eliminate the file of the project.
+-HMG 3.4.3 2016/05/08
+   - Updated MinGW C compiler (32 and 64-bit) to version 5.3.0 (release december 2015)
+   - Updated Harbour 64-bit compiler to version nightly 2016-04-20
+   - Updated Harbour compiler to version nightly 2016-05-07
+   - New HMG_IsWin64(), returns TRUE if OS is of 64-bit (contrib by BPD2000)
+   - New HFCL functions for RichEditBox (contrib by Kevin Carmody):
+      - RichEditBox_LoadFileEx, RichEditBox_SaveFileEx
+      - RichEditBox_HasNonAsciiChars, RichEditBox_HasNonAnsiChars
+      - GetRichEditFileType, HMG_UTF16ByteSwap
+      - HMG_IsUTF8Ex, HMG_IsNonASCII, HMG_UTF8IsNonANSI
+      - see \SAMPLES\HFCL\WordScribe
+   - New Numeric TextBox support comma ( , ) as decimal separator (contrib by Marek)
+   - New Draw GRAPH in Bitmap (contrib by S. Rathinagiri):
+      - GRAPH BITMAP PIE|BARS|LINES|POINTS ...
+      - see documentation and demo \SAMPLES\Controls\Graph\GRAPH_Bitmap
+      - Note: It is highly recommended to use Graph Bitmap instead of Graph Command because the painting is much more efficient and does not produce flicker
+   - New internal C function: HMG_Trace()
+   - New function GetBinaryType ( cApplicationName ) --> nBinaryType (constants are defined in i_controlmisc.ch)
+      - SCS_32BIT_BINARY   // A 32-bit Windows-based application
+      - SCS_64BIT_BINARY   // A 64-bit Windows-based application.
+      - SCS_DOS_BINARY     // An MS-DOS – based application
+      - SCS_OS216_BINARY   // A 16-bit OS/2-based application
+      - SCS_PIF_BINARY     // A PIF file that executes an MS-DOS – based application
+      - SCS_POSIX_BINARY   // A POSIX – based application
+      - SCS_WOW_BINARY     // A 16-bit Windows-based application
+   - Bos Taurus: new version 1.0.6
+      - New functions(see doc):
+         - BT_DrawTextEx (hDC, Row, Col, Width, Height, cText, cFontName, nFontSize, aFontColor, aBackColor, nTypeText, nAlingText, nOrientation)
+         - BT_DrawTextSize (hDC, cText, cFontName, nFontSize, nTypeText) --> { nTextWidth, nTextHeight, A+B+C of first character, A, B, C }
+         - BT_DrawPolygon (hDC, aPointY, aPointX, aColorRGBLine, nWidthLine)
+         - BT_DrawPolyBezier (hDC, aPointY, aPointX, aColorRGBLine, nWidthLine)
+         - BT_DrawArc (hDC, Row1, Col1, Row2, Col2, RowStartArc, ColStartArc, RowEndArc, ColEndArc, aColorRGBLine, nWidthLine)
+         - BT_DrawChord (hDC, Row1, Col1, Row2, Col2, RowStartArc, ColStartArc, RowEndArc, ColEndArc, aColorRGBLine, nWidthLine, aColorRGBFill)
+         - BT_DrawPie (hDC, Row1, Col1, Row2, Col2, RowStartArc, ColStartArc, RowEndArc, ColEndArc, aColorRGBLine, nWidthLine, aColorRGBFill)
+   - New: now in Label control is possible to assign any data type or a list of data, e.g.
+      - @ ... LABEL ... VALUE xDataType
+      - Form.Label.Value := xDataType
+      - Form.Label.Value := { xDataType, xDataType, ... }
+   - New property HBITMAP in IMAGE control (set/get hBitmap into Image control)
+   - New in GRID control:
+      - now when loads a Grid control and column control is NIL converts automatically any data type in text, this avoids that column appears empty.
+      - On InplaceEditEvent <OnInplaceEditEventProcedure>
+      - Properties Available For OnInplaceEditEvent Procedure:
+            - This.IsInplaceEditEventInit: Return .T. or .F.
+            - This.IsInplaceEditEventRun: Return .T. or .F.
+            - This.IsInplaceEditEventFinish: Return .T. or .F.
+            - This.InplaceEditGridName: eg. “Grid_1”
+            - This.InplaceEditParentName: eg. “Form_1”
+            - This.InplaceEditControlHandle: Handle of InplaceEdit ColumnControl, eg. Handle of TEXTBOX, DATEPICKER, TIMEPICKER, COMBOBOX, SPINNER, CHECKBOX, etc.
+            - This.InplaceEditControlIndex: Return nControlIndex
+      - Now ON CLICK and ON KEY event of Gid control is available too in InplaceEdit state,
+        for check if the event is fired in the Grid control or inside of InplaceEdit control you use the property This.IsInplaceEditEventRun       
+      - see SAMPLES\Controls\Grid\GridInplaceEditEvent
+- Documented in --> Advanced --> Memory, Processes and Threads
+   - New RELEASE MEMORY, release unused memory (leak memory), test for example:
+      - ON KEY F5 ACTION ( RELEASE MEMORY )
+      - DEFINE TIMER ... ACTION ( RELEASE MEMORY )
+   - New HMG_GetObjectCount( [ nProcessId ] )
+      - returns an array of 3 items with information about the number of system objects used for a process { nGDIObjects, nUserObjects, nKernelObjects }
+   - Documented many undocumented functions
+   - New: CREATE EVENT CODEBLOCK bCodeBlock [ HWND hWnd ] [ MSG nMsg ] [ STOREINDEX nIndex ]
+   - New: HMG_PressKey( nVK1, nVK2, ... ) --> return array { nVK1, nVK2, ... }
+         - Simulates the pressure of a key or a combination of keys (where nVK is a virtual key code)
+   - New in HMG Debugger (see doc):
+      - New hotkeys
+      - Now you can switch between the ToolBar and the Main Menu at your convenience
+      - Fixed minor bugs
+      - added in dbgGUI.prg DoEvents() into large FOR-NEXT cycles
+      - added a waiting message while the program loads
+   - For a defensive programming (minimization of input errors)
+      - New Class HMG_TString:
+         - This class selects automatically the correct ANSI or Unicode string function depending of current code page,
+           the use of this class create a more portable your code.
+         - for default HMG a create instance of this class, you call with a pseudovariable oString (e.g. oString.Upper( cText ) )
+         - create a new instance of class -> oStr := HMG_TStringNew(), use e.g. oStr.Upper( cText )
+         - see documentation( DOC --> CLASSES --> HMG_TString )
+   - New: CHECK TYPE [ SOFT ] <var1> AS <type1> [ , <var2> AS <type2> [, <varN> AS <typeN> ] ]
+      <var> = var name
+      <type> = var type ( ARRAY, BLOCK, CHARACTER, DATE, HASH, LOGICAL, NIL, NUMERIC, MEMO, POINTER, SYMBOL, TIMESTAMP, OBJECT, USUAL )
+      - see documentation( DOC --> Advanced --> CHECK TYPE )
+   - New IDE ver 1.1
+      - now the IDE not convert to lowercase the name of the PRG files
+      - eliminated the maximum limit of 10000 milliseconds in the Timer control imposed for the IDE
+      - Zero value in MAXLENGTH property of the controls RichEdit, TextBox and EditBox is equal a NIL value
+      - now double click on the Run or Debug buttons not abort the IDE
+   - Fixed bug in SetGridQueryData() in Win XP (reported by Eduardo Luis)
+   - Fixed bug in TrackPopupMenu() (reported by Esgici and Mustafa)
+   - Fixed bug in Transparent Label (reported by Emzampi)
+   - Fixed bug in Transparent property of BT_DrawText() function (reported by Andres Gonzales)
+   - Fixed bug in DynamicBackColor and DynamicForeColor of the Grid control when used with database (reported by Luis Vasquez)
+   - Fixed bug in Set/Get Image in column one of Grid control (introduced in HMG.3.4.1) (reported by Zoltan Miszler)
+   - Fixed bug in OnCheckBoxClicked of Grid control (reported by Rathinagiri)
+   - Fixed bug in Picture property of ToolBar Button (reported by Pablo César)
+   - Fixed bug in updating the Value property when an item is deleted in the Grid control (reported by TopsMarc)
+   - Fixed bug in updating record pointer in database in the Grid control (reported by TopsMarc)
+   - Fixed bug in Hotkey Alt+S and Alt+U of the Grid control (reported by PiotrM)
+   - Fixed bug in ToolTip CustomDraw (reported by Eduardo Luis and Kevin Carmody)
+-HMG 3.4.2 2015/09/22
+   - Updated to latest Harbour Nightly Build (2015-09-04)
+   - New HMG DEBUGGER: native GUI debugger for HMG (see doc)
+   - New function: HMG_PrintGetJobInfo() (see START PRINTDOC doc)
+   - New function: HMG_PrinterGetStatus() (contrib by BPD2000)
+   - Now SplitChild Window support OnPaint event.
+   - New button in IDE for fast access to compile in debug mode (IDE 1.0.9)   
+   - New function HBtoWinDateFormat() for fixed bug in get date format of MonthCal/DatePick controls (contrib by Pablo Cesar)
+   - IsControlDefined, IsWindowDefine and IsWindowActive functions, accept parameters FormName/ControlName with/without quotation marks (contrib by Pablo Cesar)
+   - Fixed bug in CreateEvent (reported by Roberto Lopez)
+   - Fixed bug in This.QueryData of Grid control (reported by Roberto Lopez)
+   - Fixed bug in BackColor of InputWindow (reported by Roberto Lopez)
+   - Fixed bug in Print Preview (reported by Roberto Lopez)
+   - Fixed bug in get Cell value of the Grid control (reported by Marek)
+   - Fixed bug in default color of HeaderDYNAMICBACKCOLOR of the Grid control (reported by Rathinagiri)
+   - Fixed bug in DYNAMICFONT and ONCHECKBOXCLICKED of Grid control in i_altsyntax.ch header file (contrib by Rathinagiri)
+   - Fixed memory leak in the functions: EnumWindows, SetSubClassEvent and EnumProcessesID (contrib by Grigory Filatov)
+   - Fixed Row position in PDF (Contributed by Marek)
+-HMG 3.4.1 2015/07/06
+   - Updated to latest Harbour Nightly Build (2015-07-05)
+   - New function:
+      - BT_DRAWEDGE (hDC, nRow, nCol, nWidth, nHeight, nEdge, nGrfFlags)
+      - the values of parameters nEdge and nGrfFlags, are defined in INCLUDE\BosTaurus.ch (line 82 and 98)
+   - HMG_GetCompileVersion32 and HMG_GetCompileVersion64: improved theses functions to detect versions of HMG compilers prior to HMG.3.4.0
+   - Now Form.Grid.CELL() is more fast because of the use of the same code of Form.Grid.CellEx(), both now present with the same velocity, CellEx is maintained only for compatibility
+   - New DisableProcessWindowsGhosting()
+   - HMG_CallDLL ( cLibName , [ nRetType ] , cFuncName , Arg1 , ... , ArgN ) ---> xRetValue Note: HMG_CallDLL() detects the current code page and appropriately call the ANSI or Unicode version of the function.
+   - HMG_GetHBSymbols()   --> return array  { { cSymName1, cSymType1 } , { cSymName2, cSymType2 }, ... }
+   - HMG_GetDLLFunctions( cDllName )   --> return array  { cFuncName1, cFuncName2, ... }
+   - GetEventCodeBlockInfo () --> array { hWnd, uMsg, wParam, lParam, nIndex }
+   - SetSubClassEvent ( hWnd, CodeBlock [, nMsg | aMsg ] ) --> nIndex
+   - RemoveSubClassEvent ( nIndex ) --> lBoolean
+   - New Methods
+      - ThisWindow|<FormName>.CenterDesktop
+      - ThisWindow|<FormName>.CenterIn ( FormName2 )
+      - CENTER WINDOW <FormName> DESKTOP
+      - CENTER WINDOW <FormName> IN <FormName2>
+   - Fixed minor bug in GetProperty() when used with Grid control.
+   - Fixed minor bug when cancel save file in Print Preview.
+   - Fixed bug when change position or resize Panel Window (reported by Nascimento)
+   - Fixed bug when change font at runtime in Label control with Transparent property (Contribute by Giancarlo)
+   - Enhanced InputWindow() function, see doc (contrib by Pablo César Arrascaeta)
+   - Enhanced documentation (contrib by Pablo César Arrascaeta)
+-HMG 3.4.0 2015/01/18
+   - Updated to latest Harbour Nightly Build (2015-01-14)
+   - Updated to latest MingW Compiler 
+   - New HMG IDE version 1.0.8 
+      - now stops build app if app is running
+      - if not specified text editor, search for text editor associate with PRG files
+   - New in Grid control
+      - <ParentWindowName>.<GridControlName>.PaintDoubleBuffer [ := | -->] lBoolean   // Paints via double-buffering, which reduces flicker
+      - New Groups in Grid (see samples in grid samples folder) Note: Grid Group is not available when application is running on Windows versions of 32-bits You can check if your application is running on Win32 with the function HMG_IsRunAppInWin32() In Win32 GroupEnabled := .T. is ignored whitout needs to change the code.
+         - <ParentWindowName>.<GridControlName>.GroupEnabled [ := | -->] lBoolean
+         - <ParentWindowName>.<GridControlName>.GroupDeleteAll
+         - <ParentWindowName>.<GridControlName>.GroupDelete ( nGroupID )
+         - <ParentWindowName>.<GridControlName>.GroupExpand ( nGroupID )
+         - <ParentWindowName>.<GridControlName>.GroupCollapsed ( nGroupID )
+         - <ParentWindowName>.<GridControlName>.GroupAdd    ( nGroupID [, nPosition ] )
+         - <ParentWindowName>.<GridControlName>.GroupInfo   ( nGroupID ) [ := | -->] { [ cHeader ] , [ nAlignHeader ] , [ cFooter ] , [ nAlingFooter ] , [ nState ] }
+         - <ParentWindowName>.<GridControlName>.GroupItemID ( nItem )    [ := | -->] nGroupID
+            - nAlignHeader & nAlingFooter   -->   GRID_GROUP_LEFT | GRID_GROUP_CENTER | GRID_GROUP_RIGHT
+            - nState -->   GRID_GROUP_NORMAL | GRID_GROUP_COLLAPSED
+         - <ParentWindowName>.<GridControlName>.GroupDeleteAllItems ( nGroupID )
+         - <ParentWindowName>.<GridControlName>.GroupGetAllItemIndex ( nGroupID ) --> anItemIndex
+         - <ParentWindowName>.<GridControlName>.GroupCheckBoxAllItems ( nGroupID ) := lCheck            
+      - New CheckBox to select item(s) in Grid (see samples in grid samples folder)     
+         - <ParentWindowName>.<GridControlName>.CheckBoxEnabled [ := | -->] lBoolean
+         - <ParentWindowName>.<GridControlName>.CheckBoxItem ( nRow ) [ := | -->] lBoolean
+         - <ParentWindowName>.<GridControlName>.CheckBoxAllItems := lCheck 
+         - Method ON CHECKBOXCLICKED()
+      - New DynamicFont property to have any text font and style in any cell/header.
+         - <ParentWindowName>.<GridControlName>.HeaderDYNAMICFONT      ( nCol ) := {|| {cFontName, nFontSize, [ lBold, lItalic, lUnderline, lStrikeOut ]} }
+      - New HeaderDynamicForeColor and HeaderDynamicForeColor         
+         - <ParentWindowName>.<GridControlName>.HeaderDYNAMICFORECOLOR ( nCol ) := {|| aColor }
+         - <ParentWindowName>.<GridControlName>.HeaderDYNAMICBACKCOLOR ( nCol ) := {|| aColor }   // not work
+      - Miscellaneous Features
+         - <ParentWindowName>.<GridControlName>.Image ( lTransparent ) := { "image1.png", "image2.bmp", ... }
+         - <ParentWindowName>.<GridControlName>.ImageIndex ( nRow , nCol ) [ := | -->] nIndex
+         - <ParentWindowName>.<GridControlName>.ImageList [ := | -->] hImageList
+         - <ParentWindowName>.<GridControlName>.ColumnDYNAMICFONT ( nCol ) := {|| {cFontName, nFontSize, [ lBold, lItalic, lUnderline, lStrikeOut ]} }
+         - <ParentWindowName>.<GridControlName>.HeaderImageIndex ( nCol ) [ := | -->] nIndex
+         - <ParentWindowName>.<GridControlName>.ChangeFontSize := nSize | NIL  // Useful for use Dynamic Font with more (less) Height than the size of font the Grid control
+   - New Dynamic Font (in Grid and Tree controls see respective samples in Grid and Tree sample folders )      
+   - New ToolTip Menu
+      - SET TOOLTIPMENU    ON|OFF  --> For default ToolTip MENU is ON
+      - SET TOOLTIPMENU TO <lOn>
+      - ToolTipMenuIsActive ()
+   - New ToolTip Custom Draw (see DOC\Misc. Commands\Set ToolTipCustomDraw)   
+   - New Method ON ENTER in CheckBox and CheckButton
+   - New concept of Array Font for various uses described elsewhere below.
+      - aFont := ARRAY FONT <cFontName> SIZE <nFontSize> [ BOLD ] [ ITALIC ] [ UNDERLINE ] [ STRIKEOUT ] --> { cFontName, nFontSize, lBold, lItalic, lUnderline, lStrikeout }
+      - aFont := CREATE ARRAY FONT <cFontName> SIZE <nFontSize> [ BOLD <lBold> ] [ ITALIC <lItalic> ] [ UNDERLINE <lUnderline> ] [ STRIKEOUT <lStrikeout> ] --> { cFontName, nFontSize, lBold, lIitalic, lUnderline, lStrikeout }
+   - New Functions:
+      - FindFirstChangeNotification()
+      - FindNextChangeNotification()
+      - FindCloseChangeNotification()
+      - WaitForSingleObject()
+      - WaitForMultipleObjects()
+      - SetCursorSystem()
+      - SetWindowTheme (hWnd, cSubAppName, cSubIdList)
+      - HMG_StrCmp ( Text1 , Text2 , [ lCaseSensitive ] ) --> CmpValue
+      - HMG_IsValidFileName ( cFileName )   // cFileName --> ONLY FILE NAME without Path
+      - HMG_GetFileAssociatedWithExtension ( cExt ) --> return the full file name associated with extension (extension with point, e.g. ".TXT")
+      - HMG_IsRunAppInWin32() --> lBoolean
+      - HMG_IsWinVistaOrLater() --> lBoolean
+      - HMG_GetCompileVersion32 ( HMG_cPath ) --> cVersion
+      - HMG_GetCompileVersion64 ( HMG_cPath ) --> cVersion
+      - HMG_GetCompileVersionRaw ( HMG_cPath ) --> acVersion
+      - HMG_GetPrivateProfileSectionNames ( cFileName ) ---> return array { "SectionName1", "SectionName2", ... }      
+      - HMG_GetPrivateProfileSection ( cFileName, cSectionName ) ---> return array { "Key1=string1", "Key2=string2", ... }      
+   - New in SPLITBOX functions:
+      - REBAR_GETHEIGHT()
+      - REBAR_GETBANDCOUNT()
+      - REBAR_GETBARRECT()
+      - REBAR_GETBANDBORDERS()
+      - REBAR_SETMINCHILDSIZE()
+      - REBAR_GETBANDINFO()      
+   - New Set icon of StatusBar item
+      - <ParentWindowName>.StatusBar.IconHandle (nItem) := hIcon      
+   - New Addition of 455 new colors definitions, see INCLUDE\i_color.ch (contrib by Grigory Filatov)
+   - New GetFile() and PutFile() functions support parameter nFilterIndex, this is an index of the filter array (based upon a contribution of Kevin Carmody)      
+   - New in PLAYER control :
+      - Volume (Set/Get)
+      - Seek (Set)   
+   - New in Tree Control
+      - New Events
+         - ON EXPAND
+         - ON COLLAPSE
+         - This.TreeItemValue  // available for OnExpand and OnCollapse events and DynamicForeColor, DynamicBackColor and DynamicFont properties.
+      - New DynamicFont, DynamicForeColor and DynamicBackColor
+         - <ParentWindowName>.<TreeControlName>.DynamicForeColor := {|| aColor }
+         - <ParentWindowName>.<TreeControlName>.DynamicBackColor := {|| aColor }
+         - <ParentWindowName>.<TreeControlName>.DynamicFont      := {|| {cFontName, nFontSize, [ lBold, lItalic, lUnderline, lStrikeOut ]} }
+         - <ParentWindowName>.<TreeControlName>.ChangeFontSize   := nSize | NIL  // Useful for use Dynamic Font with more (less) Height than the size of font the Tree control
+      - New properties
+         - <ParentWindowName>.<TreeControlName>.IsExpand ( nValue ) --> lBoolean
+         - <ParentWindowName>.<TreeControlName>.ImageList     [ := | --> ] hImageList
+         - <ParentWindowName>.<TreeControlName>.HasLines      [ := | --> ] lBoolean
+         - <ParentWindowName>.<TreeControlName>.FullRowSelect [ := | --> ] lBoolean
+         - <ParentWindowName>.<TreeControlName>.HasButton ( nValue ) [ := | --> ] lBoolean
+         - <ParentWindowName>.<TreeControlName>.Cargo ( nValue ) [ := | --> ] xData
+         - <ParentWindowName>.<TreeControlName>.CargoScan ( xData ) -->  nValue | NIL
+         - <ParentWindowName>.<TreeControlName>.GetPathValue     ( nValue ) --> anPathValue | NIL
+         - <ParentWindowName>.<TreeControlName>.GetPathName      ( nValue ) --> acPathName | NIL
+         - <ParentWindowName>.<TreeControlName>.GetDisplayLevel  ( nValue ) --> nDisplayColumn | NIL
+   - New Printer Features
+      - Select Printer PDF (Directly print to a pdf file)
+      - Select Printer DialogFileName and SaveAs
+         - SELECT PRINTER <cPrinter> [ PREVIEW ] [ NOSAVEBUTTON ] [ DIALOGFILENAME <cDialogFileName> ] [ SAVEAS <cFullFileName> ]
+            - cDialogFileName --> [ cPath\ ] cFileName + [ cExt ] --> ".PDF" | ".BMP" | ".JPG" | ".GIF" | ".TIF" |".PNG" | ".EMF"
+            - cFullFileName   --> [ cPath\ ] cFileName +   cExt   --> ".PDF" | ".BMP" | ".JPG" | ".GIF" | ".TIF" |".PNG" | ".EMF"
+      - New property ANGLE <nAngle> in PRINT DATA (nAngle: are in degrees and counterclockwise)
+   - New BosTaurus Functions 
+      - BT_ToolBarBottomHeight (Win)
+      - BT_ToolBarBottomWidth  (Win)
+      - BT_ToolBarTopHeight    (Win)
+      - BT_ToolBarTopWidth     (Win)
+      - BT_MathPI ()
+      - BT_MathSIN ( AngleInDegrees )
+      - BT_MathCOS ( AngleInDegrees )
+      - BT_MathTAN ( AngleInDegrees )
+      - BT_MathCircumferenceY ( Radius, AngleInDegrees ) --> nRow
+      - BT_MathCircumferenceX ( Radius, AngleInDegrees ) --> nCol
+      - BT_MathCircumferenceArcAngle ( Radius, Arc ) --> AngleInDegrees
+      - BT_SelectObject (hDC, hGDIobj)
+      - BT_DeleteObject (hGDIobj)
+      - BT_DrawTextSize (hDC, cText, cFontName, nFontSize, nTypeText) --> { w , h , ABC of first character }
+      - BT_RegionCreateElliptic (nCol1, nRow1, nCol2, nRow2)
+      - BT_RegionCombine ( @hRgnDest, hRgnSrc1, hRgnSrc2, nCombineMode ) --> nResult
+      - BT_RegionFrame (hDC, hRgn, aColor, nWidth, nHeight)
+      - BT_ImageListGetSystemIcon ( [ lLargeIcon ] ) --> hImageList ( You NEVER add, remove or delete icons from the System Imagelist )
+      - BT_ImageListExtractIcon (hImageList, nIndex) --> hIcon
+      - BT_DirectoryInfo ( [nCSIDL | cPath] , [nTypeList] , @nIndexRoot, @CSIDL_Name ) --> { { Data1, Data2, Data3, ... } , ... }
+   - New Demos      
+      - MiniWriter (RichEditBox demo in Applications contributed by Eduardo L. Azar)
+   - Enhanced BUILD.BAT and BUILD64.BAT stops build app if app is running (contrib by Pablo César)  
+   - Enhanced DEFINE WINDOW: now AT, ROW, COL, WIDTH and HEIGHT parameters are optional (contrib by Pablo César)   
+   - Enanced InputBox() and InputWindow() functions (contrib by Pablo César)
+   - Fixed bug in RichEdit Control Justify text and in ParaNumberingStyle constants (contrib by Kevin Carmody)   
+-HMG 3.3.1 (Stable) 2014/07/15
+   - Updated to latest Harbour Nightly Build (2014-07-15)
+   - New property in Label control 
+      - NoPrefix
+   - New New property in DatePicker control 
+      - FORMAT <cFormatDate> (see demo)
+   - New Now all controls (Button, CheckButton, ToolBarButton, ComboBox, Grid, Tab, Tree, Menu, etc) loaded images: BMP, GIF, TIF, JPG and PNG
+   - New Now all controls (Button, CheckButton, ToolBarButton, ComboBox, Grid, Tab, Tree, Menu, etc) support the NOTRANSPARENT property
+   - New Grid control support the NOTRANSPARENTHEADER property
+   - New Print images in formats: BMP, GIF, JPG, TIF, WMF, EMF, CUR and PNG.
+      - @ <nRow> , <nCol> PRINT IMAGE <cImageFileName> | <cImageResourcename>
+         WIDTH <nWidth>
+         HEIGHT <nHeight>
+         [ STRETCH ]
+         [ TRANSPARENT ]
+         [ TRANSPARENTCOLOR anTransparentColor ]
+   - New LOG demands at HPDF_INIT and Proper close tables in HTML --> http://hmgforum.com/viewtopic.php?p=34856#p34856
+   - New build.bat --> http://hmgforum.com/viewtopic.php?p=35031#p35031
+   - New functions for read Keyboard and Mouse (see doc)
+      - SET CONTROL <ControlName> OF <FormName> ONKEYEVENT   <FuncName> | NIL
+      - SET CONTROL <ControlName> OF <FormName> ONMOUSEEVENT <FuncName> | NIL
+      - HMG_GetOnKeyControlIndex   ( [ @nSubIndex ] ) --> nIndex
+      - HMG_GetOnMouseControlIndex ( [ @nSubIndex ] ) --> nIndex
+   - New functions for control edge (see doc)
+      - SET CONTROL <ControlName> OF <FormName> CLIENTEDGE
+      - SET CONTROL <ControlName> OF <FormName> STATICEDGE
+      - SET CONTROL <ControlName> OF <FormName> NOTEDGE
+   - New Functions:
+      - GetKeyboardLayoutName()
+      - ActivateKeyboardLayout()
+      - GetKeyboardLayout()
+      - GetKeyboardLayoutList()
+      - LoadKeyboardLayout ()
+      - UnloadKeyboardLayout()
+      - TerminateProcess ( [ nProcessID ] , [ nExitCode ] )
+      - GetWindowThreadProcessId (hWnd, @nThread, @nProcessID)
+      - IsWow64Process ( [ nProcessID ] ) --> return lBoolean
+         - return TRUE  if a 32-bit application is running under 64-bit Windows (WOW64)
+         - return FALSE if a 32-bit application is running under 32-bit Windows
+         - return FALSE if a 64-bit application is running under 64-bit Windows
+      - WOW64 is the x86 emulator that allows 32-bit Windows-based applications to running on 64-bit Windows
+   - New: VirtualKeyboard (see doc)
+      - VirtualKeyboard.OPEN [ SHOW ]
+      - VirtualKeyboard.OPEN   HIDE
+      - VirtualKeyboard.Show
+      - VirtualKeyboard.Hide
+      - VirtualKeyboard.Release
+      - VirtualKeyboard.IsRelease
+      - VirtualKeyboard.IsOpen
+      - VirtualKeyboard.IsVisible
+      - VirtualKeyboard.IsMinimize
+      - VirtualKeyboard.IsMaximize
+      - VirtualKeyboard.Handle
+      - VirtualKeyboard.Title  [ := | --> ] cTitle
+      - VirtualKeyboard.Row    [ := | --> ] nRow
+      - VirtualKeyboard.Col    [ := | --> ] nCol
+      - VirtualKeyboard.Width  [ := | --> ] nWidth
+      - VirtualKeyboard.Height [ := | --> ] nHeight
+      - VirtualKeyboard.FileName        --> "OSK.EXE"
+      - VirtualKeyboard.FullFileName    --> GetSystemDir()+"\OSK.EXE"
+   - Fixed Numeric Textbox bug --> http://hmgforum.com/viewtopic.php?p=34890#p34890
+   - Fixed bug in Grid control build in 64-bits --> http://hmgforum.com/viewtopic.php?p=34946#p34946
+   - Fixed bug in FocusedControl Property (reported by Tiampei)
+   - Fixed Windows problem of overlap between ToolBar Bottom and StatusBar
+   - Fixed HPDF System variable conflict (Contributed by Pablo César)
+   - HMG IDE       
+      -Fixed when not found the text editor calls notepad.exe of windows (reporte by Roberto Lopez)
+      -Updated Polish language in Unicode (contributed by Marek)
+-HMG 3.3.0 (Stable) 2014/05/24
+   - Updated to latest Harbour Nightly Build (2014-05-06)
+   - Following libraries in HFCL are now in-built in the main library
+      - BosTaurus
+      - HMG_HPDF
+   - New functions in BosTaurus library:
+      - BT_BitmapLoadEMF ( cFileName, [ aBackgroundFillColor ], [ nNewWidth ], [ nNewHeight ], [ ModeStretch ] )  ---> Return hBITMAP
+      - BT_DrawFillFlood ( hDC, Row, Col, aColorRGBFill )      
+   - Re-arrangement and Improvements in HMG Documentation
+   - Demo folders are re-arranged according to the HMG Documentation order (Contributed by Pablo César)
+   - New demos:
+      - SAMPLES\Controls\RichEditBox
+      - SAMPLES\Controls\Grid\GridOnKeyOnClick
+      - SAMPLES\Miscellaneous\MoveResizeControl
+      - SAMPLES\Controls\ListBox\ListBox_4 ( Contributed By Pablo César )
+      - SAMPLES\UNICODE\BOX_DRAWING ( Contributed By Pablo César )
+      - Enhanced SAMPLES\Controls\Grid\GridIncrementalSearch 
+   - New Features in Grid Control
+      - It is now possible to effectively control the user events in Grid. At definition the following directives are possible now.
+         - [ ON CLICK <OnClickProcedure> ]
+         - [ ON KEY <OnKeyProcedure> ]
+         - [ EDITOPTION <nEditOption> ]      
+         - <ParentWindowName>.<GridControlName>.CellRowFocused   --> nCellRowIndex
+         - <ParentWindowName>.<GridControlName>.CellColFocused   --> nCellColIndex
+         - <ParentWindowName>.<GridControlName>.CellRowClicked   --> nCellRowIndex
+         - <ParentWindowName>.<GridControlName>.CellColClicked   --> nCellColIndex
+         - <ParentWindowName>.<GridControlName>.CellNavigation [ := | --> ] lBoolean
+         - <ParentWindowName>.<GridControlName>.EditOption     [ := | --> ] GRID_EDIT_DEFAULT | GRID_EDIT_SELECTALL | GRID_EDIT_INSERTBLANK | GRID_EDIT_INSERTCHAR | GRID_EDIT_REPLACEALL         
+      - For more details please see Grid Doc.
+   - New Printer related functions
+      - OpenPrinterGetDC()
+      - OpenPrinterGetPageDC()
+      - IsPrintPageMetaFile()
+      - OpenPrinterGetPageWidth()
+      - OpenPrinterGetPageHeight()
+   - New Runtime Window Handling
+      - ThisWindow|<FormName>.Handle            --> nFormHandle
+      - ThisWindow|<FormName>.Index             --> nFormIndex
+      - ThisWindow|<FormName>.IsMinimized       --> lBoolean
+      - ThisWindow|<FormName>.IsMaximized       --> lBoolean
+      - ThisWindow|<FormName>.ClientAreaWidth   --> nWidth
+      - ThisWindow|<FormName>.ClientAreaHeight  --> nHeight
+      - ThisWindow|<FormName>.NoCaption   [ := | --> ] lBoolean
+      - ThisWindow|<FormName>.NoMaximize  [ := | --> ] lBoolean
+      - ThisWindow|<FormName>.NoMinimize  [ := | --> ] lBoolean
+      - ThisWindow|<FormName>.NoSize      [ := | --> ] lBoolean
+      - ThisWindow|<FormName>.NoSysMenu   [ := | --> ] lBoolean
+      - ThisWindow|<FormName>.HScroll     [ := | --> ] lBoolean
+      - ThisWindow|<FormName>.VScroll     [ := | --> ] lBoolean
+      - ThisWindow|<FormName>.Enabled     [ := | --> ] lBoolean
+      - ThisWindow|<FormName>.AlphaBlendTransparent := nAlphaBlend (0 to 255, Completely Transparent = 0, Opaque = 255)
+      - ThisWindow|<FormName>.BackColorTransparent  := aRGBColor
+   - New Functions
+      - FindTextDialog
+      - ReplaceTextDialog
+      - HMG_LoadResourceRawFile ( cFileName, cTypeResource | nTypeResourceID ) --> cData
+      - GetFontList ( [ hDC ] , [ cFontFamilyName ] , [ nCharSet ] , [ nPitch ] , [ nFontType ] , [ lSortCaseSensitive ] , [ @aFontName ] )
+      - System.EmptyClipboard
+      - SET DIALOGBOX POSITION: Sets the position of the dialog boxes (FindTextDialog, GetColor, GetFile, GetFolder, GetFont, MessageBoxTimeout, MsgXXX, PutFile, ReplaceTextDialog, SELECT PRINTER, etc)
+         - SET DIALOGBOX [ POSITION ] ROW <nRow>|<@VarCodeBlockRow>|<NIL>   COL <nCol>|<@VarCodeBlockCol>|<NIL>
+         - SET DIALOGBOX [ POSITION ] CENTER OF PARENT
+         - SET DIALOGBOX [ POSITION ] CENTER OF <hWnd>
+         - SET DIALOGBOX [ POSITION ] CENTER OF DESKTOP
+         - SET DIALOGBOX [ POSITION ] DISABLE
+         - see example of SET DIALOGBOX POSITION in doc
+      - HMG_GetLastMouseMessage ( [ @hWnd ], [@nMsg], [@wParam], [@lParam] ) --> nMsg
+      - HMG_CleanLastMouseMessage ()
+      - HMG_GetCursorPos ( [ hWnd ], @nRow, @nCol )
+      - HMG_SetCursorPos ( [ hWnd ],  nRow,  nCol )   
+      - SetWindowLongPtr (hWnd, nIndex, dwNewLong) --> return dwRetLong
+      - GetWindowLongPtr (hWnd, nIndex) --> return dwRetLong
+      - SetClassLongPtr (hWnd, nIndex, dwNewLong) --> return dwRetLong
+      - GetClassLongPtr (hWnd, nIndex) --> return dwRetLong      
+      - GetCurrentProcessId() --> return nProcessID
+      - EnumProcessesID () ---> return array { nProcessID1, nProcessID2, ... }
+      - GetProcessName ( [ nProcessID ] ) --> return cProcessName
+      - GetProcessFullName ( [ nProcessID ] ) --> return cProcessFullName
+      - GetProcessMemoryInfo ( [ ProcessID ] )  --> return array with 9 numbers
+      - GlobalMemoryStatusEx () --> return array with 7 numbers      
+   - Enhanced GetColor ( [ aDefaultColor ], [ @aCustomColors ], [ lFullOpenBox ] )
+   - Enhanced RichEditBox Control
+      - New Properties
+         - FontName
+         - FontSize
+         - FontBold
+         - FontItalic
+         - FontUnderline
+         - FontStrikeOut
+         - FontColor
+         - FontBackColor
+         - FontScript
+         - Link
+         - GetClickLinkRange
+         - GetClickLinkText
+         - RTFTextMode
+         - AutoURLDetect
+         - Zoom
+         - SelectRange
+         - CaretPos
+         - Value
+         - ViewRect
+         - GetSelectText
+         - GetTextLength
+         - GetTextRange
+         - GetPosChar
+         - AddText
+         - AddTextAndSelect
+         - CanPaste
+         - CanUndo
+         - CanRedo
+         - BackGroundColor
+         - ParaAlignment
+         - ParaNumbering
+         - ParaNumberingStyle
+         - ParaNumberingStart
+         - ParaOffset
+         - ParaLineSpacing
+         - ParaIndent
+         - FindText
+         - ReplaceText
+         - ReplaceAllText
+      - New Methods
+         - SelectAll
+         - UnSelectAll
+         - SelCopy
+         - SelPaste
+         - SelCut
+         - SelClear
+         - Undo
+         - Redo
+         - ClearUndoBuffer
+         - RTFLoadFile
+         - RTFSaveFile
+         - RTFPrint
+      - New Properties at Definition
+         - NOHSCROLL
+         - NOVSCROLL
+         - ON SELECT
+         - ON LINK
+         - ON VSCROLL
+   - New Features in Print Preview 
+      - New Save Print Preview as image: BMP, JPG, GIF, TIFF, PNG or EMF
+      - New Save Printer Preview as PDF
+      - Enhanced look and feel of Print Preview ( Contributed By Pablo César )
+      - Enhanced quality of images of ThumbNails in printer preview
+      - Changed cursor behavior in Print Preview window: Zoom and Glass Cursor only into page to print 
+   - New HMG_HPDF PRINT UNICODE TEXT as images (Please see SAMPLES\HPDF\HMG_HPDFUNI)
+   - New Unicode related functions
+      - HMG_IsUTF8 ( cString )          --> lBoolean
+      - HMG_IsUTF8WithBOM ( cString )   --> lBoolean
+      - HMG_UTF8RemoveBOM ( cString )   --> cString
+      - HMG_UTF8InsertBOM ( cString )   --> cString
+   - New Registry related functions
+      - RegCloseKey ( hKey ) --> return lBoolean
+      - RegOpenKeyEx ( hKey, cSubKey, [ RegSAM ], @hResult ) --> return lBoolean
+      - RegEnumKeyEx ( hKey, nIndex, @cBuffer, @cClass ) --> return lBoolean
+   - New HFCL ComboSearchBox Features ( See sample )
+     - Additive 
+     - RowOffset
+     - ColOffset
+   - Fixed Printer Preview activate from Modal Window with Panel Window (Reported by Marek, Fixed by Dr. Claudio Soto)
+   - Fixed scroll window with Panel Window (Reported by Marek, Fixed by Dr. Claudio Soto)
+   - Fixed HMG_HPDF ttf font selection ( Contributed By Pablo César )         
+   - Fixed Numeric TextBox Decimal Point problem ( Contributed By Pablo César )
+   - Fixed HFCL ComboSearchBox GotFocus/LostFocus Bug
+   - Fixed HTML_END ( Contributed By Pablo César )   
+-HMG 3.2 (Stable) 2013/12/08
+   - This is a stable version of HMG
+   - Zero message warning of compiler (Contributed by Dr. Claudio Soto)
+   - Fixed: message loop bug (introduced in HMG.3.1.5) (Contributed by Dr. Claudio Soto)
+   - Improvement in GetFolder() function (see doc) (Contributed by Dr. Claudio Soto)
+   - Now DISABLEUPDATE/ENABLEUPDATE method available in GRID, COMBOBOX, BROWSE and TREE controls (Contributed by Dr. Claudio Soto)
+   - New functions: GetUserName, GetComputerName, SetComputerName (Contributed by Dr. Claudio Soto)
+   - New function: HMG_GetImageInfo ( [ cFileName | hBitmap ], @nWidth, @nHeight, @aBackColor, [ nRowColor ], [ nColColor ] ) --> Return lBoolean (Contributed by Dr. Claudio Soto)
+   - New function: HMG_MessageBoxTimeout ( cText, cCaption, nTypeIconButton, nMilliseconds ) ---> return nRetValue (Contributed by Dr. Claudio Soto)
+      - nTypeIconButton and nRetValue: are constants defined in i_MsgBox.ch
+   - New info debug command: DEBUGINFO [ STOREIN cVar ] [ TITLE xTitle ] [ TYPE nTypeIconButton ] [ TIMEOUT nMilliseconds ] [ PARAMETERS ] xData1, xData2, ... (Contributed by Dr. Claudio Soto)
+   - TREE control New Properties/Methods : (Contributed by Dr. Claudio Soto)
+      - GetProperty     -> AllValue, RootValue, FirstItemValue, ImageCount, ParentValue, ChildValue, SiblingValue, ItemText, IsTrueNode
+      - Set/GetProperty -> NodeFlag,ImageIndex
+      - SetProperty     -> AddImage, TextColor, BackColor, LineColor
+      - DoMethod        -> SetDefaultNodeFlag, SetDefaultAllNodeFlag, Sort
+      - TREESORT ControlName OF ParentName [ ITEM nItem ] [ RECURSIVE lRecursive ] [ CASESENSITIVE lCaseSensitive ] [ ASCENDINGORDER lAscendingOrder ] [ NODEPOSITION nNodePosition ]
+      - Enanced Expand/Collapse method: include recursive clause
+   - Updated documentation of changes (Contributed by Dr. Claudio Soto)
+   - New demos: (Contributed by Dr. Claudio Soto)
+      - Samples\Controls\EditBox\EditBoxOverwrite (CREATE EVENT example)
+      - Samples\Controls\Grid\GridIncrementalSearch (CREATE EVENT example)
+      - Samples\Miscellaneous\ScreenSplash
+      - Samples\Controls\Tree\TreeSort
+-HMG 3.1.5 (Test) 2013/07/31
+   - New Visual Effects on Windows (Contributed by Dr. Claudio Soto)
+      - SET WINDOW cFormName TRANSPARENT TO nAlphaBlend  --> nAlphaBlend = 0 to 255 (completely transparent = 0, opaque = 255)
+      - SET WINDOW cFormName [ TRANSPARENT ] TO OPAQUE
+      - FLASH WINDOW cFormName CAPTION COUNT nTimes INTERVAL nMilliseconds
+      - FLASH WINDOW cFormName TASKBAR COUNT nTimes INTERVAL nMilliseconds
+      - FLASH WINDOW cFormName [ ALL ] COUNT nTimes INTERVAL nMilliseconds
+      - ANIMATE WINDOW cFormName MODE nFlags INTERVAL nMilliseconds
+      - ANIMATE WINDOW cFormName MODE nFlags (See Docs for various modes)
+   - New Read Keyboard Functions (Contributed by Dr. Claudio Soto)  
+      - HMG_GetLastVirtualKeyDown ( [ @hWnd ], [ @nMsg ], [ @wParam ], [ @lParam ] ) --> nVK_Code
+      - HMG_GetLastVirtualKeyUp   ( [ @hWnd ], [ @nMsg ], [ @wParam ], [ @lParam ] ) --> nVK_Code
+      - HMG_GetLastCharacter      ( [ @hWnd ], [ @nMsg ], [ @wParam ], [ @lParam ] ) --> cCharacter
+      - HMG_CleanLastVirtualKeyDown ( [ lCleanAll ] )
+      - HMG_CleanLastVirtualKeyUp   ( [ lCleanAll ] )
+      - HMG_CleanLastCharacter      ( [ lCleanAll ] )
+      - HMG_GetLastVirtualKeyName ( [ lParam ] ) --> cVK_Name
+      - HMG_VirtualKeyIsPressed ( VK_Code )
+      - GetKeyState ( VK_Code ) --> return nKeyState
+      - HMG_SendCharacter ( [ hWnd ], cText )
+      - HMG_EnableReadKey()
+      - HMG_DisableReadKey()
+   - New Handle: Form/Control property (To use in combination with Read Keyboard functions (Contributed by Dr. Claudio Soto)
+      - Form.HANDLE           --> equivalent to: GetFormHandle ( cForm )
+      - Form.Control.HANDLE   --> equivalent to: GetControlHandle ( cControl, cForm )
+      - GetFormNameByHandle    ( hWnd, @cFormName,    @cFormParentName ) --> Return nFormIndex
+      - GetControlNameByHandle ( hWnd, @cControlName, @cFormParentName ) --> Return nControlIndex
+   - New Convert Unicode Value <=> Text (Contributed by Dr. Claudio Soto)
+      - HMG_GetUnicodeValue ( cUnicodeText ) --> Return array { nCode1, nCode2, ..., nCodeN }
+      - HMG_GetUnicodeCharacter ( { nCode1, nCode2, ..., nCodeN } ) --> Return cUnicodeText   
+   - New in HFCL: HMG_Zebra Barcode Creation Function using hbzebra harbour contrib library and HFCL BosTaurus library. (Contributed by Dr. Claudio Soto and S. Rathinagiri)
+      - HMG_CreateBarCode( cCode, cType, [nBarwidth], [nBarHeight], [lDisplayCode], [cPNGFileName], [aBarColor], [aBackColor], [lCheckSum], [lWide2_5], [lWide3] )
+         - HMG_CreateBarCode() function can be used to create barcode image in png file format if cPNGFileName parameter is included. If cPNGFileName is omitted, the function returns the hBitMap handle of barcode.      
+         - Any one of the following Barcode types is allowed. { "EAN13","EAN8","UPCA","UPCE","CODE39","ITF","MSI","CODABAR","CODE93","CODE11","CODE128","PDF417","DATAMATRIX","QRCODE" }
+         - Checkdigit will be generated by library if omitted.
+      - See sample in hfcl\samples\hmg_zebra folder
+   - Updated to latest Harbour Nightly Build (2013-07-18)
+   - Fixed bugs in various samples (Contributed by Pablo César)
+   - Fixed and optimized HFCL: ComboSearchBox (Contributed by S. Rathinagiri)
+      - Anywhere search not working in the first instance. 
+-HMG 3.1.4 (Test) 2013/06/16
+   - New function HMG_GetLanguage() --> Returns cLang  (returns the name ID of the language in which HMG shows messages - Eg.: "EN") (Contributed by Dr. Claudio Soto)
+   - New Control level context menu (Contributed by Dr. Claudio Soto)
+      - DEFINE CONTROL CONTEXT MENU cControlName [ OF | PARENT cParentName ]
+      - DEFINE CONTROL CONTEXTMENU  cControlName [ OF | PARENT cParentName ]
+      - RELEASE CONTROL CONTEXT MENU cControlName  OF | PARENT cParentName
+      - RELEASE CONTROL CONTEXTMENU  cControlName  OF | PARENT cParentName
+      - ReleaseControlContextMenu   (cControlName, cParentForm )
+      - IsControlContextMenuDefined (cControlName, cParentForm ) --> Return lBoolean
+      - SET CONTROL CONTEXTMENU  [ ON | OFF ]
+      - SET CONTROL CONTEXT MENU [ ON | OFF ]   
+   - New commands and functions for managing events (Please see DOC\data\HMG_UNICODE_DOC\Update_HMG_Unicode.htm for more details) (Contributed by Dr. Claudio Soto)  
+   - New MARQUEE command for ProgressBar. Use this command when you do not know the amount of progress toward completion but wish to indicate that progress is being made. (Contributed by Dr. Claudio Soto)
+      - SET PROGRESSBAR ControlName OF FormName ENABLE MARQUEE [ UPDATED MilliSeconds ]
+      - SET PROGRESSBAR ControlName OF FormName DISABLE MARQUEE 
+   - New AutoAdjust demo in samples\MainDemo\MAIN.AUTOADJUST (Contributed by Pablo César)
+   - New DynamicMenu demo in samples\Menu\MENU_Dynamic_Demo) (Contributed by Dr. Claudio Soto)
+   - New CueBanner demo in samples\controls\textbox\cuebanner (Contributed by S. Rathinagiri)
+      - CueBanner works only in UniCode version and Windows Vista and above.
+   - New QHTM library in HFCL (Contributed by Pablo César)
+      - QHTM.dll is needed at run time. (included in HFCL\samples\QHTM)
+      - QHTM can not be used in a commercial product unless you have purchased a licence
+   - Enhanced Image Control (Contributed by Dr. Claudio Soto)
+      - Now is possible to automatically load an image at its original size.
+      - Added properties:
+        - TRANSPARENT lValue
+        - BACKGROUNDCOLOR aRGBcolor
+        - ADJUSTIMAGE lValue
+        - TRANSPARENTCOLOR aRGBcolor   
+   - Enhanced PutFile() function: (Contributed by Dr. Claudio Soto)
+      - New parameters: cDefaultFileName and @cExtFile
+      - Remember, if:
+        cExtFile := NIL ---> Not set selected file extension (traditional behavior)
+        cExtFile := "" ---> Sets the file extension selected by the user   
+   - Updated IDE-Unicode: Now supports the Unicode character set and allows at runtime change the language (Contributed by Dr. Claudio Soto)
+   - Updated to latest Harbour Nightly Build (2013-06-15)
+   - Changed default IDE to Unicode version. Ansi IDE is suitably included in IDE_ANSI folder.
+   - Changed structure of samples folder and introduced various sub-folders by categories.
+   - Fixed Build.bat in samples folder/subfolders. Now it is possible to call build.bat from any level of sub-folders.
+   - Fixed Build.bat in hmg main folder to delete the file init.cld. (Contributed by Pablo César)
+   - Fixed ComboSearchBox in HFCL. Now the listbox bottom is correctly shown. (Contributed by Dr. Claudio Soto)  
+-HMG 3.1.3 (Test) 2013/05/09
+   - New IDE_Unicode Test Version (Contributed by Dr. Claudio Soto)
+   - New TimePicker control. Please see DOC\data\TimePicker.htm for more details) (Contributed by Dr. Claudio Soto)
+      - New Time-related functions
+         - HMG_TimeToValue()
+         - HMG_ValueToTime()
+         - HMG_TimeToTime()
+         - HMG_IsTimeAMPM()
+   - New MsgDebug() function to display Debugging information (Contributed by Dr. Claudio Soto)
+   - New functions to check Unicode support (Contributed by Dr. Claudio Soto)    
+      - HMG_SupportUnicode()
+      - IF HMG SUPPORT UNICODE [ RUN | STOP]      
+   - New ANSI string functions for Unicode string functions: (Contributed by Dr. Claudio Soto)
+       ANSI/UNICODE                ONLY ANSI
+       ------------                ---------
+       HMG_ISALPHA()         <=>   ISALPHA()
+       HMG_ISDIGIT()         <=>   ISDIGIT()
+       HMG_ISLOWER()         <=>   ISLOWER()
+       HMG_ISUPPER()         <=>   ISUPPER()
+       HMG_ISALPHANUMERIC()  <=>   RETURN (ISALPHA(c) .OR. ISDIGIT(c))       
+   - New Functions/Commands for better program control. With these commands we can avoid re-entry while processing the events of a control or window allowing the use of other controls/functions that generate messages of re-called of events (Contributed by Dr. Claudio Soto)
+      - DISABLE [ CONTROL ] EVENT ControlName OF FormName
+      - ENABLE  [ CONTROL ] EVENT ControlName OF FormName
+      - StopControlEventProcedure ( cControlName, cFormName, lStop )
+      - DISABLE [ WINDOW ] EVENT OF FormName
+      - ENABLE  [ WINDOW ] EVENT OF FormName
+      - StopWindowEventProcedure ( cFormName, lStop )
+      - GetLastActiveFormIndex ()       --> Return nFormIndex
+      - GetLastActiveControlIndex ()    --> Return nControlIndex
+   - New Samples/Grid.40 Demo showing the functionality of new GridEx and TimePicker Control features (Contributed by Dr. Claudio Soto)  
+   - Enhanced Grid control properties/methods (see HMG_UNICODE in Documentation for more details) (Contributed by Dr. Claudio Soto)
+      - Set/Get Properties: ColumnCOUNT, ColumnHEADER( nColIndex ), ColumnWIDTH( nColIndex ), ColumnJUSTIFY( nColIndex ), ColumnCONTROL( nColIndex ), ColumnDYNAMICBACKCOLOR( nColIndex ), ColumnDYNAMICFORECOLOR( nColIndex ), ColumnVALID( nColIndex ), ColumnWHEN( nColIndex ), ColumnONHEADCLICK( nColIndex ), ColumnDISPLAYPOSITION( nColIndex )
+         - New CellEx property for faster access to Grid Cells.
+         - New BackGroundImage ( nAction, cPicture, nRow, nCol ) 
+         - New CellNavigationColor colors and display mode in GRID cell navigation mode:
+      - New Methods: 
+         - AddColumnEx ( [ nColIndex ],[ cCaption ],[ nWidth ],[ nJustify ],[aColumnControl] )
+         - AddItemEx ( aItem, nRow )
+         - AddColumn, AddColumnEx and DeleteColumn properties DO NOT clean the Grid (NOT Delete all items), for compatibility with old behavior of ADDCOLUMN and DELETECOLUMN use:
+            - SET GridDeleteAllItems [ TRUE|ON ] | [ FALSE|OFF ]
+            - IsGridDeleteAllItems() --> Return .T. or .F.
+   - Updated to latest Harbour Nightly Build (2013-05-08)
+   - Updated HMG Documentation (Contributed by Dr. Claudio Soto)    
+   - Upgraded MsgBox, MsgExclamation, MsgInfo, MsgOkCancel, MsgRetryCancel, MsgStop, MsgYesNo Functions (Contributed by Dr. Claudio Soto)
+      - Now these functions accept as a parameter any data type or an array of any data type
+   - Removed GridEx from HFCL as it is merged to HMG main source (Contributed by Dr. Claudio Soto)
+   - Fixed Bugs (Contributed by Dr. Claudio Soto)
+      - Bug in Define/Release Menu (Reported by Marek)
+      - Bug in Numeric Textbox with Euro symbol (Reported by Mustafa)
+      - Increment Bitmap Handle with load PNG image (Reported by Grigory)
+      - Value property of Textbox control (Reported by Daniel Maximiliano, Ed-Steed and AidTIC)
+      - Undefined reference to HMG_UPPER(), HMG_LEN() and HMG_LOWER() with compile for support ANSI character set (Reported by Danny)
+      - Bug in behaviour of HMG_PADL() and HMG_PADR() (Reported by Carlos Britos)    
+
+-HMG 3.1.2 (Test) 2013/04/04
+   - Update to latest Harbour Nightly Build (2013-03-18)
+   - New Included contrib folder of Harbour for Library samples
+   - set the compiler warnings to W2 (Contributed by Dr. Claudio Soto)
+   - Fixed Browse Control Problem (Contributed by Dr. Claudio Soto)
+   - Fixed Image Property in COMBOBOX control (Contributed by Dr. Claudio Soto)
+   - New functions HMG_LOWER() and HMG_UPPER() (see source\Unicode_Strings.PRG) for support LowerCase and UpperCase of strings in Unicode. (Contributed by Dr. Claudio Soto)
+   - New functions HMG_PADC(), HMG_PADL() and HMG_PADR() (see source\Unicode_Strings.PRG) for Unicode string padded. (Contributed by Dr. Claudio Soto)
+   - New alternative functions for some string related functions for Unicode or ANSI (Contributed by Dr. Claudio Soto)
+      UNICODE/ANSI            ANSI Only
+      ------------            ---------
+      HMG_LEN()         <=>   LEN()
+      HMG_LOWER()       <=>   LOWER()
+      HMG_UPPER()       <=>   UPPER()
+      HMG_PADC()        <=>   PADC()
+      HMG_PADL()        <=>   PADL()
+      HMG_PADR()        <=>   PADR()
+
+      HB_USUBSTR()      <=>   SUBSTR()
+      HB_ULEFT()        <=>   LEFT()
+      HB_URIGHT()       <=>   RIGHT()
+      HB_UAT()          <=>   AT()
+      HB_UTF8RAT()      <=>   RAT()
+      HB_UTF8STUFF()    <=>   STUFF()
+   - Fixed EDIT Control language problem.(Contributed by Dr. Claudio Soto)
+   - New Define/Release at runtime Main / Context / Notify / DropDown Menu
+      - New Commands/Functions (see example MENU_Dynamic_Demo.rar) (Contributed by Dr. Claudio Soto)
+         IsMainMenuDefined ( cFormName )
+         IsContextMenuDefined ( cFormName )
+         IsNotifyMenuDefined ( cFormName )
+         IsDropDownMenuDefined ( cButtonName,  cFormName )
+
+         RELEASE MAIN MENU   OF  FormName
+         RELEASE MAINMENU    OF  FormName
+         ReleaseMainMenu  ( cFormName )
+
+         RELEASE CONTEXT MENU  OF  FormName
+         RELEASE CONTEXTMENU   OF  FormName
+         ReleaseContextMenu ( cFormName )
+
+         RELEASE NOTIFY MENU  OF FormName
+         RELEASE NOTIFYMENU   OF FormName
+         ReleaseNotifyMenu ( cFormName )
+
+         RELEASE DROPDOWN  MENU  BUTTON    ButtonName OF FormName
+         RELEASE DROPDOWNMENU  OWNERBUTTON  ButtonName OF FormName
+         ReleaseDropDownMenu ( cButtonName, cFormName )
+   - Fixed HFCL for Unicode support except HMG_HPDF (Contributed by Dr. Claudio Soto)
+   - New BosTaurus documentation and Demo12 (Unicode example) (Contributed by Dr. Claudio Soto)       
+- HMG 3.1.1 (Test) 2012/12/02
+   - Update to latest Harbour Nightly Build (18706 2012-11-29)
+   - Fix (Contributed by Dr. Claudio Soto)
+      - Set BACKGROUND Color in RadioGroup control when defined in the TAB control. This bug was found in previous versions of HMG also.  
+      - Set Icon in StatusBar control in Windows XP (Found in HMG-UNICODE version)
+      - QueryData in GRID control (Found in HMG-UNICODE version)
+      - SELECT PRINTER DEFAULT (Found in HMG-UNICODE version)
+      - GetClipboard (Found in HMG-UNICODE version).
+      - All the libraries are not built without incremental and build from scratch to avoid updation in 'c' source code.
+   - New    
+      - Added 2 new functions HMG_IsUnicode() and HMG_CharSetName()
+      - "SET CODEPAGE TO UNICODE" is added to language directives. Those who write hybrid applications where in ANSI and UNICODE texts are used it is useful to use them both with 'SET CODEPAGE TO ANSI' and 'SET CODEPAGE TO UNICODE' wherever required. By default SET CODEPAGE TO UNICODE is set.
+
+- HMG 3.1.0 (Test) 2012/11/25
+   - Major update to HMG
+      - Unicode (UTF8) compatibility. (Solely contributed by Dr. Claudio Soto)
+         - With this upgraded version HMG will be available in all human languages. It is required to set 'Encoding->Encoding in UTF8' in Notepad++ for all the source code files which contain strings in languages using Unicode characters.
+         - New Main.UNI.Demo in samples folder for Unicode characters in Tamil language.
+   - Update to BosTaurus Graphics Library version 1.02 (contributed by Dr. Claudio Soto)
+      - Updated BT_BitmapSaveFile() fuction, now save images in the formats: BMP, GIF, JPG, TIF and PNG.
+      - Updated BosTaurus-FunctionsReferenceGuide.PDF with changes made.
+      - New Demo11 in hfcl\samples\BosTaurus folder.
+   - Fixed HFCL HMG_HPDF TTF font loading bug. 
+   
+
+- HMG 3.0.46 (Test) 2012/11/06
+   - Update to latest Harbour Nightly Build (18443 2012-11-05)
+   - New
+      - Print Barcode sample. See samples/printean13 folder for details. (Contributed by Marek Olszewski)
+      - Desktop Make Shortcut for file/dir and URLs in HFCL. See sample at hfcl/samples/makeshortcut folder. (Contributed by B.P Dave and Esgici)
+      - buildalllib.bat in the base directory to build all the libraries including hmg, hfcl, hmgsqlbridges, crypt, edit, editex, ini, graph, report etc with a single call.
+      - Included hbvpdf library in HMG library folder. This library is required to compile all the samples in samples/report.advanced folders.
+   - Update   
+      - Bos Taurus Graphics library 1.01. Author Claudio Soto had modified the source files to make it compatible for HFCL. (Thanks to Claudio Soto)
+         - Updated BT_BitmapLoadFile() fuction, now load images in the formats: BMP, GIF, JPG, TIF and PNG.
+         - Added Functions:
+            - BT_BitmapInvert
+            - BT_BitmapContrast
+            - BT_BitmapModifyColor
+            - BT_BitmapGammaCorrect
+            - BT_BitmapConvolutionFilter3x3
+         - Updated BosTaurus-FunctionsReferenceGuide.PDF with changes made.
+         - Added Demo10
+      - HMG_HPDF Library in HFCL. Now the image command accepts both jpg and png file formats from either file or resource location. (Contributed by Claudio Soto)
+   - Fix
+      - Number of warnings while compiling the HMG library is now reduced to only six. Great thanks to Claudio Soto.
+      - Hardcoded Path name references in batch files. Now HMG can be installed any path (having no spaces).
+   
+
+- HMG 3.0.45 (Test) 2012/10/22
+   - New Bos Taurus Graphics Library with many useful graphics functions in HFCL. For details please see HFCL Doc folder. (Contributed by Claudio Soto.)
+   - New HMG_HPDF Library in HFCL. For details please see HFCL Doc Folder (Contributed by S. Rathinagiri)
+   - Updated to latest Harbour Nightly Build (18377 2012-10-19)
+   - Fixed and cleaned up most of the files in Samples folder, still to go. (Thanks to Esgici)
+   - Fixed bug in loading images from resources and the bug in the handle release (memory allocation and device context). (Thanks to Claudio Soto)
+   - Temporarily fixed bug in toolbar button caption. (Reported by Daniel Maximiliano. Thanks to Claudio Soto)
+
+- HMG 3.0.44 (Test) 2012/09/03 Changelog:
+   - Fixed Portuguese language definitions (Thanks to Ronaldo (Chacal.GO))
+   - New GridEx dynamic grid functionality and see the sample in HFCL samples directory. (Thanks to Claudio Soto)
+      - GRID_ColumnCount         ---> Return the Number of Column on GRID
+      - GRID_AddColumnEx         ---> Complement of Method:  AddColumn (nColIndex)
+      - GRID_DeleteColumnEx      ---> Complement of Method:  DeleteColumn (nColIndex)
+      - GRID_GetColumnControlsEx ---> Return Array with Controls of Column(nColIndex) ==> {cCAPTION, nWIDTH, nJUSTIFY, aCOLUMNCONTROL, bDYNAMICBACKCOLOR, bDYNAMICFORECOLOR, bCOLUMNWHEN, bCOLUMNVALID, bONHEADCLICK}
+      - GRID_GetColumnControl    ---> Return specific Control of Column(nColIndex) ==> [cCAPTION, nWIDTH, nJUSTIFY, aCOLUMNCONTROL, bDYNAMICBACKCOLOR, bDYNAMICFORECOLOR, bCOLUMNWHEN, bCOLUMNVALID, bONHEADCLICK]
+      - GRID_SetColumnControl    ---> Set specific Control of Column(nColIndex)    ==> [cCAPTION, nWIDTH, nJUSTIFY, aCOLUMNCONTROL, bDYNAMICBACKCOLOR, bDYNAMICFORECOLOR, bCOLUMNWHEN, bCOLUMNVALID, bONHEADCLICK]
+      - GRID_GetColumnDisplayPos ---> Get the position of Column(nColIndex) in that display in the GRID
+      - GRID_SetColumnDisplayPos ---> Set the position of Column(nColIndex) in that display in the GRID
+      - GRID_GetColumnWidthDisplay -> Get the Width of Column(nColIndex) in that display in the GRID
+      - GRID_SetBkImage          ---> Set background image in Grid
+
+// #include: ARRAY_FUNC.prg
+*******************************************************************************
+* ARRAY_CHANGE (nAction, aData, nIndex, [nPos | DataAdd])      --> Move/Add/Remove: COLUMN or ROW in Array 
+* ARRAY_GRID   (cControlName, cParentForm, nAction, aGridData) --> Get/Add: data in GRID 
+
+- HMG 3.0.43 (Test) 2012/08/30 Changelog:
+   - Updated to Harbour 3.2 Nightly Build (18042 2012-08-29)
+   - Fixed OnPaint (Thanks to Claudio Soto)
+   - New Sample Wallpaper (Thanks to Claudio Soto)
+
+- HMG 3.0.42 (Test) 2012/08/08 Changelog:
+   - Updated to Harbour 3.2 Nightly Build (17976 2012-08-08)
+   - Updated Notepad++ to 6.1.5
+
+- HMG 3.0.41 (Test) 2012/04/20 Changelog:
+   - Updated to Harbour 3.1 Nightly Build (17406 2012-04-20)
+   - Updated to latest MingW GCC Compiler 4.6.2-1
+
+- HMG 3.0.40 (Test) 2011/11/13 Changelog:
+   - Updated to Harbour 3.1 Nightly Build (17111 2011-11-10)
+   - New : SET CELLNAVIGATIONMODE EXCEL | STANDARD (by Roberto Lopez) To have an option to navigate cells in a grid downwards while in-place editing. Please see samples\grid.39 sample folder.
+
+- HMG 3.0.39 (Test) 2011/09/12 Changelog:
+   - Updated to Harbour 3.1 Nightly Build (17036 2011-09-11) Thanks to Grigory Filatov for new TOleAuto Class compatible to the new WIN_OLEAUTO
+
+- HMG 3.0.38 (Test) 2011/07/18 Changelog:
+   - Updated to Harbour 3.0 (Thanks to Harbour Development Team)
+
+- HMG 3.0.37a (Test) 2011/06/24 Changelog:
+   - Updated IDE/build.bat/hmg.hbc by Roberto Lopez accommodating /c (console mode) and debugger.
+   - Included xbase.xml for Syntax Highlighting in Notepad++. Please see readmenotepad++.txt in HMG Folder\notepad++ directory. (Thanks to MigSoft)
+
+- HMG 3.0.37 (Test) 2011/06/20 Changelog:
+   - Built using latest Harbour Nightly Build (2011/06/18)
+   - Updated Build.bat by Roberto Lopez
+   - Updated ide.exe by Roberto Lopez
+   - Fixed MultiSelect Grid set value (Thanks to Grigory Filatov)
+   - New MixedConsole Sample by Roberto Lopez
+   - Fixed Memory Leak Problem (Thanks to Grigory Filatov)
+   - Changed the program editor to Notepad++
+     
+
+- HMG 3.0.36 (Test) 2011/05/31 Changelog:
+   - Built using latest Harbour Nightly Build (2011/03/16)
+   - Fixed theme, manifest and resource in buildapp.bat (Thanks to Grigory Filatov)
+   - buildcons.bat for console mode applications. Please see \hmg\samples\console.    
+
+- HMG 3.0.36 (Test) 2011/03/19 Changelog:
+   - Built using latest Harbour Nightly Build (2011/03/16)
+   - Following Modifications done on official HMG 3.0.35
+     * Edit in \hmg\source\c_media.c - Replace line no. 144 with the following:
+     //    hwnd=MCIWndCreate((HWND) hb_parnl(1),NULL,Style,hb_parc(2));
+     * Edit in \hmg\source\h_init.prg - Replace line no. 628 with the following:
+         _HMG_SYSDATA [ 306 ] := ( EMPTY( CreateMutex( , .T., strtran(GetProgramFileName(),'\','_') ) ) .OR. (HMGGetLastError() > 0) )
+     * Edit in \hmg\source\c_winapimisc.c - Replace line no. 416 to 419 with the following:
+      HB_FUNC ( HMGGETLASTERROR )
+      {
+        hb_retnl( (LONG) GetLastError() ) ;
+      }
+     * Edit in \hmg\source\h_windows.prg. Replace line no 5588 with the following:
+            uResult := CallDll32 ( "IsAppThemed" , "UXTHEME.DLL"  ) 
+   - Changed HMG Build system to hbmk2 by adapting HMG 4 and latest Harbour method.
+   - Changed HMG Build Application System by adapting HMG 4. Please make use of newbuild.bat in samples folder or buildapp.bat in hmg main folder.   
+
+- HMG 3.0.35 Changelog:
+
+	- Fixed: Multiselect listbox problems setting value property. Fixed by 
+	Grigory Filatov.
+
+	- Fixed: Tab control: setting row and col properties when the tab has a 
+	child panel window.
+
+	- Fixed: Conflict between Harbour and hmg charxor functions. Fixed by 
+	Esgici.
+
+	- Fixed: Problem with 'Visible' property. Previous version forced
+	message processing creating problems in some rare situations.
+
+	- Fixed: Problem in IDE closing object ispector or project manager
+	with alt+F4.
+
+
+- HMG 3.0.34 Changelog:
+
+	- New: Data-Bound Grid methods: 'DisableUpdate' and 'EnableUpdate' 
+	I've added these methods to avoid conflicts arising when user 
+	programatically moves the record pointer in the Grid RowSource
+	workarea.(*) 
+	
+	- Modified: Data-bound Grid, 'Refresh' method supports an optional
+	logical parameter. When it is set to .t., the selected logical
+	record will be preserved.(*)
+
+	- Modified: Documentation. I've included the refernce for Browse 
+	control in documentation again and removed its 'obsolete' status.
+	The reason for this, is that some people felt compelled to change 
+	Browse for Grid in their applications (that was	not my intention). 
+	Data-bound Grid is only an alternative to Browse, so, each user must 
+	evaluate the convenience to change. 
+	More important, data-bound Grid is in testing stage yet, and its use
+	in working applications must be evaluated carefully.
+
+	- Fixed: Grid problems in re-initialization. Reported by radohabjan.
+
+	- Fixed: Grid problems with multiple workareas. Reported by Czarny_Pijar.
+
+	- Fixed: Grid 'When' problems (introduced in 3.0.31). Reported by Grigory.
+
+	- Fixed: Problems with Tab's 'AddControl method.
+
+	- Fixed: Spinner control problems withm Row, Col, Width and Height 
+	properties used after control definition.
+
+	(*) These are exceptions to the feature freeze, but these new features
+	are required to allow users to handle certain situations when using 
+	data-bound Grid.
+
+
+- HMG 3.0.33 Changelog:
+
+	- Fixed: Grid 'ColumnWhen' property problems. Reported by Claudio.
+
+	- Fixed: Grid Problems redrawing horizontal lines in XP (introduced 
+	in 3.0.31). Reported by Claudio.
+
+	- Fixed: Grid error checking (recordsource workarea must be open at 
+	control definition). Reported by radohabjan.
+
+	- Fixed: Setting recno property in filtered Grid.
+
+
+- HMG 3.0.32 Changelog:
+
+	- Fixed: IDE problems renaming grid control. Reported by Czarny_Pijar.
+
+	- Fixed: Problems with QUIT command (reported by Steed).
+
+	- Fixed: Problem with 'Restore' method for non-visible windows.
+
+	- Fixed: ACTIVATE WINDOW ALL problem with PANEL windows. Reported by
+	Luigi.	
+
+	-Fixed: On Key Escape command / Menu conflict. Reported by Marek.
+
+	-Fixed: Closing a MsgBox with <Esc> makes release method 
+	not working when invoked immediately after. Reported by Marek.
+
+	-Fixed: Grid justification not working for the first column (caused
+	by a limitation of WinApi ListView control). From OOHG Grid 
+	implementation. Proposed by Grigory Filatov.
+
+
+- HMG 3.0.31 Changelog:
+
+	- New: LockColumns property for Grid control (includes a fix for a 
+	problem when column position is changed via a mouse click reported 
+	by Fernando Chirico). Sample:\sample\grid.38.
+
+	- Modified: Exiting from grid cell edit, jumps to the next editable
+	cell. Requested by Sudip.
+
+	- Fixed: Incremental project data is reset now when HMG version 
+	is changed (IDE and command line).
+
+	- Fixed: Little bug in IDE Portuguese translation. 
+	Contributed by Kurt lauer.
+
+	- Fixed: Problem with button focus at window activation. 
+	Reported by Czarny_Pijar.
+
+	- Fixed: Problem with Grid ColumnValid (introduced in 3.0.30).
+	Reported by Rathinagiri.
+
+
+- HMG 3.0.30 Changelog:
+
+	- Fixed: Problems with windows handling introduced in 3.0.29
+	(already published in 3.0.29a patch). Reported by Marek.
+
+	- Fixed: Panel windows error checking (already published in 3.0.29a 
+	patch). Reported by Esgici.
+
+	- Fixed: Problems in editable Grid EditBox control window dimensions
+	(already published in 3.0.29b patch).
+
+	- Fixed: 'ThisWindow' object refernce incorrect on Grid valid 
+	procedure (already published in 3.0.29b patch). Reported by Marek.
+
+	- Fixed: Data-bound Grid problems with aliased (non-rowsource) fields
+	and expressions (ColumnFields). Already published in 3.0.29b patch. 
+	Reported by Marek. Samples: \samples\grid.36 and \samples\grid.37.
+
+
+- HMG 3.0.29 Changelog:
+
+	English:
+	--------
+
+	- New: PANEL Window type.
+
+	Panel windows can be embedded in other windows.
+	You can define a PANEL window inside a DEFINE WINDOW / END WINDOW 
+	structure or outside specifiying Parent's name (exactly as a control).
+	Panel windows are automatically activated through its parent, so
+	explicit activation is not required.
+
+
+		DEFINE WINDOW Win_1 ;
+			ROW 0 ;
+			COL 0 ;
+			WIDTH 400 ;
+			HEIGHT 400 ;
+			TITLE 'HMG Panel Window Demo' ;
+			WINDOWTYPE MAIN  
+
+			DEFINE WINDOW Win_2 ;
+				ROW 30 ;
+				COL 30 ;
+				WIDTH 300 ;
+				HEIGHT 200 ;
+				VIRTUALWIDTH 400 ;
+				VIRTUALHEIGHT 400 ;
+				WINDOWTYPE PANEL
+
+				<...>
+	
+			END WINDOW
+
+		END WINDOW
+
+		ACTIVATE WINDOW Win_1
+
+
+	Samples: \samples\panel.* and \samples\external.windows\panel.
+	
+
+	- New: Chinese language support for IDE. Contributed by ouyang.
+
+	- Fixed: data-bound grid refresh method problems introduced in 3.0.28.
+	Reported by Sudip and Czarny_Pijar.
+
+	- Fixed: data-bound grid 'BackColor' and 'FontColor' properties not
+	working. Reported by mustafa.
+
+
+	Español:
+	-------
+
+	- Nuevo: Ventana tipo PANEL.
+
+	Las ventanas tipo PANEL pueden estar contenidas por otras ventanas.
+
+	Una ventana tipo PANEL puede definirse dentro de una estructura
+	DEFINE WINDOW / END WINDOW o fuera de ella, simplemente especificando
+	el nombre de su ventana 'parent' (de la misma forma que un control).
+
+	Las ventanas tipo PANEL, son autom'áticamente activadas a través de su
+	'parent', por lo cual una activación explícita no es requerida.
+
+
+		DEFINE WINDOW Win_1 ;
+			ROW 0 ;
+			COL 0 ;
+			WIDTH 400 ;
+			HEIGHT 400 ;
+			TITLE 'HMG Panel Window Demo' ;
+			WINDOWTYPE MAIN  
+
+			DEFINE WINDOW Win_2 ;
+				ROW 30 ;
+				COL 30 ;
+				WIDTH 300 ;
+				HEIGHT 200 ;
+				VIRTUALWIDTH 400 ;
+				VIRTUALHEIGHT 400 ;
+				WINDOWTYPE PANEL
+
+				<...>
+	
+			END WINDOW
+
+		END WINDOW
+
+		ACTIVATE WINDOW Win_1
+
+
+	Ejemplos: \samples\panel.* and \samples\external.windows\panel.
+
+	- Nuevo: IDE. Soporte para lenguaje Chino. Contribucón de ouyang.
+
+	- Solucionado: Problemas con el método 'refresh' del data-bound grid 
+	(introducidos en 3.0.28) Reportado por Sudip y Czarny_Pijar.
+
+	- Solucionado: Problemas con las propiedades 'BackColor' and 'FontColor' de data-bound grid.
+	Reportado por mustafa.
+
+
+
+- HMG 3.0.28 Changelog:
+
+	English:
+	--------
+
+	- Fixed: IDE. OnHScroll event edit problems. Reported by Czarny_Pijar.
+
+	- Fixed: Problems with data-bound Grid code generated by IDE. Reported
+	by Claudio Tedesco.
+
+	- Fixed: Data-bound grid problems when refreshing after an order change 
+	(\samples\grid.35). Reported by Ralph.
+
+	- Fixed: Problems with a report sample. Reported by Claudio Tedesco.
+
+
+	Español:
+	-------
+
+	- Solucionado: IDE. Problemas de edición con el evento OnHScroll.
+	Reportado por Czarny_Pijar.
+
+	- Solucionado: Problemas con data-bound Grid cuando el código es 
+	generado por el IDE. Reportado por Claudio Tedesco.
+
+	- Solucionado: Problemas al actualizar data-bound Grid después de 
+	cambiar el orden de la tabla (\samples\grid.35). Reportado por Ralph.
+
+	- Solucionado: Problemas ejemplo de report. Reportado por Claudio 
+	Tedesco.
+
+
+- HMG 3.0.27 Changelog:
+
+	English:
+	--------
+
+	- Fixed: IDE Object inspector window size in Windows 7. Reported 
+	by Sudip.
+
+	- New: DidabledbackColor and DisabledFontColor for TextBox control.
+	Sample: \samples\TextBox.1.
+
+
+	Español:
+	-------
+
+	- Solucionado: Problemas con el tamaño de la ventana del inspector de 
+	objetos (IDE) en Windows 7. Reportado por Sudip.
+
+	- Nuevo: Propiedades DisabledBackColor y DisabledForeColor para el
+	control TextBox. Ejemplo: \samples\TextBox.1.
+
+
+- HMG 3.0.26 Changelog:
+
+	English:
+	--------
+
+	- Fixed: Problem with data-bound grid refresh when the control is
+	initializaed with an empty table. Reported by Sudip.
+
+	- Fixed: Problem with number of copies in print preview window. 
+	Reported by swapan.
+
+	- Fixed: Problem with QUIT command. Reported by Czarny_Pijar. Fix
+	based on a suggestion of fprijatelj.
+
+	- New: DidabledbackColor and DisabledFontColor for Edit control.
+	Sample: \samples\edit.
+
+	- Updated: HFCL to version 0.95a.
+
+
+	Español:
+	-------
+
+	- Solucionado: Problema con el método Refresh del control Grid 
+	(data-bound) cuando es inicializado con una tabla vacía. Reportado
+	por Sudip.
+
+	- Solucionado: Problema con el número de copias en la ventana de vista 
+	previa de impresión. Reportado por Swapan.
+
+	- Solucionado: Problema con el comando QUIT. Reportado por Czarny_Pijar.
+	Solución basada en una sugerencia de Fprijatelj.
+
+	- Nuevo: Propiedades DisabledBackColor y DisabledForeColor para el
+	control Edit. Ejemplo: \samples\edit.
+
+	- Actializado: HFCL a la versión 0.95a.
+
+
+- HMG 3.0.25 Changelog:
+
+	English:
+	--------
+
+	- New: 'OnSave' method for Data-bound Grid. 
+
+	This method allows to set a custom save procedure.
+		
+	The following properties are available while this method is executing:
+
+
+		- This.EditBuffer: Array of one element per edited cell.
+
+		The elements has the following structure:
+
+		{ nLogicalRow , nLogicalCol , xValue , nRecNo }							
+
+
+		- This.AppendBuffer: Array of one element per appended record.
+
+		The elements has the following structure:
+
+		{ xFieldValue 1 , ... , xFieldValue n }							
+
+
+		- This.MarkBuffer: Array of one element per record marked to be deleted or recalled.
+
+		The elements has the following structure:
+
+		{ nLogicalRow , nRecNo , cMark ( 'D' or 'R' ) }
+
+
+	Sample: \samples\grid.34
+
+
+	- New: PsPad freeware editor. This is the program editor that I use with 
+	IDE and from the command line. 
+
+	PsPad has a lot of nice features including syntax highlighting. I've 
+	recently discovered that it is freely redistributable, so I've decided
+	to include in HMG distribution.
+
+	PsPAd is, from this release, the default program editor for IDE, instead
+	NotePad.
+
+
+	Español:
+	-------
+
+	- Nuevo: Método 'OnSave' para Data-bound Grid. 
+
+	Este método permite establecer un procedimiento 'Save' personalizado.
+
+	Las siguientes propiedades están disponibles mientras este método
+	se ejecuta:
+		
+
+		- This.EditBuffer: Array (un elemento por cada celda editada).
+
+		Los elementos tienen la siguiente estructura:
+
+		{ nLogicalRow , nLogicalCol , xValue , nRecNo }							
+
+
+		- This.AppendBuffer: Array (un elemento por cada registro agregado).
+
+		Los elementos tienen la siguiente estructura:
+
+		{ xFieldValue 1 , ... , xFieldValue n }							
+
+
+		- This.MarkBuffer: Array (un elemento por cada registro marcado para ser eliminado o recuperado).
+
+		Los elementos tienen la siguiente estructura:
+
+		{ nLogicalRow , nRecNo , cMark ( 'D' or 'R' ) }
+
+
+	Ejemplo: \samples\grid.34
+
+
+	- Nuevo: PsPad freeware editor. Es un editor de programas que uso para
+	trabajar desde IDE y línea de comando.	
+
+	PsPAd tiene muchas buenas características, incluyendo resaltado de
+	syntaxis. Recientemente descubrí que puede distribuirse libremente, por
+	lo cual, decidí incluirlo en la distribución de HMG.
+
+	Desde esta versión, PsPAd es el editor de m'ódulos por defecto para
+	IDE en lugar de NotePad.
+
+
+- HMG 3.0.24 Changelog:
+
+	English:
+	--------
+
+	- Modified: Data-bound Grid. 
+
+		* Delete and Recall operations are always buffered now.
+	
+		* From this release filtered tables (set filter / set deleted /
+		 index...for) records can be deleted and recalled.
+
+
+	Español:
+	-------
+
+	- Modificado: Data-bound Grid. 
+	
+		* Las operaciones Delete y Recall son siempre 'buffered'.
+
+		* Desde esta versión las tablas filtradass (set filter / 
+		set deleted / index...for) pueden usar los métodos 'Delete' y
+		'Recall'.
+
+
+- HMG 3.0.23 Changelog:
+
+	English:
+	--------
+
+	- Fixed: WindowsVersion() function to recognize 'Windows 7'.
+	Reported by Mustafá Lopez.
+
+	- Fixed: 'Cosmetic' problem with memo edit window in data-bound 
+	grid with Windows 7.
+
+	- Modified: Data-bound Grid. 
+	
+	* From this release filtered tables (set filter / set deleted / index...for)
+	records can be modified and appended.
+
+	* All changes to the table (excepting delete and recall) will be 
+	always buffered.
+
+	* To commit the pending changes, the method 'Save' (Alt+S) must be used.
+
+	* To undo changes, the new method 'ClearBuffer' (Alt+U) must be used.
+
+	* When changes be made:
+
+		- New records will go to the end of the grid. 
+
+		- If a key field is edited and its content changed, it will 
+		remain in its current position.
+
+		- If a field used in a filter expression is edited and its 
+		content changed, it will remain in place.
+
+		- 'Save' method, will cause that order and visibility of records
+		be updated according new values commited to table.
+
+		- There will be separate 'Save' code for core RDDs and contrib
+		ones. In this release you'll find three sections: 'Core', 
+		'SqlMix' and 'PgRdd' ('SqlMix' and 'PgRdd' will be implemented
+		in future releases).
+
+
+	- Fixed: Problem with 'Capture' method. Reported by Claudio.
+
+	- Modified: Fix on Textbox (introduced in 3.0.20) temporarily reverted 
+	(again) since it created new problems (more research is needed to solve 
+	the original problem without create 'colateral damage').
+
+
+	Español:
+	-------
+
+	- Solucionado: Función WindowsVersion() para Windows 7.
+	Reportado por Mustafá Lopez.
+
+	- Solucionado: Problema con la apariencia de la ventana de edición
+	de memo en data-bound Grid con Windows 7.
+
+	- Modificado: Data-bound Grid. 
+	
+	* Desde esta versión las tablas filtradass (set filter / set deleted / index...for)
+	pueden ser modificadas y agregársele nuevos registros.
+
+	* Los cambios hechos a la tabla (excepto delete y recall) se 
+	registrarán siempre en un 'buffer'.
+
+	* Para grabar los cambios pendientes deberá usarse el método 'Save' 
+	(Alt+S).
+
+	* Para deshacer los cambios deberá usarse el nuevo método 'ClearBuffer' 
+	(Alt+U).
+
+	* Al hacer los cambios:
+
+		- Los nuevos registros aparecerán al final de la tabla.
+
+		- En caso de editarse un campo clave, este permanecerá en 
+		la misma posición.
+
+		- En caso de editarse un campo usado en una expresión 
+		de filtro, este permanecerá visible.
+
+		- El método 'Save' provocará la actualización en cuanto
+		a posición y visibilidad de un registro al grabar la tabla.
+
+		- Habrá código separado para los RDDs SQLMIX y PGRDD en el 
+		método 'Save', para facilitar la implementaci'ón del soporte
+		de escritura para los mismos.
+
+	- Solucionado: Problema con el método 'Capture'. Reportado por Claudio.
+
+	- Modificado: Fix en Textbox (introducido en 3.0.20) temporariamente  
+	revertido (nuevamente) ya que ha creado nuevos problemas (se requiere 
+	más investigación de para solucionar el problema original sin crear 
+	'daño colateral'.
+
+
+- HMG 3.0.22 Changelog:
+
+	English:
+	--------
+
+	- Fixed: Filtered data-bound Grid problems with recno property. Reported ny
+	Raumi75.
+
+	- Fixed: Error checking in data-bound Grid to avoid PostGre and SqlMix 
+	Tables edit. Reported by Raumi75.
+
+	- Fixed: Problems with Activex control. Reported by Vanguarda.
+
+	- New: 'FlagMovil' sample by Humberto Fornazier and Mustafá López.
+
+	- New: Sample 'Grid.33'.
+
+	- New: Sample 'Player.2' by Mustafá López.
+
+	Español:
+	--------
+	
+	- Solucionado: Problemas con la propiedad 'recno' en Grid con tablas 
+	filtradas. Reportado por Raumi75.
+
+	- Solucionado: Verificación de errored en data-bound Grid para evitar
+	la edición de tablas PostGre y SqlMix. Reportado por Raumi75.
+
+	- Solucionado: Problemas con el control Activex. Reportado por Vanguarda.
+
+	- Nuevo: Ejemplo 'FlagMovil' por Humberto Fornazier y Mustafá López.
+
+	- Nuevo: Ejemplo 'Grid.33'.
+
+	- Nuevo: Ejemplo 'Player.2' por Mustafá López.
+
+
+- HMG 3.0.21 Changelog:
+
+	English:
+	--------
+
+	- Fixed: build.bat incorrect in various samples.
+
+	- Fixed: Misc. data-bound Grid problems: Filtered and conditional
+	indexed tables, SQLMIX and POSTGRE RDD locking bugs and some other
+	minor bugs. Thanks to raumi75, Mol and Vanguarda for reports on 
+	problems.
+
+	- Fixed: Problem with Player control. Reported by Vanguarda.
+
+	- New: GRID.31, GRID.32 samples.
+
+	- Updated: HFCL. Contributed by Rathinagiri.
+
+
+	Español:
+	--------
+	
+	- Solucionado: 'build.bat' incorrecto en varios ejemplos.
+
+	- Solucionado: Varios problemas en Grid: Tablas filtradas y con 
+	índices condicionales, bloqueo con SQLMIX y POSTGRE y varios bugs menores.
+	Gracias a Raumi75, Mol y Vanguarda por los reportes.
+
+	- Solucionado: Problema con el control Player. Reportado por Vanguarda.	
+
+	- Nuevo: Ejemplos GRID.31 y GRID.32.
+
+	- Actualizado: HFCL. Gracias a Rathinagiri.
+
+
+- HMG 3.0.20 Changelog:
+
+	English:
+	--------
+
+	- New: Virtual Grid supports allowedit, ColumnWhen, ColumnValid 
+	DynamicBackColor, DynamicForeColor and ColumnControls properties now. 
+	Sample: GRID_24.
+
+	- New: 'ColumnControls' property supports now EDITBOX (use [Ctrl+W] to
+	accept and [Esc] to exit). Sample: GRID_25.
+
+	- New: 'ColumnControls' (Grid) property supports now a third parameter for
+	ComboBox control. This new parameter is an array with values to be stored
+	in the grid instead the numeric position of the selected combo item.
+	Sample: GRID_27.
+
+	- Changed: Using mouse to exit a cell editing in grid is the same as 
+	<Return>.
+
+	- New: Tables support for Grid control:
+
+		- 'RowSource' Property.
+		- 'ColumnFields' Property.
+		- 'AllowAppend' Property.
+		- 'AllowDelete' Property.
+		- 'Buffered' Property.
+		- 'DynamicDisplay' Property.
+		- 'RecNo' Property.
+		- 'Append' Method.
+		- 'Save' Method.
+		- 'Refresh' Method.
+		- 'Delete' Method.
+		- 'Recall' Method.
+
+
+		In 'Buffered' mode, adding a record, store it in a temporary 
+		(1 record buffer). This buffer is flushed when you add another 
+		record, with the 'Save' method or when the grid control is 
+		released. The main advabtage of this way is that the new record 
+		goes to the end  of the grid, not being affected by current 
+		index order (it will be ordered when saved).
+
+		'Append' has the Alt+A shortcut.
+		'Save' has the Alt+S shotcut.
+		'Delete' has the Alt+D shotcut.
+		'Recall' has the Alt+R shotcut.
+
+		'DynamicDisplay' property allows to define a code block array 
+		to customize cell content displayed for each column.
+		This.CellValue, This.CellRowIndex and This.CellColIndex
+		are available for evaluation inside the block.
+
+		You can set currently selected item with the 'Value' 
+		property, as in a standard 'CellNavigation' style grid.
+		Alternatively you can use 'RecNo' property to set selected
+		item with physical record number.
+
+		'Refresh' method is meant to update changes made outside from
+		grid.
+
+		Deleted records can't be edited and are shown in light gray
+		FontColor.
+
+		Is this redundant, duplicating Browse functionality?: No!
+
+		Please, read the 'Something funny happened in the way to 
+		the browse' article in HMG Forum (www.hmgforum.com) for a 
+		detailed explanation.
+
+		Samples: GRID_25, GRID_26, GRID_27, GRID_28, GRID_29, GRID_30.
+
+	- Fixed: 'OnChange' procedure fired by gotfocus/lostfocus events for 
+	numeric (inputmask) textbox. Reported by Grigory Filatov.
+
+	- Fixed: Problems with editable Grid (cell-navigation style). 
+	Reported by Sudip.
+
+	- Fixed: Problems with timer. Reported by Grigory Filatov.
+
+	- Fixed: Problems with when block in Browse control. Reported by Luis Vasquez.
+
+	- Fixed: Problems with numeric group expression in report generator. 
+	Reported by Fernando Chirico.
+
+	- Fixed: Problem when group header is omited in report generator. 
+	Reported by Sudip.
+			
+	-Fixed: Virtual GRID update problems. Reported by Vanguarda.
+
+	- Modified: HMG installation is portable now, so it could be installed
+	in a different folder than c:\hmg and work without need to reconfigure.
+
+	- Updated: Harbour compiler to 2.0.0 (r13372) OFFICIAL DISTRIBUTION. 
+
+	- Updated: MingW compiler to 4.4.1
+
+	- New: MULTILINE property for TAB control.
+
+	- New: Resources files set. Contributed by Vanguarda.
+
+	- Modified: Added error checking to 'ColumnWhen' and 'ColumnValid' 
+	  Browse/Grid events. From this release, when an attempt to edit a 
+	  Browse/Grid cell inside these event procedures is done, a runtime 
+	  error is generated. The reason for this is to avoid attempts to edit 
+	  two o more cells simultaneously in different control instances.  
+	  Reported by Luis Vazquez.
+
+	- Modified: Portuguese Messages. Contributed by Salamandra.
+
+	- Modified: Samples.
+
+		Removed: ADORDD samples (adordd not working on
+			 current Harbour release)
+		
+		Added:
+
+			-\HMG\SAMPLES\RDD.SQL\MYSQL
+			-\HMG\SAMPLES\RDD.SQL\ODBC
+			-\HMG\SAMPLES\RDD.SQL\ARRAY
+			-\HMG\SAMPLES\MEMORY.TABLES
+			-\HMG\SAMPLES\MULTI.WIN
+			-\HMG\SAMPLES\SQLITE
+			-\HMG\SAMPLES\POSTGRESQL
+			-\HMG\SAMPLES\NETIO.01
+			-\HMG\SAMPLES\NETIO.01
+			-\HMG\SAMPLES\HMGTALK
+
+		Modified:
+
+			-\HMG\SAMPLES\MULTI.PRG
+			-\HMG\SAMPLES\CONTAINERS\TOOLBAR*
+
+	New: 'Build.bat' (it replaces 'compile.bat'). 
+
+	Build [/i|/r|/d|/cs|/ci/cr] <PrgFile> | <filelist.hbp> [config.hbc]
+	
+	[/i] : incremental build
+	[/r] : incremental build (rebuild all)
+
+	[/cs] : Console/mixed mode (std build)
+	[/ci] : Console/mixed mode (incremental build)
+	[/cr] : Console/mixed mode (incremental rebuild all)
+
+	[/d] : Debug mode (gui and console)
+
+	<filelist.hbm> : A text file with .hbp extension containing a source list
+	<configfile.hbc>: A text file with configuration parameters as additional
+	libs, include paths and lib paths.
+ 
+		<configfile.hbc> Syntax:
+ 
+		incpaths = incpath1 incpath2 ... incpathn
+                   
+		libpaths = libpath1 libpath2 ... libpathn
+ 
+		libs = lib1 lib2 ... libn
+
+		mt=yes (multi-threading support)		
+
+	- library names must not include 'lib' prefix nor '.a' extension.
+
+	- 'build.bat' will create an 'error.log' file in the app folder when build
+	process ends with an error condition.
+
+	Sample: \HMG\SAMPLES\MULTI.PRG
+
+	- Modified: From this release, BROWSE is considered a compatibility 
+	(obsolete)  control and therefore not recommended. It is superseded 
+	by the GRID control.
+
+
+	Español:
+	--------
+
+	- Nuevo: Virtual Grid soporta las propiedades allowedit, ColumnWhen, 
+	ColumnValid, ColumnControls, DynamicBackColor y DynamicForeColor 
+	desde esta versión. Ejemplos: GRID_24 y GRID_25.
+
+	- Nuevo: 'ColumnControls' soporta ahora el control EDITBOX ([Ctrl+W] 
+	para aceptar y [Esc] para cancelar). Ejemplo: GRID_25.
+
+	- Nuevo: 'ColumnControls' (Grid) soporta ahora un tercer parámetro para
+	el control ComboBox. Este nuevo parámetro es un array conteniendo los
+	valores para almacenar en el Grid lugar de la posición del elemento
+	seleccionado. Ejemplo: GRID_27.
+
+	- Modificado: Desde exta versión es posible salir del modo de edición 
+	en el control Grid con un click de mouse (equivalente a usar le tecla 
+	[Enter])
+
+	- Nuevo: Soporte para tablas para el control Grid:
+
+		- 'RowSource' Property.
+		- 'ColumnFields' Property.
+		- 'AllowAppend' Property.
+		- 'AllowDelete' Property.
+		- 'Buffered' Property.
+		- 'DynamicDisplay' Property.
+		- 'RecNo' Property.
+		- 'Append' Method.
+		- 'Save' Method.
+		- 'Refresh' Method.
+		- 'Delete' Method.
+		- 'Recall' Method.
+
+		En el modo 'Buffered', al agregar un nuevo registro, este se
+		almacenará en un buffer temporal (de un registro).
+		Este buffer es vaciado y su contenido guardado en la tabla
+		cuando se agrega un nuevo registro, con el método 'Save' o
+		cuando el control Grid es eliminado.
+		la ventaja principal de esta forma de trabajo es que el
+		nuevo registro se posicionará al final del Grid, sin ser
+		afectado por el orden impuesto por el índice activo.		
+
+		'Append' tiene el atajo Alt+A.
+		'Save' tiene el atajo Alt+S.
+		'Delete' tiene el atajo Alt+D.
+		'Recall' tiene el atajo Alt+R.
+
+		'DynamicDisplay' permite definir un arrays de code-blocks para
+		personalizar el contenido de las celdas que se mostrará (un 
+		elemento por columna).
+		This.CellValue, This.CellRowIndex y This.CellColIndex
+		estan disponibles para ser evaluados en el code-block.
+
+		El registro seleccionado puede establecerse por medio de
+		la propiedad 'value' de la misma forma que en un grid 
+		con el estilo 'cellnavigation'.
+		También puede usarse la nueva propiedad 'recno', estableciendo
+		el item activo por medio de su número de registro físico.
+
+		El método 'Refresh' debe usarse para actualizar cambios hechos
+		a la tabla por fuera de Grid.
+
+		Los registros marcados para eliminación no pueden ser editados y
+		se mostrarán en color gris claro.
+
+		Ejemplos: GRID_25, GRID_26, GRID_27, GRID_28, GRID_29, GRID_30.
+
+	- Solucionado: El procedimiento 'OnChange' ejecutado by por los eventos gotfocus/lostfocus 
+	para el control textbox (numeric-inputmask). Reportado por Grigory Filatov.
+
+	- Solucionado: Problemas con Grid (editable, cell-navigation). 
+	Reportado por Sudip.
+
+	- Solucionado: Problemas con el control Timer. Reportado por Grigory Filatov.
+
+	- Solucionado: Problemas con when en Browse. Reportado por Luis Vasquez.
+
+	- Solucionado: Problemas expresiones de grupo numéricas en el generador
+	de reportes. Reportado por Fernando Chirico.
+
+	- Solucionado: Problemas con el generador de reportes al no especificar
+	encabezado de grupo. Reportado por Sudip.
+
+	- Soluconado: Virtual GRID. Problemas de actualización. 
+	Reportado por Vanguarda.
+
+	- Modificado: La instalación de HMG es portable desde esta versión.
+	Por lo tanto, puede ser instalado en cualquier carpeta (diferente de
+	c:\hmg).
+
+	- Actualizado: Harbour compiler a 2.0.0 (r13372) DISTRIBUCION OFICIAL. 
+
+		- Actualizado: MingW compiler a 4.4.1
+
+	- Nuevo: Propiedad MULTILINE para el control TAB.
+
+	- Nuevo: Conjunto de archivos de recursos. Contribución: Vanguarda.
+
+	- Modificado: Mensajes en Portugués. Contribución: Salamandra.
+
+	- Modificado: Samples.
+
+		Eliminado: Ejemplos ADORDD (adordd no funciona en la 
+			   versión actual de Harbour)
+		
+		Agregados: 
+
+			-\HMG\SAMPLES\RDD.SQL\MYSQL
+			-\HMG\SAMPLES\RDD.SQL\ODBC
+			-\HMG\SAMPLES\RDD.SQL\ARRAY
+			-\HMG\SAMPLES\MEMORY.TABLES
+			-\HMG\SAMPLES\MULTI.WIN
+			-\HMG\SAMPLES\SQLITE
+			-\HMG\SAMPLES\POSTGRESQL
+			-\HMG\SAMPLES\NETIO.01
+			-\HMG\SAMPLES\NETIO.02
+			-\HMG\SAMPLES\HMGTALK
+
+		Modificado:
+
+			-\HMG\SAMPLES\MULTI.PRG
+			-\HMG\SAMPLES\CONTAINERS\TOOLBAR*
+
+	Nuevo:'Build.bat' (reemplaza a 'compile.bat'). 
+		
+	Build [/i|/r|/d|/cs|/ci/cr] <PrgFile> | <filelist.hbp> [config.hbc]
+	
+	[/i] : incremental build
+	[/r] : incremental build (rebuild all)
+
+	[/cs] : Console/mixed mode (std build)
+	[/ci] : Console/mixed mode (incremental build)
+	[/cr] : Console/mixed mode (incremental rebuild all)
+
+	[/d] : Debug mode (gui and console)
+
+
+	<filelist.hbp> : Un archivo de texto con la lista de programas del proyecto.
+	<configfile.hbc>: Un archivo de texto con información de configuración
+	(librerías adicionales y paths de include y librerías adicionales).
+
+		<configfile.hbc> Syntax:
+ 
+		incpaths = incpath1 incpath2 ... incpathn
+                   
+		libpaths = libpath1 libpath2 ... libpathn
+ 
+		libs = lib1 lib2 ... libn
+
+		mt=yes (soporte multi-threading)		
+
+	- Los nombres de librería no deben incluir el prefijo 'lib' ni la 
+	extensión '.a'
+
+	- 'build.bat' creará un archivo llamado 'error.log' en la carpeta de la 
+	aplicaci'ón cuando el proceso de compilación falle.
+
+	Ejemplo: \HMG\SAMPLES\MULTI.PRG
+
+	- Modificado: Desde esta versión, Browse es considerado un control de  
+	compatibilidad (obsoleto) y por lo tanto no recomendado. Este es 
+	reemplazado por el control Grid.
+
+	- Modificado: Nuevo control de errores en los eventos 'ColumnWhen' y
+	'ColumnValid' de Browse y Grid para evitar el intento de edición 
+	simultánea de celdas en diferentes instacias del control. 
+	Reportado por Luis Vazquez.
+
+- HMG 2.9.5 Changelog:
+
+
+	English:
+	--------
+
+	- New: 'Filled' clause for PRINT RECTANGLE command. Contributed 
+	by Rathinagiri.
+
+	- New: 'DATA' section for reports. It allows to define an 'iterator' and
+	'Stopper' conditions. 
+	
+		BEGIN DATA
+			ITERATOR	<xExpression>
+			STOPPER		<xExpression>
+		END DATA
+
+	This new feature is useful for use (ie) arrays instead tables for reports.
+
+	Sample:
+
+		Public i := 1
+		Public aRows [ 20 ] [ 3 ]
+		...
+		DEFINE REPORT TEMPLATE
+			BEGIN DATA
+				ITERATOR	i++
+				STOPPER		i == 20 
+			END DATA
+			...
+			BEGIN DETAIL
+				BANDHEIGHT	6
+				BEGIN TEXT
+					EXPRESSION	aRows [i] [1]
+				...
+			END DETAIL
+		...			
+		END REPORT		
+
+	The section is optional. If omited, 'Iterator' will be set as 'dbskip()'
+	and 'Stopper' as 'Eof()'
+
+	Full Sample: \hmg\samples\report.advanced\demo8.prg
+
+	Español:
+	--------
+
+	- Nuevo: Cláusula 'Filled' para el comando PRINT RECTANGLE. Contribución
+	de Rathinagiri.
+
+	- Nuevo: Sección 'DATA' para el generador de reportes. Por medio de esta 
+	sección puede definirse un 'Iterador'y un 'Stopper'.
+
+		BEGIN DATA
+			ITERATOR	<xExpression>
+			STOPPER		<xExpression>
+		END DATA
+
+	Esta nueva característica es útil, por ejemplo, para usar arrays en lugar
+	de tablas para los reportes.
+
+	Ejemplo:
+
+		Public i := 1
+		Public aRows [ 20 ] [ 3 ]
+		...
+		DEFINE REPORT TEMPLATE
+			BEGIN DATA
+				ITERATOR	i++
+				STOPPER		i == 20 
+			END DATA
+			...
+			BEGIN DETAIL
+				BANDHEIGHT	6
+				BEGIN TEXT
+					EXPRESSION	aRows [i] [1]
+				...
+			END DETAIL
+		...			
+		END REPORT		
+
+	La sección es opcional. Si se omite, 'Iterator' es establecido como 'dbskip()'
+	y 'Stopper()' como 'Eof()'.
+
+	Ejemplo Completo: \hmg\samples\report.advanced\demo8.prg
+
+
+- HMG 2.9.4 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed. Multiple buttons having 'default button' style. Reported by 
+	Vanguarda. Thanks to Grigory Filatov for help.
+
+
+	Español:
+	--------
+
+	- Solucionado: Multiples botones con el estilo 'botón por defecto'.
+	 Reportado por Vanguarda. Gracias a Grigory Filatov por la ayuda.
+
+
+- HMG 2.9.3 Changelog:
+
+
+	English:
+	--------
+
+	- New: Report generator. Samples and details: 
+	\hmg\samples\report.advanced.
+	
+	- Fixed: Hyperlink control bug. Reported by Rathinagiri.
+
+	- Fixed. Various errors in documentation.
+
+	- Fixed. Browse bug. Reported by Vanguarda.
+
+
+	Español:
+	--------
+
+	- Nuevo: Generqdor de reportes. Ejemplos y detalles en: 
+	\hmg\samples\report.advanced.
+
+	- Solucionado: Problemas con el control HyperLink. Reportado por 
+	Rathinagiri.
+
+	- Solucionado: Varios errores en la documentación.
+
+	- Solucionado: Bug en Browse. Reportado por Vanguarda.
+
+
+- HMG 2.9.2 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: Print Preview. 'go to page' window not refresh preview
+	window.
+
+	- Modified: Documentation completed, fixed, indexed, linked and 
+	formatted.
+
+	- New: Property style synonyms for the following GUI 
+	objects (look at documentation for details):
+
+		- WINDOW
+		- TOOLBAR 
+		- TREE
+		- TAB
+		- SPLITBOX
+		- CONTEXT MENU
+		- DROPDOWN MENU
+		- MAIN MENU
+		- STATUSBAR
+
+	The following synonyms for alternate syntax were added:
+
+		- LINES  (NOLINES)
+		- ALIGNMENT  (CENTERALIGN,RIGHTALIGN)
+		- TODAY  (NOTODAY)
+		- TODAYCIRCLE (NOTODAYCIRCLE)	
+		- DATATYPE (NUMERIC,CHARACTER,DATE)
+		- CASECONVERT (UPPERCASE,LOWERCASE)
+		- TICKMARKS (NOTICKS)
+		- AUTOSIZEWINDOW (NOAUTOSIZEWINDOW)
+		- AUTOSIZEMOVIE (NOAUTOSIZEMOVIE)
+		- ERRORDLG (NOERRORDLG)
+		- MENU (NOMENU)
+		- OPEN (NOOPEN)
+		- PLAYBAR (NOPLAYBAR)
+
+
+	Español:
+	--------
+
+	- Solucionado: Vista previa de impresión. Al cambiar de página desde
+	la ventana 'ir a' la ventana no se actualiza.
+
+	- Modificado: Documentación completada y corregida (indice, enlaces 
+	y formato).
+
+	- Nuevo: Sinónimos (estilo propiedad) para los siguientes objetos
+	(consultar la documentación para ver los detalles)
+
+		- WINDOW
+		- TOOLBAR 
+		- TREE
+		- TAB
+		- SPLITBOX
+		- CONTEXT MENU
+		- DROPDOWN MENU
+		- MAIN MENU
+		- STATUSBAR
+
+	Los siguientes sinónimos fueron agregaods para la sintaxis alternativa:
+
+		- LINES  (NOLINES)
+		- ALIGNMENT  (CENTERALIGN,RIGHTALIGN)
+		- TODAY  (NOTODAY)
+		- TODAYCIRCLE (NOTODAYCIRCLE)	
+		- DATATYPE (NUMERIC,CHARACTER,DATE)
+		- CASECONVERT (UPPERCASE,LOWERCASE)
+		- TICKMARKS (NOTICKS)
+		- AUTOSIZEWINDOW (NOAUTOSIZEWINDOW)
+		- AUTOSIZEMOVIE (NOAUTOSIZEMOVIE)
+		- ERRORDLG (NOERRORDLG)
+		- MENU (NOMENU)
+		- OPEN (NOOPEN)
+		- PLAYBAR (NOPLAYBAR)
+
+
+- HMG 2.9.1 Changelog:
+
+	English:
+	--------
+
+	- Fixed: Redundant 'if' in grid event processing. Reported by 
+	Grigory Filatov.
+
+	- Fixed: Grid (CellNavigation). OnChange event not fired whe selection
+	is automatically changed after accepting cell edit with [Enter].
+
+	- Fixed: ComboBox with images. 'Item' property read problems. Reported
+	by Esgici.
+
+	- Fixed: Browse control. Value changed with right mouse button not fires
+	OnCgange event procedure.
+
+	- Fixed: Programmatic change not execute OnChange procedure for the
+	following controls:
+
+		- ComboBox
+		- Slider
+		- ListBox
+		- Edit
+		- DatePicker
+		- RadioGroup
+		- MonthCalendar
+
+	- Fixed: 'Value' property. From this version, programmatic changes to 
+	this property only occurs when new value is different from previous one.
+
+	- Fixed: Focus problem with editable Grid in child windows. Reported by
+	Sudip.
+
+	- Modified: Grid Control (CellNavigation). Up and Down arrows allows to
+	exit cell edit mode accepting the value. Exiting cell edit mode with 
+	[Enter] will move selected cell cursor to right.
+
+	- Modified: Finished documentation.
+
+
+	Español:
+	--------
+
+	- Solucionado: 'if' redundante en el procesamiento de eventos del
+	control Grid. Reportado por Grigory Filatov.
+
+	- Solucionado: Grid (CellNavigation). Evento 'OnChange' no ejecutado
+	cuando la selección es cambiada automáticamente después de aceptar los
+	cambios de una celda con [Enter].
+
+	- Solucionado: ComboBox con imágenes. Problemas de lectura con la 
+	propiedad 'Item'. Reported por Esgici.
+
+	- Solucionado: Browse control. Al cambiar el registro seleccionado con el
+	botón derecho del mouse no ejecytaba el procedimieto 'OnChange'.
+
+	- Solucionado: Los cambios programáticos no ejecutaban el procedimiento 
+	'OnChange' para los siguientes controles:
+
+		- ComboBox
+		- Slider
+		- ListBox
+		- Edit
+		- DatePicker
+		- RadioGroup
+		- MonthCalendar
+
+	- Solucionado: Propiedad 'Value'. Desde esta versión, los cambios 
+	programáticos a esta propiedad solo ocurrir'án cuando el nuevo valor sea
+	diferent del anterior.
+
+	- Solucionado: Problemas de foco con Grids editables en ventanas 'child'.
+	Reportado por Sudip.
+
+	- Modificado: Control Grid (CellNavigation). Las teclas de movimiento
+	del cursor (arriba y abajo) permiten salir del modo de edición aceptando
+	los cambios. Al aceptar la modificación de una celda con [Enter] se 
+	seleccionará automaticamente la celda contigua.
+
+	- Modificado: Documentación finalizada.
+
+
+- HMG 2.8.8 Changelog:
+
+	English:
+	--------
+
+	- Fixed: Focus at application startap with multiple windows.
+
+	- Fixed: Value property error checking for grid.
+
+	- Fixed: WAIT WINDOW not hiding with all keys and mouse buttons.
+
+	Español:
+	--------
+
+	- Solucionado: Foco en el inicio de la aplicación con múltiples ventanas.
+
+	- Solucionado: Verificacion de errores para la propiedad 'Value' en Grid.
+	
+	- Solucionado: WAIT WINDOW. Algunas teclas y botones del mouse no 
+	ocultan la ventana.
+
+
+- HMG 2.8.6 Changelog:
+
+	English:
+	--------
+
+	- New: CELLNAVIGATION property for GRID control.
+
+	- Modified: GRID control (Navigation 'by cell'). When 'CellNavigation'
+	Grid property is set to .T. value property will be a two element array 
+	(row,column).
+
+	Sample: \hmg\samples\grid_21,\hmg\samples\grid_22,\hmg\samples\grid_23. 
+
+	Español:
+	--------
+
+	- Nuevo: Propiedad CELLNAVIGATION para el control GRID.
+
+	- Modificado: Control GRID (navegación 'por celda'). Cuando la 
+	propiedad 'CellNavigation' se establece en .T., la propiedad 'value' 
+	será un array numérico de dos elementos	(Fila,Columna).
+	
+	Ejemplo: \hmg\samples\grid_21,\hmg\samples\grid_22,\hmg\samples\grid_23. 
+
+
+- HMG 2.7.2 Changelog:
+
+	English:
+	--------
+
+	- Modified: DRAGITEMS LISTBOX control. Move an item above the
+	last one is allowed now.
+
+	- Fixed: This.cellValue bug. Thanks to Grigory Filatov.
+
+	- Fixed: \hmg\samples\mysql\demo2.prg. Report and fix by sudip.
+
+	Español:
+	--------
+
+	- Nuevo: DRAGITEMS LISTBOX. Ahore es posible mover un item por encima
+	del último.
+
+	- Solucionado: Bug en This.CellValue. Gracias a Grigory Filatov.
+
+	- Solucionado: \hmg\samples\mysql\demo2.prg. Reportado y solucionado
+	por sudip.
+
+- HMG 2.7.1 Changelog:
+
+	English:
+	--------
+
+	- New: DRAGITEMS property for LISTBOX control.
+	This property allows to user to reorder items in a ListBox
+	by dragging it. Samples:\hmg\samples\listbox
+
+	- Fixed: This.cellValue bug. Thanks to Grigory Filatov.
+
+
+	Español:
+	--------
+
+	- Nuevo: Propiedad DRAGITEMS para el control LISTBOX.
+	Esta propiedad permite al usuario reordenar los items en un ListBox
+	arrastrándolos. Ejemplos:\hmg\samples\listbox
+
+	- Solucionado: Bug en This.CellValue. Gracias a Grigory Filatov.
+
+
+- HMG 2.7.0 Changelog:
+
+
+	English:
+	--------
+
+	- New: WAIT WINDOW command. 
+
+
+		This command shows a window with a custom message and pauses
+		program execution until a key is pressed or mouse is clicked.
+
+		When optional NOWAIT clause is specified program execution 
+		continue after message is displayed. To hide the message
+		window WAIT CLEAR must be used.
+
+		This command must be used only after main window was activated.
+
+		Syntax (Command):
+		                                            
+			WAIT WINDOW <cMessage> [ NOWAIT ] | CLEAR 
+
+		Syntax (Function):
+
+			WaitWindow ( [ cMessage , lNoWait ] )
+
+			To hide the message window (WAIT CLEAR) you must omit 
+			both parameters. 
+
+		Sample 1:
+
+			WAIT WINDOW "Press any key to continue"
+
+		Sample 2:
+
+			WAIT WINDOW "Processing" NOWAIT			
+			<...>		
+			WAIT CLEAR
+
+		More Samples: \hmg\samples\wait_window
+
+
+	- New: 'System' object. It will aloow to read (and write when possible)
+	various operating system properties.
+	The first implementation allows to access (read and write) the system
+	clipboard and various system settings (read only).
+	Clipboard functions are based upon HWGUI and WHAT32 code.
+
+		Syntax:
+
+			System.Clipboard [ := <cString> ]
+
+			System.DesktopWidth
+			System.DesktopHeight
+			System.DefaultPrinter
+			System.DesktopFolder
+			System.MyDocumentsFolder
+			System.ProgramFilesFolder
+			System.SystemFolder
+			System.TempFolder
+			System.WindowsFolder
+
+		Samples:
+
+			System.Clipboard := 'a string'
+
+			<...>
+
+			MsgInfo(System.Clipboard)
+
+			<...>
+
+			MsgInfo(Str(System.DesktopWidth))
+
+			<...>
+
+			MsgInfo(Str(System.DesktopHeight))
+
+			<...>
+
+			MsgInfo(System.DefaultPrinter)
+
+
+	More samples: \hmg\samples\clipboard.
+
+	- Modified: Grid Control: 'This.CellValue' is writable now, so, you can 
+	change the value of the cell being currently edited from inside 'Valid'
+	cell procedure. Sample: \hmg\samples\grid_14
+
+	- Modified: EXECUTE...WAIT command supports HIDE clause now.
+
+	- Modified: ADORDD library was replaced with a prior version since the one
+	currently distributed with Harbour has bugs (Many Thanks to Grigory 
+	Filatov for help on this!).
+
+	- Modified: Matteo Baccan socket library are not linked by default 
+	anymore. It will be removed in the next release. Use HBTIP instead. 
+
+	- Modified: DRAW GRAPH (pie type) accepts bigger than 7 digits values 
+	now (Thanks to Esgici).
+
+	- Fixed: Changing grid cell content in the same row being editing, from
+	a valid procedure not working.
+
+	- Fixed: 'AddItem' method and 'Item' (Grid) properties problems in WIn9x
+	systems.
+
+	- Fixed: DRAW GRAPH (pie type) problem with low values (about 0%).
+
+
+	Español:
+	--------
+	
+	- Nuevo: comando WAIT WINDOW. 
+
+
+		Este comando muestra una ventana con un mensaje personalizado 
+		y pausa la ejecución del programa hasta que se pulsa cualquier 
+		tecla o se hace clic. 
+
+		Cuando la cláusula opcional nowait se especifica, la ejecución 
+		del programa continua después de mostrar el mensaje 
+		Para ocultar la ventana debe usarse WAIT CLEAR. 
+
+		Este comando debe utilizarse sólo después de que la ventana 
+		principal se haya activado. 
+
+		Sintaxis (comando): 
+
+		WAIT WINDOW <cMessage> [nowait] | CLEAR 
+
+		Sintaxis (Función): 
+
+		WaitWindow ([cMessage, lNoWait]) 
+
+		Para ocultar la ventana (WAIT CLEAR) debe omitirse 
+		ambos parámetros. 
+
+		Ejemplo 1: 
+
+			WAIT WINDOW "Press any key to continue"
+
+		Ejemplo 2: 
+
+			WAIT WINDOW "Processing" NOWAIT			
+			<...>		
+			WAIT CLEAR
+
+		Más ejemplos:\HMG\samples\wait_window 
+
+	- Nuevo: Objeto 'System'. Permitirá tener acceso de lectura y escritura
+	a varias propiedades del sistema.
+	La primera implementación permitirá tener acceso de lectura y escritura
+	al portapapeles y acceso de lectura a varias propiedades del sistema.
+	Las funciones de acceso al portapapeles están basadas en código de HWGUI
+	y WHAT32.
+
+		Sintaxis:
+
+			System.Clipboard
+			System.Clipboard := <cString>
+
+			System.DesktopWidth
+			System.DesktopHeight
+			System.DefaultPrinter
+			System.DesktopFolder
+			System.MyDocumentsFolder
+			System.ProgramFilesFolder
+			System.SystemFolder
+			System.TempFolder
+			System.WindowsFolder
+
+		Ejemplos:
+
+			System.Clipboard := 'a string'
+
+			<...>
+
+			MsgInfo(System.Clipboard)
+
+			<...>
+
+			MsgInfo(Str(System.DesktopWidth))
+
+			<...>
+
+			MsgInfo(Str(System.DesktopHeight))
+
+			<...>
+
+			MsgInfo(System.DefaultPrinter)
+
+
+	More samples: \hmg\samples\clipboard.
+
+	- Modificado: Control Grid: 'This.CellValue' puede ser modificado.
+	desde el procedimiento 'ColumnValid'. Ejemplo:\HMG\samples\grid_14 
+
+	- Modificado: El comando EXECUTE...WAIT soporta ahora la cláusula HIDE.	
+
+	- Modificado: La librería ADORDD fue reemplazada por una versión anterior
+	ya que la que se distribuye actualmente con Harbour presenta bugs (Muchas
+	Gracias a Grigory Filatov por su ayuda!).
+
+	- Modificado: La librería 'socket' de Mateo Baccan ya no es enlazada por 
+	defecto y será removida en el próximo release. Debe usarse HBTIP en 
+	su lugar. 
+
+	- Modificado: FRAW GRAPH (pie type) acepta ahora valores mayores a 7 digitos
+	(Gracias a Esgici).
+
+	- Solucionado: Problemas al cambiar el contenido de las celdas
+	de un control Grid, desde el procedimiento 'ColumnValid', para
+	la fila que se está editando.
+
+	- Solucionado: Problemas con el método 'AddItem' (Grid)
+	en sistemas Win9x.
+
+	- Solucionado: Problemas con DRAW GRAPH (tipo PIE) con valores bajos 
+	(cercanos al 0%).
+
+
+- HMG 2.6.7 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: Errors in documentation. 
+
+	- Fixed: Problems with semi-oop preprocessor directives introduced 
+	in 2.6.6. Reported by Marek and Grigory Filatov.
+
+	- Fixed: Problem with libhbmysql.a. Reported by Osvaldo Tambutti.
+
+
+	Español:
+	--------
+
+	- Solucionado: Errores en la documentación. 
+
+	- Solucionado: Problemas con las directivas de preprocesador (semi-oop) 
+	introducidos en la versión 2.6.6. Reportado por Grigory Filatov.
+
+	- Solucionado: Problema con libhbmysql.a. Reportado por Osvaldo Tambutti.
+
+
+- HMG 2.6.6 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: Error in documentation. Reported by Grigory Filatov.
+
+	- Fixed: Another problem in print preview introduced in 2.6.2.
+	Reported by Grigory Filatov.
+
+	- Fixed: Semi-oop syntax for containers. Tab, ToolBar and SplitBox 
+	child controls can be (optionally) referred as follows:
+
+	ToolBar Buttons:
+
+		Window.ToolBar.Button
+	
+	Tab child controls:
+
+		Window.Tab(nPage).Control
+
+	SplitBox child controls ('SplitBox' name is automatically assigned):
+
+		Window.SplitBox.Control
+	
+	When a ToolBar is in a SplitBox, the syntax is as follows:
+
+		Window.SplitBox.ToolBar.Button
+
+	Samples: \hmg\samples\containers.
+
+
+	Español:
+	--------
+
+	- Solucionado: Error en la documentación. Reportado por Grigory Filatov.
+
+	- Solucionado: Otro problema en la vista previa de impresión introducido
+	en la versión 2.6.2. Reportado por Grigory Filatov.
+
+	- Solucionado: Sintaxis semi-oop para contenedores. Los controles
+	pertenecientes a un Tab, SplitBox o ToolBar pueden ser referidos
+	(opcionalmente) según se indica a continuación:
+
+	Botones de ToolBar:
+
+		Window.ToolBar.Button
+	
+	Controles en Tab:
+
+		Window.Tab(nPage).Control
+
+	Controles en SplitBox (El nombre 'SplitBox' es asignado
+	automáticamente):
+
+		Window.SplitBox.Control
+	
+	Cuando un ToolBar está en un SplitBox, la sintaxis es:
+
+		Window.SplitBox.ToolBar.Button
+
+	Ejemplos: \hmg\samples\containers.
+
+
+- HMG 2.6.5 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: Problem in print preview introduced in 2.6.2.
+
+	- Updated: Harbour compiler updated to version 1.01.	
+
+	- Modified: Documentation.
+
+	Español:
+	--------
+
+	- Solucionado: Problema en la vista previa de impresión introducido
+	en la versión 2.6.2.
+
+	- Actualizado: Harbour a la versión 1.01.
+
+	- Modificado: Documentación.
+
+
+- HMG 2.6.4 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: 'Caption' property not working for ToolBar buttons. Reported
+	by Grigory Filatov.
+	
+
+	Español:
+	--------
+
+	- Solucionado: Problemas con la propiedad 'Caption' en los botones
+	de ToolBar. Reportado por Grigory Filatov.
+
+
+- HMG 2.6.3 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: 'RangeMax' and 'RangeMin' properties not working when set
+	its values at runtime for Spinner control.
+
+	- Fixed: Incorrect dimensions in print preview windows under 
+	Vista with 'Classic' theme.
+
+	- Fixed: 'Caption' property not working for ToolBar buttons.
+	
+	- Fixed: Problem in print preview introduced in 2.6.2.
+
+
+	Español:
+	--------
+
+	- Solucionado: Las propiedades 'RangeMax' y 'RangeMin' no funcionan 
+	al intentar cambiar sus valores en tiempo de ejecución para el control
+	Spinner.
+
+	- Solucionado: Dimensiones de las ventanas de vista previa de 
+	impresión en Vista con el tema 'Clásico'
+
+	- Solucionado: Problemas con la propiedad 'Caption' en los botones
+	de ToolBar.
+
+	- Solucionado: Problema en la vista previa de impresión introducido
+	en la versión 2.6.2.
+
+
+- HMG 2.6.2 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: Tab page change based on hotkey, causes double excecution
+	of 'OnChange' event. Reported by Grigory Filatov.
+
+	- Fixed: Programatic change to CheckBox control Value do no excecute 
+	'OnChange' procedure. Reported by Grigory Filatov.
+
+	Español:
+	--------
+
+	- Solucionado: El cambio de página de Tab basado en un atajo de teclado, causa
+	la doble ejecución del evento 'OnChange'. Reportado por Grigory Filatov.
+
+	- Solucionado: Los cambios en la propiedad Value del control CheckBox 
+	no ejecutan el procedimiento OnChange. Reportado por Grigory Filatov.
+
+
+- HMG 2.6.1 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: Problems with InputItems in Browse control. Reported by 
+	Fernando Chirico and Grigory Filatov.
+
+	- Fixed: Programatic change to Tab control Value do no excecute 
+	'OnChange' procedure. Reported by: Gert Winderlich.
+
+	Español:
+	--------
+
+	- Solucionado: Problemas con la propiedad InputItems en el control
+	Browse. Reportado por Fernando Chirico y Grigory Filatov.
+
+	- Solucionado: Los cambios en la propiedad Value del control Tab 
+	no ejecutan el procedimiento OnChange. Reportado por: Gert Winderlich.
+
+
+- HMG 2.6.0 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: 'OnEnter' event not forwing for ComboBox with images
+	(c:\hmg\samples\combo_5\test1.prg).
+
+	- Fixed: Extended syntax for tab child controls (c:\hmg\samples\tab).
+
+	Español:
+	--------
+
+	- Solucionado: Problema con el evento 'OnEnter' en ComboBox con
+	imágenes.
+
+	- Solucionado: Sintáxis extendida para el control TAB 
+	(c:\hmg\samples\tab).
+
+
+- HMG 2.5.9 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: Pressing [Esc] key in splitbox child EditBox, causes splitbox
+	to close.
+
+	- New: 'Multiline' property for Button control. If .T. , it wraps
+	the text to multiple lines when the text is too long to fit on a 
+	single line.
+
+	Sample:
+
+		DEFINE BUTTON BUTTON_5		
+			ROW			10
+			COL			200
+			CAPTION			"Please... Click This!"
+			ACTION			MsgInfo('Thanks!')
+			PICTURE			"button.BMP"
+			WIDTH			120
+			HEIGHT			60
+			PICTALIGNMENT		LEFT
+			MULTILINE		.T.
+		END BUTTON
+
+
+	More samples:\hmg\samples\button_2
+
+
+	Español:
+	--------
+
+	- Solucionado: Presionando [Esc] en un EditBox contenido en un
+	SplitBox, causa que el SPlitBox se cierre.
+
+	- Nuevo: Propiedad 'Multiline' para el control Button. Si se establece
+	como .T., dividirá el texto del botón en múltiples líneas en caso que
+	sea demasiado extenso como para una sola.
+
+	Ejemplo:
+
+		DEFINE BUTTON BUTTON_5		
+			ROW			10
+			COL			200
+			CAPTION			"Please... Click This!"
+			ACTION			MsgInfo('Thanks!')
+			PICTURE			"button.BMP"
+			WIDTH			120
+			HEIGHT			60
+			PICTALIGNMENT		LEFT
+			MULTILINE		.T.
+		END BUTTON
+
+	Más ejemplos:\hmg\samples\button_2
+
+
+- HMG 2.5.8 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: Problems with 'HeaderImages' in XP.
+
+
+	Español:
+	--------
+
+	- Solucionado: Problemas con la propiedad 'HeaderImages' en XP.
+
+
+- HMG 2.5.7 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: Activex control problems when used in tabs. Reported by 
+	Juan Rendon.
+
+	- Fixed: Changing header text or image of Grid or Browse, changes 
+	aligment to left always.
+
+	- Fixed: Setting content for selected item in listbox, will cause that 
+	value be set to zero.
+
+	- Fixed: ToolButton error checking. Dropdown button
+	must have an associated action, if not (for no action dropdown)
+	'wholedropdown' style must be used.
+
+	- Modified: WholeDropdown ToolBar buttons shortcuts opens the menu
+	now.
+
+
+	Español:
+	--------
+
+	- Solucionado: Problemas con Activex cuando es usado en un TAB.
+        Reportado por Juan Rendon.
+
+	- Solucionado: Al cambiar el texto o la imagen del encabezado en
+	un control Grid o Browse, la alineación cambia a la izquierda.
+
+	- Solucionado: AL cambiar el contenido del item seleccionado en
+          un ListBox, el valor cambia a cero.
+
+	- Solucionado: Verificación de errores en ToolButton. 
+        Los botones 'Dropdown' deben estar asociados a una acción, de 
+        lo contrario, debe usarse el estilo 'WholeDropDown'
+
+	- Modificado: Los atajos de teclado en los botones 'WholeDropDown',
+        ahore abren el menu asociado al botón.
+
+
+- HMG 2.5.6 Changelog:
+
+
+	English:
+	--------
+
+	- Updated: Harbour Compiler to 1.0.0 FINAL VERSION!!! (Thanks to
+	Harbour project team for that GREAT JOB).
+
+	- New: 'HeaderImages' property for Grid and Browse controls.
+	This is a character array containing image filenames or 
+	resourcenames (one for each column).
+	To change a header's image at runtime you must specify the column 
+	position as argument.
+
+
+	Sample (Control definition):
+
+		DEFINE GRID Grid_1 
+			ROW		10
+			COL		10
+			WIDTH		500 
+			HEIGHT		330 
+			HEADERS		{'Last Name','First Name','Phone'} 
+			WIDTHS		{140,140,140}
+			ITEMS		LoadItems() 
+			VALUE		1
+			HEADERIMAGES	{ '00.bmp' , '01.bmp' , '02.bmp' }
+		END GRID
+
+
+	Sample (Set image at runtime):
+
+	Form_1.Grid_1.HeaderImages(1) :=  '03.bmp'
+
+
+	Sample (Get Image at runtime):
+
+	MsgInfo ( Form_1.Grid_1.HeaderImages(1) )
+
+	More Samples: \hmg\samples\grid_18, \hmg\samples\browse_6
+
+
+	- Fixed: ComboBox with images not working on Win9x systems. Thanks to
+	Grigory for the report.
+
+	- Fixed: Misc errors in reference doc. Thanks to Esgici.
+
+
+	Español:
+	--------
+
+	- Actualizado: Harbour a la versión 1.0.0 FINAL!!! (Gracias a todo
+	el euipo de Harbour por este GRAN TRABAJO!!).
+
+	- Nuevo: Propiedad 'HeaderImages' para Grid y Browse.
+	Es un array de caracteres conteniendo nombres de archivo de imagen
+	o recursos (uno por cada columna).
+	Para cambiar la imagen del header en tiempo de ejecución debe
+	especificarse la posición de la columna como argumento.
+
+
+	Ejemplo (Definición del control):
+
+		DEFINE GRID Grid_1 
+			ROW		10
+			COL		10
+			WIDTH		500 
+			HEIGHT		330 
+			HEADERS		{'Last Name','First Name','Phone'} 
+			WIDTHS		{140,140,140}
+			ITEMS		LoadItems() 
+			VALUE		1
+			HEADERIMAGES	{ '00.bmp' , '01.bmp' , '02.bmp' }
+		END GRID
+
+
+	Ejemplo (Establecer la imagen en tiempo de ejecución):
+
+	Form_1.Grid_1.HeaderImages(1) :=  '03.bmp'
+
+
+	Ejemplo (Obtener el nombre de la imagen en tiempo de ejecución)
+
+	MsgInfo ( Form_1.Grid_1.HeaderImages(1) )
+
+	Más ejemplos: \hmg\samples\grid_18, \hmg\samples\browse_6
+
+
+	- Solucionado: Problemas con ComboBox con imágenes en sistemas Win9x.
+	Gracias a Grigory por el reporte.
+
+	- Fixed: Misc errors in reference doc. Thanks to Esgici.
+
+
+
+- HMG 2.5.5 Changelog:
+
+
+	English:
+	--------
+
+	- New: 'DroppedWidth' property for ComboBox control. This property 
+	is used to set the dropdown list in a combobox control. 
+	'DroppedWidth' can't be less that ComboBox width. Sanples: 
+	\hmg\samples\combo_5.
+
+	- New: 'OnDropDown' event for ComboBox control. OnDropDown Event 
+	will be executed when the user attempts to open combo's dropdown 
+	list. Sanples: \hmg\samples\combo_5.
+
+	- New: 'OnCloseUp' event for ComboBox control. It will be executed 
+	when the user closes the dropdown list. Sanples: 
+	\hmg\samples\combo_5.
+
+	- Fixed: Selected item is correctly preserved for Combobox using
+	'ItemSource' property after refresh.
+
+	- New: 'Image' property for ComboBox cpntrol.
+
+	'Image' Property specify a character array containing image file 
+	names or resource names.
+
+	When you add an item, must specify the image array index number 
+	(zero based) and the text associated with it.
+
+	When adding items at startup you must to use a two dimensional array.
+	This array must have one row for each combo item and two columns.
+	The first column must contain the image index and the second the 
+	text for the item.
+
+	When using the additem or Item properties you must use a single array
+	containing two elements. The first, the image index item and the 
+	second, the text for the item. 
+
+	When you retrieve the item, using the 'item' property, it will 
+	return a two elwments array containing the image index and the text 
+	of the item.
+
+	When 'Image' and 'ItemSource' properties are used simultaneously, 
+	'ItemSource' must be specified as a list containing two field names.
+	The first, the image index for the items, the second, the item text.
+
+	'Sort' and 'Image' can't be used simultaneously.
+
+	Sample:
+
+		DEFINE COMBOBOX Combo1
+			ROW 10
+			COL 250
+			ITEMSOURCE CIDADES->CODIGO , CIDADES->DESCRICAO
+			VALUE 2
+			WIDTH 200					
+			HEIGHT 100					
+			IMAGE { 'Img0.bmp','Img1.bmp','Img2.Bmp','Img3.Bmp' }
+			DROPPEDWIDTH 350
+			ONDROPDOWN PlayBeep()
+			ONCLOSEUP PlayAsterisk()		
+		END COMBOBOX
+
+		<...>
+
+		aItems := {}
+
+		aadd ( aItems , { 2 , 'Item 01' } )
+		aadd ( aItems , { 0 , 'Item 02' } )
+		aadd ( aItems , { 3 , 'Item 03' } )
+		aadd ( aItems , { 1 , 'Item 04' } )
+
+		DEFINE COMBOBOX Combo2
+			ROW	10
+			COL	10
+			WIDTH	100 
+			ITEMS	aItems
+			VALUE	1 
+			IMAGE	{ 'Img0.bmp','Img1.bmp','Img2.Bmp','Img3.Bmp' }
+		END COMBOBOX
+
+		* Adding an item with 'Img3.bmp' and the text 'Hello!'
+
+		Win1.Combo2.AddItem( { 3 , 'Hello!' } )
+
+
+	More Sanples: \hmg\samples\combo_5
+
+
+	Español:
+	--------
+
+	- Nuevo: Propiedad 'DroppedWidth' para el control ComboBox. 
+	Esta propiedad permite establecer el ancho de la lista desplegable.
+	'DroppedWidth' no puede ser menor al ancho del control.
+	Ejemplos: \hmg\samples\combo_5.
+
+	- Nuevo: Evento 'OnDropDown' para el control ComboBox. 
+	Este evento será ejecutado cuando el usuario abra la 
+	lista desplegable. Ejemplos: \hmg\samples\combo_5.
+
+	- Nuevo: Evento 'OnCloseUp' para el control ComboBox. 
+	Se ejecutará cuando el usuario cierre la lista desplegable. Ejemplos: 
+	\hmg\samples\combo_5.
+
+	- Solucionado: El item seleccionado es correctamente preservado
+	luego de un 'refresh' en el control ComboBox que use la propiedad
+	'ItemSource'.
+
+	- Nuevo: Propiedad 'Image' para el control COmboBox.
+
+	La propiedad 'Image' se usa para especificar un array conteniendo 
+	los nombres de archivos de imagen (o recursos) que se quiera asociar
+	al control.
+
+	Al agregar un item, debe especificarse el número de índice de la
+	imagen (basado en cero) y el texto asociados al mismo.
+
+	Al agregar items en la definición del control, debe usarse un array
+	de dos dimensiones (una fila por cada item y dos columnas).
+	La primera columna debe contener el número de índice de la imagen 
+	(posiciónen el array de imágenes definido mediante la propiedad
+	'image') y la segunda columna debe contener el texto asociado al 
+	item.
+
+	Cuando se agregan items usando el método 'AddItem' debe usarse un 
+	array de dos elementos: El primero, el índice de la imagen y el 
+	segundo el texto asociado al item.
+
+	Al leer el contenido de un item por medio de la propiedad 'item'
+	se obtendrá un array de dos elementos, según se describió en el 
+	punto anterior.
+
+	Cuando las propuiedades 'Image' e 'ItemSource' se usan 
+	simultáneamente, 'ItemSource' debe especificarse como una lista
+	conteniendo dos nombres de campo, correspondiendo al indice de la
+	imagen y al texto de cada item, respectivamente.
+
+	Las propiedades 'Sort' e 'Image' no pueden usarse simultáneamente.
+
+	Ejemplo:
+
+		DEFINE COMBOBOX Combo1
+			ROW 10
+			COL 250
+			ITEMSOURCE CIDADES->CODIGO , CIDADES->DESCRICAO
+			VALUE 2
+			WIDTH 200					
+			HEIGHT 100					
+			IMAGE { 'Img1.bmp','Img2.bmp','Img3.Bmp','Img4.Bmp' }
+			DROPPEDWIDTH 350
+			ONDROPDOWN PlayBeep()
+			ONCLOSEUP PlayAsterisk()		
+		END COMBOBOX
+
+		<...>
+
+		aItems := {}
+
+		aadd ( aItems , { 2 , 'Item 01' } )
+		aadd ( aItems , { 0 , 'Item 02' } )
+		aadd ( aItems , { 3 , 'Item 03' } )
+		aadd ( aItems , { 1 , 'Item 04' } )
+
+		DEFINE COMBOBOX Combo2
+			ROW	10
+			COL	10
+			WIDTH	100 
+			ITEMS	aItems
+			VALUE	1 
+			IMAGE	{ 'Img0.bmp','Img1.bmp','Img2.Bmp','Img3.Bmp' }
+		END COMBOBOX
+
+		* Agregando una item con la imagen 'Img3.bmp' y el texto 
+		* 'Hello!'
+
+		Win1.Combo2.AddItem( { 3 , 'Hello!' } )
+
+	Más Ejemplos: \hmg\samples\combo_5
+
+
+- HMG 2.5.4 Changelog:
+
+
+	English:
+	--------
+
+	- Fixed: InputItems property not working when accessed at runtime.
+
+	- Fixed: Edit window height in browse for inputitems combo, to be the
+	same as logical values combo (Thanks to Grigory for the report).
+
+	- Fixed: Browse control error when adding new record and InputItems
+	property is set (Again, thanks to Grigory for the report).
+
+	- Fixed: Tab child control paint problems under Vista 'Windows Classic'
+	theme (Thanks to Rathinagiri for the report).
+		
+	- Fixed: WindowsVersion() function to recognize Windows Vista.
+
+	- Fixed: Horizontal RadioGroup problems in virtual windows 
+	(\hmg\samples\VirtualDim).
+
+	- Modified: Ctrl+W can be used instead [Enter] in InputBox() 
+	function and browse field edit.
+
+
+	Español:
+	--------
+
+	- Solucionado: Problemas de acceso a la propiedad InputItems en 
+	tiempo de ejecución.
+
+	- Solucionado: Altura de la ventana de edición al usar InputItems
+	en Browse (Gracias a Grigory por el reporte).
+
+	- Solucionado: Problema al agregar nuevos registros a Browse cuando 
+	se usa InputItems (Nuevamente, Gracias a Grigory por el reporte).
+
+	- Solucionado: Problemas en la actualización de algunos controles 
+	pertenecientes a un TAB cuando se usa el tema 'Windows Clásico' en
+	Vista (Gracias a Rathinagiri por el reporte).
+		
+	- Solucionado: Función WindowsVersion() para el reconocimiento de 
+	Windows Vista.
+
+	- Solucionado: Problemas con RadioGroup horizontal en ventanas
+	virtuales (\hmg\samples\VirtualDim).
+
+	- Modificado: Ctrl+W puede usarse en lugar de [Enter] en la función 
+	InputBox() y en la edición de Browse.
+
+
+- HMG 2.5.3 Changelog:
+
+	English:
+	--------
+
+	- New: Activex samples (Adobe Reader and Flash Player):
+	\hmg\samples\activex..
+
+	- New: 'InputItems' and 'DisplayItems' properties for Browse control.
+
+	'InputItems' property allows to control data input in the control.
+	This property is an array (one element for each browse column).
+	Each element (if specified) must be a two dimensional array. The 
+	first column in the array must contain the data to be shown to the user. 
+	the second column must contain the data to be stored in the table (ID)
+	for each text row in the array.
+
+	'DisplayItems' property allows to control data display in the control.
+	This property is an array (one element for each browse column).
+	Each element (if specified) must be a two dimensional array. 
+	The first column in the array must contain the text to be shown to the 
+	user. The second column	must contain the ID for each array row.
+	The array will be searched for a corresponding ID in the table to show
+	the right text in each cell. If no correspondence is found, the cell 
+	will be blank.
+
+	Samples: \hmg\samples\browse_5\
+
+
+	Español:
+	--------
+
+	- Nuevo: Ejemplos Activex (Adobe Reader y Flash Player): 
+	\hmg\samples\activex.
+
+	- Nuevo: Propiedades 'InputItems' y 'DisplayItems' para el control 
+	browse.
+
+	La propiedad 'InputItems' sirve para controlar la entrada de datos en 
+	Browse.
+	Esta propiedad es un array (un elemento por cada columna de browse).
+	Cada elemento (si se especifica) debe ser un array de dos dimensiones.
+	La primera columna en el array debe contener los datos a mostrarse al
+	usuario. La segunda columna debe contener los datos a almacenar en la
+	tabla(ID) para cada fila de texto en el array.
+	
+	La propiedad 'DisplayItems' permite controlar los datos a mostrar en
+	browse. Esta propiedad es un array (un elemento por cada columna de 
+	browse). Cada elemento (si se especifica) debe ser un array de dos 
+	dimensiones. La primera columna en el array debe contener el texto
+	a mostrar al usuario. La segunda columna debe contener el ID para cada
+	fila del array. Se buscará en el array el ID correspondiente en
+	la tabla para mostrar el texto correcto en la celda correspondiente.
+	en caso de no encontrarse correspondencia, se mostrará la celda en 
+	blanco.
+
+	Ejemplos: \hmg\samples\browse_5\
+
+
+- HMG 2.5.2 Changelog:
+
+	English:
+	--------
+
+	- New: Activex Sample (c\hmg\samples\activex\demo5.prg).
+
+	- Fixed: 'c:\hmg\batch\compile.bat'. Problems building MySql apps 
+	including resources (Thanks to MARIO SÉRGIO for report).
+
+	- Fixed: Activex control error checking.
+
+	- Fixed: User componets sample (Thanks to Bicahi Esgici for report).
+
+	- Fixed: Reference. User components section.
+
+	Español:
+	--------
+
+	- Nuevo: Ejemplo Activex (c\hmg\samples\activex\demo5.prg).
+
+	- Solucionado: 'c:\hmg\batch\compile.bat'. Problemas al crear 
+	aplicaciones MySql incluyendo recursos (Gracias a MARIO SÉRGIO
+	por el reporte).
+
+	- Solucionado: Activex control. Verificacion de errores.
+
+	- Solucionado: Ejemplo User componets (Gracias a Bicahi Esgici
+	por el reporte).
+
+	- Solucionado: Referencia. User components.
+
+
+- HMG 2.5.1 Changelog:
+
+	English:
+	--------
+
+	- New: Activex support. Inspired by Freewin Activex inplementation by 
+	Oscar Joel Lira Lira (http://sourceforge.net/projects/freewin).
+	A new property called 'Object' was added to manipulate the control.
+
+	Syntax:
+		
+		@ <nRow>,<nCol> ACTIVEX <ControlName> 
+			[ OF | PARENT <ParentWindowName> ] 
+			WIDTH <nWidth>
+			HEIGHT <nWidth> 
+			PROGID <cProgId> 
+
+		Or:
+
+		DEFINE ACTIVEX <ControlName>
+			<PropertyName>	<PropertyValue>
+			<...>
+		END ACTIVEX
+
+	Sample:
+
+		<...>
+
+		@ 10 , 50 ACTIVEX Test ;
+			WIDTH 700  ;
+			HEIGHT 400  ;
+			PROGID "shell.explorer.2"  
+
+		<...>
+
+		Win1.Test.Object:Navigate("www.harbour-project.org")
+
+	Look at \hmg\samples\activex.
+
+	Español:
+	--------
+
+	- Nuevo: Soporte para Activex. Inspirado por la implementación de 
+	Activex creada por Oscar Joel Lira Lira 
+	(http://sourceforge.net/projects/freewin).
+	Una nueva propiedad llamada 'Object' fue agregada para manipular 
+	el control.
+
+	Sintaxis:
+		
+		@ <nRow>,<nCol> ACTIVEX <ControlName> 
+			[ OF | PARENT <ParentWindowName> ] 
+			WIDTH <nWidth>
+			HEIGHT <nWidth> 
+			PROGID <cProgId> 
+
+		O:
+
+		DEFINE ACTIVEX <ControlName>
+			<PropertyName>	<PropertyValue>
+			<...>
+		END ACTIVEX
+
+	Ejemplo:
+
+		<...>
+
+		@ 10 , 50 ACTIVEX Test ;
+			WIDTH 700  ;
+			HEIGHT 400  ;
+			PROGID "shell.explorer.2"  
+
+		<...>
+
+		Win1.Test.Object:Navigate("www.harbour-project.org")
+
+	Más ejemplos: \hmg\samples\activex.
+
+
+- HMG 2.5.0 Changelog:
+
+	English:
+	--------
+
+	- Changed: Version number updated to 2.5 reflecting various major
+	changes related to non-HMG core support libraries.
+	Applications using ZIP and/or REGISTRY support commands WILL REQUIRE
+	code changes.
+
+	- Updated: Harbour compiler to version 1.0 RC2.
+
+	- Changed: ZIP support is provided now by HBMZIP Harbour contribution 
+	library	(linked by default). Clauses STOREPATH, LEVEL, EXTRACTPATH and 
+	CREATEDIR, has been REMOVED from COMPRESS/UNCOMPRESS commands. XZIP.DLL
+	IS NOT REQUIRED ANYMORE.
+
+		- Paths will be always stored when being specified in <aFiles> 
+		array.
+
+		- Paths will be always restored when were specified in <aFiles>
+		array at compression time.
+
+	The updated (simplified) command syntax is:
+
+		COMPRESS [ FILES ] <aFiles> 
+			TO <cZipfile> 
+			[ BLOCK <bBlock> ]
+			[ OVERWRITE ] 
+
+		UNCOMPRESS [ FILE ] <cZipfile> 
+			[ BLOCK <bBlock> ] 
+
+	Alternatively these new functions may be used:
+
+	CompressFiles ( <cZipfile> , <aFileNames> , [<bBlock>] , [<lOovr>] )
+	UncompressFiles ( <cZipfile> , [<bBlock>] )
+
+	Take a look at \hmg\samples|\zip.
+
+	- Changed: Registry support is now provided by HBW32 Harbour 
+	contribution library (linked by default). The commands: OPEN REGISTRY,
+	GET VALUE, SET VALUE, DELETE VALUE and CLOSE REGISTRY has been REMOVED.
+	The following functions must be used instead:
+
+		RegistryRead( cRegPath )
+		RegistryWrite( cRegPath, xValue )
+
+	Examples:
+
+	RegistryRead("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper" )
+	RegistryWrite("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper","New")
+
+	Take a look at \hmg\samples\registry.
+
+
+	Español:
+	--------
+
+	- Modificado: Número de verión actualizado a 2.5 reflejando
+	varios cambios importantes relacionados con librerías accesorias
+	(no relacionadas con el núcleo de HMG).
+	Las aplicaciones que usen comandos de soporte para el manejo de
+	archivos ZIP o de Registry REQUERIRÁN cambios en el código.
+
+	- Actualizado: Compilador Harbour a la version 1.0 RC2.
+
+	- modificado: El soporte para ZIP es proporcionado por la librería HBMZIP
+	(contribución de Harbour) que es enlazada por defecto. La cláusulas
+	STOREPATH, LEVEL, EXTRACTPATH y CREATEDIR, han sido REMOVIDAS de los 
+	comandos COMPRESS/UNCOMPRESS. XZIP.DLL YA NO ES REQUERIDA.
+
+		- Los paths serán siempre almacennados cuando sean 
+		especificados en el array <aFiles>.
+
+		- Los paths serán siempre restaurados cuando se hayan 
+		especificado en  <aFiles> al momento de la compresión.
+
+	La sintaxis actualizada (simplificada) de los comandos es:
+
+		COMPRESS [ FILES ] <aFiles> 
+			TO <cZipfile> 
+			[ BLOCK <bBlock> ]
+			[ OVERWRITE ] 
+
+		UNCOMPRESS [ FILE ] <cZipfile> 
+			[ BLOCK <bBlock> ] 
+
+	Alternativamente estas nuevas funciones pueden usarse:
+
+	CompressFiles ( <cZipfile> , <aFileNames> , [<bBlock>] , [<lOovr>] )
+	UncompressFiles ( <cZipfile> , [<bBlock>] )
+
+	Ejemplos: \hmg\samples|\zip.
+
+	- Modificado: El soporte de Registry es proporcionado por la
+	librería HBW32 (contribución de Harbour enlazada por defecto).
+	Los comandos: OPEN REGISTRY, GET VALUE, SET VALUE, DELETE VALUE y
+	CLOSE REGISTRY han sido REMOVIDOS.
+	Las siguientes funciones deben usarse en su lugar:
+
+		RegistryRead( cRegPath )
+		RegistryWrite( cRegPath, xValue )
+
+	Ejemplos:
+
+	RegistryRead("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper" )
+	RegistryWrite("HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper","New")
+
+	Más ejemplos \hmg\samples\registry.
+
+
+- HMG 2.0.032 Changelog:
+
+	English:
+	--------
+
+	- Updated: Harbour to version 1.0 RC1 (minor changes to HMG were
+	done to keep it compatible with this new version).
+
+	- New: ADORDD sample (\hmg\samples\adordd-2).
+
+	Español:
+	--------
+
+	- Actualizado: Harbour a la versión 1.0 RC1 (se hicieron cambios 
+	menores a HMG para hacerla compatible con esta nueva versión).
+
+	- Nuevo: Ejemplo de ADORDD (\hmg\samples\adordd-2).
+
+- HMG 2.0.031 Changelog:
+
+	English:
+	--------
+
+	- Fixed: Problems with buttons's images in Vista and XP.
+	Thanks to Bicahi Esgici.
+
+	- Fixed: Browse and Grid edit problems in standard 
+	windows.
+
+	- Fixed: Browse initialization problems in Vista.
+
+	Español:
+	--------
+
+	- Solucionado: Problemas con imágenes en botones (Vista y
+	XP). Gracias a Bicahi Esgici.
+
+	- Solucionado: Problemas de edición en Browse y Grid en
+	ventanas de tipo Standard.
+
+	- Solucionado: Problemas de inicialización de Browse en 
+	Vista.
+
+- HMG 2.0.030 Changelog:
+
+	English:
+	--------
+
+	- Fixed: Problems with images's buttons. Bug introduced
+        in 2.0.025. Thanks to Juan Rendon.
+
+       	- Fixed: Turkish language support. Thanks to Bicahi Esgici.
+
+        - Fixed: Browse valid not working (standard syntax). Thanks
+        to Corsini Giorgio.
+
+        - Fixed: Browse. When the table is empty, using Up,Down,
+        PgUp and PgDn keys generates a runtime error. Thanks to
+        Martín Gamez.
+
+        - Fixed: DO REPORT command. Fatal error when including
+        logical fields.
+
+        - Fixed: Print perview problems in Windows Vista.
+
+	Español:
+	--------
+
+	- Solucionado: Problemas con las imágenes en botones.
+        Bug introducido en 2.0.025. Gracias a Juan Rendon.
+
+        - Solucionado: Soporte para lenguaje Turco. Gracias a
+        Bicahi Esgici.
+
+        - Solucionado: Problemas con la propiedad valid de Browse
+        cuando se usa la sintaxis estándar. Gracias a Corsini
+        Giorgio.
+
+        - Solucionado: Browse. Cuando la table está vacía, al usar
+        las teclas Up,Down,PgUp and PgDn se genera un error de
+        tiempo de ejecución. Gracias a Martín Gamez.
+
+        - Solucionado: Comando DO REPORT. Error de tiempo de
+        ejecución cuando se incluyen campos lógicos.
+
+        - Solucionado: Problemas en la vista previa d eimpresión
+        en Windows Vista.
+
+- HMG 2.0.029 Changelog:
+
+	English:
+	--------
+
+	- Updated: HBOLE (Harbour contribution library) to the
+        new (alternate) version. This new version is required by
+        ADORDD to work properly (not working in 2.0.027 and
+        2.0.028 with 'old' Harbour HBOLE).
+
+	Be aware that this new version IS NOT FULLY COMPATIBLE
+	with prior HBOLE implementation, so existing code
+	using OLE could generate errors or not work at all.
+	
+	Existing OLE code could be adapted easily. The
+	sample: '\hmg\samples\ole' has been updated to work with
+	this new library. The required changes are minimal.
+
+	If you prefer to use old HBOLE, this is still included in 
+        the HMG distribution as '\hmg\harbour\lib\libhboleold.a',
+        but remember that linking this library instead the new,
+        ADORDD will not work.
+
+        If you are wondering why can't the two libraries be linked
+        together, the reason is that they use the same names (some)
+        for classes methods and functions, creating conflicts.
+
+	I hope that Harbour contributors can (sometime in the
+        future) integrate both libraries to get backwards
+        compatibility and adequate support for ADORDD.
+
+        Updated OLE samples:
+        
+                \hmg\samples\OLE
+
+        ADORDD samples:
+
+               \hmg\samples\adordd-1 (access sample)
+
+               \hmg\samples\adordd-2 (mysql sample)
+
+	Español:
+	--------
+
+       	- Actualizado: HBOLE (librería contribución de Harbour) 
+        a la nueva versión (alternativa). 
+        Esta nueva versión es requerida por ADORDD para trabajar 
+        correctamente (no funcionó en las versiones 2.0.027 y 
+        2.0.028 con la version anterior de HBOLE).
+
+        Debe tenerse en cuenta que esta nueva versión NO ES
+        TOTALMENTE COMPATIBLE con la versión anterior de HBOLE,
+        por lo cual el código existente que use OLE podría 
+        generar errores o no funcionar en absoluto.
+
+        El código OLE existente puede ser adaptado fácilmente.
+        El ejemplo '\hmg\samples\ole' ha sido actualizado para
+        trabajar con esta nueva librería. Los cambios requeridos 
+        son mínimos.
+
+        En caso que se desee usar la versión anterior de HBOLE,
+        esta, aun está incluida en la distribución de HMG: 
+        '\hmg\harbour\lib\libhboleold.a', pero debe tenerse en cuenta
+        que enlazando esta librería en lugar de la nueva ADORDD no 
+        funcionará.
+
+        Lamentablemente, ambas librerías no pueden ser enlazadas juntas 
+        ya que usan algunos de los mismos nombres para clases, funciones 
+        y métodos, creándose conflictos.
+
+        Espero que los colaboradores de Harbour puedan en el futuro
+        integrar ambas librerñias para obtener compatibilidad con 
+        versiones anteriores y soporte adecuado para ADORDD.
+
+        Ejemplos OLE actualizados:
+
+               \hmg\samples\OLE
+
+        Ejemplos ADORDD:
+
+               \hmg\samples\adordd-1 (ejemplo access)
+
+               \hmg\samples\adordd-2 (ejemplo mysql)
+
+- HMG 2.0.028 Changelog:
+
+	English:
+	--------
+
+	- New: SET AUTOSCROLL Command. When set to ON, virtual
+	dimensioned windows scrollbars, are automatically
+	adjusted to make a non visible control that had gained 
+	the focus, visible. Default is ON.
+	
+		SET AUTOSCROLL ON | OFF
+		
+	Samples: \hmg\samples\virtualdim
+
+	- New: HORIZONTAL property for RADIOGROUP control.
+
+	Samples:
+
+		@ 10,10 RADIOGROUP Radio_1 ;
+			OPTIONS { 'One' , 'Two' , 'Three', 'Four' } ;
+			VALUE 1 ;
+			WIDTH 100 ;
+			HORIZONTAL
+
+		DEFINE RADIOGROUP Radio_2 
+			ROW 10
+			COL 150
+			OPTIONS { 'One' , 'Two' , 'Three', 'Four' } 
+			VALUE 1 
+			WIDTH 100 
+			HORIZONTAL .T.
+		END RADIOGROUP
+	
+	More Samples: \hmg\samples\radiogroup
+
+	Español:
+	--------
+
+	- Nuevo: Comando SET AUTOSCROLL. Cuando se establece
+	en ON, las barras de desplazamiento de las ventanas de
+	dimensiones virtuales se ajustan automáticamente para
+	hacer visibles, controles no visibles que ganaron el foco.
+	El valor por defecto es ON.
+
+		SET AUTOSCROLL ON | OFF
+		
+	Ejemplos: \hmg\samples\virtualdim
+
+	- Nuevo: Propiedad HORIZONTAL para el control RADIOGROUP.
+	
+	Ejemplos:
+
+		@ 10,10 RADIOGROUP Radio_1 ;
+			OPTIONS { 'One' , 'Two' , 'Three', 'Four' } ;
+			VALUE 1 ;
+			WIDTH 100 ;
+			HORIZONTAL
+
+		DEFINE RADIOGROUP Radio_2 
+			ROW 10
+			COL 150
+			OPTIONS { 'One' , 'Two' , 'Three', 'Four' } 
+			VALUE 1 
+			WIDTH 100 
+			HORIZONTAL .T.
+		END RADIOGROUP
+	
+	Más Ejemplos: \hmg\samples\radiogroup
+
+- HMG 2.0.027 Changelog:
+
+	English:
+	--------
+
+	- Fixed: OLE compatibility problems on Vista.
+
+	- Changed: ADORDD and USRRDD libraries are linked 
+	by default now.
+
+	- Updated: Harbour compiler (Beta 3).
+
+	- New: 'ReadOnly' property for RadioGroup control. This 
+	is a logical array.
+
+		Sample:
+
+		At design Time:
+
+		@ 10,150 RADIOGROUP Radio_2 ;
+			OPTIONS { 'One' , 'Two' , 'Three', 'Four' } ;
+			VALUE 1 ;
+			WIDTH 100 ;
+			TOOLTIP 'RadioGroup' ;
+			READONLY { .F. , .T. , .F. , .T. }
+		
+		Or:
+
+		DEFINE RADIOGROUP Radio_2 
+			ROW 10
+			COL 150
+			OPTIONS { 'One' , 'Two' , 'Three', 'Four' } 
+			VALUE 1 
+			WIDTH 100 
+			TOOLTIP 'RadioGroup' 
+			READONLY { .F. , .T. , .F. , .T. }
+		END RADIOGROUP
+
+		At RunTime:
+
+		Form_1.Radio_1.ReadOnly := { .F. , .F. , .F. , .F. }
+		aReadOnly := Form_1.Radio_1.ReadOnly
+
+		Or:
+
+		SetProperty ( 'Form_1','Radio_1','ReadOnly',{ .F. , .F. , .F. , .F. } )
+		aReadOnly := GetProperty ( 'Form_1','Radio_1','ReadOnly' )
+
+		More Samples: 
+
+			\hmg\sample\radiogroup\demo2.prg
+			\hmg\sample\radiogroup\demo2.prg
+
+		- New: SET SCROLLSTEP TO <nStep> command. Set scroll amount
+		for harizontal and vertical scrollbars in virtual
+		dimensioned windows.
+
+		Sample:
+
+			SET SCROLLSTEP TO 15
+
+		More Samples:
+
+			\hmg\samples\virtualdim\test2.prg
+
+	Español:
+	--------
+
+	- Solucionado: Problemas de compatibilidad con OLE en Vista.
+
+	- Modificado: Las librerías ADORDD y USRRDD son ahora enlazadas por defecto. 
+
+	- Actualizado: Harbour (Beta 3).
+
+	- Nuevo: Propiedad 'ReadOnly' para el control RadioGroup (array lógico).
+
+	Ejemplo:
+
+	En tiempo de diseño:
+
+	@ 10,150 RADIOGROUP Radio_2 ;
+		OPTIONS { 'One' , 'Two' , 'Three', 'Four' } ;
+		VALUE 1 ;
+		WIDTH 100 ;
+		TOOLTIP 'RadioGroup' ;
+		READONLY { .F. , .T. , .F. , .T. }
+
+	O:
+
+	DEFINE RADIOGROUP Radio_2
+		ROW 10
+		COL 150
+		OPTIONS { 'One' , 'Two' , 'Three', 'Four' }
+		VALUE 1
+		WIDTH 100
+		TOOLTIP 'RadioGroup'
+		READONLY { .F. , .T. , .F. , .T. }
+	END RADIOGROUP
+
+	En tiempo de ejecución:
+
+	Form_1.Radio_1.ReadOnly := { .F. , .F. , .F. , .F. }
+	aReadOnly := Form_1.Radio_1.ReadOnly
+
+	O:
+
+	SetProperty ( 'Form_1','Radio_1','ReadOnly',{ .F. , .F. , .F. , .F. } )
+	aReadOnly := GetProperty ( 'Form_1','Radio_1','ReadOnly' )
+
+	Más ejemplos:
+
+	\hmg\sample\radiogroup\demo2.prg
+	\hmg\sample\radiogroup\demo2.prg
+
+	- Nuevo: Comando SET SCROLLSTEP TO. Configura la magnitud
+	del desplazamiento en las barras de desplazamiento de las
+	ventanas con dimensiones virtuales.
+
+	Ejemplo:
+
+	SET SCROLLSTEP TO 15
+
+	Más ejemplos:
+
+	\hmg\samples\virtualdim\test2.prg
+		
+- HMG 2.0.026 Changelog:
+
+	English:
+	--------
+
+	- Updated: MingW Compiler. With this updated version it
+	is not necessary to change MingW location to make it work
+	under Vista.
+
+	- Updated: Harbour Compiler (CVS 2007.06.11).
+
+	- New: Turkish language support. Thanks to Bicahi Esgici.
+
+	- Fixed: Various Vista minor compatibility issues).
+
+	Español:
+	--------
+
+	- Actualizado: MingW. A partir de esta nueva versión, no
+	es necesario cambiar la ubicación de MingW para trabajar 
+	en Vista.
+
+	- Actualizado: Harbour (CVS 2007.06.11).
+
+	- Nuevo: Sporte para lenguaje Turco. Gracias a Bicahi Esgici.
+
+	- Solucionado: Varios problemas menores de compatibilidad con Vista.
+
+- HMG 2.0.025 Changelog:
+
+	English:
+	--------
+
+	- New: Buttons allows combine images and text now. To use this feature 
+	you must set 'Caption' and 'Picture' properties.
+	You optionally can specify picture alignment via TOP , LEFT , RIGHT and
+	BOTTOM clauses (standard syntax) or setting the new 'PictAlignment' 
+	property when alternate syntax is used:
+
+		PictAlignment Top | Left | Right | Bottom
+
+	The default aligment is 'Top'.
+
+	Sample: \hmg\samples\button_2
+
+	This feature requires Windows XP or later version. Support for older
+	Windows versions will be added in future HMG versions.
+
+	- Fixed: Statusbar Bug. When optional 'Width' is not specified for an
+	item (except the first) a runtime error occurs.
+
+	- Modified: Image buttons are shown using XP-Style when available.
+	Sample: \hmg\samples\button
+
+	- Modified: Image checkButtons are shown using XP-Style when available.
+	Sample: \hmg\samples\button_3
+
+	Modified: Disabled image buttons and image checkbuttons shows a 
+	'grayed' image when are disabled instead a gray rectangle for 
+	not 'XP-Style' applications (WINAPI default).
+
+	Español:
+	--------
+
+	- Nuevo: Los botones permiten combinar texto e imágenes desde esta 
+	versión. Para usar esta característica debe establecerse las 
+	propiedades 'Caption' y 'Picture'.
+	Opcionalmente puede especificarse la alineación de la imagen por medio
+	de las cláusulas TOP, LEFT, RIGHT y BOTTOM (sintaxis estándar) o 
+	estableciendo la propiedad 'PictAlignment' si se usa la sintaxis 
+	alternativa.
+
+		PictAlignment Top | Left | Right | Bottom
+		
+	La alineación por defecto es 'Top'.
+
+	Ejemplo: \hmg\samples\button_2
+
+	Esta característica requiere Windows XP o superior. Se agregará
+	soporte para versiones anteriores de Windows en futuras versiones
+	de HMG.
+
+	- Solucionado: Problema en StatusBar. Cuando no se especifica la 
+	clausula opcional 'Width' para un item (excepto el primero) ocurre
+	un error de tiempo de ejecución.
+
+	- Modificado: Los botones con imagen usan el estilo-XP cuando está
+	disponible.
+
+	- Modificado: Los checkbuttons con imagen usan el estilo-XP cuando 
+	está disponible.
+
+	- Modificado: Los bototnes con imagen y checkbuttons con imagen son
+	mostrados con una imagen 'desactivada' en lugar de un rectángulo gris
+	para aplicaciones que no usan 'estilo-XP' (comportamiento por defecto
+	del API de Windows).
+	
+- HMG 2.0.024 Changelog:
+
+	English:
+	--------
+
+	- New: Polish messages for print system. Thanks to Piotr Michalski.
+
+	- Fixed: Bug in GetFile() function. Thanks to Ciro Vargas Clemov.
+
+	- Fixed: Problems compiling multi-prg applications with 'compile.bat'. 
+	Thanks to Jose L.
+
+	- Fixed: Painting problems with some tab-child controls.
+
+	- Fixed: Bug in GetFont() function. Thanks to Ciro Vargas Clemov.
+
+	- Fixed: Errors in tutorial. Thanks to Daniel Lopes Filho.
+
+	Español:
+	--------
+
+	- Nuevo: Mensajes en Polaco para el sistema de impresión. Gracias a 
+	Piotr Michalski.
+
+	- Solucionado: Error en la función GetFile(). Gracias a Ciro 
+	Vargas Clemov.
+
+	- Solucionado: Problemas compilinando aplicaciones con múltiples
+	 programas con 'compile.bat'. Gracias a Jose L.
+
+	- Solucionado: Problemas en la actualización en algunos controles 
+	'tab-child'.
+
+	- Solucionado: Error en la función GetFont(). Gracias a Ciro Vargas 
+	Clemov.
+
+	- Solucionado: Errores en el tutorial. Gracias a Daniel Lopes Filho.
+
+- HMG 2.0.023 Changelog:
+
+	English:
+	--------
+
+	- Fixed: MySql access library problems.
+
+	- Fixed: Reference.Txt errors. Thanks to Alex L. Gustow.
+
+	- New: MySql access library basic reference added to 'Reference.Txt'
+
+	Español:
+	--------
+
+	- Solucionado: Problemas con la biblioteca de acceso a MySql.
+
+	- Solucionado: Errores en 'Reference.Txt'. Gracias a Alex L. Gustow.
+
+	- Nuevo: Referencia básica de la biblioteca de acceso MySqla agregada a
+		'Reference.Txt'
+
+- HMG 2.0.022 Changelog:
+
+	English:
+	--------
+
+	- Updated: Harbour Compiler. 
+	See details at "\hmg\harbour\Harbour Compiler Changelog.Txt"
+
+	- Fixed: "This.<Method>" problems. Bug introduced in 2.0.21.
+
+	- Fixed: Spinner "ReadOnly"  property problems. Reported by "Miguelon".
+
+	- Fixed: "ImageBrowse2" sample. Reported by Alex L. Gustow.
+
+	Español:
+	--------
+
+	- Actualizado: Compilador Harbour.
+	Ver detalles en: "\hmg\harbour\Harbour Compiler Changelog.Txt"
+
+	- Solucionado: Problemas con "This.<Method>". Bug introducido en
+	2.0.21.
+
+	- Solucionado: Spinner. Problemas con la propiedad "ReadOnly".
+	Reportado por "Miguelon".
+
+	- Solucionado: Ejemplo "ImageBrowse2". Reportado por Alex L. Gustow.
+
+- HMG 2.0.021 Changelog:
+
+	English:
+	--------
+
+	- Updated: Harbour Compiler. 
+	See details at "\hmg\harbour\Harbour Compiler Changelog.Txt"
+
+	Español:
+	--------
+
+	- Actualizado: Compilador Harbour.
+	Ver detalles en: "\hmg\harbour\Harbour Compiler Changelog.Txt"
+
+- HMG 2.0.020 Changelog:
+
+	English:
+	--------
+
+	- Fixed: TAB Control. Since XP-Style API (ComCtl32.dll version 6) does
+	not supports vertical TAB control, 'Vertical' property / Clause
+	(TCS_VERTICAL style) will be ignored when XP-Style is active and 
+	'Buttons' style is not set.
+
+	- Fixed: TAB Control. Background painting problems with some
+	'tab-child' controls, when 'Buttons' style is selected and 
+	XP-Style is active (bug introduced in 2.0.019).
+
+	- Fixed: BROWSE control. Input of null dates at field edition not
+	allowed.
+
+	- Fixed: Tone() function not working.
+
+	- Fixed. Problems showing error messages in GUI applications that not
+	has a main window defined.
+
+	Español:
+	--------
+
+	- Solucionado: TAB. Considerando que ComCtl32.dll version 6 (API estilo
+	XP) no soporta controles TAB verticales (estilo TCS_VERTICAL) la 
+	propiedad 'Vertical' será ignorada cuando el estilo XP esté activo y
+	el estilo 'buttons' no se haya seleccionado.
+
+	- Solucionado: TAB. Problemas con el color de fondo con algunos
+	 controles 'tab-child', cuando se usa el estilo 'buttons'  y el estilo
+	XP está activo. (bug introducido en la versión 2.0.019).
+
+	- Solucionado: BROWSE. Ingreso de fechas nulas en la edición de campos
+	no permitida.
+
+	- Solucionado: Función Tone() no funciona.
+
+	- Solucionado: Problemas al mostrar los mensajes de error en
+	aplicaciones GUI que no tienen una ventana principal definida.
+
+- HMG 2.0.019 Changelog:
+
+	English:
+	--------
+
+	- New: Switch /C for 'Compile.Bat'. It allows to create console/mixed
+	mode applications.
+
+	- Fixed: The following 'tab-child' controls not displayed correctly
+	when XP Style is active:
+
+		- Label
+		- Frame
+		- RadioGroup
+		- Slider
+		- CheckBox
+		- HyperLink
+
+	- Fixed: GUI applications show a console window in Win9x systems.
+
+	Español:
+	--------
+
+	- Nuevo: Modificador /C para 'Compile.Bat'. Permite la creación 
+	de aplicaciones de modo consola/mixtas.
+
+	- Solucionado: Los siguientes controles 'tab-child' no se mostraban 
+	correctamente cuando el estilo XP esta activo:
+
+		- Label
+		- Frame
+		- RadioGroup
+		- Slider
+		- CheckBox
+		- HyperLink
+
+	- Solucionado: Las aplicaciones GUI muestran una ventana de consola en
+	sistemas Win9x.
+
+- HMG 2.0.018 Changelog:
+
+	English:
+	--------
+
+	- Updated: Harbour Compiler Binaries. Details at 
+	\hmg\horbour\changelog,txt.
+
+	- Changed: SET CODEPAGE command, supports new languages in this
+	version:
+
+		SET CODEPAGE TO ENGLISH	| SPANISH | BULGARIAN | GERMAN | GREEK
+				| HUNGARIAN | POLISH | PORTUGUESE | RUSSIAN
+				| SERBIAN | SLOVENIAN
+
+	Español:
+	--------
+
+	- Actualizado: Binearios del Compilador Harbour. Detalles en 
+	\hmg\horbour\changelog,txt.
+
+	- Modificado: El comando SET CODEPAGE, soporta más nuevos lenguajes en
+	esta versión:
+
+		SET CODEPAGE TO ENGLISH	| SPANISH | BULGARIAN | GERMAN | GREEK
+				| HUNGARIAN | POLISH | PORTUGUESE | RUSSIAN
+				| SERBIAN | SLOVENIAN
+
+
+- HMG 2.0.017 Changelog:
+
+	English:
+	--------
+
+	- Updated: harbour Compiler Binaries (Very important changes and 
+	bugfixes). Details at \hmg\horbour\changelog,txt.
+
+	- New: SET CODEPAGE command. Sets current CodePage.
+
+		SET CODEPAGE TO ENGLISH | SPANISH
+
+	- New: CZECH Language support (SET LANGUAGE TO CZECH command).
+	Thanks to Vojtech Obrdlik.
+
+	- Fixed: STATUSBAR control. Keyboard status icons slow response.
+
+	- Fixed: DATEPICKER control. OnChange event problems (reported by
+	Chris).
+
+	Español:
+	--------
+
+	- Actualizado: Binearios del Compilador Harbour (cambios muy 
+	importantes y soluciones a problemas). Detalles en 
+	\hmg\horbour\changelog,txt.
+
+	- Nuevo: Comando SET CODEPAGE. Estable la página de código actual.
+
+		SET CODEPAGE TO ENGLISH | SPANISH
+
+	- Nuevo: Soporte para lenguaje Checoslovaco (SET LANGUAGE TO CZECH).
+	Gracias a Vojtech Obrdlik.
+
+	- Solucionado: Control STATUSBAR. Respuesta lenya de los iconos de 
+	estado del teclado.
+
+	- Solucionado: Control DATEPICKER. Problemas con el evento OnChange
+	(reportado por Chris).
+
+
+- HMG 2.0.016 Changelog:
+
+	English:
+	--------
+
+	- New: 'ShowHeaders' property, 'NoHeaders' clause for GRID Control.
+
+	- Fixed: StatusBar 'Action' event problems.
+
+	- Fixed: ToolBar button error checking.
+
+	- Fixed: Typo in HMGVersion() function.
+
+	- Fixed: Problems with wheel mouse scroll in virtual sized windows.
+
+	- Fixed: Problems in compile.bat with 'codepage' library support.
+
+	- Fixed: Problems with wheel mouse scroll in print preview window.
+
+	Español:
+	--------
+
+	- Nuevo: Propiedad 'ShowHeaders', cláusula 'NoHeaders' para el 
+	control GRID.
+
+	- Solucionado: Problemas con el evento ACTION del control StatusBar.
+
+	- Solucionado: Verificación de errores en el control 'ToolBar Button'.
+
+	- Solucionado: Error tipográfico en la función HMGVersion().
+
+	- Solucionado: Problemas con scroll originado con la rueda del mouse
+	en ventanas de dimensiones virtuales.
+
+	- Solucionado: Problemas en compile.bat con el soporte para la 
+	libreria 'codepage'.
+
+	- Solucionado: Problemas con scroll originado con la rueda del mouse
+	en la ventana de vista preliminar de impresión.
+
+- HMG 2.0.015 Changelog:
+
+	English:
+	--------
+
+	- Fixed: ACTION event in special StatusBar items problmes.
+
+	- Fixed: SET LANGUAGE problems with print system messages.
+
+	- Fixed: BREAK property / BEGIN SEQUENCE's BREAK statement conflict.
+	Thanks to Fernando Yurisich.
+
+	- Fixed: BROWSE. Memo editing window, show column name as title instead
+	'Edit Memo'. Thanks to Fernando Yurisich.
+
+	- Updated: Print system FRENCH messages. thanks to 'c.jouniauxdiv'.
+
+	Spanish:
+	--------
+
+	- Solucionado: Problemas con el evento ACTION de los ítems especiales 
+	de StatusBar.
+
+	- Solucionado: Problemas SET LANGUAGE con los mensajes del sistema de
+	impresión.
+
+	- Solucionado: Conflicto entre la propiedad BREAK y la sentencia BREAK
+	de la estructura BEGIN SEQUENCE. Gracias a Fernando Yurisich.
+
+	- Solucionado: BROWSE. La ventana de edición de campos memo muestra el 
+	nombre de la columna en lugar de 'Edit memo' como título. Gracias a 
+	Fernando Yurisich.
+
+	- Actualizado: Mensajes en Francés del sistema de impresión. Gracias a
+	'c.jouniauxdiv'.
+
+- HMG 2.0.014 Changelog:
+
+	English:
+	--------
+
+	- Fixed: @...PRINT TO problems.
+
+	- Fixed: ODBC sample. Connection string updated.
+
+	Spanish:
+	--------
+
+	- Solucionado: Problemas con @...PRINT TO.
+
+	- Solucionado: Ejemplo ODBC. String de conexión actualizada.
+
+- HMG 2.0.013 Changelog:
+
+	English:
+	--------
+
+	- New: NOFIXED clause for DO REPORT command / external reports. Based 
+	on a contribution by Ciro Vargas Clemov.
+
+	- New: STOREPATH clause for COMPRESS command.
+
+	- Changed: Codepage library is linked by default now.
+
+	- Fixed: OLE objects incorectly uninitialized.
+
+	- Fixed: aPrinters() and GetPrinter() functions not recognize network
+	printers in Windows 2000. Thanks to: Ciro Vargas Clemov, Luigi Ferraris
+	and Pierpaolo Martinello.
+
+	- Fixed: Configuration problem in CONTROL FINANCIERO sample.
+
+	Español:
+	--------
+
+	- Nurvo: Cláusula NOFIXED para el comando DO REPORT y reportes externos. basado 
+	en una contribución de Ciro Vargas Clemov.
+
+	- Nuevo: Cláusula STOREPATH para el comando COMPRESS.
+
+	- Cambiado: La librería Codepage es enlazada por default en esta
+	versión.
+
+	- Solucionado: Objetos OLE descargados incorrectamente.
+
+	- Solucionado: Problemas en las funciones aPrinters() y GetPrinter() con impresoras de red 
+	en Windows 2000. Gracias a: Ciro Vargas Clemov, Luigi Ferraris
+	y Pierpaolo Martinello.
+
+	- Solucionado: Problemas de configuración en el ejemplo CONTROL FINANCIERO.
+
+
+- HMG 2.0.012 Changelog:
+
+	English:
+	-------
+
+	- Fixed: GetPrintableAreaWith() and GetPrintableAreaHeight() not working
+	(bug introduced in 2.0.010).
+
+	- Fixed: Window 'release' method problems (bug introduced in 2.0.010).
+
+	- Fixed: Print preview problem with 'Go To Page' dialog. 
+
+	- New: NAME clause for START PRINTDOC command. This clause allows to
+	set a custom name to a print job (this text is shown in Windows 
+	spooler).
+
+		START PRINTDOC [ NAME <cPrintJobName> ]
+
+	- New: SET TOOLTIPSTYLE command. Set tooltip style. (**)
+
+		SET TOOLTIPSTYLE STANDARD | BALLOON 
+
+	- New: SET TOOLTIPBACKCOLOR command. Set tooltip background color. (**)
+
+		SET TOOLTIPBACKCOLOR <aColor> 
+
+	- New: SET TOOLTIPFORECOLOR command. Set tooltip foreground color. (**)
+
+		SET TOOLTIPFORECOLOR <aColor>
+
+	- New: 'Print' method for window objects. Look at
+	\hmg\samples\maindemo (syntax I). (*)
+
+	- New: 'Capture' method for window objects. This method saves a copy 
+	of the specified window to a .bmp file at the current folder.
+	Look at	\hmg\samples\maindemo (syntax I). (*)
+
+	- New: PRINT GRAPH command.
+
+		PRINT GRAPH [ OF ] <cWindowname> [ PREVIEW ] [ DIALOG ] 
+
+	Prints BARS, POINTS, LINES or PIE graph previously drawn using 
+	DRAW GRAPH command in the specified window. Look at 
+	\hmg\samples\graph_3 and \hmg\samples\graph_4 samples. (*)
+
+	(*) Based on code contributed by Ciro Vargas Clemov.
+	(**) Based on code published at Marcos Antonio Gambeta site 
+	(http://geocities.yahoo.com.br/marcosgambeta).
+
+	Español:
+	-------
+	
+	- Solucionado: problemas con las funciones GetPrintableAreaWith() 
+	y GetPrintableAreaHeight() (bug introducido en 2.0.010).
+
+	- Solucionado: Problemas con el metodo 'release' (windows). Bug 
+	introducido en 2.0.010.
+
+	- Solucionado: Problemas en la vista preliminar con la ventana 
+	'Go To Page'. 
+
+	- Nuevo: Cláusula NAME para el comando START PRINTDOC. 
+	Esta cláusula permite establecer un nombre personalizado para el 
+	trabajo	de impresión (es el nombre mostrado por el spooler de windows).
+
+		START PRINTDOC [ NAME <cPrintJobName> ]
+
+	- Nuevo: Comando SET TOOLTIPSTYLE. 
+
+		SET TOOLTIPSTYLE STANDARD | BALLOON 
+
+	- New: SET TOOLTIPBACKCOLOR. Establece el color de fondo para los 
+	tooltips. (**)
+
+		SET TOOLTIPBACKCOLOR <aColor> 
+
+	- New: SET TOOLTIPFORECOLOR. Establece el color de fuente para los
+	tooltips. (**)
+
+		SET TOOLTIPFORECOLOR <aColor>
+
+	- Nuevo: Metodo 'Print' (ventanas). Ver ejemplo:
+	\hmg\samples\maindemo (syntax I). (*)
+
+	- Nuevo: Metodo 'Capture' (ventanas). Este metodo guarda una copia 
+	de la ventana especificada (.bmp) en la carpeta actual.
+	Ver ejemplo: \hmg\samples\maindemo (syntax I). (*)
+
+	- Nuevo: Comando PRINT GRAPH.
+
+		PRINT GRAPH [ OF ] <cWindowname> [ PREVIEW ] [ DIALOG ] 
+
+	Imprime gráficos de tipo BARS, POINTS, LINES y PIE creados
+	con el comando DRAW GRAPH en la ventana especificada. Ver ejemplos:
+	\hmg\samples\graph_3 and \hmg\samples\graph_4. (*)
+
+	(*) Basado en una contribución de Ciro Vargas Clemov.
+	(**) Based encodigo publicado en el sitio de Marcos Antonio Gambeta
+	(http://geocities.yahoo.com.br/marcosgambeta).
+
+
+- HMG 2.0.011 Changelog:
+
+	English:
+	-------
+	
+	- Fixed: Print problems in Win9x.
+
+	- Fixed: Print preview problems with some unusual paper sizes.
+
+	- Changed: GetPrinter() window show printers sorted and the default 
+	printer is selected at startup (Thanks to Ciro Vargas Clemov).
+	Window is wider to accomodate longer printer names.
+
+	- New: Optional RIGHT and CENTER clauses for @...PRINT command.
+
+	Español:
+	-------
+	
+	- Solucionado: Problemas de impresión en Win9x.
+
+	- Solucionado: Problemas en la vista preliminar de impresión con
+	algunos tamaños de papel no usuales.
+
+	- Modificado: GetPrinter() muestra las impresoras ordenadas y la
+	impresora por defecto es seleccionada al inicio (Gracias a Ciro 
+	Vargas Clemov). La ventana es ahora mas ancha para 
+	evitar el truncamiento de nombres de impresora más
+	largos.
+
+	- Nuevo: Cláusulas opcionales RIGHT y CENTER para el comando @...PRINT.
+
+
+- HMG 2.0.010 Changelog:
+
+	English:
+	-------
+	
+	- Optimized: HMG internal variables handling. All the public variables
+	used by HMG has been replaced by an unique public array that holds all
+	HMG internal data. This array is called _HMG_SYSDATA.
+	A complete reference for the usage of each element in this array can
+	be found at the beginning of 'h_init.prg' file located at HMG's source 
+	folder.
+	From this change, memory usage for a typical HMG application is 
+	reduced by about 100k and EXE size about 50k.
+
+	- New: HMG User Components Support.
+
+		I've created a standard interface to allow HMG users to create
+		its own components (ie: new controls) without need to modify 
+		HMG library itself.
+
+		HMG User Components Reference:
+	
+		- InstallEventHandler ( <cEventHandlerFunctionName> )
+
+		Every time that an event is triggered by the system the specified
+		function will be called.
+
+		This function will receive the following parameters:
+
+				hWnd, nMsg, wParam, lParam
+		
+		If your function process the message, it must return a not NIL
+		value. If not, it must return NIL.
+
+		- InstallMethodHandler(<cMethodName>,<cMethodHandlerProcName>)
+
+		Every time that specified method is called, your procedure will
+		be executed.
+
+		If your procedure process the method, you must set the 'user
+		process flag' ( _HMG_SYSDATA [63] ) to .T. If not, you must 
+		set it to .F.
+
+		- InstallPropertyHandler(<cPropName>,<cSetFucName>,<cGetFuncName>)
+
+		When the specified property is set, <cSetFucName> is called 
+		with all the original parameters		
+
+		When the specified property is value retrieved <cGetFucName> is 
+		called with all the original parameters.
+
+		In both cases if your functions process the property, you must 
+		set the 'user process flag' ( _HMG_SYSDATA [63] ) to .T. 
+		If not, you must set it to .F.
+
+		- Other Considerations:
+
+		If you've created components that requires #command directives
+		(ie. a control) you must add these definitions to i_UsrInit.ch
+		file located at HMG's INCLUDE folder.
+
+		The definitions must include start and end markers that will be
+		used to allow the creation of automated installation and 
+		maintenance procedures for components. 
+
+		The format for start marker is:
+
+		#define BASEDEF_<YourComponentTypeName>
+
+		The format for end marker is:
+
+		#undef BASEDEF_<YourComponentTypeName>
+
+		If you've created methods or properties with new names (not
+		currently specified in i_windows.ch, DECLARE WINDOW command
+		definition) you must add translation directives for them in 
+		'i_UsrSOOP.ch' file, located at HMG's INCLUDE folder.
+
+		The definitions must include start and end markers too and the 
+		translation directives must follow special rules.
+
+		The format for start marker is:
+
+		#define SOOP_<YourComponentTypeName> ;;
+
+		The format for translation directives for methods is:
+
+		#xtranslate <Window> . <Control> . MethodName  => Domethod ( <"Window">, <"Control"> , "MethodName" ) ;;
+
+		The format for translation directives for properties is:
+
+		#xtranslate <Window> . <Control> . PropName  => GetProperty ( <"Window">, <"Control"> , "PropName" )  ;;
+		#xtranslate <Window> . <Control> . PropName  := <v> => SetProperty ( <"Window">, <"Control"> , "PropName" , <v> )  ;;
+
+		The format for end marker is:
+
+		#undef SOOP_<YourComponentTypeName> ;;
+
+		- Sample:
+
+			c:\hmg\samples\user_components
+
+	- Fixed: All Harbour level warnings at library compilation.
+
+	- Fixed: Misc bugs in some GRID and BROWSE samples.
+
+	- Fixed: Toolbar command definition bug (font style).
+
+	Español:
+	-------
+
+	- Optimizado: Administración de variables internas de HMG. Todas las
+	variables públicas usadas por HMG fueron reemplazadas por un array público
+	único que contiene todos los datos de uso interno. Este array se denomina
+	_HMG_SYSDATA.
+	Una referencia completa del uso de cada elemento en este array se encuentra
+	al inicio del archivo 'h_init.prg' ubicado en la carpeta SOURCE.
+	A partir de este cambio el uso de memoria para una aplicación HMG típica se
+	redujo aproximadamente 100k y el tamaño de los ejecutables aproximadamente
+	50k.
+
+	- Nuevo: Soporte para HMG User Components.
+
+		He creado una interfase estándar para permitir a los usuarios de
+		HMG crear sus propios componentes (por ejemplo controles) sin 
+		necesidad de modificar la librería.
+
+		Referencia de HMG User Components:
+	
+		- InstallEventHandler ( <cEventHandlerFunctionName> )
+
+		Cada vez que un evento es iniciado por el sistema, la función 
+		especificada será invocada.
+
+		Esta función recibirá los siguientes parámetros:
+
+				hWnd, nMsg, wParam, lParam
+
+		Si ña función procesa el mensaje, esta debe retornar un valor
+		diferente de NIL. De lo contrario, debe retornar NIL.		
+
+		- InstallMethodHandler(<cMethodName>,<cMethodHandlerProcName>)
+
+		Cada vez que el método especificado sea invocado, el procedimiento
+		<cMethodHandlerProcName> será ejecutado.
+
+		Si este procedimiento procesa el método, debe asignarse .T. al
+		'user process flag' ( _HMG_SYSDATA [63] ). De lo contrario debe 
+		asignárseLe .F.
+
+		- InstallPropertyHandler(<cPropName>,<cSetFucName>,<cGetFuncName>)
+
+		Cuando se le asigne un valor a la propiedad especificada se invocará
+		<cSetFucName> con todos los parámetros originales.
+
+		Cuando el valor de la propiedad especificada sea leído, será invocada
+		<cGetFucName> con todos los parámetros originales.
+
+		En ambos casos, si se procesa la función, debe asignarse .T. al
+		'user process flag' ( _HMG_SYSDATA [63] ). De lo contrario debe 
+		asignárseLe .F.
+
+		- Otras Consideraciones:
+
+		Si los componentes creados requieren directivas #command (por ejemplo
+		un control) las definiciones deben agregarse al archivo i_UsrInit.ch
+		ubicado en la carpeta INCLUDE.
+
+		Estas definiciones deben incluir marcadores de inicio y fin que serán
+		usados para la creación de procedimientos automáticos de instalación 
+		y mantenimiento para los componentes.
+
+		El formato para el marcador de inicio es:
+
+		#define BASEDEF_<YourComponentTypeName>
+
+		El formato para el marcador de finalización es:
+
+		#undef BASEDEF_<YourComponentTypeName>
+
+		Si se han creado métodos o propiedades con nuevos nombres 
+		(no especificados actualmente en la definición del comando 
+		DECLARE WINDOW en el archivo i_windows.ch) debe agregarse las 
+		directivas de traducción para ellas en el archivo i_UsrSOOP.ch
+		ubicado en la carpeta INCLUDE.
+
+		Estas definiciones deben incluir marcadores de inicio y fin y las
+		directivas de traducción deben seguir reglas especiales.
+
+		El formato para el marcador de inicio es el siguiente:
+
+		#define SOOP_<YourComponentTypeName> ;;
+
+		EL formato para las directivas #translate de los métodos es:
+
+		#xtranslate <Window> . <Control> . MethodName  => Domethod ( <"Window">, <"Control"> , "MethodName" ) ;;
+
+		El formato para las directivas #translate de las propiedades es:
+
+		#xtranslate <Window> . <Control> . PropName  => GetProperty ( <"Window">, <"Control"> , "PropName" )  ;;
+		#xtranslate <Window> . <Control> . PropName  := <v> => SetProperty ( <"Window">, <"Control"> , "PropName" , <v> )  ;;
+
+		El formato para el marcador de finalización es:
+
+		#undef SOOP_<YourComponentTypeName> ;;
+
+		- Ejemplo:
+
+			c:\hmg\samples\user_components
+
+	- Solucionado: Warnings reportados por Harbour al construir la librería.
+
+	- Solucionado: Problemas varios en algunos ejemplos de BROWSE y GRID.
+
+	- Solucionado: Definicion del comando TOOLBAR (estilos de fuente).
+
+- HMG 2.0.009 Changelog:
+
+	- Changed: From this release, build number is at the end of version
+	number. This way '2.0.009' is used instead '2.0 build 009'. Besides 
+	that 'ALPHA' and 'BETA' denominations will not be used anymore, 
+	'Stable' and 'Test' will be used to indicate the status of a specific 
+	release.
+
+	- Fixed: EXECUTE (WAIT) command definition bug.
+
+	- Fixed: BROWSE bug. The problem arises when DynamicBackColor property 
+	is not Nil and a column is resized.
+
+	- Fixed: TEXTBOX / EDITBOX controls. Non consistent behavior about 
+	control's content selection when focus is received.
+
+	- Fixed: Print Preview. Thumbails background problems (bug introduced 
+	in build 008).
+
+	- Updated: Harbour compiler binaries.
+
+- HMG 2.0 ALPHA BUILD 008 Changelog:
+
+	- Fixed: BROWSE repositioning (row/col properties) problems.
+
+	- Fixed: DYNAMICFORECOLOR, INPUTMASK and FORMAT properties not 
+	available in splitchild BROWSE (standard syntax).
+
+	- Fixed: BROWSE (valid property) xHarbour compatibility issue.
+
+	- Fixed: GRID. Edit problems when grid is inside tab.
+
+	- Fixed: STATUSBAR control. RELEASE method problems when CLOCK or 
+	KEYBOARD items are used.
+
+	- Fixed: STATUSBAR control. When created outside of WINDOW...END WINDOW 
+	structure and CLOCK / KEYBOARD special items are used a runtime error on
+	internal timers creation arises.
+
+	- Fixed: IMAGE control. Memory leak at PICTURE property change.
+
+- HMG 2.0 ALPHA BUILD 007 Changelog:
+
+	- Fixed: When toolbar button is disabled, hot key associated to the
+	button (if any) was not deactivated.
+
+	- Fixed/Updated: MySql access libraries. MySql support is working 
+	now for LibMySql.dll distributed with 4.1 and 5.0 MySql versions.
+
+	- Changed: ADS support libraries will be not included in main HMG 
+	distribution nor linked by default anymore. These libraries will be
+	available for download separately.
+
+	- Updated: Harbour compiler binaries. This build solves various known 
+	problems and includes new features like SWITCH and FOR EACH structures
+	and support for date constants. Look at \hmg\harbour\changelog.txt for
+	details.	
+
+	- Updated: HMG IDE. ADS support libraries are not linked 
+	by default anymore. You must add it as optional libraries in 
+	'Preferences' window.
+
+
+- HMG 2.0 ALPHA BUILD 006 Changelog:
+
+	- Fixed: 'This.Cell()' object reference not working.
+
+	- Fixed: GRID. FontName and Fontsize used in cell editing are the
+	same as control.
+
+	- Fixed: BROWSE. FontName and Fontsize used in cell editing are the
+	same as control.
+
+	- Fixed: GRID. 'UpDown' style for datepicker edit control not working.
+
+	- Fixed: GRID. Using 0 as value for a COMBOBOX column causes program 
+	crash.
+
+	- Fixed: GRID. Some cosmetic problems with edit controls.
+
+	- Fixed: GRID_11, GRID_12, GRID_14, GRID_16 samples.
+
+	- Fixed / Update: HMG IDE.
+
+		- Linker and resource compiler errors are shown in 'post-build' 
+		error report window.
+
+	        - New properties (introduced in 2.0) dor GRID and BROWSE 
+		controls are supported now.
+
+
+- HMG 2.0 ALPHA BUILD 005 Changelog:
+
+	- Changed: MiniPrint library source code (a modified/optimized version)
+	is now included as an integral part of HMG library. This code is 
+	experimental and will be changed / optimized in the future. Please, do 
+	not use these sources as an example of HMG programming, since some 
+	techniques used there relies hardly on HMG internals and could be 
+	non-stable or reliable applied to other environments (outside print 
+	modules). The same applies to modifications to the code.
+
+	You don't need to use the "#include 'miniprint.ch'" anymore, but that 
+	is supported for backwards compatibility.
+
+	- Updated: Harbour Compiler Binaries. There is various important 
+	changes. The most relevant is the synchronization of RDD system with 
+	xHarbour.
+
+	- New: 'ColumnValid' property for GRID control. Codeblock array (one 
+	element per column) is evaluated at cell editing.
+
+	This.CellValue variable are available at codeblock evaluation.
+	
+	Sample:
+
+		COLUMNVALID	{ ;
+				{ || This.CellValue > 100 } , ;
+				{ || This.CellValue = Date() } , ;
+				Nil , ;
+				Nil , ;
+				Nil ;
+				}
+
+		See	\hmg\samples\grid\grid_14
+			\hmg\samples\grid\grid_15
+
+	- New: 'ColumnWhen' property for GRID control. Codeblock array (one 
+	element per column) is evaluated at cell editing.
+
+	This.CellValue variable are available at codeblock evaluation.
+	
+	Sample:
+
+		COLUMNWHEN 	{ ;
+				{ || This.CellValue >= 'M' } , ;
+				{ || This.CellValue >= 'C' } , ;
+				{ || ! Empty ( This.CellValue ) } ;
+				} 
+
+		See	\hmg\samples\grid\grid_16
+			\hmg\samples\grid\grid_17
+
+	- New: GetPrintableAreaWidth() Function. Returns the current printable 
+	area width in milimeters.
+
+	- New: GetPrintableAreaHeight() Function. Returns the current printable 
+	area height in milimeters.
+
+	- New: GetPrintableAreaHorizontalOffset() Function. Returns the current
+	printable area horizontal offset (distance from paper edge to begining
+	of printable area) in milimeters.
+
+	- New: GetPrintableAreaVerticalOffset() Function. Returns the current
+	printable area vertical offset (distance from paper edge to begining
+	of printable area) in milimeters.
+
+	- Updated: HMG IDE. Build processing has been changed 
+	according requirements of new Harbour RDD structure. An installer
+	is provided now.
+
+	- Updated: HMG application build batch files according requirements of
+	new Harbour RDD structure.
+
+- HMG 2.0 ALPHA BUILD 004 Changelog:
+
+	- New: Cell ( nRow , nCol ) property for GRID control (read(write).
+
+	- New: Edit routines for GRID control. Editing is now 'in-cell'.
+
+	- New: 'DynamicForeColor' / 'DynamicBackColor' properties for GRID 
+	control. Codeblock array (one element per column) evaluated
+	for each cell at any grid change.
+
+	This.CellRowIndex, This.CellColIndex and This.CellValue variables are
+	available at codeblock evaluation.
+
+	Sample:
+
+	bColor := { || if ( This.CellRowIndex/2 == int(This.CellRowIndex/2) , ;
+	RGB (128,128,128) , RGB (192,192,192) ) }
+
+	DYNAMICBACKCOLOR { bColor , bColor, bColor, bColor, bColor, bColor }
+
+		See	\hmg\samples\grid\grid_10
+			\hmg\samples\grid\grid_11
+			\hmg\samples\grid\grid_12
+
+	- New: EDITCONTROLS Property for GRID. You can specify control
+	type and behavior for cell edit.
+
+		EDITCONTROLS { aControlDef1 , aControlDef2 , ... aControlDefN }
+
+		Control Definition Array:
+		-------------------------
+
+		TEXTBOX
+
+		{ cControlType , cDataType , cInputMask , cFormat }
+
+		cControlType	= 'TEXTBOX' (Required)
+		cDataType	= 'CHARACTER' , 'NUMERIC' , 'DATE'  (Required)
+		cInputMask	= cInputMask (Optional)
+		cFormat		= cFormat (Optional)
+
+		DATEPICKER
+
+		{ cControlType , cControlStyle }
+
+		cControlType	= 'DATEPICKER' (Required)
+		cControlStyle	= 'DROPDOWN' , 'UPDOWN' (Required)
+
+		COMBOBOX
+
+		{ cControlType , acItems }
+
+		cControlType	'COMBOBOX' (Required)
+		acItems		(Required)
+
+		SPINNER
+
+		{ cControlType , nRangeMin , nRangeMax }
+
+		cControlType	'SPINNER' (Required)
+		nRangeMin	(Required)
+		nRangeMax	(Required)
+
+		CHECKBOX
+
+		{ cControlType , cCheckedLabel , cUnCheckedLabel }
+
+		cControlType	'CHECKBOX' (Required)
+		cCheckedLabel	(Required)
+		cUnCheckedLabel	(Required)
+
+		Data type for each column will depend control specified.
+
+			NUMERIC TEXTBOX		: NUMERIC
+			DATE TEXTBOX		: DATE
+			CHARACTER TEXTBOX	: CHARACTER
+			SPINNER			: NUMERIC
+			COMBOBOX		: NUMERIC
+			CHECKBOX		: LOGICAL
+
+		Sample:
+
+		@ 10,10 GRID Grid_1 ;
+			WIDTH 620 ;
+			HEIGHT 330 ;
+			HEADERS {'Column 1','Column 2','Column 3','Column 4',;
+				'Column 5'} ;
+			WIDTHS {140,140,140,140,140} ;
+			ITEMS aRows ;
+			EDIT ;
+			COLUMNCONTROLS { {'TEXTBOX','NUMERIC','$ 999,999.99'},;
+				{'DATEPICKER','DROPDOWN'} ,;
+				{'COMBOBOX',{'One','Two','Three'}} , ;
+				{ 'SPINNER' , 1 , 20 } , ;
+				{ 'CHECKBOX' , 'Yes' , 'No' } }
+
+		See	\hmg\samples\grid\grid_9
+			\hmg\samples\grid\grid_10
+
+	- New: 'LEGENDSWIDTH' clause (optional) for DRAW GRAPH commands
+	(BARS/LINES/POINTS types).
+
+	- Fixed: '!' template symbol allows digits.
+
+	- Fixed: BROWSE control, default Inputmask incorrect for floating
+	point fields.
+
+	- Fixed: DRAW GRAPH commands, when data series values are all '0',
+	program crash (divide by zero error).
+
+	- Fixed: DRAW GRAPH commands, labels backcolor incorrect when window 
+	backcolor is not the default.
+
+	- Fixed: Automatic Inputmask for edit Browse fail for numeric
+	fields with no decimals.
+
+	- Changed: BROWSE edit is always inplace without regarding about
+	'InPlace' value (Edit and Inplace properties has now the same
+	meaning).
+
+- HMG 2.0 ALPHA BUILD 003 Changelog:
+
+	- New: 'InputMask' property for BROWSE control. This must be defined as
+	a character array (one element per column). The same rules as TEXTBOX 
+	are applied.
+
+		Sample:
+
+		INPUTMASK { '$99.9', '!!!!!!!!!!' , '!!!!!!!!!!' )
+
+	- New: 'Format' property for BROWSE control. This must be defined as
+	a character array (one element per column). The same rules as TEXTBOX 
+	are applied.
+
+		Sample: 
+
+		FORMAT { 'E' , '' , '' }
+
+	- Fixed: Append record causes crash when DynamicBackColor / 
+	DynamicForecolor used in Browse control.
+
+	- Fixed: 'DynamicBackColor' and 'DynamicForeColor' Borwse properties 
+	accept color arrays now, being, this way, consistent with HMG 
+	general color handling.
+
+	- Fixed: BROWSE control, when 'InPlaceEdit' style is used, program crash
+	if you use keep ENTER key pressed.
+
+	- Fixed: BROWSE control, when 'DynamicbackColor' / 'DynamicForeColor'
+	properties are used along images, program crash.
+
+- HMG 2.0 ALPHA BUILD 002 Changelog:
+
+	- Enhanced: 'AllowEdit' Borwse property can be read and written at
+	runtime now.
+
+	- Enhanced: 'AllowDelete' Borwse property can be read and written at
+	runtime now.
+
+	- Enhanced: 'AllowAppend' Borwse property can be read and written at
+	runtime now.
+
+	- New: GetProgramFileName() Function
+
+	- New: 'DynamicForeColor' property for BROWSE control. Codeblock array
+	(one element per column) evaluated for each cell at browse refresh
+	allowing total control of foreground color (the value returned by
+	the codeblock).
+
+	Sample:
+
+	bColor := { || if ( recno()/2 == int(recno()/2) , RGB (128,128,128) , ;
+	RGB (192,192,192) ) }
+
+	DYNAMICFORECOLOR { bColor , bColor, bColor, bColor, bColor, bColor }
+
+	- Fixed: 'No new line at end of file' warning.
+
+	- Fixed: Registry support not available.
+
+	- Fixed: Grid lines corruption when up and down buttons are used to
+	scroll.
+
+	- Changed: HMG IDE and Harbour MiniPrint library are
+	distributed separately.
+
+	- Changed: dll files required for ADS, MYSQL and ZIP samples must be
+	downloaded from sites indicated in readme.txt files located at
+	corresponding folders.
+
+- HMG 2.0 ALPHA BUILD 001 Changelog:
+
+	- New: 'DynamicBackColor' property for BROWSE control. Codeblock array
+	(one element per column) evaluated for each cell at browse refresh
+	allowing total control of background color (the value returned by
+	the codeblock).
+
+	Sample:
+
+	bColor := { || if ( recno()/2 == int(recno()/2) , RGB (128,128,128) , ;
+	RGB (192,192,192) ) }
+
+	DYNAMICBACKCOLOR { bColor , bColor, bColor, bColor, bColor, bColor }
+
+	- New: 'When' property for BROWSE control. This is a codeblock array
+	(one element per column) evaluated prior to cell edit.
+
+	Sample:
+
+	WHEN { { || Test->Code == 10 } , ,{ || Test->Married == .t. } , , , }
+
+	- New: IMAGESIZE clause for TOOLBAR control. If not specified it is
+	calculated automatically.
+
+	- New: STRICTWIDTH clause for TOOLBAR control. Forces buttons width,
+	preventing automatic width changes.
+
+	- New: TOOLTIP clause for TOOLBAR BUTTON control
+
+	- New: TOP clause for STATUSBAR control. Allows to locate status bar
+	at the top of the window.
+
+	- New: RIGHTALIGN property for HYPERLINK control
+
+	- New: CENTERALIGN property for HYPERLINK control
+
+	- New: GetStartUpFolder() Function.
+
+	- New: JPG and GIF resource types supported by IMAGE and TOOLBAR
+	controls (you must use JPG and GIF as resource types in resource file).
+
+	- New: Function 'CallDll32'. This is simpler that DynaCall used in
+	previous versions (DECLARE command uses it now).
+	DECLARE syntax and format are preserved for backwards compatibility,
+	but, it is recommended to use CallDll32 function instead.
+
+	Syntax:
+
+	CallDll32 ( cFunctionName , cDllName , ... <parameters> ... )
+
+	This code author is Vic McClung (I've made a slight change to make
+	it run under Harbour)
+
+	SInce this is new code and it has not been fully tested yet, problems
+	could arise. If find some trouble please send to me a report according
+	directions in 'BugReport.Txt' file.
+
+	- Optimized / Rewrote from the scratch: TOOLBAR control.
+
+	- Optimized / Rewrote from the scratch: STATUSBAR control.
+
+	- Optimized / Rewrote from the scratch: HELP commands.
+
+	- Optimized / Rewrote from the scratch: RICHEDITBOX control.
+
+	- Optimized / Redesigned: HYPERLINK control (Works on top of label
+	control now).
+
+	- Changed: Zip Support.
+
+	Considering that hbzlib has some license restrictions I've decided to
+	not include in HMG distribution anymore.
+
+	From now, Zip support will rely on 'xzip.dll' a freeware Zip Component
+	(http://xstandard.com)
+
+	You must considering the following:
+
+		- xzip.dll must be located at the application folder.
+
+		- Clauses PASSWORD and CREATEDIR of UNCOMPRESS command are not
+		available anymore, since that features are not supported by
+		this component.
+
+	- The following contributed modules has been separated from
+	main library and compiled as individual libraries.
+	The source code for these contributions is available at \source folder.
+
+		- libcrypt.a:	Crypto Library.
+			Contributor: Grigory Filatov
+
+		- libedit.a:	EDIT command support library.
+			Contributor: Cristobal Molla
+
+		- libeditex.a:	EDIT EXTENDED command support library.
+			Contributor: Cristobal Molla
+
+		- libreport.a:	DO REPORT command support library.
+			Contributor: Ciro vargas Clemow
+
+		- libgraph.a:	DRAW commands support library.
+			Contributors: Grigory Filatov / Rathinagiri
+
+		- libregistry.a:Registry commands support library.
+			Contributor: Grigory Filatov
+
+		- libini.a:	INI commands support library.
+			Contributors: Grigory Filatov / Janusz Pora
+
+	- HbPrinter library will not be included in HMG
+	distribution anymore.
+
+--
+Roberto Lopez
+http://sites.google.com/site/hmgweb
+<mail.box.hmg@gmail.com>
+

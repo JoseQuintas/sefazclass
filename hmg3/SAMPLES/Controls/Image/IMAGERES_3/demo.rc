@@ -1,0 +1,8 @@
+imgBMP BITMAP img.BMP
+imgJPG JPG img.JPG
+imgGIF GIF img.GIF
+imgTIF TIF img.TIF
+imgPNG PNG img.PNG
+imgWMF WMF img.WMF
+imgICO ICO img.ICO
+imgCUR CUR img.CUR

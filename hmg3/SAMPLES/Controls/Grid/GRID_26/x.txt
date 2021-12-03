@@ -1,0 +1,197 @@
+Harbour Make (hbmk2) 2.0.0 (Rev. 13372)
+Copyright (c) 1999-2010, Viktor Szakats
+http://www.harbour-project.org/
+
+Syntax:
+
+  hbmk2 [options] [<script[s]>] <src[s][.prg|.c|.obj|.o|.rc|.res|.po|.pot|.hbl|@.clp|.d]>
+
+Options:
+  -o<outname>        output file name
+  -l<libname>        link with <libname> library. <libname> should be without
+                     path, extension and 'lib' prefix (unless part of libname).
+  -L<libpath>        additional path to search for libraries
+  -i<p>|-incpath=<p> additional path to search for headers
+  -static|-shared    link with static/shared libs
+  -mt|-st            link with multi/single-thread VM
+  -gt<name>          link with GT<name> GT driver, can be repeated to link with
+                     more GTs. First one will be the default at runtime
+  -hblib             create static library
+  -hbdyn             create dynamic library
+
+  -gui|-std          create GUI/console executable
+  -main=<mainfunc>   override the name of starting function/procedure
+  -fullstatic        link with all static libs
+  -[full|fix]shared  create shared Harbour binaries without/with absolute dir
+                     reference to Harbour library (default: 'fullshared' when
+                     Harbour is installed on system location, 'fixshared'
+                     otherwise) (fix/full option in *nix only)
+  -nulrdd[-]         link with nulrdd
+  -[no]debug         add/exclude C compiler debug info. For Harbour level
+                     debug, use Harbour option -b as usual
+  -[no]optim         toggle C compiler optimizations (default: on)
+  -[no]cpp[=def]     force C/C++ mode or reset to default
+  -[no]map           create (or not) a map file
+  -[no]implib        create (or not) an import library (in -hbdyn mode)
+  -[no]strip         strip (no strip) binaries
+  -[no]trace         show commands executed
+  -[no]beep          enable (or disable) single beep on successful exit, double
+                     beep on failure
+  -[no]ignore        ignore errors when running compiler tools (default: off)
+  -nohblib[-]        do not use static core Harbour libraries when linking
+  -nolibgrouping[-]  disable library grouping on gcc based compilers
+  -nomiscsyslib[-]   don't add extra list of system libraries to default
+                     library list
+  -traceonly         show commands to be executed, but don't execute them
+  -[no]warn[=lev]    set C compiler warning level
+                     <lev> can be: yes, no, def (default: yes)
+  -[no]compr[=lev]   compress executable/dynamic lib (needs UPX)
+                     <lev> can be: min, max, def
+  -[no]run           run/don't run output executable
+  -vcshead=<file>    generate .ch header file with local repository
+                     information. SVN, CVS, Git, Mercurial, Bazaar and Fossil
+                     are currently supported. Generated header will define
+                     macro _HBMK_VCS_TYPE_ with the name of detected VCS and
+                     _HBMK_VCS_ID_ with the unique ID of local repository
+  -tshead=<file>     generate .ch header file with timestamp information.
+                     Generated header will define macros _HBMK_BUILD_DATE_,
+                     _HBMK_BUILD_TIME_, _HBMK_BUILD_TIMESTAMP_ with the
+                     date/time of build
+  -icon=<file>       set <file> as application icon. <file> should be a
+                     supported format on the target platform (experimental)
+  -instpath=<path>   copy target to <path>. if <path> is a directory, it should
+                     end with path separator. can be specified multiple times
+  -nohbc             do not process .hbc files in current directory
+  -stop              stop without doing anything
+  -echo=<text>       echo text on screen
+
+  -bldf[-]           inherit all/no (default) flags from Harbour build
+  -bldf=[p][c][l]    inherit .prg/.c/linker flags (or none) from Harbour build
+  -inctrypath=<p>    additional path to autodetect .c header locations
+  -prgflag=<f>       pass flag to Harbour
+  -cflag=<f>         pass flag to C compiler
+  -resflag=<f>       pass flag to resource compiler (Windows only)
+  -ldflag=<f>        pass flag to linker (executable)
+  -aflag=<f>         pass flag to linker (static library)
+  -dflag=<f>         pass flag to linker (dynamic library)
+  -runflag=<f>       pass flag to output executable when -run option is used
+  -jobs=<n>          start n compilation threads (multiprocess platforms only)
+  -inc               enable incremental build mode
+  -[no]head[=<m>]    control source header parsing (in incremental build mode)
+                     <m> can be: native, full, partial (default), off
+  -rebuild           rebuild all (in incremental build mode)
+  -clean             clean (in incremental build mode)
+  -workdir=<dir>     working directory for incremental build mode
+                     (default: .hbmk/plat/comp)
+
+  -hbl[=<output>]    output .hbl filename. %{hb_lng} macro is accepted in
+                     filename
+  -lng=<languages>   list of languages to be replaced in %{hb_lng} macros in
+                     .pot/.po filenames and output .hbl/.po filenames. Comma
+                     separared list:
+                     -lng=en-EN,hu-HU,de
+  -po=<output>       create/update .po file from source. Merge it with previous
+                     .po file of the same name
+  -[no]minipo        don't (or do) add Harbour version number and source file
+                     reference to .po (default: add them)
+  -rebuildpo         recreate .po file, thus removing all obsolete entries in
+                     it
+
+  -target=<script>   specify a new build target. <script> can be .prg (or no
+                     extension) or .hbm file (available on command line only)
+  -target            marks beginning of options belonging to a new build target
+                     (available on command line only)
+  -alltarget         marks beginning of common options belonging to all targets
+                     (available on command line only)
+
+  -hbrun             run target
+  -hbraw             stop after running Harbour compiler
+  -hbcmp|-clipper    stop after creating the object files
+                     create link/copy hbmk2 to hbcmp/clipper for the same
+                     effect
+  -hbcc              stop after creating the object files and accept raw C
+                     flags
+                     create link/copy hbmk2 to hbcc for the same effect
+  -hblnk             accept raw linker flags
+  -hb10              enable Harbour 1.0.x compatibility mode (experimental)
+  -xhb               enable xhb mode (experimental)
+  -hbc               enable pure C mode (experimental)
+  -exospace          emulate Clipper compatible linker behavior
+                     create link/copy hbmk2 to rtlink/blinker/exospace for the
+                     same effect
+
+  -hbmake=<file>     convert hbmake project file to .hbp file (experimental)
+  -xbp=<file>        convert .xbp (xbuild) project file to .hbp file
+                     (experimental)
+  -xhp=<file>        convert .xhp (xMate) project file to .hbp file
+                     (experimental)
+
+  --hbdirbin         output Harbour binary directory
+  --hbdirdyn         output Harbour dynamic library directory
+  --hbdirlib         output Harbour static library directory
+  --hbdirinc         output Harbour header directory
+
+  -plat[form]=<plat> select target platform.
+  -comp[iler]=<comp> select C compiler.
+                     Special value:
+                      - bld: use original build settings (default on *nix)
+  -build=<name>      use a specific build name
+  -lang=<lang>       override default language. Similar to HB_LANG envvar.
+  --version          display version header only
+  -pause             force waiting for a key on exit in case of failure (with
+                     alternate GTs only)
+  -info              turn on informational messages
+  -quiet             suppress all screen messages
+
+Notes:
+  - <script> can be <@script> (.hbm format), <script.hbm>, <script.hbp> (marks
+    a new target) or <script.hbc>.
+  - Multiple -l, -L and <script> parameters are accepted.
+  - Regular Harbour compiler options are also accepted.
+  - hbmk.cfg option file in hbmk2 directory is always processed if it exists.
+    On *nix platforms ~/.harbour, /etc/harbour, <base>/etc/harbour, <base>/etc
+    are checked (in that order) before the hbmk2 directory. The file format is
+    the same as .hbc.
+  - hbmk.hbm make script in current directory is always processed if it exists.
+  - .hbc config files in current dir are automatically processed.
+  - .hbc options (they should come in separate lines): libs=[<libname[s]>],
+    hbcs=[<.hbc file[s]>], gt=[gtname], syslibs=[<libname[s]>],
+    prgflags=[Harbour flags], cflags=[C compiler flags], resflags=[resource
+    compiler flags], ldflags=[linker flags], libpaths=[paths], sources=[source
+    files], incpaths=[paths], inctrypaths=[paths], instpaths=[paths],
+    gui|mt|shared|nulrdd|debug|opt|map|implib|strip|run|inc=[yes|no],
+    cpp=[yes|no|def], warn=[yes|no|def], compr=[yes|no|def|min|max],
+    head=[off|partial|full|native], skip=[yes|no], echo=<text>
+    Lines starting with '#' char are ignored
+  - Platform filters are accepted in each .hbc line and with several options.
+    Filter format: {[!][<plat>|<comp>|<keyword>]}. Filters can be combined
+    using '&', '|' operators and grouped by parantheses. Ex.: {win}, {gcc},
+    {linux|darwin}, {win&!pocc}, {(win|linux)&!watcom}, {unix&mt&gui},
+    -cflag={win}-DMYDEF, -stop{dos}, -stop{!allwin},
+    {allpocc|allgcc|allmingw|unix}, {allmsvc}, {x86|x86_64|ia64|arm},
+    {debug|nodebug|gui|std|mt|st|xhb}
+  - Certain .hbc lines (libs=, hbcs=, prgflags=, cflags=, ldflags=, libpaths=,
+    inctrypaths=, instpaths=, echo=) and corresponding command line parameters
+    will accept macros: ${hb_root}, ${hb_dir}, ${hb_name}, ${hb_plat},
+    ${hb_comp}, ${hb_build}, ${hb_cpu}, ${hb_bin}, ${hb_lib}, ${hb_dyn},
+    ${hb_inc}, ${<envvar>}. libpaths= also accepts %{hb_name} which translates
+    to the name of the .hbc file under search.
+  - Options accepting macros also support command substitution. Enclose command
+    inside ``, and, if the command contains space, also enclose in double
+    quotes. F.e. "-cflag=`wx-config --cflags`", or
+    ldflags={unix&gcc}"`wx-config --libs`".
+  - Defaults and feature support vary by platform/compiler.
+  - Options can also be specified in environment variable HBMK_OPTIONS
+
+Supported <comp> values for each supported <plat> value:
+  - linux  : gcc, clang, icc, watcom, sunpro, open64
+  - darwin : gcc, clang, icc
+  - win    : mingw, msvc, bcc, watcom, icc, pocc, cygwin, xcc,
+  -          mingw64, msvc64, msvcia64, iccia64, pocc64
+  - wce    : mingwarm, mingw, msvcarm, poccarm
+  - os2    : gcc, gccomf, watcom
+  - dos    : djgpp, watcom
+  - bsd    : gcc
+  - hpux   : gcc
+  - beos   : gcc
+  - sunos  : gcc, sunpro

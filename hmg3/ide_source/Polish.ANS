@@ -1,0 +1,295 @@
+001 Nowy Projekt
+002 Otwórz Projekt
+003 Zamknij Project
+004 Zapisz formatke
+005 Zamknij formatke
+006 Wyjœcie
+007 Usuñ
+008 Kolejnoœæ kontrolek
+009 Dopasuj do siatki
+010 Usuñ Specjalne
+011 G³ówne Menu
+012 Pasek Narzêdzi
+013 Menu Kontekstowe
+014 Pasek Stanu
+015 Notify Menu
+016 SplitBox
+017 Podgl¹d
+018 Kod ród³owy Formatki
+019 Projekt
+020 HMG Reference
+021 Uruchom
+022 Debuguj
+023 Resetuj dane inkrementacyjne projektu
+024 Nowa formatka
+025 Dodaj formatkê
+026 Nowy modu³
+027 Import File
+028 Nowy raport
+029 Refresh Project Window
+030 Edit File
+031 Delete File
+032 Ustaw Modu³ jako g³ówny
+033 Narzêdzia
+034 Kreatorzy
+035 Menu g³ówne
+036 pasek stanu
+037 Menu kontekstowe
+038 Pasek stanu
+039 Menu rozwijane
+040 Menu powiadomieñ
+041 SplitBox
+042 Preferencje
+043 Pomoc
+044 O...
+045 Plik
+046 Edycja
+047 Musisz zrestartowaæ HMG-IDE, aby zmiana jêzyka odnios³a skutek
+048 Wybierz: klik / Przesuñ: ci¹gnij górny lewy róg / Rozmiar: ci¹gnij dolny prawy róg
+049 Nowy projekt
+050 Otwórz projekt
+051 Zamknij projekt
+052 Nowa formatka
+053 Nowy modu³
+054 Uruchom
+055 Wybierz obiekt
+056 Usuñ kontrolkê
+057 Kolejnoœæ kontrolek
+058 Kreator menu g³ównego
+059 Kreator menu kontekstowego
+060 Kreator paska stanu
+061 Kreator paska narzêdzi
+062 Kreator menu powiadomieñ
+063 Kreator menu rozwijanego
+064 Kreator SplitBox'a
+065 Przegl¹darka projektu []
+066 Modu³y
+067 Formatki
+068 Zasoby
+069 Raporty
+070 Kliknij dwa razy, aby edytowaæ
+071 Edycja funkcji Event (Tworzy nowy modu³ z funkcj¹)
+072 Sk³adnia pliku zasobów: <NazwaZasobu> <TypZasobu> <NazwaPliku>
+073 Czy chcesz usun¹æ aktualnie przypisany modu³ z funkcj¹ Event?
+074 Inspektor obiektu []
+075 W³aœciwoœci
+076 Funkcje
+077 Cecha
+078 Wartoœæ
+079 Kliknij dwa razy aby edytowaæ
+080 Funkcja
+081 Wartoœæ
+082 Kliknij dwa razy aby edytowaæ
+083 £adowanie... Proszê czekaæ...
+084 Kompilacja... Proszê czekaæ...
+085 Brak aktywnego projektu!
+086 Brak aktywnej formatki!
+087 Edytor kodu Ÿród³owego:
+088 HMG Folder:
+089 B³¹d sk³adni w raporcie
+090 <kliknij 2 razy>/<nac. Enter> aby edytowaæ wybran¹ liniê kodu Ÿród³owego
+091 Lista b³êdów
+092 Dziennik kompilacji
+093 Jêzyk interfejsu IDE:
+094 Preferencje
+095 Tables
+096 New Table
+097 Table Name Duplicated
+098 Zresetowanie danych inkrementacyjnych projektu wymusi nastêpn¹ kompilacjê jako pe³n¹
+099 Czy jesteœ pewien?
+100 Kontrolka nie jest zdefiniowana
+101 Kreator menu rozwijanego
+102 Nowe menu...
+103 Edycja menu...
+104 Usuñ menu
+105 Nazwa...
+106 Zamknij
+107 WprowadŸ nazwê przycisku wywo³uj¹cego pasek stanu:
+108 Nazwa przycisku paska stanu wywo³uj¹cego menu rozwijane
+109 Usuñ konktrolkê
+110 Nowemenu rozwijane
+111 Kreator menu g³ównego
+112 &Nastêpny
+113 &Poprzedni
+114 &Wstaw
+115 &Usuñ
+116 Ok
+117 Anuluj
+118 Elementy menu opuszczaj¹ poziom
+119 Akcja nie mo¿e byæ zdefiniowana dla popup's
+120 Ikona nie mo¿e byæ zdefiniowana dla popup's
+121 Potwierdzenie' nie mo¿e byæ zdefiniowane dla popup's
+122 Nazwa nie mo¿e byæ zdefiniowana dla separatora
+123 Akcja nie mo¿e byæ zdefiniowana dla separatora
+124 Ikona nie mo¿e byæ zdefiniowana dla separatora
+125 Potwierdzenie' nie mo¿e byæ zdefiniowane dla separatora
+126 Niezdefiniowana akcja dla elementu menu
+127 Kreator menu powiadomieñ
+128 Kreator menu kontekstowego
+129 Kreator menu rozwijanego [
+130 Edycja cechy
+131 Edycja funkcji
+132 Kreator paska stanu
+133 U¿yj $CLOCK, $DATE, $KEYBOARD as podpis elementów specjalnych
+134 Czcionka...
+135 Górna Pozycja.
+136 Nie mo¿na zdefiniowaæ ikony dla elementów typu 'DATE'
+137 Nie mo¿na zdefiniowaæ stylu dla elementów typu 'DATE'
+138 Nie mo¿na zdefiniowaæ ikony dla elementów typu 'CLOCK'
+139 Nie mo¿na zdefiniowaæ stylu dla elementów typu 'CLOCK'
+140 Nie mo¿na zdefiniowaæ ikony dla elementów typu 'KEYBOARD'
+141 Nie mo¿na zdefiniowaæ stylu dla elementów typu 'KEYBOARD'
+142 Cechy...
+143 Przycisk paska narzêdzi musi posiadaæ nazwê
+144 Rozwijane i ca³kowicie rozwijane style wykluczaj¹ siê wzajemnie(Element: 
+145 Obraz nie mo¿e byæ pusty (Element: 
+146 W³aœciwoœci paska narzêdzi
+147 nazwa paska narzêdzi:
+148 Szerokoœæ przycisku:
+149 Wysokoœæ przycisku:
+150 Wysokoœæ obrazu:
+151 Szerokoœæ obrazu:
+152 WprowadŸ nazwê:
+153 Nowa formatka
+154 Inspektor obiektu [
+155 Nowy modu³
+156 Nazwa modu³u siê powtarza
+157 nazwa formatki siê powtarza
+158 Nowy raport
+159 dodaj formatkê (musi siê znajdowaæ w folderze projektu)
+160 Dodawana formatka musi siê znajdowaæ w folderze projektu. Przerwano
+161 Formatka jest ju¿ w projekcie. Przerwano
+162 Nie odnaleziono pliku!!!
+163 Source folder must be different from project folder for no .prg (module) files
+164 Dodawany modu³ musi siê znajdowaæ w folderze projektu. Przerwano
+165 Modu³ jest ju¿ w projekcie. Przerwano
+166 Nie odnaleziono pliku!!!
+167 Delete
+168 Czy chcesz usun¹æ wybrany plik z dysku?
+169 U¿yj strza³ek aby zmieniæ pozycjê kontrolki
+170 Kolejnoœæ kontrolek
+171 To oknoposiada ju¿ g³ówny pasek narzêdzi. Musisz go wczeœniej usun¹æ, aby utworzyæ SplitBox.
+172 Kreator SplitBox'a
+173 Obiekty SplitChild 
+174 Nazwa
+175 Typ
+176 Cechy SplitBox'a
+177 Dodaj
+178 Usuñ
+179 W górê
+180 W dó³
+181 Edytuj
+182 Edytuj obiekt [
+183 W³aœciwoœci
+184 W³aœciwoœæ
+185 Wartoœæ
+186 Kliknij dwa azy aby edytowaæ
+187 Fukcje Event
+188 Edycja
+189 Okno nale¿y ju¿ do tego SplitBox'a
+190 Powielona nazwa kontrolki
+191 Typ
+192 B³êdna nazwa
+193 Nie wybrano elementu
+194 dodaj obiekt SplitChild
+195 W³aœciwoœci paska narzêdzi SplitChild
+196 Kreator paska narzêdzi SplitChild [
+197 Funkcja Event
+198 Wartoœæ 
+199 Pasek narzêdzi musi mieæ zdefiniowan¹ nazwê
+200 Przegl¹darka obiektu [
+201 Spacje s¹ zabronione w nazwach modu³ów, formatek i œcie¿kach
+202 Kompiluj projekt
+203 Podsumowanie
+204 Plik projektu: 
+205 Folder projektu: 
+206 Folder HMG: 
+207 Dodatkowe biblioteki: 
+208 Œcie¿ka dodatkowych plików Include: 
+209 Typ kompilacji: 
+210 Informacje Debuggera:
+211 Tak
+212 Konsola / Tryb mieszany: 
+213 Zmodyfikowane pliki / Zale¿noœci:'
+214 Log kompilacji:
+215 Status: Kompilacja...'
+216 Zapisz Log.
+217 Zamknij
+218 Status: Ukoñczono bez b³êdów
+219 Status: Ukoñczono z b³êdami
+220 Angielski
+221 Hiszpañski
+222 B³êna nazwa/œcie¿ka projektu (Spacje oraz znaki specjalne s¹ niedozwolone)
+223 Strony Tab'a do usuniêcia musz¹ byæ puste
+224 Domyœlnie (Nil)
+225 U¿ytkownika
+226 Plik projektu jest pusty, b³êdny lub nie zdefionowano modu³u g³ównego
+227 Ju¿ istnieje. Nadpisaæ?
+228 Kreator raportów HMG: Krok 1: Wybierz pola
+229 tabele:
+230 Dostêpne pola:
+231 Wybrane pola:
+232 Wybierz tabelê a nastêpnie wybierz pola, które chcesz do³¹czyæ do raportu.
+233 Przeci¹gnij elementy, aby zmieniæ kolejnoœæ wybranych pól
+234 U¿yj [+] / [-] aby dodaæ / usun¹æ w³asne pola lub wyra¿enia
+235 Anuluj
+236 Nastêpny >
+237 Kreator raportów HMG: Krok 2: Layout raportu
+238 Rozmiar papieru:
+239 Orientacja:
+240 Wybierz rozmiar i orientacjê papieru dla raportu
+241 < Powrót
+242 Kreator raportów HMG: Krok 3: Koniec
+243 Tytu³ raportu:
+244 Tytu³y...
+245 Sumy...
+246 Formaty...
+247 Czcionka
+248 Podgl¹d
+249 Aby zapisaæ raport i zamkn¹æ kreatora, naciœnij [Koniec]
+250 Przetwarzanie raportu...
+251 Zamknij podgl¹d aby wróciæ do kreatora
+253 (Pola u¿ytkownika s¹ niedostêpne w podgl¹dzie)
+254 Koniec
+255 Edycja tytu³ów pól
+256 Kliknij dwa razy aby edytowaæ tytu³ pola
+257 Zamknij
+258 Sumuj pola
+259 Wybierz pola do sumowania
+260 (kliknij dwa razy aby zmieniæ)
+261 Edytuj formaty pól
+262 Kliknij dwa razy, aby edytowaæ format pola
+263 U¿yj <cSayPicture> format z funkcji Transform()
+264 Pole
+265 Maska
+266 Sumuj
+267 Tytu³
+268 Dodaj pole
+269 dodaj wszystkie pola
+270 Usuñ pole
+271 Usuñ wszystkie pola
+272 Dodaj w³asne pole lub wyra¿enie
+273 Remove a custom field or expression
+274 Sumuj pole u¿ytkownika: tylko pojedyncze pola tabeli mog¹ byæ sumowane. Kontynuowaæ?
+275 To nie jest pole u¿ytkownika ani wyra¿enie. U¿yj przycisku [<] aby usun¹æ
+276 Edytuj format pola
+277 Edytuj tytu³ pola
+278 Konfiguracja
+279 Includes
+280 Nowy Include
+281 Nowa wartoœæ
+282 Edytuj wartoœæ
+283 Grupowanie...
+284 Grupuj wed³ug:
+285 Nag³ówek grupy:
+286 Stopka grupy:
+287 Edycja tabeli
+288 Przegl¹d
+289 Modyfikacja struktury
+290 Szerokoœæ
+291 Dziesiêtne
+292 Modyfikacja tabeli
+293 Dodaj Pole
+294 Usuñ Pole
+295 Zapisz
+296 BROWSE is a compatibility (obsolete) control and therefore not recommended. It is superseded by the GRID control. Do you want to use it anyway?

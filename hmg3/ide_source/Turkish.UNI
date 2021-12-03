@@ -1,0 +1,295 @@
+001 Yeni Proje
+002 Proje Aç
+003 Proje Kapat
+004 Formu Kaydet
+005 Formu Kapat
+006 Çýkýþ
+007 Sil
+008 Kontrol Sýrasý
+009 Izgaraya Konumlandýr
+010 Özel Silme
+011 Ana Menü
+012 Araç Çubuðu
+013 Baðlam Menüsü
+014 Durum Çubuðu 
+015 Hatýrlatma Menüsü
+016 Çoklu Pencere
+017 Görünüm
+018 Form Kodu
+019 Proje
+020 HMG Reference
+021 Yürüt 
+022 Hata Ayýkla
+023 Projeyi Sýfýrla
+024 Yeni Form 
+025 Form Ekle
+026 Yeni Modül 
+027 Import File
+028 Yeni Rapor
+029 Proje penceresini tazele
+030 Dosya Editle
+031 Dosya Sil
+032 Bu Modül "Main" olsun
+033 Araçlar
+034 Yapýcýlar
+035 Ana Menü
+036 Durum Çubuðu
+037 Baðlam Menüsü
+038 Araç Çubuðu
+039 Aþaðý Açýlýr Menü
+040 Hatýrlatma Menüsü
+041 Çoklu Pencere
+042 Tercihler
+043 Yardým
+044 Hakkýnda
+045 Dosya
+046 Düzenle
+047 Dil seçiminin etkin olmasý için HMG-IDE'yi kapatýp tekrar açmalýsýnýz. 
+048 Seç : Týkla / Taþý : Sol üst köþeden sürükle / Boyutlandýr : Alt sað köþeden sürükle 
+049 Yeni Proje
+050 Proje Aç
+051 Projeyi Kapat
+052 Yeni Form'
+053 Yeni Modül
+054 Yürüt
+055 Nesne Seç
+056 Kontrolu Sil
+057 Kontrol Sýrasý
+058 Ana Menü Yapýcý
+059 Baðlam Menüsü Yapýcý
+060 Durum Çubuðu Yapýcý
+061 Araç Çubuðu Yapýcý
+062 Hatýrlatma Menüsü Yapýcý
+063 Aþaðý Açýlýr Menü Yapýcý
+064 Çoklu Pencere Yapýcý
+065 Proje Ýzleme 
+066 Modüller
+067 Formlar
+068 Kaynaklar
+069 Raporlar
+070 Düzenleme Ýçin Çift Týk
+071 Olay Düzenle (Yeni Fonksiyon Modülü Oluþtur)
+072 Kaynak Dosya Ýmlâsý : <KaynakAdý> <KaynakTipi> <DosyaAdý>
+073 Atanmýþ cari olay modülünü silmek istiyor musunuz ?
+074 Nesne Gözlemcisi []
+075 Özellikler
+076 Olaylar
+077 Özellik
+078 Deðer
+079 Düzenlemek Ýçin Çift Týk
+080 Olay
+081 Deðer
+082 Düzenleme Ýçin Çift Týk
+083 Yükleniyor... Lütfen Bekleyin...
+084 Oluþturuluyor... Lütfen Bekleyin...
+085 Aktif Proje Yok
+086 Aktif Form Yok!
+087 Modül Editörü:
+088 HMG Klasörü:
+089 Raporda imlâ hatasý
+090 Seçili kaynak kodu satýrýný editlemek için : çift týk/return
+091 Hata Listesi
+092 Log oluþtur
+093 IDE Arayüz Dili :
+094 Tercihler
+095 Tablolar
+096 New Table
+097 Çift Tablo Adý
+098 Projeyi Sýfýrlamak Sonraki Oluþturmayý Tam Olmaya zorlar
+099 Emin misiniz?
+100 Kontrol Yok
+101 Aþaðý Açýlýr Menü Yapýsýcýsý
+102 Yeni Menü...
+103 Menüyü Düzenle...
+104 Menüyü Sil
+105 Ýsim...
+106 Kapat
+107 Araç Çubuðu Düðmesinin Adýný Girin:
+108 Aþaðý Açýlýr Menü Araç Çubuðu Düðmesinin Adý
+109 Kontrolu Sil
+110 Yeni Aþaðý Açýlýr Menü
+111 Ana Menü Yapýcýsý
+112 S&onraki
+113 &Önceki
+114 &Araya Ekle
+115 &Sil
+116 Tamam
+117 Cancel
+118 Menü Maddesi Bir Seviye Atlandý
+119 Popuplara Eylem Tanýmlanamaz
+120 Popuplara Resim Tanýmlanamaz
+121 Popuplara 'Onaylý' Tanýmlanamaz
+122 Ayýrýcýya Ýsim Tanýmlanamaz
+123 Ayýrýcýya Eylem Tanýmlanamaz
+124 Ayýrýcýya Resim Tanýmlanamaz
+125 Ayýrýcýya 'Onaylý' Tanýmlanamaz
+126 Menü Maddesine Eylem Tanýmlanmadý
+127 Hatýrlatma Menüsü Yapýcýsý
+128 Baðlam Menüsü Yapýcýsý
+129 Aþaðý Açýlýr Menü Düzenleyici [
+130 Özellik Düzenleme
+131 Olay Düzenleme
+132 Durum Çubuðu Yapýcýsý
+133 Özel Maddeler Ýçin baþlýk olarak $CLOCK, $DATE, $KEYBOARD kullanýn
+134 Font...
+135 Tepe Pos.
+136 'DATE' Maddelerine Simge Tanýmlanamaz 
+137 'DATE' Maddelerine Stil Tanýmlanamaz 
+138 'CLOCK' Maddelerine Simge Tanýmlanamaz 
+139 'CLOCK' Stil Tanýmlanamaz 
+140 'KEYBOARD' Maddelerine Simge Tanýmlanamaz
+141 'KEYBOARD' Maddelerine Stil Tanýmlanamaz 
+142 Özellikler...
+143 Araç Çubuðu Düðmesinin Bir Ýsmi Olmalýdýr
+144 DropDown ve WholeDropDown Stilleri Birlikte Kullanýlamaz (Madde: 
+145 'Picture' Boþ Olamaz (Madde: 
+146 Araç Çubuðu Özellikleri 
+147 Araç Adý:
+148 Düðme Eni:
+149 Düðme Yüksekliði:
+150 Resim Eni:
+151 Resim Yüksekliði:
+152 Ýsim Girin:
+153 Yeni Form
+154 Nesne Gözlemcisi [
+155 Yeni Modül 
+156 Çift Modül Adý 
+157 Çift Form Adý
+158 Yeni Rapor
+159 Form Ekle (Proje Klasöründe Olmalýdýr)
+160 Eklenecek Form proje Klasöründe Olmalýdýr. Ýptal Edildi
+161 Form Zaten Projede. Ýptal Edildi
+162 Dosya Yok!!!
+163 .prg (modül) dosyalarý hariç, kaynak klasör hedef klasörden farklý olmalýdýr 
+164 Eklenecek Modül Proje Klasöründe Olmalýdýr. Ýptal Edildi
+165 Modül Zaten Projede. Ýptal Edildi
+166 Dosya Yok!!!
+167 Sil
+168 Seçilen dosyayý diskten silmek mi istiyorsunuz?
+169 Kontrolun Yerini Deðiþtirmek Ýçin Ok Tuþlarýný Kullanýn
+170 Kontrol Sýrasý
+171 Bu Pencerenin Bir Ana Araç Çubuðu var. Bir Çoklu Pencere oluþturmadan önce o Araç Çubuðunu Silmelisiniz.
+172 Çoklu Pencere Yapýcýsý
+173 Çoklu Pencere Nesneleri
+174 Ýsim
+175 Tip
+176 Çoklu Pencere Özellikleri
+177 Ekle
+178 Çýkar
+179 Yukarý
+180 Aþaðý
+181 Düzenle
+182 Nesne Düzenle [
+183 Özellikler
+184 Özellik
+185 Deðer
+186 Düzenlemek için çift-týk
+187 Olaylar
+188 Düzenle
+189 Pencere zaten bu Çoklu Pencere ile iliþkilendirilmiþ
+190 Çift Kontrol Adý
+191 Tip
+192 Geçersiz Ýsim
+193 Madde Seçilmedi
+194 Çoklu Pencere Nesnesi Ekle 
+195 Çoklu Pencere Araç Çubuðu Özellikleri
+196 Çoklu Pencere Araç Çubuðu Yapýcýsý [
+197 Olay
+198 Deðer
+199 Araç Çubuðu'nun bir adý olmalý
+200 Proje Ýzleme [
+201 Modül Ýsimlerinde, Form Ýsimlerinde ve Dosya Yolu tanýmlarýnda boþluk olmayacak.
+202 Projeyi Oluþtur
+203 Özet
+204 Proje Dosyasý: 
+205 Proje Klasörü: 
+206 HMG Klasörü:  
+207 Ýlâve Kütüphaneler:
+208 Ýlâve Inc. Dosya Yolu: 
+209 Oluþturma Tipi: 
+210 Hata Ayýklama Bilgisi:
+211 Evet
+212 Konsol / Karma Mod: 
+213 Deðiþmiþ Dosyalar / Baðýmlýlýklar:'
+214 Oluþturma Günlüðü:
+215 Durum: Oluþturuluyor...'
+216 Günlüðü Kaydet.
+217 Kapat
+218 Durum: Hatasýz Bitti
+219 Durum: Hatalý Bitti
+220 Ýngilizce
+221 Ýspanyolca
+222 Geçersiz Proje Adý / Dosya Yolu (Boþluk veya Özel Karakter Olmayacak)
+223 Silinecek 'Tab' sayfasý boþ olmalýdýr
+224 Varsayým (Nil)
+225 Tanýmlý
+226 Proje Dosyasý boþ, geçersiz veya 'Main' modül tanýmlanmamýþ
+227 Zaten mevcut. Üzerine yazýlsýn mý?
+228 HMG Rapor Yapýcýsý: Adým 1: Saha Seçimi 
+229 Tablo Dosyalarý (.dbf):
+230 Uygun Sahalar:
+231 Seçili Sahalar:
+232 Önce bir Tablo (dosyasý:.dbf) seçin, sonra rapora girecek sahalarý seçin.
+233 Seçili Saha Listesini Deðiþtirmek Ýçin Maddeleri Sürükleyin.
+234 Seçili saha veya ifadelere ilave yapmak içi [+], çýkarmak için [-] iþaretini kullanýn.
+235 Ýptal
+236 Sonraki >
+237 HMG Rapor Yapýcýsý: Adým 2: Rapor Kalýbý
+238 Kâðýt Boyutu:
+239 Kâðýt yönü:
+240 Rapor Ýçin Kâðýt Boyutunu ve Yönünü Seçin
+241 < Geri
+242 HMG Rapor Yapýcýsý: Adým 3: Son
+243 Rapor Baþlýðý:
+244 Baþlýklar...
+245 Toplamlar...
+246 Formatlar...
+247 Font
+248 Ön Ýzleme
+249 Raporu Kaydedip Yapýcýdan Çýkmak için [Son] u týklayýn
+250 Rapor Oluþturuluyor...
+251 Yapýcýya Dönmek Ýçin Ön Ýzlemeyi Kapat 
+253 (Tanýmlanmýþ Saha Ýçerikleri Ön Ýzlemede Görünmez)
+254 Son
+255 Saha Baþlýklarýný Düzenle
+256 Saha Baþlýðý Girmek Ýçin Çift Týk
+257 Kapat
+258 Sahalarý Topla
+259 Toplanacak Sahalarý Seçin
+260 (Deðiþtirmek Ýçin Çift Týk)
+261 Saha Formatlarýný Düzenle
+262 Saha Formatýný Düzenlemek Ýçin Çift Týk 
+263 Transform() Fonsiyonundan <cSayPicture> Formatýný Kullan
+264 Saha
+265 Maske
+266 Topla
+267 Baþlýk
+268 Bir Saha Ekle
+269 Bütün Sahalarý Ekle
+270 Sahayý Çýkar
+271 Bütün Sahalarý Çýkar
+272 Tanýmlanmýþ Saha veya Ýfade Ekle
+273 Tanýmlanmýþ Saha veya Ýfadeyi Çýkar
+274 Tanýmlanmýþ Saha Toplamý: Yalnýz Table Sahalarý toplanabilir. Devam? 
+275 Tanýmlanmýþ Saha veya Ýfade deðil. Çýkarmak için [<] düðmesini kullanýn
+276 Saha Formatýný Düzenle
+277 Saha Baþlýðýný Düzenle
+278 Kurulum
+279 Include'lar
+280 Yeni Include
+281 Yeni Deðer
+282 Deðeri Düzenle
+283 Gruplama...
+284 Grup Sahasý:
+285 Grup Baþlýðý:
+286 Grup Altlýðý:
+287 Tablo Edit
+288 Brows
+289 Yapýyý Deðiþtir
+290 Geniþlik
+291 Desimaller
+292 Tabloyu Deðiþtir
+293 Saha EKle
+294 Saha Sil
+295 Kaydet
+296 BROWSE bir uyumluluk (eskimiþ) kontroldur ve artýk tavsiye edilmez. Yerini GRID kontrolu almýþtýr. Gene de kullanmak istiyor musunuz?

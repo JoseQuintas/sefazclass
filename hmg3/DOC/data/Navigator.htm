@@ -1,0 +1,751 @@
+<html>
+<head> 
+<title></title> 
+<style> 
+body
+{
+    font: 9pt Arial,sans-serif;
+    color: black;
+}
+.trigger
+{
+    cursor: pointer;
+    cursor: hand;
+}
+.branch
+{
+    display: none;
+    margin-left: 16px;
+}
+
+a:link, a:visited, a:active 
+{
+    text-decoration: none ; color: #000000; font: 9pt Arial,sans-serif; 
+}
+
+a.normal
+{
+    height: 300px;
+    width: initial;
+}
+</style>
+
+<script type="text/javascript" src="../assets/js/indexmenu.js"></script>
+<script type="text/javascript" src="../assets/js/itemschanged.js"></script>
+<script language="JavaScript">
+var openImg = new Image();
+openImg.src = "../assets/img/open.gif";
+var closedImg = new Image();
+closedImg.src = "../assets/img/closed.gif";
+var item = addmenuitem();
+var page = "<html><head><title></title></head><body bgcolor='white'><center><u><font size='4'>Search Results</font></u></center><br><table border=0 cellspacing=5 width=100%>";
+var modified = addmoditem();
+
+function showBranch(branch)
+{
+    var objBranch = document.getElementById(branch).style;
+    if(objBranch.display=="block")
+        objBranch.display="none";
+    else
+        objBranch.display="block";
+}
+ 
+function swapFolder(img)
+{
+    objImg = document.getElementById(img);
+    if(objImg.src.indexOf('closed.gif')>-1)
+        objImg.src = openImg.src;
+    else
+        objImg.src = closedImg.src;
+}
+
+function OnActiveLink(newActiveLink)
+{
+    var xid = document.getElementsByTagName("span");
+    for (var nP = 0; nP < xid.length; ++nP)
+    {
+        var currentId = xid[nP].id;
+        var container = document.getElementById(currentId);
+        var links = container.getElementsByTagName("a");
+        for (var i = 0; i < links.length; ++i)
+        {
+            links[i].style.color = "black";
+            links[i].style.fontWeight = "normal";
+        }
+        newActiveLink.style.color = "red";
+        newActiveLink.style.fontWeight = 'bold';
+    }
+}
+
+function search(frm) 
+{ 
+  txt = frm.srchval.value.split(" "); 
+  fnd = new Array(); total=0;
+  htm = "init.htm"
+  for (i = 0; i < item.length; i++) 
+  { 
+    fnd[i] = 0; order = new Array(0, 4, 2, 3); 
+    for (j = 0; j < order.length; j++) 
+      for (k = 0; k < txt.length; k++) 
+		if (item[i][order[j]].toLowerCase().indexOf(txt[k].toLowerCase()) > -1 && txt[k] != "")
+          fnd[i] += (j+1); 
+  }
+  for (i = 0; i < fnd.length; i++) 
+  {
+    n = 0; w = -1; 
+    for (j = 0;j < fnd.length; j++) 
+      if (fnd[j] > n) { n = fnd[j]; w = j; }; 
+    if (w > -1) total += show(w,n); 
+    fnd[w] = 0; 
+  } 
+  page += "</table><br><center>Total found: "+total+"<br><p></p>";
+  document.write(page);
+  document.close();
+}
+
+function show(which,num) 
+{ 
+  link = item[which][1] + item[which][0];
+  tree = item[which][5]+"."
+  line = '<tr><td><a href="'+link+'" style="text-decoration:none;" TARGET=DETAILS><small>'+tree+'</small><u><b>'+item[which][2]+"</b></u></a>: ";
+  line += item[which][4] + "</td></tr>"; 
+  page += line; 
+  return 1; 
+}
+
+function BackBtnOn()
+{
+  parent.MNUBOTTOM.location.href = 'menubottom.htm';
+  // button.style.visibility = "hidden";
+  // parent.MNUBOTTOM.getElementById("button").style.visibility = "visible";
+}
+
+function ItHasChanged(obj,hh)
+{
+  var htmItem = obj.closest("a").href; // In IE not working
+  // var htmItem = document.getElementsByTagName("a"); // for IE
+  var filename = htmItem.substring(htmItem.lastIndexOf('/')+1).toLowerCase();
+
+  if ( WhatsNew(filename) > -1 )
+  {  
+    obj.setAttribute('src', "../assets/img/doc_changed.gif");
+  }
+
+}
+
+function WhatsNew(cfile)
+{
+  n = modified.indexOf(cfile);
+  return n;
+}
+
+</script> 
+</head> 
+
+<body>
+<center>
+<!--  <form method=get action="" onsubmit="search(this); javascript:BackBtnOn(); return false;">  -->
+<form method=get action="javascript:#" onsubmit="search(this); javascript:BackBtnOn(); return false;">
+<tr><td> <!-- <input type=text name=srchval size="20" value=""></td> <td><input type=submit value="Search"> --> </td></tr>
+</form>
+</center>
+
+<div id="menu" class="trigger" onClick="showBranch('branch1');swapFolder('folder1')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder1"> 
+    Basics
+</div> 
+<span class="branch" id="branch1"> 
+<!--      <a href="Building_HMG_applications.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style>  </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" onload="ItHasChanged(this,'Building HMG Applications')" BORDER=0> Building HMG Applications</a> <br>  -->
+    <a href="Building_HMG_applications.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style>  </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Building HMG Applications</a> <br>
+    <a href="tutorial.htm" onclick="OnActiveLink(this);" TARGET=DETAILS  <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Tutorial (English)</a> <br>
+    <a href="tutorial_es.htm" onclick="OnActiveLink(this);" TARGET=DETAILS  <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Tutorial (Español)</a> <br>
+    <a href="faq.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style>  <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> FAQ</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch22');swapFolder('folder22')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder22"> 
+    HMG IDE
+</div> 
+<span class="branch" id="branch22"> 
+    <a href="idebasics.htm" onclick="OnActiveLink(this);" TARGET=DETAILS  <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Basics</a> <br>
+    <a href="idequickstart.htm" onclick="OnActiveLink(this);" TARGET=DETAILS  <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Quick Start</a> <br>
+    <a href="idesample.htm" onclick="OnActiveLink(this);" TARGET=DETAILS  <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Sample</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch2');swapFolder('folder2')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder2"> 
+    Windows
+</div> 
+<span class="branch" id="branch2"> 
+    <a href="activatewindowall.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style>  <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Activate Window All</a> <br>
+    <a href="declarewindow.htm" onclick="OnActiveLink(this);" TARGET=DETAILS  <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Declare Window</a> <br>
+    <a href="definewindow.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Define Window</a> <br>
+    <a href="loadwindow.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Load Window</a> <br>
+	<a href="thiswindow.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style>  <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ThisWindow Object</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch3');swapFolder('folder3')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder3"> 
+    Controls
+</div> 
+<span class="branch" id="branch3"> 
+    <a href="activex.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Activex</a> <br>
+    <a href="animatebox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> AnimateBox</a> <br>
+    <a href="browse.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Browse</a> <br>
+    <a href="button.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Button</a> <br>
+    <a href="checkbox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> CheckBox</a> <br>
+    <a href="checkbutton.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> CheckButton</a> <br>
+    <a href="combobox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ComboBox</a> <br>
+    <a href="contextmenu.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Context Menu</a> <br>
+    <a href="controlcontextmenu.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Control Context Menu</a> <br>
+    <a href="datepicker.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> DatePicker</a> <br>
+    <a href="dropdownmenu.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> DropDown Menu</a> <br>
+    <a href="editbox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> EditBox</a> <br>
+    <a href="frame.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Frame</a> <br>
+    <a href="grid.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Grid</a> <br>
+    <a href="hyperlink.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HyperLink</a> <br>
+    <a href="image.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Image</a> <br>
+    <a href="ipaddress.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> IpAddress</a> <br>
+    <a href="label.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Label</a> <br>
+    <a href="listbox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ListBox</a> <br>
+    <a href="mainmenu.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Main Menu</a> <br>
+    <a href="monthcalendar.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MonthCalendar</a> <br>
+    <a href="notifymenu.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Notify Menu</a> <br>
+    <a href="player.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Player</a> <br>
+    <a href="progressbar.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ProgressBar</a> <br>
+    <a href="radiogroup.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> RadioGroup</a> <br>
+    <a href="richeditbox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> RichEditBox</a> <br>
+    <a href="slider.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Slider</a> <br>
+    <a href="spinner.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Spinner</a> <br>
+    <a href="splitbox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> SplitBox</a> <br>
+    <a href="statusbar.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> StatusBar</a> <br>
+    <a href="tab.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Tab</a> <br>
+    <a href="textbox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> TextBox</a> <br>
+	<a href="this.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style>  <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> This Object</a> <br>
+    <a href="timer.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Timer</a> <br>
+    <a href="TimePicker.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> TimePicker</a> <br>
+    <a href="tree.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Tree</a> <br>
+    <a href="toolbar.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ToolBar</a> <br>
+</span>                                                                      
+
+<div class="trigger" onClick="showBranch('branch4');swapFolder('folder4')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder4"> 
+    Properties
+</div> 
+<span class="branch" id="branch4"> 
+    <a href="address.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> address</a> <br>
+    <a href="alignment.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> alignment</a> <br>
+    <a href="allowappend.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> allowappend</a> <br>
+    <a href="allowdelete.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> allowdelete</a> <br>
+    <a href="allowedit.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> allowedit</a> <br>
+    <a href="autoplay.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> autoplay</a> <br>
+    <a href="autosize.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> autosize</a> <br>
+    <a href="autosizemovie.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> autosizemovie</a> <br>
+    <a href="autosizewindow.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> autosizewindow</a> <br>
+    <a href="backcolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> backcolor</a> <br>
+    <a href="bordercolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> bordercolor</a> <br>
+    <a href="both.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> both</a> <br>
+    <a href="bottom.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> bottom</a> <br>
+    <a href="break.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> break</a> <br>
+    <a href="buttons.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> buttons</a> <br>
+    <a href="buttonwidth.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> buttonwidth</a> <br>
+    <a href="buttonheight.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> buttonheight</a> <br>
+    <a href="caseconvert.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> caseconvert</a> <br>
+    <a href="caption.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> caption</a> <br>
+    <a href="caretpos.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> caretpos</a> <br>
+    <a href="cell.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> cell</a> <br>
+    <a href="cellnavigation.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> cellnavigation</a> <br>
+    <a href="centerproperty.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> center</a> <br>
+    <a href="centeralign.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> centeralign</a> <br>
+    <a href="check.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> check</a> <br>
+    <a href="checked.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> checked</a> <br>
+    <a href="col.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> col</a> <br>
+    <a href="columncontrols.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> columncontrols</a> <br>
+    <a href="columnvalid.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> columnvalid</a> <br>
+    <a href="columnwhen.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> columnwhen</a> <br>
+    <a href="cursor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> cursor</a> <br>
+    <a href="datatype.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> datatype</a> <br>
+    <a href="date.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> date</a> <br>
+    <a href="disabledbackcolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> disabledbackcolor</a> <br>
+    <a href="disabledfontcolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> disabledfontcolor</a> <br>
+    <a href="displayedit.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> displayedit</a> <br>
+    <a href="displayitems.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> displayitems</a> <br>
+    <a href="displayvalue.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> displayvalue</a> <br>
+    <a href="dragitems.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> dragitems</a> <br>
+    <a href="dropdown.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> dropdown</a> <br>
+    <a href="droppedwidth.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> droppedwidth</a> <br>
+    <a href="dynamicbackcolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> dynamicbackcolor</a> <br>
+    <a href="dynamicdisplay.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> dynamicdisplay</a> <br>
+    <a href="dynamicforecolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> dynamicforecolor</a> <br>
+    <a href="enabled.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> enabled</a> <br>
+    <a href="errordlg.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> errordlg</a> <br>
+    <a href="field.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> field</a> <br>
+    <a href="fields.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> fields</a> <br>
+    <a href="file.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> file</a> <br>
+    <a href="flat.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> flat</a> <br>
+    <a href="focusedcontrol.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> focusedcontrol</a> <br>
+    <a href="fontname.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> fontname</a> <br>
+    <a href="fontsize.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> fontsize</a> <br>
+    <a href="fontbold.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> fontbold</a> <br>
+    <a href="fontcolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> fontcolor</a> <br>
+    <a href="fontitalic.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> fontitalic</a> <br>
+    <a href="fontunderline.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> fontunderline</a> <br>
+    <a href="fontstrikeout.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> fontstrikeout</a> <br>
+    <a href="format.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> format</a> <br>
+    <a href="grippertext.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> grippertext</a> <br>
+    <a href="group.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> group</a> <br>
+    <a href="handcursor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> handcursor</a> <br>
+    <a href="header.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> header</a> <br>
+    <a href="headers.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> headers</a> <br>
+    <a href="headerimages.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> headerimages</a> <br>
+    <a href="height.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> height</a> <br>
+    <a href="helpid.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> helpid</a> <br>
+    <a href="horizontal.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> horizontal</a> <br>
+    <a href="hottrack.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> hottrack</a> <br>
+    <a href="hscrollbar.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> hscrollbar</a> <br>
+    <a href="icon.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> icon</a> <br>
+    <a href="imageproperty.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> image</a> <br>
+    <a href="imagewidth.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> imagewidth</a> <br>
+    <a href="imageheight.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> imageheight</a> <br>
+    <a href="increment.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> increment</a> <br>
+    <a href="inputitems.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> inputitems</a> <br>
+    <a href="inputmask.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> inputmask</a> <br>
+    <a href="interval.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> interval</a> <br>
+    <a href="item.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> item</a> <br>
+    <a href="items.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> items</a> <br>
+    <a href="itemcount.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> itemcount</a> <br>
+    <a href="itemimages.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> itemimages</a> <br>
+    <a href="itemsource.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> itemsource</a> <br>
+    <a href="justify.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> justify</a> <br>
+    <a href="left.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> left</a> <br>
+    <a href="lines.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> lines</a> <br>
+    <a href="lock.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> lock</a> <br>
+    <a href="lowercase.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> lowercase</a> <br>
+    <a href="maxlength.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> maxlength</a> <br>
+    <a href="menu.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> menu</a> <br>
+    <a href="multiline.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> multiline</a> <br>
+    <a href="multiselect.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> multiselect</a> <br>
+    <a href="name.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> name</a> <br>
+    <a href="notifyicon.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> notifyicon</a> <br>
+    <a href="notifytooltip.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> notifytooltip</a> <br>
+    <a href="nodeimages.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> nodeimages</a> <br>
+    <a href="numeric.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> numeric</a> <br>
+    <a href="openproperty.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> open</a> <br>
+    <a href="playbar.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> playbar</a> <br>
+    <a href="object.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> object</a> <br>
+    <a href="options.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> options <br>
+    <a href="outerfontcolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> trailingfontcolor</a> <br>
+    <a href="ownerbutton.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ownerbutton <br>
+    <a href="parent.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> parent</a> <br>
+    <a href="pictalignment.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> pictalignment</a> <br>
+    <a href="picture.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> picture</a> <br>
+    <a href="rangemax.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> rangemax</a> <br>
+    <a href="rangemin.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> rangemin</a> <br>
+    <a href="readonly.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> readonly</a> <br>
+    <a href="readonlyfields.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> readonlyfields</a> <br>
+    <a href="recno.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> recno</a> <br>
+    <a href="rightalign.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> rightalign</a> <br>
+    <a href="righttext.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> righttext</a> <br>
+    <a href="rowsource.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> rowsource</a> <br>
+    <a href="rootbutton.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> rootbutton</a> <br>
+    <a href="row.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> row</a> <br>
+    <a href="rowsperpage.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> rowsperpage</a> <br>
+    <a href="separator.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> separator</a> <br>
+    <a href="showall.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> showall</a> <br>
+    <a href="showheaders.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> showheaders</a> <br>
+    <a href="shownone.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> shownone</a> <br>
+    <a href="showposition.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> showposition</a> <br>
+    <a href="sizable.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> sizable</a> <br>
+    <a href="smooth.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> smooth</a> <br>
+    <a href="sort.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> sort</a> <br>
+    <a href="spacing.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> spacing</a> <br>
+    <a href="stretch.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> stretch</a> <br>
+    <a href="strictwidth.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> strictwidth</a> <br>
+    <a href="style.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> style</a> <br>
+    <a href="tabstop.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> tabstop</a> <br>
+    <a href="tickmarks.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> tickmarks</a> <br>
+    <a href="title.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> title</a> <br>
+    <a href="titlebackcolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> titlebackcolor</a> <br>
+    <a href="titlefontcolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> titlefontcolor</a> <br>
+    <a href="today.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> today</a> <br>
+    <a href="todaycircle.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> todaycircle</a> <br>
+    <a href="tooltip.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> tooltip</a> <br>
+    <a href="top.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> top</a> <br>
+    <a href="transparent.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> transparent</a> <br>
+    <a href="updown.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> updown</a> <br>
+    <a href="uppercase.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> uppercase</a> <br>
+    <a href="valid.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> valid</a> <br>
+    <a href="validmessages.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> validmessages</a> <br>
+    <a href="value.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> value</a> <br>
+    <a href="valuesource.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> valuesource</a> <br>
+    <a href="vertical.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> vertical</a> <br>
+    <a href="view.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> view</a> <br>
+    <a href="virtual.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> virtual</a> <br>
+    <a href="visible.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> visible</a> <br>
+    <a href="visiblemin.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> visiblemin</a> <br>
+    <a href="visiblemax.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> visiblemax</a> <br>
+    <a href="vscrollbar.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> vscrollbar</a> <br>
+    <a href="weeknumbers.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> weeknumbers</a> <br>
+    <a href="when.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> when</a> <br>
+    <a href="wholedropdown.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> wholedropdown</a> <br>
+    <a href="width.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> width</a> <br>
+    <a href="widths.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> widths</a> <br>
+    <a href="windowtype.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> windowtype</a> <br>
+    <a href="workarea.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> workarea</a> <br>
+    <a href="wrap.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> wrap</a> <br>
+    <a href="colorarray.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Color Array</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch5');swapFolder('folder5')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder5"> 
+    Events
+</div> 
+<span class="branch" id="branch5"> 
+    <a href="action.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> action</a> <br>
+    <a href="onchange.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onchange</a> <br>
+    <a href="onclick.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onclick</a> <br>
+    <a href="oncloseup.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> oncloseup</a> <br>
+    <a href="ondblclick.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ondblclick</a> <br>
+    <a href="ondisplaychange.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ondisplaychange</a> <br>
+    <a href="ondropdown.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ondropdown</a> <br>
+    <a href="onenter.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onenter</a> <br>
+    <a href="ongetbolddays.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ongetbolddays</a> <br>
+    <a href="ongotfocus.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ongotfocus</a> <br>
+    <a href="onheadclick.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onheadclick</a> <br>
+    <a href="onhscrollbox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onhscrollbox</a> <br>
+    <a href="oninit.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> oninit</a> <br>
+    <a href="oninteractiveclose.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> oninteractiveclose</a> <br>
+    <a href="OnKey_Grid.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onkey</a> <br>
+    <a href="onlostfocus.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onlostfocus</a> <br>
+    <a href="onmaximize.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onmaximize</a> <br>
+    <a href="onminimize.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onminimize</a> <br>
+    <a href="onmouseclick.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onmouseclick</a> <br>
+    <a href="onmousedrag.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onmousedrag</a> <br>
+    <a href="onmousemove.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onmousemove</a> <br>
+    <a href="onnotifyclick.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onnotifyclick</a> <br>
+    <a href="onquerydata.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onquerydata</a> <br>
+    <a href="onpaint.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onpaint</a> <br>
+    <a href="onrelease.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onrelease</a> <br>
+    <a href="onsave.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onsave</a> <br>
+    <a href="onscrolldown.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onscrolldown</a> <br>
+    <a href="onscrollleft.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onscrollleft</a> <br>
+    <a href="onscrollright.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onscrollright</a> <br>
+    <a href="onscrollup.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onscrollup</a> <br>
+    <a href="onsize.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onsize</a> <br>
+    <a href="onvscrollbox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> onvscrollbox</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch6');swapFolder('folder6')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder6"> 
+    Methods
+</div> 
+<span class="branch" id="branch6"> 
+    <a href="activate.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> activate</a> <br>
+    <a href="append.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> append</a> <br>
+    <a href="addcolumn.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> addcolumn</a> <br>
+    <a href="addcontrol.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> addcontrol</a> <br>
+    <a href="additem.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> additem</a> <br>
+    <a href="addpage.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> addpage</a> <br>
+    <a href="capture.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> capture</a> <br>
+    <a href="center.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> center</a> <br>
+    <a href="clearbuffer.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> clearbuffer</a> <br>
+    <a href="close.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> close</a> <br>
+    <a href="delete.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> delete</a> <br>
+    <a href="deletecolumn.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> deletecolumn</a> <br>
+    <a href="deleteitem.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> deleteitem</a> <br>
+    <a href="deletepage.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> deletepage</a> <br>
+    <a href="eject.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> eject</a> <br>
+    <a href="hide.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> hide</a> <br>
+    <a href="maximize.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> maximize</a> <br>
+    <a href="minimize.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> minimize</a> <br>
+    <a href="open.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> open</a> <br>
+    <a href="pause.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> pause</a> <br>
+    <a href="play.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> play</a> <br>
+    <a href="playreverse.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> playreverse</a> <br>
+    <a href="print.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> print</a> <br>
+    <a href="recall.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> recall</a> <br>
+    <a href="refresh.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> refresh</a> <br>
+    <a href="release.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> release</a> <br>
+    <a href="resume.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> resume</a> <br>
+    <a href="restore.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> restore</a> <br>
+    <a href="save.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> save</a> <br>
+    <a href="seek.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> seek</a> <br>
+    <a href="setfocus.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> setfocus</a> <br>
+    <a href="show.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> show</a> <br>
+    <a href="stop.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> stop</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch7');swapFolder('folder7')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder7"> 
+    Functions
+</div> 
+<span class="branch" id="branch7"> 
+    <a href="compressfiles.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> CompressFiles</a> <br>
+    <a href="createfolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> CreateFolder</a> <br>
+    <a href="DisableProcessWindowsGhosting.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> DisableProcessWindowsGhosting</a> <br>
+    <a href="domethod.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> DoMethod</a> <br>
+    <a href="FindTextDialog.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> FindTextDialog</a> <br>
+    <a href="getcolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetColor</a> <br>
+    <a href="GetBinaryType.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetBinaryType</a> <br>
+    <a href="GetComputerName.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetComputerName</a> <br>
+    <a href="getcurrentfolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetCurrentFolder</a> <br>
+    <a href="getdata.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetData</a> <br>
+    <a href="getfile.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetFile</a> <br>
+    <a href="getfolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetFolder</a> <br>
+    <a href="getfont.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetFont</a> <br>
+    <a href="GetFontList.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetFontList</a> <br>
+    <a href="getdesktopfolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetDesktopFolder</a> <br>
+    <a href="getdesktopheight.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetDesktopHeight</a> <br>
+    <a href="getdesktopwidth.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetDesktopWidth</a> <br>
+    <a href="getmydocumentsfolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetMyDocumentsFolder</a> <br>
+    <a href="getprogramfilesfolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetProgramFilesFolder</a> <br>
+    <a href="getproperty.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetProperty</a> <br>
+    <a href="getstartupfolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetStartupFolder</a> <br>
+    <a href="getsystemfolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetSystemFolder</a> <br>
+    <a href="gettempfolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetTempFolder</a> <br>
+    <a href="GetUserName.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetUserName</a> <br>
+    <a href="getwindowsfolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetWindowsFolder</a> <br>
+	<a href="HMG_CallDLL.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_CallDLL</a> <br>
+	<a href="HMG_GetDLLFunctions.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_GetDLLFunctions</a> <br>
+	<a href="HMG_GetHBSymbols.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_GetHBSymbols</a> <br>
+	<a href="HMG_GetCompileVersion32.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_GetCompileVersion32</a> <br>
+	<a href="HMG_GetCompileVersion64.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_GetCompileVersion64</a> <br>
+	<a href="HMG_GetImageInfo.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_GetImageInfo</a> <br>
+    <a href="HMG_GetLanguage.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_GetLanguage</a> <br>
+    <a href="HMG_LoadResourceRawFile.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_LoadResourceRawFile</a> <br>
+	<a href="HMGversion.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMGVersion</a> <br>
+    <a href="inputbox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> InputBox</a> <br>
+    <a href="inputwindow.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> InputWindow</a> <br>
+    <a href="iscontroldefined.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> IsControlDefined</a> <br>
+    <a href="iswindowactive.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> IsWindowActive</a> <br>
+    <a href="iswindowdefined.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> IsWindowDefined</a> <br>
+    <a href="isinsertactive.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> IsInsertActive</a> <br>
+    <a href="iscapslockactive.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> IsCapslockActive</a> <br>
+    <a href="isscrolllockactive.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> IsScrolllockActive</a> <br>
+    <a href="isnumlockactive.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> IsNumlockActive</a> <br>
+    <a href="memorystatus.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MemoryStatus</a> <br>
+    <a href="MessageBoxTimeout.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MessageBoxTimeout</a> <br>
+    <a href="msgbox.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MsgBox</a> <br>
+    <a href="msgdebug.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MsgDebug</a> <br>
+    <a href="msgexclamation.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MsgExclamation</a> <br>
+    <a href="msginfo.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MsgInfo</a> <br>
+    <a href="msgokcancel.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MsgOkCancel</a> <br>
+    <a href="msgretrycancel.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MsgRetryCancel</a> <br>
+    <a href="msgstop.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MsgStop</a> <br>
+    <a href="msgyesno.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MsgYesNo</a> <br>
+    <a href="playasterisk.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> PlayAsterisk</a> <br>
+    <a href="playbeep.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> PlayBeep</a> <br>
+    <a href="playexclamation.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> PlayExclamation</a> <br>
+    <a href="playhand.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> PlayHand</a> <br>
+    <a href="playok.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> PlayOk</a> <br>
+    <a href="playquestion.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> PlayQuestion</a> <br>
+    <a href="putfile.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> PutFile</a> <br>
+    <a href="random.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Random</a> <br>
+    <a href="registryread.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> RegistryRead</a> <br>
+    <a href="registrywrite.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> RegistryWrite</a> <br>
+    <a href="removefolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> RemoveFolder</a> <br>
+    <a href="ReplaceTextDialog.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ReplaceTextDialog</a> <br>
+    <a href="senddata.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> SendData</a> <br>
+    <a href="SetDialogBoxPosition.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set DialogBox Position</a> <br>
+    <a href="setproperty.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> SetProperty</a> <br>
+    <a href="SetComputerName.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> SetComputerName</a> <br>
+    <a href="setcurrentfolder.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> SetCurrentFolder</a> <br>
+    <a href="shellabout.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ShellAbout</a> <br>
+    <a href="uncompressfiles.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> UnCompressFiles</a> <br>
+    <a href="VirtualKeyboard.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> VirtualKeyboard</a> <br>
+    <a href="waitwindow.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> WaitWindow</a> <br>
+    <a href="windowsversion.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> WindowsVersion</a> <br>
+</span> 
+
+
+<div class="trigger" onClick="showBranch('branch9');swapFolder('folder9')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder9"> 
+    Misc. Commands
+</div> 
+<span class="branch" id="branch9"> 
+    <a href="compress.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Compress</a> <br>
+    <a href="decode.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Decode</a> <br>
+    <a href="displayhelp.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Display Help</a> <br>
+    <a href="doevents.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Do Events</a> <br>
+    <a href="doreport.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Do Report</a> <br>
+    <a href="doreportform.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Do Report Form</a> <br>
+    <a href="draw.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Draw/Erase/Print Graph</a> <br>
+    <a href="edit.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Edit</a> <br>
+    <a href="encode.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Encode</a> <br>
+    <a href="execute.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Execute</a> <br>
+    <a href="GraphBitmap.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Graph Bitmap </a> <br>
+    <a href="onkey.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> On Key</a> <br>
+    <a href="playwave.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Play Wave</a> <br>
+    <a href="releasekey.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Release Key</a> <br>
+    <a href="setautoscroll.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set AutoScroll</a> <br>
+    <a href="setbrowsesync.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set BrowseSync</a> <br>
+    <a href="setcodepage.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set CodePage</a> <br>
+    <a href="setcompath.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set CommPath</a> <br>
+    <a href="SetEdge.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set Edge</a> <br>
+    <a href="setfont.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set Font</a> <br>
+    <a href="sethelpfile.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set HelpFile</a> <br>
+    <a href="setinteractiveclose.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set InteractiveClose</a> <br>
+    <a href="setlanguage.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set Language</a> <br>
+    <a href="setmultiple.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set Multiple</a> <br>
+    <a href="setnavigation.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set Navigation</a> <br>
+    <a href="setregion.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set Region</a> <br>
+    <a href="setscroll.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set Scroll</a> <br>
+    <a href="setstationname.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set StationName</a> <br>
+    <a href="settooltipbackcolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set ToolTipBackColor</a> <br>
+    <a href="settooltipforecolor.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set ToolTipForeColor</a> <br>
+    <a href="SetToolTipCustomDraw.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set ToolTipCustomDraw</a> <br>
+    <a href="settooltipstyle.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Set ToolTipStyle</a> <br>
+    <a href="storekey.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Store Key</a> <br>
+    <a href="systemobject.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> System Object</a> <br>
+    <a href="uncompress.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Uncompress</a> <br>
+    <a href="waitwindowcommand.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Wait Window</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch8');swapFolder('folder8')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder8"> 
+    Print System
+</div> 
+<span class="branch" id="branch8"> 
+    <a href="selectprinter.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> SELECT PRINTER</a> <br>
+    <a href="startprintdoc.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> START PRINTDOC</a> <br>
+    <a href="startprintpage.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> START PRINTPAGE</a> <br>
+    <a href="endprintpage.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> END PRINTPAGE</a> <br>
+    <a href="endprintdoc.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> END PRINTDOC</a> <br>
+    <a href="abortprintdoc.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ABORT PRINTDOC</a> <br>
+    <a href="printdata.htm" onclick="OnActiveLink(this);" TARGET=DETAILS  <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> PRINT DATA</a> <br>
+    <a href="printimage.htm" onclick="OnActiveLink(this);" TARGET=DETAILS  <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> PRINT IMAGE</a> <br>
+    <a href="printline.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> PRINT LINE</a> <br>
+    <a href="printrectangle.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> PRINT RECTANGLE</a> <br>
+    <a href="getprintableareawidth.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetPrintableAreaWidth()</a> <br>
+    <a href="getprintableareaheight.htm" onclick="OnActiveLink(this);" TARGET=DETAILS  <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetPrintableAreaHeight()</a> <br>
+    <a href="getprintableareahorizontaloffset.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetPrintableAreaHorizontalOffset()</a> <br>
+    <a href="getprintableareaverticaloffset.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetPrintableAreaVerticalOffset()</a> <br>
+    <a href="getprinter.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetPrinter()</a> <br>
+    <a href="aprinters.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> aPrinters()</a> <br>
+    <a href="getdefaultprinter.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GetDefaultPrinter()</a> <br>
+    <a href="HMG_PrinterGetStatus.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_PrinterGetStatus()</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch11');swapFolder('folder11')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder11"> 
+    Report Writer
+</div> 
+<span class="branch" id="branch11"> 
+    <a href="reportwriter.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Reference</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch15');swapFolder('folder15')"> 
+   <img src="../assets/img/closed.gif" border="0" id="folder15"> 
+   HMG HPDF
+</div> 
+<span class="branch" id="branch15"> 
+	<a href="../HMG HPDF/HMG_HPDF Introduction.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Introduction</a> <br>
+	<a href="../HMG HPDF/HMG_HPDF_Document_Handling.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Document Handling</a> <br>
+	<a href="../HMG HPDF/HMG_HPDFINFO.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HPDFINFO</a> <br>
+	<a href="../HMG HPDF/HMG_HPDFMiscellaneous.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Miscellaneous</a> <br>
+	<a href="../HMG HPDF/HMG_HPDFOutline.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Outline</a> <br>
+	<a href="../HMG HPDF/HMG_HPDFPage_Handling.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Page Handling</a> <br>
+	<a href="../HMG HPDF/HMG_HPDFContent_Handling.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Content Handling</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch18');swapFolder('folder18')"> 
+   <img src="../assets/img/closed.gif" border="0" id="folder18"> 
+   Bos Taurus
+</div> 
+<span class="branch" id="branch18"> 
+    <a href="../BosTaurus/BosTaurus-FunctionsReferenceGuide.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Reference Guide</a> <br> 
+</span> 
+
+<div class="trigger" onClick="showBranch('branch10');swapFolder('folder10')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder10"> 
+    Advanced
+</div> 
+<span class="branch" id="branch10"> 
+    <a href="Disable_Event.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Disable/Enable Events</a> <br>
+    <a href="Create_Event.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Create Event</a> <br>
+    <a href="Read_Keyboard_Mouse.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Read Keyboard and Mouse</a> <br>
+    <a href="Memory_Processes_Threads.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Memory, Processes and Threads</a> <br>
+    <a href="HMG_CheckType.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Check Type</a> <br>
+    <a href="user-components.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> User Components</a> <br>
+</span> 
+
+
+<div class="trigger" onClick="showBranch('branch12');swapFolder('folder12')"> 
+    <img src="../assets/img/closed.gif" border="0" id="folder12"> 
+    External Guides and Tutorials
+</div> 
+<span class="branch" id="branch12"> 
+   <a href="http://www.hmgforum.com/hmgdoc/hmgdoc.htm" target="_blank" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMGDoc online</a> <br>
+   <a href="http://harbour.github.io/doc/index.html" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Harbour Reference</a> <br>
+   <a href="http://www.kresin.ru/en/hrbfaq_3.html" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Harbour for Beginners</a> <br>
+   <a href="http://www.itlnet.net/programming/program/Reference/c53g01c/menu.html" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> CA-Clipper 5.3</a> <br>
+   <a href="http://www.elektrosoft.it/tutorials/hmg/hmg.asp" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG Tutorial</a> <br>
+   <a href="http://www.hmgforum.com/wiki" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG Wiki</a> <br>
+   <a target="DETAILS" href="OurChannel.htm" onclick="OnActiveLink(this);" <style></style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG in YouTube</a><br>
+   <a href="http://vivaclipper.wordpress.com/category/hmg/" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG - Viva Clipper</a> <br>
+</span> 
+
+
+<div class="trigger" onClick="showBranch('branch13');swapFolder('folder13')"> 
+   <img src="../assets/img/closed.gif" border="0" id="folder13"> 
+   HFCL
+</div> 
+<span class="branch" id="branch13"> 
+   <a href="HFCL_Intro.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Introduction</a> <br>
+   <a href="HFCL_AutoFill.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> AutoFill</a> <br> 
+   <a href="HFCL_COMBOSEARCHBOX.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> ComboSearchBox</a> <br> 
+   <a href="HFCL_gridprint.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GridPrint</a> <br> 
+   <a href="HFCL_MakeShortcut.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> MakeShortcut</a> <br>
+   <a href="HFCL_QHTM.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> QHTM</a> <br>
+   <a href="HMGSQL.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG SQL</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch14');swapFolder('folder14')"> 
+   <img src="../assets/img/closed.gif" border="0" id="folder14"> 
+   HMG UNICODE
+</div> 
+<span class="branch" id="branch14"> 
+    <a href="Update_HMG_Unicode.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG-UNICODE Documentation</a> <br> 
+    <a href="HMG_Unicode_Strings.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG Unicode String Functions</a> <br> 
+    <a href="HB_Unicode_Strings.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Harbour Unicode String Functions</a> <br>
+    <a href="HB_Ansi_Strings.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> Harbour ANSI Only String Functions</a> <br>
+    <a href="HMG_Cesu8.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_CESU8()</a> <br>
+    <a href="HMG_EscapeToUtf8.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_ESCAPETOUTF8()</a> <br>
+    <a href="HMG_GetUnicodeCharacter.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_GETUNICODECHARACTER()</a> <br>
+    <a href="HMG_GetUnicodeValue.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_GETUNICODEVALUE()</a> <br>
+    <a href="HMG_HasSPChar.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_HASSPCHAR()</a> <br>
+    <a href="HMG_IsUtf8.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_ISUTF8()</a> <br>
+    <a href="HMG_StrCmp.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_STRCMP()</a> <br>
+    <a href="HMG_UnCesu8.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_UNCESU8()</a> <br>
+    <a href="HMG_Utf8Crawl.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_UTF8CRAWL()</a> <br>
+    <a href="HMG_Utf8ToEscape.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_UTF8TOESCAPE()</a> <br>
+    <a href="U.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> U()</a> <br>
+    <a href="W.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> W()</a> <br>
+</span> 
+
+<div class="trigger" onClick="showBranch('branch19');swapFolder('folder19')"> 
+   <img src="../assets/img/closed.gif" border="0" id="folder19"> 
+   HMG 64-bits
+</div> 
+<span class="branch" id="branch19"> 
+    <a href="HMG-64bits.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG 64-bits Documentation</a> <br> 
+</span> 
+
+<div class="trigger" onClick="showBranch('branch20');swapFolder('folder20')"> 
+   <img src="../assets/img/closed.gif" border="0" id="folder20"> 
+   HMG DEBUGGER
+</div> 
+<span class="branch" id="branch20"> 
+    <a href="../Debugger/HMG_Debugger.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> GUI Documentation</a> <br> 
+</span> 
+
+<div class="trigger" onClick="showBranch('branch21');swapFolder('folder21')"> 
+   <img src="../assets/img/closed.gif" border="0" id="folder21"> 
+   CLASSES
+</div> 
+<span class="branch" id="branch21"> 
+    <a href="HMG_TString.htm" onclick="OnActiveLink(this);" TARGET=DETAILS <style> </style> <img src="../assets/img/doc.gif" onload="ItHasChanged(this)" BORDER=0> HMG_TString </a> <br> 
+</span> 
+
+</body>
+</htm>

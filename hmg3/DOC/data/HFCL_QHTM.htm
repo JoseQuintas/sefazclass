@@ -1,0 +1,444 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<title>QHTM API Reference and User Guide</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:"Calibri Light";
+	panose-1:2 15 3 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+h1
+	{mso-style-link:"Título 1 Char1";
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:24.0pt;
+	font-family:"Times New Roman","serif";
+	font-weight:bold;}
+h2
+	{mso-style-link:"Título 2 Char1";
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:18.0pt;
+	font-family:"Times New Roman","serif";
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+span.Ttulo1Char
+	{mso-style-name:"Título 1 Char";
+	mso-style-link:"Título 1";
+	font-family:"Calibri Light","sans-serif";
+	color:#2E74B5;}
+span.Ttulo2Char
+	{mso-style-name:"Título 2 Char";
+	mso-style-link:"Título 2";
+	font-family:"Calibri Light","sans-serif";
+	color:#2E74B5;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";}
+span.Ttulo1Char1
+	{mso-style-name:"Título 1 Char1";
+	mso-style-link:"Título 1";
+	font-family:"Calibri Light","sans-serif";
+	color:#2E74B5;
+	font-weight:bold;}
+span.Ttulo2Char1
+	{mso-style-name:"Título 2 Char1";
+	mso-style-link:"Título 2";
+	font-family:"Calibri Light","sans-serif";
+	color:#5B9BD5;
+	font-weight:bold;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 3.0cm 70.85pt 3.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:14.0pt;font-family:"Courier New";color:white'>&nbsp;QHTM
+API</span></b></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><i><span
+lang=EN-US style='font-family:"Courier New";color:white'>&nbsp;Reference and
+User Guide</span></i></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><span
+lang=EN-US style='font-family:"Courier New";color:white'>&nbsp;</span></p>
+
+</div>
+
+<p><span lang=EN-GB>&nbsp;</span></p>
+
+<p><span lang=EN-GB>For a quick introduction of how to use QHTM see the <a
+href="http://gipsysoft.com/qhtm/doc/qstart.shtml">quick start</a> page.</span></p>
+
+<p><span lang=EN-GB>To make use of QHTM in programming languages other than C/C++
+you will need to know how to create a window from a window class name, and how
+to send messages to a window and how to call a &quot;C&quot; function in a DLL.</span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal><span lang=EN-GB><a href="http://gipsysoft.com/qhtm/using/">Click
+     here</a> to read some information and to download samples of QHTM from
+     within other programming languages </span></li>
+ <li class=MsoNormal><span lang=EN-GB><a
+     href="http://gipsysoft.com/qhtm/doc/html.shtml">Click here</a> to read
+     about the HTML tags support </span></li>
+</ul>
+
+<h2><a name=howto></a><span lang=EN-GB>How to</span></h2>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/howto_simple.shtml">Use QHTM as a simple hyperlink
+control</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>A step-by-step
+guide for using QHTM as a simple hyperlink control on a dialog.</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/howto_givehtml.shtml">Giving HTML to QHTM</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>A discussion of
+the various methods of actually displaying HTML including how QHTM locates
+images.</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/howto_addborders.shtml">Add borders</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Add borders to a
+QHTM control</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/howto_print.shtml">Printing</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Print using
+standard API printing mechanisms</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/howto_hyperlinks.shtml">Hyperlinks</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>A method of
+handling hyperlinks within your applications</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/howto_linking.shtml">Linking with the
+library</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Describes issues
+regarding linking to QHTM</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/howto_vc5.shtml">Using QHTM with VC5</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Making a link
+library for use within VC5</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/howto_catch_hyperlinks.shtml">Catch
+hyperlinks</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Catch hyperlinks
+and run your own code for them</span></p>
+
+<h2><a name=functionreference></a><span lang=EN-GB>Function Reference</span></h2>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_initialise.shtml">QHTM_Initialize</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Initialise the
+library</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_enablecooltips.shtml">QHTM_EnableCooltips</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Enable and disable
+tooltips within an application</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_setresources.shtml">QHTM_SetResources</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Set the resource
+used for the 'hand' pointer and the 'no image' bitmap</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_printcreatecontext.shtml">QHTM_PrintCreateContext</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Create a print
+context specifying a zoom level</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_printdestroycontext.shtml">QHTM_PrintDestroyContext</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Destroy a print
+context</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_printsettext.shtml">QHTM_PrintSetText</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Set the print
+context text using some in memory text block</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_printsettextfile.shtml">QHTM_PrintSetTextFile</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Set the print
+context text using a file</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_printsettextresource.shtml">QHTM_PrintSetTextResource</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Set the print
+context text using a resource</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_printlayout.shtml">QHTM_PrintLayout</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Layout the HTML
+and determine the number of pages required</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_printpage.shtml">QHTM_PrintPage</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Print an entire
+page</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_printgethtmlheight.shtml">QHTM_PrintGetHTMLHeight</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Measure some in
+memory text prior to printing</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_printsetimagecallback.shtml">QHTM_PrintSetImageCallback</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Set the image
+callback for a print context</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_messagebox.shtml">QHTM_MessageBox</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>A drop in
+replacement for the MessageBox API, except we display HTML for the text!</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_sethtmlbutton.shtml">QHTM_SetHTMLButton</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Change a
+standard push button to allow it to contain HTML with a single function call.</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_sethtmllistbox.shtml">QHTM_SetHTMLListbox</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Change a
+standard listbox control to allow it to contain HTML with a single function
+call.</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_gethtmlheight.shtml">QHTM_GetHTMLHeight</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Measure the
+height of HTML given a constraining width.</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_renderhtml.shtml"><span lang=EN-US>QHTM_RenderHTML</span></a></span><span
+lang=EN-GB> </span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'>Render HTML onto a device context.</p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_renderhtmlrect.shtml">QHTM_RenderHTMLRect</a>
+</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Render HTML onto
+a device context and confined within a rectangle.</span></p>
+
+<h2><a name=types></a><span lang=EN-GB>QHTM Types</span></h2>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/funcqhtmimagecallback.shtml">funcQHTMImageCallback</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Pointer to
+function to supply images to QHTM</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/funcqhtmbitmapcallback.shtml">funcQHTMBitmapCallback</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Pointer to
+function to supply HBITMAP's to QHTM</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/funcqhtmresourcecallback.shtml">funcQHTMResourceCallback</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Pointer to
+function to supply any resource to QHTM. When QHTM needs a HTML file, image, or
+any other file it will call this callback.</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/funcqhtmformcallback.shtml">funcQHTMFORMCallback</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Pointer to
+function to receive form POST information. When the user submits a form QHTM
+gathers the form data and sends it to this callback.</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtmformsubmit.shtml">struct QHTMFORMSubmit</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Structure that
+QHTM uses to send for POST data to your application.</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/cqhtmimageabc.shtml">class CQHTMImageABC</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Image callback
+abstract base class class</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_link_info.shtml">struct QHTM_LINK_INFO</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Structure used
+when asking QHTM for hyperlink information</span></p>
+
+<h2><a name=messagereference></a><span lang=EN-GB>Message Reference</span></h2>
+
+<p><span lang=EN-GB>A list of the messages that can be sent to QHTM and what
+they mean. All of the messages have message cracker APIs too. </span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_load_from_resource.shtml">QHTM_LOAD_FROM_RESOURCE</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Load some HTML
+from resources into a QHTM window</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_load_from_file.shtml">QHTM_LOAD_FROM_FILE</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Load some HTML from
+a file into a QHTM window</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_set_option.shtml">QHTM_SET_OPTION</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Set one of the
+QHTM options</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_get_option.shtml">QHTM_GET_OPTION</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Get one of the
+QHTM options</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_goto_link.shtml">QHTM_GOTO_LINK</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Force QHTM to
+scroll to a given named link target within the current document </span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_get_scroll_pos.shtml">QHTM_GET_SCROLL_POS</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Get the current
+scroll position within the current document</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_set_scroll_pos.shtml">QHTM_SET_SCROLL_POS</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Set the current
+scroll position within the current document</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_get_html_title_length.shtml">QHTM_GET_HTML_TITLE_LENGTH</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Get the length
+of the title of the current document</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_get_html_title.shtml">QHTM_GET_HTML_TITLE</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Get the title of
+the current document</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_get_drawn_size.shtml">QHTM_GET_DRAWN_SIZE</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Get the drawn
+size of thw HTML within QHTM window</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_add_html.shtml">QHTM_ADD_HTML</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Add HTML to the
+current QHTM document.</span></p>
+
+<p class=MsoNormal><span lang=EN-GB><a
+href="http://gipsysoft.com/qhtm/doc/qhtm_get_link_from_point.shtml">QHTM_GET_LINK_FROM_POINT</a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><span lang=EN-GB>Get hyperlink
+information from a point.</span></p>
+
+<div id=footer>
+
+<p class=MsoNormal><span lang=EN-GB>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-GB>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-GB>© GipsySoft | Design by <a
+href="http://andreasviklund.com/">Andreas Viklund</a></span></p>
+
+<p class=MsoNormal><span lang=EN-GB>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-GB>Readapted to HMG by Pablo César Arrascaeta,
+Claudio Soto, S.Rathinagiri</span></p>
+
+<p class=MsoNormal><span lang=EN-GB>&nbsp;</span></p>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

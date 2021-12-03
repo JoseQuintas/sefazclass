@@ -1,0 +1,14 @@
+[OPTIONS]
+Compiled file=HelpDemo.chm
+Default Window=base
+Default topic=HelpDemo.html
+Title=Help Demo
+Full-text search=Yes
+
+[FILES]
+HelpDemo.html
+HelpDemo1.html
+HelpDemo2.html
+
+[WINDOWS]
+base="HelpDemo","HelpDemo.hhc","HelpDemo.hhk","HelpDemo.html","HelpDemo.html",,,,,0x520,200,0x10304e,[10,10,700,700],0x0,0x0,1,0,0,0,

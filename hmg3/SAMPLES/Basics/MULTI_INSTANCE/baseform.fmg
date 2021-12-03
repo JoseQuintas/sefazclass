@@ -1,0 +1,25 @@
+DEFINE WINDOW TEMPLATE; 
+	AT 93,80 ;
+	WIDTH 550 ;
+	HEIGHT 350 ; 
+	TITLE ''  
+
+	@ 10,10 CHECKBUTTON CheckButton_1 ;
+		CAPTION 'CheckButton!' ;
+		VALUE .T. ;
+		TOOLTIP 'CheckButton' 
+
+	@ 10,200 COMBOBOX Combo_1 ;
+		ITEMS {'One','Two','Three'} ;
+		VALUE 2 ;
+		TOOLTIP 'ComboBox' 
+
+	@ 249,225 BUTTON button_11 ;
+		CAPTION 'button_11' ; 
+		ACTION MsgInfo('Button Pressed') ;
+		WIDTH 100 ;
+		HEIGHT 28 ; 
+		FONT 'Arial' ;
+		SIZE 10 
+
+END WINDOW 

@@ -1,0 +1,311 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-536870145 1073786111 1 0 415 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;
+	mso-bidi-font-family:"Times New Roman";}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{mso-style-priority:34;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;
+	mso-bidi-font-family:"Times New Roman";}
+p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+	{mso-style-priority:34;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-type:export-only;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;
+	mso-bidi-font-family:"Times New Roman";}
+p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagraphCxSpMiddle
+	{mso-style-priority:34;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-type:export-only;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;
+	mso-bidi-font-family:"Times New Roman";}
+p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+	{mso-style-priority:34;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-type:export-only;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;
+	mso-bidi-font-family:"Times New Roman";}
+span.TextosinformatoCar
+	{mso-style-name:"Texto sin formato Car";
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Texto sin formato";
+	font-family:"Courier New";
+	mso-ascii-font-family:"Courier New";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Courier New";}
+p.msoplaintext1, li.msoplaintext1, div.msoplaintext1
+	{mso-style-name:msoplaintext1;
+	mso-style-unhide:no;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;}
+p.msoplaintext2, li.msoplaintext2, div.msoplaintext2
+	{mso-style-name:msoplaintext2;
+	mso-style-unhide:no;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;}
+p.msoplaintext3, li.msoplaintext3, div.msoplaintext3
+	{mso-style-name:msoplaintext3;
+	mso-style-unhide:no;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;}
+p.msopapdefault, li.msopapdefault, div.msopapdefault
+	{mso-style-name:msopapdefault;
+	mso-style-unhide:no;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;
+	mso-style-unhide:no;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	mso-default-props:yes;
+	font-size:10.0pt;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 3.0cm 70.85pt 3.0cm;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US-UY style='tab-interval:35.4pt'>
+
+<div class=WordSection1>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;background:#339966;color:white;font-size:12.0pt;'>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=msoplaintext1 style='font-size:12.0pt;'><b> <u>HARBOUR</u> string functions that support only the ANSI character set</b></p>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+</div>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=msoplaintext1>&nbsp;</p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:black;'><b>All these functions work with the ANSI character set and 
+other character sets (code pages) but do not support the Unicode character 
+set.</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;'>&nbsp;</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>LEN()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;'>&nbsp;</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>AT()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>HB_AT()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>HB_ATI()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;'>&nbsp;</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>MLCTOPOS()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>MPOSTOLC()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;'>&nbsp;</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>PAD()</b> <span style='color:black'>/* synonymn for PADR */</span></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>PADC()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>PADL()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>PADR()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;'>&nbsp;</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>RAT()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>HB_RAT()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;'>&nbsp;</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>LEFT()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>RIGHT()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;'>&nbsp;</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>LOWER()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>UPPER()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;'>&nbsp;</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>STUFF()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>SUBSTR()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>TRANSFORM()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;'>&nbsp;</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>HB_STRSHRINK()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;'>&nbsp;</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>ISALPHA()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>ISDIGIT()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>ISLOWER()</b></p>
+
+<p class=MsoNormal style='margin-bottom:0;font-size:10.0pt;font-family:"Courier New";
+color:red;'><b>ISUPPER()</b></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+
+HMG_FINGER      CURSOR      FINGER.CUR
+HMG_DRAGLIST    CURSOR      DRAGLIST.CUR
+HMG_DRAGUP      CURSOR      DRAGUP.CUR
+HMG_DRAGDOWN    CURSOR      DRAGDOWN.CUR
+
+// EDIT COMMAND IMAGE BUTTONS
+
+HMG_EDIT_CANCEL     BITMAP          EDIT_CANCEL.BMP
+HMG_EDIT_CLOSE      BITMAP          EDIT_CLOSE.BMP
+HMG_EDIT_COPY       BITMAP          EDIT_COPY.BMP
+HMG_EDIT_DELETE     BITMAP          EDIT_DELETE.BMP
+HMG_EDIT_EDIT       BITMAP          EDIT_EDIT.BMP
+HMG_EDIT_FIND       BITMAP          EDIT_FIND.BMP
+HMG_EDIT_NEW        BITMAP          EDIT_NEW.BMP
+HMG_EDIT_OK         BITMAP          EDIT_OK.BMP
+HMG_EDIT_PRINT      BITMAP          EDIT_PRINT.BMP
+HMG_EDIT_ADD        BITMAP          EDIT_ADD.BMP
+HMG_EDIT_DEL        BITMAP          EDIT_DEL.BMP
+HMG_EDIT_SET        BITMAP          EDIT_SET.BMP
+
+ZZZ_AAAWINDOW   ICON WINDOW.ICO
+ZZZ_LED_ON      ICON LED_ON.ICO
+ZZZ_LED_OFF     ICON LED_OFF.ICO
+
+HP_END          BITMAP  go_last_page_24.bmp
+HP_TOP          BITMAP  go_first_page_24.bmp
+HP_NEXT         BITMAP  go_next_page_24.bmp
+HP_BACK         BITMAP  go_previous_page_24.bmp
+HP_PRINT        BITMAP  print_24.bmp
+HP_ZOOM         BITMAP  Zoom_24.bmp
+HP_GOPAGE       BITMAP  go_to_page_24.bmp
+HP_CLOSE        BITMAP  Exit_24.bmp
+HP_SAVE         BITMAP  save_24.bmp
+HP_THUMBNAIL    BITMAP  ThumNails.bmp
+HP_FOLDER       BITMAP  Search_Folder.bmp
+HP_GLASS        CURSOR  HP_GLASS.CUR
+
+GRID_MSAV       BITMAP  grid_msav.bmp
+GRID_MCAN       BITMAP  grid_mcan.bmp
+
+
+//------------------------------------------------
+// HMG Debugger resources
+//------------------------------------------------
+
+_about        	PNG   _dbg_about.png
+
+_animate      	PNG   _dbg_animate.png
+_step         	PNG   _dbg_step.png
+_trace        	PNG   _dbg_trace.png
+_go           	PNG   _dbg_go.png
+_tocursor     	PNG   _dbg_tocursor.png
+_next         	PNG   _dbg_next.png
+_pause        	PNG   _dbg_pause.png
+
+_breakpoint   	PNG   _dbg_breakpoint.png
+_watchpoint   	PNG   _dbg_watchpoint.png
+_tracepoint   	PNG   _dbg_tracepoint.png
+_configuration	PNG   _dbg_configuration.png
+_quit         	PNG   _dbg_quit.png
+
+_pointer      	PNG   _dbg_pointer.png
+_refresh      	PNG   _dbg_refresh.png
+
+_open      	PNG   _dbg_open.png
+_save      	PNG   _dbg_save.png
+
+_dbgIcon        ICON  _dbg_icon.ico
+
+_dbgbutton    	PNG   _dbg_button.png

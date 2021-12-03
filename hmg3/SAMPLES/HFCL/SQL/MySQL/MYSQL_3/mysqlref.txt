@@ -1,0 +1,343 @@
+*******************************************************************************
+* MySql Harbour Contribution Library 
+*******************************************************************************
+
+-------------------------------------------------------------------------------
+CLASS TMySQLRow: Every single row of an answer
+-------------------------------------------------------------------------------
+
+	DATA  aRow		
+
+		A single row of answer
+
+	DATA  aDirty		
+
+		Array of booleans set to .T. if corresponding field of aRow has
+		been changed
+
+	DATA  aOldValue		
+
+		If aDirty[n] is .T. aOldValue[n] keeps a copy of changed value 
+		if aRow[n] is part of a primary	key
+
+	DATA  aOriValue		
+
+		Original values ( same as TMySQLtable:aOldValue )
+
+	DATA  aFieldStruct	
+
+		Type of each field
+
+	DATA  cTable		
+
+		Name of table containing this row, empty if TMySQLQuery returned
+		this row
+
+	METHOD	New(aRow, aFStruct, cTableName)
+
+		Create a new Row object
+
+	METHOD   FieldGet(cnField)
+
+		Same as clipper ones, but FieldGet() and FieldPut() accept a 
+		string as
+
+	METHOD   FieldPut(cnField, Value)
+
+		Field identifier, not only a number
+
+	METHOD   FieldName(nNum)
+
+	METHOD   FieldPos(cFieldName)
+
+	METHOD   FieldLen(nNum)
+
+		Length of field N
+
+	METHOD   FieldDec(nNum)
+
+		How many decimals in field N
+
+	METHOD   FieldType(nNum)
+
+		Clipper type of field N
+
+	METHOD   MakePrimaryKeyWhere()
+
+		Returns a WHERE x=y statement which uses primary key (if 
+		available)
+
+-------------------------------------------------------------------------------
+CLASS TMySQLQuery: Every single query submitted to MySQL server
+-------------------------------------------------------------------------------
+
+	DATA  nSocket
+
+		Connection handle to MySQL server
+
+	DATA  nResultHandle
+
+		Result handle received from MySQL
+
+	DATA  cQuery
+
+		Copy of query that generated this object
+
+	DATA  nNumRows
+
+		Number of rows available on answer NOTE MySQL is 0 based
+
+	DATA  nCurRow
+
+		I'm currently over row number
+
+	DATA  lBof
+	
+	DATA  lEof
+
+	DATA  lFieldAsData
+
+		Use fields as object DATA. For compatibility
+		Names of fields can match name of TMySQLQuery/Table DATAs,
+		and it is dangerous. ::lFieldAsData:=.F. can fix it
+
+	DATA  aRow
+
+		Values of fields of current row
+
+	DATA  nNumFields
+
+		How many fields per row
+
+	DATA  aFieldStruct
+
+		Type of each field, a copy is here a copy inside each row
+
+	DATA  lError
+
+		.T. if last operation failed
+
+	METHOD   New(nSocket, cQuery)
+
+		New query object
+
+	METHOD   Destroy()
+
+	METHOD   End()
+
+	METHOD   Refresh()
+
+		ReExecutes the query (cQuery) so that changes to table are 
+		visible
+
+	METHOD   GetRow(nRow)
+
+		Return Row n of answer
+
+	METHOD   Skip(nRows)
+		
+		Same as clipper ones
+
+	METHOD   Bof()
+
+	METHOD   Eof()
+
+	METHOD   RecNo()
+
+	METHOD   LastRec()
+
+	METHOD   GoTop()
+
+	METHOD   GoBottom()
+
+	METHOD   GoTO(nRow)
+
+	METHOD   FCount()
+
+	METHOD   NetErr()
+
+		Returns .T. if something went wrong
+
+	METHOD   Error()
+
+		Returns textual description of last error and clears ::lError
+
+	METHOD   FieldName(nNum)
+
+	METHOD   FieldPos(cFieldName)
+	
+	METHOD   FieldGet(cnField)
+
+	METHOD   FieldLen(nNum)
+
+		Length of field N
+
+	METHOD   FieldDec(nNum)
+
+		How many decimals in field N
+
+	METHOD   FieldType(nNum)
+		
+		Clipper type of field N
+
+-------------------------------------------------------------------------------
+CLASS TMySQLTable: A query without joins; Insert() e Delete() rows are allowed. 
+-------------------------------------------------------------------------------
+NOTE: it's always a SELECT result, so it will contain a full table only if
+SELECT * FROM ... was issued
+
+	DATA  cTable
+	
+		Name of table
+
+	DATA  aOldValue
+
+		Keeps a copy of old value
+
+	METHOD   New(nSocket, cQuery, cTableName)
+
+	METHOD   GetRow(nRow)
+
+	METHOD   Skip(nRow)
+
+	METHOD   GoTop()
+	
+	METHOD   GoBottom() 
+
+	METHOD   GoTo(nRow)
+	
+	METHOD   Update(oRow, lOldRecord, lRefresh)
+
+		Gets an oRow and updates changed fields
+
+	METHOD   Save()
+
+	METHOD   Delete(oRow, lOldRecord, lRefresh)
+
+		Deletes passed row from table
+
+	METHOD   Append(oRow, lRefresh)
+
+		Inserts passed row into table
+	
+	METHOD   GetBlankRow( lSetValues )
+		
+		Returns an empty row with all available fields empty
+
+	METHOD   SetBlankRow() 
+
+		Compatibility
+
+	METHOD   Blank()
+
+	METHOD   FieldPut(cnField, Value)
+
+		Field identifier, not only a number
+
+	METHOD   Refresh()
+
+	METHOD   MakePrimaryKeyWhere()
+
+		Returns a WHERE x=y statement which uses primary key (if 
+		available)
+
+-------------------------------------------------------------------------------
+CLASS TMySQLServer: Every available MySQL server
+-------------------------------------------------------------------------------
+
+   DATA  nSocket
+
+	Connection handle to server (currently pointer to a MYSQL structure)
+
+   DATA  cServer
+
+	Server name
+
+   DATA  cDBName
+
+	Selected DB
+
+	DATA  cUser
+
+		User accessing db
+
+	DATA  cPassword
+		His/her password
+
+	DATA  lError
+
+		.T. if occurred an error
+
+	DATA  cCreateQuery
+
+	METHOD   New(cServer, cUser, cPassword)
+
+		Opens connection to a server, returns a server object
+
+	METHOD   Destroy()
+
+		Closes connection to server
+
+	METHOD   SelectDB(cDBName)
+
+		Which data base I will use for subsequent queries
+
+	METHOD   CreateTable(cTable, aStruct,cPrimaryKey,cUniqueKey,cAuto)
+
+		Create new table using the same syntax of dbCreate()
+
+	METHOD   DeleteTable(cTable)
+
+		Delete table
+
+	METHOD   TableStruct(cTable)
+
+		Returns a structure array compatible with clipper's dbStruct() 
+		ones
+
+	METHOD   CreateIndex(cName, cTable, aFNames, lUnique)
+		Create an index (unique) on field name(s) passed as an array of
+		strings aFNames
+
+	METHOD   DeleteIndex(cName, cTable)
+
+		Delete index cName from cTable
+
+	METHOD   ListDBs()
+
+		Returns an array with list of data bases available
+
+	METHOD   ListTables()
+
+		Returns an array with list of available tables in current 
+		database
+
+	METHOD   Query(cQuery)
+
+		Gets a textual query and returns a TMySQLQuery or TMySQLTable 
+		object
+
+	METHOD   NetErr() INLINE ::lError
+
+		Returns .T. if something went wrong
+
+	METHOD   Error()
+
+		Returns textual description of last error
+
+	METHOD   CreateDatabase( cDataBase )
+		
+		Create an New Mysql Database
+
+	METHOD   sql_Commit()
+
+		Commits transaction
+
+	METHOD   sql_Rollback()
+
+		Rollbacks transaction
+
+	METHOD   sql_Version()
+
+	Server version as numeric
+

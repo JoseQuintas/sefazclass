@@ -1,0 +1,12 @@
+// Using a resource file like this, you can include images, icons and sounds
+// inside EXE.
+//
+//	Resource name	Resouce Type    Resource FileName
+//
+//	WAVERESNAME	WAVE 		FILENAME.WAV
+//	BITMAPRESNAME	BITMAP		FILENAME.BMP
+//	ICONRESNAME	ICON		FILENAME.ICO
+//	JPGRESNAME	JPG		FILENAME.JPG
+//	GIFRESNAME	GIF		FILENAME.GIF
+
+	HMG		BITMAP		HMG.BMP

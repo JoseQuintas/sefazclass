@@ -1,0 +1,665 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:"Calibri Light";
+	panose-1:2 15 3 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Consolas;
+	panose-1:2 11 6 9 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+h4
+	{mso-style-link:"TÃ­tulo 4 Char";
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-link:"Texto sem FormataÃ§Ã£o Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.MsoNoSpacing, li.MsoNoSpacing, div.MsoNoSpacing
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+span.Ttulo4Char
+	{mso-style-name:"TÃ­tulo 4 Char";
+	mso-style-link:"TÃ­tulo 4";
+	font-family:"Calibri Light","sans-serif";
+	color:#2E74B5;
+	font-style:italic;}
+span.TextosemFormataoChar
+	{mso-style-name:"Texto sem FormataÃ§Ã£o Char";
+	mso-style-link:"Texto sem FormataÃ§Ã£o";
+	font-family:Consolas;}
+p.msolistparagraphcxspfirst, li.msolistparagraphcxspfirst, div.msolistparagraphcxspfirst
+	{mso-style-name:msolistparagraphcxspfirst;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+p.msolistparagraphcxspmiddle, li.msolistparagraphcxspmiddle, div.msolistparagraphcxspmiddle
+	{mso-style-name:msolistparagraphcxspmiddle;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+p.msolistparagraphcxsplast, li.msolistparagraphcxsplast, div.msolistparagraphcxsplast
+	{mso-style-name:msolistparagraphcxsplast;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+span.TextosinformatoCar
+	{mso-style-name:"Texto sin formato Car";
+	mso-style-link:"Texto sin formato";
+	font-family:"Courier New";}
+p.msoplaintext1, li.msoplaintext1, div.msoplaintext1
+	{mso-style-name:msoplaintext1;
+	mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.msoplaintext2, li.msoplaintext2, div.msoplaintext2
+	{mso-style-name:msoplaintext2;
+	mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.msoplaintext3, li.msoplaintext3, div.msoplaintext3
+	{mso-style-name:msoplaintext3;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.msopapdefault, li.msopapdefault, div.msopapdefault
+	{mso-style-name:msopapdefault;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.style2, li.style2, div.style2
+	{mso-style-name:style2;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	color:black;}
+p.Textosinformato, li.Textosinformato, div.Textosinformato
+	{mso-style-name:"Texto sin formato";
+	mso-style-link:"Texto sin formato Car";
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+p.separator, li.separator, div.separator
+	{mso-style-name:separator;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";}
+span.style21
+	{mso-style-name:style21;
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+.MsoPapDefault
+	{margin-bottom:10.0pt;
+	line-height:115%;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 3.0cm 70.85pt 3.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=PT-BR link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+
+<p class=msoplaintext1 style='background:#339966;border:none;padding:0cm'><span
+lang=EN-US style='color:white'>&nbsp;</span></p>
+
+<p class=msoplaintext1 style='background:#339966;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:12.0pt;color:white;background:#339966'>HMG IDE <br>
+</span></b><b><i><span lang=EN-US style='color:white'>Quick Start</span></i></b></p>
+
+<p class=msoplaintext1 style='background:#339966;border:none;padding:0cm'><span
+lang=EN-US style='color:white'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoPlainText style='text-align:justify'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=msoplaintext2 style='text-align:justify'><span lang=EN-US>&nbsp;</span></p>
+
+<h4 style='text-align:justify'><span class=style21><span lang=EN-US
+style='font-family:"Courier New"'>Step 1</span></span><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>&nbsp; </span></h4>
+
+<p class=style2 style='margin-left:54.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings'>Ã</span><span lang=EN-US
+style='font-size:7.0pt'>&nbsp; </span><span lang=EN-US style='font-family:"Courier New"'>Download latest release of <a
+href="http://sourceforge.net/projects/hmg/" target="_blank">HMG package</a> and&nbsp;run HMG setup wizard for installation.</span></p>
+
+<p class=style2 style='margin-left:54.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings'>Ã</span><span lang=EN-US
+style='font-size:7.0pt'>&nbsp; </span><span lang=EN-US style='font-family:"Courier New"'>Install
+HMG at normal and default path for location, this is the best practice.</span></p>
+
+<p class=style2 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-family:"Courier New"'>Installer will create with following HMG
+folders structure:</span></p>
+
+<p class=style2 style='margin-left:36.0pt;text-align:justify'><span
+style='font-family:"Courier New";color:blue'><img border=0 width=217
+height=322 src="../assets/img/HMGDirStru-full.png" alt=1></span></p>
+
+<p class=style2 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-family:"Courier New"'>At above picture where's <b>hmg.x.x.x</b>
+means that is the hmgroot folder. Which folder name is composed by HMG version
+installed.</span></p>
+
+<p class=style2 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-family:"Courier New"'>Regarding <b>HARBOUR</b> and <b>MINGW</b>
+sub-folders, means you haven't need to download or install neither and have
+been included for use with more convenience and assurance of its versions that
+can work with each specific HMG version.</span></p>
+
+<p class=style2 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-family:"Courier New"'>Regarding IDE, there two version: ANSI and
+UNICODE and are available to use in IDE folders.</span></p>
+
+<h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New";
+color:black'>Step 2</span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;font-weight:normal'>Ã</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>To
+start edit your source code (PRGs files) you will need to install your favorite
+source code editor that you can feel more comfortable counting with advanced
+editing features of your preference. </span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-family:"Courier New";color:black'>Notepad++</span><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'> is our most
+favorite source editor can be easy to indicate. Because is very powerful,
+supports several languages and is free editor. </span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'>You can
+download it from <a href="https://notepad-plus-plus.org/download/">https://notepad-plus-plus.org/download/</a>.</span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'>You will need
+setup your source code editor at menubar in Tools \ Preferences \ Module
+Editor.</span></h4>
+
+<h4 align=center style='margin-left:36.0pt;text-align:center'><span
+style='font-family:"Courier New";color:#666666'><img border=0 width=487
+height=196 src="../assets/img/ChangeModuleEditor-full.png"></span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'>You also can
+also change your language settings for user interface messages.</span></h4>
+
+<h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New";
+color:black'>Step 3</span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;font-weight:normal'>Ã</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>To
+begin any project, is normal require to create a specific folder to contain
+your project, all source and all databases files to be contained.</span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-size:8.0pt;font-family:"Courier New";font-weight:normal'>&nbsp;</span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;font-weight:normal'>Ã</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>There
+are two ways to open a new project by our IDE: </span></h4>
+
+<h4 style='margin-left:72.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:"Courier New";font-weight:normal'>1.</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'> </span><span lang=EN-US
+style='font-family:"Courier New";font-weight:normal'>By menubar </span><span
+lang=EN-US style='font-family:"Courier New"'>File</span><span lang=EN-US
+style='font-family:"Courier New";font-weight:normal'> and select </span><span
+lang=EN-US style='font-family:"Courier New"'>New Project</span></h4>
+
+<h4 style='margin-left:72.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:"Courier New";font-weight:normal'>2.</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'> </span><span lang=EN-US
+style='font-family:"Courier New";font-weight:normal'>Or simple click to </span><span
+lang=EN-US style='font-family:"Courier New"'>New Project</span><span
+lang=EN-US style='font-family:"Courier New";font-weight:normal'> button</span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;font-weight:normal'>Ã</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>Inform
+your project folder and give a name. In this case we can call the project as </span><span
+lang=EN-US style='font-family:"Courier New";color:black'>MyApp</span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>
+name.</span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-family:"Courier New";font-weight:normal'>You would use long file
+names but beware including spaces and special character in your full file name.
+Because our IDE is not supports special characters and spaces but in other hand
+Build.bat allows working with long names files.</span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;font-weight:normal'>Ã</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>At
+this time, will be open and display two files: </span></h4>
+
+<h4 style='margin-left:72.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>1.</span><span
+lang=EN-US style='font-size:7.0pt;color:black;font-weight:normal'> </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>Main.prg
+file displayed at your favorite source code editor</span></h4>
+
+<h4 style='margin-left:72.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:"Courier New";font-weight:normal'>2.</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'> </span><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'>Main.fmg file
+displayed at </span><span lang=EN-US style='font-family:"Courier New";
+color:black'>Form Design</span><span lang=EN-US style='font-family:"Courier New";
+color:black;font-weight:normal'> board</span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'>Also are
+creating following files at your project folder:</span></h4>
+
+<h4 style='margin-left:72.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:"Courier New";font-weight:normal'>1.</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'> </span><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'>MyApp.hbp</span></h4>
+
+<h4 style='margin-left:72.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:"Courier New";font-weight:normal'>2.</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'> </span><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'>MyApp.hbc</span></h4>
+
+<h4 style='margin-left:72.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:"Courier New";font-weight:normal'>3.</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'> </span><span lang=EN-US
+style='font-family:"Courier New";font-weight:normal'>MyApp.rc</span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify'><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'>You can see
+two files with </span><span lang=EN-US style='font-family:"Courier New";
+color:black'>Main</span><span lang=EN-US style='font-family:"Courier New";
+color:black;font-weight:normal'> name were created instead </span><span
+lang=EN-US style='font-family:"Courier New";color:black'>MyApp</span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'> as
+it was defined for project name. In case you need to rename, you have two ways
+to do it:</span></h4>
+
+<h4 style='margin-left:72.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>1.</span><span
+lang=EN-US style='font-size:7.0pt;color:black;font-weight:normal'> </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>Thru
+IDE</span></h4>
+
+<h4 style='margin-left:108.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;color:black;font-weight:normal'>§</span><span
+lang=EN-US style='font-size:7.0pt;color:black;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>At
+menubar </span><span lang=EN-US style='font-family:"Courier New";color:black'>Project</span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'> / </span><span
+lang=EN-US style='font-family:"Courier New";color:black'>Delete File</span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>
+and you can exclude both files by this way.</span></h4>
+
+<h4 style='margin-left:108.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;color:black;font-weight:normal'>§</span><span
+lang=EN-US style='font-size:7.0pt;color:black;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>Now
+at menubar </span><span lang=EN-US style='font-family:"Courier New";color:black'>Project</span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'> / </span><span
+lang=EN-US style='font-family:"Courier New";color:black'>New Module</span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>
+will creates a prg file with the right name given.</span></h4>
+
+<h4 style='margin-left:108.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;color:black;font-weight:normal'>§</span><span
+lang=EN-US style='font-size:7.0pt;color:black;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>To
+create fmg file you click at menubar </span><span lang=EN-US style='font-family:
+"Courier New";color:black'>Project</span><span lang=EN-US style='font-family:
+"Courier New";color:black;font-weight:normal'> / </span><span lang=EN-US
+style='font-family:"Courier New";color:black'>New Form</span><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'> and will
+creates with right name</span></h4>
+
+<h4 style='margin-left:72.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>2.</span><span
+lang=EN-US style='font-size:7.0pt;color:black;font-weight:normal'> </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>Outside
+of IDE</span></h4>
+
+<h4 style='margin-left:108.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;color:black;font-weight:normal'>§</span><span
+lang=EN-US style='font-size:7.0pt;color:black;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>You
+will need to close project (not the IDE) by menubar </span><span lang=EN-US
+style='font-family:"Courier New";color:black'>File</span><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'> / </span><span
+lang=EN-US style='font-family:"Courier New";color:black'>Close Project.</span></h4>
+
+<h4 style='margin-left:108.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;color:black;font-weight:normal'>§</span><span
+lang=EN-US style='font-size:7.0pt;color:black;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>Thru
+Windows Explorer you can rename these files.</span></h4>
+
+<h4 style='margin-left:108.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;color:black;font-weight:normal'>§</span><span
+lang=EN-US style='font-size:7.0pt;color:black;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>Will
+be necessary to re-edict MyApp.hbp and change </span><span lang=EN-US
+style='font-family:"Courier New";color:black'>Main</span><span lang=EN-US
+style='font-family:"Courier New";color:black;font-weight:normal'> name for </span><span
+lang=EN-US style='font-family:"Courier New";color:black'>MyApp</span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>
+and save the file.</span></h4>
+
+<h4 style='margin-left:108.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;color:black;font-weight:normal'>§</span><span
+lang=EN-US style='font-size:7.0pt;color:black;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";color:black;font-weight:normal'>Now
+you can open MyApp project</span></h4>
+
+<h4 style='margin-left:36.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings;font-weight:normal'>Ã</span><span
+lang=EN-US style='font-size:7.0pt;font-weight:normal'>&nbsp; </span><span
+lang=EN-US style='font-family:"Courier New";font-weight:normal'>From now you
+can edit your main prg file.</span></h4>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ style='margin-left:36.0pt;border-collapse:collapse'>
+ <tr>
+  <td width=717 valign=top style='width:537.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New";
+  font-weight:normal'>In this case </span><span lang=EN-US style='font-family:
+  "Courier New"'>MyApp.prg</span><span lang=EN-US style='font-family:"Courier New";
+  font-weight:normal'> will appears with default source code, like this.</span></h4>
+  <h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New";
+  font-weight:normal'>This code is used for loading a previous fmg file done. </span></h4>
+  <h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New";
+  font-weight:normal'>If your project you make manually (without using fmg files)
+  you can exclude following lines:</span></h4>
+  <p class=MsoNoSpacing style='margin-left:177.95pt'><b><span lang=EN-US
+  style='font-family:"Courier New";color:#2F5597'>Load Window Main</span></b></p>
+  <p class=MsoNoSpacing style='margin-left:177.95pt'><b><span lang=EN-US
+  style='font-family:"Courier New";color:#2F5597'>Main.Center</span></b></p>
+  <p class=MsoNoSpacing style='margin-left:177.95pt'><b><span lang=EN-US
+  style='font-family:"Courier New";color:#2F5597'>Main.Activate</span></b></p>
+  <h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New";
+  font-weight:normal'>Then you write your own code.</span></h4>
+  <h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New";
+  font-weight:normal'>In case your fmg was previous renamed, you will need to
+  replace Main by the new name.</span></h4>
+  </td>
+  <td width=435 valign=top style='width:326.05pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <h4 align=center style='text-align:center'><span style='font-family:"Courier New";
+  font-weight:normal'><img border=0 width=297 height=280
+  src="../assets/img/Default_Prg.png"></span></h4>
+  </td>
+ </tr>
+</table>
+
+<h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></h4>
+
+<h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New";
+color:black'>Step 4</span></h4>
+
+<p class=style2 style='margin-left:36.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings'>Ã</span><span lang=EN-US
+style='font-size:7.0pt'>&nbsp; </span><span lang=EN-US style='font-family:"Courier New"'>To
+add a new prgs just click at menubar <b>Project</b> / <b>New Module</b> will
+creates a prg file with the name given.</span></p>
+
+<p class=style2 style='margin-left:36.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings'>Ã</span><span lang=EN-US
+style='font-size:7.0pt'>&nbsp; </span><span lang=EN-US style='font-family:"Courier New"'>In
+case you have others prgs files you can bring to actual project by clicking at
+menubar <b>Project</b> / <b>Import File</b>.</span></p>
+
+<p class=separator style='text-align:justify'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New";
+color:black'>Step 5 </span></h4>
+
+<p class=style2 style='margin-left:36.0pt;text-align:justify;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings'>Ã<span style='font:7.0pt "Times New Roman"'>&nbsp;
+</span></span><span lang=EN-US style='font-family:"Courier New"'>By double
+click on your main name in module tab of Project Browser, will open automatically
+for file editing.</span></p>
+
+<p class=style2 style='margin-left:36.0pt;text-align:justify;text-indent:-18.0pt'><span
+class=style21><span lang=EN-US style='font-family:Wingdings'>Ã<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span></span><span
+lang=EN-US style='font-family:"Courier New"'>Then we can start to make MyApp demonstration.
+So at first line when we wish to work in GUI functions of HMG we have to
+include this as follows<span class=style21>:</span></span></p>
+
+<p class=style2 style='margin-left:36.0pt;text-align:justify'><span
+class=style21><b><span lang=EN-US style='font-family:"Courier New"'>#include
+&lt;hmg.ch&gt;</span></b></span></p>
+
+<p class=style2 style='margin-left:36.0pt;text-align:justify'><span
+class=style21><span lang=EN-US style='font-family:"Courier New"'>This line is
+standard as GUI for all HMG modules. Unless you want build a project for
+console mode only, this line is not necessary.</span></span></p>
+
+<h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New";
+color:black'>Step 6</span></h4>
+
+<p class=style2 style='margin-top:5.0pt;margin-right:0cm;margin-bottom:12.0pt;
+margin-left:36.0pt;text-indent:-18.0pt'><span lang=EN-US style='font-family:
+Wingdings'>Ã<span style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span
+lang=EN-US style='font-family:"Courier New"'>Next, we'll add the <b>Main</b>
+function as follows:<br>
+<br>
+Function Main()<br>
+<br>
+&nbsp;&nbsp;&nbsp; DEFINE WINDOW Win_1 ;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AT 0,0 ;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WIDTH 400 ;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HEIGHT 200 ;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TITLE 'Hello World!' ;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MAIN <br>
+<br>
+&nbsp;&nbsp;&nbsp; END WINDOW<br>
+<br>
+&nbsp;&nbsp;&nbsp; ACTIVATE WINDOW Win_1<br>
+<br>
+Return Nil</span></p>
+
+<h4 style='text-align:justify'><span lang=EN-US style='font-family:"Courier New";
+color:black'>Step 7</span></h4>
+
+<p class=style2 style='margin-left:36.0pt;text-indent:-18.0pt'><span
+lang=EN-US style='font-family:Wingdings'>Ã<span style='font:7.0pt "Times New Roman"'>&nbsp;
+</span></span><span lang=EN-US style='font-family:"Courier New"'>Save your
+program file and then build and run your project by selecting <b>Project</b> \ <b>Run</b>
+from menu or simply click "<b>Run</b>" button.</span></p>
+
+<p class=style2 align=center style='margin-left:36.0pt;text-align:center'><span
+lang=EN-US style='font-family:"Courier New"'><br>
+</span><span lang=EN-US style='font-size:14.0pt;font-family:"Courier New"'>That's
+all !</span><span lang=EN-US style='font-family:"Courier New"'><br>
+<br>
+</span></p>
+
+<p class=separator align=center style='text-align:center'><a
+href="../assets/img/HelloWorld-full.jpg" imageanchor=1><span style='font-family:"Courier New";
+text-decoration:none'><img border=0 width=404 height=204
+src="../assets/img/HelloWorld-full.jpg" alt=1></span></a></p>
+
+<h4 align=center style='text-align:center'><span lang=EN-US>&nbsp;</span></h4>
+
+<h4 style='text-align:justify'><span lang=EN-US style='font-size:14.0pt;
+font-family:"Courier New";color:black'>Analysing the source code demo:</span></h4>
+
+<p class=MsoNoSpacing><b><i><span lang=EN-US style='font-size:12.0pt;
+font-family:"Courier New"'>Function Main</span></i></b><span lang=EN-US
+style='font-size:12.0pt;font-family:"Courier New"'> statement should it be at every
+HMG project. </span></p>
+
+<p class=MsoNoSpacing style='margin-right:19.35pt;text-align:justify'><span
+lang=EN-US style='font-size:12.0pt;font-family:"Courier New"'>It must be with the
+name of &quot;<b>Function Main</b>&quot; or "<b>Procedure Main</b>" and could
+add parenthesis for parameters separated by comma.</span></p>
+
+<p class=style2><span lang=EN-US style='font-family:"Courier New"'><br>
+<br>
+</span><b><span lang=EN-US style='font-family:"Courier New";color:red'>DEFINE
+WINDOW</span></b><span lang=EN-US style='font-family:"Courier New"'> </span><span
+lang=EN-US style='font-size:11.0pt;font-family:"Courier New"'>command will
+create the main window for the program.<br>
+</span><span lang=EN-US style='font-family:"Courier New"'><br>
+</span><b><span lang=EN-US style='font-family:"Courier New";color:red'>Win_1</span></b><span
+lang=EN-US style='font-family:"Courier New"'> </span><span lang=EN-US
+style='font-size:11.0pt;font-family:"Courier New"'>is the name of the window.<br>
+<br>
+</span><b><span lang=EN-US style='font-family:"Courier New";color:red'>AT 0,0</span></b><span
+lang=EN-US style='font-family:"Courier New"'> </span><span lang=EN-US
+style='font-size:11.0pt;font-family:"Courier New"'>indicates the window
+position (row=0,col=0).<br>
+</span><span lang=EN-US style='font-family:"Courier New"'><br>
+</span><b><span lang=EN-US style='font-family:"Courier New";color:red'>WIDTH
+400</span></b><span lang=EN-US style='font-family:"Courier New"'> </span><span
+lang=EN-US style='font-size:11.0pt;font-family:"Courier New"'>means that the window
+will have 400 pixels width.<br>
+</span><span lang=EN-US style='font-family:"Courier New"'><br>
+</span><b><span lang=EN-US style='font-family:"Courier New";color:red'>HEIGHT
+200</span></b><span lang=EN-US style='font-family:"Courier New"'> </span><span
+lang=EN-US style='font-size:11.0pt;font-family:"Courier New"'>means that the
+window will have 200 pixels height.</span><span lang=EN-US style='font-family:
+"Courier New"'><br>
+<br>
+</span><b><span lang=EN-US style='font-family:"Courier New";color:red'>TITLE
+'Hello World!'</span></b><span lang=EN-US style='font-family:"Courier New"'> </span><span
+lang=EN-US style='font-size:11.0pt;font-family:"Courier New"'>indicated text for
+window title at bar.<br>
+</span><span lang=EN-US style='font-family:"Courier New"'><br>
+</span><b><span lang=EN-US style='font-family:"Courier New";color:red'>MAIN</span></b><span
+lang=EN-US style='font-family:"Courier New"'> </span><span lang=EN-US
+style='font-size:11.0pt;font-family:"Courier New"'>indicates that we are
+defining the main application window. Main window is required for all HMG
+applications.<br>
+</span><span lang=EN-US style='font-family:"Courier New"'><br>
+</span><b><span lang=EN-US style='font-family:"Courier New";color:red'>ACTIVATE
+WINDOW Win_1</span></b><span lang=EN-US style='font-family:"Courier New"'> </span><span
+lang=EN-US style='font-size:11.0pt;font-family:"Courier New"'>will show the window
+and start the event loop.</span></p>
+
+<p class=style2><b><span lang=EN-US style='font-family:"Courier New";
+color:red'>Return Nil</span></b><span lang=EN-US style='font-family:"Courier New"'>
+w</span><span lang=EN-US style='font-size:11.0pt;font-family:"Courier New"'>ill
+ends of function &quot;main&quot; return nothing.</span></p>
+
+<p class=style2><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=style2><span lang=EN-US style='font-family:"Courier New"'>This <b>"</b></span><b><span
+lang=EN-US style='font-family:"Courier New";color:red'>;</span></b><b><span
+lang=EN-US style='font-family:"Courier New"'>"</span></b><span lang=EN-US
+style='font-family:"Courier New"'> character indicates carriage return and used
+to facilitate to avoid code all in the same line. Breaking down lines helps for
+better understanding.</span></p>
+
+</div>
+
+</body>
+
+</html>

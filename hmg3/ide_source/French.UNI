@@ -1,0 +1,295 @@
+001 Nouveau projet
+002 Ouvrir un projet
+003 Fermer le projet
+004 Enregistrer le formulaire
+005 Fermer le formulaire
+006 Quitter
+007 Supprimer
+008 Formulaire des Commandes
+009 Aligner sur la grille
+010 Suppression spéciale
+011 Menu principal
+012 barre d'outils
+013 Menu contextuel
+014 Barre d'état
+015 Notification-Menu
+016 Splitbox
+017 Vue
+018 Code Source du formulaire
+019 projets
+020 HMG référence
+021 Exécuter
+022 débogage
+023 Initialiser les données incrémentales du Projet
+024 Nouveau formulaire
+025 Ajouter un formulaire
+026 Nouveau module
+027 Importer un fichier
+028 Nouveau rapport
+029 Actualiser la fenêtre du projet
+030 édition des fichiers
+031 Supprimer le fichier
+032 Mettre comme Module principal
+033 Outils
+034 Assistants
+035 Menu principal
+036 Barre d'etat
+037 Menu contextuel
+038 barre d'outils
+039 Menu déroulant
+040 Notification du Menu
+041 Splitbox
+042 Préférences
+043 Aide
+044 À propos
+045 Fichier
+046 Modifier
+047 Pour prendre effet des changements de langue vous devez redémarrer l'HMG-IDE
+048 Choisir: Cliquez / Pour déplacer:  Faites glisser à partir du coin gauche  / Pour la  Taille: faites glisser à partir du coin droit
+049 Nouveau projet
+050 Ouvrir un projet
+051 Fermer le projet
+052 Nouveau Formulaire
+053 Nouveau module
+054 Exécuter
+055 Sélectionnez l'objet
+056 Ordre de suppression
+057 Ordre de Commande
+058 Assistant Menu Principal
+059 Assistant menu contextuel
+060 Assistant Barre d'état (StatusBar)
+061 Assistant barre d'outils (ToolBar)
+062 Assistant Notify Menu
+063 Assistant du Menu déroulant 
+064 Assistant du SplitBox 
+065 arborescence du projet []
+066 modules
+067 formulaires
+068 Ressources
+069 Rapports
+070 Double cliquez pour modifier
+071 Evénement d'édition (Créer un nouveau module d'une fonction)
+072 Syntaxe du fichier ressources : <NomRessource> <TypeRessource> <NomFichier>
+073 Voulez-vous Supprimer le module d'événements actuellement attribué?
+074 inspecteur d'objets []
+075 Propriétés
+076 événements
+077 propriété
+078 Valeur
+079 Double cliquez pour modifier
+080 événement
+081 Valeur
+082 Double cliquez pour modifier
+083 Chargement en cours ... Attendez s'il vous plaît ...
+084 En cours ... Attendez s'il vous plaît ...
+085 Aucun projet actif
+086 Pas de formulaire actif!
+087 Editeur de module:
+088 repértoire HMG :
+089 Erreur de syntaxe dans le rapport
+090 <double click> / <return> pour modifier la ligne séléctionnée
+091 Liste des erreurs
+092 Build Log
+093 langue de l'interface de l'IDE:
+094 Préférences
+095 Base de Données
+096 Nouvelle Base
+097 Nom de la Base dupliquée
+098 Cette opération va réinitialiser complétement la prochaine creation 
+099 Etes-vous sûr?
+100 commande inéxistante
+101 Assistant de la Liste déroulante (Dropdown Menu)
+102 Nouveau menu ...
+103 Menu Edition ...
+104 Supprimer Menu
+105 Nom ...
+106 Fermer
+107 Entrez la propriété de la barre d'outils du nom du bouton:
+108 Menu déroulant de la propriété de la barre d'outils du Nom du Boutton
+109 Commande Supprimer
+110 Nouveau Menu déroulant 
+111 Menu Générateur
+112 &Suivant 
+113 &Premier
+114 &Insertion
+115 &Effacer
+116 Ok
+117 Abondon
+118 Élément de menu sauter un niveau
+119 Actions ne Pouvant pas être spécifiées pour les fenêtres contextuelles( popups)
+120 Images ne Pouvant pas être spécifiées pour fenêtres contextuelles( popups)
+121 Vérification ne peut pas être spécifiée pour pour les fenêtres contextuelles( popups)les popups
+122 Nom ne peut pas être spécifié pour les séparateurs
+123 Actions ne Pouvant pas être spécifiées pour les séparateurs
+124 Images ne Pouvant pas être spécifiées pour les séparateurs
+125 Vérification ne peut pas être spécifiée pour les séparateurs
+126 Action non spécifiée pour un élément du menu
+127 Assistant  Notify Menu
+128 Contexte  Notify Menu
+129 Edition Menu déroulant  [
+130 Propriété Modifier
+131 Evénement Modifier
+132 Assistant Barre d'état (StatusBar)
+133 Utilisez $CLOCK, $DATE, $CLAVIER comme légende pour des objets spéciaux
+134 Police ...
+135 TOP Pos.
+136 Icônes ne peuvent pas être spécifiées pour les éléments 'DATE' 
+137 Styles ne peuvent pas être spécifiés pour les éléments  'DATE' 
+138 icônes ne peuvent pas être spécifiés pour les éléments 'CLOCK' 
+139 styles ne peuvent pas être spécifiés pour les éléments 'CLOCK'
+140 icônes ne peuvent pas être spécifiés pour les éléments 'KEYBOARD'
+141 styles ne peuvent pas être spécifiés pour les éléments 'KEYBOARD'
+142 Propriétés ...
+143 le Button Barre d'outils(ToolBar) doit avoir un nom
+144 les Styles  déplacer vers le bas(DropDown) et  Déplacer entiéremnt vers le bas(WholeDropDown) s'excluent mutuellement (Element:
+145 La photo(Picture) ne peut pas être vide (Objet:
+146 Propriétés de la barre d'outils
+147 Barre d'outils Nom:
+148 Bouton Largeur:
+149 Bouton Hauteur:
+150 Largeur de l'image:
+151 Taille de l'image:
+152 Entrez Nom:
+153 Nouveau formulaire
+154 inspecteur d'objets [
+155 Nouveau module
+156 Nom du module dupliqué
+157 Nom du formulaire dupliqué
+158 Nouveau rapport
+159 Ajouter un formulaire (Il doit être situé dans un dossier de projet)
+160 le Formulaire Ajouté doit être situé dans un dossier de projet. Exécution Interrompue
+161 Police est déjà dans le projet. Exécution Interrompue
+162 Fichier non trouvé!
+163 le dossier source doit être différent du dossier du projet des fichiers de type non .Prg (module) 
+164 le module Ajouté doit être situé dans un dossier de projet. Exécution Interrompue
+165 le Module est déjà dans le projet. Exécution Interrompue
+166 Fichier non trouvé!
+167 Supprimer
+168 Voulez-vous supprimer complétemnt le fichier sélectionné du disque?
+169 Utilisez les flèches pour changer la  position des commandes
+170 Ordre des Commandes
+171 Cette fenêtre a une barre d'outils principale. Vous devez la supprimer avant de créer un Splitbox.
+172 Assistant Splitbox 
+173 Objet  SplitChild 
+174 Nom
+175 Type
+176 Propriétés du Splitbox
+177 Ajouter
+178 Supprimer
+179 Vers le Haut(Up)
+180 Vers le bas(Down)
+181 Modifier
+182 édition d'objet [
+183 Propriétés
+184 propriété
+185 Valeur
+186 Double cliquer pour modifier
+187 Evénements
+188 Modifier
+189 Fenêtre appartenant déjà à ce Splitbox
+190 Nom de la commande dupliqué
+191 Type
+192 Nom invalide
+193 Aucun élément sélectionné
+194 Ajouter un objet SplitChild 
+195 Propriétés de la barre d'outils de SplitChild
+196 Assistant de la barre d'outils de SplitChild  [
+197 Evénement
+198 Valeur
+199 La barre d'outil (ToolBar) doit avoir un nom
+200 Arborescence du projet [
+201 Les espaces ne sont pas  autorisés dans les noms de module, les noms du formulaire ou des chemins
+202 Compilation du Projet
+203 General
+204 dossiers du Fichier:
+205 Dossier du projet:
+206 Dossier HMG:
+207 Bibliothèques supplémentaires:
+208 Chemin Inc. supplémentaires:
+209 Type de Compilation:
+210 Info du Débogage:
+211 Oui
+212 Console / mode mixte:
+213 fichiers modifiés / Dépendants: '
+214 Rapport de Compilation:
+215 Statut: Compilation ... »
+216 Enregistrer le journal.
+217 Fermer
+218 Statut: Terminé Ok
+219 Statut: Terminé avec des erreurs
+220 Anglais
+221 Espagnôl
+222 Nom Invalide du projet / Path (espaces et Chatacters spéciaux non autorisés)
+223 Les pages de l'Onglet à supprimer doit être vides
+224 par défaut (Nil)
+225 Personnalisée
+226 Le dossier des projets est vide, invalide ou aucun module principal spécifiée
+227 Il Existe déjà.faut'il l'Ecraser?
+228 HMG Createur de rapports: Étape 1: Sélectionner les champs
+229 Bases de Données:
+230 champs disponibles:
+231 champs sélectionnés:
+232 Sélectionnez une base de Données, puis sélectionnez les champs que vous souhaitez inclure dans le rapport.
+233 Faîtes glisser les éléments à modifier selon l'Ordre des Champs sélectionnés
+234 Utilisez [+] / [-] pour ajouter / supprimer des expressions ou des champs personnalisés
+235 Annuler
+236 Suivant>
+237 HMG Générateur de rapports: Étape 2: Présentation des rapports
+238 Format du papier:
+239 Orientation:
+240 Choisir le Format du papier et l'orientation du rapport
+241 < Retour
+242 HMG Générateur de rapports: Étape 3: Terminer
+243 Titre du rapport:
+244 Titres ...
+245 Total ...
+246 Formats ...
+247 Police
+248 Aperçu
+249 Pour enregistrer votre rapport et fermer le Générateur, cliquez sur [Terminer]
+250 Rapport de traitement ...
+251 Fermer Aperçu Pour revenir au Générateur
+253 (le contenu des champs personnalisés n'est pas disponible en avant-première)
+254 Finition
+255 Modifier les titres des Champs
+256 Double-cliquez pour modifier le titre des champs 
+257 Fermé 
+258 Totalise les champs
+259 Selection des champs à Totaliser
+260 (Double Click pour Changer)
+261 Modifier le format des champs
+262 Double-cliquez pour modifier le format du champ 
+263 Utilisation <cSayPicture> Forme De la fonction Transform()
+264 champ
+265 Masque
+266 Totalisation
+267 Titre
+268 Ajouter un champ
+269 ​​Ajouter tous les champs
+270 Champ à Supprimer
+271 Supprimer tous les champs
+272 Ajouter un champ ou une expression personnalisée
+273 Supprimer un champ ou une expression personnalisée
+274 Totalisation d'un champ personnalisé: Seulement les champs simples  de la table  peuvent être totalisées. Continuer?
+275 Pas de champ ou  d'expression personnalisés. Utilisez [<] pour Retirez
+276 Modifier le format du champ
+277 Modifier le titre du champ
+278 Configuration
+279 Include
+280 Nouveau Include
+281 Nouvelle valeur
+282 Modifier la valeur
+283 Groupement ...
+284 Groupé par:
+285 Tête de groupe:
+286 Pied de groupe:
+287 Modification de la table
+288 Parcourir 
+289 Modifier la structure
+290 Largeur
+291 Décimales
+292 Base de données à Modifier
+293 Ajouter un champ
+294 Supprimer un champ
+295 Sauvegarder
+296 BROWSE est une fonction(commande) de compatibilité (obsolète) et n'est donc pas recommandée. elle est remplacée par la commande GRID (Grille). Voulez-vous l'utiliser quand même?

@@ -1,0 +1,189 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+span.TextosinformatoCar
+	{mso-style-name:"Texto sin formato Car";
+	mso-style-link:"Texto sin formato";
+	font-family:"Courier New";}
+.MsoPapDefault
+	{margin-bottom:10.0pt;
+	line-height:115%;}
+@page Section1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 3.0cm 70.85pt 3.0cm;}
+div.Section1
+	{page:Section1;}
+div.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+li.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoPlainText2 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+div.MsoPlainText2 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+li.MsoPlainText2 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoPlainText3 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+  <div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+    <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'>&nbsp;</p>
+    <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:14.0pt'>Virtual Property</span></b><b><span lang=EN-US
+style='font-size:12.0pt;background:#339966'><br>
+    </span></b><b><i><span lang=EN-US>Specifies whether a Grid control allow
+virtual rows</span></i></b></p>
+    <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'>&nbsp;</p>
+  </div>
+  <div class=Section1>
+    <p class=MsoPlainText1><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText2><span lang=EN-US>&nbsp;</span><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText2><strong><span lang=EN-US>Syntax:</span></strong></p>
+    <p class=MsoPlainText2>&nbsp;</p>
+    <blockquote>
+      <p class="MsoPlainText2">Virtual &lt;lValue&gt;	</p>
+      </blockquote>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US style='font-family:"Arial","sans-serif";
+color:black'> </span><span lang=EN-US>This allows handling of millons rows
+      without performance penalty.</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>When using virtual Grids you must avoid
+      to use Item property and additem method. It can generate unexpected results.</span></p>
+    <p class=MsoPlainText3>&nbsp;</p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><strong><span lang=EN-US>Sample:</span></strong></p>
+    <p class=MsoPlainText3>&nbsp;</p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>#include &quot;hmg.ch&quot;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>Function Main</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DEFINE
+      WINDOW Form_1 ;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      AT 0,0 ;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      WIDTH 450 ;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      HEIGHT 400 ;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      TITLE 'Hello World!' ;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      MAIN </span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      DEFINE MAIN MENU</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      DEFINE POPUP 'File'</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      MENUITEM 'Change ItemCount' ACTION Form_1.Grid_1.ItemCount := Val(InputBox('New
+      Value','Change ItemCount'))</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      END POPUP</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      END MENU</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      @ 10,10 GRID Grid_1 ;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      WIDTH 400 ;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      HEIGHT 330 ;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      HEADERS {'Column 1','Column 2','Column 3'} ;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      WIDTHS {140,140,140};</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      VIRTUAL ;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      ITEMCOUNT 100000000 ;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      ON QUERYDATA QueryTest() </span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; END
+      WINDOW</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CENTER
+      WINDOW Form_1</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ACTIVATE
+      WINDOW Form_1</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>Return</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>Procedure QueryTest()</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      This.QueryData := Str ( This.QueryRowIndex ) + ',' + Str ( This.QueryColIndex )</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>&nbsp;</span></p>
+    <p class=MsoPlainText3><span lang=EN-US>Return</span></p>
+    <p>&nbsp;</p>
+  </div>
+  </div>
+
+</body>
+
+</html>

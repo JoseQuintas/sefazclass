@@ -1,0 +1,295 @@
+001 新建项目
+002 打开项目
+003 关闭项目
+004 保存表单
+005 关闭表单
+006 退出
+007 删除
+008 控件排序
+009 对齐网格
+010 选定删除
+011 主菜单
+012 工具栏
+013 Context菜单
+014 状态栏
+015 Notify菜单
+016 SplitBox
+017 浏览
+018 表单代码
+019 项目
+020 HMG参考
+021 运行
+022 Debug
+023 Reset Project Incremental Data
+024 新建表单
+025 新增表单
+026 新建模块
+027 导入文件
+028 新建报表
+029 刷新项目窗口
+030 编辑文件
+031 删除文件
+032 设置模块为主模块
+033 工具
+034 生成器
+035 主菜单
+036 状态栏
+037 Context菜单
+038 工具栏
+039 下拉菜单
+040 Notify菜单
+041 SplitBox
+042 参数设定
+043 帮助
+044 关于
+045 文件
+046 编辑
+047 更改有关选项后，必须重启HMG-IDE使其生效
+048 选定控件: 鼠标单击 / 移动位置: 拖动控件左上角 / 调整大小: 拖动控件右下角
+049 新建项目
+050 打开项目
+051 关闭项目
+052 新建表单
+053 新建模块
+054 运行
+055 选定对象
+056 删除控件
+057 控件次序
+058 主菜单生成器
+059 Context菜单生成器
+060 状态栏生成器
+061 工具栏生成器
+062 Notify菜单生成器
+063 下拉菜单生成器
+064 SplitBox生成器
+065 项目浏览器 []
+066 程序模块
+067 表单
+068 程序资源
+069 数据报表
+070 双击进行编辑
+071 事件编辑 (创建新功能模块)
+072 资源文件语法: <ResourceName> <ResourceType> <FileName>
+073 你要删除当前关联的事件模块?
+074 对象查看器 []
+075 属性列表
+076 事件列表
+077 属性
+078 值
+079 双击进行编辑
+080 事件
+081 值
+082 双击进行编辑
+083 加载中... 请等待...
+084 构建中... 请等待...
+085 没有激活的项目
+086 没有激活的表单!
+087 程序文件编辑器:
+088 HMG文件夹:
+089 报表语法错误
+090 <双击>/<回车>编辑选定的源代码行
+091 错误列表
+092 构建日志
+093 IDE界面语言:
+094 参数设定
+095 数据表
+096 新建数据表
+097 数据表的名称重复
+098 Resetting project incremental build data will force next build as full
+099 你确定吗?
+100 控件不存在
+101 下拉菜单生成
+102 新建菜单...
+103 编辑菜单...
+104 删除菜单
+105 Name...
+106 关闭
+107 Enter owner toolbar button name:
+108 DropDown Menu Owner ToolBar Button Name
+109 删除控件
+110 New DropDown Menu
+111 主菜单生成器
+112 &向下
+113 &向上
+114 &插入
+115 &删除
+116 确定
+117 取消
+118 Menu Items Skipped a Level
+119 Actions can't be specified for popups
+120 Images can't be specified for popups
+121 Checked' can't be specified for popups
+122 Name' can't be specified for Separators
+123 Actions can't be specified for Separators
+124 Images can't be specified for Separators
+125 Checked' can't be specified for Separators
+126 没有为菜单条目指定操作
+127 Notify菜单生成器
+128 Context菜单生成器
+129 下拉菜单编辑器 [
+130 属性编辑器
+131 事件编辑器
+132 StatusBar菜单生成器
+133 Use $CLOCK, $DATE, $KEYBOARD as caption for special items
+134 字体...
+135 Top Pos.
+136 Icons can't be specified for 'DATE' items
+137 Styles can't be specified for 'DATE' items
+138 Icons can't be specified for 'CLOCK' items
+139 Styles can't be specified for 'CLOCK' items
+140 Icons can't be specified for 'KEYBOARD' items
+141 Styles can't be specified for 'KEYBOARD' items
+142 Properties...
+143 工具栏按钮必须命名
+144 DropDown and WholeDropDown Styles Are Mutually Exclusive (Item: 
+145 Picture不能为空(Item: 
+146 ToolBar Properties
+147 TlBar Name:
+148 按钮宽度:
+149 按钮高度:
+150 图像宽度:
+151 图像高度:
+152 键入文件名:
+153 新建表单
+154 对象查看 [
+155 新建模块
+156 模块名重复
+157 表单名重复
+158 新建报表
+159 添加表单(必须在项目文件夹内)
+160 Added Form Must Be Located At Project Folder. Aborted
+161 表单已存在于项目中。中止
+162 文件未发现!!!
+163 Source folder must be different from project folder for no .prg (module) files
+164 Added Module Must Be Located At Project Folder. Aborted
+165 模块文件已存在于项目中。中止
+166 文件未发现!!!
+167 删除 
+168 你要将选定的文件从磁盘上删除吗?
+169 使用方向键改变控件位置
+170 Control Order
+171 这个窗口包含一个主工具栏，在创建SplitBox前必须将它删除。
+172 SplitBox生成器
+173 SplitChild Objects
+174 Name
+175 Type
+176 SplitBox Properties
+177 新增
+178 移除
+179 向上
+180 向下
+181 编辑
+182 对象编辑 [
+183 Properties
+184 属性
+185 Value
+186 双击进行编辑
+187 事件
+188 Edit
+189 Window Already Belongs To This SplitBox
+190 控件名重复
+191 类型
+192 无效名
+193 没有条目被选中
+194 Add SplitChild Object
+195 SplitChild ToolBar Properties
+196 SplitChild ToolBar Builder [
+197 Event
+198 Value
+199 工具栏必须有一个名
+200 项目浏览器 [
+201 模块名、表单名和路径名中不允许有空格
+202 构建项目
+203 概要
+204 项目文件: 
+205 项目文件夹: 
+206 HMG文件夹: 
+207 Additional Libraries: 
+208 Additional Inc. Path: 
+209 构建类型: 
+210 Debug信息:
+211 是
+212 Console / Mixed 模式: 
+213 Modified Files / Dependences:'
+214 Build Log:
+215 Status: 构建中...'
+216 保存Log.
+217 关闭
+218 Status: 正确完成
+219 Status: 完成但有错误
+220 English
+221 Spanish
+222 无效项目名/路径(不允许有空格和特殊字符)
+223 Tab pages to delete must be empty
+224 Default (Nil)
+225 Custom
+226 项目文件为空,无效或没有指定主运行模块
+227 已经存在。覆盖它?
+228 HMG报表生成器: 第一步: 选择字段
+229 数据表名:
+230 可用字段:
+231 选定字段:
+232 选定一个数据表和你需要包括在报表中的字段。
+233 拖动条目来改变所选定字段的顺序
+234 使用[+] / [-]添加/移除自定义字段或公式
+235 取消
+236 下一步 >
+237 HMG报表生成器: 第二步:报表版面
+238 页面大小:
+239 页面方向:
+240 选择报表的页面大小和方向
+241 < 上一步
+242 HMG报表生成器: 第3步:完成
+243 报表标题:
+244 标题...
+245 总计...
+246 格式...
+247 字体...
+248 报表预览
+249 保存你的报表并关闭生成器，点击[完成]
+250 处理报表...
+251 关闭预览返回生成器
+253 (自定义字段的内容在报表预览中不可见)
+254 完成
+255 编辑字段标题
+256 双击编辑字段标题
+257 关闭
+258 合计字段
+259 选择字段进行合计
+260 (叠出进行更改)
+261 编辑字段格式
+262 双击编辑字段格式
+263 Use <cSayPicture> Format From Transform() Function
+264 字段
+265 掩码
+266 Totalize
+267 标题
+268 新增一个字段
+269 添加所有字段
+270 移除字段
+271 移除所有字段
+272 添加自定义字段或表达式
+273 移除自定义字段或表达式
+274 自定义字段的合计：只有单个表内的字段能进行合计，继续吗？
+275 Not a Custom Field or Expression. Use [<] button to Remove it
+276 编辑字段格式
+277 编辑字段标题
+278 程序设置
+279 包含文件
+280 新建包含文件
+281 New Value
+282 Edit Value
+283 分组...
+284 Group by:
+285 Group Header:
+286 Group Footer:
+287 Table Edit
+288 Browse
+289 修改表结构
+290 宽度
+291 Decimals
+292 数据表修改
+293 新增字段
+294 删除字段
+295 保存
+296 BROWSE是兼容性控件(已过时)因此不应使用。当前建议使用GRID控件。你确实要使用BROWSE吗?

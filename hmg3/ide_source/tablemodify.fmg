@@ -1,0 +1,235 @@
+* HMG-IDE Form Designer Generated Code
+* (c) Roberto Lopez - http://sites.google.com/site/hmgweb
+
+DEFINE WINDOW TEMPLATE AT 97 , 246 WIDTH 535 HEIGHT 316 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "View Table" ICON NIL MODAL NOSYSMENU CURSOR NIL ON INIT Nil ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON PAINT Nil BACKCOLOR Nil ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE LABEL Label_1
+        ROW    15
+        COL    15
+        WIDTH  490
+        HEIGHT 20
+        VALUE "Label_1"
+        FONTNAME "Arial"
+        FONTSIZE 8
+        TOOLTIP ""
+        FONTBOLD .T.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+    DEFINE GRID Grid_1
+        ROW    40
+        COL    15
+        WIDTH  355
+        HEIGHT 230
+        ITEMS aItems
+        VALUE Nil
+        WIDTHS { 95 , 90 , 70 , 70 }
+        HEADERS { 'Name' , "Type" , "Length" , "Decimals"}
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        ONCHANGE Nil
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONDBLCLICK Nil
+        ONHEADCLICK Nil
+        ONQUERYDATA Nil
+        MULTISELECT .F.
+        ALLOWEDIT .T.
+        VIRTUAL .F.
+        DYNAMICBACKCOLOR Nil
+        DYNAMICFORECOLOR Nil
+        COLUMNWHEN { {||.T.} , {||.T.} , { || EvalLength() } , { || EvalDec() } }
+        COLUMNVALID Nil
+        COLUMNCONTROLS { {'TEXTBOX','CHARACTER' } , {'COMBOBOX',{'Character','Numeric','Date','Logical','Memo'}} , { 'SPINNER' , 1 , 1024 } , { 'SPINNER' , 0 , 99 } }
+        SHOWHEADERS .T.
+        CELLNAVIGATION .T.
+        NOLINES .F.
+        HELPID Nil
+        IMAGE Nil
+        JUSTIFY Nil
+        ITEMCOUNT Nil
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+        HEADERIMAGES Nil
+        ROWSOURCE Nil
+        COLUMNFIELDS Nil
+        ALLOWAPPEND .F.
+        ALLOWDELETE .F.
+        BUFFERED .F.
+        DYNAMICDISPLAY .F.
+        ONSAVE Nil
+        LOCKCOLUMNS 0
+    END GRID
+
+    DEFINE BUTTON save
+        ROW    200
+        COL    390
+        WIDTH  120
+        HEIGHT 28
+        ACTION tablesave(cFileName)
+        CAPTION "Save"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        HELPID Nil
+        FLAT .F.
+        TABSTOP .T.
+        VISIBLE .T.
+        TRANSPARENT .F.
+        MULTILINE .F.
+        PICTURE "save"
+        PICTALIGNMENT LEFT
+    END BUTTON
+
+    DEFINE BUTTON addfield
+        ROW    40
+        COL    390
+        WIDTH  120
+        HEIGHT 28
+        ACTION tableaddfield()
+        CAPTION "Add"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        HELPID Nil
+        FLAT .F.
+        TABSTOP .T.
+        VISIBLE .T.
+        TRANSPARENT .F.
+        MULTILINE .F.
+        PICTURE "addfield"
+        PICTALIGNMENT LEFT
+    END BUTTON
+
+    DEFINE BUTTON deletefield
+        ROW    80
+        COL    390
+        WIDTH  120
+        HEIGHT 28
+        ACTION tabledeletefield()
+        CAPTION "Delete"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        HELPID Nil
+        FLAT .F.
+        TABSTOP .T.
+        VISIBLE .T.
+        TRANSPARENT .F.
+        MULTILINE .F.
+        PICTURE "removefield"
+        PICTALIGNMENT LEFT
+    END BUTTON
+
+    DEFINE BUTTON cancel
+        ROW    240
+        COL    390
+        WIDTH  120
+        HEIGHT 28
+        ACTION ThisWIndow.Release
+        CAPTION "Cancel"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        HELPID Nil
+        FLAT .F.
+        TABSTOP .T.
+        VISIBLE .T.
+        TRANSPARENT .F.
+        MULTILINE .F.
+        PICTURE "delete"
+        PICTALIGNMENT LEFT
+    END BUTTON
+
+    DEFINE BUTTON Button_1
+        ROW    120
+        COL    390
+        WIDTH  120
+        HEIGHT 28
+        ACTION tablefieldmoveup()
+        CAPTION "Up"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        HELPID Nil
+        FLAT .F.
+        TABSTOP .T.
+        VISIBLE .T.
+        TRANSPARENT .F.
+        MULTILINE .F.
+        PICTURE "up"
+        PICTALIGNMENT LEFT
+    END BUTTON
+
+    DEFINE BUTTON Button_2
+        ROW    160
+        COL    390
+        WIDTH  120
+        HEIGHT 28
+        ACTION tablefieldmovedown()
+        CAPTION "Down"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        ONGOTFOCUS Nil
+        ONLOSTFOCUS Nil
+        HELPID Nil
+        FLAT .F.
+        TABSTOP .T.
+        VISIBLE .T.
+        TRANSPARENT .F.
+        MULTILINE .F.
+        PICTURE "down"
+        PICTALIGNMENT LEFT
+    END BUTTON
+
+END WINDOW
+

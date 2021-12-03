@@ -1,0 +1,1192 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:#0563C1;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:#954F72;
+	text-decoration:underline;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Calibri","sans-serif";}
+p.msopapdefault, li.msopapdefault, div.msopapdefault
+	{mso-style-name:msopapdefault;
+	margin-right:0cm;
+	margin-bottom:8.0pt;
+	margin-left:0cm;
+	line-height:105%;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msoplaintext1, li.msoplaintext1, div.msoplaintext1
+	{mso-style-name:msoplaintext1;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+.MsoChpDefault
+	{font-size:10.0pt;}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:105%;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:35.45pt 49.55pt 70.85pt 2.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link="#0563C1" vlink="#954F72">
+
+<div class=WordSection1>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:white'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:14.0pt;font-family:"Courier New";color:white'>&nbsp;Content
+Handling </span></b></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><i><span
+lang=EN-US style='font-family:"Courier New";color:white'>&nbsp;Text / Graphics
+/ Image / ToolTip / Page Link / URL Link</span></i></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><i><span
+lang=EN-US style='font-family:"Courier New";color:white'>&nbsp;</span></i><span
+lang=EN-US style='font-family:"Courier New";color:white'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal style='text-align:justify;text-autospace:none'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>TEXT » @..HPDFPRINT:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to render a
+single line of text data in the specified font, size, color and alignment at the
+specified row and column. The text rendered is left aligned unless otherwise
+specified. Only following Base14 fonts are built-in. Courier, Courier-Bold,
+Courier-Oblique, Courier-BoldOblique, Helvetica, Helvetica-Bold,
+Helvetica-Oblique, Helvetica-BoldOblique, Times-Roman, Times-Bold,
+Times-Italic, Times-BoldItalic, Symbol, ZapfDingbats. The text will be rendered
+in the current character encoding.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>Helvetica is the default font if
+no fontname is specified. Default fontsize is 12.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>True Type Fonts can also be used
+if the absolute address of the True Type Font file is mentioned.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>Otherwise the TTF shall be
+required at the runtime in the same directory as of the executable file.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row , Col HPDFPRINT cText ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>[ FONT cFontName ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>[ SIZE nFontSize ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>[ COLOR aColor ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:1.0cm'><span
+lang=EN-US style='font-family:"Courier New"'>[ CENTER|RIGHT ]</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 205, 10 HPDFPRINT &quot;This is a sample Text in default
+font.&quot;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 220, 10 HPDFPRINT &quot;This is a sample Text in Times-Roman
+font.&quot; FONT &quot;Times-Roman&quot; SIZE 14</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 235, 200 HPDFPRINT &quot;This is right aligned text&quot; FONT
+&quot;Courier-Bold&quot; SIZE 14 RIGHT</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 250, 105 HPDFPRINT &quot;This is center aligned text&quot;
+COLOR { 255, 0, 0 } CENTER</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 270, 105 HPDFPRINT &quot;This is text in bigger font
+size&quot; SIZE 30 COLOR { 255, 0, 0 }</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 290, 10 HPDFPRINT &quot;The font is Tscparan.TTF&quot; FONT
+&quot;Tscparan.TTF&quot; size 12</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Print sample</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span style='font-family:"Courier New"'><img
+width=633 height=302 src="../HMG HPDF/HMG_HPDF_Screen1.png"></span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>TEXT » @..HPDFPRINT..TO:</span></b></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is just like the
+previous command @..HPDFPRINT. However, this command is used to print the text
+data in multiline. The text will be rendered inside a rectangular area
+specified in the command. The text can be aligned in JUSTIFY alignment also.
+All other options are just the same as the previous command.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row , Col HPDFPRINT cText ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>TO ToRow, ToCol ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ FONT cFontName ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ SIZE nFontSize ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ COLOR aColor ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ CENTER|RIGHT ]</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 10 HPDFPRINT &quot;This is a small paragraph to be
+printed inside a rectangular area left aligned.&quot; to 250, 60</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 80 HPDFPRINT &quot;This is a small paragraph to be
+printed inside a rectangular area right aligned.&quot; to 250, 130 RIGHT</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 150 HPDFPRINT &quot;This is a small paragraph to be
+printed inside a rectangular area justified.&quot; to 250, 200 JUSTIFY</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 255, 10 HPDFPRINT &quot;This is a small paragraph to be
+printed inside a rectangular area justified.&quot; to 275, 60 JUSTIFY&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Print sample</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'><img
+width=637 height=222 src="../HMG HPDF/HMG_HPDF_Screen2.png"></span><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>TEXT » SET HPDFPAGE LINESPACING:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>This command is used to change the default line spacing in
+@..HPDFPRINT..TO command.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>SET HPDFPAGE LINESPACING TO nSpacing</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 10 HPDFPRINT &quot;This is a small paragraph to be
+printed inside a rectangular area left aligned.&quot; to 250, 60</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>SET HPDFPAGE LINESPACING TO 6</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 70 HPDFPRINT &quot;This is a small paragraph to be
+printed inside a rectangular area left aligned with a different
+linespacing.&quot; to 260, 120</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>SET HPDFPAGE LINESPACING TO 0</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 130 HPDFPRINT &quot;This is a small paragraph to be
+printed inside a rectangular area left aligned line spacing back to
+normal.&quot; to 230, 180</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Print sample</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><img width=637 height=217
+src="../HMG HPDF/HMG_HPDF_Screen3.png"></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>GRAPHICS » @..HPDFPRINT LINE TO:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>This command is used to draw a continuous line from the
+specified location to a specified another location. </span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>Color and width of the line can be specified optionally. The
+default color is black.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row , Col HPDFPRINT LINE ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>TO ToRow, ToCol ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ PENWIDTH nWidth ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ COLOR aColor ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 10 HPDFPRINT LINE TO 230, 50</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 235, 10 HPDFPRINT LINE TO 235, 50 PENWIDTH 1 COLOR { 255, 0, 0
+}</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 70 HPDFPRINT LINE TO 250, 70 PENWIDTH 1 COLOR { 255, 0, 0
+}</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 100 HPDFPRINT LINE TO 250, 150 PENWIDTH 2 COLOR { 255, 0,
+255 }&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Print sample</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'>&nbsp;</p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><img width=638 height=244
+src="../HMG HPDF/HMG_HPDF_Screen4.png"></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>GRAPHICS » @..HPDFPRINT RECTANGLE TO:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to draw a
+rectangle from the specified location to a specified another location. Color and
+width of the line can be specified optionally. The default color is black. The
+rectangle can be filled. Rounded clause will draw a rounded rectangle.
+Optionally Curve length can also be specified for Rounded rectangle.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row , Col HPDFPRINT RECTANGLE ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>TO ToRow, ToCol ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ PENWIDTH nWidth ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ COLOR aColor ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ FILLED ];</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>ROUNDED ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ CURVE nCurve ]</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:35.45pt'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 10 HPDFPRINT RECTANGLE TO 250, 50</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 60 HPDFPRINT RECTANGLE TO 250, 100 PENWIDTH 1 COLOR {
+255, 0, 0 }</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 110 HPDFPRINT RECTANGLE TO 250, 150 PENWIDTH 1 COLOR {
+255, 0, 0 } FILLED</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 260, 10 HPDFPRINT RECTANGLE TO 280, 50 PENWIDTH 2 COLOR { 255,
+0, 255 } ROUNDED</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 260, 60 HPDFPRINT RECTANGLE TO 280, 150 PENWIDTH 2 COLOR {
+255, 0, 255 } ROUNDED CURVE 10</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 260, 160 HPDFPRINT RECTANGLE TO 280, 200 PENWIDTH 2 COLOR {
+255, 255, 0 } FILLED ROUNDED CURVE 10</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Print sample</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><img width=638 height=216
+src="../HMG HPDF/HMG_HPDF_Screen5.png"></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>GRAPHICS » @..HPDFPRINT CIRCLE:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to draw a
+circle with the given radius having row and col as the center.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>Color and width of the line can be
+specified optionally. The default color is black. The circle can be filled.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row , Col HPDFPRINT CIRCLE RADIUS nRadius ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ PENWIDTH nWidth ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ COLOR aColor ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ FILLED ]</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 40 HPDFPRINT CIRCLE RADIUS 10</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 80 HPDFPRINT CIRCLE RADIUS 10 PENWIDTH 2</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 120 HPDFPRINT CIRCLE RADIUS 10 PENWIDTH 2 COLOR { 0, 0,
+255 }</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 160 HPDFPRINT CIRCLE RADIUS 10 COLOR { 0, 0, 255 } FILLED</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Print sample</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><img width=637 height=246
+src="../HMG HPDF/HMG_HPDF_Screen6.png"></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>GRAPHICS » @..HPDFPRINT ELLIPSE:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to draw an
+ellipse with the given horizontal radius and vertical radius having row and col
+as the center. Color and width of the line can be specified optionally. The
+default color is black. The ellipse can be filled.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row , Col HPDFPRINT ELLIPSE HORIZONTAL RADIUS nHRadius ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>VERTICAL RADIUS nVRadius ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ PENWIDTH nWidth ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ COLOR aColor ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ FILLED ]</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 40 HPDFPRINT ELLIPSE HORIZONTAL RADIUS 20 VERTICAL RADIUS
+10</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 240, 80 HPDFPRINT ELLIPSE HORIZONTAL RADIUS 10 VERTICAL RADIUS
+20 PENWIDTH 2</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 120 HPDFPRINT ELLIPSE HORIZONTAL RADIUS 20 VERTICAL
+RADIUS 10 PENWIDTH 2 COLOR { 0, 0, 255 }</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 240, 160 HPDFPRINT ELLIPSE HORIZONTAL RADIUS 10 VERTICAL
+RADIUS 20 COLOR { 0, 0, 255 } FILLED</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Print sample</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'><img
+width=637 height=245 src="../HMG HPDF/HMG_HPDF_Screen7.png"></span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>GRAPHICS » @..HPDFPRINT ARC:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>This command is used to draw an arc with given radius from given
+angle to given another angle.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>Color and width of the line can be specified optionally. The
+default color is black.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row , Col HPDFPRINT ARC RADIUS nRadius ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>ANGLE FROM nFromAngle ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>TO nToAngle ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ PENWIDTH nWidth ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ COLOR aColor ]</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 40 HPDFPRINT ARC RADIUS 10 ANGLE FROM 0 TO 180</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 80 HPDFPRINT ARC RADIUS 10 ANGLE FROM 90 TO 270 PENWIDTH
+2</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 120 HPDFPRINT ARC RADIUS 10 ANGLE FROM 30 TO 200 PENWIDTH
+2 COLOR { 0, 100, 100 }</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Print sample</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'>&nbsp;</p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><img width=637 height=258
+src="../HMG HPDF/HMG_HPDF_Screen8.png"></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>GRAPHICS » @..HPDFPRINT CURVE:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:17.05pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to draw a
+Bézier curve from a point taking second point as curvature to the third point. Color
+and width of the line can be specified optionally. The default color is black.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:17.05pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row , Col HPDFPRINT CURVE ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>FROM FromRow, FromCol ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>TO ToRow, ToCol ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ PENWIDTH nWidth ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ COLOR aColor ]</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 40 HPDFPRINT CURVE FROM 230, 10 TO 250, 30</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 80 HPDFPRINT CURVE FROM 230, 100 TO 250, 60 PENWIDTH 2</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 120 HPDFPRINT CURVE FROM 230, 160 TO 250, 120 PENWIDTH 2
+COLOR { 100, 0, 200 }</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Print sample</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span style='font-family:"Courier New"'><img
+width=638 height=259 src="../HMG HPDF/HMG_HPDF_Screen9.png"></span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>@..HPDFPRINT IMAGE:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:17.05pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to insert a
+PNG/JPG format image file from the resource or the given path inside the document
+at the current location. The image will be stretched according to the given
+width and length. Specify image type 1 for PNG and 2 for JPG.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:17.05pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row , Col HPDFPRINT IMAGE cImage ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>WIDTH nWidth ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>LENGTH nLength</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>TYPE JPG|PNG</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 10 HPDFPRINT IMAGE &quot;hmghpdf.png&quot; TYPE PNG width
+100 height 30</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 110 HPDFPRINT IMAGE &quot;imgpng&quot; TYPE PNG width 40
+height 40</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 160 HPDFPRINT IMAGE &quot;imgjpg&quot; TYPE JPG width 40
+height 40</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Print sample</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'>&nbsp;</p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><img width=637 height=227
+src="../HMG HPDF/HMG_HPDF_Screen10.png"></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>@..HPDFTOOLTIP:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:17.05pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to insert a
+tooltip at the specified place with the specified icon. When the user hovers
+the mouse over this icon, the tooltip will be displayed.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:17.05pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row , Col HPDFPRINT TOOLTIP cToolTip ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>ICON COMMENT|KEY|NOTE|HELP|</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>NEW_PARAGRAPH|PARAGRAPH|INSERT</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 240, 10 HPDFTOOLTIP &quot;Comment Tooltip&quot; ICON COMMENT</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 250, 10 HPDFTOOLTIP &quot;Key Tooltip&quot; ICON KEY</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 260, 10 HPDFTOOLTIP &quot;Note Tooltip&quot; ICON NOTE</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 240, 50 HPDFTOOLTIP &quot;Help Tooltip&quot; ICON HELP</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 250, 50 HPDFTOOLTIP &quot;New_Paragraph Tooltip&quot; ICON NEW_PARAGRAPH</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 260, 50 HPDFTOOLTIP &quot;Paragraph Tooltip&quot; ICON
+PARAGRAPH</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 240, 90 HPDFTOOLTIP &quot;Insert Tooltip&quot; ICON INSERT</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Screen Shot</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span style='font-family:"Courier New"'><img
+width=638 height=198 src="../HMG HPDF/HMG_HPDF_Screen11.png"></span></b></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>@..HPDFPAGELINK:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:17.05pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to link a
+particular page to the specified text. Font, size, color, alignment options are
+the same as text data. A BORDER around the link can also be drawn with the optional
+width parameter.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:17.05pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row, Col HPDFPAGELINK cLink TO nPage ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ FONT cFontName ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ SIZE nFontSize ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ COLOR aColor ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ CENTER|RIGHT ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ BORDER ];</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ WIDTH nwidth ]</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 10 HPDFPAGELINK &quot;Go to Page 5&quot; TO 5</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 70 HPDFPAGELINK &quot;Go to Page 8&quot; TO 8 FONT
+&quot;Courier&quot; size 18 color { 255, 0, 0 }</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 130 HPDFPAGELINK &quot;Go to Page 10&quot; TO 10 color {
+255, 0, 0 } BORDER</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 250, 10 HPDFPAGELINK &quot;Go to Page 12&quot; TO 12 color {
+0, 0, 255 } BORDER WIDTH 1</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Screen Shot</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><img width=638 height=240
+src="../HMG HPDF/HMG_HPDF_Screen13.png"></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-size:14.0pt;font-family:
+"Courier New"'>@..HPDFURLLINK:</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:17.05pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is used to link a particular
+Web URL/E-Mail ID to the specified text. Font, size, color, alignment options
+are the same as text data.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:17.05pt;margin-bottom:
+0cm;margin-left:1.0cm;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ Row, Col HPDFURLLINK cLink TO nPage ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ FONT cFontName ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ SIZE nFontSize ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ COLOR aColor ] ;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:42.55pt'><span
+lang=EN-US style='font-family:"Courier New"'>[ CENTER|RIGHT ]</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 230, 10 HPDFURLLINK &quot;HMGFORUM&quot; TO
+&quot;http://www.hmgforum.com&quot; color { 0, 0, 255 }</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>@ 240, 10 HPDFURLLINK &quot;Mail me&quot; TO
+&quot;mailto:srgiri@dataone.in&quot; color { 0, 0, 255 }</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Screen Shot</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span style='font-family:"Courier New"'><img
+width=638 height=248 src="../HMG HPDF/HMG_HPDF_Screen12.png"></span></b><b><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Tips</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>If you find same problem of security block like this:</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span style='font-family:"Courier New"'><img
+width=547 height=263 src="../HMG HPDF/SecurityBlock.png"></span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm'><span lang=EN-US style='font-family:
+"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>You will find at this forum this
+topic with further discussion about it in: </span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'><a
+href="http://www.hmgforum.com/viewtopic.php?p=22062#p22062" target="_blank">http://www.hmgforum.com/viewtopic.php?p=22062#p22062</a></span></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><b><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

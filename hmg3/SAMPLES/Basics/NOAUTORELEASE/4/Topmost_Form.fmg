@@ -1,0 +1,16 @@
+DEFINE WINDOW TEMPLATE ;
+	AT 100,500 ;
+	WIDTH 320 ;
+	HEIGHT 240 ;
+	TITLE 'Topmost Form' ;
+	TOPMOST 
+
+	DEFINE BUTTON Button_1
+		ROW	10
+		COL	10
+		CAPTION 'Hide Form'
+		ACTION	ThisWindow.Hide
+	END BUTTON
+
+END WINDOW
+

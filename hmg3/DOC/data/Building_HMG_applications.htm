@@ -1,0 +1,645 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<base target="_blank">
+<title>HMG Reference</title>
+<style>
+<!--
+#DIVLINES
+	{position:absolute;}
+#TEXT1
+	{overflow-x: scroll;}
+
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Consolas;
+	panose-1:2 11 6 9 2 2 4 3 2 4;}
+@font-face
+	{font-family:"Trebuchet MS";
+	panose-1:2 11 6 3 2 2 2 2 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-link:"Texto sem FormataÃ§Ã£o Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+pre
+	{mso-style-link:"PrÃ©-formataÃ§Ã£o HTML Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+span.TextosemFormataoChar
+	{mso-style-name:"Texto sem FormataÃ§Ã£o Char";
+	mso-style-link:"Texto sem FormataÃ§Ã£o";
+	font-family:Consolas;}
+p.msolistparagraphCxSpFirst, li.msolistparagraphCxSpFirst, div.msolistparagraphCxSpFirst
+	{mso-style-name:msolistparagraphCxSpFirst;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msolistparagraphCxSpMiddle, li.msolistparagraphCxSpMiddle, div.msolistparagraphCxSpMiddle
+	{mso-style-name:msolistparagraphCxSpMiddle;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msolistparagraphCxSpLast, li.msolistparagraphCxSpLast, div.msolistparagraphCxSpLast
+	{mso-style-name:msolistparagraphCxSpLast;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msolistparagraph0, li.msolistparagraph0, div.msolistparagraph0
+	{mso-style-name:msolistparagraph;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";}
+span.TextosinformatoCar
+	{mso-style-name:"Texto sin formato Car";
+	mso-style-link:"Texto sin formato";
+	font-family:Consolas;}
+p.Textosinformato, li.Textosinformato, div.Textosinformato
+	{mso-style-name:"Texto sin formato";
+	mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+span.TextodeEspaoReservado
+	{mso-style-name:"Texto de EspaÃ§o Reservado";
+	color:gray;}
+span.Pr-formataoHTMLChar
+	{mso-style-name:"PrÃ©-formataÃ§Ã£o HTML Char";
+	mso-style-link:"PrÃ©-formataÃ§Ã£o HTML";
+	font-family:Consolas;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:36.0pt 36.0pt 36.0pt 36.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<meta charset="utf-8" />
+
+<!-- Include EnlighterJS Styles -->
+<link rel="stylesheet" type="text/css" href="../assets/css/EnlighterJS.min.css" />
+
+<!-- Include MooTools Framework -->
+<script type="text/javascript" src="../assets/js/MooTools-More-1.5.1-compressed.js"></script>
+
+<!-- Include EnlighterJS -->
+<script type="text/javascript" src="../assets/js/EnlighterJS.min.js"></script>
+
+<!-- Initialize EnlighterJS using the Helper Utility -->
+<script type="text/javascript">
+window.addEvent('domready', function()
+{
+ 	// you can pass any EnlighterJS options as object or just true/false
+ 	document.id('Codeblock').enlight({
+ 		language: 'csharp',
+ 		theme: 'classic',
+ 		indent: 4,
+ 		infoButton: false,
+ 		windowButton: false });
+ });
+
+function GetMyURL(cFolder)
+{
+	if(document.location.href.substring(0,5) == "file:")
+       {
+	     var curloc = document.location.href ;
+         var ini = curloc.search("file:///") ;
+         var end = curloc.search("/DOC") ;
+         var gotopage = curloc.substring(ini+8,(end-ini))+cFolder ;
+       }
+   else
+       {
+       var gotopage = "http://hmgforum.com"+cFolder ;
+       }
+
+   window.open(gotopage, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=200, left=300,  width=650, height=400");
+
+   return gotopage ;
+}
+</script>
+
+<body lang=PT-BR link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt'>
+
+<p class=MsoNormal style='background:#339966'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='background:#339966'><b><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New";color:white'>&nbsp;BUILDING
+HMG APPLICATIONS</span></b></p>
+
+<p class=MsoNormal style='background:#339966'><i><span lang=EN-US
+style='font-family:"Courier New";color:white'>&nbsp;Build.Bat / HMG-IDE</span></i></p>
+
+<p class=MsoNormal style='background:#339966'><span lang=EN-US
+style='font-family:"Courier New";color:white'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><b><span lang=EN-US style='font-size:12.0pt'>- </span></b><b><span
+lang=EN-US style='font-size:14.0pt'>BUILD.BAT</span></b></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The
+easiest way is to use the Build.Bat file located at HMG root folder.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><b><u><span
+lang=EN-US style='font-size:12.0pt'>Usage</span></u></b><b><span lang=EN-US
+style='font-size:12.0pt'>:</span></b></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><b><span lang=EN-US style='font-size:12.0pt'>Build</span></b><span
+lang=EN-US> [ <b>/n</b> ] [ <b>/d</b> ] [ <b>/c</b> ] &lt;program.prg&gt; |
+&lt;project.hbp&gt; [&lt;hbmk2 params&gt;]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<b>/n</b>] :&nbsp; No
+run after build</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<b>/d</b>] :&nbsp;
+Enabled debugger</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [<b>/c</b>] :&nbsp;
+Console mode</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;program.prg&gt;&nbsp; : A main text file containing your source code.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;filelist.hbp&gt; : A text file with .hbp extension containing a source
+list.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+
+<p class=MsoPlainText style='margin-left:5.0cm;text-indent:-5.0cm'><span
+lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;hbmk2 params&gt; : A text file
+with configuration parameters as additional libs, include paths and lib paths.</span></p>
+
+<p class=MsoPlainText style='margin-left:134.7pt'><span lang=EN-US>This is also
+informed the .hbc file of your project.</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<u>For example</u>:</span></p>
+
+<blockquote style='margin-top:5.0pt;margin-bottom:5.0pt'>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+incpaths = incpath1 incpath2 ... incpathn</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;libpaths = libpath1
+libpath2 ... libpathn</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+libs = lib1 lib2 ... libn</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+mt = 'yes' (multi-threading support)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:106.35pt'><span lang=EN-US>See sample
+at: <a href="javascript:void(0)">..\SAMPLES\Basics\MULTIPRG</a></span></p>
+
+<p class=MsoPlainText style='margin-left:106.35pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><b><u><span lang=EN-US style='font-size:12.0pt'>Notes</span></u></b><b><span
+lang=EN-US style='font-size:12.0pt'>:</span></b></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:36.0pt;text-align:justify;text-indent:
+-18.0pt'><span lang=EN-US style='font-family:Symbol'>·</span><span lang=EN-US
+style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span lang=EN-US>Library names must not include 'lib' prefix nor '.a'
+extension.</span></p>
+
+<p class=MsoPlainText style='text-align:justify;text-indent:6.0pt'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:36.0pt;text-align:justify;text-indent:
+-18.0pt'><span lang=EN-US style='font-family:Symbol'>·</span><span lang=EN-US
+style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span lang=EN-US>Build.bat will create an error.log file in the app folder
+when build process ends with an error condition.</span></p>
+
+<p class=MsoPlainText style='margin-left:2.0cm;text-align:justify;text-indent:
+-21.25pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:36.0pt;text-align:justify;text-indent:
+-18.0pt'><span lang=EN-US style='font-family:Symbol'>·</span><span lang=EN-US
+style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span lang=EN-US>If in case of no parameter has been informed, any
+action is going to happen using the main Build.bat at HMG folder. Some
+Build.bat at C:\HMG..\SAMPLES will accept to compile even without any parameter
+because it will acts according all hbp files in the current folder. In this
+case, all files in the current folder are automatically be processed.</span></p>
+
+<p class=MsoPlainText style='text-align:justify;text-indent:6.0pt'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:36.0pt;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-18.0pt'><span lang=EN-US style='font-family:Symbol'>·</span><span lang=EN-US
+style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span lang=EN-US>To build projects with long names option.</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:35.45pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>Spaces at folders and prg files names normally is not required, but
+sometimes we would like to use in that way. Since on hmg 3.3.0 version, have
+been implemented for Build.bat and this works perfectly.</span></p>
+
+<p class=MsoPlainText style='margin-right:12.25pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:48.25pt;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>Example at dot command (see below in red color example):</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:35.45pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:2.0cm;margin-bottom:.0001pt;text-align:justify;text-indent:
+-21.25pt'><b><span lang=EN-US style='color:red'>Build</span></b><span
+lang=EN-US style='color:red'> <b>"My Project"</b> </span><span lang=EN-US>(must
+be in quoted)</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-14.2pt'><span lang=EN-US style='font-family:Wingdings'>§</span><span
+lang=EN-US style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;
+</span><span lang=EN-US>This is regarding being possible for: hbp file, prg
+file or project folder names.</span></p>
+
+<p class=MsoListParagraph><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-14.2pt'><span lang=EN-US style='font-family:Wingdings'>§</span><span
+lang=EN-US style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;
+</span><span lang=EN-US>Not only used for your main prg, also for others prgs
+files with spaces.</span></p>
+
+<p class=MsoPlainText style='margin-right:12.25pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-14.2pt'><span lang=EN-US style='font-family:Wingdings'>§</span><span
+lang=EN-US style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;
+</span><span lang=EN-US>But all files/folders with long names, must be always
+in quoted and saved at hbp file.</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:35.45pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>For hbp file: &quot;My Project.hbp&quot;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>For prg file: &quot;My Main.prg&quot;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>For project folder: &quot;My Main&quot;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:35.45pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-14.2pt'><span lang=EN-US style='font-family:Wingdings'>§</span><span
+lang=EN-US style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;
+</span><span lang=EN-US>For old projects will still keep it original names at
+least you want to change with spaces on it and re-build it with adding
+quotation marks.</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-14.2pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-14.2pt'><span lang=EN-US style='font-family:Wingdings'>§</span><span
+lang=EN-US style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;
+</span><span lang=EN-US>Executable files with long names (spaces included) is
+created normally and also at project folder with long name.</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-14.2pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-14.2pt'><span lang=EN-US style='font-family:Wingdings'>§</span><span
+lang=EN-US style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;
+</span><span lang=EN-US>This feature is not yet workable at IDE building
+because IDE needs to adjust for hbp creation with quotation marks.</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:49.65pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-14.2pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-right:12.25pt;text-align:justify;
+text-indent:6.0pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify;text-indent:
+-18.0pt'><span lang=EN-US style='font-family:Symbol'>·</span><span lang=EN-US
+style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span lang=EN-US>To Build apps making executable file copy in a second
+place.</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:48.25pt;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:48.25pt;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>When we compile our application we do it in an appropriate folder
+where we keep the source code of the project. But we often need to copy the
+executable that was generated for the right system folder (in use), i.e. where
+the data files are placed. So in that case we will need to use Windows Explorer
+to copy/paste the executable in that one.</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:48.25pt;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:48.25pt;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>To simplify this procedure we can automatize by edting your
+&lt;Project_name&gt;.hbc file and add this:</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:48.25pt;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:12.25pt;margin-bottom:
+0cm;margin-left:35.45pt;margin-bottom:.0001pt;text-align:justify'><b><span
+lang=EN-US style='color:red'>instpaths="c:\In other place\Sys\"</span></b><span
+lang=EN-US> (with slash bar at end of full path) </span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:48.25pt;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:48.25pt;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US>This is a hbc directives from Harbour to copy the target to
+&lt;path&gt;. If &lt;path&gt; is a directory, must end with path separator.
+This can be specified multiple times.</span></p>
+
+<p class=MsoPlainText style='margin-right:84.25pt;text-align:justify'><span
+lang=EN-US>&nbsp;&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-top:0cm;margin-right:36.0pt;margin-bottom:
+5.0pt;margin-left:36.0pt;text-align:justify'><span lang=EN-US>&nbsp;</span></p>
+
+</blockquote>
+
+<p class=MsoPlainText style='text-align:justify'><b><span lang=EN-US
+style='font-size:12.0pt'>- </span></b><b><span lang=EN-US style='font-size:
+14.0pt'>HMG IDE</span></b></p>
+
+<p class=MsoPlainText style='text-align:justify'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN-US>This programming environment allows visual form editing and
+application build.</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN-US>Environment settings (HMG Folder, Program Editor, etc.) are stored
+in '.ini' files, located at IDE folder. </span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN-US>You can interactively change default settings (Main
+Menu-&gt;Tools-&gt;Preferences).</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN>In IDE, all build customizations must be handled by the user from
+'Configuration' (project browser) tab. It is direct edit of the project .hbc
+file. </span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN>Look at hbmk2 help for details. By default two gt drivers are ALWAYS
+linked: </span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN style='font-family:Symbol'>·</span><span lang=EN style='font-size:7.0pt;
+font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span lang=EN>GTGUI (as default) and GTWIN (Windows console)</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN style='font-family:Symbol'>·</span><span lang=EN style='font-size:7.0pt;
+font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span lang=EN>You can compile pure console adding </span><b><span
+lang=EN-US style='font-size:9.5pt;font-family:"Trebuchet MS","sans-serif";
+color:#333333;background:#ECF3F7'>gui='no'</span></b><span lang=EN-US
+style='font-size:9.5pt;font-family:"Trebuchet MS","sans-serif";color:#333333;
+background:#ECF3F7'> (in quotes)</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:70.9pt;text-align:justify'><img
+border=0 width=302 height=244 src="../assets/img/Gui_No.png"><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt'><span lang=EN>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:70.9pt;text-indent:-21.25pt'><span
+lang=EN style='font-family:Symbol'>·</span><span lang=EN style='font-size:7.0pt;
+font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span lang=EN-US>To Build apps making executable file copy in a second
+place at IDE, you will need write instpaths="¦ in Project Browser/Configuration
+as follows:</span></p>
+
+<p class=MsoPlainText style='margin-left:70.9pt;text-indent:-21.25pt'><span
+lang=EN style='font-family:"Times New Roman","serif"'>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:70.9pt'><span style='font-family:Symbol'><img
+border=0 width=302 height=244 src="../assets/img/InsPaths.png"></span></p>
+
+<p class=MsoPlainText style='margin-left:70.9pt'><span lang=EN
+style='font-family:"Times New Roman","serif"'>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:70.9pt;text-indent:-21.25pt'><span
+lang=EN style='font-family:Symbol'>·</span><span lang=EN style='font-size:7.0pt;
+font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span lang=EN>To create apps console/mixed mode, you only need to add
+this followinq command (red color):<b> </b></span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt'><b><span lang=EN
+style='color:red'>REQUEST&nbsp; HB_GT_WIN_DEFAULT</span></b><span lang=EN>&nbsp;(at
+top of your main prg file). </span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt'><b><span lang=EN>&nbsp;</span></b></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt'><span lang=EN>See example:</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt'>&nbsp;</p>
+
+ <div class="container" style="margin-left:50px; width:95%;">
+  <div class="panel panel-default">
+   <pre id="Codeblock">
+REQUEST HB_GT_WIN_DEFAULT
+ 
+Function Main()
+SetMode(25,80)
+ 
+Cls
+?
+@ 10,10 Say 'Hello'
+ 
+Alert('Hello')
+Return Nil
+   </pre>
+  </div>
+ </div>
+
+<p class=MsoPlainText style='margin-left:49.65pt'><span lang=EN>&nbsp;</span></p>
+
+<p class=MsoPlainText align=center style='margin-left:49.65pt;text-align:center'><b><span
+lang=EN>Screenshot</span></b></p>
+
+<p class=MsoNormal align=center style='margin-left:49.65pt;text-align:center'><img
+border=0 width=343 height=252 src="../assets/img/Console_Hello.png" alt=1></p>
+
+<p class=MsoNormal style='margin-left:49.65pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><b><u><span
+lang=EN style='font-size:12.0pt'>Tip</span></u></b><span lang=EN
+style='font-size:12.0pt'>:</span><span lang=EN> </span></p>
+
+<p class=MsoPlainText style='margin-left:49.65pt;text-align:justify'><span
+lang=EN>&nbsp;</span></p>
+
+<p class=MsoPlainText style='margin-left:78.0pt;text-align:justify'><span
+lang=EN>When upgrading HMG, please clean previous build data from your projects
+using incremental building, use </span></p>
+
+<p class=MsoPlainText style='margin-left:78.0pt;text-align:justify'><span
+lang=EN>the 'Reset project incremental data' option from the project menu.</span></p>
+
+<p class=MsoPlainText style='margin-left:78.0pt;text-align:justify'><span
+lang=EN-US>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

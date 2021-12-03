@@ -1,0 +1,19 @@
+
+Bug Reports
+-----------
+
+Submit them to the HMG Forum (Bug Report section)
+(http://www.hmgforum.com) according the following rules:
+
+The bug report MUST include a DETAILED DESCRIPTION of the problem AND a simple 
+CODE SAMPLE (including all necessary files to get it run) showing it. 
+Besides that, you MUST indicate Windows and HMG versions used.
+
+Note: There is various warnings at Harbour and C levels at library 
+compilation, I know that and fix in next versions, please do not report as 
+bugs.
+
+--
+Roberto Lopez
+http://sites.google.com/site/hmgweb
+<mail.box.hmg@gmail.com>

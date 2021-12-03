@@ -1,0 +1,223 @@
+ ***************************************
+ * BOS TAURUS: Graphic Library for HMG *
+ ***************************************
+
+ * Bos Taurus, (c) 2012-2017 by Dr. Claudio Soto, <srvet@adinet.com>, http://srvet.blogspot.com 
+
+ 
+ ************************************
+ * BOS TAURUS 1.0.6   2016/04/26
+ ************************************ 
+
+   - New UNDOCUMENTED Functions ( added in 2016/06/21 )
+
+      - BT_DrawEMF ( [ hDC ] , cFileNameOld , cFileNameNew , cFuncNameCallBack )  ---> Return nError, e.g. Zero is OK
+      - BT_BitmapIsValidFileImage( cFileName ) 
+
+
+   - Added functions:
+      - BT_DrawTextEx
+      - BT_DrawTextSize
+      - BT_DrawPolygon
+      - BT_DrawPolyBezier
+      - BT_DrawArc
+      - BT_DrawChord
+      - BT_DrawPie
+
+
+   - New UNDOCUMENTED Functions ( added in 2015/01/18 )
+
+      - BT_ToolBarBottomHeight (Win)
+      - BT_ToolBarBottomWidth  (Win)
+      - BT_ToolBarTopHeight    (Win)
+      - BT_ToolBarTopWidth     (Win)
+
+      - BT_MathPI ()
+      - BT_MathSIN ( AngleInDegrees )
+      - BT_MathCOS ( AngleInDegrees )
+      - BT_MathTAN ( AngleInDegrees )
+      - BT_MathCircumferenceY ( Radius, AngleInDegrees ) --> nRow
+      - BT_MathCircumferenceX ( Radius, AngleInDegrees ) --> nCol
+      - BT_MathCircumferenceArcAngle ( Radius, Arc ) --> AngleInDegrees
+
+      - BT_SelectObject (hDC, hGDIobj)
+      - BT_DeleteObject (hGDIobj)
+
+      - BT_RegionCreateElliptic (nCol1, nRow1, nCol2, nRow2)
+      - BT_RegionCombine ( @hRgnDest, hRgnSrc1, hRgnSrc2, nCombineMode ) --> nResult
+      - BT_RegionFrame (hDC, hRgn, aColor, nWidth, nHeight)
+
+      - BT_ImageListGetSystemIcon ( [ lLargeIcon ] ) --> hImageList ( You NEVER add, remove or delete icons from the System Imagelist )
+      - BT_ImageListExtractIcon (hImageList, nIndex) --> hIcon
+      - BT_DirectoryInfo ( [nCSIDL | cPath] , [nTypeList] , @nIndexRoot, @CSIDL_Name ) --> { { Data1, Data2, Data3, ... } , ... }
+
+
+ ************************************
+ * BOS TAURUS 1.0.5   2014/04/19
+ ************************************ 
+
+    - Added functions:
+        - BT_BitmapLoadEMF
+        - BT_DrawFillFlood
+
+    - Since HMG version 3.2.1 (May 2014) the source files of Bos Taurus is part of the source code of HMG.
+      This allow the use of the functions of BT in the internal graphical manipulation of the HMG.
+
+    - Since MiniGUI Extended version 2.2.3 (June 2013), Bos Taurus is distributed ready to use as a 
+      Static Link Library (.LIB) on MiniGUI (no need to compile the source code of BT library before using). 
+
+    - Updated BosTaurus-FunctionsReferenceGuide.PDF with changes made.
+
+
+
+ ************************************
+ * BOS TAURUS 1.0.4   2013/05/18
+ ************************************ 
+
+    - It increased the quality of the resized images, now BT_BitmapCopyAndResize() supports three 
+      resizing algorithms ( BT_RESIZE_COLORONCOLOR, BT_RESIZE_HALFTONE, BT_RESIZE_BILINEAR )
+
+    - Added functions:
+        - BT_HMGSetImage
+        - BT_HMGGetImage
+        - BT_HMGCloneImage
+
+    - Updated BosTaurus-FunctionsReferenceGuide.PDF with changes made.
+
+    - Added Demo13
+
+
+
+ ************************************
+ * BOS TAURUS 1.0.3   2012/12/12
+ ************************************ 
+
+    - Updating: All functions of Bos Taurus supports ANSI and UNICODE text formats.
+
+    - Updated BosTaurus-FunctionsReferenceGuide.PDF with changes made.
+
+    - Added Demo12
+
+
+
+ ************************************
+ * BOS TAURUS 1.0.2   2012/11/09
+ ************************************ 
+
+    - Updated BT_BitmapSaveFile() function, now save images in the formats: BMP, GIF, JPG, TIF and PNG.
+
+    - Updated BosTaurus-FunctionsReferenceGuide.PDF with changes made.
+
+    - Added Demo11
+
+
+
+ ************************************
+ * BOS TAURUS 1.0.1   2012/11/03  
+ ************************************ 
+
+    - Updated BT_BitmapLoadFile() function, now load images in the formats: BMP, GIF, JPG, TIF and PNG.
+
+    - Added Functions:
+        - BT_BitmapInvert
+        - BT_BitmapContrast
+        - BT_BitmapModifyColor
+        - BT_BitmapGammaCorrect
+        - BT_BitmapConvolutionFilter3x3
+
+     - Updated BosTaurus-FunctionsReferenceGuide.PDF with changes made.
+
+     - Added Prototype Example for HMG Extended in BosTaurus-FunctionsReferenceGuide.PDF
+
+     - Added Demo10
+
+     - Added the following directive in file: BosTaurus_C.prg (for compatibility with HMG Extended)
+        - #define BT_BCC_LINK_LIB  "C:\Borland\BCC55\Lib\PSDK\msimg32.lib"  //  If necessary define adequate path in your application before include header files
+  
+     - Now Bos Taurus is distributed as HFCL and as raw source code.
+        - BosTaurus_HFCL.rar
+        - BosTaurus_SOURCE.rar
+             - Folder HMG      // HMG Oficial
+             - Folder MiniGUI  // HMG Extended
+
+     
+
+ ************************************
+ * BOS TAURUS 1.0.0   2012/09/21
+ ************************************
+
+     - User Functions List:
+        - BT_InfoName
+        - BT_InfoVersion
+        - BT_InfoAuthor
+        - BT_GetDesktopHandle
+        - BT_DesktopWidth
+        - BT_DesktopHeight
+        - BT_WindowWidth
+        - BT_WindowHeight
+        - BT_ClientAreaWidth
+        - BT_ClientAreaHeight
+        - BT_StatusBarWidth
+        - BT_StatusBarHeight
+        - BT_ClientAreaInvalidateAll
+        - BT_ClientAreaInvalidateRect
+        - BT_BitmapLoadFile
+        - BT_BitmapSaveFile
+        - BT_BitmapRelease
+        - BT_BitmapWidth
+        - BT_BitmapHeight
+        - BT_BitmapBitsPerPixel
+        - BT_BitmapCreateNew
+        - BT_BitmapClone
+        - BT_BitmapCopyAndResize
+        - BT_BitmapPaste
+        - BT_BitmapPasteTransparent
+        - BT_BitmapPasteAlphaBlend
+        - BT_BitmapGrayness
+        - BT_BitmapBrightness
+        - BT_BitmapTransform
+        - BT_BitmapCaptureDesktop
+        - BT_BitmapCaptureWindow
+        - BT_BitmapCaptureClientArea
+        - BT_BitmapClipboardGet
+        - BT_BitmapClipboardPut
+        - BT_BitmapClipboardClean
+        - BT_BitmapClipboardIsEmpty
+        - BT_CreateDC
+        - BT_DeleteDC
+        - BT_DrawGetPixel
+        - BT_DrawSetPixel
+        - BT_DrawBitmap
+        - BT_DrawBitmapTransparent
+        - BT_DrawBitmapAlphaBlend
+        - BT_DrawDCtoDC
+        - BT_DrawDCtoDCTransparent
+        - BT_DrawDCtoDCAlphaBlend
+        - BT_DrawGradientFillHorizontal
+        - BT_DrawGradientFillVertical
+        - BT_DrawText
+        - BT_DrawPolyLine
+        - BT_DrawLine
+        - BT_DrawRectangle
+        - BT_DrawEllipse
+        - BT_DrawFillRectangle
+        - BT_DrawFillEllipse
+        - BT_DrawFillRoundRect
+
+     - Files: 
+        - BosTaurus.CH
+        - BosTaurus.prg
+        - BosTaurus_HB.prg
+        - BosTaurus_C.prg
+        - BosTaurus-FunctionsReferenceGuide.PDF
+        - BosTaurus_ChangeLog.TXT
+        - Demo1...9
+
+
+----------------------------
+  (c) Dr. Claudio Soto
+   srvet@adinet.com.uy
+ http://srvet.blogspot.com
+       from Uruguay
+----------------------------
+

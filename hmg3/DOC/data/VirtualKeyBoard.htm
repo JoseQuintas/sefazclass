@@ -1,0 +1,736 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"MS Mincho";
+	panose-1:2 2 6 9 4 2 5 8 3 4;
+	mso-font-alt:"\FF2D\FF33 \660E\671D";
+	mso-font-charset:128;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-536870145 1791491579 18 0 131231 0;}
+@font-face
+	{font-family:"MS Mincho";
+	panose-1:2 2 6 9 4 2 5 8 3 4;
+	mso-font-alt:"\FF2D\FF33 \660E\671D";
+	mso-font-charset:128;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-536870145 1791491579 18 0 131231 0;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-536870145 1073786111 1 0 415 0;}
+@font-face
+	{font-family:"\@MS Mincho";
+	panose-1:2 2 6 9 4 2 5 8 3 4;
+	mso-font-charset:128;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-536870145 1791491579 18 0 131231 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;
+	mso-bidi-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	color:purple;
+	mso-themecolor:followedhyperlink;
+	text-decoration:underline;
+	text-underline:single;}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-priority:99;
+	mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{mso-style-priority:34;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;
+	mso-bidi-font-family:"Times New Roman";}
+p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+	{mso-style-priority:34;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-type:export-only;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;
+	mso-bidi-font-family:"Times New Roman";}
+p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagraphCxSpMiddle
+	{mso-style-priority:34;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-type:export-only;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;
+	mso-bidi-font-family:"Times New Roman";}
+p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+	{mso-style-priority:34;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-type:export-only;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;
+	mso-bidi-font-family:"Times New Roman";}
+span.TextosinformatoCar
+	{mso-style-name:"Texto sin formato Car";
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Texto sin formato";
+	font-family:"Courier New";
+	mso-ascii-font-family:"Courier New";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Courier New";}
+p.msoplaintext1, li.msoplaintext1, div.msoplaintext1
+	{mso-style-name:msoplaintext1;
+	mso-style-unhide:no;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;}
+p.msopapdefault, li.msopapdefault, div.msopapdefault
+	{mso-style-name:msopapdefault;
+	mso-style-unhide:no;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	mso-fareast-font-family:"MS Mincho";
+	mso-fareast-theme-font:minor-fareast;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;
+	mso-style-unhide:no;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	mso-default-props:yes;
+	font-size:10.0pt;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 3.0cm 70.85pt 3.0cm;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US-UY link=blue vlink=purple style='tab-interval:35.4pt'>
+
+<div class=WordSection1>
+
+<div style='mso-element:para-border-div;border:solid windowtext 1.0pt;
+mso-border-alt:solid windowtext .5pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+
+<p class=msoplaintext1 style='background:#339966;color:white;border:none;mso-border-alt:
+solid windowtext .5pt;padding:0cm;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span
+lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=msoplaintext1 style='background:#339966;color:white;border:none;mso-border-alt:
+solid windowtext .5pt;padding:0cm;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span
+class=SpellE><b><span lang=EN-US style='font-size:12.0pt;mso-ansi-language:
+EN-US'>VirtualKeyboard</span></b></span><b><span lang=EN-US style='font-size:
+12.0pt;background:#339966;mso-ansi-language:EN-US'><br>
+</span></b><b><i><span lang=EN-US style='mso-ansi-language:EN-US'>Opens the Virtual
+Keyboard of the System</span></i></b><span lang=EN-US style='mso-ansi-language:
+EN-US'><o:p></o:p></span></p>
+
+<p class=msoplaintext1 style='background:#339966;color:white;border:none;mso-border-alt:
+solid windowtext .5pt;padding:0cm;mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt'><span
+lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+</div>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><strong><span lang=EN-US style='font-family:"Courier New";
+mso-ansi-language:EN-US'>Syntax:</span></strong><span lang=EN-US
+style='mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'> </span><span style='mso-spacerun:yes'>     </span>- </span><span
+class=SpellE><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:
+EN-US'>VirtualKeyboard.OPEN</span></b></span><b style='mso-bidi-font-weight:
+normal'><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'> <span class=GramE>[ SHOW</span> ]<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>VirtualKeyboard.OPEN</b></span><b style='mso-bidi-font-weight:normal'><span
+style='mso-spacerun:yes'>   </span>HIDE<o:p></o:p></b></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'>&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'>Methods:</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";mso-fareast-font-family:
+"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'>&nbsp;&nbsp;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'> </span><b style='mso-bidi-font-weight:normal'><span
+style='mso-spacerun:yes'>     </span>-&nbsp;<span class=SpellE>VirtualKeyboard<span
+style='mso-fareast-font-family:"MS Mincho";mso-fareast-theme-font:minor-fareast;
+color:windowtext'>.Show</span></span><o:p></o:p></b></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New";mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>-</span></b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'> <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>VirtualKeyboard</b><b style='mso-bidi-font-weight:normal'><span
+style='mso-fareast-font-family:"MS Mincho";mso-fareast-theme-font:minor-fareast;
+color:windowtext'>.Hide</span></b></span></span><b style='mso-bidi-font-weight:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-ansi-language:EN-US'><o:p></o:p></span></b></p>
+
+<p class=MsoPlainText><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>      </span>-</span></b><span
+lang=EN-US style='mso-fareast-font-family:"Times New Roman";color:black;
+mso-ansi-language:EN-US'> <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>VirtualKeyboard</b><b style='mso-bidi-font-weight:normal'><span
+style='mso-fareast-font-family:"MS Mincho";mso-fareast-theme-font:minor-fareast;
+color:windowtext'>.Release</span></b></span></span><b style='mso-bidi-font-weight:
+normal'><span lang=EN-US style='mso-ansi-language:EN-US'><o:p></o:p></span></b></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'>Properties:</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";mso-fareast-font-family:
+"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoPlainText><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>      </span>- </span></b><span
+class=SpellE><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:
+EN-US'>VirtualKeyboard</span></b><b style='mso-bidi-font-weight:normal'><span
+lang=EN-US style='mso-ansi-language:EN-US'>.IsRelease</span></b></span><b
+style='mso-bidi-font-weight:normal'><span lang=EN-US style='mso-ansi-language:
+EN-US'><o:p></o:p></span></b></p>
+
+<p class=MsoPlainText><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>      </span>- </span></b><span
+class=SpellE><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:
+EN-US'>VirtualKeyboard</span></b><b style='mso-bidi-font-weight:normal'><span
+lang=EN-US style='mso-ansi-language:EN-US'>.IsOpen</span></b></span><b
+style='mso-bidi-font-weight:normal'><span lang=EN-US style='mso-ansi-language:
+EN-US'><o:p></o:p></span></b></p>
+
+<p class=MsoPlainText><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>      </span>- </span></b><span
+class=SpellE><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:
+EN-US'>VirtualKeyboard.IsVisible</span></b></span><b style='mso-bidi-font-weight:
+normal'><span lang=EN-US style='mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>VirtualKeyboard.IsMinimize</b></span><b style='mso-bidi-font-weight:
+normal'><o:p></o:p></b></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>VirtualKeyboard.IsMaximize</b></span><b style='mso-bidi-font-weight:
+normal'><o:p></o:p></b></span></p>
+
+<p class=MsoPlainText><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=MsoPlainText><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>      </span>- </span></b><span
+class=SpellE><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:
+EN-US'>VirtualKeyboard</span></b><b style='mso-bidi-font-weight:normal'><span
+lang=EN-US style='mso-ansi-language:EN-US'>.Handle</span></b></span><b
+style='mso-bidi-font-weight:normal'><span lang=EN-US style='mso-ansi-language:
+EN-US'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE><span class=GramE><b
+style='mso-bidi-font-weight:normal'>VirtualKeyboard.Title</b></span></span><span
+class=GramE><span style='mso-spacerun:yes'>  </span>[</span> <b
+style='mso-bidi-font-weight:normal'>:= | --&gt;</b> ] <span class=SpellE>cTitle</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>VirtualKeyboard.Row</b></span><span style='mso-spacerun:yes'>   
+</span><span class=GramE>[ <b style='mso-bidi-font-weight:normal'>:</b></span><b
+style='mso-bidi-font-weight:normal'>= | --&gt;</b> ] <span class=SpellE>nRow</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>VirtualKeyboard.Col</b></span><span style='mso-spacerun:yes'>   
+</span><span class=GramE>[ <b style='mso-bidi-font-weight:normal'>:</b></span><b
+style='mso-bidi-font-weight:normal'>= | --&gt;</b> ] <span class=SpellE>nCol</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE><span class=GramE><b
+style='mso-bidi-font-weight:normal'>VirtualKeyboard.Width</b></span></span><span
+class=GramE><span style='mso-spacerun:yes'>  </span>[</span> <b
+style='mso-bidi-font-weight:normal'>:= | --&gt;</b> ] <span class=SpellE>nWidth</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>VirtualKeyboard.Height</b></span> <span class=GramE>[ <b
+style='mso-bidi-font-weight:normal'>:</b></span><b style='mso-bidi-font-weight:
+normal'>= | --&gt;</b> ] <span class=SpellE>nHeight</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>VirtualKeyboard.FileName</b></span><span
+style='mso-spacerun:yes'>         </span>--&gt; &quot;OSK.EXE&quot;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>      </span>- <span class=SpellE><b style='mso-bidi-font-weight:
+normal'>VirtualKeyboard.FullFileName</b></span><span
+style='mso-spacerun:yes'>     </span>--&gt; <span class=SpellE><span
+class=GramE>GetSystemDir</span></span><span class=GramE>(</span>)+&quot;\OSK.EXE&quot;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'>Example:<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'>#include &quot;hmg.ch&quot;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'>FUNCTION Main<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>  
+</span>DEFINE WINDOW Form_1;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span>AT 0<span class=GramE>,0</span> ;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span>WIDTH 600 HEIGHT <span class=GramE>600 ;</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span><span class=GramE>MAIN ;</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span>TITLE &quot;System Virtual Keyboard&quot;;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span>ON RELEASE IF (<span class=SpellE>VirtualKeyboard.IsOpen</span> == .<span
+class=GramE>T.,</span> <span class=SpellE>VirtualKeyboard.RELEASE</span>, NIL)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span>@ 50, 20 EDITBOX Editbox_1 WIDTH 550 HEIGHT 350 VALUE &quot;&quot;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span>@ 410, 280 BUTTON Button_1 CAPTION &quot;On/Off<span class=GramE>&quot;<span
+style='mso-spacerun:yes'>  </span>ACTION</span> <span class=SpellE>OnOff_VirtualKeyboard</span>()<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span>@ 450, 280 BUTTON Button_2 CAPTION &quot;Release&quot; ACTION IF (<span
+class=SpellE>VirtualKeyboard.IsOpen</span> == .<span class=GramE>T.,</span> <span
+class=SpellE>VirtualKeyboard.RELEASE</span>, NIL)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>  
+</span>END WINDOW<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>  
+</span>CENTER WINDOW Form_1<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>  
+</span>ACTIVATE WINDOW Form_1<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'>RETURN NIL<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'>PROCEDURE <span class=SpellE>OnOff_VirtualKeyboard</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>   </span><span
+class=GramE>IF <span class=SpellE>VirtualKeyboard.IsOpen</span> == .F.</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span>IF .NOT. FILE (<span class=SpellE>VirtualKeyboard.FULLFILENAME</span>)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>        
+</span>RETURN<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span>ENDIF<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span><span class=SpellE>VirtualKeyboard.OPEN</span><span
+style='mso-spacerun:yes'>   </span>HIDE<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span><span class=SpellE>Inkey</span> (1)<span style='mso-spacerun:yes'>  
+</span>// Wait until the application is loaded<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span><span class=SpellE><span class=GramE>VirtualKeyboard.TITLE</span></span><span
+class=GramE> :</span>= &quot;HMG Virtual Keyboard&quot;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span><span class=SpellE><span class=GramE>VirtualKeyboard.ROW</span></span><span
+class=GramE> :</span>= Form_1.ROW + Form_1.editbox_1.ROW + 50<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span><span class=SpellE><span class=GramE>VirtualKeyboard.COL</span></span><span
+class=GramE> :</span>= Form_1.COL + Form_1.editbox_1.COL + 20<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span><span class=SpellE>VirtualKeyboard.SHOW</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span>RETURN<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>  
+</span>ENDIF<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>   </span><span
+class=GramE>IF <span class=SpellE>VirtualKeyboard.IsVisible</span> == .F.</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span><span class=SpellE>VirtualKeyboard.SHOW</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>  
+</span>ELSE<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>     
+</span><span class=SpellE>VirtualKeyboard.HIDE</span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'><span style='mso-spacerun:yes'>  
+</span>ENDIF<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:35.4pt;margin-bottom:.0001pt;line-height:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Courier New";mso-fareast-font-family:"Times New Roman";
+color:black;mso-ansi-language:EN-US'>RETURN<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+mso-fareast-font-family:"Times New Roman";color:black;mso-ansi-language:EN-US'><o:p>&nbsp;</o:p></span></p>
+
+</div>
+
+</body>
+
+</html>

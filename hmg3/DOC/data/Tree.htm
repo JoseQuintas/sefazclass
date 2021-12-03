@@ -1,0 +1,1000 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Consolas;
+	panose-1:2 11 6 9 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-link:"Texto sem Formatação Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+span.TextosemFormataoChar
+	{mso-style-name:"Texto sem Formatação Char";
+	mso-style-link:"Texto sem Formatação";
+	font-family:Consolas;}
+p.msopapdefault, li.msopapdefault, div.msopapdefault
+	{mso-style-name:msopapdefault;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";}
+p.msoplaintext1, li.msoplaintext1, div.msoplaintext1
+	{mso-style-name:msoplaintext1;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.msoplaintext3, li.msoplaintext3, div.msoplaintext3
+	{mso-style-name:msoplaintext3;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.Textosinformato, li.Textosinformato, div.Textosinformato
+	{mso-style-name:"Texto sin formato";
+	mso-style-link:"Texto sin formato Car";
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+span.TextosinformatoCar
+	{mso-style-name:"Texto sin formato Car";
+	mso-style-link:"Texto sin formato";
+	font-family:"Courier New";}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 3.0cm 70.85pt 3.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+
+<p class=MsoPlainText style='background:#339966;border:none;padding:0cm'><span
+lang=EN-US style='color:white'>&nbsp;</span></p>
+
+<p class=MsoPlainText style='background:#339966;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:12.0pt;color:white'>DEFINE TREE<span
+style='background:#339966'><br>
+</span></span></b><b><i><span lang=EN-US style='color:white'>Creates a Tree
+Control</span></i></b></p>
+
+<p class=MsoPlainText style='background:#339966;border:none;padding:0cm'><span
+lang=EN-US style='color:white'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><strong><span lang=EN-US style='font-family:"Courier New"'>Standard
+Syntax (xBase Style):</span></strong></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DEFINE
+TREE &lt;ControlName&gt; </span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ OF | PARENT &lt;ParentWindowName&gt; ] </span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+AT &lt;nRow&gt; ,&lt;nCol&gt; </span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+WIDTH &lt;nWidth&gt; </span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HEIGHT &lt;nHeight&gt; </span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ VALUE &lt;nValue&gt; ] </span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ FONT &lt;cFontname&gt; SIZE &lt;nFonSize&gt; ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ TOOLTIP &lt;cToolTipText&gt; ] </span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ON GOTFOCUS &lt;OnGotFocusProcedur&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ON CHANGE &lt;OnChangeProcedure&gt; | &lt;bBlock&gt; ] </span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ON LOSTFOCUS &lt;OnLostFocusProcedure&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ON DBLCLICK &lt;OnDblClickProcedure&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ ON EXPAND
+&lt;OnExpandProcedure&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ON COLLAPSE &lt;OnCollapseProcedure&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ BREAK ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ NODEIMAGES &lt;aImgNode&gt; [ ITEMIMAGES &lt;aImgItem&gt; ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ NOROOTBUTTON ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ITEMIDS ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ HELPID &lt;nHelpId&gt; ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US style='color:black'>            [
+NOTRANSPARENT<span class=apple-converted-space><span style='orphans: auto;
+text-align:start;widows: auto;-webkit-text-stroke-width: 0px;float:none;
+word-spacing:0px'>&nbsp;</span>]</span></span><span lang=EN-US> </span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ NODE &lt;cNodeCaption&gt; ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ IMAGES &lt;aImage&gt; ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ID &lt;nItemID&gt; ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ TREEITEM &lt;cTreeItemCaption&gt;</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ IMAGES &lt;aImage&gt; ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ID &lt;nItemID&gt; ] ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+... </span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ END NODE ]</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...</span></p>
+
+<p class=msoplaintext1><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; END TREE
+</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><strong><span lang=EN-US style='font-family:"Courier New"'>Alternate
+Syntax:</span></strong></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DEFINE
+TREE &lt;ControlName&gt; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ PARENT &lt;ParentWindowName&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ROW &lt;nRow&gt;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+COL &lt;nCol&gt;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+WIDTH &lt;nWidth&gt; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+HEIGHT &lt;nHeight&gt; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ VALUE &lt;nValue&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ FONTNAME &lt;cFontname&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ FONTSIZE &lt;nFonSize&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ TOOLTIP &lt;cToolTipText&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ONGOTFOCUS &lt;OnGotFocusProcedure&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ONCHANGE &lt;OnChangeProcedure&gt; | &lt;bBlock&gt; ] </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ONLOSTFOCUS &lt;OnLostFocusProcedure&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ONDBLCLICK &lt;OnDblClickProcedure&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ ONEXPAND
+&lt;OnExpandProcedure&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ONCOLLAPSE &lt;OnCollapseProcedure&gt; | &lt;bBlock&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ BREAK &lt;lValue&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ NODEIMAGES &lt;aImgNode&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ITEMIMAGES &lt;aImgItem&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ROOTBUTTON &lt;lValue&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ITEMIDS &lt;lValue&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ HELPID &lt;nHelpId&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US style='color:black'>            [
+TRANSPARENT &lt;lValue&gt;</span><span lang=EN-US> ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp; </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ NODE &lt;cNodeCaption&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ IMAGES &lt;aImage&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ID &lt;nItemID&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ TREEITEM &lt;cTreeItemCaption&gt;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ IMAGES &lt;aImage&gt; ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ ID &lt;nItemID&gt; ] ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+... </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[ END NODE ]</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+...</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; END TREE </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><b><span lang=EN-US>Properties:</span></b></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="value.htm">Value</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="enabled.htm">Enabled</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="visible.htm">Visible</a> </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="row.htm">Row</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="col.htm">Col</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="width.htm">Width</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="height.htm">Height</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="item.htm">Item ( nItemIndex | nItemID )</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="itemcount.htm">ItemCount</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontname.htm">FontName</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontsize.htm">FontSize</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontbold.htm">FontBold</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontitalic.htm">FontItalic</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontunderline.htm">FontUnderline</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="fontstrikeout.htm">FontStrikeout</a> </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="tooltip.htm">ToolTip</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="name.htm">Name</a> (R)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="break.htm">Break</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="nodeimages.htm">NodeImages</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="itemimages.htm">ItemImages</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="helpid.htm">HelpId</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="parent.htm">Parent</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="rootbutton.htm">RootButton</a> (D)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D:
+Available at control definition only</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; R:
+Read-Only</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><b><span lang=EN-US>Events:</span></b></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="ongotfocus.htm">OnGotFocus</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="onchange.htm">OnChange</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="onlostfocus.htm">OnLostFocus</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="ondblclick.htm">OnDblClick</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>      - OnExpand (*)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>      - OnCollapse (*)</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;       </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>        (*)<b><i><u>Note</u></i>: </b></span><span
+lang=EN-US style='color:black'>Property available for <b>OnExpand</b> and <b>OnCollapse</b>
+events and <b>DynamicForeColor</b>, <b>DynamicBackColor</b> and <b>DynamicFont</b>
+properties<b>:</b></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=EN-US style='font-size:10.0pt;font-family:"Courier New";
+color:black'>&nbsp;                -&nbsp;<b>This.TreeItemValue</b></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><b><span lang=EN-US>Methods:</span></b></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="show.htm">Show</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="hide.htm">Hide</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="additem.htm">AddItem ( cItemText , nParentItemIndex | nParentItemID )</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="deleteitem.htm">DeleteItem ( nItemIndex | nItemID )</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="deleteallitems.htm">DeleteAllItems</a> </span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="expand.htm">Expand ( nItemIndex | nItemID )</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="collapse.htm">Collapse ( nItemIndex | nItemID )</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="setfocus.htm">SetFocus</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - <a
+href="release.htm">Release</a></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText><span lang=EN-US>When ITEMIDS clause is specified, you
+can assign a numeric ID (ID clause) to tree items and nodes. That way, all tree
+properties and methods will work using these ID's instead item position.</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><b><u><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'># TREE Control
+improvement</span></u></b></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'> </span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>     <b><i>Note:</i></b><i>
+nValue = nItemIndex | nItemID</i></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;<span
+class=apple-converted-space>&nbsp;</span>-<span class=apple-converted-space>&nbsp;</span><u>New
+Get Properties:<u1:p></u1:p></u></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt;orphans: auto;
+text-align:start;widows: auto;-webkit-text-stroke-width: 0px;word-spacing:0px'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'><u1:p>&nbsp;</u1:p></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt;orphans: auto;
+text-align:start;widows: auto;-webkit-text-stroke-width: 0px;word-spacing:0px'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+class=apple-converted-space>&nbsp;</span>&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>AllValue</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+class=apple-converted-space>&nbsp;</span>--&gt;<span
+class=apple-converted-space>&nbsp;anAllItemsValues | NIL</span></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt;orphans: auto;
+text-align:start;widows: auto;-webkit-text-stroke-width: 0px;word-spacing:0px'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;          
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>RootValue</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>                         
+--&gt; nValue | NIL</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>FirstItemValue</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>                    
+--&gt; nValue | NIL</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>ParentValue</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>     ( nValue
+)         --&gt; nValue | NIL</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>ChildValue</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>      ( nValue
+)         <span style='color:black'>--&gt;<span class=apple-converted-space>&nbsp;anChildItemsValues
+| NIL</span></span></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>SiblingValue</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>    ( nValue
+)         <span style='color:black'>--&gt;<span class=apple-converted-space>&nbsp;an</span></span><span
+class=apple-converted-space>Sibling<span style='color:black'>ItemsValues | NIL</span></span></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>ItemText</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>        (
+anItemsValues )  --&gt; acItemsText | NIL</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>IsTrueNode</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>      ( nValue
+)         --&gt; lBoolean</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>NodeFlag</b></span><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>        ( nValue
+)         --&gt; lBoolean</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>ImageCount</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>                        
+--&gt; nImageCount </span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>ImageIndex</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>      ( nValue
+)         --&gt; { iUnSelectItem , iSelectItem }</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>IsExpand</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>        ( nValue
+)         --&gt; lBoolean</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>ImageList</b>                         
+--&gt; hImageList</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>HasLines</b>                          
+--&gt; lBoolean</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>FullRowSelect</b>                    
+ --&gt; lBoolean</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>HasButton</b> ( nValue
+)               --&gt; lBoolean</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>Cargo</b> ( nValue
+)                   --&gt; xData</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>CargoScan</b> ( xData
+)                --&gt; nValue | NIL</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>GetPathValue</b>     (
+nValue )        --&gt; anPathValue | NIL</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>GetPathName</b>      (
+nValue )        --&gt; acPathName | NIL</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>GetDisplayLevel</b>  (
+nValue )        --&gt; nDisplayColumn | NIL</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;<span
+class=apple-converted-space>&nbsp;</span>-<span class=apple-converted-space>&nbsp;</span><u>New
+Set Properties:<u1:p></u1:p></u></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt;orphans: auto;
+text-align:start;widows: auto;-webkit-text-stroke-width: 0px;word-spacing:0px'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'><u1:p>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>NodeFlag</b></span><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>    ( nValue ) 
+:= lBoolean</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>ImageIndex</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>  ( nValue )  :=
+{ iUnSelectItem , iSelectItem }</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>AddImage</span></b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>               
+:= cImageName</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>            <span
+style='color:black'>&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b>TextColor</b>              
+:= anRGBcolor</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>            <span
+style='color:black'>&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b>BackColor</b>              
+:= anRGBcolor</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>            <span
+style='color:black'>&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.</span><b>LineColor</b>              
+:= anRGBcolor</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>DynamicForeColor</b>       
+:= {|| anRGBcolor }</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>DynamicBackColor</b>       
+:= {|| anRGBcolor }</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>DynamicFont</b>            
+:= {|| {cFontName, nFontSize, [ lBold, lItalic, lUnderline, lStrikeOut ]} }</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>ChangeFontSize</b>         
+:= nSize | NIL  // Useful for use Dynamic Font with more (less) Height than the
+size of font the Tree control</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>ImageList</b>               :=
+hImageList</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>HasLines</b>               
+:= lBoolean</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>FullRowSelect</b>          
+:= lBoolean</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>HasButton</b> ( nValue )   
+:= lBoolean</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>           
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>Cargo</b> ( nValue )       
+:= xData</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;&nbsp;&nbsp;&nbsp;<span
+class=apple-converted-space>&nbsp;</span>-<span class=apple-converted-space>&nbsp;</span><u>New
+Methods:<u1:p></u1:p></u></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt;orphans: auto;
+text-align:start;widows: auto;-webkit-text-stroke-width: 0px;word-spacing:0px'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'><u1:p>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>            <span
+style='color:black'>&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>Expand</b>  
+</span>( nValue , lRecursive )</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>            <span
+style='color:black'>&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>Collapse</b>
+</span>( nValue , lRecursive )</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>            <span
+style='color:black'>&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>DisableUpdate</b></span></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>            <span
+style='color:black'>&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>EnableUpdate</b></span></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>            <span
+style='color:black'>&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>SetDefaultAllNodeFlag</b></span></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>            <span
+style='color:black'>&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>SetDefaultNodeFlag</b>
+</span>( nValue )</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>            <span
+style='color:black'>&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>Sort</b>
+( </span>nValue , lRecursive, lCaseSensitive, lAscendingOrder, <i>nNodePosition</i>
+)</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>            <b>TREESORT</b>
+ControlName <b>OF</b> ParentName </span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>                   
+</span><b><span style='font-size:10.0pt;font-family:"Courier New"'>[ ITEM </span></b><span
+style='font-size:10.0pt;font-family:"Courier New"'>nValue<b> ] </b></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><b><span
+style='font-size:10.0pt;font-family:"Courier New"'>                    [
+RECURSIVE </span></b><span style='font-size:10.0pt;font-family:"Courier New"'>lRecursive<b>
+] </b></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><b><span
+style='font-size:10.0pt;font-family:"Courier New"'>                    [
+CASESENSITIVE </span></b><span style='font-size:10.0pt;font-family:"Courier New"'>lCaseSensitive<b>
+] </b></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><b><span
+style='font-size:10.0pt;font-family:"Courier New"'>                    [
+ASCENDINGORDER </span></b><span style='font-size:10.0pt;font-family:"Courier New"'>lAscendingOrder<b>
+] </b></span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><b><span
+style='font-size:10.0pt;font-family:"Courier New"'>                    </span></b><b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>[ NODEPOSITION </span></b><i><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>nNodePosition</span></i><b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'> ]</span></b></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><b><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>                   
+<i>nNodePosition</i> = TREESORTNODE_FIRST | TREESORTNODE_LAST |
+TREESORTNODE_MIX</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><b><i><u><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>Note:</span></u></i></b></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>   
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>IsTrueNode</b> ( nValue )
+--&gt; Only returns .T. if the item contain sub-items (child items).</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New";color:black'>   
+&lt;ParentWindowName&gt;.&lt;TreeControlName&gt;.<b>NodeFlag</b></span><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'> ( nValue ) :=
+lBoolean --&gt; This flag allows you to force an Item to be Node (.T.) or not
+(.F.). This flag only affect the Nodes positions when run the Sort method.</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>For more
+information about of the new features see demo SortTreeDir in SAMPLES folder.</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><i><u><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>Dynamic Font:</span></u></i></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>   - <b>ARRAY
+FONT &lt;cFontName&gt; SIZE &lt;nFontSize&gt; [ BOLD ] [ ITALIC ] [ UNDERLINE ]
+[ STRIKEOUT ]</b> --&gt; { cFontName, nFontSize, lBold, lItalic, lUnderline,
+lStrikeout }</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:10.0pt;font-family:"Courier New"'>   - <b>CREATE
+ARRAY FONT &lt;cFontName&gt; SIZE &lt;nFontSize&gt; [ BOLD &lt;lBold&gt; ] [
+ITALIC &lt;lIitalic&gt; ] [ UNDERLINE &lt;lUnderline&gt; ] [ STRIKEOUT
+&lt;lStrikeout&gt; ]</b> --&gt; { cFontName, nFontSize, lBold, lItalic,
+lUnderline, lStrikeout }</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=msoplaintext3 style='margin:0cm;margin-bottom:.0001pt'><span
+lang=EN-US style='font-size:9.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

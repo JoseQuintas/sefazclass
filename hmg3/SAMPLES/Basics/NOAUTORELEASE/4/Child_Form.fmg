@@ -1,0 +1,16 @@
+DEFINE WINDOW TEMPLATE ;
+	AT 100,100 ;
+	WIDTH 320 ;
+	HEIGHT 240 ;
+	TITLE 'Child Form' ;
+	CHILD 
+
+	DEFINE BUTTON Button_1
+		ROW	10
+		COL	10
+		CAPTION 'Hide Form'
+		ACTION	ThisWindow.Hide
+	END BUTTON
+
+END WINDOW
+

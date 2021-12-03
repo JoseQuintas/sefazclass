@@ -1,0 +1,12 @@
+[OPTIONS]
+Compiled file=Shortcuts.chm
+Default Window=base
+Default topic=Shortcuts.html
+Title=WordScribe Keyboard Shortcuts
+Full-text search=No
+
+[FILES]
+Shortcuts.html
+
+[WINDOWS]
+base="WordScribe Keyboard Shortcuts","","","Shortcuts.html","Shortcuts.html",,,,,0x520,0,0x10304e,[10,50,850,1200],0x0,0x0,1,1,0,0,

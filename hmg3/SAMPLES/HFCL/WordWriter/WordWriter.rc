@@ -1,0 +1,110 @@
+
+// Icons
+
+MainIcon          ICON    Res\Main\WordWriter.ico
+MainImage         BITMAP  Res\Main\WordWriter.bmp
+
+// Quick Access area
+
+SaveMain          BITMAP  Res\Main\Save.bmp
+NewMain           BITMAP  Res\Main\New.bmp
+OpenMain          BITMAP  Res\Main\Open.bmp
+PrintMain         BITMAP  Res\Main\Print.bmp
+Shortcuts         BITMAP  Res\Main\Shortcuts.bmp
+
+// Home tab Clipboard frame
+
+Paste             BITMAP  Res\Home\Paste.bmp
+Cut               BITMAP  Res\Home\Cut.bmp
+Copy              BITMAP  Res\Home\Copy.bmp
+Delete            BITMAP  Res\Home\Delete.bmp
+PasteUnform       BITMAP  Res\Home\PasteUnform.bmp
+
+// Home tab Font frame
+
+BoldOff           BITMAP  Res\Home\BoldOff.bmp
+BoldOn            BITMAP  Res\Home\BoldOn.bmp
+ItalicsOff        BITMAP  Res\Home\ItalicsOff.bmp
+ItalicsOn         BITMAP  Res\Home\ItalicsOn.bmp
+UnderlineOff      BITMAP  Res\Home\UnderlineOff.bmp
+UnderlineOn       BITMAP  Res\Home\UnderlineOn.bmp
+StrikethroughOff  BITMAP  Res\Home\StrikethroughOff.bmp
+StrikethroughOn   BITMAP  Res\Home\StrikethroughOn.bmp
+SubscriptOff      BITMAP  Res\Home\SubscriptOff.bmp
+SubscriptOn       BITMAP  Res\Home\SubscriptOn.bmp
+SuperscriptOff    BITMAP  Res\Home\SuperscriptOff.bmp
+SuperscriptOn     BITMAP  Res\Home\SuperscriptOn.bmp
+FontOptions       BITMAP  Res\Home\FontOptions.bmp
+
+// Home tab Paragraph frame
+
+ListApply         BITMAP  Res\Home\ListApply.bmp
+ListSet           BITMAP  Res\Home\ListSet.bmp
+IndentLeft        BITMAP  Res\Home\IndentLeft.bmp
+IndentOpt         BITMAP  Res\Home\IndentOpt.bmp
+IndentRight       BITMAP  Res\Home\IndentRight.bmp
+LineSpaceApply    BITMAP  Res\Home\LineSpaceApply.bmp
+LineSpaceSet      BITMAP  Res\Home\LineSpaceSet.bmp
+AlignLeftOff      BITMAP  Res\Home\AlignLeftOff.bmp
+AlignLeftOn       BITMAP  Res\Home\AlignLeftOn.bmp
+AlignCenterOff    BITMAP  Res\Home\AlignCenterOff.bmp
+AlignCenterOn     BITMAP  Res\Home\AlignCenterOn.bmp
+AlignRightOff     BITMAP  Res\Home\AlignRightOff.bmp
+AlignRightOn      BITMAP  Res\Home\AlignRightOn.bmp
+AlignJustifyOff   BITMAP  Res\Home\AlignJustifyOff.bmp
+AlignJustifyOn    BITMAP  Res\Home\AlignJustifyOn.bmp
+Link              BITMAP  Res\Home\Link.bmp
+
+// Home tab Editing frame
+
+Undo              BITMAP  Res\Home\Undo.bmp
+Redo              BITMAP  Res\Home\Redo.bmp
+Find              BITMAP  Res\Home\Find.bmp
+Replace           BITMAP  Res\Home\Replace.bmp
+
+// View tab Colors frame 
+
+DefFontBColor     BITMAP  Res\View\DefFontBColor.bmp
+SelFontBColor     BITMAP  Res\View\SelFontBColor.bmp
+DefFontFColor     BITMAP  Res\View\DefFontFColor.bmp
+SelFontFColor     BITMAP  Res\View\SelFontFColor.bmp
+DefBackColor      BITMAP  Res\View\DefBackColor.bmp
+SelBackColor      BITMAP  Res\View\SelBackColor.bmp
+
+// View tab Window frame
+
+ZoomIn            BITMAP  Res\View\ZoomIn.bmp
+ZoomOut           BITMAP  Res\View\ZoomOut.bmp
+WordWrapOff       BITMAP  Res\View\WordWrapOff.bmp
+WordWrapOn        BITMAP  Res\View\WordWrapOn.bmp
+StatusBarOff      BITMAP  Res\View\StatusBarOff.bmp
+StatusBarOn       BITMAP  Res\View\StatusBarOn.bmp
+
+// File menu
+
+New               BITMAP  Res\File\New.bmp
+Open              BITMAP  Res\File\Open.bmp
+Save              BITMAP  Res\File\Save.bmp
+SaveAs            BITMAP  Res\File\SaveAs.bmp
+Print             BITMAP  Res\File\Print.bmp
+PrintPreview      BITMAP  Res\File\PrintPreview.bmp
+PageSetup         BITMAP  Res\File\PageSetup.bmp
+Assoc             BITMAP  Res\File\Assoc.bmp
+About             BITMAP  Res\File\About.bmp
+Exit              BITMAP  Res\File\Exit.bmp
+
+// Context menu
+
+CopyMin           BITMAP  Res\Context\CopyMin.bmp
+PasteMin          BITMAP  Res\Context\PasteMin.bmp
+BoldMin           BITMAP  Res\Context\BoldMin.bmp
+ItalicsMin        BITMAP  Res\Context\ItalicsMin.bmp
+UnderlineMin      BITMAP  Res\Context\UnderlineMin.bmp
+StrikethroughMin  BITMAP  Res\Context\StrikethroughMin.bmp
+SubscriptMin      BITMAP  Res\Context\SubscriptMin.bmp
+SuperscriptMin    BITMAP  Res\Context\SuperscriptMin.bmp
+AlignLeftMin      BITMAP  Res\Context\AlignLeftMin.bmp
+AlignCenterMin    BITMAP  Res\Context\AlignCenterMin.bmp
+AlignRightMin     BITMAP  Res\Context\AlignRightMin.bmp
+AlignJustifyMin   BITMAP  Res\Context\AlignJustifyMin.bmp
+

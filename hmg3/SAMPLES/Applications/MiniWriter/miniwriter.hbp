@@ -1,0 +1,14 @@
+miniwriter.prg
+miniwriter.rc
+
+-w0
+-L..\..\..\
+hmg3.hbc
+
+hbhpdf.hbc
+hbmzip.hbc
+hbwin.hbc
+hbct.hbc
+hbmisc.hbc
+xhb.hbc
+

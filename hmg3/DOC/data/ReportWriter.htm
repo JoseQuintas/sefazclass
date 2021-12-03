@@ -1,0 +1,364 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+span.TextosinformatoCar
+	{mso-style-name:"Texto sin formato Car";
+	mso-style-link:"Texto sin formato";
+	font-family:"Courier New";}
+.MsoPapDefault
+	{margin-bottom:10.0pt;
+	line-height:115%;}
+@page Section1
+	{size:612.0pt 792.0pt;
+	margin:70.85pt 3.0cm 70.85pt 3.0cm;}
+div.Section1
+	{page:Section1;}
+div.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+li.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoPlainText1 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoPlainText2 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+div.MsoPlainText2 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+li.MsoPlainText2 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoPlainText3 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoPlainText31 {mso-style-link:"Texto sin formato Car";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+-->
+</style>
+</head>
+
+<body lang=EN-US>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+  <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'>&nbsp;</p>
+  <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:14.0pt'>HMG Report Writer Reference</span></b><b><span lang=EN-US
+style='font-size:12.0pt;background:#339966'><br>
+  </span></b><b><i><span lang=EN-US>Writes a report to printer, PDF file or HTML file.</span></i></b></p>
+  <p class=MsoPlainText1 style='background:#339966;color:white;border:none;padding:0cm'>&nbsp;</p>
+</div>
+<div class=Section1>
+  <p class=MsoPlainText1>&nbsp;</p>
+  <p class=MsoPlainText2><span lang=EN-US>&nbsp;</span><span lang=EN-US>&nbsp;</span></p>
+  <p class=MsoPlainText2>    <strong>REPORT DEFINITION</strong><br>
+  </p>
+  <blockquote>
+    <p class="MsoPlainText3"> DEFINE REPORT &lt;Name&gt; | TEMPLATE</p>
+    <blockquote>
+      <p class="MsoPlainText31">BEGIN DATA </p>
+      <blockquote>
+        <p class="MsoPlainText31">ITERATOR	&lt;xExpression&gt;</p>
+        <p class="MsoPlainText31">STOPPER	&lt;xExpression&gt;</p>
+      </blockquote>
+      <p class="MsoPlainText31">END DATA</p>
+      <p class="MsoPlainText31">&nbsp;</p>
+      <p class="MsoPlainText3">BEGIN LAYOUT</p>
+      <blockquote>
+        <p class="MsoPlainText3">PAPERSIZE	&lt;nValue&gt;</p>
+        <p class="MsoPlainText3">ORIENTATION	&lt;nValue&gt;</p>
+        <p class="MsoPlainText3">[ PAPERWIDTH	&lt;nValue&gt; ]</p>
+        <p class="MsoPlainText3">[ PAPERLENGTH	&lt;nValue&gt; ]</p>
+      </blockquote>
+      <p class="MsoPlainText3">END LAYOUT</p>
+      <p class="MsoPlainText3">&nbsp; </p>
+      <p class="MsoPlainText3">BEGIN HEADER</p>
+      <blockquote>
+        <p class="MsoPlainText3">BANDHEIGHT	&lt;nValue&gt;</p>
+        <p class="MsoPlainText3">&nbsp;</p>
+        <p class="MsoPlainText3"><span class="MsoPlainText3">&lt; Report Object Definitions &gt;</span></p>
+      </blockquote>
+      <p class="MsoPlainText3">END HEADER</p>
+      <p class="MsoPlainText3">&nbsp;</p>
+      <p class="MsoPlainText3">BEGIN DETAIL</p>
+      <blockquote>
+        <p class="MsoPlainText3">BANDHEIGHT	&lt;nValue&gt;</p>
+        <p class="MsoPlainText3">&nbsp;</p>
+        <p class="MsoPlainText3"><span class="MsoPlainText3">&lt; Report Object Definitions &gt;</span></p>
+      </blockquote>
+      <p class="MsoPlainText3">END DETAIL</p>
+      <p class="MsoPlainText3">&nbsp; </p>
+      <p class="MsoPlainText3">BEGIN FOOTER</p>
+      <blockquote>
+        <p class="MsoPlainText3">BANDHEIGHT	&lt;nValue&gt;</p>
+        <p class="MsoPlainText3">&nbsp;</p>
+        <p class="MsoPlainText3"><span class="MsoPlainText3">&lt; Report Object Definitions &gt;</span></p>
+      </blockquote>
+      <p class="MsoPlainText3">END FOOTER</p>
+      <p class="MsoPlainText3">&nbsp; </p>
+      <p class="MsoPlainText3">BEGIN SUMMARY</p>
+      <blockquote>
+        <p class="MsoPlainText3">BANDHEIGHT	&lt;nValue&gt;</p>
+        <p class="MsoPlainText3">&nbsp;</p>
+        <p class="MsoPlainText3"><span class="MsoPlainText3">&lt; Report Object Definitions &gt;</span></p>
+      </blockquote>
+      <p class="MsoPlainText3">END SUMMARY</p>
+      <p class="MsoPlainText3">&nbsp;</p>
+      <p class="MsoPlainText3">BEGIN GROUP</p>
+      <blockquote>
+        <p class="MsoPlainText3">GROUPEXPRESSION	&lt;Value&gt;</p>
+        <p class="MsoPlainText3">&nbsp;</p>
+        <p class="MsoPlainText3">BEGIN GROUPHEADER</p>
+        <blockquote>
+          <p class="MsoPlainText3">BANDHEIGHT	&lt;nValue&gt;</p>
+          <p class="MsoPlainText3">&nbsp;</p>
+          <p class="MsoPlainText3"><span class="MsoPlainText3">&lt; Report Object Definitions &gt;</span></p>
+        </blockquote>
+        <p class="MsoPlainText3">END GROUPHEADER</p>
+        <p class="MsoPlainText3">&nbsp;</p>
+        <p class="MsoPlainText3">BEGIN GROUPFOOTER</p>
+        <blockquote>
+          <p class="MsoPlainText3">BANDHEIGHT	&lt;nValue&gt;</p>
+          <p class="MsoPlainText3">&nbsp;</p>
+          <p class="MsoPlainText3"><span class="MsoPlainText3">&lt; Report Object Definitions &gt;</span></p>
+        </blockquote>
+        <p class="MsoPlainText3">END GROUPFOOTER</p>
+      </blockquote>
+      <p class="MsoPlainText3">END GROUP</p>
+    </blockquote>
+    <p class="MsoPlainText3">END REPORT<br>
+    </p>
+  </blockquote>
+  <p class="MsoPlainText3">- 'TEMPLATE' should be used instead report name on external reports (defined on <br>
+    a text file with '.rmg' extension.</p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">- Summary and Group sections are optional. </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">- PAPERWIDTH and PAPERLENGTH properties are required in layout section only <br>
+    when PRINTER_PAPER_USER is defined.<br>
+  </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"><strong>REPORT OBJECTS</strong><br>
+  </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">Positions are relative to current band top left margin for all objects. Measure<br>
+    unit is millimeters.<br>
+  </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"><strong>TEXT</strong></p>
+  <p class="MsoPlainText3">&nbsp; </p>
+  <blockquote>
+    <p class="MsoPlainText3">BEGIN TEXT</p>
+    <blockquote>
+      <p class="MsoPlainText3">VALUE		&lt;xValue&gt;<br>
+        ROW		&lt;nValue&gt; <br>
+        COL		&lt;nValue&gt; <br>
+        WIDTH		&lt;nValue&gt; <br>
+        HEIGHT		&lt;nValue&gt; <br>
+        FONTNAME	&lt;cValue&gt;<br>
+        FONTSIZE	&lt;nValue&gt; <br>
+        FONTBOLD	&lt;lValue&gt;<br>
+        FONTITALIC	&lt;lValue&gt;<br>
+        FONTUNDERLINE	&lt;lValue&gt;<br>
+        FONTSTRIKEOUT	&lt;lValue&gt;<br>
+        FONTCOLOR	&lt;anValue&gt;<br>
+        ALIGNMENT	Left | Center | Right</p>
+    </blockquote>
+    <p class="MsoPlainText3"> END TEXT </p>
+  </blockquote>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"><strong>PICTURE</strong><br>
+  </p>
+  <p class="MsoPlainText3">&nbsp; </p>
+  <blockquote>
+    <p class="MsoPlainText3"> BEGIN PICTURE</p>
+    <blockquote>
+      <p class="MsoPlainText3">VALUE		&lt;cValue&gt;<br>
+        ROW		&lt;nValue&gt; <br>
+        COL		&lt;nValue&gt; <br>
+        WIDTH		&lt;nValue&gt; <br>
+        HEIGHT		&lt;nValue&gt; <br>
+      STRETCH		&lt;lValue&gt;</p>
+    </blockquote>
+    <p class="MsoPlainText3">END PICTURE        </p>
+  </blockquote>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"><strong>LINE</strong><br>
+  </p>
+  <p class="MsoPlainText3">&nbsp; </p>
+  <blockquote>
+    <p class="MsoPlainText3"> BEGIN LINE</p>
+    <blockquote>
+      <p class="MsoPlainText3"> FROMROW		&lt;nValue&gt; <br>
+        FROMCOL		&lt;nValue&gt; <br>
+        TOROW		&lt;nValue&gt; <br>
+        TOCOL		&lt;nValue&gt; <br>
+        PENWIDTH	&lt;nValue&gt; <br>
+      PENCOLOR	&lt;anValue&gt;</p>
+    </blockquote>
+    <p class="MsoPlainText3">END LINE    </p>
+  </blockquote>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"><strong>RECTANGLE</strong></p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <blockquote>
+    <p class="MsoPlainText3">BEGIN RECTANGLE</p>
+    <blockquote>
+      <p class="MsoPlainText3"> FROMROW		&lt;nValue&gt; <br>
+        FROMCOL		&lt;nValue&gt; <br>
+        TOROW		&lt;nValue&gt; <br>
+        TOCOL		&lt;nValue&gt; <br>
+        PENWIDTH	&lt;nValue&gt; <br>
+      PENCOLOR	&lt;anValue&gt;</p>
+    </blockquote>
+    <p class="MsoPlainText3">END RECTANGLE    </p>
+  </blockquote>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"><strong>REPORT EXECUTION</strong></p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <blockquote>
+    <p class="MsoPlainText3"><strong>Function:</strong><br>
+    </p>
+    <p class="MsoPlainText3">&nbsp;</p>
+    <p class="MsoPlainText3"> ExecuteReport ( &lt;cReportName&gt; , &lt;lPrintPreview&gt; , &lt;lSelectPrinter&gt; , [ &lt;cOutputFile&gt; ] )<br>
+      <br>
+      <strong>Command:</strong></p>
+    <p class="MsoPlainText3">&nbsp; </p>
+    <p class="MsoPlainText3">EXECUTE REPORT &lt;ReportName&gt; [ PREVIEW ] [ PRINTERSELECT ] [ FILE &lt;cFile&gt; ]      </p>
+  </blockquote>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"><strong>PDF Output:</strong><br>
+  </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">- If &lt;cOutputFile&gt; with 'pdf' extension is specified, a PDF file with report <br>
+  content will be generated. &lt;lPrintPreview&gt; and &lt;lSelectPrinter&gt; parameters <br>
+    will be ignored). </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">- The following limitations applies when report is redirected to a PDF file:<br>
+  </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"> - Only .jpg image files are allowed. </p>
+  <p class="MsoPlainText3">&nbsp; </p>
+  <p class="MsoPlainText3">- When 'Underline' property is .t., color property is ignored <br>
+    (assumed black) for expressions. </p>
+  <p class="MsoPlainText3">&nbsp; </p>
+  <p class="MsoPlainText3">- The following fonts are supported (all other are assumed as 'Times'):</p>
+  <blockquote>
+    <p class="MsoPlainText3">- Times<br>
+      - Helvetica<br>
+      - Courier</p>
+  </blockquote>
+  <p class="MsoPlainText3"> - The following paper sizes are supported:</p>
+  <blockquote>
+    <p class="MsoPlainText3">- PRINTER_PAPER_LETTER<br>
+      - PRINTER_PAPER_LEGAL<br>
+      - PRINTER_PAPER_A4<br>
+      - PRINTER_PAPER_TABLOID<br>
+      - PRINTER_PAPER_EXECUTIVE<br>
+      - PRINTER_PAPER_A3<br>
+      - PRINTER_PAPER_ENV_10<br>
+      - PRINTER_PAPER_B4<br>
+      - PRINTER_PAPER_B5<br>
+      - PRINTER_PAPER_P32K<br>
+      - PRINTER_PAPER_ENV_C5<br>
+      - PRINTER_PAPER_ENV_DL<br>
+      - PRINTER_PAPER_ENV_B5<br>
+    - PRINTER_PAPER_ENV_MONARCH      </p>
+  </blockquote>
+  <p class="MsoPlainText3">- Sample: Demo6.prg<br>
+  </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"><strong>HTML Output:</strong><br>
+  </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">- If &lt;cOutputFile&gt; with 'html' extension is specified, an HTML file with <br>
+  report content will be generated. (&lt;lPrintPreview&gt; and &lt;lSelectPrinter&gt; <br>
+    parameters  will be ignored). </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">- Sample: Demo7.prg<br>
+  </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"><strong>REPORT VARIABLES</strong><br>
+  </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"><br>
+  </p>
+  <p class="MsoPlainText3"> _PAGENO<br>
+  </p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3">&nbsp;</p>
+  <p class="MsoPlainText3"><strong>EXTERNAL REPORT</strong><br>
+  </p>
+  <p class="MsoPlainText3"><br>
+    <br>
+    This is a report defined in a separate text file with '.rmg' extension.<br>
+    'TEMPLATE' should be used instead report name.  </p>
+  <p class="MsoPlainText3">&nbsp; </p>
+  <blockquote>
+    <p class="MsoPlainText3">LOAD REPORT &lt;ReportFileName&gt;<br>
+    </p>
+  </blockquote>
+  <p class="MsoPlainText3">&nbsp;</p>
+</div>
+<div class=Section1></div>
+</body>
+
+</html>

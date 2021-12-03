@@ -1,0 +1,11 @@
+mt=yes
+gui=yes
+strip=yes
+fullstatic=yes
+{!hblib}compr=yes
+{!hblib}libpaths=../addons/hmg3/
+{!hblib}libpaths=../addons/oohg/
+{!hblib}libpaths=../addons/sefazclass/
+{!hblib}libpaths=../addons/wvgtst/
+{!hblib}libpaths=../addons/hwgui/
+PRGFLAGS=-m -n -w3 -es2 -ge1

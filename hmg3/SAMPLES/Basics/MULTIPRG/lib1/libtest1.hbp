@@ -1,0 +1,11 @@
+-hblib
+-inc
+-otest1
+
+-Iinclude
+
+-D__HBIDE__
+
+-w0 -es2
+
+code1.prg

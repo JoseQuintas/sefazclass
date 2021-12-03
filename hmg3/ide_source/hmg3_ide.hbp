@@ -1,0 +1,17 @@
+IDE_SourceCode.prg
+ide_ansi.rc
+
+-ohmg3_ide
+
+-w2
+# -es2
+-I./
+-L../
+hmg3.hbc
+-gtwvg
+hbhpdf.hbc
+hbmisc.hbc
+hbmzip.hbc
+hbct.hbc
+xhb.hbc
+

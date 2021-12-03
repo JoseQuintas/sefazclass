@@ -1,0 +1,259 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:107%;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:35.45pt 49.55pt 70.85pt 2.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=WordSection1>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<div style='border:solid windowtext 1.0pt;padding:1.0pt 4.0pt 1.0pt 4.0pt;
+background:#339966'>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><span
+lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><b><span
+lang=EN-US style='font-size:14.0pt;font-family:"Courier New";color:white'>&nbsp;HPDFINFO</span></b></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><i><span
+lang=EN-US style='font-family:"Courier New";color:white'>&nbsp;SET HPDFINFO / GET
+HPDFINFO</span></i></p>
+
+<p class=MsoNormal style='background:#339966;border:none;padding:0cm'><span
+lang=EN-US style='font-family:"Courier New";color:white'>&nbsp;</span></p>
+
+</div>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US
+style='font-size:10.0pt;font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><b><u><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>SET HPDFINFO</span></u></b><b><span
+lang=EN-US style='font-size:14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is be used to insert
+some document attributes/properties about the author, creation date etc.</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:21.3pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>All these information are in meta-data
+and not shown inside the PDF document.</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><b><u><span
+lang=EN-US style='font-family:"Courier New"'>Syntax</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><b><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO AUTHOR TO cValue</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO CREATOR TO cValue</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO TITLE TO cValue</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO SUBJECT TO cValue</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO KEYWORDS TO cValue</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO DATECREATED TO dValue
+[ TIME cTimeString ]</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO DATEMODIFIED TO
+dValue [ TIME cTimeString ]</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><b><u><span
+lang=EN-US style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><b><span
+lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO AUTHOR TO &quot;My
+Author&quot;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO CREATOR TO &quot;My
+Creator&quot;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO TITLE TO &quot;Doc
+Title&quot;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO SUBJECT TO &quot;Doc
+Subject&quot;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO KEYWORDS TO
+&quot;Keyword1, Keyword2&quot;</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO DATECREATED TO date()</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO DATEMODIFIED TO
+date()</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO DATECREATED TO date()
+TIME time()</span></p>
+
+<p class=MsoNormal style='margin-left:1.0cm;text-indent:-7.05pt'><span
+lang=EN-US style='font-family:"Courier New"'>SET HPDFINFO DATEMODIFIED TO
+date() TIME time()</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><b><u><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>GET HPDFINFO</span></u></b><b><span
+lang=EN-US style='font-size:14.0pt;font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-right:9.95pt'><b><span lang=EN-US
+style='font-size:14.0pt;font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt;text-align:justify'><span
+lang=EN-US style='font-family:"Courier New"'>This command is be used to
+retrieve the document attributes/properties about the author, creation date
+etc., already stored in the PDF document to the memory variable specified.</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Syntax</span></u></b><b><span lang=EN-US
+style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO AUTHOR TO cValue</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO CREATOR TO cValue</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO TITLE TO cValue</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO SUBJECT TO cValue</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO KEYWORDS TO cValue</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO DATECREATED TO cDateTime</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO DATEMODIFIED TO cDateTime</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><b><u><span lang=EN-US
+style='font-family:"Courier New"'>Source code example</span></u></b><b><span
+lang=EN-US style='font-family:"Courier New"'>:</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><b><span lang=EN-US
+style='font-family:"Courier New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO AUTHOR TO cAuthor</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO CREATOR TO cCreator</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO TITLE TO cTitle</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO SUBJECT TO cSubject</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO KEYWORDS TO cKeywords</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO DATECREATED TO cDateTime</span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:9.95pt;margin-bottom:
+0cm;margin-left:21.3pt;margin-bottom:.0001pt'><span lang=EN-US
+style='font-family:"Courier New"'>GET HPDFINFO DATEMODIFIED TO cDateTime</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Courier New"'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

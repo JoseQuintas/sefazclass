@@ -1,0 +1,80 @@
+name: HMG asistex all libs 32bit MinGW 930 unicode
+
+on:
+    push:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    if: github.actor == github.event.repository.owner.login
+
+    steps:
+    - name: Checkout asistex repo
+      uses: actions/checkout@v2
+      with:
+       repository: asistex/HMG
+       path: asistex/HMG
+
+    - name: Install dependencies
+      run: |
+        (new-object System.Net.WebClient).DownloadFile('https://bitbucket.org/lorenzodla/mod_harbour_actions_resources/downloads/mingw32.zip', 'C:\temp\mingw32.zip')
+        Expand-Archive -LiteralPath C:\temp\mingw32.zip -DestinationPath C:\mingw32 -Force
+        (new-object System.Net.WebClient).DownloadFile('https://github.com/asistex/HMG/raw/master/workflows/hb32_mgw930_32b_2020_10_27.zip', 'C:\temp\harbour.zip')
+        Expand-Archive -LiteralPath C:\temp\harbour.zip -DestinationPath C:\harbour -Force
+        gcc --version
+
+    - name: Building lib HMG
+      shell: cmd
+      run: |
+        cd asistex\hmg
+        set path=c:\mingw32\mingw32\bin;c:\harbour\bin;%path%
+        BuildAllLib32.bat
+
+    - name: Create output folders...
+      shell: cmd
+      run: |
+        mkdir output
+
+        robocopy asistex\hmg\source output\source /E
+        if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+        robocopy asistex\hmg\lib output\lib /E
+        if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+        robocopy asistex\hmg\include output\include /E
+        if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+        robocopy asistex\hmg\doc output\doc /E
+        if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+        robocopy asistex\hmg\samples output\samples /E
+        if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+        robocopy asistex\hmg\hfsl output\hfsl /E
+        if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+        robocopy asistex\hmg\resources output\resources /E
+        if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+        robocopy asistex\hmg\workflows output\workflows /E
+        if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+        :: robocopy asistex\hmg\harbour output\harbour /E
+        :: if %ERRORLEVEL% EQU 1 set ERRORLEVEL=0
+
+        copy asistex\hmg\*.* output\
+
+    - name: Get current time
+      uses: srfrnk/current-time@master
+      id: current-time
+      with:
+        format: YYYY_MM_DD
+
+    - name: Create artifact
+      env:
+        TIME: "${{ steps.current-time.outputs.formattedTime }}"
+      uses: actions/upload-artifact@v2
+      with:
+        name: hmg34asistex_all_hb32_mgw930_uni_${{ env.TIME }}
+        path: output

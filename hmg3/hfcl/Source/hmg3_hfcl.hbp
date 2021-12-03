@@ -1,0 +1,21 @@
+-hblib
+-o../../lib/${hb_plat}/${hb_comp}/hmg3_hfcl
+
+-Iinclude
+-I../include
+
+-L../../
+hmg3.hbc
+
+-D__HBIDE__
+
+-w0 -es2
+
+AutoFill.prg
+ComboSearchBox.prg
+GridPrint.prg
+MakeShortcut.prg
+h_qhtm.prg
+c_qhtm.c
+RichEditBoxEx_C.c
+RichEditBoxEx_H.prg

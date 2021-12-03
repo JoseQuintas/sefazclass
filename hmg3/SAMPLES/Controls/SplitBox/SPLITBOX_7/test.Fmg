@@ -1,0 +1,31 @@
+			DEFINE WINDOW TEMPLATE ; 
+				WIDTH 200 ;
+				HEIGHT 200 ;
+				VIRTUAL WIDTH 400 ;
+				VIRTUAL HEIGHT 400 ;
+				SPLITCHILD ;
+				NOCAPTION 
+
+				@ 55,30 LABEL Label_1 ;
+				VALUE 'Label !!!' ;
+				WIDTH 100 HEIGHT 27 
+
+				@ 80,30 CHECKBOX Check_1 ;
+				CAPTION 'Check 1' ;
+				VALUE .T. ;
+				TOOLTIP 'CheckBox' 
+			
+				@ 115,30 SLIDER Slider_1 ;
+				RANGE 1,10 ;
+				VALUE 5 ;
+				TOOLTIP 'Slider' 
+
+				@ 45,170 FRAME Frame_1 WIDTH 85 HEIGHT 110
+
+				@ 50,180 RADIOGROUP Radio_1 ;
+				OPTIONS { 'One' , 'Two' , 'Three', 'Four' } ;
+				VALUE 1 ;
+				WIDTH 70 ;
+				TOOLTIP 'RadioGroup' 
+
+			END WINDOW 

@@ -1,0 +1,35 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+
+<link rel="icon" href="../assets/img/favicon.png" type="image/png" />
+<title>HMG Reference</title>
+<style>
+.BottomBackground
+  {
+     background-color: #D0D0D0;
+	 border-top: thin solid #AAAAAA;
+	 border-top-style: double;
+	 border-left: thin solid #AAAAAA;
+	 border-bottom: thin solid #AAAAAA;
+  }
+</style>
+<script>
+function blank()
+{
+    return "<html><body bgcolor='#D0D0D0'></body></html>";
+}
+</script>
+</head>
+<frameset cols="265,1*">
+ <frameset rows="95%,5%" border=0 frameborder=0 framespacing=0>
+  <frame name=SIDEBAR src="navigator.htm">
+  <!-- <frame name=MNUBOTTOM id="button" src="menubottom.htm"> -->
+  <!--[if !IE]> -->
+  <frame name=MNUBOTTOM class="BottomBackground" src="javascript:parent.blank();">
+  <!-- <![endif]-->
+ </frameset>
+ <frame name=DETAILS id=details src="init.htm">
+</frameset>
+</html>

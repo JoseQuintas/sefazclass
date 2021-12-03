@@ -1,0 +1,54 @@
+* Harbour MiniGUI IDE Two-Way Form Designer Generated Code
+* (c)2004-2007 Roberto Lopez <harbourminigui@gmail.com>
+* http://harbourminigui.googlepages.com
+
+DEFINE WINDOW TEMPLATE AT 132 , 235 WIDTH 560 HEIGHT 400 VIRTUAL WIDTH Nil VIRTUAL HEIGHT Nil TITLE "Hello ToolBar!!!" ICON NIL MAIN CURSOR NIL ON INIT Nil ON RELEASE Nil ON INTERACTIVECLOSE Nil ON MOUSECLICK Nil ON MOUSEDRAG Nil ON MOUSEMOVE Nil ON SIZE Nil ON MAXIMIZE Nil ON MINIMIZE Nil ON PAINT Nil BACKCOLOR NIL NOTIFYICON NIL NOTIFYTOOLTIP NIL ON NOTIFYCLICK Nil ON GOTFOCUS Nil ON LOSTFOCUS Nil ON SCROLLUP Nil ON SCROLLDOWN Nil ON SCROLLLEFT Nil ON SCROLLRIGHT Nil ON HSCROLLBOX Nil ON VSCROLLBOX Nil
+
+    DEFINE TOOLBAR ToolBar_1 BUTTONSIZE 85,85 FONT "Arial" SIZE 9 FLAT BORDER
+        BUTTON button1 CAPTION "Button 1" PICTURE "button1.bmp" ACTION MsgInfo("1") TOOLTIP "ToolTip 1" GROUP
+        BUTTON button2 CAPTION "Button 2" PICTURE "button2.bmp" ACTION MsgInfo("2") TOOLTIP "ToolTip 2"
+        BUTTON button3 CAPTION "Button 3" PICTURE "button3.bmp" ACTION MsgInfo("3") TOOLTIP "ToolTip 3"
+    END TOOLBAR
+
+    DEFINE FRAME Frame_1
+        ROW    110
+        COL    130
+        WIDTH  250
+        HEIGHT 110
+        FONTNAME "Arial"
+        FONTSIZE 9
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        CAPTION "Note:"
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+        OPAQUE .T.
+    END FRAME
+
+    DEFINE LABEL Label_1
+        ROW    160
+        COL    170
+        WIDTH  160
+        HEIGHT 20
+        VALUE "This Window Has a ToolBar!"
+        FONTNAME "Arial"
+        FONTSIZE 9
+        TOOLTIP ""
+        FONTBOLD .F.
+        FONTITALIC .F.
+        FONTUNDERLINE .F.
+        FONTSTRIKEOUT .F.
+        HELPID Nil
+        VISIBLE .T.
+        TRANSPARENT .F.
+        ACTION Nil
+        AUTOSIZE .F.
+        BACKCOLOR NIL
+        FONTCOLOR NIL
+    END LABEL
+
+END WINDOW
+
+

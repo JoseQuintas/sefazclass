@@ -1,0 +1,2 @@
+libs=sqlite3
+libs=hmgsqlite
