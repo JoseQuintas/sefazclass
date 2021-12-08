@@ -111,7 +111,6 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT Str( OPC_CERT_REMOVE, 2 )     + "-Remove Certificado"
       @ Row() + 1, 5 PROMPT Str( OPC_STATUSGERAL, 2 )     + "-Status Geral"
       MENU TO nOpc
-      Altd()
       DO CASE
       CASE LastKey() == K_ESC
          EXIT
@@ -364,7 +363,7 @@ FUNCTION SetupHarbour()
    CLS
    SET DATE BRITISH
    Set( _SET_CODEPAGE, "PTISO" )
-   Set( _SET_EVENTMASK, HB_INKEY_ALL - INKEY_MOVE + HB_INKEY_GTEVENT )
+   Set( _SET_EVENTMASK, HB_INKEY_ALL - INKEY_MOVE )
    SET CONFIRM ON
 
 #ifndef __XHARBOUR__
