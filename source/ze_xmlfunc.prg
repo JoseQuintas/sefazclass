@@ -337,12 +337,12 @@ FUNCTION XmlToHash( cXml, aTagList, oVar )
 
    RETURN oVar
 
-FUNCTION MultipleNodeToArray( cXml, cNode )
+FUNCTION MultipleNodeToArray( cXml, cNode, lComTag )
 
    LOCAL aNodes := {}
 
    DO WHILE "<" + cNode + " " $ cXml .OR. "<" + cNode + ">" $ cXml
-      AAdd( aNodes , XmlNode( cXml , cNode ) )
+      AAdd( aNodes , XmlNode( cXml, cNode, lComTag ) )
       IF ! "</" + cNode $ cXml
          cXml := ""
       ELSE
