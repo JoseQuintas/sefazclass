@@ -29,16 +29,16 @@ jobs:
          workflow_conclusion: success
          name: hb34_0703
          path: c:\temp
-         repo: JoseQuintas/harbour_34
+         repo: JoseQuintas/addons
 
     - name: Mingw
       uses: JoseQuintas/action-download-artifact@v2
       with:
-         workflow: hb34_0703.yml
+         workflow: mingw_0703.yml
          workflow_conclusion: success
          name: mingw_0703
          path: c:\temp
-         repo: JoseQuintas/harbour_34
+         repo: JoseQuintas/addons
 
     - name: Unzip
       run: |
@@ -77,17 +77,3 @@ jobs:
          c:
          cd \temp\sefazclass
          hbmk2 *.hbp
-
-    - name: Zip
-      env:
-         PATH: c:\program files\7-zip
-      run: |
-         c:
-         cd \temp\sefazclass
-         7z a -r c:\temp\sefazclass.7z c:\temp\sefazclass\*.*  -xr'!.git' -xr'!.github' -xr'!.hbmk'
-
-    - name: Save
-      uses: actions/upload-artifact@v2
-      with:
-         name: sefazclass
-         path: c:\temp\sefazclass.7z
