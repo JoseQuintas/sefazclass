@@ -3,7 +3,7 @@
 # create: hbsefazclass
 #
 
-name: hbsefazclass
+name: sefazclass
 
 on:
   push:
