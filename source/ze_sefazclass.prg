@@ -19,6 +19,18 @@ José Quintas
 
 #define WS_NFE_DEFAULT "4.00"
 
+FUNCTION SefazClassValidaXml( cXml, cXsd )
+
+   LOCAL oSefaz := SefazClass():New()
+
+   RETURN oSefaz:ValidaXml( cXml, cXsd )
+
+FUNCTION SefazClassTipoXml( cXml )
+
+   LOCAL oSefaz := SefazClass():New()
+
+   RETURN oSefaz:TipoXml( cXml )
+
 CREATE CLASS SefazClass
 
    /* configuração */
