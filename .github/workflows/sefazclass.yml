@@ -23,7 +23,7 @@ jobs:
     steps:
 
     - name: Harbour
-      uses: JoseQuintas/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v2
       with:
          workflow: hb34_0703.yml
          workflow_conclusion: success
@@ -32,7 +32,7 @@ jobs:
          repo: JoseQuintas/addons
 
     - name: Mingw
-      uses: JoseQuintas/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v2
       with:
          workflow: mingw_0703.yml
          workflow_conclusion: success
