@@ -750,19 +750,31 @@ STATIC FUNCTION XmlToDocMDFECancel( cXmlInput, oDocSped )
 
 STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
 
-   LOCAL nPosIni
+   LOCAL nPosIni, cModelo, cSerie, cNumero, cUF
 
    oDocSped:cAmbiente := XmlNode( cXmlInput, "tpAmb" )
    nPosIni := At( cXmlInput, [<InfInut] )
    IF nPosIni != 0
-      oDocSped:cChave        := Pad( SoNumeros( Substr( cXmlInput, nPosIni, 60 ) ), 44, "0" )
-      oDocSped:Emitente:Cnpj := Transform( DfeEmitente( oDocSped:cChave ), "@R 99.999.999/9999-99" )
-      oDocSped:cNumDoc       := DfeNumero( oDocSped:cChave )
+      oDocSped:DataEmissao   := Stod( Left( SoNumeros( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
+      oDocSped:Emitente:Cnpj := Transform( XmlNode( cXmlInput, "CNPJ" ), "@R 99.999.999/9999-99" )
       oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
       oDocSped:cSequencia    := "01"
       oDocSped:Protocolo     := XmlNode( cXmlInput, "infInut" )
       oDocSped:Status        := "111"
       oDocSped:DataEmissao   := Stod( Left( SoNumeros( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
+      cModelo                := XmlNode( cXmlInput, "mod" )
+      cSerie                 := XmlNode( cXmlInput, "serie" )
+      cNumero                := XmlNode( cXmlInput, "nNFIni" )
+      oDocSped:cNumDoc       := StrZero( Val( cNumDoc ), 9 )
+      oDocSped:cChave        := Substr( SoNumeros( Substr( cXmlInput, nPosIni, 60 ) ), 1, 2 ) + ;
+                                Substr( Dtos( oDocSped:DataEmissao ), 3, 4 ) + ;
+                                SoNumeros( oDocSped:Emitente:Cnpj ) + ;
+                                cModelo + ;
+                                cSerie + ;
+                                oDocSped:cNumDoc + ;
+                                "1" + ;
+                                StrZero( 0, 8 )
+      oDocSped:cChave         := cChave + ze_CalculaDigito( oDocSped:cChave, "11" )
    ENDIF
 
    RETURN Nil
