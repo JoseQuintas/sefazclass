@@ -773,7 +773,7 @@ STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
                                 oDocSped:cNumDoc + ;
                                 "1" + ;
                                 StrZero( 0, 8 )
-      oDocSped:cChave         := oDocSped:cChave + ze_CalculaDigito( oDocSped:cChave, "11" )
+      oDocSped:cChave         := oDocSped:cChave + CalculaDigito( oDocSped:cChave, "11" )
    ENDIF
 
    RETURN Nil
