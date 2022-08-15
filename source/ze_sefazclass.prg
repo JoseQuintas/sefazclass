@@ -128,6 +128,7 @@ CREATE CLASS SefazClass
    METHOD NFeStatusServico( cUF, cCertificado, cAmbiente )
    METHOD NFeStatusServicoSVC( cUF, cCertificado, cAmbiente, lSVCAN )
    METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente )
+   METHOD NFeConsultaGTIN( cGTIN, cCertificado )
 
    METHOD CTeAddCancelamento( cXmlAssinado, cXmlCancelamento )
    METHOD NFeAddCancelamento( cXmlAssinado, cXmlCancelamento )
@@ -955,6 +956,22 @@ METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
    RETURN ::cXmlRetorno
 
+METHOD NFeConsultaGTIN( cGTIN, cCertificado ) CLASS SefazClass
+
+   ::cProjeto     := WS_PROJETO_NFE
+   ::aSoapUrlList := WS_NFE_CONSULTAGTIN
+   ::cVersao      := "1.00"
+   ::Setup( ::cUF, cCertificado )
+   ::cSoapAction := "ccgConsGTIN"
+   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/ccgConsGtin"
+
+   ::cXmlEnvio := [<consGTIN versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
+   ::cXmlEnvio += [<GTIN>] + AllTrim( cGTIN ) + [</GTIN>]
+   ::cXmlEnvio += [</consGTIN>]
+   ::XmlSoapPost()
+
+   RETURN ::cXmlRetorno
+
 METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_NFE )
@@ -1006,7 +1023,6 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmb
    ::Setup( "AN", cCertificado, cAmbiente )
    ::cSoapAction  := "nfeDistDFeInteresse"
    ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe"
-
    ::cXmlEnvio    := [<distDFeInt ] + WS_XMLNS_NFE + [ versao="1.01">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    IF ! Empty( cUF )
@@ -1614,7 +1630,7 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ENDIF
    ::cXmlSoap    := XML_UTF8
    ::cXmlSoap    += [<soap12:Envelope ] + cXmlns + [>]
-   IF ::cSoapAction != "nfeDistDFeInteresse"
+   IF ::cSoapAction != "nfeDistDFeInteresse" .AND. ::cSoapAction != "ccgConsGTIN"
       ::cXmlSoap +=    [<soap12:Header>]
       IF ::cVersao == "4.00"
          ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + ["/>]
@@ -1627,14 +1643,22 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
       ::cXmlSoap +=    [</soap12:Header>]
    ENDIF
    ::cXmlSoap    +=    [<soap12:Body>]
+   IF ::cSoapAction == "ccgConsGTIN"
+      ::cXmlSoap += [<ccgConsGTIN xmlns="] + ::cSoapService + [">]
+   ENDIF
    IF ::cSoapAction == "nfeDistDFeInteresse"
       ::cXmlSoap += [<nfeDistDFeInteresse xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
+   ELSEIF ::cSoapAction == "ccgConsGTIN"
       ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
    ELSE
       ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg xmlns="] + ::cSoapService + [">]
    ENDIF
    ::cXmlSoap    += ::cXmlEnvio
    ::cXmlSoap    +=    [</] + ::cProjeto + [DadosMsg>]
+   IF ::cSoapAction == "ccgConsGTIN"
+      ::cXmlSoap += [</ccgConsGTIN>]
+   ENDIF
    IF ::cSoapAction == "nfeDistDFeInteresse"
       ::cXmlSoap += [</nfeDistDFeInteresse>]
    ENDIF
@@ -1971,7 +1995,7 @@ STATIC FUNCTION SoapUrlNfe( aSoapList, cUF, cVersao )
 
    LOCAL nPos, cUrl
 
-   nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
+   nPos := hb_AScan( aSoapList, { | e | ( cUF == e[ 1 ] .OR. e[ 1 ] == "**" ) .AND. cVersao == e[ 2 ] } )
    IF nPos != 0
       cUrl := aSoapList[ nPos, 3 ]
    ENDIF

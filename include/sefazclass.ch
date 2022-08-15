@@ -549,3 +549,6 @@
    { "SP", "2.00P", "https://www.nfce.fazenda.sp.gov.br/consulta" }, ;
    { "RR", "2.00P", "http://www.sefaz.rr.gov.br/nfce/consulta" }, ;
    { "PR", "2.00P", "http://www.fazenda.pr.gov.br/nfce/consulta" } }
+
+#define WS_NFE_CONSULTAGTIN { ;
+   { "**", "1.00P", "https://dfe-servico.svrs.rs.gov.br/ws/ccgConsGTIN/ccgConsGTIN.asmx" } }
