@@ -16,6 +16,7 @@ CREATE CLASS hbNFeDaGeral
    VAR    cDesenvolvedor INIT ""
    VAR    cLogoFile      INIT ""
    VAR    cRetorno       INIT ""
+   VAR    lQuadroEntrega INIT .F.
 
    METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar )
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
@@ -169,6 +170,7 @@ METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar ) CLASS hbNFeDaGeral
    OTHERWISE
       RETURN "XML inválido"
    ENDCASE
+   oDanfe:lQuadroEntrega := ::lQuadroEntrega
    oDanfe:cLogoFile      := ::cLogoFile
    oDanfe:cDesenvolvedor := ::cDesenvolvedor
 

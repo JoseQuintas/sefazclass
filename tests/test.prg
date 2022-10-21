@@ -403,6 +403,7 @@ FUNCTION TestDanfe()
       fErase( cFilePdf )
       //oDanfe:cLogoFile := JPEGImage()
       oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
+      oDanfe:lQuadroEntrega := .T.
       oDanfe:ToPDF( oFile[ F_NAME ], cFilePdf )
       ? oFile[ F_NAME ], oDanfe:cRetorno
       PDFOpen( cFilePdf )
@@ -489,6 +490,7 @@ STATIC FUNCTION DanfeAutomatico( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    hFileOutput := hb_FTempCreateEx( @cTempFile, hb_DirTemp(), "", ".PDF" )
    fClose( hFileOutput )
    oDanfe := hbNFeDaGeral():New()
+   oDanfe:lQuadroEntrega := .T.
    oDanfe:cDesenvolvedor := "hbnfe/sefazclass"
    oDanfe:cLogoFile      := cLogoFile
    oDanfe:ToPDF( cXmlDocumento, cTempFile, cXmlAuxiliar )
