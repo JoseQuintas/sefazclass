@@ -508,7 +508,7 @@ METHOD QuadroNotaFiscal() CLASS hbNFeDaNFe
       ::DrawTexto( 371, ::nLinhaPdf - 71, 589, NIL, "no site da Sefaz Autorizadora", HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
    ENDIF
    ::nLinhaPdf -= 80
-   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 365, 16, "NATUREZA DA OPERAÇÃO", Left( ::aIde[ "natOp" ], 50 ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 365, 16, "NATUREZA DA OPERAÇÃO", ::FormataString( ::aIde[ "natOp" ], 360 ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    // PROTOCOLO
    ::DrawBox( 370, ::nLinhaPdf - 16, 220, 16, ::nLarguraBox )
    // ::DrawTexto(371, ::nLinhaPdf - 1, 589, NIL, "PROTOCOLO DE AUTORIZAÇÃO DE USO", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 5 )
@@ -726,7 +726,7 @@ METHOD QuadroTransporte() CLASS hbNFeDaNFe
    IF ::nFolha == 1
       ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "TRANSPORTADOR / VOLUMES TRANSPORTADOS", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
       ::nLinhaPdf -= 6
-      ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 215, 16, "NOME/RAZÃO SOCIAL", XmlToString( ::aTransp[ "xNome" ] ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
+      ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 215, 16, "NOME/RAZÃO SOCIAL", ::FormataString( XmlToString( ::aTransp[ "xNome" ] ), 210 ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
       IF ::aTransp[ "modFrete" ] == "0"
          ::DrawBoxTituloTexto( 220, ::nLinhaPdf, 90, 16, "FRETE POR CONTA", "0-EMITENTE", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
       ELSEIF ::aTransp[ "modFrete" ] == "1"
