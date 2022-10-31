@@ -26,7 +26,9 @@ CREATE CLASS hbNFeDaGeral
    METHOD DrawLine( x1, y1, x2, y2, nPen, FLAG )                                    INLINE hbNFe_Line_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen, FLAG )
    METHOD DrawTexto( x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )  INLINE hbNFe_Texto_Hpdf( ::oPDFPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
    METHOD DefineDecimais( xValue, nDecimais )
-   METHOD FormataString( cTexto, nLarguraPDF )                                      INLINE MemoLine( ::FormataMemo( cTexto, nLarguraPDF ), 1000, 1 )
+   METHOD FormataString( cTexto, nLarguraPDF, nFontSize )                           INLINE ;
+                                                HPDF_Page_SetFontAndSize( ::oPDFPage, ::oPDFFontNormal, nFontSize ), ;
+                                                MemoLine( ::FormataMemo( cTexto, nLarguraPDF ), 1000, 1 )
    METHOD FormataMemo( cMemo, nLarguraPDF )
    METHOD LarguraTexto( cText )                                                     INLINE HPDF_Page_TextWidth( ::oPDFPage, cText ) + 4
    METHOD FormataTelefone( cText )                                                  INLINE hbNFe_FormataTelefone( cText )
