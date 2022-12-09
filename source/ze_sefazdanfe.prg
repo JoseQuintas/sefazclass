@@ -605,6 +605,7 @@ METHOD QuadroLocalEntrega() CLASS hbNFeDaNFe
    ::nLinhaPdf -= 17
 
    RETURN NIL
+
 METHOD QuadroDuplicatas() CLASS hbNFeDaNFe
 
    LOCAL nICob, nItensCob, nLinhaFinalCob, nTamanhoCob, aList, cTPag, nPos
@@ -1033,7 +1034,7 @@ METHOD ItensDaFolha( nFolha ) CLASS hbNFeDaNFe
       ENDIF
    ENDIF
 
-   RETURN Int( nQuadro / LAYOUT_FONTSIZE )
+   RETURN Int( nQuadro / LAYOUT_FONTSIZE ) - 1
 
 METHOD DrawTextoProduto( nCampo, nRow, nConteudo, nAlign ) CLASS hbNFeDaNFe
 
