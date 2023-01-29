@@ -135,6 +135,3 @@ FUNCTION Date_Add( dDate, nValue, cType )
    ENDCASE
 
    RETURN dDate
-
-
-

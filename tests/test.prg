@@ -428,10 +428,6 @@ FUNCTION JPEGImage()
 
 #endif
 
-FUNCTION AppUserName(); RETURN ""
-
-FUNCTION AppVersaoExe(); RETURN ""
-
 STATIC FUNCTION CertificadoEscolhe( cCertificado )
 
    LOCAL dValidFrom, dValidTo
@@ -497,3 +493,5 @@ STATIC FUNCTION DanfeAutomatico( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    PDFOpen( cTempFile )
 
    RETURN Nil
+
+FUNCTION AppVersaoExe(); RETURN ""

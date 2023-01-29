@@ -139,7 +139,10 @@ FUNCTION XmlNode( cXml, cNode, lComTag )
    LOCAL nInicio, nFim, cResultado := ""
 
    hb_Default( @lComTag, .F. )
-   nInicio := At( "<" + cNode, cXml )
+   nInicio := At( "<" + cNode + ">", cXml )
+   IF nInicio == 0
+      nInicio := At( "<" + cNode + " ", cXml )
+   ENDIF
    // a linha abaixo é depois de pegar o início, senão falha
    IF " " $ cNode
       cNode := Substr( cNode, 1, At( " ", cNode ) - 1 )
