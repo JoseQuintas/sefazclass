@@ -16,7 +16,7 @@ FUNCTION Main()
 
 FUNCTION ze_AliquotaICMS( cUF1, cUF2 )
 
-   LOCAL nPos, nAliquota := 0, bCode
+   LOCAL nPos, nAliquota, bCode
    LOCAL aList := { ;
       { "AC", "AC", 12 }, ;
       { "AL", "AL", 18 }, ;

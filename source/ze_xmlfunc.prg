@@ -137,11 +137,15 @@ FUNCTION XmlTransform( cXml )
 FUNCTION XmlNode( cXml, cNode, lComTag )
 
    LOCAL nInicio, nFim, cResultado := ""
+   LOCAL nInicio2
 
    hb_Default( @lComTag, .F. )
-   nInicio := At( "<" + cNode + ">", cXml )
+   nInicio  := At( "<" + cNode + ">", cXml )
+   nInicio2 := At( "<" + cNode + " ", cXml )
    IF nInicio == 0
-      nInicio := At( "<" + cNode + " ", cXml )
+      nInicio := nInicio2
+   ELSEIF nInicio2 != 0 .AND. nInicio2 < nInicio
+      nInicio := nInicio2
    ENDIF
    // a linha abaixo é depois de pegar o início, senão falha
    IF " " $ cNode
