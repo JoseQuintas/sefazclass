@@ -25,7 +25,7 @@ FUNCTION ChkSignature( cXml, cCertificadoCN )
       XmlDoc:ResolveExternals   := .F.
 
       IF ! XmlDoc:LoadXml( cXml )
-         cXmlRetorno := "Cannot load file. reason " + XmlDoc:ParseError:Reason
+         cXmlRetorno := iif( cXmlRetorno == Nil, "", "Cannot load file. reason " + XmlDoc:ParseError:Reason )
          BREAK
       ENDIF
       XmlDoc:SetProperty( "SelectionNamespaces", DSIGNS )
@@ -37,21 +37,21 @@ FUNCTION ChkSignature( cXml, cCertificadoCN )
       XmlDSig:Signature := oSignature
       oKeyInfo := XmlDoc:selectSingleNode( ".//ds:KeyInfo/ds:X509Data" )
       IF oKeyInfo == NIL
-         cXmlRetorno := "Invalid <KeyInfo> Element"
+         cXmlRetorno := iif( cXmlRetorno == Nil, "", "Invalid <KeyInfo> Element" )
          BREAK
       ENDIF
       oPubKey := XmlDSig:CreateKeyFromNode( oKeyInfo )
       IF oPubKey == NIL
-         cXmlRetorno := "Cannot generate public key for verification"
+         cXmlRetorno := iif( cXmlRetorno == Nil, "", "Cannot generate public key for verification" )
          BREAK
       ENDIF
-      cXmlRetorno := "Invalid Signature"
+      cXmlRetorno := iif( cXmlRetorno == Nil, "", "Invalid Signature" )
       oVerifiedKey := XmlDSig:Verify( oPubKey )
       IF oVerifiedKey == NIL
          cXmlRetorno := "Signature not verified"
          BREAK
       ENDIF
-      cXmlRetorno := "OK"
+      cXmlRetorno := iif( cXmlRetorno == Nil, "", "OK" )
 
    ENDSEQUENCE
    IF cXmlRetorno == "OK" // pelo temo que demora, melhor não usar

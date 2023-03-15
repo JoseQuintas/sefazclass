@@ -1885,7 +1885,7 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd, cIgnoreList )
       oXmlDomDoc:ResolveExternals := .F.
       oXmlDomDoc:ValidateOnParse  := .T.
 
-      cRetorno   := "Erro Carregando XML"
+      cRetorno   := iif( cRetorno == Nil, "", "Erro Carregando XML" )
       oXmlDomDoc:LoadXml( cXml )
       IF oXmlDomDoc:ParseError:ErrorCode <> 0
          cRetorno := "Erro XML inválido " + ;
@@ -1896,10 +1896,10 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd, cIgnoreList )
          BREAK
       ENDIF
 
-      cRetorno   := "Erro Carregando MSXML2.XMLSchemaCache.6.0"
+      cRetorno   := iif( cRetorno == Nil, "", "Erro Carregando MSXML2.XMLSchemaCache.6.0" )
       oXmlSchema := win_OleCreateObject( "MSXML2.XMLSchemaCache.6.0" )
 
-      cRetorno   := "Erro carregando " + cFileXSD
+      cRetorno   := iif( cRetorno == Nil, "", "Erro carregando " + cFileXSD )
       DO CASE
       CASE "mdfe" $ Lower( cFileXsd )
          oXmlSchema:Add( "http://www.portalfiscal.inf.br/mdfe", cFileXSD )
@@ -1915,7 +1915,7 @@ STATIC FUNCTION DomDocValidaXml( cXml, cFileXsd, cIgnoreList )
          cRetorno := "Erro: " + AllTrim( Transform( oXmlErro:ErrorCode, "" ) ) + " " + ConverteErroValidacao( oXmlErro:Reason, "" )
          BREAK
       ENDIF
-      cRetorno := "OK"
+      cRetorno := iif( cRetorno == Nil, "", "OK" )
 
    ENDSEQUENCE
 
