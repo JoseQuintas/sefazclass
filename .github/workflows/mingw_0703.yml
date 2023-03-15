@@ -10,8 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        description: 'mingw 7.3
-        x86_64-7.3.0-release-posix-sjlj-rt_v5-rev0'
+        description: 'mingw 7.3 32bits'
         default: 'mingw_0703'
         required: true
 
@@ -21,20 +20,14 @@ jobs:
     runs-on: windows-latest
     steps:
 
-    - name: mingw
-    - run: |
-      git clone https://github.com/JoseQuintas/addons c:\temp\addons
-      copy c:\temp\addons\mingw_0703.zip c:\temp
-      ren c:\temp\mingw_0703.zip c:\temp\mingw_0703.7z
-
-    #- name: mingw 7.3
-    #  uses: dawidd6/action-download-artifact@v2
-    #  with:
-    #     workflow: mingw_0703.yml
-    #     workflow_conclusion: success
-    #     name: mingw_0703
-    #     path: c:\temp
-    #     repo: JoseQuintas/addons
+    - name: mingw 7.3
+      uses: dawidd6/action-download-artifact@v2
+      with:
+         workflow: mingw_0703.yml
+         workflow_conclusion: success
+         name: mingw_0703
+         path: c:\temp
+         repo: JoseQuintas/addons
 
     - name: Save
       uses: actions/upload-artifact@v3

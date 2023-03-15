@@ -1,8 +1,8 @@
 #
 # use: mingw_0703.yml
-# use: hb34_0703.yml
+# use: hb32_0703.yml
 
-name: hb34pack
+name: hb32pack
 
 on:
 #  push:
@@ -11,8 +11,8 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        description: 'hb34pack'
-        default: 'hb34pack'
+        description: 'hb32pack'
+        default: 'hb32pack'
         required: true
 
 jobs:
@@ -30,12 +30,12 @@ jobs:
          path: c:\temp
          repo: JoseQuintas/addons
 
-    - name: harbour 3.4
+    - name: harbour 3.2
       uses: dawidd6/action-download-artifact@v2
       with:
-         workflow: hb34_0703.yml
+         workflow: hb32_0703.yml
          workflow_conclusion: success
-         name: hb34_0703
+         name: hb32_0703
          path: c:\temp
          repo: JoseQuintas/addons
 
@@ -44,7 +44,7 @@ jobs:
          PATH: c:\program files\7-zip
       run: |
          c:
-         7z x -y c:\temp\hb34_0703.7z -oc:\temp\harbour
+         7z x -y c:\temp\hb32_0703.7z -oc:\temp\harbour
          7z x -y c:\temp\mingw_0703.7z -oc:\temp\mingw
 
     - name: Load Source Code
@@ -73,28 +73,30 @@ jobs:
          HB_COMPILER: mingw
          HB_INSTALL_PREFIX: c:\temp\harbour
          HBMK_CMD: -workdir=c:\temp -q -quiet
-         PATH: c:\temp\mingw\mingw64\bin;c:\temp\harbour\bin
+         PATH: c:\temp\mingw\mingw32\bin;c:\temp\harbour\bin
       run: |
          c:
+         copy c:\temp\harbour\addons\gtwvg.hbc c:\temp\harbour\contrib\gtwvg
+
          cd c:\temp\harbour\addons\hwgui
-         hbmk2 hwgui.hbp
-         hbmk2 hwgui.hbp -comp=mingw64
+         hbmk2 hwgui.hbp -q
+         #hbmk2 hwgui.hbp -comp=mingw64
 
          cd c:\temp\harbour\addons\hmge
-         hbmk2 hmge.hbp
-         hbmk2 hmge.hbp -comp=mingw64
+         hbmk2 hmge.hbp -q
+         #hbmk2 hmge.hbp -comp=mingw64
 
          cd c:\temp\harbour\addons\sefazclass
          hbmk2 sefazclass.hbp
-         hbmk2 sefazclass.hbp  -comp=mingw64
+         #hbmk2 sefazclass.hbp  -comp=mingw64
 
          cd c:\temp\harbour\addons\hmg3
-         hbmk2 hmg3.hbp -workdir=c:\temp -quiet
-         hbmk2 hmg3.hbp -workdir=c:\temp -comp=mingw64 -quiet
+         hbmk2 hmg3.hbp -workdir=c:\temp -quiet -q -DHB32
+         #hbmk2 hmg3.hbp -workdir=c:\temp -comp=mingw64 -quiet
 
          cd c:\temp\harbour\addons\wvgtst
-         hbmk2 wvgtst.hbp
-         hbmk2 wvgtst.hbp -comp=mingw64
+         hbmk2 wvgtst.hbp -q -Dhb32
+         #hbmk2 wvgtst.hbp -comp=mingw64
 
     - name: Zip
       env:

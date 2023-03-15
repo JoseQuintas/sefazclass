@@ -1,7 +1,7 @@
 #
-# create: JoseQuintas/addons/hb34_0703
+# create: JoseQuintas/addons/hb32_0703
 
-name: Harbour 3.4 mingw 7.3
+name: Harbour 3.2 mingw 7.3
 
 on:
 #  push:
@@ -10,9 +10,8 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        description: 'Harbour 3.4 mingw 7.3
-        x86_64-7.3.0-release-posix-sjlj-rt_v5-rev0'
-        default: 'hb34_0703'
+        description: 'Harbour 3.2 mingw 7.3'
+        default: 'hb32_0703'
         required: true
 
 jobs:
@@ -23,11 +22,11 @@ jobs:
 
     - name: Load Source Code
       env:
-         REPO: JoseQuintas/harbour34
+         REPO: JoseQuintas/harbour32
       run: |
          c:
-         git clone https://github.com/$env:repo c:\temp\harbour34 --depth 1
-         cd \temp\harbour34
+         git clone https://github.com/$env:repo c:\temp\harbour32 --depth 1
+         cd \temp\harbour32
 
     - name: mingw 7.3
       uses: dawidd6/action-download-artifact@v2
@@ -52,32 +51,32 @@ jobs:
          HB_BUILD_STRIP: all
          HB_COMPILER: mingw
          HB_INSTALL_PREFIX: c:\temp\harbour
-         PATH: c:\temp\comp\mingw64\bin;c:\temp\harbour\bin
+         PATH: c:\temp\comp\mingw32\bin;c:\temp\harbour\bin
       run: |
          c:
-         cd c:\temp\harbour34
+         cd c:\temp\harbour32
          mingw32-make clean install
 
-    - name: Build 64 bits
-      env:
-         HB_BUILD_STRIP: all
-         HB_COMPILER: mingw64
-         HB_INSTALL_PREFIX: c:\temp\harbour
-         PATH: c:\temp\comp\mingw64\bin;c:\temp\harbour\bin
-      run: |
-         c:
-         cd \temp\harbour34
-         mingw32-make clean install
+    #- name: Build 64 bits
+    #  env:
+    #     HB_BUILD_STRIP: all
+    #     HB_COMPILER: mingw64
+    #     HB_INSTALL_PREFIX: c:\temp\harbour
+    #     PATH: c:\temp\comp\mingw64\bin;c:\temp\harbour\bin
+    #  run: |
+    #     c:
+    #     cd \temp\harbour34
+    #     mingw32-make clean install
 
     - name: Zip
       env:
          PATH: c:\program files\7-zip
       run: |
          c:
-         7z a -r c:\temp\hb34_0703.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
+         7z a -r c:\temp\hb32_0703.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
 
     - name: Save
       uses: actions/upload-artifact@v3
       with:
-         name: hb34_0703
-         path: c:\temp\hb34_0703.7z
+         name: hb32_0703
+         path: c:\temp\hb32_0703.7z
