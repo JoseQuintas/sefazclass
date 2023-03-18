@@ -37,7 +37,7 @@ CREATE CLASS SefazClass
    VAR    cSoapAction    INIT ""                      // webservice Action
    VAR    cSoapURL       INIT ""                      // webservice Endereço
 
-   METHOD EnvioLoteRPS( cXml, cCertificado, cAmbiente )
+   METHOD EnvioRPS( cXml, cCertificado, cAmbiente )
 
    /* Uso interno */
    METHOD Setup( cCertificado, cAmbiente, nWsServico )
@@ -47,7 +47,7 @@ CREATE CLASS SefazClass
 
    ENDCLASS
 
-METHOD EnvioLoteRPS( cXml, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD EnvioRPS( cXml, cCertificado, cAmbiente ) CLASS SefazClass
 
    ::Setup( cCertificado, cAmbiente, WS_ENVIOLOTERPS )
    ::cXmlEnvio := ::AssinaXml( cXml )
@@ -101,7 +101,7 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ::cXmlSoap    := XML_UTF8
    ::cXmlSoap    += [<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ]
    ::cXmlSoap    +=       [xmlns:xsd="http://www.w3.org/2001/XMLSchema" ]
-   ::cXmlSoap    +=       [xmlns:soap12="http://schemas.xmlsoap.org/soap/envelope/">]
+   ::cXmlSoap    +=       [xmlns:soap12="http://www.w3.org/2013/05/soap-envelope">]
    ::cXmlSoap    +=    [<soap12:Body>]
    ::cXmlSoap    +=       [<] + ::cSoapService + [Request xmlns="http://www.prefeitura.sp.gov.br/nfe">]
    ::cXmlSoap    +=          [<VersaoSchema>1</VersaoSchema>]

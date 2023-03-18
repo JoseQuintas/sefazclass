@@ -325,7 +325,7 @@ METHOD GeraPDF( cFilePDF ) CLASS hbnfeDaCte
    ENDDO
    FOR nCont = 1 TO ::nFolhas
       ::oPDFPage := ::aPDFPageList[ nCont ]
-      ::DrawTexto( 383, ::nLinhaPdf - 047, 418, Nil, Str( nCont, 1 ) + "/" + Str( ::nFolhas, 1 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+      ::DrawTexto( 383, ::nLinhaPdf - 047, 418, Nil, Ltrim( Str( nCont, 3 ) ) + "/" + Ltrim( Str( ::nFolhas, 3 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
    NEXT
 
    // Ajustar numeração
