@@ -1,5 +1,5 @@
 #
-# use:    JoseQuintas/harbour_34/hb34_0703
+# use:    JoseQuintas/addons/hb32_0703
 # create: hbsefazclass
 #
 
@@ -25,9 +25,9 @@ jobs:
     - name: Harbour
       uses: dawidd6/action-download-artifact@v2
       with:
-         workflow: hb34_0703.yml
+         workflow: hb32_0703.yml
          workflow_conclusion: success
-         name: hb34_0703
+         name: hb32_0703
          path: c:\temp
          repo: JoseQuintas/addons
 
@@ -46,7 +46,7 @@ jobs:
          dir c:\temp
          md c:\temp\harbour
          md c:\temp\harbour\comp
-         7z x -y c:\temp\hb34_0703.7z -oc:\temp\harbour
+         7z x -y c:\temp\hb32_0703.7z -oc:\temp\harbour
          7z x -y c:\temp\mingw_0703.7z -oc:\temp\mingw
          dir c:\temp\mingw
 
@@ -62,18 +62,8 @@ jobs:
       env:
          HB_COMPILER: mingw
          HB_INSTALL_PREFIX: c:\temp\harbour
-         PATH: c:\temp\harbour\bin;c:\temp\mingw\mingw64\bin
+         PATH: c:\temp\harbour\bin;c:\temp\mingw\mingw32\bin
       run: |
          c:
          cd c:\temp\sefazclass
          hbmk2 *.hbp -workdir=c:\temp
-
-    - name: Build 64 bits
-      env:
-         HB_COMPILER: mingw64
-         HB_INSTALL_PREFIX: c:\temp\harbour
-         PATH: c:\temp\harbour\bin;c:\temp\mingw\mingw64\bin
-      run: |
-         c:
-         cd \temp\sefazclass
-         hbmk2 *.hbp
