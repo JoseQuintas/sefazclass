@@ -172,7 +172,7 @@ CREATE CLASS NfeCofinsClass STATIC
 
 CREATE CLASS NfeRastroClass STATIC
 
-   VAR nLote INIT 0
+   VAR nLote INIT ""
    VAR qLote INIT 0
    VAR dFab  INIT Ctod("")
    VAR dVal  INIT Ctod("")
@@ -404,7 +404,7 @@ FUNCTION XmlToDoc( cXmlInput, lAutorizado )
 
 STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
 
-   LOCAL aList, nCont, aList2, nCont2
+   LOCAL aList, aList2
    LOCAL cBlocoInfNfeComTag, cBlocoChave, cBlocoIde, cBlocoInfAdic
    LOCAL cBlocoEmit, cBlocoEndereco, cBlocoDest, cBlocoTransporte, cBlocoTransp, cBlocoVeiculo, cBlocoVol, cBlocoTotal
    LOCAL cBlocoItem, cBlocoProd,  cBlocoIpi, cBlocoIcms, cBlocoPis, cBlocoCofins, cBlocoRastro
@@ -419,176 +419,188 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
       oDocSped:cErro := "Chave de Acesso Inválida"
       RETURN Nil
    ENDIF
-   oDocSped:cChave := cBlocoChave
-   oDocSped:cAssinatura := XmlNode( cXmlInput, "Signature" )
-   cBlocoIde := XmlNode( cXmlInput, "ide" )
-      oDocSped:cNumDoc := XmlNode( cBlocoIde, "nNF" )
-      IF Empty( oDocSped:cNumDoc )
-         oDocSped:cErro := "Sem número de documento"
-         RETURN Nil
-      ENDIF
-      oDocSped:cNumDoc          := StrZero( Val( oDocSped:cNumDoc ), 9 )
-      oDocSped:TipoNFe          := XmlNode( cBlocoIde, "tpNF" )  // 2018.02.23 Jackson
-      oDocSped:TipoEmissao      := XmlNode( cBlocoIde, "tpEmis" ) // 2018.01.23 Jackson
-      oDocSPed:NaturezaOperacao := XmlNode( cBlocoIde, "natOp" ) // 2018.01.23 Jackson
-      IF ! Empty( XmlDate( XmlNode( cBlocoIde, "dhEmi" ) ) )
-         oDocSped:DataHora    := XmlNode( cBlocoIde, "dEmi" ) // 2018.01.23 Jackson
-         oDocSped:DataEmissao := XmlDate( XmlNode( cBlocoIde, "dhEmi" ) )
-         oDocSped:DataSaida   := XmlDate( XmlNode( cBlocoIde, "dhSaiEnt" ) )
-      ELSE
-         oDocSped:DataEmissao := XmlDate( XmlNode( cBlocoIde, "dEmi" ) )
-         oDocSped:DataSaida   := XmlDate( XmlNode( cBlocoIde, "dSaiEnt" ) )
-      ENDIF
-      IF Empty( oDocSped:DataSaida )
-         oDocSped:DataSaida := oDocSped:DataEmissao
-      ENDIF
-      oDocSped:cAmbiente := XmlNode( cBlocoIde, "tpAmb" )
+   WITH OBJECT oDocSped
+      :cChave := cBlocoChave
+      :cAssinatura := XmlNode( cXmlInput, "Signature" )
+      cBlocoIde := XmlNode( cXmlInput, "ide" )
+         :cNumDoc := XmlNode( cBlocoIde, "nNF" )
+         IF Empty( oDocSped:cNumDoc )
+            oDocSped:cErro := "Sem número de documento"
+            RETURN Nil
+         ENDIF
+         :cNumDoc          := StrZero( Val( :cNumDoc ), 9 )
+         :TipoNFe          := XmlNode( cBlocoIde, "tpNF" )  // 2018.02.23 Jackson
+         :TipoEmissao      := XmlNode( cBlocoIde, "tpEmis" ) // 2018.01.23 Jackson
+         :NaturezaOperacao := XmlNode( cBlocoIde, "natOp" ) // 2018.01.23 Jackson
+         IF ! Empty( XmlDate( XmlNode( cBlocoIde, "dhEmi" ) ) )
+            :DataHora    := XmlNode( cBlocoIde, "dEmi" ) // 2018.01.23 Jackson
+            :DataEmissao := XmlDate( XmlNode( cBlocoIde, "dhEmi" ) )
+            :DataSaida   := XmlDate( XmlNode( cBlocoIde, "dhSaiEnt" ) )
+         ELSE
+            :DataEmissao := XmlDate( XmlNode( cBlocoIde, "dEmi" ) )
+            :DataSaida   := XmlDate( XmlNode( cBlocoIde, "dSaiEnt" ) )
+         ENDIF
+         IF Empty( :DataSaida )
+            :DataSaida := oDocSped:DataEmissao
+         ENDIF
+         :cAmbiente := XmlNode( cBlocoIde, "tpAmb" )
 
-   cBlocoInfAdic := XmlNode( cXmlInput, "InfAdic" )
-      oDocSped:InfAdicionais := XmlNode( cBlocoInfAdic, "InfCpl" )
+      cBlocoInfAdic := XmlNode( cXmlInput, "InfAdic" )
+         :InfAdicionais := XmlNode( cBlocoInfAdic, "InfCpl" )
+   ENDWITH
 
    cBlocoEmit := XmlNode( cXmlInput, "emit" )
-      oDocSped:Emitente:Cnpj              := Transform( DfeEmitente( oDocSped:cChave ), "@R 99.999.999/9999-99" )
-      oDocSped:Emitente:Nome              := Upper( XmlNode( cBlocoEmit, "xNome" ) )
-      oDocSped:Emitente:InscricaoEstadual := XmlNode( cBlocoEmit, "IE" )
-      cBlocoEndereco := XmlNode( cBlocoEmit, "enderEmit" )
-         oDocSped:Emitente:Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
-         oDocSped:Emitente:Numero     := XmlNode( cBlocoEndereco, "nro" )
-         oDocSped:Emitente:Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
-         oDocSped:Emitente:Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
-         oDocSped:Emitente:CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
-         oDocSped:Emitente:Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
-         oDocSped:Emitente:Uf         := Upper( XmlNode( cBlocoEndereco, "UF" ) )
-         oDocSped:Emitente:Cep        := Transform( XmlNode( cBlocoEndereco, "CEP" ), "@R 99999-999" )
-         oDocSped:Emitente:Telefone   := XmlNode( cBlocoEndereco, "fone" )
+      WITH OBJECT oDocSped:Emitente
+         :Cnpj              := Transform( DfeEmitente( oDocSped:cChave ), "@R 99.999.999/9999-99" )
+         :Nome              := Upper( XmlNode( cBlocoEmit, "xNome" ) )
+         :InscricaoEstadual := XmlNode( cBlocoEmit, "IE" )
+         cBlocoEndereco := XmlNode( cBlocoEmit, "enderEmit" )
+            :Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
+            :Numero     := XmlNode( cBlocoEndereco, "nro" )
+            :Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
+            :Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
+            :CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
+            :Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
+            :Uf         := Upper( XmlNode( cBlocoEndereco, "UF" ) )
+            :Cep        := Transform( XmlNode( cBlocoEndereco, "CEP" ), "@R 99999-999" )
+            :Telefone   := XmlNode( cBlocoEndereco, "fone" )
+         ENDWITH
 
       cBlocoDest := XmlNode( cXmlInput, "dest" )
-      oDocSped:Destinatario:Cnpj := Trim( XmlNode( cBlocoDest, "CNPJ" ) )
-      IF Len( Trim( oDocSped:Destinatario:Cnpj ) ) = 0
-         oDocSped:Destinatario:Cnpj := XmlNode( cBlocoDest, "CPF" )
-         oDocSped:Destinatario:Cnpj := Transform( oDocSped:Destinatario:Cnpj, "@R 999.999.999-99" )
-      ELSE
-         oDocSped:Destinatario:Cnpj := Transform( oDocSped:Destinatario:Cnpj, "@R 99.999.999/9999-99" )
-      ENDIF
-      oDocSped:Destinatario:Nome := Upper( XmlNode( cBlocoDest, "xNome" ) )
-      oDocSped:Destinatario:InscricaoEstadual := XmlNode( cBlocoDest, "IE" )
-      cBlocoEndereco := XmlNode( cBlocoDest, "enderDest" )
-         oDocSped:Destinatario:Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
-         oDocSped:Destinatario:Numero     := XmlNode( cBlocoEndereco, "nro" )
-         oDocSped:Destinatario:Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
-         oDocSped:Destinatario:Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
-         oDocSped:Destinatario:CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
-         oDocSped:Destinatario:Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
-         oDocSped:Destinatario:Uf         := Upper( XmlNode( cBlocoEndereco, "UF" ) )
-         oDocSped:Destinatario:Cep        := Transform( XmlNode( cBlocoEndereco, "CEP" ), "@R 99999-999" )
-         oDocSped:Destinatario:Telefone   := XmlNode( cBlocoEndereco, "fone" )
+      WITH OBJECT oDocSped:Destinatario
+         :Cnpj := Trim( XmlNode( cBlocoDest, "CNPJ" ) )
+         IF Len( Trim( :Cnpj ) ) = 0
+            :Cnpj := XmlNode( cBlocoDest, "CPF" )
+            :Cnpj := Transform( :Cnpj, "@R 999.999.999-99" )
+         ELSE
+            :Cnpj := Transform( :Cnpj, "@R 99.999.999/9999-99" )
+         ENDIF
+         :Nome := Upper( XmlNode( cBlocoDest, "xNome" ) )
+         :InscricaoEstadual := XmlNode( cBlocoDest, "IE" )
+         cBlocoEndereco := XmlNode( cBlocoDest, "enderDest" )
+            :Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
+            :Numero     := XmlNode( cBlocoEndereco, "nro" )
+            :Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
+            :Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
+            :CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
+            :Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
+            :Uf         := Upper( XmlNode( cBlocoEndereco, "UF" ) )
+            :Cep        := Transform( XmlNode( cBlocoEndereco, "CEP" ), "@R 99999-999" )
+            :Telefone   := XmlNode( cBlocoEndereco, "fone" )
+      ENDWITH
 
    cBlocoTransporte := XmlNode( cXmlInput, "transp" )
-      cBlocoTransp := XmlNode( cBlocoTransporte, "transporta" )
-         oDocSped:Transporte:Cnpj              := Transform( XmlNode( cBlocoTransp, "CNPJ" ), "@R 99.999.999/9999-99" )
-         oDocSped:Transporte:Nome              := Upper( XmlNode( cBlocoTransp, "xNome" ) )
-         oDocSped:Transporte:InscricaoEstadual := XmlNode( cBlocoTransp, "IE" )
-         oDocSped:Transporte:Endereco          := Upper( XmlNode( cBlocoTransp, "xEnder" ) )
-         oDocSped:Transporte:Cidade            := Upper( XmlNode( cBlocoTransp, "xMun" ) )
-         oDocSped:Transporte:Uf                := Upper( XmlNode( cBlocoTransp, "UF" ) )
-      cBlocoVol := XmlNode( cBlocoTransporte, "vol" )
-         oDocSped:Transporte:Volumes:Qtde        := Val( XmlNode( cBlocoVol, "qVol" ) )
-         oDocSped:Transporte:Volumes:Especie     := Upper( XmlNode( cBlocoVol, "esp" ) )
-         oDocSped:Transporte:Volumes:Marca       := Upper( XmlNode( cBlocoVol, "marca" ) )
-         oDocSped:Transporte:Volumes:PesoLiquido := Val( XmlNode( cBlocoVol, "pesoL" ) )
-         oDocSped:Transporte:Volumes:PesoBruto   := Val( XmlNode( cBlocoVol, "pesoB" ) )
-         oDocSped:Transporte:Volumes:Numeros     := XmlNode( cBlocoVol, "nvol" ) // 2018.01.23 Jackson
-      cBlocoVeiculo := XmlNode( cBlocoTransporte, "veicTransp" )
-      oDocSped:Transporte:PlacaUf := Upper( XmlNode( cBlocoVeiculo, "UF" ) )
-      oDocSped:Transporte:Placa   := Upper( XmlNode( cBlocoVeiculo, "placa" ) )
+      WITH OBJECT oDocSped:Transporte
+         cBlocoTransp := XmlNode( cBlocoTransporte, "transporta" )
+            :Cnpj              := Transform( XmlNode( cBlocoTransp, "CNPJ" ), "@R 99.999.999/9999-99" )
+            :Nome              := Upper( XmlNode( cBlocoTransp, "xNome" ) )
+            :InscricaoEstadual := XmlNode( cBlocoTransp, "IE" )
+            :Endereco          := Upper( XmlNode( cBlocoTransp, "xEnder" ) )
+            :Cidade            := Upper( XmlNode( cBlocoTransp, "xMun" ) )
+            :Uf                := Upper( XmlNode( cBlocoTransp, "UF" ) )
+         cBlocoVol := XmlNode( cBlocoTransporte, "vol" )
+            :Volumes:Qtde        := Val( XmlNode( cBlocoVol, "qVol" ) )
+            :Volumes:Especie     := Upper( XmlNode( cBlocoVol, "esp" ) )
+            :Volumes:Marca       := Upper( XmlNode( cBlocoVol, "marca" ) )
+            :Volumes:PesoLiquido := Val( XmlNode( cBlocoVol, "pesoL" ) )
+            :Volumes:PesoBruto   := Val( XmlNode( cBlocoVol, "pesoB" ) )
+            :Volumes:Numeros     := XmlNode( cBlocoVol, "nvol" ) // 2018.01.23 Jackson
+         cBlocoVeiculo := XmlNode( cBlocoTransporte, "veicTransp" )
+            :PlacaUf := Upper( XmlNode( cBlocoVeiculo, "UF" ) )
+            :Placa   := Upper( XmlNode( cBlocoVeiculo, "placa" ) )
+      ENDWITH
 
    cBlocoTotal := XmlNode( cXmlInput, "total" )
-      oDocSped:Totais:IpiVal   := Val( XmlNode( cBlocoTotal, "vIPI" ) )
-      oDocSped:Totais:IIVal    := Val( XmlNode( cBlocoTotal, "vII" ) )
-      oDocSped:Totais:IcmBas   := Val( XmlNode( cBlocoTotal, "vBC" ) )
-      oDocSped:Totais:IcmVal   := Val( XmlNode( cBlocoTotal, "vICMS" ) )
-      oDocSped:Totais:SubBas   := Val( XmlNode( cBlocoTotal, "vBCST" ) )
-      oDocSped:Totais:SubVal   := Val( XmlNode( cBlocoTotal, "vST" ) )
-      oDocSped:Totais:MonoBas  := Val( XmlNode( cBlocoTotal, "qBCMono" ) )
-      oDocSPed:Totais:MonoVal  := Val( XmlNode( cBlocoTotal, "vICMSMono" ) )
-      oDocSped:Totais:PisVal   := Val( XmlNode( cBlocoTotal, "vPIS" ) )
-      oDocSped:Totais:CofVal   := Val( XmlNode( cBlocoTotal, "vCOFINS" ) )
-      oDocSped:Totais:ValPro   := Val( XmlNode( cBlocoTotal, "vProd" ) )
-      oDocSped:Totais:ValSeg   := Val( XmlNode( cBlocoTotal, "vSeg" ) )
-      oDocSped:Totais:ValFre   := Val( XmlNode( cBlocoTotal, "vFrete" ) )
-      oDocSPed:Totais:ValDesc  := Val( XmlNode( cBlocoTotal, "vDesc" ) ) // 2018.01.23 Jackson
-      oDocSped:Totais:ValOut   := Val( XmlNode( cBlocoTotal, "vOutro" ) )
-      oDocSped:Totais:ValNot   := Val( XmlNode( cBlocoTotal, "vNF" ) )
-      oDocSped:Totais:ValTrib  := Val( XmlNode( cBlocoTotal, "vTotTrib" ) ) // 2018.01.23 Jackson
+      WITH OBJECT oDocSped:Totais
+         :IpiVal   := Val( XmlNode( cBlocoTotal, "vIPI" ) )
+         :IIVal    := Val( XmlNode( cBlocoTotal, "vII" ) )
+         :IcmBas   := Val( XmlNode( cBlocoTotal, "vBC" ) )
+         :IcmVal   := Val( XmlNode( cBlocoTotal, "vICMS" ) )
+         :SubBas   := Val( XmlNode( cBlocoTotal, "vBCST" ) )
+         :SubVal   := Val( XmlNode( cBlocoTotal, "vST" ) )
+         :MonoBas  := Val( XmlNode( cBlocoTotal, "qBCMono" ) )
+         :MonoVal  := Val( XmlNode( cBlocoTotal, "vICMSMono" ) )
+         :PisVal   := Val( XmlNode( cBlocoTotal, "vPIS" ) )
+         :CofVal   := Val( XmlNode( cBlocoTotal, "vCOFINS" ) )
+         :ValPro   := Val( XmlNode( cBlocoTotal, "vProd" ) )
+         :ValSeg   := Val( XmlNode( cBlocoTotal, "vSeg" ) )
+         :ValFre   := Val( XmlNode( cBlocoTotal, "vFrete" ) )
+         :ValDesc  := Val( XmlNode( cBlocoTotal, "vDesc" ) ) // 2018.01.23 Jackson
+         :ValOut   := Val( XmlNode( cBlocoTotal, "vOutro" ) )
+         :ValNot   := Val( XmlNode( cBlocoTotal, "vNF" ) )
+         :ValTrib  := Val( XmlNode( cBlocoTotal, "vTotTrib" ) ) // 2018.01.23 Jackson
+      ENDWITH
 
    aList := MultipleNodeToArray( cXmlInput, "det" )
    FOR EACH cBlocoItem IN aList
       AAdd( oDocSped:Produto, NFEProdutoClass():New() )
-      nCont := Len( oDocSped:Produto )
-      cBlocoProd := XmlNode( cBlocoItem, "prod" )
-         oDocSped:Produto[ nCont ]:Codigo          := XmlNode( cBlocoProd, "cProd" )
-         oDocSped:Produto[ nCont ]:Nome            := Upper( XmlNode( cBlocoProd, "xProd" ) )
-         oDocSped:Produto[ nCont ]:CFOP            := Transform( XmlNode( cBlocoProd, "CFOP" ), "@R 9.9999" )
-         oDocSped:Produto[ nCont ]:NCM             := XmlNode( cBlocoProd, "NCM" )
-         oDocSped:Produto[ nCont ]:GTIN            := SoNumeros( XmlNode( cBlocoProd, "cEAN" ) )
-         oDocSped:Produto[ nCont ]:GTINTrib        := SoNumeros( XmlNode( cBlocoProd, "cEANTrib" ) )
-         oDocSped:Produto[ nCont ]:CEST            := SoNumeros( XmlNode( cBLocoProd, "CEST" ) )
-         IF Empty( oDocSped:Produto[ nCont ]:GTINTrib )
-            oDocSped:Produto[ nCont ]:GTINTrib := oDocSped:Produto[ nCont ]:GTIN
-         ENDIF
-         oDocSped:Produto[ nCont ]:CBenef          := XmlNode( cBlocoProd, "cBenef" )
-         oDocSped:Produto[ nCont ]:Unidade         := Upper( XmlNode( cBlocoProd, "uCom" ) )
-         oDocSped:Produto[ nCont ]:UnidTrib        := Upper( XmlNode( cBlocoProd, "uTrib" ) ) // 2019.01.08 Fernando Queiroz
-         oDocSped:Produto[ nCont ]:Qtde            := Val( XmlNode( cBlocoProd, "qCom" ) )
-         oDocSped:Produto[ nCont ]:QtdeTrib        := Val( XmlNode( cBlocoProd, "qTrib" ) ) // 2019.01.08 Fernando Queiroz
-         oDocSped:Produto[ nCont ]:ValorUnitario   := Val( XmlNode( cBlocoProd, "vUnCom" ) )
-         oDocSped:Produto[ nCont ]:ValUnitTrib     := Val( XmlNode( cBlocoProd, "vUnTrib" ) ) // 2019.01.08 Fernando Queiroz
-         oDocSped:Produto[ nCont ]:ValorTotal      := Val( XmlNode( cBlocoProd, "vProd" ) )
-         oDocSped:Produto[ nCont ]:Desconto        := Val( XmlNode( cBlocoProd, "vDesc" ) ) // 2018.01.23 Jackson
-         oDocSped:Produto[ nCont ]:Pedido          := Val( XmlNode( cBlocoProd, "xPed" ) ) // 2018.01.23 Jackson
-         oDocSped:Produto[ nCont ]:InfAdicional    := XmlNode( cBlocoProd, "infAdProd" ) // 2018.01.23 Jackson
-      cBlocoIpi := XmlNode( cBlocoItem, "IPI" )
-         oDocSped:Produto[ nCont ]:Ipi:Base        := Val( XmlNode( cBlocoIpi, "vBC" ) )
-         oDocSped:Produto[ nCont ]:Ipi:Aliquota    := Val( XmlNode( cBlocoIpi, "pIPI" ) )
-         oDocSped:Produto[ nCont ]:Ipi:Valor       := Val( XmlNode( cBlocoIpi, "vIPI" ) )
-      cBlocoIcms := XmlNode( cBlocoItem, "ICMS" )
-         oDocSped:Produto[ nCont ]:Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CST" )
-         IF Len( oDocSped:Produto[ nCont ]:Icms:Cst ) < 3
-            oDocSped:Produto[ nCont ]:Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CSOSN" )
-         ENDIF
-         oDocSped:Produto[ nCont ]:Icms:Base       := Val( XmlNode( cBlocoIcms, "vBC" ) )
-         oDocSped:Produto[ nCont ]:Icms:Reducao    := Val( XmlNode( cBlocoIcms, "pRedBC" ) )
-         oDocSped:Produto[ nCont ]:Icms:Aliquota   := Val( XmlNode( cBlocoIcms, "pICMS" ) )
-         oDocSped:Produto[ nCont ]:Icms:Valor      := Val( XmlNode( cBlocoIcms, "vICMS" ) )
-         oDocSped:Produto[ nCont ]:IcmsSt:Base     := Val( XmlNode( cBlocoIcms, "vBCST" ) )
-         oDocSped:Produto[ nCont ]:IcmsSt:Iva      := Val( XmlNode( cBlocoIcms, "pMVAST" ) )
-         oDocSped:Produto[ nCont ]:IcmsSt:Reducao  := Val( XmlNode( cBlocoIcms, "pRedBCST" ) )
-         oDocSped:Produto[ nCont ]:IcmsSt:Aliquota := Val( XmlNode( cBlocoIcms, "pICMSST" ) )
-         oDocSped:Produto[ nCont ]:IcmsSt:Valor    := Val( XmlNode( cBlocoIcms, "vICMSST" ) )
-         oDocSped:Produto[ nCont ]:IcmsMono:Base   := Val( XmlNode( cBlocoIcms, "qBCMono" ) )
-         oDocSped:Produto[ nCont ]:IcmsMono:Aliquota := Val( XmlNode( cBlocoIcms, "adRemICMS" ) )
-         oDocSped:Produto[ nCont ]:IcmsMono:Valor  := Val( XmlNode( cBlocoIcms, "vICMSMono" ) )
-      cBlocoPis := XmlNode( cBlocoItem, "PIS" )
-         oDocSped:Produto[ nCont ]:Pis:Cst         := XmlNode( cBlocoPis, "CST" )
-         oDocSped:Produto[ nCont ]:Pis:Base        := Val( XmlNode( cBlocoPis, "vBC" ) )
-         oDocSped:Produto[ nCont ]:Pis:Aliquota    := Val( XmlNode( cBlocoPis, "pPIS" ) )
-         oDocSped:Produto[ nCont ]:Pis:Valor       := Val( XmlNode( cBlocoPis, "vPIS" ) )
-      cBlocoCofins := XmlNode( cBlocoItem, "COFINS" )
-         oDocSped:Produto[ nCont ]:Cofins:Cst      := XmlNode( cBlocoCofins, "CST" )
-         oDocSped:Produto[ nCont ]:Cofins:Base     := Val( XmlNode( cBlocoCofins, "vBC" ) )
-         oDocSped:Produto[ nCont ]:Cofins:Aliquota := Val( XmlNode( cBlocoCofins, "pCOFINS" ) )
-         oDocSped:Produto[ nCont ]:Cofins:Valor    := Val( XmlNode( cBlocoCofins, "vCOFINS" ) )
-      cBlocoComb := XmlNode( cBlocoItem, "comb" )
-         oDocSped:Produto[ nCont ]:Anp             := XmlNode( cBlocoComb, "cProdANP" )
-      aList2 := MultipleNodeToArray( cBlocoComb, "rastro" )
-         FOR EACH cBlocoRastro IN aList2
-            AAdd( oDocSped:Produto[ nCont ]:Rastro, NfeRastroClass() )
-            nCont2 := Len( oDocSped:Produto[ nCont ]:Rastro )
-            oDocSped:Produto[ nCont ]:Rastro[ nCont2 ]:nLote := Val( XmlNode( cBlocoRastro, "nLote" ) )
-            oDocSped:Produto[ nCont ]:Rastro[ nCont2 ]:qLote := Val( XmlNode( cBlocoRastro, "qLote" ) )
-            oDocSped:Produto[ nCont ]:Rastro[ nCont2 ]:dFab  := XmlDate( XmlNode( cBlocoRastro, "dFab" ) )
-            oDocSped:Produto[ nCont ]:Rastro[ nCont2 ]:dVal  := XmlDate( XmlNode( cBlocoRastro, "dVal" ) )
-         NEXT
+      WITH OBJECT Atail( oDocSped:Produto )
+         cBlocoProd := XmlNode( cBlocoItem, "prod" )
+            :Codigo          := XmlNode( cBlocoProd, "cProd" )
+            :Nome            := Upper( XmlNode( cBlocoProd, "xProd" ) )
+            :CFOP            := Transform( XmlNode( cBlocoProd, "CFOP" ), "@R 9.9999" )
+            :NCM             := XmlNode( cBlocoProd, "NCM" )
+            :GTIN            := SoNumeros( XmlNode( cBlocoProd, "cEAN" ) )
+            :GTINTrib        := SoNumeros( XmlNode( cBlocoProd, "cEANTrib" ) )
+            :CEST            := SoNumeros( XmlNode( cBLocoProd, "CEST" ) )
+            IF Empty( :GTINTrib )
+               :GTINTrib := :GTIN
+            ENDIF
+            :CBenef          := XmlNode( cBlocoProd, "cBenef" )
+            :Unidade         := Upper( XmlNode( cBlocoProd, "uCom" ) )
+            :UnidTrib        := Upper( XmlNode( cBlocoProd, "uTrib" ) ) // 2019.01.08 Fernando Queiroz
+            :Qtde            := Val( XmlNode( cBlocoProd, "qCom" ) )
+            :QtdeTrib        := Val( XmlNode( cBlocoProd, "qTrib" ) ) // 2019.01.08 Fernando Queiroz
+            :ValorUnitario   := Val( XmlNode( cBlocoProd, "vUnCom" ) )
+            :ValUnitTrib     := Val( XmlNode( cBlocoProd, "vUnTrib" ) ) // 2019.01.08 Fernando Queiroz
+            :ValorTotal      := Val( XmlNode( cBlocoProd, "vProd" ) )
+            :Desconto        := Val( XmlNode( cBlocoProd, "vDesc" ) ) // 2018.01.23 Jackson
+            :Pedido          := Val( XmlNode( cBlocoProd, "xPed" ) ) // 2018.01.23 Jackson
+            :InfAdicional    := XmlNode( cBlocoProd, "infAdProd" ) // 2018.01.23 Jackson
+         cBlocoIpi := XmlNode( cBlocoItem, "IPI" )
+            :Ipi:Base        := Val( XmlNode( cBlocoIpi, "vBC" ) )
+            :Ipi:Aliquota    := Val( XmlNode( cBlocoIpi, "pIPI" ) )
+            :Ipi:Valor       := Val( XmlNode( cBlocoIpi, "vIPI" ) )
+         cBlocoIcms := XmlNode( cBlocoItem, "ICMS" )
+            :Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CST" )
+            IF Len( :Icms:Cst ) < 3
+               :Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CSOSN" )
+            ENDIF
+            :Icms:Base       := Val( XmlNode( cBlocoIcms, "vBC" ) )
+            :Icms:Reducao    := Val( XmlNode( cBlocoIcms, "pRedBC" ) )
+            :Icms:Aliquota   := Val( XmlNode( cBlocoIcms, "pICMS" ) )
+            :Icms:Valor      := Val( XmlNode( cBlocoIcms, "vICMS" ) )
+            :IcmsSt:Base     := Val( XmlNode( cBlocoIcms, "vBCST" ) )
+            :IcmsSt:Iva      := Val( XmlNode( cBlocoIcms, "pMVAST" ) )
+            :IcmsSt:Reducao  := Val( XmlNode( cBlocoIcms, "pRedBCST" ) )
+            :IcmsSt:Aliquota := Val( XmlNode( cBlocoIcms, "pICMSST" ) )
+            :IcmsSt:Valor    := Val( XmlNode( cBlocoIcms, "vICMSST" ) )
+            :IcmsMono:Base   := Val( XmlNode( cBlocoIcms, "qBCMono" ) )
+            :IcmsMono:Aliquota := Val( XmlNode( cBlocoIcms, "adRemICMS" ) )
+            :IcmsMono:Valor  := Val( XmlNode( cBlocoIcms, "vICMSMono" ) )
+         cBlocoPis := XmlNode( cBlocoItem, "PIS" )
+            :Pis:Cst         := XmlNode( cBlocoPis, "CST" )
+            :Pis:Base        := Val( XmlNode( cBlocoPis, "vBC" ) )
+            :Pis:Aliquota    := Val( XmlNode( cBlocoPis, "pPIS" ) )
+            :Pis:Valor       := Val( XmlNode( cBlocoPis, "vPIS" ) )
+         cBlocoCofins := XmlNode( cBlocoItem, "COFINS" )
+            :Cofins:Cst      := XmlNode( cBlocoCofins, "CST" )
+            :Cofins:Base     := Val( XmlNode( cBlocoCofins, "vBC" ) )
+            :Cofins:Aliquota := Val( XmlNode( cBlocoCofins, "pCOFINS" ) )
+            :Cofins:Valor    := Val( XmlNode( cBlocoCofins, "vCOFINS" ) )
+         cBlocoComb := XmlNode( cBlocoItem, "comb" )
+            :Anp             := XmlNode( cBlocoComb, "cProdANP" )
+         aList2 := MultipleNodeToArray( cBlocoComb, "rastro" )
+            FOR EACH cBlocoRastro IN aList2
+               AAdd( :Rastro, NfeRastroClass() )
+               WITH OBJECT Atail( :Rastro )
+                  :nLote := XmlNode( cBlocoRastro, "nLote" )
+                  :qLote := Val( XmlNode( cBlocoRastro, "qLote" ) )
+                  :dFab  := XmlDate( XmlNode( cBlocoRastro, "dFab" ) )
+                  :dVal  := XmlDate( XmlNode( cBlocoRastro, "dVal" ) )
+               ENDWITH
+            NEXT
+      ENDWITH
    NEXT
 
    cBlocoCobranca := XmlNode( cXmlInput, "cobr" )
@@ -599,10 +611,11 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
       //   EXIT
       //ENDIF
       AAdd( oDocSped:Duplicata, NFEDuplicataClass():New() )
-      nCont := Len( oDocSped:Duplicata )
-      oDocSped:Duplicata[ nCont ]:Duplicata  := XmlNode( cBlocoDup, "nDup" ) // 2018.01.23 Jackson
-      oDocSped:Duplicata[ nCont ]:Vencimento := XmlDate( XmlNode( cBlocoDup, "dVenc" ) )
-      oDocSped:Duplicata[ nCont ]:Valor      := Val( XmlNode( cBlocoDup, "vDup" ) )
+      WITH OBJECT Atail( oDocSped:Duplicata )
+         :Duplicata  := XmlNode( cBlocoDup, "nDup" ) // 2018.01.23 Jackson
+         :Vencimento := XmlDate( XmlNode( cBlocoDup, "dVenc" ) )
+         :Valor      := Val( XmlNode( cBlocoDup, "vDup" ) )
+      ENDWITH
    NEXT
 
    // Detalhes dos Blocos de Pagamentos na NFCe
@@ -610,17 +623,20 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
    aList := MultipleNodeToArray( cXmlInput, "pag" )
    FOR EACH cBlocoPG IN aList
       AAdd( oDocSped:Pagamentos, NfePagamentosClass():New() )
-      nCont := Len( oDocSped:Pagamentos )
-      oDocSped:Pagamentos[ nCont ]:TipoPago    := XmlNode( cBlocoPG, "tPag" )
-      oDocSped:Pagamentos[ nCont ]:ValorPago   := Val( XmlNode( cBlocoPG, "vPag" ) )
-      oDocSped:Pagamentos[ nCont ]:Integracao  := XmlNode( cBlocoPG, "tpIntegra" )
-      oDocSped:Pagamentos[ nCont ]:Cnpj_Ope    := XmlNode( cBlocoPG, "CNPJ" )
-      oDocSped:Pagamentos[ nCont ]:Bandeira    := XmlNode( cBlocoPG, "tBand" )
-      oDocSped:Pagamentos[ nCont ]:Autorizacao := XmlNode( cBlocoPG, "cAut" )
+      WITH OBJECT Atail( oDocSped:Pagamentos )
+         :TipoPago    := XmlNode( cBlocoPG, "tPag" )
+         :ValorPago   := Val( XmlNode( cBlocoPG, "vPag" ) )
+         :Integracao  := XmlNode( cBlocoPG, "tpIntegra" )
+         :Cnpj_Ope    := XmlNode( cBlocoPG, "CNPJ" )
+         :Bandeira    := XmlNode( cBlocoPG, "tBand" )
+         :Autorizacao := XmlNode( cBlocoPG, "cAut" )
+      ENDWITH
    NEXT
 
-   oDocSped:Protocolo := XmlNode( cXmlInput, "nProt" )
-   oDocSped:Status    := XmlNode( cXmlInput, "cStat" )
+   WITH OBJECT oDocSPed
+      :Protocolo := XmlNode( cXmlInput, "nProt" )
+      :Status    := XmlNode( cXmlInput, "cStat" )
+   ENDWITH
 
    RETURN Nil
 
