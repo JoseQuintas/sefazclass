@@ -590,7 +590,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
             :Cofins:Valor    := Val( XmlNode( cBlocoCofins, "vCOFINS" ) )
          cBlocoComb := XmlNode( cBlocoItem, "comb" )
             :Anp             := XmlNode( cBlocoComb, "cProdANP" )
-         aList2 := MultipleNodeToArray( cBlocoComb, "rastro" )
+         aList2 := MultipleNodeToArray( cBlocoItem, "rastro" )
             FOR EACH cBlocoRastro IN aList2
                AAdd( :Rastro, NfeRastroClass() )
                WITH OBJECT Atail( :Rastro )
