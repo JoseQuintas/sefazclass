@@ -81,6 +81,8 @@ CREATE CLASS NfeTotaisClass STATIC
    VAR  IcmVal     INIT 0
    VAR  SubBas     INIT 0
    VAR  SubVal     INIT 0
+   VAR  MonoBas    INIT 0
+   VAR  MonoVal    INIT 0
    VAR  IpiVal     INIT 0
    VAR  IIVal      INIT 0
    VAR  IssVal     INIT 0
@@ -142,6 +144,14 @@ CREATE CLASS NfeIcmsStClass STATIC
 
    ENDCLASS
 
+CREATE CLASS NfeIcmsMonoClass STATIC
+
+   VAR Base     INIT 0
+   VAR Aliquota INIT 0
+   VAR Valor    INIT 0
+
+   ENDCLASS
+
 CREATE CLASS NfePisClass STATIC
 
    VAR  Cst      INIT ""
@@ -157,6 +167,15 @@ CREATE CLASS NfeCofinsClass STATIC
    VAR  Base     INIT 0
    VAR  Aliquota INIT 0
    VAR  Valor    INIT 0
+
+   ENDCLASS
+
+CREATE CLASS NfeRastroClass STATIC
+
+   VAR nLote INIT 0
+   VAR qLote INIT 0
+   VAR dFab  INIT Ctod("")
+   VAR dVal  INIT Ctod("")
 
    ENDCLASS
 
@@ -182,25 +201,28 @@ CREATE CLASS NfeProdutoClass STATIC
    VAR  Desconto      INIT 0 // 2018.01.23 Jackson
    VAR  Icms
    VAR  IcmsSt
+   VAR  IcmsMono
    VAR  Iss
    VAR  Ipi
    VAR  Pis
    VAR  Cofins
    VAR  II
    VAR  InfAdicional  INIT "" // 2018.01.23 Jackson
+   VAR  Rastro        INIT {}
    METHOD Init()
 
    ENDCLASS
 
 METHOD Init() CLASS NfeProdutoClass
 
-   ::Icms   := NfeIcmsClass():New()
-   ::IcmsSt := NfeIcmsStClass():New()
-   ::Iss    := NfeIssClass():New()
-   ::II     := NfeIIClass():New()
-   ::Ipi    := NfeIpiClass():New()
-   ::Pis    := NfePisClass():New()
-   ::Cofins := NfeCofinsClass():New()
+   ::Icms     := NfeIcmsClass():New()
+   ::IcmsSt   := NfeIcmsStClass():New()
+   ::IcmsMono := NfeIcmsMonoClass():New()
+   ::Iss      := NfeIssClass():New()
+   ::II       := NfeIIClass():New()
+   ::Ipi      := NfeIpiClass():New()
+   ::Pis      := NfePisClass():New()
+   ::Cofins   := NfeCofinsClass():New()
 
    RETURN SELF
 
@@ -382,10 +404,10 @@ FUNCTION XmlToDoc( cXmlInput, lAutorizado )
 
 STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
 
-   LOCAL aList, nCont
+   LOCAL aList, nCont, aList2, nCont2
    LOCAL cBlocoInfNfeComTag, cBlocoChave, cBlocoIde, cBlocoInfAdic
    LOCAL cBlocoEmit, cBlocoEndereco, cBlocoDest, cBlocoTransporte, cBlocoTransp, cBlocoVeiculo, cBlocoVol, cBlocoTotal
-   LOCAL cBlocoItem, cBlocoProd,  cBlocoIpi, cBlocoIcms, cBlocoPis, cBlocoCofins
+   LOCAL cBlocoItem, cBlocoProd,  cBlocoIpi, cBlocoIcms, cBlocoPis, cBlocoCofins, cBlocoRastro
    LOCAL cBlocoComb, cBlocoCobranca, cBlocoDup, cBlocoPG
 
    cBlocoInfNfeComTag := XmlNode( cXmlInput, "infNFe", .T. )
@@ -487,6 +509,8 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
       oDocSped:Totais:IcmVal   := Val( XmlNode( cBlocoTotal, "vICMS" ) )
       oDocSped:Totais:SubBas   := Val( XmlNode( cBlocoTotal, "vBCST" ) )
       oDocSped:Totais:SubVal   := Val( XmlNode( cBlocoTotal, "vST" ) )
+      oDocSped:Totais:MonoBas  := Val( XmlNode( cBlocoTotal, "qBCMono" ) )
+      oDocSPed:Totais:MonoVal  := Val( XmlNode( cBlocoTotal, "vICMSMono" ) )
       oDocSped:Totais:PisVal   := Val( XmlNode( cBlocoTotal, "vPIS" ) )
       oDocSped:Totais:CofVal   := Val( XmlNode( cBlocoTotal, "vCOFINS" ) )
       oDocSped:Totais:ValPro   := Val( XmlNode( cBlocoTotal, "vProd" ) )
@@ -541,6 +565,9 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          oDocSped:Produto[ nCont ]:IcmsSt:Reducao  := Val( XmlNode( cBlocoIcms, "pRedBCST" ) )
          oDocSped:Produto[ nCont ]:IcmsSt:Aliquota := Val( XmlNode( cBlocoIcms, "pICMSST" ) )
          oDocSped:Produto[ nCont ]:IcmsSt:Valor    := Val( XmlNode( cBlocoIcms, "vICMSST" ) )
+         oDocSped:Produto[ nCont ]:IcmsMono:Base   := Val( XmlNode( cBlocoIcms, "qBCMono" ) )
+         oDocSped:Produto[ nCont ]:IcmsMono:Aliquota := Val( XmlNode( cBlocoIcms, "adRemICMS" ) )
+         oDocSped:Produto[ nCont ]:IcmsMono:Valor  := Val( XmlNode( cBlocoIcms, "vICMSMono" ) )
       cBlocoPis := XmlNode( cBlocoItem, "PIS" )
          oDocSped:Produto[ nCont ]:Pis:Cst         := XmlNode( cBlocoPis, "CST" )
          oDocSped:Produto[ nCont ]:Pis:Base        := Val( XmlNode( cBlocoPis, "vBC" ) )
@@ -553,6 +580,15 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          oDocSped:Produto[ nCont ]:Cofins:Valor    := Val( XmlNode( cBlocoCofins, "vCOFINS" ) )
       cBlocoComb := XmlNode( cBlocoItem, "comb" )
          oDocSped:Produto[ nCont ]:Anp             := XmlNode( cBlocoComb, "cProdANP" )
+      aList2 := MultipleNodeToArray( cBlocoComb, "rastro" )
+         FOR EACH cBlocoRastro IN aList2
+            AAdd( oDocSped:Produto[ nCont ]:Rastro, NfeRastroClass() )
+            nCont2 := Len( oDocSped:Produto[ nCont ]:Rastro )
+            oDocSped:Produto[ nCont ]:Rastro[ nCont2 ]:nLote := Val( XmlNode( cBlocoRastro, "nLote" ) )
+            oDocSped:Produto[ nCont ]:Rastro[ nCont2 ]:qLote := Val( XmlNode( cBlocoRastro, "qLote" ) )
+            oDocSped:Produto[ nCont ]:Rastro[ nCont2 ]:dFab  := XmlDate( XmlNode( cBlocoRastro, "dFab" ) )
+            oDocSped:Produto[ nCont ]:Rastro[ nCont2 ]:dVal  := XmlDate( XmlNode( cBlocoRastro, "dVal" ) )
+         NEXT
    NEXT
 
    cBlocoCobranca := XmlNode( cXmlInput, "cobr" )
