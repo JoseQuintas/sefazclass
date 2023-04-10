@@ -14,9 +14,11 @@ hbwin.hbc
 
 -hblib
 
--olib/${hb_plat}/${hb_comp}/sefazclass
+-olib/sefazclass
 
 -hbx=sefazclass.hbx
+
+#$hb_pkg_install.hbm
 
 source/ze_atmseguroclass.prg
 source/ze_sefazclass.prg

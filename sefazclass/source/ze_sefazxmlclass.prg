@@ -81,8 +81,8 @@ CREATE CLASS NfeTotaisClass STATIC
    VAR  IcmVal     INIT 0
    VAR  SubBas     INIT 0
    VAR  SubVal     INIT 0
-   VAR  MonoBas    INIT 0
-   VAR  MonoVal    INIT 0
+   VAR  MonBas    INIT 0
+   VAR  MonVal    INIT 0
    VAR  IpiVal     INIT 0
    VAR  IIVal      INIT 0
    VAR  IssVal     INIT 0
@@ -518,8 +518,8 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
          :IcmVal   := Val( XmlNode( cBlocoTotal, "vICMS" ) )
          :SubBas   := Val( XmlNode( cBlocoTotal, "vBCST" ) )
          :SubVal   := Val( XmlNode( cBlocoTotal, "vST" ) )
-         :MonoBas  := Val( XmlNode( cBlocoTotal, "qBCMono" ) )
-         :MonoVal  := Val( XmlNode( cBlocoTotal, "vICMSMono" ) )
+         :MonBas   := Val( XmlNode( cBlocoTotal, "qBCMono" ) )
+         :MonVal   := Val( XmlNode( cBlocoTotal, "vICMSMono" ) )
          :PisVal   := Val( XmlNode( cBlocoTotal, "vPIS" ) )
          :CofVal   := Val( XmlNode( cBlocoTotal, "vCOFINS" ) )
          :ValPro   := Val( XmlNode( cBlocoTotal, "vProd" ) )

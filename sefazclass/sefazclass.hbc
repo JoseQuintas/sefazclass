@@ -5,4 +5,4 @@
 incpaths=include
 {!hblib}libs=hbhpdf.hbc hbzebra.hbc hbwin.hbc
 {!hblib}libs=sefazclass
-libpaths=lib/${hb_plat}/${hb_comp}
+libpaths=lib
