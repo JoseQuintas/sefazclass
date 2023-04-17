@@ -49,23 +49,26 @@ jobs:
 
     - name: Load Source Code
       env:
-         REPO_ADDONS:     https://github.com/JoseQuintas/addons
-         REPO_HWGUI:      https://github.com/JoseQuintas/hwgui
-         REPO_HMGE:       https://github.com/JoseQuintas/hmge
-         REPO_SEFAZCLASS: https://github.com/JoseQuintas/sefazclass
-         REPO_WVGTST:     https://github.com/JoseQuintas/wvgtst
-         PATH_ADDONS:     c:\temp\harbour\addons
-         PATH_HWGUI:      c:\temp\harbour\addons\hwgui
-         PATH_HMGE:       c:\temp\harbour\addons\hmge
-         PATH_SEFAZCLASS: c:\temp\harbour\addons\sefazclass
-         PATH_WVGTST:     c:\temp\harbour\addons\wvgtst
+         REPO_ADDONS:       https://github.com/JoseQuintas/addons
+         REPO_BOLETOCLASS:  https://github.com/JoseQuintas/boletoclass
+         REPO_HWGUI:        https://github.com/JoseQuintas/hwgui
+         REPO_HMGE:         https://github.com/JoseQuintas/hmge
+         REPO_SEFAZCLASS:   https://github.com/JoseQuintas/sefazclass
+         REPO_WVGTST:       https://github.com/JoseQuintas/wvgtst
+         PATH_ADDONS:       c:\temp\harbour\addons
+         PATH_BOLETOCLASS:  c:\temp\harbour\addons\boletoclass
+         PATH_HWGUI:        c:\temp\harbour\addons\hwgui
+         PATH_HMGE:         c:\temp\harbour\addons\hmge
+         PATH_SEFAZCLASS:   c:\temp\harbour\addons\sefazclass
+         PATH_WVGTST:       c:\temp\harbour\addons\wvgtst
       run: |
          c:
-         git clone $env:REPO_ADDONS     $env:PATH_ADDONS     --depth 1
-         git clone $env:REPO_HWGUI      $env:PATH_HWGUI      --depth 1
-         git clone $env:REPO_HMGE       $env:PATH_HMGE       --depth 1
-         git clone $env:REPO_SEFAZCLASS $env:PATH_SEFAZCLASS --depth 1
-         git clone $env:REPO_WVGTST     $env:PATH_WVGTST     --depth 1
+         git clone $env:REPO_ADDONS      $env:PATH_ADDONS      --depth 1
+         git clone $env:REPO_BOLETOCLASS $env:PATH_BOLETOCLASS --depth 1
+         git clone $env:REPO_HWGUI       $env:PATH_HWGUI       --depth 1
+         git clone $env:REPO_HMGE        $env:PATH_HMGE        --depth 1
+         git clone $env:REPO_SEFAZCLASS  $env:PATH_SEFAZCLASS  --depth 1
+         git clone $env:REPO_WVGTST      $env:PATH_WVGTST      --depth 1
 
     - name: Build All
       env:
