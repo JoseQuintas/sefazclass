@@ -1,0 +1,14 @@
+#
+# rmchartclass
+#
+
+-hblib
+-olib/rmchartclass
+-hbx=rmchartclass.hbx
+
+rmchartclass.hbc
+hbct.hbc
+
+#$hb_pkg_install.hbm
+
+source/ze_rmchartclass.prg
