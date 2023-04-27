@@ -2,9 +2,10 @@
 #   wvgtst
 #
 
+-stop{!allwin}
 -hblib
--olib/wvgtest
--hbx=wvgtest.hbx
+-o../lib/wvgtest
+-hbx=../lib/wvgtest.hbx
 -Iinclude
 -w3
 -es2

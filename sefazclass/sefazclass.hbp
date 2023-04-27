@@ -14,9 +14,9 @@ hbwin.hbc
 
 -hblib
 
--olib/sefazclass
+-o../lib/sefazclass
 
--hbx=sefazclass.hbx
+-hbx=../lib/sefazclass.hbx
 
 #$hb_pkg_install.hbm
 

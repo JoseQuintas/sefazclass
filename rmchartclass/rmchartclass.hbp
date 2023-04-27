@@ -2,11 +2,12 @@
 # rmchartclass
 #
 
+-stop{!allwin}
 -hblib
--olib/rmchartclass
--hbx=rmchartclass.hbx
+-o../lib/rmchartclass
+-hbx=../lib/rmchartclass.hbx
 
-rmchartclass.hbc
+-Iinclude
 hbct.hbc
 
 #$hb_pkg_install.hbm

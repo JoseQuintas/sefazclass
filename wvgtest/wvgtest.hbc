@@ -1,3 +1,3 @@
-libpaths=lib
+libpaths=../lib
 libs=wvgtest gtwvg.hbc
 incpaths=include
