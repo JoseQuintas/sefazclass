@@ -1,0 +1,5 @@
+Description=any
+libs=pdfclass
+{!xhb}libs=hbhpdf.hbc hbzebra.hbc hbct.hbc
+libpaths=lib
+incpaths=include
