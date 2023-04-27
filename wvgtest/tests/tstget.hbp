@@ -1,0 +1,5 @@
+test.prg
+-L..
+wvgtst.hbc
+-w3
+-es2

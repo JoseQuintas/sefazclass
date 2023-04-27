@@ -1,0 +1,8 @@
+#define RT_MANIFEST 24
+#define APP_MANIFEST 1
+
+APP_MANIFEST RT_MANIFEST "all.exe.manifest"
+
+AppIcon  ICON   "tstjpa.ico"
+tstico   ICON   "tstjpa.ico"
+tstbmp   BITMAP "tstjpa.bmp"

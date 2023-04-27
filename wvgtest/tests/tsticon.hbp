@@ -1,0 +1,6 @@
+tsticon.prg
+tsticon.rc
+-L..
+wvgtst.hbc
+-w3
+-es2

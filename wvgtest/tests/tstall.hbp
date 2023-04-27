@@ -1,0 +1,6 @@
+all.prg
+all.rc
+-L..
+../wvgtst.hbc
+-w3
+-es2
