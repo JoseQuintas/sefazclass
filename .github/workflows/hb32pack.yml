@@ -84,8 +84,8 @@ jobs:
          cd c:\temp\harbour\addons\sefazclass\pdfclass
          hbmk2 pdfclass.hbp
 
-         cd c:\temp\harbour\addons\sefazclass\wvgtst
-         hbmk2 wvgtst.hbp -q
+         cd c:\temp\harbour\addons\sefazclass\wvgtest
+         hbmk2 wvgtest.hbp -q
 
          cd c:\temp\harbour\addons\hwgui
          hbmk2 hwgui.hbp -q
