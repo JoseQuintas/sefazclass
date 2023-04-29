@@ -1,7 +1,8 @@
 rmchart.prg
-ze_rmchartclass
 -L..
-wvgtst.hbc
+-I../include
+wvgtest.hbc
 hbct.hbc
+rmchartclass.hbc
 -w3
 -es2
