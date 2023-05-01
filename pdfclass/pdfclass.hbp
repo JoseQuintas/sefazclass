@@ -4,7 +4,6 @@ source/ze_pdfclass.prg
 -es2
 -m
 -n
--beep
 -q
 
 -o../lib/pdfclass

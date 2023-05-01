@@ -617,7 +617,7 @@ METHOD wvgTstControl:handleEvent( nMessage, aNM )
          RETURN ::hBrushBG
       ENDIF
 
-      RETURN EVENT_HANDELLED
+      RETURN EVENT_HANDLED
 
    CASE ::lSetCallback .AND. nMessage == HB_GTE_ANY
       IF aNM[ 1 ] == WM_LBUTTONUP
