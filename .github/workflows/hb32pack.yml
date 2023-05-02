@@ -49,17 +49,17 @@ jobs:
 
     - name: Load Source Code
       env:
-         REPO_SEFAZCLASS:   https://github.com/JoseQuintas/sefazclass
-         REPO_HWGUI:        https://github.com/JoseQuintas/hwgui
-         REPO_HMGE:         https://github.com/JoseQuintas/hmge
-         PATH_HWGUI:        c:\temp\harbour\addons\hwgui
-         PATH_HMGE:         c:\temp\harbour\addons\hmge
-         PATH_SEFAZCLASS:   c:\temp\harbour\addons\sefazclass
+         REPO_SEFAZ:   https://github.com/JoseQuintas/sefazclass
+         REPO_HWGUI:   https://github.com/JoseQuintas/hwgui
+         REPO_HMGE:    https://github.com/JoseQuintas/hmge
+         PATH_HWGUI:   c:\temp\harbour\addons\hwgui
+         PATH_HMGE:    c:\temp\harbour\addons\hmge
+         PATH_SEFAZ:   c:\temp\harbour\addons\sefazclass
       run: |
          c:
-         git clone $env:REPO_HWGUI       $env:PATH_HWGUI       --depth 1
-         git clone $env:REPO_HMGE        $env:PATH_HMGE        --depth 1
-         git clone $env:REPO_SEFAZCLASS  $env:PATH_SEFAZCLASS  --depth 1
+         git clone $env:REPO_HWGUI  $env:PATH_HWGUI  --depth 1
+         git clone $env:REPO_HMGE   $env:PATH_HMGE   --depth 1
+         git clone $env:REPO_SEFAZ  $env:PATH_SEFAZ  --depth 1
 
     - name: Build All
       env:
