@@ -27,7 +27,7 @@ jobs:
          workflow_conclusion: success
          name: mingw_0703
          path: c:\temp
-         repo: JoseQuintas/addons
+         repo: JoseQuintas/sefazclass
 
     - name: Save
       uses: actions/upload-artifact@v3

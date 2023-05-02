@@ -28,7 +28,7 @@ jobs:
          workflow_conclusion: success
          name: mingw_0703
          path: c:\temp
-         repo: JoseQuintas/addons
+         repo: JoseQuintas/sefazclass
 
     - name: harbour 3.2
       uses: dawidd6/action-download-artifact@v2
@@ -37,7 +37,7 @@ jobs:
          workflow_conclusion: success
          name: hb32_0703
          path: c:\temp
-         repo: JoseQuintas/addons
+         repo: JoseQuintas/sefazclass
 
     - name: Unzip
       env:
