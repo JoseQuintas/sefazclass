@@ -57,9 +57,9 @@ jobs:
          PATH_HMGE:         c:\temp\harbour\addons\hmge
       run: |
          c:
-         git clone $env:REPO_SEFAZCLASS  $env:PATH_SEFAZCLASS  --depth 1
          git clone $env:REPO_HWGUI       $env:PATH_HWGUI       --depth 1
          git clone $env:REPO_HMGE        $env:PATH_HMGE        --depth 1
+         git clone $env:REPO_SEFAZCLASS  $env:PATH_SEFAZCLASS  --depth 1
 
     - name: Build All
       env:
