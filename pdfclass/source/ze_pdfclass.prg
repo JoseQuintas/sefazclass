@@ -300,8 +300,8 @@ METHOD DrawText( nTop, nLeft, xValue, cPicture, nFontSize, cFontName, nAngle, an
       HPDF_Page_ShowText( ::oPage, cTexto )
       HPDF_Page_EndText( ::oPage )
       IF anRGB != NIL
-         HPDF_Page_SetRGBFill( ::Page, 0, 0, 0 )
-         HPDF_Page_SetRGBStroke( ::Page, 0, 0, 0 )
+         HPDF_Page_SetRGBFill( ::oPage, 0, 0, 0 )
+         HPDF_Page_SetRGBStroke( ::oPage, 0, 0, 0 )
       ENDIF
    ENDIF
 
