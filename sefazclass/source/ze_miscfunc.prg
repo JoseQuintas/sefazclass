@@ -126,7 +126,7 @@ FUNCTION Date_Add( dDate, nValue, cType )
       ENDIF
       IF nMonth > 12
          nYear  += Int( ( nMonth - 1 ) / 12 )
-         nMonth := Mod( ( nMonth - 1 ), 12 )
+         nMonth := Mod( nMonth, 12 )
       ENDIF
       dDate := Stod( StrZero( nYear, 4 ) + StrZero( nMonth, 2 ) + "01" ) + nDay - 1
       IF Month( dDate ) != nMonth
