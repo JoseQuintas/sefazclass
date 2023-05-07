@@ -35,26 +35,26 @@ STATIC FUNCTION ValidCpf( cCpf )
 
    RETURN lOk
 
-FUNCTION ValidCnpjCpf( cCnpj )
+FUNCTION ValidCnpjCpf( cValue )
 
    LOCAL lOk
 
-   lOk := ( ValidCnpj( @cCnpj ) .OR. ValidCpf( @cCnpj ) )
+   lOk := ( ValidCnpj( @cValue ) .OR. ValidCpf( @cValue ) )
 
    RETURN lOk
 
-FUNCTION FormatCnpj( mCnpjCpf )
+FUNCTION FormatCnpj( cValue )
 
-   LOCAL mPicture := "@X"
+   LOCAL cPicture := "@X"
 
-   mCnpjCpf := SoNumeros( mCnpjCpf )
-   IF Len( Trim( mCnpjCpf ) ) == 14
-      mPicture := "@R 99.999.999/9999-99"
-   ELSEIF Len( Trim( mCnpjCpf ) ) == 11
-      mPicture := "@R 999.999.999-99"
+   cValue := SoNumeros( cValue )
+   IF Len( cValue ) == 14
+      cPicture := "@R 99.999.999/9999-99"
+   ELSEIF Len( cValue ) == 11
+      cPicture := "@R 999.999.999-99"
    ENDIF
 
-   RETURN Pad( Transform( mCnpjCpf, mPicture ), 18 )
+   RETURN Pad( Transform( cValue, cPicture ), 18 )
 
 FUNCTION ValidRenavam( cRenavam )
 
