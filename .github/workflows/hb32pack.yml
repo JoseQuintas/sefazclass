@@ -75,8 +75,8 @@ jobs:
          cd c:\temp\harbour\addons\sefazclass\sefazclass
          hbmk2 sefazclass.hbp
 
-         cd c:\temp\harbour\addons\sefazclass\boletoclass
-         hbmk2 boletoclass.hbp
+         cd c:\temp\harbour\addons\sefazclass\bostaurus
+         hbmk2 bostaurus.hbp
 
          cd c:\temp\harbour\addons\sefazclass\rmchartclass
          hbmk2 rmchartclass.hbp
