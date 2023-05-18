@@ -1,0 +1,7 @@
+h_bostaurus.prg
+c_bostaurus.c
+-obostaurus
+-hbx=../lib/${hb_name}.hbx
+-hblib
+-o../lib/${hbname}
+-Iinclude

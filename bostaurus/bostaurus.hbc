@@ -1,0 +1,4 @@
+libs=bostaurus
+libs=hbwin.hbc
+incpaths=include
+libpaths=../lib
