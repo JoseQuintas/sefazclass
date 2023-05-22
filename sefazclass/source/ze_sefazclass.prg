@@ -1675,11 +1675,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    cSoapAction := ::cSoapAction
    BEGIN SEQUENCE WITH __BreakBlock()
       ::cXmlRetorno := [<erro text="*ERRO* Erro: Criando objeto MSXML2.ServerXMLHTTP" />]
-//#ifdef __XHARBOUR__
-//      oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.5.0" )
-//#else
       oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
-//#endif
       ::cXmlRetorno := [erro text="*ERRO* Erro: No uso do objeto MSXML2.ServerXmlHTTP.6.0" />]
       IF ::cCertificado != NIL
          oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )

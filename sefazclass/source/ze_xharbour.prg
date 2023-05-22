@@ -6,6 +6,10 @@ ZE_XHARBOUR - compatibilidade xHarbour
 
 #ifdef __XHARBOUR__
 
+FUNCTION win_OleCreateObject( cName )
+
+   RETURN xhb_CreateObject( cName )
+
 FUNCTION hb_MemoWrit( cFile, cText )
 
    RETURN MemoWrit( cFile, cText, .T. )
