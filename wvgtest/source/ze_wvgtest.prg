@@ -468,14 +468,14 @@ METHOD wvgTstUpDown:SetValues( nValue, nRangeMin, nRangeMax )
 CREATE CLASS wvgtstControl INHERIT WvgWindow
 
    VAR    ClassName                             INIT "WVGCustom"
-   VAR    autosize                              INIT .F.
+   VAR    Autosize                              INIT .F.
    VAR    Border                                INIT .T.
-   VAR    cancel                                INIT .F.
+   VAR    Cancel                                INIT .F.
    VAR    cText
-   VAR    default                               INIT .F.
-   VAR    drawMode                              INIT WVG_DRAW_NORMAL
-   VAR    preSelect                             INIT .F.
-   VAR    pointerFocus                          INIT .F.
+   VAR    Default                               INIT .F.
+   VAR    DrawMode                              INIT WVG_DRAW_NORMAL
+   VAR    PreSelect                             INIT .F.
+   VAR    PointerFocus                          INIT .F.
    VAR    Style                                 INIT 0
    VAR    cImage
    VAR    nIconBitmap                           INIT 0
@@ -484,17 +484,17 @@ CREATE CLASS wvgtstControl INHERIT WvgWindow
    VAR    nFontSize
    VAR    lImageResize                          INIT .T.
 
-   METHOD new( oParent, oOwner, aPos, aSize, aPresParams, lVisible )
-   METHOD create( oParent, oOwner, aPos, aSize, aPresParams, lVisible )
-   METHOD configure( oParent, oOwner, aPos, aSize, aPresParams, lVisible )
-   METHOD destroy()
-   METHOD handleEvent( nMessage, aNM )
-   METHOD setColorBG( nRGB )
+   DESTRUCTOR destroy()
+   METHOD New( oParent, oOwner, aPos, aSize, aPresParams, lVisible )
+   METHOD Create( oParent, oOwner, aPos, aSize, aPresParams, lVisible )
+   METHOD Configure( oParent, oOwner, aPos, aSize, aPresParams, lVisible )
+   METHOD HandleEvent( nMessage, aNM )
+   METHOD SetColorBG( nRGB )
 
-   METHOD activate( xParam )                    SETGET
-   METHOD setText( cText )
+   METHOD Activate( xParam )                    SETGET
+   METHOD SetText( cText )
    METHOD SetImage()
-   METHOD draw( xParam )                        SETGET
+   METHOD Draw( xParam )                        SETGET
 
    ENDCLASS
 

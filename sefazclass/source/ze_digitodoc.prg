@@ -5,6 +5,14 @@ José Quintas
 2017.11.27 - Validação PIS
 */
 
+FUNCTION IsCnpj( cValue )
+
+   RETURN Len( SoNumeros( cValue ) ) == 14
+
+FUNCTION IsCpf( cValue )
+
+   RETURN Len( SoNumeros( cValue ) ) == 11
+
 STATIC FUNCTION ValidCnpj( cCnpj )
 
    LOCAL cNumero, lOk, cPicture := "@R 99.999.999/9999-99"
