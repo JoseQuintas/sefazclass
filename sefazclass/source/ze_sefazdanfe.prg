@@ -526,7 +526,7 @@ METHOD QuadroNotaFiscal() CLASS hbNFeDaNFe
    ENDIF
    ::nLinhaPdf -= 16
    ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 240, 16, "INSCRIÇÃO ESTADUAL", ::aEmit[ "IE" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-   ::DrawBoxTituloTexto( 245, ::nLinhaPdf, 225, 16, "INSCRIÇÃO ESTADUAL DO SUBS. TRIBUTÁRIO", "", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 245, ::nLinhaPdf, 225, 16, "INSCRIÇÃO ESTADUAL DO SUBS. TRIBUTÁRIO", ::aEmit[ "IEST" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::DrawBoxTituloTexto( 470, ::nLinhaPdf, 120, 16, "C.N.P.J.", Transform( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::nLinhaPdf -= 17
 
