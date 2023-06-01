@@ -17,7 +17,10 @@ José Quintas
 #define ALL_PARAMETERS ...
 #endif
 
-#define WS_NFE_DEFAULT "4.00"
+#define WS_BPE_DEFAULT  "1.00"
+#define WS_NFE_DEFAULT  "4.00"
+#define WS_CTE_DEFAULT  "3.00"
+#define WS_MDFE_DEFAULT "3.00"
 
 FUNCTION SefazClassValidaXml( cXml, cXsd )
 
@@ -162,7 +165,7 @@ METHOD AssinaXml() CLASS SefazClass
 
 METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
-   hb_Default( @::cVersao, "1.00" )
+   hb_Default( @::cVersao, WS_BPE_DEFAULT )
    hb_Default( @::cProjeto, WS_PROJETO_BPE )
    ::aSoapUrlList := WS_BPE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
@@ -188,7 +191,7 @@ METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD BPeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   hb_Default( @::cVersao, "1.00" )
+   hb_Default( @::cVersao, WS_BPE_DEFAULT )
    hb_Default( @::cProjeto, WS_PROJETO_BPE )
    ::aSoapUrlList := WS_BPE_STATUSSERVICO
    ::Setup( cUF, cCertificado, cAmbiente )
@@ -205,7 +208,7 @@ METHOD BPeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
    ::aSoapUrlList := WS_CTE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
@@ -231,7 +234,7 @@ METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
    IF cRecibo != NIL
       ::cRecibo := cRecibo
@@ -256,7 +259,7 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
 METHOD CTeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente ) CLASS SefazClass
 
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
    hb_Default( @nSequencia, 1 )
    ::aSoapUrlList := WS_CTE_ENVIAEVENTO
@@ -291,7 +294,8 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
 
    LOCAL cXml := ""
 
-   cXml += [<detEvento versaoEvento="3.00">]
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
+   cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evCancCTe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento" )
    cXml +=       XmlTag( "nProt", Ltrim( Str( nProt, 16 ) ) )
@@ -307,7 +311,8 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
 
    LOCAL oElement, cXml := ""
 
-   cXml += [<detEvento versaoEvento="3.00">]
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
+   cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=      [<evCCeCTe>]
    cXml +=          XmlTag( "descEvento", "Carta de Correcao" )
    FOR EACH oElement IN aAlteracoes
@@ -339,7 +344,8 @@ METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente ) C
 
    LOCAL cXml := ""
 
-   cXml += [<detEvento versaoEvento="3.00">]
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
+   cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evPrestDesacordo>]
    cXml +=       XmlTag( "descEvento", "Prestacao do Servico em Desacordo" )
    cXml +=       XmlTag( "indDesacordoOper", "1" )
@@ -355,9 +361,10 @@ METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, 
 
    LOCAL oElement, cXml := "", cHash
 
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
    cHash := hb_Sha1( cChave + hb_Base64Encode( cStrImagem ), .T. )
    cHash := hb_Base64Encode( cHash )
-   cXml += [<detEvento versaoEvento="3.00">]
+   cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evCECTe>]
    cXml +=       XmlTag( "descEvento", "Comprovante de Entrega do CT-e" )
    cXml +=       XmlTag( "nProt", Ltrim( Str( nProt ) ) )
@@ -390,7 +397,8 @@ METHOD CTeEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cCertifica
 
    LOCAL cXml := ""
 
-   cXml += [<detEvento versaoEvento="3.00">]
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
+   cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evCancCECTe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento do Comprovante de Entrega do CT-e" )
    cXml +=       XmlTag( "nProt", Ltrim( Str( nProt ) ) )
@@ -405,7 +413,7 @@ METHOD CTeEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cCertifica
 METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
@@ -432,7 +440,7 @@ METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
@@ -456,7 +464,7 @@ METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
    ::aSoapUrlList := WS_CTE_INUTILIZA
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "cteInutilizacaoCT"
@@ -503,7 +511,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    LOCAL oDoc, cBlocoXml, aList, cURLConsulta := "http:", nPos
 
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
    IF Empty( cLote )
       cLote := "1"
    ENDIF
@@ -521,7 +529,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
 
    oDoc := XmlToDoc( cXml, .F. )
    aList := WS_CTE_QRCODE
-   nPos := hb_ASCan( aList, { | e | e[ 1 ] == DfeUF( oDoc:cChave ) .AND. e[ 2 ] == "3.00" + iif( oDoc:cAmbiente == "1", "P", "H" ) } )
+   nPos := hb_ASCan( aList, { | e | e[ 1 ] == DfeUF( oDoc:cChave ) .AND. e[ 2 ] == ::cVersao + iif( oDoc:cAmbiente == "1", "P", "H" ) } )
    IF nPos != 0
       cURLConsulta := aList[ nPos, 3 ]
    ENDIF
@@ -553,7 +561,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
 
 METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
    hb_Default( @::cProjeto, WS_PROJETO_CTE )
    ::aSoapUrlList := WS_CTE_STATUSSERVICO
    ::Setup( cUF, cCertificado, cAmbiente )
@@ -570,7 +578,7 @@ METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
 
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
    ::cSoapAction  := "mdfeConsNaoEnc"
    ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc"
@@ -593,7 +601,7 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass
 METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::aSoapUrlList := WS_MDFE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
    ::cSoapAction  := "mdfeConsultaMDF"
@@ -620,7 +628,7 @@ METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    IF cRecibo != NIL
       ::cRecibo := cRecibo
    ENDIF
@@ -652,7 +660,7 @@ METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCl
 METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    hb_Default( @cUltNSU, "0" )
    hb_Default( @cNSU, "" )
 
@@ -687,7 +695,7 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
 METHOD MDFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    hb_Default( @nSequencia, 1 )
 
    ::aSoapUrlList := WS_MDFE_EVENTO
@@ -720,7 +728,7 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
 
    LOCAL cXml := ""
 
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evCancMDFe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento" )
@@ -737,7 +745,7 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia, nProt, cUFFim , cMunCarrega ,
 
    LOCAL cXml := ""
 
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evEncMDFe>]
    cXml +=       XmlTag( "descEvento", "Encerramento" )
@@ -756,7 +764,7 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
 
    LOCAL cXml := ""
 
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evIncCondutorMDFe>]
    cXml +=       XmlTag( "descEvento", "Inclusao Condutor" )
@@ -775,7 +783,7 @@ METHOD MDFeEventoPagamento( cChave, nSequencia, cXmlPagamento, cCertificado, cAm
 
    LOCAL cXml := ""
 
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml += cXmlPagamento
    cXml += [</detEvento>]
@@ -787,7 +795,7 @@ METHOD MDFeEventoPagamento( cChave, nSequencia, cXmlPagamento, cCertificado, cAm
 METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
@@ -814,7 +822,7 @@ METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
@@ -840,7 +848,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    LOCAL oDoc, cBlocoXml, aList, nPos, cURLConsulta := "http:"
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    hb_Default( @cLote, "1" )
    ::aSoapUrlList := WS_MDFE_AUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
@@ -855,7 +863,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ENDIF
    oDoc := XmlToDoc( cXml, .F. )
    aList := WS_MDFE_QRCODE
-   nPos := hb_ASCan( aList, { | e | e[ 2 ] == "3.00" + iif( oDoc:cAmbiente == "1", "P", "H" ) } )
+   nPos := hb_ASCan( aList, { | e | e[ 2 ] == ::cVersao + iif( oDoc:cAmbiente == "1", "P", "H" ) } )
    IF nPos != 0
       cURLConsulta := aList[ nPos, 3 ]
    ENDIF
@@ -891,7 +899,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 // METHOD MDFeRecepcaoSinc( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass
 //
 //   hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-//   hb_Default( @::cVersao, "3.00" )
+//   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
 //   ::aSoapUrlList := WS_MDFE_RECEPCAOSINC
 //   ::Setup( cUF, cCertificado, cAmbiente )
 //   ::cSoapAction := ""
@@ -916,7 +924,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
    hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-   hb_Default( @::cVersao, "3.00" )
+   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::aSoapUrlList := WS_MDFE_STATUSSERVICO
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "mdfeStatusServicoMDF"
