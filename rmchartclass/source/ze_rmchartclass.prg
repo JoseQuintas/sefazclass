@@ -21,7 +21,7 @@ CREATE CLASS RMChartClass
    VAR    aIdChartList                     INIT {}
    CLASSVAR ChartID INIT 0
 
-   DESTRUCTOR Destroy()
+   METHOD Destroy()
    METHOD GetChartID()                     INLINE ::ChartID += 1, AAdd( ::aIdChartList, ::ChartID ), ::ChartID
    METHOD FreeChartList()
    METHOD Init()                           INLINE ::hDLL := hb_libLoad( "RMChart.dll" )
