@@ -16,6 +16,11 @@
 
 #define XML_UTF8                   [<?xml version="1.0" encoding="UTF-8"?>]
 
+#define WS_BPE_DEFAULT  "1.00"
+#define WS_NFE_DEFAULT  "4.00"
+#define WS_CTE_DEFAULT  "3.00"
+#define WS_MDFE_DEFAULT "3.00"
+
 #define WS_BPE_CONSULTAPROTOCOLO { ;
    { "MG",   "1.00P", "https://bpe.fazenda.mg.gov.br/bpe/services/BPeConsulta" }, ;
    { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
@@ -56,11 +61,13 @@
    { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteConsulta" }, ;
    { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta" }, ;
    { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
+   { "SP",   "4.00P", "https://nfe.fazenda.sp.gov.br/CTeWS/WS/CTeConsultaV4.asmx" }, ;
    { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl" }, ;
    { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteConsulta.asmx" }, ;
    { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" }, ;
    ;
    { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
+   { "SP",   "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeWS/WS/CTeConsultaV4.asmx" }, ;
    { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" } }
 
 #define WS_CTE_RETAUTORIZACAO { ;
@@ -81,9 +88,11 @@
    { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews2/services/CteRecepcaoEvento?wsdl" }, ;
    { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcaoEvento?wsdl" }, ;
    { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
+   { "SP",   "4.00P", "https://nfe.fazenda.sp.gov.br/CTeWS/WS/CTeRecepcaoEventoV4.asmx" }, ;
    { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" }, ;
    ;
    { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
+   { "SP",   "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeWS/WS/CTeRecepcaoEventoV4.asmx" }, ;
    { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" } }
 
 #define WS_CTE_INUTILIZA { ;
@@ -103,6 +112,7 @@
    { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao" }, ;
    { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl" }, ;
    { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+   { "SP",   "4.00P", "https://nfe.fazenda.sp.gov.br/CTeWS/WS/CTeRecepcaoSincV4.asmx" }, ;
    { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
    { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
    ;
@@ -115,10 +125,12 @@
    { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteStatusServico" }, ;
    { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl" }, ;
    { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
+   { "SP",   "4.00P", "https://nfe.fazenda.sp.gov.br/CTeWS/WS/CTeStatusServicoV4.asmx" }, ;
    { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteStatusServico.asmx" }, ;
    { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" }, ;
    ;
    { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
+   { "SP",   "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeWS/WS/CTeStatusServicoV4.asmx" }, ;
    { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" } }
 
 #define WS_CTE_QRCODE { ;
@@ -332,6 +344,7 @@
    { "RS",    "4.00P",  "https://nfe.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
    { "SP",    "4.00P",  "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" }, ;
    { "SVAN",  "4.00P",  "https://www.sefazvirtual.fazenda.gov.br/NFeInutilizacao4/NFeInutilizacao4.asmx" }, ;
+   { "SVCAN", "4.00P",  "https://www.svc.fazenda.gov.br/NFeInutilizacao4/NFeInutilizacao4.asmx" }, ;
    { "SVCRS", "4.00P",  "https://nfe.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
    { "SVRS",  "4.00P",  "https://nfe.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
    ;

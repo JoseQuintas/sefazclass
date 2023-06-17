@@ -22,6 +22,10 @@ hbwin.hbc
 
 source/ze_atmseguroclass.prg
 source/ze_sefazclass.prg
+source/ze_sefazclass_bpe.prg
+source/ze_sefazclass_cte.prg
+source/ze_sefazclass_mdfe.prg
+source/ze_sefazclass_nfe.prg
 source/ze_sefazcapicom.prg
 source/ze_sefazAssina.prg
 source/ze_sefazAssinachk.prg
@@ -36,6 +40,4 @@ source/ze_xmlfunc.prg
 source/ze_miscfunc.prg
 source/ze_xharbour.prg
 source/ze_digitodoc.prg
-source/ze_extenso.prg
-source/ze_inscestadual.prg
 

@@ -24,22 +24,23 @@ REQUEST HB_CODEPAGE_PTISO
 #define OPC_NFCE            6
 #define OPC_STATUS_NFE      7
 #define OPC_STATUS_CTE      8
-#define OPC_STATUS_MDFE     9
-#define OPC_CADASTRO        10
-#define OPC_PROTOCOLO_NFE   11
-#define OPC_PROTOCOLO_CTE   12
-#define OPC_PROTOCOLO_MDFE  13
-#define OPC_DESTINADAS      14
-#define OPC_VALIDA_XML      15
-#define OPC_ASSINA_TESTE    16
-#define OPC_ASSINA_USUARIO  17
-#define OPC_CONSULTA_RECIBO 18
-#define OPC_ENVIO_TESTE     19
-#define OPC_ENVIO_USUARIO   20
-#define OPC_MANIFESTACAO    21
-#define OPC_DOWNLOAD_NFE    22
-#define OPC_CERT_REMOVE     23
-#define OPC_STATUSGERAL     24
+#define OPC_STATUS_CTE4     9
+#define OPC_STATUS_MDFE     10
+#define OPC_CADASTRO        11
+#define OPC_PROTOCOLO_NFE   12
+#define OPC_PROTOCOLO_CTE   13
+#define OPC_PROTOCOLO_MDFE  14
+#define OPC_DESTINADAS      15
+#define OPC_VALIDA_XML      16
+#define OPC_ASSINA_TESTE    17
+#define OPC_ASSINA_USUARIO  18
+#define OPC_CONSULTA_RECIBO 19
+#define OPC_ENVIO_TESTE     20
+#define OPC_ENVIO_USUARIO   21
+#define OPC_MANIFESTACAO    22
+#define OPC_DOWNLOAD_NFE    23
+#define OPC_CERT_REMOVE     24
+#define OPC_STATUSGERAL     25
 
 #define VAR_CERTIFICADO 1
 #define VAR_UF          2
@@ -94,6 +95,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT Str( OPC_NFCE, 2 )            + "-Nota (atual=" + iif( aVarList[ VAR_NFCE ] == "S", "NFCE", "NFE" ) + ")"
       @ Row() + 1, 5 PROMPT Str( OPC_STATUS_NFE, 2 )      + "-Consulta Status NFE"
       @ Row() + 1, 5 PROMPT Str( OPC_STATUS_CTE, 2 )      + "-Consulta Status CTE"
+      @ Row() + 1, 5 PROMPT Str( OPC_STATUS_CTE4, 2 )     + "-Consulta Status CTE 4.0"
       @ Row() + 1, 5 PROMPT Str( OPC_STATUS_MDFE, 2 )     + "-Consulta Status MDFE"
       @ Row() + 1, 5 PROMPT Str( OPC_CADASTRO, 2 )        + "-Consulta Cadastro NFE (digitado)"
       @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_NFE, 2 )   + "-Protocolo NFE (digitado)"
@@ -151,6 +153,20 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          oSefaz:cVersao := "3.00"
          cXmlRetorno := oSefaz:CteStatusServico()
          //wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
+         wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
+         cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" )    + hb_Eol()
+         cTexto += "Versão Aplicativo:" + XmlNode( cXmlRetorno, "verAplic" ) + hb_Eol()
+         cTexto += "Status:"            + XmlNode( cXmlRetorno, "cStat" )    + hb_Eol()
+         cTexto += "Motivo:"            + XmlNode( cXmlRetorno, "xMotivo" )  + hb_Eol()
+         cTexto += "UF:"                + XmlNode( cXmlRetorno, "cUF" )      + hb_Eol()
+         cTexto += "Data/Hora:"         + XmlNode( cXmlRetorno, "dhRecbto" ) + hb_Eol()
+         cTexto += "Tempo Médio:"       + XmlNode( cXmlRetorno, "tMed" )     + hb_Eol()
+         wapi_MessageBox( , cTexto, "Informação Extraída" )
+
+      CASE nOpc == OPC_STATUS_CTE4
+         oSefaz:cVersao := "4.00"
+         cXmlRetorno := oSefaz:CteStatusServico()
+         wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
          wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
          cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" )    + hb_Eol()
          cTexto += "Versão Aplicativo:" + XmlNode( cXmlRetorno, "verAplic" ) + hb_Eol()
