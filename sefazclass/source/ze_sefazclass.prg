@@ -35,25 +35,28 @@ CREATE CLASS SefazClass INHERIT Sefazclass_BPE, SefazClass_CTE, SefazClass_MDFE,
    VAR    cProjeto        INIT NIL
    VAR    cAmbiente       INIT WS_AMBIENTE_PRODUCAO
    VAR    cVersao         INIT NIL
-   VAR    cVersaoQrCode   INIT "2.00"                  // Versao do QRCode
-   VAR    cScan           INIT "N"                     // Indicar SCAN/SVAN/SVRS testes iniciais
    VAR    cUF             INIT "SP"                    // Modificada conforme método
    VAR    cCertificado    INIT ""                      // CN (NOME) do certificado
+   /* contingência e sinc/assinc */
+   VAR    cScan           INIT "N"                     // Indicar SCAN/SVAN/SVRS testes iniciais
+   VAR    cIndSinc        INIT WS_RETORNA_RECIBO       // Poucas UFs opção de protocolo
+   /* pra NFCe */
+   VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
+   VAR    cCSC            INIT ""                      // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
+   /* configuração não comum */
+   VAR    cVersaoQrCode   INIT "2.00"                  // Versao do QRCode
+   VAR    nTempoEspera    INIT 10                      // intervalo entre envia lote e consulta recibo
+   VAR    nSoapTimeOut    INIT 15000                  // Limite de espera por resposta em segundos * 1000
    VAR    lEmitenteCPF    INIT .F.                     // Para o caso de CPF ao invés de CNPJ
    VAR    ValidFromDate   INIT ""                      // Validade do certificado
    VAR    ValidToDate     INIT ""                      // Validade do certificado
-   VAR    cIndSinc        INIT WS_RETORNA_RECIBO       // Poucas UFs opção de protocolo
-   VAR    nTempoEspera    INIT 10                      // intervalo entre envia lote e consulta recibo
-   VAR    nSoapTimeOut    INIT 15000                  // Limite de espera por resposta em segundos * 1000
    VAR    cUFTimeZone     INIT ""                      // Para TimeZone diferente da UF de comunicação
    VAR    cUserTimeZone   INIT ""                      // Para TimeZone definido pelo usuário
-   VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
-   VAR    cCSC            INIT ""                      // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
    VAR    cPassword       INIT ""                      // Senha de arquivo PFX
    VAR    cProxyUrl       INIT ""
    VAR    cProxyUser      INIT ""
    VAR    cProxyPassword  INIT ""
-   /* XMLs de cada etapa */
+   /* XMLs de cada etapa, se precisar conferir */
    VAR    cXmlDocumento   INIT ""                      // O documento oficial, com ou sem assinatura, depende do documento
    VAR    cXmlEnvio       INIT ""                      // usado pra criar/complementar XML do documento
    VAR    cXmlSoap        INIT ""                      // XML completo enviado pra Sefaz, incluindo informações do envelope

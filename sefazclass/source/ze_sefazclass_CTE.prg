@@ -35,7 +35,7 @@ CREATE CLASS SefazClass_CTE
 METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   ::cProjeto := WS_PROJETO_CTE
    ::aSoapUrlList := WS_CTE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
    ::cSoapAction  := "cteConsultaCT"
@@ -61,7 +61,7 @@ METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_
 METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   ::cProjeto := WS_PROJETO_CTE
    IF cRecibo != NIL
       ::cRecibo := cRecibo
    ENDIF
@@ -86,8 +86,8 @@ METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 METHOD CTeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
    hb_Default( @nSequencia, 1 )
+   ::cProjeto := WS_PROJETO_CTE
    ::aSoapUrlList := WS_CTE_ENVIAEVENTO
    ::cSoapAction  := "cteRecepcaoEvento"
    ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento"
@@ -121,6 +121,7 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    LOCAL cXml := ""
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
+   ::cProjeto := WS_PROJETO_CTE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evCancCTe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento" )
@@ -138,6 +139,7 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
    LOCAL oElement, cXml := ""
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
+   ::cProjeto := WS_PROJETO_CTE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=      [<evCCeCTe>]
    cXml +=          XmlTag( "descEvento", "Carta de Correcao" )
@@ -171,6 +173,7 @@ METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente ) C
    LOCAL cXml := ""
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
+   ::cProjeto := WS_PROJETO_CTE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evPrestDesacordo>]
    cXml +=       XmlTag( "descEvento", "Prestacao do Servico em Desacordo" )
@@ -188,6 +191,7 @@ METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, 
    LOCAL oElement, cXml := "", cHash
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
+   ::cProjeto := WS_PROJETO_CTE
    cHash := hb_Sha1( cChave + hb_Base64Encode( cStrImagem ), .T. )
    cHash := hb_Base64Encode( cHash )
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
@@ -224,6 +228,7 @@ METHOD CTeEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cCertifica
    LOCAL cXml := ""
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
+   ::cProjeto := WS_PROJETO_CTE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evCancCECTe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento do Comprovante de Entrega do CT-e" )
@@ -238,7 +243,7 @@ METHOD CTeEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cCertifica
 
 METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass_CTE
 
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   ::cProjeto := WS_PROJETO_CTE
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
@@ -265,7 +270,7 @@ METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass_CTE
 
 METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass_CTE
 
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   ::cProjeto := WS_PROJETO_CTE
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
@@ -289,7 +294,7 @@ METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass_C
 
 METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   ::cProjeto := WS_PROJETO_CTE
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    ::aSoapUrlList := WS_CTE_INUTILIZA
    ::Setup( cUF, cCertificado, cAmbiente )
@@ -336,7 +341,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
 
    LOCAL oDoc, cBlocoXml, aList, cURLConsulta := "http:", nPos
 
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   ::cProjeto := WS_PROJETO_CTE
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    IF Empty( cLote )
       cLote := "1"
@@ -388,20 +393,24 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
 METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   ::cProjeto := WS_PROJETO_CTE
    ::aSoapUrlList := WS_CTE_STATUSSERVICO
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "cteStatusServicoCT"
    IF ::cVersao == "3.00"
       ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico"
+      ::cXmlEnvio    := [<consStatServCte versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
+      ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
+      ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
+      ::cXmlEnvio    += [</consStatServCte>]
    ELSE
       ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CTeStatusServicoV4"
+      ::cXmlEnvio    := [<consStatServCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
+      ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
+      ::cXmlEnvio    +=    XmlTag( "cUF", ::UFCodigo( ::cUF ) )
+      ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
+      ::cXmlEnvio    += [</consStatServCTe>]
    ENDIF
-
-   ::cXmlEnvio    := [<consStatServCte versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
-   ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
-   ::cXmlEnvio    += [</consStatServCte>]
    ::XmlSoapPost()
 
    RETURN ::cXmlRetorno
