@@ -1,6 +1,6 @@
-all.prg
-all.rc
+tstall.prg
+tstall.rc
 -L..
-../wvgtst.hbc
+../wvgtest.hbc
 -w3
 -es2

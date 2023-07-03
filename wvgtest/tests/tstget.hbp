@@ -1,5 +1,5 @@
-test.prg
+tstget.prg
 -L..
-wvgtst.hbc
+../wvgtest.hbc
 -w3
 -es2

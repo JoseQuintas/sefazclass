@@ -1,6 +1,7 @@
 tsticon.prg
+tstall.rc
 tsticon.rc
 -L..
-wvgtst.hbc
+../wvgtest.hbc
 -w3
 -es2
