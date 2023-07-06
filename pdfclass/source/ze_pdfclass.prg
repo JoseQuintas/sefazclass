@@ -73,10 +73,10 @@ CREATE CLASS PDFClass
    METHOD DrawLine( nTop, nLeft, nBottom, nRight, nPenSize )
    METHOD DrawBox( nTop, nLeft, nBottom, nRight, nPenSize, nFillType, anRGB )
    METHOD DrawBoxSize( nTop, nLeft, nHeight, nWidth, nPenSize, nFillType, anRGB )
-   METHOD DrawImageBox( nTop, nLeft, nBottom, nRight, cJPEGFile )
-   METHOD DrawImageSize( nRow, nCol, nHeight, nWidth, cJPEGFile )
-   METHOD DrawMemImageBox( nTop, nLeft, nBottom, nRight, cJPEGMem )
-   METHOD DrawMemImageSize( nRow, nCol, nHeight, nWidth, cJPEGMem )
+   METHOD DrawImageBox( nTop, nLeft, nBottom, nRight, cJPEGFile, lPNG )
+   METHOD DrawImageSize( nRow, nCol, nHeight, nWidth, cJPEGFile, lPNG )
+   METHOD DrawMemImageBox( nTop, nLeft, nBottom, nRight, cJPEGMem, lPNG )
+   METHOD DrawMemImageSize( nRow, nCol, nHeight, nWidth, cJPEGMem, lPNG )
    METHOD Cancel()
    METHOD LstToPdf( cInputFile )
    METHOD SetType( nPrinterType )
@@ -330,29 +330,34 @@ METHOD DrawLine( nTop, nLeft, nBottom, nRight, nPenSize ) CLASS PDFClass
 
    RETURN NIL
 
-METHOD DrawImageBox( nTop, nLeft, nBottom, nRight, cJPEGFile ) CLASS PDFClass
+METHOD DrawImageBox( nTop, nLeft, nBottom, nRight, cJPEGFile, lPNG ) CLASS PDFClass
 
    LOCAL oImage, nWidth, nHeight
 
    IF ::nPrinterType == PDFCLASS_TXT // .OR. ! File( cJPEGFile )
       RETURN NIL
    ENDIF
+   hb_Default( @lPNG, .F. )
    nWidth  :=  ::ColToPdfCol( nRight - nLeft ) - ::ColToPdfCol( 0 )
    nHeight := ( ::RowToPdfRow( 0 ) - ::RowToPdfRow( nBottom - nTop ) )
    nBottom := ::RowToPDFRow( nBottom )
    nLeft   := ::ColToPdfCol( nLeft )
-   oImage  := HPDF_LoadJPEGImageFromFile( ::oPdf, cJPEGFile )
+   IF lPNG
+      oImage  := HPDF_LoadPNGImageFromFile( ::oPdf, cJPEGFile )
+   ELSE
+      oImage  := HPDF_LoadJPEGImageFromFile( ::oPdf, cJPEGFile )
+   ENDIF
    HPDF_Page_DrawImage( ::oPage, oImage, nLeft, nBottom, nWidth, nHeight )
 
    RETURN NIL
 
-METHOD DrawImageSize( nRow, nCol, nHeight, nWidth, cJPEGFile ) CLASS PDFClass
+METHOD DrawImageSize( nRow, nCol, nHeight, nWidth, cJPEGFile, lPNG ) CLASS PDFClass
 
-   ::DrawImageBox( nRow, nCol, nRow + nHeight, nCol + nWidth, cJPEGFile )
+   ::DrawImageBox( nRow, nCol, nRow + nHeight, nCol + nWidth, cJPEGFile, lPNG )
 
    RETURN NIL
 
-METHOD DrawMemImageBox( nTop, nLeft, nBottom, nRight, cJPEGMem ) CLASS PDFClass
+METHOD DrawMemImageBox( nTop, nLeft, nBottom, nRight, cJPEGMem, lPNG ) CLASS PDFClass
 
    LOCAL oImage, nWidth, nHeight
 
@@ -362,18 +367,23 @@ METHOD DrawMemImageBox( nTop, nLeft, nBottom, nRight, cJPEGMem ) CLASS PDFClass
    IF cJPEGMem == NIL
       RETURN NIL
    ENDIF
+   hb_Default( @lPNG, .F. )
    nWidth  :=  ::ColToPdfCol( nRight - nLeft ) - ::ColToPdfCol( 0 )
    nHeight := ( ::RowToPdfRow( 0 ) - ::RowToPdfRow( nBottom - nTop ) )
    nBottom := ::RowToPDFRow( nBottom )
    nLeft   := ::ColToPdfCol( nLeft )
-   oImage  := HPDF_LoadJPEGImageFromMem( ::oPDF, cJPEGMem, Len( cJPEGMem ) )
+   IF lPNG
+      oImage  := HPDF_LoadPNGImageFromMem( ::oPDF, cJPEGMem, Len( cJPEGMem ) )
+   ELSE
+      oImage  := HPDF_LoadJPEGImageFromMem( ::oPDF, cJPEGMem, Len( cJPEGMem ) )
+   ENDIF
    HPDF_Page_DrawImage( ::oPage, oImage, nLeft, nBottom, nWidth, nHeight )
 
    RETURN NIL
 
-METHOD DrawMemImageSize( nRow, nCol, nHeight, nWidth, cJPEGMem ) CLASS PDFClass
+METHOD DrawMemImageSize( nRow, nCol, nHeight, nWidth, cJPEGMem, lPNG ) CLASS PDFClass
 
-   ::DrawMemImageBox( nRow, nCol, nRow + nHeight, nCol + nWidth, cJPEGMem )
+   ::DrawMemImageBox( nRow, nCol, nRow + nHeight, nCol + nWidth, cJPEGMem, lPNG )
 
    RETURN NIL
 
