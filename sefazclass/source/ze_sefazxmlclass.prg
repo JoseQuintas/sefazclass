@@ -325,6 +325,12 @@ FUNCTION XmlToDoc( cXmlInput, lAutorizado )
       oDocSped:cModFis := "55"
       oDocSped:cEvento  := "110111"
       XmlToDocNfeCancel( cXmlInput, @oDocSped )
+   CASE "<procEventoNFe" $ cXmlInput
+      oDocSped:cModFis := "55"
+      oDocSped:cEvento := XmlNode( cXmlInput, "tpEvento" )
+      IF Len( SoNumeros( oDocSped:cEvento ) ) == 6
+         XmlToDocNfeEvento( cXmlInput, @oDocSped )
+      ENDIF
    CASE "<procCancNFe" $ cXmlInput .AND. "<xServ>CANCELAR" $ cXmlInput
       oDocSped:cModFis := "55"
       oDocSped:cEvento  := "110111"
@@ -333,22 +339,16 @@ FUNCTION XmlToDoc( cXmlInput, lAutorizado )
       oDocSped:cModFis := "57"
       oDocSped:cEvento  := "110111"
       XmlToDocCTeCancel( cXmlInput, @oDocSped )
-   CASE "<procEventoNFe" $ cXmlInput .AND. "<descEvento>Carta de Correcao" $ cXmlInput
-      oDocSped:cModFis := "55"
-      oDocSped:cEvento  := "110110"
-      XmlToDocNfeCCe( cXmlInput, @oDocSped )
-   CASE "<procEventoNFe" $ cXmlInput .AND. "<descEvento>EPEC" $ cXmlInput
-      oDocSped:cModFis := "55"
-      oDocSped:cEvento := "110140"
-      XmlToDocNfeCce( cXmlInput, @oDocSped )
    CASE "<procEventoMDFe" $ cXmlInput .AND. "<descEvento>Cancelamento" $ cXmlInput
       oDocSped:cModFis := "58"
       oDocSped:cEvento  := "110111"
       XmlToDocMDFECancel( cXmlInput, @oDocSped )
-   CASE "<procEventoMDFe" $ cXmlInput .AND. "<descEvento>Encerramento" $ cXmlInput
+   CASE "<procEventoMDFe" $ cXmlInput
       oDocSped:cModFis := "58"
-      oDocSped:cEvento  := "110112"
-      XmlToDocMDFEEnc( cXmlInput, @oDocSped )
+      oDocSped:cEvento  := XmlNode( cXmlInput, "tpEvento" ) // "110112"
+      IF Len( SoNumeros( oDocSped:cEvento ) ) == 6
+         XmlToDocMDFEEnc( cXmlInput, @oDocSped )
+      ENDIF
    CASE "<infMDFe" $ cXmlInput
       oDocSped:cModFis := "58"
       oDocSped:cEvento  := "000000"
@@ -681,7 +681,7 @@ STATIC FUNCTION XmlToDocNfeCancel( cXmlInput, oDocSped )
 
    RETURN Nil
 
-STATIC FUNCTION XmlToDocNfeCce( XmlInput, oDocSped )
+STATIC FUNCTION XmlToDocNfeEvento( XmlInput, oDocSped )
 
    LOCAL mXmlProcEvento, mXmlEvento, mXmlInfEvento, mXmlRetEvento
 
