@@ -41,9 +41,7 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
    VAR cRntrcProp
    VAR cCiot
    VAR aCondutor
-   VAR ainfNF
-   VAR ainfNFe
-   VAR ainfCTe
+   VAR aInfDoc
    VAR ainfOutros
    VAR aValePed
    VAR aDest
@@ -115,7 +113,7 @@ METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel ) CLASS hbnfeDaMdfe
 
 METHOD buscaDadosXML() CLASS hbnfeDaMdfe
 
-   LOCAL cinfNF, cText, cNF, cchCT
+   LOCAL cText, aList, xItem
 
    ::aIde         := XmlToHash( XmlNode( ::cXml, "ide" ), { "cUF", "tpAmb", "tpEmis", "mod", "serie", "nMDF", "cMDF", "cDV", "modal", ;
       "dhEmi", "tpEmis", "procEmi", "verProc", "UFIni", "UFFim" } )
@@ -125,30 +123,32 @@ METHOD buscaDadosXML() CLASS hbnfeDaMdfe
    ::aModal       := XmlNode( XmlNode( ::cXml, "rem" ), "versaoModal" )
    ::aMunDescarga := XmlToHash( XmlNode( ::cXml, "infMunDescarga" ), { "cMunDescarga", "xMunDescarga" } )
 
-   ::ainfCTe := {}
-   cText     := XmlNode( ::cXml, "infCTe" )
-   DO WHILE "<chCT" $ cText
-      cchCT := XmlNode( cText, "chCT" )
-      cText := Substr( cText, At( "</chCT", cText ) + 7 )
-      AAdd( ::ainfCTe, cchCT )
-   ENDDO
+   ::aInfDoc := {}
+   cText     := XmlNode( ::cXml, "infDoc" )
+   aList := MultipleNodeToArray( cText, "infCTe" )
+   FOR EACH xItem IN aList
+      AAdd( ::aInfDoc, { "CTe", XmlNode( xItem, "chCTe" ), "", "" } )
+   NEXT
 
-   ::ainfNF := {}
-   cinfNF   := XmlNode( ::cXml, "infNF" )
-   cText    := cInfNF
-   DO WHILE "<infNF" $ cText .AND. "</infNF" $ cText // precaucao inicio/fim
-      cNF   := XmlNode( cText, "infNF" )
-      cText := Substr( cText, At( "</infNF", cText ) + 8 )
-      AAdd( ::ainfNF, { ;
-         XmlNode( cNF, "CNPJ" ), ;
-         XmlNode( cNF, "UF" ), ;
-         XmlNode( cNF, "nNF" ), ;
-         XmlNode( cNF, "serie" ), ;
-         XmlNode( cNF, "dEmi" ), ;
-         XmlNode( cNF, "vNF" ), ;
-         XmlNode( cNF, "PIN" ) } )
-   ENDDO
-   ::ainfNFe    := MultipleNodeToArray( ::cXml, "infNFe" )
+   aList := MultipleNodeToArray( cText, "infNF" )
+   FOR EACH xItem IN aList
+      AAdd( ::aInfDoc, { "NF", ;
+         XmlNode( xItem, "nNF" ) + " " + ;
+         XmlNode( xItem, "CNPJ" ) + " " + ;
+         XmlNode( xItem, "UF" ) + " " + ;
+         XmlNode( xItem, "serie" ) +  " " + ;
+         XmlNode( xItem, "dEmi" ) + " " + ;
+         XmlNode( xItem, "vNF" ) + " " + ;
+         XmlNode( xItem, "PIN" ), "", "" } )
+   NEXT
+
+   aList := MultipleNodeToArray( cText, "infNFe" )
+   FOR EACH xItem IN aList
+      AAdd( ::aInfDoc, { "NFe", ;
+         XmlNode( xItem, "chNFe" ), ;
+         XmlNode( xItem, "tpUnidTransp" ), ;
+         XmlNode( xItem, "idUnidTransp" ) } )
+   NEXT
    ::aTot       := XmlToHash( XmlNode( ::cXml, "tot" ), { "qCTe", "qCT", "qNFe", "qNF", "vCarga", "cUnid", "qCarga" } )
    ::cLacre     := XmlNode( ::cXml, "nLacre" )
    ::cInfCpl    := XmlNode( ::cXml, "infCpl" )
@@ -168,8 +168,8 @@ METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
    LOCAL nQtFolhas, nCont
 
    nQtFolhas := 1
-   IF Len( ::aInfNfe ) > 11
-      nQtFolhas := Int( ( Len( ::aInfNfe ) + 10 ) / 11 )
+   IF Len( ::aInfDoc ) > 11
+      nQtFolhas := Int( ( Len( ::aInfDoc ) + 10 ) / 11 )
    ENDIF
    // criacao objeto pdf
    ::oPDF := HPDF_New()
@@ -392,7 +392,7 @@ METHOD cabecalho( nQtFolhas ) CLASS hbnfeDaMdfe
       ::DrawTexto( 175, ::nLinhaPdf - 550, 240, Nil, ::aValePed[ "nCompra" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 08 )
    ENDIF
 
-   // ::aInfNFe
+   // ::aInfDoc
    ::DrawBox( 020, ::nLinhaPDF - 720, 555, 125, ::nLarguraBox )
    ::DrawTexto( 22, ::nLinhaPDF - 600, 550, NIL, "Informação da Composição da Carga", HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
    ::DrawLine( 20, ::nLinhaPDF - 611, 575, ::nLinhaPDF - 611, ::nLarguraBox )
@@ -408,13 +408,13 @@ METHOD cabecalho( nQtFolhas ) CLASS hbnfeDaMdfe
 
    FOR nCont = 1 TO 11
       nItem := ( ::nFolha - 1 ) * 11 + nCont
-      IF nItem > Len( ::aInfNfe )
+      IF nItem > Len( ::aInfDoc )
          EXIT
       ENDIF
-      ::DrawTexto( 22, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, "NF-e", HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ::DrawTexto( 42, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, XmlNode( ::aInfNFe[ nItem ], "chNFe" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ::DrawTexto( 322, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, XmlNode( ::aInfNFe[ nItem ], "tpUnidTransp" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-      ::DrawTexto( 332, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, XmlNode( ::aInfNFe[ nItem ], "idUnidTransp" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 22, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, ::aInfDoc[nCont,1], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 42, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, ::aInfDoc[nCont,2], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 322, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, ::aInfDoc[nCont,3], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+      ::DrawTexto( 332, ::nLinhaPDF - 622 - ( nCont * 8 ), 550, NIL, ::aInfDoc[nCont,4], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
    NEXT
 
    ::DrawBox( 020, ::nLinhaPdf - 775, 555, 50, ::nLarguraBox )
