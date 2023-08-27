@@ -41,7 +41,6 @@ BOS TAURUS library code into it.
 //#include "hmg.ch"
 
 #include "bostaurus.ch"
-//#include "i_color.ch"
 #define BLACK { 0, 0, 0 }
 #define WHITE {255,255,255}
 

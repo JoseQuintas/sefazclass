@@ -47,7 +47,7 @@ jobs:
 
 #     - name: Download Internet
 #       run: |
-#        (New-Object System.Net.WebClient).DownloadFile('http://www.josequintas.com.br/arquivos/mingw_0703.zip', 'c:\temp\mingw_0703posix.7z')
+#        (New-Object System.Net.WebClient).DownloadFile('http://www.example.com.br/arquivos/mingw_0703.zip', 'c:\temp\mingw_0703posix.7z')
 
 #    - name: Download artifact
 #      uses: dawidd6/action-download-artifact@v2
@@ -83,7 +83,6 @@ jobs:
 #         git config user.email "you@example.com"
 #         git config user.name "Your Name"
 #         git pull https://github.com/vszakats/hb
-#         git clone https://github.com/JoseQuintas/hbdeleted c:\harbour34\contrib\hbdeleted
 
 #    - name: Run work
 #      env:
