@@ -68,7 +68,7 @@ FUNCTION bt_ListCalledFunctions( nActivation )
 
    LOCAL cMsg := ""
 
-   nActivation := IF( ValType( nActivation ) <> "N", 1, nActivation )
+   nActivation := iif( ValType( nActivation ) <> "N", 1, nActivation )
    DO WHILE .NOT.( ProcName( nActivation ) == "" )
       cMsg := cMsg + "Called from:" + ProcName( nActivation ) + "(" + LTrim( Str( ProcLine( nActivation ) ) ) + ")" + CRLF
       nActivation++
