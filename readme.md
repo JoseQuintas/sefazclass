@@ -1,6 +1,5 @@
-boletoclass/ - boletos bancários
 
-pdfclass/ - class to harupdf using row/col, centimeters, pixels
+pdfclass/ - class to harupdf using row/col, milimeters, pixels
 
 rmchartclass/ - class to rmchart dll
 
