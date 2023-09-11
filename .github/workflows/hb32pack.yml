@@ -113,7 +113,7 @@ jobs:
          PATH: c:\program files\7-zip
       run: |
          c:
-         7z a -r c:\temp\hb34pack.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
+         7z a -r c:\temp\hb32pack.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
 
 #    - name: upload
 #      uses: actions/upload-artifact@v2
@@ -125,5 +125,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
          name: harbour
-         path: c:\temp\hb34pack.7z
+         path: c:\temp\hb32pack.7z
 
