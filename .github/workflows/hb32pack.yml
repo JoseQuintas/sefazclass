@@ -54,18 +54,21 @@ jobs:
          REPO_HMGE:    https://github.com/JoseQuintas/hmge
          REPO_HMG3:    https://github.com/JoseQuintas/hmg3
          REPO_OOHG:    https://github.com/JoseQuintas/oohg
+         REPO_DLGAUTO: https://github.com/JoseQuintas/dlgauto
          PATH_HWGUI:   c:\temp\harbour\addons\hwgui
          PATH_HMGE:    c:\temp\harbour\addons\hmge
          PATH_HMG3:    c:\temp\harbour\addons\hmg3
          PATH_OOHG:    c:\temp\harbour\addons\oohg
          PATH_SEFAZ:   c:\temp\harbour\addons\sefazclass
+         PATH_DLGAUTO: c:\temp\harbour\addons\dlgauto
       run: |
          c:
-         git clone $env:REPO_SEFAZ  $env:PATH_SEFAZ  --depth 1
-         git clone $env:REPO_HWGUI  $env:PATH_HWGUI  --depth 1
-         git clone $env:REPO_HMGE   $env:PATH_HMGE   --depth 1
-         git clone $env:REPO_HMG3   $env:PATH_HMG3   --depth 1
-         git clone $env:REPO_OOHG   $env:PATH_OOHG   --depth 1
+         git clone $env:REPO_SEFAZ   $env:PATH_SEFAZ   --depth 1
+         git clone $env:REPO_HWGUI   $env:PATH_HWGUI   --depth 1
+         git clone $env:REPO_HMGE    $env:PATH_HMGE    --depth 1
+         git clone $env:REPO_HMG3    $env:PATH_HMG3    --depth 1
+         git clone $env:REPO_OOHG    $env:PATH_OOHG    --depth 1
+         git clone $env:REPO_DLGAUTO $env:PATH_DLGAUTO --depth 1
 
     - name: Build All
       env:
@@ -107,6 +110,13 @@ jobs:
 
          cd c:\temp\harbour\addons\oohg
          hbmk2 oohg.hbp -workdir=c:\temp -q -rebuild
+
+         cd c:\temp\harbour\dlgauto\source
+         hbmk2 test hwgui.hbc -rebuild
+         hbmk2 test hmg3.hbc  -rebuild
+         hbmk2 test hmge.hbc  -rebuild
+         hbmk2 test oohg.hbc  -rebuild
+         hbmk2 test gtwvg.hbc -rebuild
 
     - name: Zip
       env:
