@@ -82,41 +82,41 @@ jobs:
          #copy c:\temp\harbour\sefazclass\gtwvg.hbc c:\temp\harbour\contrib\gtwvg
 
          cd c:\temp\harbour\addons\sefazclass\sefazclass
-         hbmk2 sefazclass.hbp -workdir=c:\temp -q -rebuild
+         hbmk2 sefazclass.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\sefazclass\bostaurus
-         hbmk2 bostaurus.hbp -workdir=c:\temp -q -rebuild
+         hbmk2 bostaurus.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\sefazclass\rmchartclass
-         hbmk2 rmchartclass.hbp -workdir=c:\temp -q -rebuild
+         hbmk2 rmchartclass.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\sefazclass\pdfclass
-         hbmk2 pdfclass.hbp -workdir=c:\temp -q -rebuild
+         hbmk2 pdfclass.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\sefazclass\wvgtest
-         hbmk2 wvgtest.hbp -workdir=c:\temp -q -rebuild
+         hbmk2 wvgtest.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\hwgui
-         hbmk2 hbxml.hbp -workdir=c:\temp -q -rebuild
-         hbmk2 hwgui.hbp -workdir=c:\temp -q -rebuild
-         hbmk2 hwgdebug.hbp -workdir=c:\temp -q -rebuild
-         hbmk2 procmisc.hbp -workdir=c:\temp -q -rebuild
+         hbmk2 hbxml.hbp -q -rebuild
+         hbmk2 hwgui.hbp -q -rebuild
+         hbmk2 hwgdebug.hbp -q -rebuild
+         hbmk2 procmisc.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\hmge
-         hbmk2 hmge.hbp -workdir=c:\temp -q -rebuild
+         hbmk2 hmge.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\hmg3
-         hbmk2 hmg3.hbp -workdir=c:\temp -q -rebuild
+         hbmk2 hmg3.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\oohg
-         hbmk2 oohg.hbp -workdir=c:\temp -q -rebuild
+         hbmk2 oohg.hbp -q -rebuild
 
-         cd c:\temp\harbour\dlgauto\source
-         hbmk2 test hwgui.hbc -rebuild
-         hbmk2 test hmg3.hbc  -rebuild
-         hbmk2 test hmge.hbc  -rebuild
-         hbmk2 test oohg.hbc  -rebuild
-         hbmk2 test gtwvg.hbc -rebuild
+         cd c:\temp\harbour\addons\dlgauto\source
+         hbmk2 test hwgui.hbc -q -rebuild
+         hbmk2 test hmg3.hbc  -q -rebuild
+         hbmk2 test hmge.hbc  -q -rebuild
+         hbmk2 test oohg.hbc  -q -rebuild
+         hbmk2 test gtwvg.hbc -q -rebuild
 
     - name: Zip
       env:
