@@ -49,21 +49,21 @@ jobs:
 
     - name: Load Source Code
       env:
-         REPO_SEFAZ:   https://github.com/JoseQuintas/sefazclass
-         REPO_HWGUI:   https://github.com/JoseQuintas/hwgui
-         REPO_HMGE:    https://github.com/JoseQuintas/hmge
-         REPO_HMG3:    https://github.com/JoseQuintas/hmg3
-         REPO_OOHG:    https://github.com/JoseQuintas/oohg
-         REPO_DLGAUTO: https://github.com/JoseQuintas/dlgauto
-         PATH_HWGUI:   c:\temp\harbour\addons\hwgui
-         PATH_HMGE:    c:\temp\harbour\addons\hmge
-         PATH_HMG3:    c:\temp\harbour\addons\hmg3
-         PATH_OOHG:    c:\temp\harbour\addons\oohg
-         PATH_SEFAZ:   c:\temp\harbour\addons\sefazclass
-         PATH_DLGAUTO: c:\temp\harbour\addons\dlgauto
+         REPO_ZEPACK:   https://github.com/JoseQuintas/zepack
+         REPO_HWGUI:    https://github.com/JoseQuintas/hwgui
+         REPO_HMGE:     https://github.com/JoseQuintas/hmge
+         REPO_HMG3:     https://github.com/JoseQuintas/hmg3
+         REPO_OOHG:     https://github.com/JoseQuintas/oohg
+         REPO_DLGAUTO:  https://github.com/JoseQuintas/dlgauto
+         PATH_HWGUI:    c:\temp\harbour\addons\hwgui
+         PATH_HMGE:     c:\temp\harbour\addons\hmge
+         PATH_HMG3:     c:\temp\harbour\addons\hmg3
+         PATH_OOHG:     c:\temp\harbour\addons\oohg
+         PATH_ZEPACK:   c:\temp\harbour\addons\zepack
+         PATH_DLGAUTO:  c:\temp\harbour\addons\dlgauto
       run: |
          c:
-         git clone $env:REPO_SEFAZ   $env:PATH_SEFAZ   --depth 1
+         git clone $env:REPO_ZEPACK  $env:PATH_ZEPACK  --depth 1
          git clone $env:REPO_HWGUI   $env:PATH_HWGUI   --depth 1
          git clone $env:REPO_HMGE    $env:PATH_HMGE    --depth 1
          git clone $env:REPO_HMG3    $env:PATH_HMG3    --depth 1
@@ -81,24 +81,27 @@ jobs:
          c:
          #copy c:\temp\harbour\sefazclass\gtwvg.hbc c:\temp\harbour\contrib\gtwvg
 
-         cd c:\temp\harbour\addons\sefazclass\sefazclass
+         cd c:\temp\harbour\addons\zepack\sefazclass
          hbmk2 sefazclass.hbp -q -rebuild
 
-         cd c:\temp\harbour\addons\sefazclass\bostaurus
+         cd c:\temp\harbour\addons\zepack\boletoclass
+         hbmk2 boletoclass.hbp -q -rebuild
+
+         cd c:\temp\harbour\addons\zepack\bostaurus
          hbmk2 bostaurus.hbp -q -rebuild
 
-         cd c:\temp\harbour\addons\sefazclass\rmchartclass
+         cd c:\temp\harbour\addons\zepack\rmchartclass
          hbmk2 rmchartclass.hbp -q -rebuild
 
-         cd c:\temp\harbour\addons\sefazclass\pdfclass
+         cd c:\temp\harbour\addons\zepack\pdfclass
          hbmk2 pdfclass.hbp -q -rebuild
 
-         cd c:\temp\harbour\addons\sefazclass\wvgtest
+         cd c:\temp\harbour\addons\zepack\wvgtest
          hbmk2 wvgtest.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\hwgui
-         hbmk2 hbxml.hbp -q -rebuild
-         hbmk2 hwgui.hbp -q -rebuild
+         hbmk2 hbxml.hbp    -q -rebuild
+         hbmk2 hwgui.hbp    -q -rebuild
          hbmk2 hwgdebug.hbp -q -rebuild
          hbmk2 procmisc.hbp -q -rebuild
 
