@@ -1,0 +1,10 @@
+-o../lib/${hb_name}
+-hblib
+
+-m -n -w3 -es2
+source/ze_boleto.prg
+source/ze_boleto033.prg
+source/ze_boleto237.prg
+source/ze_boleto341.prg
+source/ze_boleto422.prg
+source/ze_boletopdf.prg
