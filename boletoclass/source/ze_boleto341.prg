@@ -1,6 +1,6 @@
 /*
 Itaú
-carteira 109, DM ou
+Outubro/2023
 */
 
 FUNCTION ze_Calculo341( SELF )

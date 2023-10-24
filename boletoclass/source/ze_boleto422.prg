@@ -1,6 +1,6 @@
 /*
 Safra
-Manual do banco em outubro/2023
+outubro/2023
 */
 
 FUNCTION ze_Calculo422( SELF )

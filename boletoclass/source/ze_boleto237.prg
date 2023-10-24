@@ -1,9 +1,6 @@
 /*
 Bradesco
-carteira 2, 1, DM, idEmpresa
-carteira 6, 99, DIV, idEmpresa
-carteira 9, 1, DM, idEmpresa
-carteira 10, 01, DM
+Outubro/2023
 */
 
 FUNCTION ze_Calculo237( SELF )

@@ -1,7 +1,6 @@
 /*
 Santander
-MANUAL VERSAO 2.29 DE JULHO/2022
-OBTIDO EM MAIO/2023
+Outubro/2023
 */
 
 FUNCTION ze_Calculo033( SELF )
@@ -10,11 +9,11 @@ FUNCTION ze_Calculo033( SELF )
    ::cLocalPagto  := "PAGÁVEL PREFERENCIALMENTE NO SANTANDER"
    ::cBolNumero := StrZero( ::nBancario, 12 )
    ::cBolNumero += ::Modulo11_033( ::cBolNumero )
-   ::cBolConta  := StrZero( ::nAgencia, 4 ) + " / " + StrZero( ::nIdEmpresa, 9 )
+   ::cBolConta  := Left( StrZero( ::nAgencia, 5 ), 4 ) + " / " + StrZero( ::nIdEmpresa, 9 )
 
    ::cBarras    := StrZero( ::nBanco, 3 ) + "9" + StrZero( ::nFatorVen, 4 ) + ;
       StrZero( ::nValor * 100, 10 ) + "9" + StrZero( ::nidEmpresa, 7 ) + ;
-      StrZero( ::nBancario, 13 ) + "0" + StrZero( ::nCarteira, 3 ) // talvez 101 sempre
+      StrZero( ::nBancario, 13 ) + "0" + StrZero( ::nCarteira, 3 )
 
    RETURN Nil
 

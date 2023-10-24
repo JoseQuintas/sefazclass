@@ -17,7 +17,7 @@ FUNCTION ze_BoletoToPDF( aBoletoList )
    NEXT
    oPDF:End()
 
-   RETURN Nil
+   RETURN oPDF
 
 CREATE CLASS BoletoPDFClass INHERIT PDFClass STATIC
 
