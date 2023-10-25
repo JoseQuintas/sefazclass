@@ -48,7 +48,7 @@ FUNCTION ze_Cnab422( aBoletoList )
       /* 080-090 */ cTxt += Pad( "BANCO SAFRA", 11 )
       /* 091-094 */ cTxt += Space(4)
       /* 095-100 */ cTxt += hb_Dtoc( Date(), "DDMMYY" )
-      /* 101-394 */ cTxt += Space(291)
+      /* 101-391 */ cTxt += Space(291)
       /* 392-394 */ cTxt += StrZero( :nRemessa, 3 )
       /* 395-400 */ cTxt += StrZero( nSequencial++, 6 )
       cTxt += hb_Eol()
@@ -88,7 +88,7 @@ FUNCTION ze_Cnab422( aBoletoList )
          IF :nMulta == 0
             /* 206-218 */ cTxt += StrZero(0,13)
          ELSE
-            /* 206-211 */ cTxt += hb_Dtoc( :dEmissao + 30, "DDMMYY" )
+            /* 206-211 */ cTxt += hb_Dtoc( :dEmissao + 1, "DDMMYY" )
             /* 212-215 */ cTxt += StrZero( :nMulta * 100, 4 )
             /* 216-218 */ cTxt += "000"
          ENDIF
@@ -97,14 +97,14 @@ FUNCTION ze_Cnab422( aBoletoList )
          /* 235-274 */ cTxt += Pad( :cCliNome, 40 )
          /* 275-314 */ cTxt += Pad( :cCliEnd, 40 )
          /* 315-324 */ cTxt += Pad( :cCliBairro, 10 )
-         /* 325-326 */ cTxt += Space(1)
+         /* 325-326 */ cTxt += Space(2)
          /* 327-334 */ cTxt += StrZero( Val( SoNumeros( :cCliCep ) ), 8 )
          /* 325-349 */ cTxt += Pad( :cCliCidade, 25 )
          /* 350-351 */ cTxt += Pad( :cCliUF, 2 )
          /* 352-381 */ cTxt += Pad( :cAvalNome, 30 )
          /* 382-388 */ cTxt += Space(7)
          /* 389-391 */ cTxt += "422"
-         /* 392-394 */ cTxt += StrZero( :nRemessa, 3 )
+         /* 392-394 */ cTxt += Right( StrZero( :nRemessa, 9 ), 3 )
          /* 395-400 */ cTxt += StrZero( nSequencial++, 6 )
          nTotal += :nValor
       ENDWITH

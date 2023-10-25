@@ -1,5 +1,6 @@
 -o../lib/${hb_name}
 -hblib
+-hbx=../lib/${hb_name}.hbx
 
 -m -n -w3 -es2
 source/ze_boleto.prg

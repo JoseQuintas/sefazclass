@@ -86,7 +86,7 @@ FUNCTION ze_Cnab237( aBoletoList )
             /* 030-037 */ cTxt += Left( StrZero( :nConta, 8 ), 7 ) + "P"
          ELSE
             /* 025-029 */ cTxt += StrZero( :nAgencia, 5 )
-            /* 030-037 */ cTxt += StrZero( :Conta, 8 )
+            /* 030-037 */ cTxt += StrZero( :nConta, 8 )
          ENDIF
          /* 038-062 */ cTxt += Space(25)                             // Número de controle do participante - olhar pag. 17
          /* 063-065 */ cTxt += StrZero( 0, 3 )                       // Codigo do banco a ser debitado - olhar pag.17
