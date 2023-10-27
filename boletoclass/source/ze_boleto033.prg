@@ -20,7 +20,7 @@ FUNCTION ze_Calculo033( SELF )
 FUNCTION ze_Cnab033( aBoletoList )
 
    LOCAL cTxt := "", nSequencial := 1, cCodigoTransmissao
-   LOCAL oBoleto, nLote := 1, nRemessa := 1, nArquivo := 1, cNossoNumero
+   LOCAL oBoleto, nLote := 1, nRemessa := 1, nArquivo := 1
 
    IF Empty( aBoletoList )
       RETURN Nil
@@ -81,7 +81,6 @@ FUNCTION ze_Cnab033( aBoletoList )
 
    FOR EACH oBoleto IN aBoletoList
       WITH OBJECT oBoleto
-         cNossoNumero := StrZero( :nBancario, 12 ) + oBoleto:Modulo11_033( StrZero( :nBancario, 12 ) )
          /* Detalhe P */
          /* 001-003 */ cTxt += StrZero( :nBanco, 3 )
          /* 004-007 */ cTxt += StrZero( nLote, 4 )
@@ -94,7 +93,7 @@ FUNCTION ze_Cnab033( aBoletoList )
          /* 023-032 */ cTxt += StrZero( :nConta, 10 )
          /* 033-042 */ cTxt += StrZero( :nConta, 10 )
          /* 043-044 */ cTxt += Space(2)
-         /* 045-057 */ cTxt += StrZero( :nBancario, 12 ) + Right( cNossoNumero, 1 )
+         /* 045-057 */ cTxt += StrZero( :nBancario, 12 ) + oBoleto:Modulo11_033( StrZero( nBancario, 12 ) )
          /* 058-058 */ cTxt += "5"
          /* 059-059 */ cTxt += "1"
          /* 060-060 */ cTxt += "1"

@@ -105,7 +105,7 @@ METHOD Calcula() CLASS BoletoClass
    ::cDigitavel += Substr( cCampoLivre, 6, 10 )  + ::Modulo10_All( Substr( cCampoLivre, 6, 10 ) )
    ::cDigitavel += Substr( cCampoLivre, 16, 10 ) + ::Modulo10_All( Substr( cCampoLivre, 16, 10 ) )
    ::cDigitavel += Substr( ::cBarras, 5, 1 )
-   ::cDigitavel += Substr( ::cBarras, 6, 19 )
+   ::cDigitavel += Substr( ::cBarras, 6, 14 )
 
    RETURN Nil
 

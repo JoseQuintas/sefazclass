@@ -1,6 +1,6 @@
 #include "hbclass.ch"
 
-FUNCTION ze_BoletoToPDF( aBoletoList )
+FUNCTION ze_BoletoToPDF( aBoletoList, cFileName )
 
    LOCAL oBoleto, oPDF
 
@@ -15,6 +15,9 @@ FUNCTION ze_BoletoToPDF( aBoletoList )
    FOR EACH oBoleto IN aBoletoList
       oPDF:Add( oBoleto )
    NEXT
+   IF ! Empty( cFileName )
+      oPDF:cFileName := cFileName
+   ENDIF
    oPDF:End()
 
    RETURN oPDF
