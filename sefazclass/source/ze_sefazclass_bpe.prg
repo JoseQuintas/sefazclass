@@ -8,13 +8,13 @@ ZE_SEFAZCLASS_BPE - Rotinas pra BPE
 
 CREATE CLASS SefazClass_BPE
 
-   METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente )
-   METHOD BPeStatusServico( cUF, cCertificado, cAmbiente )
+   METHOD BPeProtocolo( cChave, cCertificado, cAmbiente )
+   METHOD BPeStatus( cUF, cCertificado, cAmbiente )
    METHOD SoapUrlBpe( aSoapList, cUF, cVersao )
 
    ENDCLASS
 
-METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_BPE
+METHOD BPeProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_BPE
 
    hb_Default( @::cVersao, WS_BPE_DEFAULT )
    ::cProjeto := WS_PROJETO_BPE
@@ -40,7 +40,7 @@ METHOD BPeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_
 
    RETURN ::cXmlRetorno
 
-METHOD BPeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass_BPE
+METHOD BPeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass_BPE
 
    hb_Default( @::cVersao, WS_BPE_DEFAULT )
    ::cProjeto := WS_PROJETO_BPE

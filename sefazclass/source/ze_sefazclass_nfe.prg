@@ -25,8 +25,8 @@ CREATE CLASS SefazClass_nfe
    METHOD NFeDownload( cCnpj, cChave, cCertificado, cAmbiente ) INLINE ::NfeDistribuicaoDfe( cCnpj, "", "", cChave, ::UFCodigo( Left( cChave, 2 ) ), cCertificado, cAmbiente )
 
    //METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente )
-   METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
-   METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
+   METHOD NFeProtocolo( cChave, cCertificado, cAmbiente )
+   METHOD NFeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmbiente )
    METHOD NFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
    METHOD NFeEventoAutor( cChave, cCnpj, cOrgaoAutor, ctpAutor, cverAplic, cAutorCnpj, ctpAutorizacao, cCertificado, cAmbiente )
@@ -37,7 +37,7 @@ CREATE CLASS SefazClass_nfe
    METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
-   METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc )
+   METHOD NFeEmissao( cXml, cUF, cCertificado, cAmbiente, cIndSinc )
    METHOD NFeStatusServico( cUF, cCertificado, cAmbiente )
    METHOD NFeStatusServicoSVC( cUF, cCertificado, cAmbiente, lSVCAN )
    METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente )
@@ -90,7 +90,7 @@ METHOD NFeConsultaGTIN( cGTIN, cCertificado ) CLASS SefazClass_nfe
 
    RETURN ::cXmlRetorno
 
-METHOD NFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_nfe
+METHOD NFeProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_nfe
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::cProjeto := WS_PROJETO_NFE
@@ -434,7 +434,7 @@ METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_nf
 
    RETURN ::cXmlDocumento
 
-METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass_nfe
+METHOD NFeEmissao( cXml, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass_nfe
 
    LOCAL oDoc, cChave
 
@@ -447,9 +447,6 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
    ::cSoapAction  := "nfeAutorizacaoLote"
    ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4"
 
-   IF Empty( cLote )
-      cLote := "1"
-   ENDIF
    IF cXml != NIL
       ::cXmlDocumento := cXml
    ENDIF
@@ -462,7 +459,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
 
    ::cXmlEnvio    := [<enviNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    // FOR EACH cXmlNota IN aXmlNotas
-   ::cXmlEnvio    += XmlTag( "idLote", cLote )
+   ::cXmlEnvio    += XmlTag( "idLote", "1" )
    ::cXmlEnvio    += XmlTag( "indSinc", cIndSinc )
    ::cXmlEnvio    += ::cXmlDocumento
    // NEXT
@@ -475,12 +472,12 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
       ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
       IF ! Empty( ::cRecibo )
          Inkey( ::nTempoEspera )
-         ::NfeConsultaRecibo()
+         ::NfeRetEmissao()
          IF hb_ASCan( { "104", "105" }, ::cStatus,,, .T. ) != 0
             oDoc   := XmlToDoc( ::cXmlDocumento, .F. )
             cChave := oDoc:cChave
             Inkey( ::nTempoEspera )
-            ::NfeConsultaProtocolo( cChave, ::cUF, ::cCertificado, ::cAmbiente )
+            ::NfeProtocolo( cChave, ::cUF, ::cCertificado, ::cAmbiente )
             IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
                ::cXmlProtocolo := ::cXmlRetorno
             ENDIF
@@ -506,7 +503,7 @@ METHOD NFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS
 
    RETURN ::cXmlRetorno
 
-METHOD NFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_nfe
+METHOD NFeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_nfe
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::cProjeto := WS_PROJETO_NFE

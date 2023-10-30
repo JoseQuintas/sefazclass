@@ -233,7 +233,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          IF LastKey() == K_ESC
             EXIT
          ENDIF
-         oSefaz:NfeConsultaProtocolo( aVarList[ VAR_CHAVE ] )
+         oSefaz:NfeProtocolo( aVarList[ VAR_CHAVE ] )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
@@ -245,7 +245,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
             EXIT
          ENDIF
          oSefaz:cVersao := "3.00"
-         oSefaz:CteConsultaProtocolo( aVarList[ VAR_CHAVE ] )
+         oSefaz:CteProtocolo( aVarList[ VAR_CHAVE ] )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
 
@@ -257,7 +257,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
             EXIT
          ENDIF
          oSefaz:cVersao := "3.00"
-         oSefaz:MDFeConsultaProtocolo( aVarList[ VAR_CHAVE ] )
+         oSefaz:MDFeProtocolo( aVarList[ VAR_CHAVE ] )
          wapi_MessageBox( , oSefaz:cXmlSoap )
          wapi_MessageBox( , oSefaz:cXmlRetorno )
          hb_MemoWrit( "consultamdfe.xml", oSefaz:cXmlRetorno )
@@ -294,7 +294,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          @ 8, 1 GET aVarList[ VAR_RECIBO ] PICTURE "@9"
          READ
          IF LastKey() != K_ESC .AND. ! Empty( aVarList[ VAR_RECIBO ] )
-            oSefaz:NfeConsultaRecibo( aVarList[ VAR_RECIBO ] )
+            oSefaz:NfeRetEmissao( aVarList[ VAR_RECIBO ] )
             ? oSefaz:cXmlRetorno
             Inkey(0)
          ENDIF

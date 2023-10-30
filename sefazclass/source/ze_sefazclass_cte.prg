@@ -15,7 +15,7 @@ ZE_SEFAZCLASS_CTE - Rotinas pra CTE
 CREATE CLASS SefazClass_CTE
 
    METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente )
-   METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
+   METHOD CTeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD CTeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
    METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente )
@@ -25,8 +25,8 @@ CREATE CLASS SefazClass_CTE
    METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
-   METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
-   METHOD CTeStatusServico( cUF, cCertificado, cAmbiente )
+   METHOD CTeEmissao( cXml, cUF, cCertificado, cAmbiente )
+   METHOD CTeStatus( cUF, cCertificado, cAmbiente )
    METHOD CTeAddCancelamento( cXmlAssinado, cXmlCancelamento )
    METHOD SoapUrlCte( aSoapList, cUF, cVersao )
 
@@ -58,7 +58,7 @@ METHOD CTeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_
 
    RETURN ::cXmlRetorno
 
-METHOD CTeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
+METHOD CTeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    ::cProjeto := WS_PROJETO_CTE
@@ -337,15 +337,12 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    RETURN ::cXmlRetorno
 
-METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
+METHOD CTeEmissao( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
    LOCAL oDoc, cBlocoXml, aList, cURLConsulta := "http:", nPos
 
    ::cProjeto := WS_PROJETO_CTE
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   IF Empty( cLote )
-      cLote := "1"
-   ENDIF
    ::aSoapUrlList := WS_CTE_AUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "cteRecepcaoLote"
@@ -374,7 +371,7 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
 	::cXmlDocumento := StrTran( ::cXmlDocumento, "</infCte>", "</infCte>" + cBlocoXml )
 
    ::cXmlEnvio    := [<enviCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
-   ::cXmlEnvio    +=    XmlTag( "idLote", cLote )
+   ::cXmlEnvio    +=    XmlTag( "idLote", "1" )
    ::cXmlEnvio    +=    ::cXmlDocumento
    ::cXmlEnvio    += [</enviCTe>]
    ::XmlSoapPost()
@@ -384,13 +381,13 @@ METHOD CTeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClas
    ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
    IF ! Empty( ::cRecibo ) .AND. ::cStatus != "999"
       Inkey( ::nTempoEspera )
-      ::CteConsultaRecibo()
+      ::CteRetEmissao()
       ::CteGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo ) // runner
    ENDIF
 
    RETURN ::cXmlRetorno
 
-METHOD CTeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
+METHOD CTeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    ::cProjeto := WS_PROJETO_CTE

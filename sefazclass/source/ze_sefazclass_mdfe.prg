@@ -16,7 +16,7 @@ CREATE CLASS SefazClass_MDFE
 
    METHOD MDFeConsNaoEnc( CUF, cCNPJ , cCertificado, cAmbiente )
    METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
-   METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente )
+   METHOD MDFeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD MDFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
    METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
@@ -25,9 +25,9 @@ CREATE CLASS SefazClass_MDFE
    METHOD MDFeEventoPagamento( cChave, nSequencia, cXmlPagamento, cCertificado, cAmbiente )
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
-   METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente )
+   METHOD MDFeEmissao( cXml, cUF, cCertificado, cAmbiente )
    //METHOD MDFeRecepcaoSinc( cXml, cUF, cCertificado, cAmbiente )
-   METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente )
+   METHOD MDFeStatus( cUF, cCertificado, cAmbiente )
    METHOD SoapUrlMdfe( aSoapList, cUF, cVersao )
 
    ENDCLASS
@@ -81,7 +81,7 @@ METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
 
    RETURN ::cXmlRetorno
 
-METHOD MDFeConsultaRecibo( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
+METHOD MDFeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
@@ -303,12 +303,11 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass_
 
    RETURN NIL
 
-METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
+METHOD MDFeEmissao( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
 
    LOCAL oDoc, cBlocoXml, aList, nPos, cURLConsulta := "http:"
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
-   hb_Default( @cLote, "1" )
    ::cProjeto := WS_PROJETO_MDFE
    ::aSoapUrlList := WS_MDFE_AUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
@@ -338,7 +337,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
       ::cXmlDocumento := StrTran( ::cXmlDocumento, "</infMDFe>", "</infMDFe>" + cBlocoXml )
    ENDIF
    ::cXmlEnvio  := [<enviMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
-   ::cXmlEnvio  +=    XmlTag( "idLote", cLote )
+   ::cXmlEnvio  +=    XmlTag( "idLote", "1" )
    ::cXmlEnvio  +=    ::cXmlDocumento
    ::cXmlEnvio  += [</enviMDFe>]
    ::XmlSoapPost()
@@ -350,7 +349,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
    ENDIF
    IF ! Empty( ::cRecibo ) .AND. ::cStatus != "999"
       Inkey( ::nTempoEspera )
-      ::MDFeConsultaRecibo()
+      ::MDFeRetEmissao()
       ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
    ENDIF
 
@@ -381,7 +380,7 @@ METHOD MDFeLoteEnvia( cXml, cLote, cUF, cCertificado, cAmbiente ) CLASS SefazCla
 
 //   RETURN ::cXmlRetorno
 
-METHOD MDFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
+METHOD MDFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
