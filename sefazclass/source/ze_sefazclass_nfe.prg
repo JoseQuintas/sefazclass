@@ -38,8 +38,8 @@ CREATE CLASS SefazClass_nfe
    METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
    METHOD NFeEmissao( cXml, cUF, cCertificado, cAmbiente, cIndSinc )
-   METHOD NFeStatusServico( cUF, cCertificado, cAmbiente )
-   METHOD NFeStatusServicoSVC( cUF, cCertificado, cAmbiente, lSVCAN )
+   METHOD NFeStatus( cUF, cCertificado, cAmbiente )
+   METHOD NFeStatusSVC( cUF, cCertificado, cAmbiente, lSVCAN )
    METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente )
    METHOD NFeConsultaGTIN( cGTIN, cCertificado )
    METHOD NFeAddCancelamento( cXmlAssinado, cXmlCancelamento )
@@ -532,7 +532,7 @@ METHOD NFeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_n
 
    RETURN ::cXmlRetorno
 
-METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass_nfe
+METHOD NFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass_nfe
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::cProjeto := WS_PROJETO_NFE
@@ -555,7 +555,7 @@ METHOD NFeStatusServico( cUF, cCertificado, cAmbiente ) CLASS SefazClass_nfe
 
    RETURN ::cXmlRetorno
 
-METHOD NFeStatusServicoSVC( cUF, cCertificado, cAmbiente, lSVCAN ) CLASS SefazClass_nfe
+METHOD NFeStatusSVC( cUF, cCertificado, cAmbiente, lSVCAN ) CLASS SefazClass_nfe
 
    LOCAL cVersao
 

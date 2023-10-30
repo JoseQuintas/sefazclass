@@ -137,7 +137,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          aVarList[ VAR_NFCE ] := iif( aVarList[ VAR_NFCE ] == "S", "N", "S" )
 
       CASE nOpc == OPC_STATUS_NFE
-         cXmlRetorno := oSefaz:NfeStatusServico()
+         cXmlRetorno := oSefaz:NfeStatus()
          //wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
          wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
          cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" )    + hb_Eol()
@@ -151,7 +151,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
       CASE nOpc == OPC_STATUS_CTE
          oSefaz:cVersao := "3.00"
-         cXmlRetorno := oSefaz:CteStatusServico()
+         cXmlRetorno := oSefaz:CteStatus()
          //wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
          wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
          cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" )    + hb_Eol()
@@ -165,7 +165,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
       CASE nOpc == OPC_STATUS_CTE4
          oSefaz:cVersao := "4.00"
-         cXmlRetorno := oSefaz:CteStatusServico()
+         cXmlRetorno := oSefaz:CteStatus()
          wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
          wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
          cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" )    + hb_Eol()
@@ -179,7 +179,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
       CASE nOpc == OPC_STATUS_MDFE
          oSefaz:cVersao := "3.00"
-         cXmlRetorno := oSefaz:MdfeStatusServico()
+         cXmlRetorno := oSefaz:MdfeStatus()
          //wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
          wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
          cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" )    + hb_Eol()
@@ -360,7 +360,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
             FOR EACH cUF IN { "AM", "BA", "CE", "GO", "MG", "MS", "MT", "PE", "PR", "RS", "SP" }
                oSefaz:cUF       := cUF
                oSefaz:cAmbiente := cAmbiente
-               oSefaz:NfeStatusServico()
+               oSefaz:NfeStatus()
                //? oSefaz:cXmlRetorno
                ? oSefaz:cAmbiente, oSefaz:cUF, oSefaz:cStatus
                Inkey(2)

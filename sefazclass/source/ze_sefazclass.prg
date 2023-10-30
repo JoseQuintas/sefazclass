@@ -169,11 +169,11 @@ METHOD XmlSoapPost() CLASS SefazClass
       ::cStatus     := "999"
       ::cMotivo     := "Erro de comunicação: sem endereço de internet"
       RETURN NIL
-   CASE Empty( ::cSoapService )
-      ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há nome do serviço" />]
-      ::cStatus     := "999"
-      ::cMotivo     := "Erro de comunicação: sem nome de serviço"
-      RETURN NIL
+   //CASE Empty( ::cSoapService )
+   //   ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há nome do serviço" />]
+   //   ::cStatus     := "999"
+   //   ::cMotivo     := "Erro de comunicação: sem nome de serviço"
+   //   RETURN NIL
    CASE Empty( ::cSoapAction )
       ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há endereço de SOAP Action" />]
       ::cStatus     := "999"
@@ -192,6 +192,11 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    [xmlns:xsd="http://www.w3.org/2001/XMLSchema" ] + ;
    [xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"]
    LOCAL cSoapVersion
+
+   IF Empty( ::cSoapService )
+      ::cSoapService := Substr( ::cSoapAction, 1, Rat( "/", ::cSoapAction ) - 1 )
+      ::cSoapAction  := Substr( ::cSoapAction, Rat( "/", ::cSoapAction ) + 1 )
+   ENDIF
 
    cSoapVersion := ::cVersao
    IF "CadConsultaCadastro" $ ::cSoapAction

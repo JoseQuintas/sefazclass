@@ -29,7 +29,7 @@ METHOD BPeProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_BPE
    ::cXmlEnvio +=   XmlTag( "chBPe", cChave )
    ::cXmlEnvio += [</conssitBPe>]
    IF DfeModFis( cChave ) != "63"
-      ::cXmlRetorno := [<erro text="*ERRO* BpeConsultaProtocolo() Chave não se refere a BPE" />]
+      ::cXmlRetorno := [<erro text="*ERRO* BpeProtocolo() Chave não se refere a BPE" />]
    ELSE
       ::XmlSoapPost()
    ENDIF

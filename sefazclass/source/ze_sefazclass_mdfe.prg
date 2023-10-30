@@ -15,7 +15,7 @@ ZE_SEFAZCLASS_MDFE - Rotinas pra MDFe
 CREATE CLASS SefazClass_MDFE
 
    METHOD MDFeConsNaoEnc( CUF, cCNPJ , cCertificado, cAmbiente )
-   METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente )
+   METHOD MDFeProtocolo( cChave, cCertificado, cAmbiente )
    METHOD MDFeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD MDFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
@@ -54,7 +54,7 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass_M
 
    RETURN ::cXmlRetorno
 
-METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
+METHOD MDFeProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
@@ -69,7 +69,7 @@ METHOD MDFeConsultaProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass
    ::cXmlEnvio +=    XmlTag( "chMDFe", cChave )
    ::cXmlEnvio += [</consSitMDFe>]
    IF DfeModFis( cChave ) != "58"
-      ::cXmlRetorno := [<erro text="*ERRO* MDFEConsultaProtocolo() Chave não se refere a MDFE" />]
+      ::cXmlRetorno := [<erro text="*ERRO* MDFEProtocolo() Chave não se refere a MDFE" />]
    ELSE
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
