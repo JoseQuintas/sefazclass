@@ -93,7 +93,7 @@ FUNCTION ze_Cnab033( aBoletoList )
          /* 023-032 */ cTxt += StrZero( :nConta, 10 )
          /* 033-042 */ cTxt += StrZero( :nConta, 10 )
          /* 043-044 */ cTxt += Space(2)
-         /* 045-057 */ cTxt += StrZero( :nBancario, 12 ) + oBoleto:Modulo11_033( StrZero( nBancario, 12 ) )
+         /* 045-057 */ cTxt += StrZero( :nBancario, 12 ) + oBoleto:Modulo11_033( StrZero( :nBancario, 12 ) )
          /* 058-058 */ cTxt += "5"
          /* 059-059 */ cTxt += "1"
          /* 060-060 */ cTxt += "1"
