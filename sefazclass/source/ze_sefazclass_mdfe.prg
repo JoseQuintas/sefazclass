@@ -16,7 +16,7 @@ CREATE CLASS SefazClass_MDFE
 
    METHOD MDFeConsNaoEnc( CUF, cCNPJ , cCertificado, cAmbiente )
    METHOD MDFeProtocolo( cChave, cCertificado, cAmbiente )
-   METHOD MDFeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente )
+   METHOD MDFeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
    METHOD MDFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
    METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
@@ -25,7 +25,7 @@ CREATE CLASS SefazClass_MDFE
    METHOD MDFeEventoPagamento( cChave, nSequencia, cXmlPagamento, cCertificado, cAmbiente )
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
-   METHOD MDFeEmissao( cXml, cUF, cCertificado, cAmbiente )
+   METHOD MDFeEnvio( cXml, cUF, cCertificado, cAmbiente )
    //METHOD MDFeRecepcaoSinc( cXml, cUF, cCertificado, cAmbiente )
    METHOD MDFeStatus( cUF, cCertificado, cAmbiente )
    METHOD SoapUrlMdfe( aSoapList, cUF, cVersao )
@@ -81,7 +81,7 @@ METHOD MDFeProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
 
    RETURN ::cXmlRetorno
 
-METHOD MDFeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
+METHOD MDFeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
@@ -303,7 +303,7 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass_
 
    RETURN NIL
 
-METHOD MDFeEmissao( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
+METHOD MDFeEnvio( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
 
    LOCAL oDoc, cBlocoXml, aList, nPos, cURLConsulta := "http:"
 
@@ -349,7 +349,7 @@ METHOD MDFeEmissao( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
    ENDIF
    IF ! Empty( ::cRecibo ) .AND. ::cStatus != "999"
       Inkey( ::nTempoEspera )
-      ::MDFeRetEmissao()
+      ::MDFeRetEnvio()
       ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
    ENDIF
 

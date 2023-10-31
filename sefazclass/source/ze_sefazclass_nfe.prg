@@ -26,7 +26,7 @@ CREATE CLASS SefazClass_nfe
 
    //METHOD NFeConsultaDest( cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cCertificado, cAmbiente )
    METHOD NFeProtocolo( cChave, cCertificado, cAmbiente )
-   METHOD NFeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente )
+   METHOD NFeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmbiente )
    METHOD NFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
    METHOD NFeEventoAutor( cChave, cCnpj, cOrgaoAutor, ctpAutor, cverAplic, cAutorCnpj, ctpAutorizacao, cCertificado, cAmbiente )
@@ -37,7 +37,7 @@ CREATE CLASS SefazClass_nfe
    METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
-   METHOD NFeEmissao( cXml, cUF, cCertificado, cAmbiente, cIndSinc )
+   METHOD NFeEnvio( cXml, cUF, cCertificado, cAmbiente, cIndSinc )
    METHOD NFeStatus( cUF, cCertificado, cAmbiente )
    METHOD NFeStatusSVC( cUF, cCertificado, cAmbiente, lSVCAN )
    METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente )
@@ -434,7 +434,7 @@ METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_nf
 
    RETURN ::cXmlDocumento
 
-METHOD NFeEmissao( cXml, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass_nfe
+METHOD NFeEnvio( cXml, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass_nfe
 
    LOCAL oDoc, cChave
 
@@ -472,7 +472,7 @@ METHOD NFeEmissao( cXml, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazCla
       ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
       IF ! Empty( ::cRecibo )
          Inkey( ::nTempoEspera )
-         ::NfeRetEmissao()
+         ::NfeRetEnvio()
          IF hb_ASCan( { "104", "105" }, ::cStatus,,, .T. ) != 0
             oDoc   := XmlToDoc( ::cXmlDocumento, .F. )
             cChave := oDoc:cChave
@@ -503,7 +503,7 @@ METHOD NFeEmissao( cXml, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazCla
 
    RETURN ::cXmlRetorno
 
-METHOD NFeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_nfe
+METHOD NFeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_nfe
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::cProjeto := WS_PROJETO_NFE

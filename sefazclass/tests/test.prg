@@ -294,22 +294,22 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          @ 8, 1 GET aVarList[ VAR_RECIBO ] PICTURE "@9"
          READ
          IF LastKey() != K_ESC .AND. ! Empty( aVarList[ VAR_RECIBO ] )
-            oSefaz:NfeRetEmissao( aVarList[ VAR_RECIBO ] )
+            oSefaz:NfeRetEnvio( aVarList[ VAR_RECIBO ] )
             ? oSefaz:cXmlRetorno
             Inkey(0)
          ENDIF
 
       CASE nOpc == OPC_ENVIO_TESTE
-         oSefaz:NfeLoteEnvia( [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>] )
+         oSefaz:NfeEnvio( [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>] )
          ? oSefaz:cXmlRetorno
          Inkey(0)
 
       CASE nOpc == OPC_ENVIO_USUARIO
          cXml := MemoRead( win_GetOpenFileName(, "Arquivo a transmitir", ".\", "XML", "*.XML", 1 ) )
          DO CASE
-         CASE "<infMDFe" $ cXml ; ? "autorizando MDFE"; oSefaz:cVersao  := "3.00"; oSefaz:MDFeLoteEnvia( cXml )
-         CASE "<infCTe"  $ cXml ; ? "autorizando CTE"; oSefaz:cVersao := "3.00"; oSefaz:CTeLoteEnvia( cXml )
-         CASE "<infNFe"  $ cXml ; ? "autorizando NFE"; oSefaz:cVersao := "4.00"; oSefaz:NfeLoteEnvia( cXml )
+         CASE "<infMDFe" $ cXml ; ? "autorizando MDFE"; oSefaz:cVersao  := "3.00"; oSefaz:MDFeEnvio( cXml )
+         CASE "<infCTe"  $ cXml ; ? "autorizando CTE"; oSefaz:cVersao := "3.00"; oSefaz:CTeEnvio( cXml )
+         CASE "<infNFe"  $ cXml ; ? "autorizando NFE"; oSefaz:cVersao := "4.00"; oSefaz:NfeEnvio( cXml )
          OTHERWISE              ; ? "Documento não reconhecido"
          ENDCASE
          ? oSefaz:cXmlRetorno
@@ -511,3 +511,4 @@ STATIC FUNCTION DanfeAutomatico( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    RETURN Nil
 
 FUNCTION AppVersaoExe(); RETURN ""
+FUNCTION AppUserName(); RETURN ""

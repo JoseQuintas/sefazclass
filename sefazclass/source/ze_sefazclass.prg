@@ -76,7 +76,6 @@ CREATE CLASS SefazClass INHERIT Sefazclass_BPE, SefazClass_CTE, SefazClass_MDFE,
    VAR    aSoapUrlList    INIT {}
 
    /* Uso interno */
-   METHOD XmlSoapEnvelope()
    METHOD XmlSoapPost()
    METHOD MicrosoftXmlSoapPost()
 
@@ -163,35 +162,24 @@ METHOD Setup( cUF, cCertificado, cAmbiente ) CLASS SefazClass
 
 METHOD XmlSoapPost() CLASS SefazClass
 
+   LOCAL cXmlns := ;
+      [xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ] + ;
+      [xmlns:xsd="http://www.w3.org/2001/XMLSchema" ] + ;
+      [xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"]
+   LOCAL cSoapVersion
+
    DO CASE
    CASE Empty( ::cSoapURL )
       ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há endereço de webservice" />]
       ::cStatus     := "999"
       ::cMotivo     := "Erro de comunicação: sem endereço de internet"
       RETURN NIL
-   //CASE Empty( ::cSoapService )
-   //   ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há nome do serviço" />]
-   //   ::cStatus     := "999"
-   //   ::cMotivo     := "Erro de comunicação: sem nome de serviço"
-   //   RETURN NIL
    CASE Empty( ::cSoapAction )
       ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há endereço de SOAP Action" />]
       ::cStatus     := "999"
       ::cMotivo     := "Erro de comunicação: sem SOAP Action"
       RETURN NIL
    ENDCASE
-   ::XmlSoapEnvelope()
-   ::MicrosoftXmlSoapPost()
-
-   RETURN NIL
-
-METHOD XmlSoapEnvelope() CLASS SefazClass
-
-   LOCAL cXmlns := ;
-      [xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ] + ;
-   [xmlns:xsd="http://www.w3.org/2001/XMLSchema" ] + ;
-   [xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"]
-   LOCAL cSoapVersion
 
    IF Empty( ::cSoapService )
       ::cSoapService := Substr( ::cSoapAction, 1, Rat( "/", ::cSoapAction ) - 1 )
@@ -204,43 +192,45 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
    ELSEIF "nfeRecepcaoEvento" $ ::cSoapAction
       cSoapVersion := "1.00"
    ENDIF
-   ::cXmlSoap    := XML_UTF8
-   ::cXmlSoap    += [<soap12:Envelope ] + cXmlns + [>]
-   IF ::cSoapAction != "nfeDistDFeInteresse" .AND. ::cSoapAction != "ccgConsGTIN" ;
-      .AND. ! ( ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00" )
-      ::cXmlSoap +=    [<soap12:Header>]
-      IF ::cVersao == "4.00" .AND. ::cProjeto != WS_PROJETO_CTE
-         ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + ["/>]
-      ELSE
-         ::cXmlSoap +=       [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
-         ::cXmlSoap +=          [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
-         ::cXmlSoap +=          [<versaoDados>] + cSoapVersion + [</versaoDados>]
-         ::cXmlSoap +=       [</] + ::cProjeto + [CabecMsg>]
-      ENDIF
-      ::cXmlSoap +=    [</soap12:Header>]
-   ENDIF
-   ::cXmlSoap    +=    [<soap12:Body>]
-   IF ::cSoapAction == "ccgConsGTIN"
-      ::cXmlSoap += [<ccgConsGTIN xmlns="] + ::cSoapService + [">]
-   ENDIF
-   IF ::cSoapAction == "nfeDistDFeInteresse"
-      ::cXmlSoap += [<nfeDistDFeInteresse xmlns="] + ::cSoapService + [">]
-      ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
-   ELSEIF ::cSoapAction == "ccgConsGTIN"
-      ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
-   ELSE
+   ::cXmlSoap := XML_UTF8
+   ::cXmlSoap += [<soap12:Envelope ] + cXmlns + [>]
+   IF "ccgConsGTIN" $ ::cSoapAction
+      ::cXmlSoap += [<soap12:Body>]
+      ::cXmlSoap +=    [<ccgConsGTIN xmlns="] + ::cSoapService + [">]
       ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=          ::cXmlEnvio
+      ::cXmlSoap +=       [</] + ::cProjeto + [DadosMsg>]
+      ::cXmlSoap +=    [</ccgConsGTIN>]
+      ::cXmlSoap += [</soap12:Body>]
+   ELSEIF "nfeDistDFeInteresse" $ ::cSoapAction
+      ::cXmlSoap += [<soap12:Body>]
+      ::cXmlSoap +=    [<nfeDistDFeInteresse xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
+      ::cXmlSoap +=          ::cXmlEnvio
+      ::cXmlSoap +=       [</] + ::cProjeto + [DadosMsg>]
+      ::cXmlSoap +=    [</nfeDistDFeInteresse>]
+      ::cXmlSoap += [</soap12:Body>]
+   ELSEIF ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00"
+      ::cXmlSoap += [<soap12:Body>]
+      ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=       ::cXmlEnvio
+      ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
+      ::cXmlSoap += [</soap12:Body>]
+   ELSE
+      ::cXmlSoap += [<soap12:Header>]
+      ::cXmlSoap +=    [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=       [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
+      ::cXmlSoap +=       [<versaoDados>] + cSoapVersion + [</versaoDados>]
+      ::cXmlSoap +=    [</] + ::cProjeto + [CabecMsg>]
+      ::cXmlSoap += [</soap12:Header>]
+      ::cXmlSoap += [<soap12:Body>]
+      ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=       ::cXmlEnvio
+      ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
+      ::cXmlSoap += [</soap12:Body>]
    ENDIF
-   ::cXmlSoap    += ::cXmlEnvio
-   ::cXmlSoap    +=    [</] + ::cProjeto + [DadosMsg>]
-   IF ::cSoapAction == "ccgConsGTIN"
-      ::cXmlSoap += [</ccgConsGTIN>]
-   ENDIF
-   IF ::cSoapAction == "nfeDistDFeInteresse"
-      ::cXmlSoap += [</nfeDistDFeInteresse>]
-   ENDIF
-   ::cXmlSoap    +=    [</soap12:Body>]
-   ::cXmlSoap    += [</soap12:Envelope>]
+   ::cXmlSoap += [</soap12:Envelope>]
+   ::MicrosoftXmlSoapPost()
 
    RETURN NIL
 
@@ -271,7 +261,6 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
          oServer:SetRequestHeader( "SOAPAction", cSoapAction )
       ENDIF
       oServer:SetRequestHeader( "Content-Type", "application/soap+xml; charset=utf-8" )
-      // webservice json: "Content-Type", "application/json"
       oServer:Send( ::cXmlSoap )
       oServer:WaitForResponse( ::nSoapTimeOut )
       cRetorno := oServer:ResponseBody()

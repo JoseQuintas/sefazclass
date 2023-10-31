@@ -15,7 +15,7 @@ ZE_SEFAZCLASS_CTE - Rotinas pra CTE
 CREATE CLASS SefazClass_CTE
 
    METHOD CTeProtocolo( cChave, cCertificado, cAmbiente )
-   METHOD CTeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente )
+   METHOD CTeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )
    METHOD CTeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
    METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente )
@@ -25,7 +25,7 @@ CREATE CLASS SefazClass_CTE
    METHOD CTeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
-   METHOD CTeEmissao( cXml, cUF, cCertificado, cAmbiente )
+   METHOD CTeEnvio( cXml, cUF, cCertificado, cAmbiente )
    METHOD CTeStatus( cUF, cCertificado, cAmbiente )
    METHOD CTeAddCancelamento( cXmlAssinado, cXmlCancelamento )
    METHOD SoapUrlCte( aSoapList, cUF, cVersao )
@@ -62,7 +62,7 @@ METHOD CTeProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
    RETURN ::cXmlRetorno
 
-METHOD CTeRetEmissao( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
+METHOD CTeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    ::cProjeto := WS_PROJETO_CTE
@@ -345,7 +345,7 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
 
    RETURN ::cXmlRetorno
 
-METHOD CTeEmissao( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
+METHOD CTeEnvio( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
    LOCAL oDoc, cBlocoXml, aList, cURLConsulta := "http:", nPos
 
@@ -392,7 +392,7 @@ METHOD CTeEmissao( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
    ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
    IF ! Empty( ::cRecibo ) .AND. ::cStatus != "999"
       Inkey( ::nTempoEspera )
-      ::CteRetEmissao()
+      ::CteRetEnvio()
       ::CteGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo ) // runner
    ENDIF
 
