@@ -36,8 +36,7 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass_M
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
-   ::cSoapAction  := "mdfeConsNaoEnc"
-   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc"
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc/mdfeConsNaoEnc"
    ::aSoapUrlList := WS_MDFE_CONSULTANAOENCERRADOS
    ::Setup( cUF, cCertificado, cAmbiente )
 
@@ -60,8 +59,7 @@ METHOD MDFeProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
    ::cProjeto := WS_PROJETO_MDFE
    ::aSoapUrlList := WS_MDFE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
-   ::cSoapAction  := "mdfeConsultaMDF"
-   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta"
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta/mdfeConsultaMDF"
 
    ::cXmlEnvio := [<consSitMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -90,8 +88,7 @@ METHOD MDFeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MD
    ENDIF
    ::aSoapUrlList := WS_MDFE_RETAUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "mdfeRetRecepcao"
-   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao"
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao/mdfeRetRecepcao"
 
    ::cXmlEnvio := [<consReciMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -122,8 +119,7 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
 
    ::aSoapUrlList := WS_MDFE_DISTRIBUICAO
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "mdfeDistDFeInteresse" // verificar na comunicação
-   ::cSoapService := "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe"
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe/mdfeDistDFeInteresse" // verificar na comunicação
 
    ::cXmlEnvio    := [<distDFeInt versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -155,8 +151,7 @@ METHOD MDFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbient
    ::cProjeto := WS_PROJETO_MDFE
 
    ::aSoapUrlList := WS_MDFE_EVENTO
-   ::cSoapAction  := "mdfeRecepcaoEvento"
-   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento"
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento/mdfeRecepcaoEvento"
    ::Setup( cChave, cCertificado, cAmbiente )
 
    ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
@@ -311,8 +306,7 @@ METHOD MDFeEnvio( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
    ::cProjeto := WS_PROJETO_MDFE
    ::aSoapUrlList := WS_MDFE_AUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "MDFeRecepcao"
-   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao"
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao/MDFeRecepcao"
 
    IF cXml != NIL
       ::cXmlDocumento := cXml
@@ -362,7 +356,6 @@ METHOD MDFeEnvio( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
 //   ::aSoapUrlList := WS_MDFE_RECEPCAOSINC
 //   ::Setup( cUF, cCertificado, cAmbiente )
 //   ::cSoapAction := ""
-//   ::cSoapService := ""
 //
 //   IF cXml != NIL
 //      ::cXmlDocumento := cXml
@@ -386,8 +379,7 @@ METHOD MDFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
    ::cProjeto := WS_PROJETO_MDFE
    ::aSoapUrlList := WS_MDFE_STATUSSERVICO
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "mdfeStatusServicoMDF"
-   ::cSoapService := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico"
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF"
 
    ::cXmlEnvio := [<consStatServMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -409,4 +401,3 @@ METHOD SoapUrlMdfe( aSoapList, cUF, cVersao ) CLASS Sefazclass_mdfe
    HB_SYMBOL_UNUSED( cUF )
 
    RETURN cUrl
-

@@ -43,7 +43,6 @@ METHOD CTeProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_CTE
    ELSE
       ::cSoapAction := "http://www.portalfiscal.inf.br/cte/wsdl/CTeConsultaV4/cteConsultaCT"
    ENDIF
-   ::cSoapService := ""
 
    ::cXmlEnvio    := [<consSitCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -71,8 +70,7 @@ METHOD CTeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
    ENDIF
    ::aSoapUrlList := WS_CTE_RETAUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "cteRetRecepcao"
-   ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao"
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao"
 
    ::cXmlEnvio     := [<consReciCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio     +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -93,11 +91,10 @@ METHOD CTeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente
    hb_Default( @nSequencia, 1 )
    ::cProjeto := WS_PROJETO_CTE
    ::aSoapUrlList := WS_CTE_ENVIAEVENTO
-   ::cSoapAction  := "cteRecepcaoEvento"
    IF ::cVersao == "3.00"
-      ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento"
+      ::cSoapAction:= "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcaoEvento/cteRecepcaoEvento"
    ELSE
-      ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoEventoV4"
+      ::cSoapAction:= "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoEventoV4/cteRecepcaoEvento"
    ENDIF
    ::Setup( cChave, cCertificado, cAmbiente )
 
@@ -306,8 +303,7 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    ::aSoapUrlList := WS_CTE_INUTILIZA
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "cteInutilizacaoCT"
-   ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao"
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT"
 
    IF Len( cAno ) != 2
       cAno := Right( cAno, 2 )
@@ -353,11 +349,10 @@ METHOD CTeEnvio( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    ::aSoapUrlList := WS_CTE_AUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "cteRecepcaoLote"
    IF ::cVersao == "3.00"
-      ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao"
+      ::cSoapAction := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote"
    ELSE
-      ::cSoapService := "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4"
+      ::cSoapAction := "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao"
    ENDIF
    IF cXml != NIL
       ::cXmlDocumento := cXml
@@ -406,13 +401,11 @@ METHOD CTeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.00"
       ::cSoapAction  := "http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico/cteStatusServicoCT"
-      ::cSoapService := ""
       ::cXmlEnvio    := [<consStatServCte versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
       ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
       ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
       ::cXmlEnvio    += [</consStatServCte>]
    ELSE
-      ::cSoapService := ""
       ::cSoapAction  := "http://www.portalfiscal.inf.br/cte/wsdl/CTeStatusServicoV4/cteStatusServicoCT"
       ::cXmlEnvio    := [<consStatServCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
       ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )

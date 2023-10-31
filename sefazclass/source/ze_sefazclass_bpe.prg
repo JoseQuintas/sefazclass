@@ -20,8 +20,7 @@ METHOD BPeProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_BPE
    ::cProjeto := WS_PROJETO_BPE
    ::aSoapUrlList := WS_BPE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
-   ::cSoapAction  := "BpeConsulta"
-   ::cSoapService := "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP"
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP/BpeConsulta"
 
    ::cXmlEnvio := [<consSitBPe> versao="] + ::cVersao + [" ] + WS_XMLNS_BPE + [>]
    ::cXmlEnvio +=   XmlTag( "tpAmb", ::cAmbiente )
@@ -46,8 +45,7 @@ METHOD BPeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass_BPE
    ::cProjeto := WS_PROJETO_BPE
    ::aSoapUrlList := WS_BPE_STATUSSERVICO
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "BpeStatusServicoBP"
-   ::cSoapService := "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico"
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/BpeStatusServicoBP"
 
    ::cXmlEnvio := [<consStatServBPe versao="] + ::cVersao + [" ] + WS_XMLNS_BPE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -67,4 +65,3 @@ METHOD SoapUrlBpe( aSoapList, cUF, cVersao ) CLASS SefazClass_bpe
    ENDIF
 
    RETURN cUrl
-

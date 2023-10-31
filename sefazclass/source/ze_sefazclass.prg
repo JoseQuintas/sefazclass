@@ -68,8 +68,7 @@ CREATE CLASS SefazClass INHERIT Sefazclass_BPE, SefazClass_CTE, SefazClass_MDFE,
    VAR    cRecibo         INIT ""                      // Número do recibo
    VAR    cMotivo         INIT ""                      // Motivo constante no Recibo
    /* uso interno */
-   VAR    cSoapService    INIT ""                      // webservice Serviço
-   VAR    cSoapAction     INIT ""                      // webservice Action
+VAR    cSoapAction     INIT ""                      // webservice Action
    VAR    cSoapURL        INIT ""                      // webservice Endereço
    VAR    cXmlNameSpace   INIT "xmlns="
    VAR    cNFCE           INIT "N"                     // Porque NFCE tem endereços diferentes
@@ -166,7 +165,7 @@ METHOD XmlSoapPost() CLASS SefazClass
       [xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ] + ;
       [xmlns:xsd="http://www.w3.org/2001/XMLSchema" ] + ;
       [xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"]
-   LOCAL cSoapVersion
+   LOCAL cSoapVersion, cSoapService
 
    DO CASE
    CASE Empty( ::cSoapURL )
@@ -181,10 +180,8 @@ METHOD XmlSoapPost() CLASS SefazClass
       RETURN NIL
    ENDCASE
 
-   IF Empty( ::cSoapService )
-      ::cSoapService := Substr( ::cSoapAction, 1, Rat( "/", ::cSoapAction ) - 1 )
-      ::cSoapAction  := Substr( ::cSoapAction, Rat( "/", ::cSoapAction ) + 1 )
-   ENDIF
+   cSoapService := Substr( ::cSoapAction, 1, Rat( "/", ::cSoapAction ) - 1 )
+   ::cSoapAction  := Substr( ::cSoapAction, Rat( "/", ::cSoapAction ) + 1 )
 
    cSoapVersion := ::cVersao
    IF "CadConsultaCadastro" $ ::cSoapAction
@@ -196,15 +193,15 @@ METHOD XmlSoapPost() CLASS SefazClass
    ::cXmlSoap += [<soap12:Envelope ] + cXmlns + [>]
    IF "ccgConsGTIN" $ ::cSoapAction
       ::cXmlSoap += [<soap12:Body>]
-      ::cXmlSoap +=    [<ccgConsGTIN xmlns="] + ::cSoapService + [">]
-      ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=    [<ccgConsGTIN xmlns="] + cSoapService + [">]
+      ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
       ::cXmlSoap +=          ::cXmlEnvio
       ::cXmlSoap +=       [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap +=    [</ccgConsGTIN>]
       ::cXmlSoap += [</soap12:Body>]
    ELSEIF "nfeDistDFeInteresse" $ ::cSoapAction
       ::cXmlSoap += [<soap12:Body>]
-      ::cXmlSoap +=    [<nfeDistDFeInteresse xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=    [<nfeDistDFeInteresse xmlns="] + cSoapService + [">]
       ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap +=          ::cXmlEnvio
       ::cXmlSoap +=       [</] + ::cProjeto + [DadosMsg>]
@@ -212,19 +209,19 @@ METHOD XmlSoapPost() CLASS SefazClass
       ::cXmlSoap += [</soap12:Body>]
    ELSEIF ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00"
       ::cXmlSoap += [<soap12:Body>]
-      ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
       ::cXmlSoap +=       ::cXmlEnvio
       ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap += [</soap12:Body>]
    ELSE
       ::cXmlSoap += [<soap12:Header>]
-      ::cXmlSoap +=    [<] + ::cProjeto + [CabecMsg xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=    [<] + ::cProjeto + [CabecMsg xmlns="] + cSoapService + [">]
       ::cXmlSoap +=       [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
       ::cXmlSoap +=       [<versaoDados>] + cSoapVersion + [</versaoDados>]
       ::cXmlSoap +=    [</] + ::cProjeto + [CabecMsg>]
       ::cXmlSoap += [</soap12:Header>]
       ::cXmlSoap += [<soap12:Body>]
-      ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + ::cSoapService + [">]
+      ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
       ::cXmlSoap +=       ::cXmlEnvio
       ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap += [</soap12:Body>]
@@ -453,7 +450,7 @@ METHOD CurlSoapPost() CLASS SefazClass
 
    LOCAL aHeader := Array(3)
 
-   aHeader[ 1 ] := [Content-Type: application/soap+xml;charset=utf-8;action="] + ::cSoapService + ["]
+   aHeader[ 1 ] := [Content-Type: application/soap+xml;charset=utf-8;action="] + ::cSoapAction + ["]
    aHeader[ 2 ] := [SOAPAction: "] + ::cSoapAction + ["]
    aHeader[ 3 ] := [Content-length: ] + AllTrim( Str( Len( ::cXml ) ) )
    curl_global_init()
