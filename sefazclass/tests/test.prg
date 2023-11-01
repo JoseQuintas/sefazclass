@@ -97,7 +97,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT Str( OPC_STATUS_MDFE, 2 )     + "-Consulta Status MDFE"
       @ Row() + 1, 5 PROMPT Str( OPC_CADASTRO, 2 )        + "-Consulta Cadastro NFE (digitado)"
       @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_NFE, 2 )   + "-Protocolo NFE (digitado)"
-      @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_CTE, 2 )   + "-Protocolo CTE 3.00 (digitado)"
+      @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_CTE, 2 )   + "-Protocolo CTE 4.00 (digitado)"
       @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_MDFE, 2 )  + "-Protocolo MDFE 3.00 (digitado)"
       @ Row() + 1, 5 PROMPT Str( OPC_DESTINADAS, 2 )      + "-Consulta Destinadas (digitado)"
       @ Row() + 1, 5 PROMPT Str( OPC_VALIDA_XML, 2 )      + "-Valida XML (Basico) (disco)"
@@ -237,7 +237,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          IF LastKey() == K_ESC
             EXIT
          ENDIF
-         oSefaz:cVersao := "3.00"
+         oSefaz:cVersao := "4.00"
          oSefaz:CteProtocolo( aVarList[ VAR_CHAVE ] )
          MsgBox( oSefaz:cXmlRetorno, "CTE PROTOCOLO" )
 

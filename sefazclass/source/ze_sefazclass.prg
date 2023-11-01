@@ -207,19 +207,21 @@ METHOD XmlSoapPost() CLASS SefazClass
       ::cXmlSoap +=       [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap +=    [</nfeDistDFeInteresse>]
       ::cXmlSoap += [</soap12:Body>]
-   ELSEIF ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00"
+   ELSEIF ::cProjeto == WS_PROJETO_MDFE .OR. ( ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00" )
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
       ::cXmlSoap +=       ::cXmlEnvio
       ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap += [</soap12:Body>]
    ELSE
+      IF .F.
       ::cXmlSoap += [<soap12:Header>]
       ::cXmlSoap +=    [<] + ::cProjeto + [CabecMsg xmlns="] + cSoapService + [">]
       ::cXmlSoap +=       [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
       ::cXmlSoap +=       [<versaoDados>] + cSoapVersion + [</versaoDados>]
       ::cXmlSoap +=    [</] + ::cProjeto + [CabecMsg>]
       ::cXmlSoap += [</soap12:Header>]
+      ENDIF
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
       ::cXmlSoap +=       ::cXmlEnvio
@@ -233,51 +235,67 @@ METHOD XmlSoapPost() CLASS SefazClass
 
 METHOD MicrosoftXmlSoapPost() CLASS SefazClass
 
-   LOCAL oServer, nCont, cRetorno
+   LOCAL oServer, nCont, cRetorno, lOk
    LOCAL cSoapAction
 
    cSoapAction := ::cSoapAction
+   lOk := .F.
    BEGIN SEQUENCE WITH __BreakBlock()
-      ::cXmlRetorno := [<erro text="*ERRO* Erro: Criando objeto MSXML2.ServerXMLHTTP" />]
       oServer := win_OleCreateObject( "MSXML2.ServerXMLHTTP.6.0" )
-      ::cXmlRetorno := [erro text="*ERRO* Erro: No uso do objeto MSXML2.ServerXmlHTTP.6.0" />]
-      IF ::cCertificado != NIL
-         oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
-      ENDIF
-      ::cXmlRetorno := [erro text="*ERRO* Erro: Na conexão com webservice ] + ::cSoapURL + [" />]
-      //setTimeouts( long resolveTimeout, long connectTimeout, long sendTimeout, long receiveTimeout )
-      oServer:SetTimeOuts( ::nSoapTimeOut, ::nSoapTimeOut, ::nSoapTimeOut, ::nSoapTimeOut )
-      oServer:Open( "POST", ::cSoapURL, .F. )
-      IF ! Empty( ::cProxyUrl )
-         oServer:SetProxy( 2, ::cProxyUrl )
-         IF ! Empty( ::ProxyUser ) .OR. ! Empty( ::cProxyPassword )
-            oServer:SetProxyCredentials( ::ProxyUser, ::ProxyPassword )
-         ENDIF
-      ENDIF
-      IF cSoapAction != NIL .AND. ! Empty( cSoapAction )
-         oServer:SetRequestHeader( "SOAPAction", cSoapAction )
-      ENDIF
-      oServer:SetRequestHeader( "Content-Type", "application/soap+xml; charset=utf-8" )
-      oServer:Send( ::cXmlSoap )
-      oServer:WaitForResponse( ::nSoapTimeOut )
-      FOR nCont = 1 TO 5
-         cRetorno := oServer:ResponseBody
-         IF ! Empty( cRetorno )
-            EXIT
-         ENDIF
-         Inkey(1)
-      NEXT
-      IF ValType( cRetorno ) == "C"
-         ::cXmlRetorno := cRetorno
-      ELSEIF cRetorno == NIL
-         ::cXmlRetorno := "Sem retorno do webservice"
-      ELSEIF ValType( cRetorno ) == "A" // xharbour e harbour antigo???
-         ::cXmlRetorno := ""
-         FOR nCont = 1 TO Len( cRetorno )
-            ::cXmlRetorno += Chr( cRetorno[ nCont ] )
-         NEXT
-      ENDIF
+      lOk := .T.
    ENDSEQUENCE
+   IF ! lOk
+      ::cXmlRetorno := "<xml>*ERRO* Erro: No uso do objeto MSXML2.ServerXmlHTTP.6.0</xml>"
+      RETURN Nil
+   ENDIF
+   IF ::cCertificado != NIL
+      oServer:setOption( 3, "CURRENT_USER\MY\" + ::cCertificado )
+   ENDIF
+   oServer:SetTimeOuts( ::nSoapTimeOut, ::nSoapTimeOut, ::nSoapTimeOut, ::nSoapTimeOut )
+   lOk := .F.
+   BEGIN SEQUENCE WITH __BreakBlock()
+      oServer:Open( "POST", ::cSoapURL, .F. )
+      lOk := .T.
+   ENDSEQUENCE
+   IF ! lOk
+      ::cXmlRetorno := "<xml>*ERRO* Erro: No Open() do endereço " + ::cSoapURL + "</xml>"
+      RETURN Nil
+   ENDIF
+   IF ! Empty( ::cProxyUrl )
+      oServer:SetProxy( 2, ::cProxyUrl )
+      IF ! Empty( ::ProxyUser ) .OR. ! Empty( ::cProxyPassword )
+         oServer:SetProxyCredentials( ::ProxyUser, ::ProxyPassword )
+      ENDIF
+   ENDIF
+   IF cSoapAction != NIL .AND. ! Empty( cSoapAction )
+      oServer:SetRequestHeader( "SOAPAction", cSoapAction )
+   ENDIF
+   oServer:SetRequestHeader( "Content-Type", "application/soap+xml; charset=utf-8" )
+   oServer:SetRequestHeader( "content-Length", Ltrim( Str( Len( ::cXmlSoap ) ) ) )
+   lOk := .F.
+   BEGIN SEQUENCE WITH __BreakBlock()
+      oServer:Send( ::cXmlSoap )
+      lOk := .T.
+   ENDSEQUENCE
+   IF ! lOk
+      ::cXmlRetorno := "<xml>*ERRO* Erro: No Send() para " + ::cSoapURL + "</xml>"
+      RETURN Nil
+   ENDIF
+   oServer:WaitForResponse( ::nSoapTimeOut )
+   cRetorno := oServer:ResponseBody
+   IF Empty( cRetorno )
+      cRetorno := oServer:ResponseText // sometimes here only
+   ENDIF
+   IF ValType( cRetorno ) == "C"
+      ::cXmlRetorno := cRetorno
+   ELSEIF cRetorno == NIL
+      ::cXmlRetorno := "Sem retorno do webservice"
+   ELSEIF ValType( cRetorno ) == "A" // xharbour e harbour antigo???
+      ::cXmlRetorno := ""
+      FOR nCont = 1 TO Len( cRetorno )
+         ::cXmlRetorno += Chr( cRetorno[ nCont ] )
+      NEXT
+   ENDIF
    DO CASE
    CASE ! Empty( XmlNode( ::cXmlRetorno, "soap:Body" ) )
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" )
@@ -288,11 +306,11 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    CASE "not have permission to view" $ ::cXmlRetorno
       ::cStatus     := "999"
       ::cMotivo     := "problemas com Sefaz e/ou certificado"
-      // ::CertificadoInfo()
-      ::cXmlRetorno := [<erro xml="] + "*ERRO*" + ::cMotivo + [" />]
+      ::cXmlRetorno := "<xml>*ERRO* Erro: Sefaz e/ou certificado</xml>"
    OTHERWISE
       // teste usando procname(2)
-      ::cXmlRetorno := [<erro text="*ERRO* Erro SOAP: ] + ProcName(2) + [ XML retorno não contém soapenv:Body" />] + ::cXmlRetorno
+      ::cXmlRetorno := "<xml>*ERRO* Erro de retorno " + ProcName(2) + ;
+         " body não identificado " + ::cXmlRetorno + "</xml>"
    ENDCASE
 
    RETURN NIL
