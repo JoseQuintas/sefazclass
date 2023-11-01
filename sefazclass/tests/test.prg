@@ -24,23 +24,22 @@ REQUEST HB_CODEPAGE_PTISO
 #define OPC_NFCE            6
 #define OPC_STATUS_NFE      7
 #define OPC_STATUS_CTE      8
-#define OPC_STATUS_CTE4     9
-#define OPC_STATUS_MDFE     10
-#define OPC_CADASTRO        11
-#define OPC_PROTOCOLO_NFE   12
-#define OPC_PROTOCOLO_CTE   13
-#define OPC_PROTOCOLO_MDFE  14
-#define OPC_DESTINADAS      15
-#define OPC_VALIDA_XML      16
-#define OPC_ASSINA_TESTE    17
-#define OPC_ASSINA_USUARIO  18
-#define OPC_CONSULTA_RECIBO 19
-#define OPC_ENVIO_TESTE     20
-#define OPC_ENVIO_USUARIO   21
-#define OPC_MANIFESTACAO    22
-#define OPC_DOWNLOAD_NFE    23
-#define OPC_CERT_REMOVE     24
-#define OPC_STATUSGERAL     25
+#define OPC_STATUS_MDFE     9
+#define OPC_CADASTRO        10
+#define OPC_PROTOCOLO_NFE   11
+#define OPC_PROTOCOLO_CTE   12
+#define OPC_PROTOCOLO_MDFE  13
+#define OPC_DESTINADAS      14
+#define OPC_VALIDA_XML      15
+#define OPC_ASSINA_TESTE    16
+#define OPC_ASSINA_USUARIO  17
+#define OPC_CONSULTA_RECIBO 18
+#define OPC_ENVIO_TESTE     19
+#define OPC_ENVIO_USUARIO   20
+#define OPC_MANIFESTACAO    21
+#define OPC_DOWNLOAD_NFE    22
+#define OPC_CERT_REMOVE     23
+#define OPC_STATUSGERAL     24
 
 #define VAR_CERTIFICADO 1
 #define VAR_UF          2
@@ -95,7 +94,6 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT Str( OPC_NFCE, 2 )            + "-Nota (atual=" + iif( aVarList[ VAR_NFCE ] == "S", "NFCE", "NFE" ) + ")"
       @ Row() + 1, 5 PROMPT Str( OPC_STATUS_NFE, 2 )      + "-Consulta Status NFE"
       @ Row() + 1, 5 PROMPT Str( OPC_STATUS_CTE, 2 )      + "-Consulta Status CTE"
-      @ Row() + 1, 5 PROMPT Str( OPC_STATUS_CTE4, 2 )     + "-Consulta Status CTE 4.0"
       @ Row() + 1, 5 PROMPT Str( OPC_STATUS_MDFE, 2 )     + "-Consulta Status MDFE"
       @ Row() + 1, 5 PROMPT Str( OPC_CADASTRO, 2 )        + "-Consulta Cadastro NFE (digitado)"
       @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_NFE, 2 )   + "-Protocolo NFE (digitado)"
@@ -146,7 +144,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          cTexto += "UF:"                + XmlNode( cXmlRetorno, "cUF" )      + hb_Eol()
          cTexto += "Data/Hora:"         + XmlNode( cXmlRetorno, "dhRecbto" ) + hb_Eol()
          cTexto += "Tempo Médio:"       + XmlNode( cXmlRetorno, "tMed" )     + hb_Eol()
-         MsgBox( cTexto, "Informação Extraída" )
+         MsgBox( cTexto, "Informação Extraída", "NFE STATUS " )
 
       CASE nOpc == OPC_STATUS_CTE
          oSefaz:cVersao := "3.00"
@@ -160,9 +158,8 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          cTexto += "UF:"                + XmlNode( cXmlRetorno, "cUF" )      + hb_Eol()
          cTexto += "Data/Hora:"         + XmlNode( cXmlRetorno, "dhRecbto" ) + hb_Eol()
          cTexto += "Tempo Médio:"       + XmlNode( cXmlRetorno, "tMed" )     + hb_Eol()
-         MsgBox( cTexto, "Informação Extraída" )
+         MsgBox( cTexto, "Informação Extraída", "CTE STATUS 3.00" )
 
-      CASE nOpc == OPC_STATUS_CTE4
          oSefaz:cVersao := "4.00"
          cXmlRetorno := oSefaz:CteStatus()
          MsgBox( oSefaz:cXmlRetorno, "XML retornado" )
@@ -173,7 +170,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          cTexto += "UF:"                + XmlNode( cXmlRetorno, "cUF" )      + hb_Eol()
          cTexto += "Data/Hora:"         + XmlNode( cXmlRetorno, "dhRecbto" ) + hb_Eol()
          cTexto += "Tempo Médio:"       + XmlNode( cXmlRetorno, "tMed" )     + hb_Eol()
-         MsgBox( cTexto, "Informação Extraída" )
+         MsgBox( cTexto, "Informação Extraída", "CTE STATUS 4.00" )
 
       CASE nOpc == OPC_STATUS_MDFE
          oSefaz:cVersao := "3.00"
@@ -187,7 +184,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          cTexto += "UF:"                + XmlNode( cXmlRetorno, "cUF" )      + hb_Eol()
          cTexto += "Data/Hora:"         + XmlNode( cXmlRetorno, "dhRecbto" ) + hb_Eol()
          cTexto += "Tempo Médio:"       + XmlNode( cXmlRetorno, "tMed" )     + hb_Eol()
-         MsgBox( cTexto, "Informação Extraída" )
+         MsgBox( cTexto, "Informação Extraída", "MDFE STATUS" )
 
       CASE nOpc == OPC_CADASTRO
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
@@ -200,8 +197,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          oSefaz:cProjeto := "nfe"
          cXmlRetorno := oSefaz:NfeConsultaCadastro( aVarList[ VAR_CNPJ ], aVarList[ VAR_UF ] )
-         wapi_MessageBox( , oSefaz:cXmlSoap, "XML Enviado" )
-         wapi_MessageBox( , oSefaz:cXmlRetorno, "XML Retornado" )
+         wapi_MessageBox( , oSefaz:cXmlRetorno, "NFE CADASTRO" )
          cTexto := "versao:    " + XmlNode( cXmlRetorno, "versao" )   + hb_Eol()
          cTexto += "Aplicativo:" + XmlNode( cXmlRetorno, "verAplic" ) + hb_Eol()
          cTexto += "Status:    " + XmlNode( cXmlRetorno, "cStat" )    + hb_Eol()
@@ -232,7 +228,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
             EXIT
          ENDIF
          oSefaz:NfeProtocolo( aVarList[ VAR_CHAVE ] )
-         MsgBox( oSefaz:cXmlRetorno )
+         MsgBox( oSefaz:cXmlRetorno, "NFE PROTOCOLO" )
 
       CASE nOpc == OPC_PROTOCOLO_CTE
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
@@ -243,7 +239,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          ENDIF
          oSefaz:cVersao := "3.00"
          oSefaz:CteProtocolo( aVarList[ VAR_CHAVE ] )
-         MsgBox( oSefaz:cXmlRetorno )
+         MsgBox( oSefaz:cXmlRetorno, "CTE PROTOCOLO" )
 
       CASE nOpc == OPC_PROTOCOLO_MDFE
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
@@ -254,7 +250,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          ENDIF
          oSefaz:cVersao := "3.00"
          oSefaz:MDFeProtocolo( aVarList[ VAR_CHAVE ] )
-         MsgBox( oSefaz:cXmlRetorno )
+         MsgBox( oSefaz:cXmlRetorno, "MDFE PROTOCOLO" )
          hb_MemoWrit( "consultamdfe.xml", oSefaz:cXmlRetorno )
 
       CASE nOpc == OPC_DESTINADAS
@@ -265,19 +261,19 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
             EXIT
          ENDIF
          oSefaz:nfeDistribuicaoDFe( aVarList[ VAR_CNPJ ], "0" )
-         MsgBox( oSefaz:cXmlRetorno )
+         MsgBox( oSefaz:cXmlRetorno, "NFE DISTRIBUICAO" )
 
          oSefaz:nfeConsultaDest( aVarList[ VAR_CNPJ ] , "0" )
-         MsgBox( oSefaz:cXmlRetorno )
+         MsgBox( oSefaz:cXmlRetorno, "NFE DESTINADAS" )
 
       CASE nOpc == OPC_VALIDA_XML
          cXml := MemoRead( win_GetOpenFileName(, "Arquivo a validar", "importa\", "XML", "*.XML", 1 ) )
-         MsgBox( oSefaz:ValidaXml( cXml ) )
+         MsgBox( oSefaz:ValidaXml( cXml ), "XML VALIDADO" )
 
       CASE nOpc == OPC_ASSINA_TESTE
          oSefaz:cXmlDocumento := [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>]
          oSefaz:AssinaXml()
-         MsgBox( oSefaz:cXmlDocumento )
+         MsgBox( oSefaz:cXmlDocumento, "XML ASSINADO" )
 
       CASE nOpc == OPC_CONSULTA_RECIBO
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
@@ -285,12 +281,12 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          READ
          IF LastKey() != K_ESC .AND. ! Empty( aVarList[ VAR_RECIBO ] )
             oSefaz:NfeRetEnvio( aVarList[ VAR_RECIBO ] )
-            MsgBox( oSefaz:cXmlRetorno )
+            MsgBox( oSefaz:cXmlRetorno, "NFE RECIBO" )
          ENDIF
 
       CASE nOpc == OPC_ENVIO_TESTE
          oSefaz:NfeEnvio( [<NFe><infNFe Id="Nfe0001"></infNFe></NFe>] )
-         MsgBox( oSefaz:cXmlRetorno )
+         MsgBox( oSefaz:cXmlRetorno, "NFE ENVIO TESTE" )
 
       CASE nOpc == OPC_ENVIO_USUARIO
          cXml := MemoRead( win_GetOpenFileName(, "Arquivo a transmitir", ".\", "XML", "*.XML", 1 ) )
@@ -300,7 +296,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          CASE "<infNFe"  $ cXml ; ? "autorizando NFE"; oSefaz:cVersao := "4.00"; oSefaz:NfeEnvio( cXml )
          OTHERWISE              ; ? "Documento não reconhecido"
          ENDCASE
-         MsgBox( oSefaz:cXmlRetorno )
+         MsgBox( oSefaz:cXmlRetorno, "NFE ENVIO DISCO" )
          //hb_MemoWrit( "testeassinado.xml", oSefaz:cXmlDocumento )
          //hb_MemoWrit( "testeautorizado.xml", oSefaz:cXmlAutorizado )
 
@@ -308,8 +304,8 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          cFileName := win_GetOpenFileName(, "Arquivo a assinar", ".\", "XML", "*.XML", 1 )
          oSefaz:cXmlDocumento := MemoRead( cFileName )
          oSefaz:AssinaXml()
-         MsgBox( oSefaz:cXmlRetorno )
-         MsgBox( oSefaz:cXmlDocumento )
+         MsgBox( oSefaz:cXmlRetorno, "RETORNO ASSINA XML USUARIO" )
+         MsgBox( oSefaz:cXmlDocumento, "XML ASSINADO" )
          //hb_MemoWrit( Substr( cFileName, 1, Rat( ".", cFileName ) - 1 ) + "-assinado.xml", oSefaz:cXmlDocumento )
 
       CASE nOpc == OPC_MANIFESTACAO
@@ -320,7 +316,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          READ
          IF LastKey() != K_ESC
             oSefaz:NfeEventoManifestacao( aVarList[ VAR_CHAVE ], aVarList[ VAR_CNPJ ], aVarList[ VAR_EVENTO ] )
-            MsgBox( oSefaz:cXmlRetorno )
+            MsgBox( oSefaz:cXmlRetorno, "NFE MANIFESTACAO" )
          ENDIF
 
       CASE nOpc == OPC_DOWNLOAD_NFE
@@ -330,7 +326,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          READ
          IF LastKey() != K_ESC
             oSefaz:NfeDownload( aVarList[ VAR_CNPJ ], aVarList[ VAR_CHAVE ], aVarList[ VAR_CERTIFICADO ], aVarList[ VAR_AMBIENTE ] )
-            MsgBox( oSefaz:cXmlRetorno )
+            MsgBox( oSefaz:cXmlRetorno, "NFE DOWNLOAD" )
             IF oSefaz:cStatus == "138"
                //hb_MemoWrit( "arquivo.zip", hb_Base64Decode( XmlNode( oSefaz:cXmlRetorno, "docZip" ) ) )
             ENDIF
