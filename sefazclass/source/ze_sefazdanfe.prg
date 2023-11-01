@@ -678,7 +678,10 @@ METHOD QuadroDuplicatas() CLASS hbNFeDaNFe
             nColuna := 1
          ENDIF
          IF ( nPos := hb_AScan( aList, { | e | e[ 1 ] == cNumero } ) ) != 0
-            ::DrawTexto( 6 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 122 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, aList[ nPos, 2 ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
+            ::DrawTexto( 6 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, ;
+            122 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, ;
+            iif( cNumero == "99", XmlNode( cTPag, "xPag" ), aList[ nPos, 2 ] ), ;
+            HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
          ENDIF
          ::DrawTexto( 130 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 195 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 8 )
          nColuna++
