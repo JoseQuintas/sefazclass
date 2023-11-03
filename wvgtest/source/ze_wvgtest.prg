@@ -580,7 +580,7 @@ METHOD wvgTstControl:handleEvent( nMessage, aNM )
             Eval( ::sl_resize, , , Self )
          ENDIF
       ENDIF
-      ::SetImage()
+      //::SetImage() // test if cause bug
 
       RETURN EVENT_HANDLED
 
