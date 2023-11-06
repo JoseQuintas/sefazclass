@@ -8,7 +8,7 @@ FUNCTION ze_Calculo422( SELF )
    LOCAL cBarras1, cBarras2
 
    ::cBancoDigito := "422-7"
-   ::cLocalPagto  := "ATÉ O VENCIMENTO PAGUE EM QUALQUER BANCO"
+   ::cLocalPagto  := "PAGÁVEL EM QUALQUER BANCO DO SISTEMA DE COMPENSAÇÃO"
    ::cBolNumero := StrZero( ::nBancario, 9 )
    ::cBolConta  := StrZero( ::nAgencia, 5 ) + " / " + StrZero( ::nIdEmpresa, 9 )
 
@@ -77,10 +77,10 @@ FUNCTION ze_Cnab422( aBoletoList )
          /* 140-142 */ cTxt += "422"
          /* 143-147 */ cTxt += StrZero(0,5)
          /* 148-149 */ cTxt += StrZero( :nEspecie, 2 )
-         /* 150-150 */ cTxt += "A"
+         /* 150-150 */ cTxt += :cAceite // aceite
          /* 151-156 */ cTxt += hb_Dtoc( :dDatEmi, "DDMMYY" )
-         /* 157-158 */ cTxt += iif( :nJuros != 0, "01", "02" )
-         /* 159-160 */ cTxt += StrZero(0,2)
+         /* 157-158 */ cTxt += iif( :nMulta != 0, "16", "00" )
+         /* 159-160 */ cTxt += iif( :nJuros != 0, "01", "00" )
          /* 161-173 */ cTxt += StrZero( :nValor * :nJuros / 30, 13 )
          /* 174-179 */ cTxt += StrZero(0,6)
          /* 180-192 */ cTxt += StrZero(0,13)
@@ -88,7 +88,7 @@ FUNCTION ze_Cnab422( aBoletoList )
          IF :nMulta == 0
             /* 206-218 */ cTxt += StrZero(0,13)
          ELSE
-            /* 206-211 */ cTxt += hb_Dtoc( :dEmissao + 1, "DDMMYY" )
+            /* 206-211 */ cTxt += hb_Dtoc( :dDatVen + 1, "DDMMYY" )
             /* 212-215 */ cTxt += StrZero( :nMulta * 100, 4 )
             /* 216-218 */ cTxt += "000"
          ENDIF
@@ -99,7 +99,7 @@ FUNCTION ze_Cnab422( aBoletoList )
          /* 315-324 */ cTxt += Pad( :cCliBairro, 10 )
          /* 325-326 */ cTxt += Space(2)
          /* 327-334 */ cTxt += StrZero( Val( SoNumeros( :cCliCep ) ), 8 )
-         /* 325-349 */ cTxt += Pad( :cCliCidade, 25 )
+         /* 335-349 */ cTxt += Pad( :cCliCidade, 15 )
          /* 350-351 */ cTxt += Pad( :cCliUF, 2 )
          /* 352-381 */ cTxt += Pad( :cAvalNome, 30 )
          /* 382-388 */ cTxt += Space(7)
