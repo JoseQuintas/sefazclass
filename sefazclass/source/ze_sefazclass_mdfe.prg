@@ -304,9 +304,14 @@ METHOD MDFeEnvio( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
-   ::aSoapUrlList := WS_MDFE_AUTORIZACAO
+   IF IsMaquinaJPA()
+      ::aSoapUrlList := WS_MDFE_RECEPCAOSINC
+      ::cSoapAction := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc/mdfeRecepcao"
+   ELSE
+      ::aSoapUrlList := WS_MDFE_AUTORIZACAO
+      ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao/MDFeRecepcao"
+   ENDIF
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao/MDFeRecepcao"
 
    IF cXml != NIL
       ::cXmlDocumento := cXml

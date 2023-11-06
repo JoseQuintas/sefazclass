@@ -70,7 +70,9 @@ METHOD CTeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
    ENDIF
    ::aSoapUrlList := WS_CTE_RETAUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao"
+   IF ! IsMaquinaJPA()
+      ::cSoapAction  := "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao"
+   ENDIF
 
    ::cXmlEnvio     := [<consReciCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio     +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -375,11 +377,14 @@ METHOD CTeEnvio( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 	cBlocoXml += "</qrCodCTe>"
 	cBlocoXml += "</infCTeSupl>"
 	::cXmlDocumento := StrTran( ::cXmlDocumento, "</infCte>", "</infCte>" + cBlocoXml )
-
-   ::cXmlEnvio    := [<enviCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
-   ::cXmlEnvio    +=    XmlTag( "idLote", "1" )
-   ::cXmlEnvio    +=    ::cXmlDocumento
-   ::cXmlEnvio    += [</enviCTe>]
+   IF ::cVersao == "3.00"
+      ::cXmlEnvio    := [<enviCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
+      ::cXmlEnvio    +=    XmlTag( "idLote", "1" )
+      ::cXmlEnvio += ::cXmlDocumento
+      ::cXmlEnvio    += [</enviCTe>]
+   ELSE
+      ::cXmlEnvio += hb_Base64Encode( hb_gzCompress( ::cXmlDocumento ) )
+   ENDIF
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno
    ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )

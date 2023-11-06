@@ -210,7 +210,11 @@ METHOD XmlSoapPost() CLASS SefazClass
    ELSEIF ::cProjeto == WS_PROJETO_MDFE .OR. ( ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00" )
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
-      ::cXmlSoap +=       ::cXmlEnvio
+      IF "SINC" $ Upper( cSoapService )
+         ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
+      ELSE
+         ::cXmlSoap +=       ::cXmlEnvio
+      ENDIF
       ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap += [</soap12:Body>]
    ELSE
@@ -224,11 +228,16 @@ METHOD XmlSoapPost() CLASS SefazClass
       ENDIF
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
-      ::cXmlSoap +=       ::cXmlEnvio
+      IF IsMaquinaJPA()
+         ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
+      ELSE
+         ::cXmlSoap +=       ::cXmlEnvio
+      ENDIF
       ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap += [</soap12:Body>]
    ENDIF
    ::cXmlSoap += [</soap12:Envelope>]
+   MsgExclamation( "envelope:" + ::cXmlSoap )
    ::MicrosoftXmlSoapPost()
 
    RETURN NIL
@@ -270,6 +279,10 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    IF cSoapAction != NIL .AND. ! Empty( cSoapAction )
       oServer:SetRequestHeader( "SOAPAction", cSoapAction )
    ENDIF
+   IF IsMaquinaJPA()
+      oServer:SetRequestHeader( "Accept-Encoding", "gzip,deflate" )
+      oServer:SetRequestHeader( "Content-Encoding", "gzip" )
+   ENDIF
    oServer:SetRequestHeader( "Content-Type", "application/soap+xml; charset=utf-8" )
    oServer:SetRequestHeader( "content-Length", Ltrim( Str( Len( ::cXmlSoap ) ) ) )
    lOk := .F.
@@ -281,11 +294,17 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       ::cXmlRetorno := "<xml>*ERRO* Erro: No Send() para " + ::cSoapURL + "</xml>"
       RETURN Nil
    ENDIF
-   oServer:WaitForResponse( ::nSoapTimeOut )
-   cRetorno := oServer:ResponseBody
+   cRetorno := oServer:ResponseXML:XML
+   MsgExclamation(hb_DefaultValue( cRetorno, "" ) )
    IF Empty( cRetorno )
-      cRetorno := oServer:ResponseText // sometimes here only
+      cRetorno := oServer:ResponseBody
+      MsgExclamation( hb_DefaultValue(cRetorno,""))
+      IF Empty( cRetorno )
+         cRetorno := oServer:ResponseText
+      MsgExclamation( hb_DefaultValue(cRetorno,""))
+      ENDIF
    ENDIF
+   MsgExclamation( "fim" )
    IF ValType( cRetorno ) == "C"
       ::cXmlRetorno := cRetorno
    ELSEIF cRetorno == NIL
