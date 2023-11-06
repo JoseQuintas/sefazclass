@@ -237,7 +237,6 @@ METHOD XmlSoapPost() CLASS SefazClass
       ::cXmlSoap += [</soap12:Body>]
    ENDIF
    ::cXmlSoap += [</soap12:Envelope>]
-   MsgExclamation( "envelope:" + ::cXmlSoap )
    ::MicrosoftXmlSoapPost()
 
    RETURN NIL
@@ -295,16 +294,12 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       RETURN Nil
    ENDIF
    cRetorno := oServer:ResponseXML:XML
-   MsgExclamation(hb_DefaultValue( cRetorno, "" ) )
    IF Empty( cRetorno )
       cRetorno := oServer:ResponseBody
-      MsgExclamation( hb_DefaultValue(cRetorno,""))
       IF Empty( cRetorno )
          cRetorno := oServer:ResponseText
-      MsgExclamation( hb_DefaultValue(cRetorno,""))
       ENDIF
    ENDIF
-   MsgExclamation( "fim" )
    IF ValType( cRetorno ) == "C"
       ::cXmlRetorno := cRetorno
    ELSEIF cRetorno == NIL
