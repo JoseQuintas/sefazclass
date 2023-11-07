@@ -37,7 +37,7 @@ CREATE CLASS SefazClass_nfe
    METHOD NFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD NFeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente )
-   METHOD NFeEnvio( cXml, cUF, cCertificado, cAmbiente, cIndSinc )
+   METHOD NFeEnvio( cXml, cUF, cCertificado, cAmbiente, lSincrono )
    METHOD NFeStatus( cUF, cCertificado, cAmbiente )
    METHOD NFeStatusSVC( cUF, cCertificado, cAmbiente, lSVCAN )
    METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente )
@@ -424,17 +424,24 @@ METHOD NFeContingencia( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_nf
 
    RETURN ::cXmlDocumento
 
-METHOD NFeEnvio( cXml, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass_nfe
+METHOD NFeEnvio( cXml, cUF, cCertificado, cAmbiente, lSincrono ) CLASS SefazClass_nfe
 
    LOCAL oDoc, cChave
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
-   hb_Default( @cIndSinc, ::cIndSinc )
+   IF lSincrono != Nil .AND. ValType( lSincrono ) == "L"
+      ::lSincrono := lSincrono
+   ENDIF
    ::cProjeto := WS_PROJETO_NFE
 
    ::aSoapUrlList := WS_NFE_AUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote"
+   IF ::lSincrono
+      // reservado pra implementacao futura em gzip
+      ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote"
+   ELSE
+      ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote"
+   ENDIF
 
    IF cXml != NIL
       ::cXmlDocumento := cXml
@@ -449,12 +456,12 @@ METHOD NFeEnvio( cXml, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass
    ::cXmlEnvio    := [<enviNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    // FOR EACH cXmlNota IN aXmlNotas
    ::cXmlEnvio    += XmlTag( "idLote", "1" )
-   ::cXmlEnvio    += XmlTag( "indSinc", cIndSinc )
+   ::cXmlEnvio    += XmlTag( "indSinc",iif( ::lSincrono, "1", "0" ) )
    ::cXmlEnvio    += ::cXmlDocumento
    // NEXT
    ::cXmlEnvio    += [</enviNFe>]
    ::XmlSoapPost()
-   IF cIndSinc == WS_RETORNA_RECIBO
+   IF ::lSincrono
       ::cXmlRecibo := ::cXmlRetorno
       ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
       ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
@@ -474,20 +481,10 @@ METHOD NFeEnvio( cXml, cUF, cCertificado, cAmbiente, cIndSinc ) CLASS SefazClass
          ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
       ENDIF
    ELSE
-      ::cXmlRecibo := ::cXmlRetorno
-      ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
-      ::cStatus    := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
-      ::cMotivo    := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
-      IF Empty( ::cStatus )
-         ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStatus" ), 3 )
-         ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
-      ENDIF
-      IF ::cStatus != "999"
-         //IF ! Empty( ::cRecibo )
-            ::cXmlProtocolo := ::cXmlRetorno
-            ::cXmlRetorno   := ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
-         //ENDIF
-      ENDIF
+      ::cXmlRecibo    := ::cXmlRetorno
+      ::cXmlProtocolo := ::cXmlRetorno
+      ::cRecibo       := ""
+      ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
    ENDIF
 
    RETURN ::cXmlRetorno

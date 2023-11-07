@@ -25,7 +25,7 @@ CREATE CLASS SefazClass_MDFE
    METHOD MDFeEventoPagamento( cChave, nSequencia, cXmlPagamento, cCertificado, cAmbiente )
    METHOD MDFeGeraAutorizado( cXmlAssinado, cXmlProtocolo )
    METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo )
-   METHOD MDFeEnvio( cXml, cUF, cCertificado, cAmbiente )
+   METHOD MDFeEnvio( cXml, cUF, cCertificado, cAmbiente, lSincrono )
    //METHOD MDFeRecepcaoSinc( cXml, cUF, cCertificado, cAmbiente )
    METHOD MDFeStatus( cUF, cCertificado, cAmbiente )
    METHOD SoapUrlMdfe( aSoapList, cUF, cVersao )
@@ -180,7 +180,6 @@ METHOD MDFeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbie
    LOCAL cXml := ""
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
-   ::cProjeto := WS_PROJETO_MDFE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evCancMDFe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento" )
@@ -198,7 +197,6 @@ METHOD MDFeEventoEncerramento( cChave, nSequencia, nProt, cUFFim , cMunCarrega ,
    LOCAL cXml := ""
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
-   ::cProjeto := WS_PROJETO_MDFE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evEncMDFe>]
    cXml +=       XmlTag( "descEvento", "Encerramento" )
@@ -218,7 +216,6 @@ METHOD MDFeEventoInclusaoCondutor( cChave, nSequencia, cNome, cCpf, cCertificado
    LOCAL cXml := ""
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
-   ::cProjeto := WS_PROJETO_MDFE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evIncCondutorMDFe>]
    cXml +=       XmlTag( "descEvento", "Inclusao Condutor" )
@@ -238,7 +235,6 @@ METHOD MDFeEventoPagamento( cChave, nSequencia, cXmlPagamento, cCertificado, cAm
    LOCAL cXml := ""
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
-   ::cProjeto := WS_PROJETO_MDFE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml += cXmlPagamento
    cXml += [</detEvento>]
@@ -298,13 +294,16 @@ METHOD MDFeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass_
 
    RETURN NIL
 
-METHOD MDFeEnvio( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
+METHOD MDFeEnvio( cXml, cUF, cCertificado, cAmbiente, lSincrono ) CLASS SefazClass_MDFE
 
    LOCAL oDoc, cBlocoXml, aList, nPos, cURLConsulta := "http:"
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
-   IF IsMaquinaJPA()
+   IF lSincrono != Nil .AND. ValType( lSincrono ) == "L"
+      ::lSincrono := lSincrono
+   ENDIF
+   IF ::lSincrono
       ::aSoapUrlList := WS_MDFE_RECEPCAOSINC
       ::cSoapAction := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc/mdfeRecepcao"
    ELSE
@@ -335,48 +334,33 @@ METHOD MDFeEnvio( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
       cBlocoXml += "</infMDFeSupl>"
       ::cXmlDocumento := StrTran( ::cXmlDocumento, "</infMDFe>", "</infMDFe>" + cBlocoXml )
    ENDIF
-   ::cXmlEnvio  := [<enviMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
-   ::cXmlEnvio  +=    XmlTag( "idLote", "1" )
-   ::cXmlEnvio  +=    ::cXmlDocumento
-   ::cXmlEnvio  += [</enviMDFe>]
+   IF ::lSincrono
+      ::cXmlEnvio := ::cXmlDocumento
+   ELSE
+      ::cXmlEnvio  := [<enviMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
+      ::cXmlEnvio  +=    XmlTag( "idLote", "1" )
+      ::cXmlEnvio  +=    ::cXmlDocumento
+      ::cXmlEnvio  += [</enviMDFe>]
+   ENDIF
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno
-   ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
-   IF ::cStatus != "999"
-      ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
-      ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
-   ENDIF
-   IF ! Empty( ::cRecibo ) .AND. ::cStatus != "999"
-      Inkey( ::nTempoEspera )
-      ::MDFeRetEnvio()
+   IF ::lSincrono
+      ::cXmlProtocolo := ::cXmlRecibo
       ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
+   ELSE
+      ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
+      IF ::cStatus != "999"
+         ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
+         ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
+      ENDIF
+      IF ! Empty( ::cRecibo ) .AND. ::cStatus != "999"
+         Inkey( ::nTempoEspera )
+         ::MDFeRetEnvio()
+         ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
+      ENDIF
    ENDIF
 
    RETURN ::cXmlRetorno
-
-// METHOD MDFeRecepcaoSinc( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
-//
-//   hb_Default( @::cProjeto, WS_PROJETO_MDFE )
-//   hb_Default( @::cVersao, WS_MDFE_DEFAULT )
-//   ::aSoapUrlList := WS_MDFE_RECEPCAOSINC
-//   ::Setup( cUF, cCertificado, cAmbiente )
-//   ::cSoapAction := ""
-//
-//   IF cXml != NIL
-//      ::cXmlDocumento := cXml
-//   ENDIF
-//   IF ::AssinaXml() != "OK"
-//      RETURN ::cXmlRetorno
-///   ENDIF
-//   ::cXmlEnvio := "falta definir aqui"
-//   ::XmlSoapPost()
-//   IF ::cXmlStatus != "999"
-//      ::cStatus := XmlNode( ::cXmlRetorno, "cStatus" )
-//      ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
-//      ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlRetorno )
-//   ENDIF
-
-//   RETURN ::cXmlRetorno
 
 METHOD MDFeStatus( cUF, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
 

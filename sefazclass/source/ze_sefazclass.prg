@@ -39,7 +39,7 @@ CREATE CLASS SefazClass INHERIT Sefazclass_BPE, SefazClass_CTE, SefazClass_MDFE,
    VAR    cCertificado    INIT ""                      // CN (NOME) do certificado
    /* contingência e sinc/assinc */
    VAR    cScan           INIT "N"                     // Indicar SCAN/SVAN/SVRS testes iniciais
-   VAR    cIndSinc        INIT WS_RETORNA_RECIBO       // Poucas UFs opção de protocolo
+   VAR    lSincrono       INIT .F.                     // Poucas UFs opção de protocolo
    /* pra NFCe */
    VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
    VAR    cCSC            INIT ""                      // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
@@ -68,7 +68,7 @@ CREATE CLASS SefazClass INHERIT Sefazclass_BPE, SefazClass_CTE, SefazClass_MDFE,
    VAR    cRecibo         INIT ""                      // Número do recibo
    VAR    cMotivo         INIT ""                      // Motivo constante no Recibo
    /* uso interno */
-VAR    cSoapAction     INIT ""                      // webservice Action
+   VAR    cSoapAction     INIT ""                      // webservice Action
    VAR    cSoapURL        INIT ""                      // webservice Endereço
    VAR    cXmlNameSpace   INIT "xmlns="
    VAR    cNFCE           INIT "N"                     // Porque NFCE tem endereços diferentes
@@ -207,16 +207,16 @@ METHOD XmlSoapPost() CLASS SefazClass
       ::cXmlSoap +=       [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap +=    [</nfeDistDFeInteresse>]
       ::cXmlSoap += [</soap12:Body>]
-   ELSEIF ::cProjeto == WS_PROJETO_MDFE .OR. ( ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00" )
-      ::cXmlSoap += [<soap12:Body>]
-      ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
-      IF "SINC" $ Upper( cSoapService )
-         ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
-      ELSE
-         ::cXmlSoap +=       ::cXmlEnvio
-      ENDIF
-      ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
-      ::cXmlSoap += [</soap12:Body>]
+   //ELSEIF ::cProjeto == WS_PROJETO_MDFE .OR. ( ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00" )
+   //   ::cXmlSoap += [<soap12:Body>]
+   //   ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
+   //   IF ::lSincrono
+   //      ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
+   //   ELSE
+   //      ::cXmlSoap +=       ::cXmlEnvio
+   //   ENDIF
+   //   ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
+   //   ::cXmlSoap += [</soap12:Body>]
    ELSE
       IF .F.
       ::cXmlSoap += [<soap12:Header>]
@@ -228,7 +228,7 @@ METHOD XmlSoapPost() CLASS SefazClass
       ENDIF
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
-      IF IsMaquinaJPA()
+      IF ::lSincrono .AND. ( ::cProjeto == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE )
          ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
       ELSE
          ::cXmlSoap +=       ::cXmlEnvio
@@ -278,7 +278,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    IF cSoapAction != NIL .AND. ! Empty( cSoapAction )
       oServer:SetRequestHeader( "SOAPAction", cSoapAction )
    ENDIF
-   IF IsMaquinaJPA()
+   IF ::lSincrono .AND. ( ::cProjeto  == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE )
       oServer:SetRequestHeader( "Accept-Encoding", "gzip,deflate" )
       oServer:SetRequestHeader( "Content-Encoding", "gzip" )
    ENDIF

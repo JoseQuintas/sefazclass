@@ -70,9 +70,7 @@ METHOD CTeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
    ENDIF
    ::aSoapUrlList := WS_CTE_RETAUTORIZACAO
    ::Setup( cUF, cCertificado, cAmbiente )
-   IF ! IsMaquinaJPA()
-      ::cSoapAction  := "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao"
-   ENDIF
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao"
 
    ::cXmlEnvio     := [<consReciCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlEnvio     +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -128,7 +126,6 @@ METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbien
    LOCAL cXml := ""
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   ::cProjeto := WS_PROJETO_CTE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evCancCTe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento" )
@@ -146,7 +143,6 @@ METHOD CTeEventoCarta( cChave, nSequencia, aAlteracoes, cCertificado, cAmbiente 
    LOCAL oElement, cXml := ""
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   ::cProjeto := WS_PROJETO_CTE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=      [<evCCeCTe>]
    cXml +=          XmlTag( "descEvento", "Carta de Correcao" )
@@ -180,7 +176,6 @@ METHOD CTeEventoDesacordo( cChave, nSequencia, cObs, cCertificado, cAmbiente ) C
    LOCAL cXml := ""
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   ::cProjeto := WS_PROJETO_CTE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evPrestDesacordo>]
    cXml +=       XmlTag( "descEvento", "Prestacao do Servico em Desacordo" )
@@ -198,7 +193,6 @@ METHOD CTeEventoEntrega( cChave, nSequencia, nProt, dDataEntrega, cHoraEntrega, 
    LOCAL oElement, cXml := "", cHash
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   ::cProjeto := WS_PROJETO_CTE
    cHash := hb_Sha1( cChave + hb_Base64Encode( cStrImagem ), .T. )
    cHash := hb_Base64Encode( cHash )
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
@@ -235,7 +229,6 @@ METHOD CTeEventoCancEntrega( cChave, nSequencia, nProt, nProtEntrega, cCertifica
    LOCAL cXml := ""
 
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   ::cProjeto := WS_PROJETO_CTE
    cXml += [<detEvento versaoEvento="] + ::cVersao + [">]
    cXml +=    [<evCancCECTe>]
    cXml +=       XmlTag( "descEvento", "Cancelamento do Comprovante de Entrega do CT-e" )
@@ -355,6 +348,7 @@ METHOD CTeEnvio( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
       ::cSoapAction := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote"
    ELSE
       ::cSoapAction := "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao"
+      ::lSincrono := .T.
    ENDIF
    IF cXml != NIL
       ::cXmlDocumento := cXml

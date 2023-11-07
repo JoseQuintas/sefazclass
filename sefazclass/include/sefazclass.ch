@@ -11,9 +11,6 @@
 #define WS_XMLNS_NFE                 [xmlns="http://www.portalfiscal.inf.br/nfe"]
 #define WS_XMLNS_MDFE                [xmlns="http://www.portalfiscal.inf.br/mdfe"]
 
-#define WS_RETORNA_PROTOCOLO    "1"
-#define WS_RETORNA_RECIBO       "0"
-
 #define XML_UTF8                   [<?xml version="1.0" encoding="UTF-8"?>]
 
 #define WS_BPE_DEFAULT  "1.00"
