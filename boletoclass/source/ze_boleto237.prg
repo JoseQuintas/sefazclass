@@ -29,7 +29,7 @@ FUNCTION ze_Calculo237( SELF )
       ::cBarras += StrZero( ::nAgencia, 4 )
    ENDIF
    ::cBarras += StrZero( ::nCarteira, 2 )
-   ::cBarras += StrZero( Val( ::cNumDoc ), 11 )
+   ::cBarras += StrZero( ::nBancario, 11 )
    ::cBarras += Left( StrZero( ::nConta, 8 ), 7 )
    ::cBarras += "0"
 
