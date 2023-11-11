@@ -31,6 +31,9 @@ FUNCTION SefazClassTipoXml( cXml )
 
 CREATE CLASS SefazClass INHERIT Sefazclass_BPE, SefazClass_CTE, SefazClass_MDFE, SefazClass_NFE
 
+   /* compatibilidade */
+   METHOD cIndSinc( xValue ) SETGET
+
    /* configuração */
    VAR    cProjeto        INIT NIL
    VAR    cAmbiente       INIT WS_AMBIENTE_PRODUCAO
@@ -47,7 +50,6 @@ CREATE CLASS SefazClass INHERIT Sefazclass_BPE, SefazClass_CTE, SefazClass_MDFE,
    VAR    cVersaoQrCode   INIT "2.00"                  // Versao do QRCode
    VAR    nTempoEspera    INIT 10                      // intervalo entre envia lote e consulta recibo
    VAR    nSoapTimeOut    INIT 15000                  // Limite de espera por resposta em segundos * 1000
-   VAR    lEmitenteCPF    INIT .F.                     // Para o caso de CPF ao invés de CNPJ
    VAR    ValidFromDate   INIT ""                      // Validade do certificado
    VAR    ValidToDate     INIT ""                      // Validade do certificado
    VAR    cUFTimeZone     INIT ""                      // Para TimeZone diferente da UF de comunicação
@@ -88,6 +90,18 @@ CREATE CLASS SefazClass INHERIT Sefazclass_BPE, SefazClass_CTE, SefazClass_MDFE,
    METHOD Setup( cUF, cCertificado, cAmbiente )
 
    ENDCLASS
+
+METHOD cIndSinc( xValue ) CLASS SefazClass
+
+   IF xValue != Nil
+      IF ValType( xValue ) == "C" .AND. xValue == "1"
+         ::lSincrono := .T.
+      ELSE
+         ::lSincrono := .F.
+      ENDIF
+   ENDIF
+
+   RETURN iif( ::lSincrono, "1", "0" )
 
 METHOD AssinaXml() CLASS SefazClass
 
@@ -231,7 +245,7 @@ METHOD XmlSoapPost() CLASS SefazClass
       IF ::lSincrono .AND. ( ::cProjeto == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE )
          ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
       ELSE
-         ::cXmlSoap +=       ::cXmlEnvio
+         ::cXmlSoap += ::cXmlEnvio
       ENDIF
       ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap += [</soap12:Body>]

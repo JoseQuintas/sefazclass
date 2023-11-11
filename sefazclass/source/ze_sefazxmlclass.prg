@@ -951,9 +951,21 @@ FUNCTION DfeNumero( cKey )
 
    RETURN Substr( cKey, 26, 9 )
 
-FUNCTION DfeEmitente( cKey )
+FUNCTION DfeEmitente( cChave )
 
-   RETURN Substr( cKey, 7, 14 )
+   LOCAL cCnpj
+
+   cCnpj := Substr( cChave, 7, 14 )
+
+   IF Left( cChave, 3 ) == "000"
+      // se não tá zerado, não é CPF
+      // já fica o teste, caso precise alterar este outro teste
+      IF ! ValidCnpj( cCnpj )
+         cCnpj := Right( cCnpj, 11 )
+      ENDIF
+   ENDIF
+
+   RETURN Right( cCnpj, 11 )
 
 FUNCTION DFeUF( cKey )
 

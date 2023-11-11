@@ -164,6 +164,8 @@ METHOD NFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmb
 
 METHOD NFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente ) CLASS SefazClass_nfe
 
+   LOCAL cCnpj
+
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::cProjeto := WS_PROJETO_NFE
    hb_Default( @nSequencia, 1 )
@@ -174,12 +176,13 @@ METHOD NFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente
    ELSE
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEvento"
    ENDIF
+   cCnpj := DfeEmitente( cChave )
    ::Setup( cChave, cCertificado, cAmbiente )
    ::cXmlDocumento := [<evento versao="1.00" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( iif( ::lEmitenteCPF, "CPF", "CNPJ" ), DfeEmitente( cChave ) )
+   ::cXmlDocumento +=       XmlTag( iif( Len( cCnpj ) == 11, "CPF", "CNPJ" ), cCnpj )
    ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", cTipoEvento )
@@ -214,12 +217,13 @@ METHOD NFeEventoAutor( cChave, cCnpj, cOrgaoAutor, ctpAutor, cverAplic, cAutorCn
    ::Setup( "AN", cCertificado, cAmbiente )
 
    cDescEvento := "Ator interessado na NF-e"
+   cCnpj := DfeEmitente( cChave )
 
    ::cXmlDocumento := [<evento versao="1.00" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID110150] + cChave + "01" + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", "91" )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( iif( ::lEmitenteCPF, "CPF", "CNPJ" ), cCnpj )
+   ::cXmlDocumento +=       XmlTag( iif( Len( cCnpj ) == 11, "CPF", "CNPJ" ), cCnpj )
    ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", "110150" )
@@ -321,6 +325,7 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
    ::cUF          := "AN"
    ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEventoNF"
    ::Setup( "AN", cCertificado, cAmbiente )
+   cCnpj := DfeEmitente( cCnpj )
 
    DO CASE
    CASE cCodigoEvento == "210200" ; cDescEvento := "Confirmacao da Operacao"
@@ -333,7 +338,7 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
    ::cXmlDocumento +=    [<infEvento Id="ID] + cCodigoEvento + cChave + "01" + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", "91" )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( iif( ::lEmitenteCPF, "CPF", "CNPJ" ), cCnpj )
+   ::cXmlDocumento +=       XmlTag( iif( Len( cCnpj ) == 11, "CPF", "CNPJ" ), cCnpj )
    ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", cCodigoEvento )

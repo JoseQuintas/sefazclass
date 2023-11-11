@@ -87,6 +87,8 @@ METHOD CTeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
 METHOD CTeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
+   LOCAL cCnpj
+
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    hb_Default( @nSequencia, 1 )
    ::cProjeto := WS_PROJETO_CTE
@@ -97,12 +99,12 @@ METHOD CTeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente
       ::cSoapAction:= "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoEventoV4/cteRecepcaoEvento"
    ENDIF
    ::Setup( cChave, cCertificado, cAmbiente )
-
+   cCnpj = DfeEmitente( cChave )
    ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( iif( ::lEmitenteCPF, "CPF", "CNPJ" ), DfeEmitente( cChave ) )
+   ::cXmlDocumento +=       XmlTag( iif( Len( cCnpj ) == 11 , "CPF", "CNPJ" ), cCnpj )
    ::cXmlDocumento +=       XmlTag( "chCTe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", cTipoEvento )
@@ -294,11 +296,12 @@ METHOD CTeGeraEventoAutorizado( cXmlAssinado, cXmlProtocolo ) CLASS SefazClass_C
 
 METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 
-   ::cProjeto := WS_PROJETO_CTE
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
+   ::cProjeto := WS_PROJETO_CTE
    ::aSoapUrlList := WS_CTE_INUTILIZA
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT"
+   cCnpj := SoNumeros( cCnpj )
 
    IF Len( cAno ) != 2
       cAno := Right( cAno, 2 )
@@ -310,7 +313,7 @@ METHOD CTeInutiliza( cAno, cCnpj, cMod, cSerie, cNumIni, cNumFim, cJustificativa
    ::cXmlDocumento +=       XmlTag( "xServ", "INUTILIZAR" )
    ::cXmlDocumento +=       XmlTag( "cUF", ::UFCodigo( ::cUF ) )
    ::cXmlDocumento +=       XmlTag( "ano", cAno )
-   ::cXmlDocumento +=       XmlTag( "CNPJ", SoNumeros( cCnpj ) )
+   ::cXmlDocumento +=       XmlTag( iif( Len( cCnpj ) == 11, "CPF", "CNPJ" ), cCnpj )
    ::cXmlDocumento +=       XmlTag( "mod", cMod )
    ::cXmlDocumento +=       XmlTag( "serie", cSerie )
    ::cXmlDocumento +=       XmlTag( "nCTIni", LTrim( Str( Val( cNumIni ), 9, 0 ) ) )
@@ -372,12 +375,12 @@ METHOD CTeEnvio( cXml, cUF, cCertificado, cAmbiente ) CLASS SefazClass_CTE
 	cBlocoXml += "</infCTeSupl>"
 	::cXmlDocumento := StrTran( ::cXmlDocumento, "</infCte>", "</infCte>" + cBlocoXml )
    IF ::cVersao == "3.00"
-      ::cXmlEnvio    := [<enviCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
-      ::cXmlEnvio    +=    XmlTag( "idLote", "1" )
+      ::cXmlEnvio := [<enviCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
+      ::cXmlEnvio +=    XmlTag( "idLote", "1" )
       ::cXmlEnvio += ::cXmlDocumento
-      ::cXmlEnvio    += [</enviCTe>]
+      ::cXmlEnvio += [</enviCTe>]
    ELSE
-      ::cXmlEnvio += hb_Base64Encode( hb_gzCompress( ::cXmlDocumento ) )
+      ::cXmlEnvio := hb_Base64Encode( hb_gzCompress( ::cXmlDocumento ) )
    ENDIF
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno

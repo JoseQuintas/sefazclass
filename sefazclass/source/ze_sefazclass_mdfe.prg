@@ -39,11 +39,12 @@ METHOD MDFeConsNaoEnc( cUF, cCNPJ , cCertificado, cAmbiente ) CLASS SefazClass_M
    ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc/mdfeConsNaoEnc"
    ::aSoapUrlList := WS_MDFE_CONSULTANAOENCERRADOS
    ::Setup( cUF, cCertificado, cAmbiente )
+   cCnpj := SoNumeros( cCnpj )
 
    ::cXmlEnvio := [<consMDFeNaoEnc versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=    XmlTag( "xServ", "CONSULTAR NÃO ENCERRADOS" )
-   ::cXmlEnvio +=    XmlTag( iif( ::lEmitenteCPF, "CPF", "CNPJ" ), cCNPJ )
+   ::cXmlEnvio +=    XmlTag( iif( Len( cCnpj ) == 11, "CPF", "CNPJ" ), cCNPJ )
    ::cXmlEnvio += [</consMDFeNaoEnc>]
    ::XmlSoapPost()
    IF ::cStatus != "999"
@@ -146,6 +147,8 @@ METHOD MDFeDistribuicaoDFe( cCnpj, cUltNSU, cNSU, cUF, cCertificado, cAmbiente )
 
 METHOD MDFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente ) CLASS SefazClass_MDFE
 
+   LOCAL cCnpj
+
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    hb_Default( @nSequencia, 1 )
    ::cProjeto := WS_PROJETO_MDFE
@@ -153,12 +156,12 @@ METHOD MDFeEvento( cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbient
    ::aSoapUrlList := WS_MDFE_EVENTO
    ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento/mdfeRecepcaoEvento"
    ::Setup( cChave, cCertificado, cAmbiente )
-
+   cCnpj := DfeEmitente( cChave )
    ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( iif( ::lEmitenteCPF, "CPF", "CNPJ" ), DfeEmitente( cChave ) )
+   ::cXmlDocumento +=       XmlTag( iif( Len( cCnpj ) == 11, "CPF", "CNPJ" ), cCnpj )
    ::cXmlDocumento +=       XmlTag( "chMDFe", cChave )
    ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
    ::cXmlDocumento +=       XmlTag( "tpEvento", cTipoEvento )

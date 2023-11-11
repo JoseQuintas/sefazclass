@@ -13,7 +13,7 @@ FUNCTION IsCpf( cValue )
 
    RETURN Len( SoNumeros( cValue ) ) == 11
 
-STATIC FUNCTION ValidCnpj( cCnpj )
+FUNCTION ValidCnpj( cCnpj )
 
    LOCAL cNumero, lOk, cPicture := "@R 99.999.999/9999-99"
 
@@ -28,7 +28,7 @@ STATIC FUNCTION ValidCnpj( cCnpj )
 
    RETURN lOk
 
-STATIC FUNCTION ValidCpf( cCpf )
+FUNCTION ValidCpf( cCpf )
 
    LOCAL cNumero, lOk, cPicture := "@R 999.999.999-99"
 
