@@ -13,9 +13,9 @@ FUNCTION ze_Calculo422( SELF )
    ::cBolConta  := StrZero( ::nAgencia, 5 ) + " / " + StrZero( ::nIdEmpresa, 9 )
 
    cBarras1 := StrZero( ::nBanco, 3 ) + "9" + StrZero( ::nFatorVen, 4 ) + ;
-      StrZero( ::nValor * 100, 10 )
+      StrZero( ::nValor * 100, 10 ) + "F"
    cBarras2 := StrZero( ::nAgencia, 5 ) + StrZero( ::nConta, 9 ) + ;
-      StrZero( ::nBancario, 9 )
+      StrZero( ::nBancario, 9 ) + "F"
    ::cBarras := cBarras1 + ::Modulo10_All( cBarras1 ) + cBarras2 + ::Modulo10_All( cBarras2 )
 
    RETURN Nil
@@ -71,7 +71,7 @@ FUNCTION ze_Cnab422( aBoletoList )
          /* 106-107 */ cTxt += StrZero(0,2)
          /* 108-108 */ cTxt += "1" // ou 2 pra vinculada
          /* 109-110 */ cTxt += StrZero(1,2)
-         /* 111-120 */ cTxt += StrZero( Val( :cNumDoc ), 10 )
+         /* 111-120 */ cTxt += Pad( Right( :cNumDoc, 10 ), 10 )
          /* 121-126 */ cTxt += hb_Dtoc( :dDatVen, "DDMMYY" )
          /* 127-139 */ cTxt += StrZero( :nValor * 100, 13 )
          /* 140-142 */ cTxt += "422"

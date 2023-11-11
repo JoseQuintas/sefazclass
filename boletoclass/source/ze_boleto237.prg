@@ -102,7 +102,7 @@ FUNCTION ze_Cnab237( aBoletoList )
          /* 106-106 */ cTxt += Space(1)                              // Enderecamento para aviso de debito
          /* 107-108 */ cTxt += Space(2)                              // Brancos
          /* 109-110 */ cTxt += "01"                                  // Identificacao da ocorrencia - 01=Remessa
-         /* 111-120 */ cTxt += StrZero( Val( :cNumDoc ), 10 )    // Número do documento
+         /* 111-120 */ cTxt += Pad( Right( :cNumDoc, 10 ), 10 )    // Número do documento
          /* 121-126 */ cTxt += hb_Dtoc( :dDatVen, "DDMMYY" )     // Data vencto DDMMAA
          /* 127-139 */ cTxt += StrZero( :nValor * 100, 13 )     // Valor do titulo
          /* 140-142 */ cTxt += StrZero( 0, 3 )                       // Zeros - Banco Encarregado da cobranca

@@ -102,7 +102,7 @@ FUNCTION ze_Cnab341( aBoletoList )
          IF Empty( :cAvalCnpj )
             /* 111-120 */ cTxt += Pad( :cNumDoc, 10 ) // nota 18
          ELSE
-            /* 111-120 */ cTxt += Pad( :cNumDocAux, 9 ) + " "
+            /* 111-120 */ cTxt += Pad( Right( :cNumDocAux, 9 ), 9 ) + " "
          ENDIF
          /* 121-126 */ cTxt += hb_Dtoc( :dDatVen, "DDMMYY" )
          /* 127-139 */ cTxt += StrZero( :nValor * 100, 13 )
