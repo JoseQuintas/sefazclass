@@ -221,25 +221,23 @@ METHOD XmlSoapPost() CLASS SefazClass
       ::cXmlSoap +=       [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap +=    [</nfeDistDFeInteresse>]
       ::cXmlSoap += [</soap12:Body>]
-   //ELSEIF ::cProjeto == WS_PROJETO_MDFE .OR. ( ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00" )
-   //   ::cXmlSoap += [<soap12:Body>]
-   //   ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
-   //   IF ::lSincrono
-   //      ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
-   //   ELSE
-   //      ::cXmlSoap +=       ::cXmlEnvio
-   //   ENDIF
-   //   ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
-   //   ::cXmlSoap += [</soap12:Body>]
+   ELSEIF ::cProjeto == WS_PROJETO_MDFE .OR. ( ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00" )
+      ::cXmlSoap += [<soap12:Body>]
+      ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
+      IF ::lSincrono
+         ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
+      ELSE
+         ::cXmlSoap +=       ::cXmlEnvio
+      ENDIF
+      ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
+      ::cXmlSoap += [</soap12:Body>]
    ELSE
-      IF .F.
       ::cXmlSoap += [<soap12:Header>]
       ::cXmlSoap +=    [<] + ::cProjeto + [CabecMsg xmlns="] + cSoapService + [">]
       ::cXmlSoap +=       [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
       ::cXmlSoap +=       [<versaoDados>] + cSoapVersion + [</versaoDados>]
       ::cXmlSoap +=    [</] + ::cProjeto + [CabecMsg>]
       ::cXmlSoap += [</soap12:Header>]
-      ENDIF
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
       IF ::lSincrono .AND. ( ::cProjeto == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE )

@@ -93,6 +93,7 @@ METHOD NFeProtocolo( cChave, cCertificado, cAmbiente ) CLASS SefazClass_nfe
    ::cProjeto := WS_PROJETO_NFE
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_CONSULTAPROTOCOLO
+   ::aSoapUrlList := WS_NFE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
    DO CASE
    CASE ::cUF $ "AC,AL,AP,DF,ES,MS,PB,PE,PI,RJ,RN,RO,RR,SC,SE,TO" // TODOS que usam SVRS
@@ -235,7 +236,7 @@ METHOD NFeEventoAutor( cChave, cCnpj, cOrgaoAutor, ctpAutor, cverAplic, cAutorCn
    ::cXmlDocumento +=          XmlTag( "tpAutor", ctpAutor ) // 1-Emitente, 2=Destinat, 3=Transp
    ::cXmlDocumento +=          XmlTag( "verAplic", cverAplic ) // versao aplicativo
    ::cXmlDocumento +=          [<autXML>]
-   ::cXmlDocumento +=          XmlTag( iif( Len( cAutorCnpj ) == 14, "CNPJ", "CPF" ), cAutorCnpj )
+   ::cXmlDocumento +=          XmlTag( iif( Len( cAutorCnpj ) == 11, "CPF", "CNPJ" ), cAutorCnpj )
    ::cXmlDocumento +=          XmlTag( "tpAutorizacao", ctpAutorizacao ) // 0=direto, 1=permite autorizar outros
    IF ctpAutorizacao == "1"
       ::cXmlDocumento +=       XmlTag( "xCondUso", "O emitente ou destinatario" + ;
@@ -466,7 +467,7 @@ METHOD NFeEnvio( cXml, cUF, cCertificado, cAmbiente, lSincrono ) CLASS SefazClas
    // NEXT
    ::cXmlEnvio    += [</enviNFe>]
    ::XmlSoapPost()
-   IF ::lSincrono
+   IF ! ::lSincrono
       ::cXmlRecibo := ::cXmlRetorno
       ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
       ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )

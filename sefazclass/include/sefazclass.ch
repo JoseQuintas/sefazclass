@@ -63,7 +63,7 @@
    { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico" }, ;
    { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico" }, ;
    { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteStatusServico" }, ;
-   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteStatusServico?wsdl" }, ;
+   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteStatusServico" }, ;
    { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx" }, ;
    { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteStatusServico.asmx" }, ;
    { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx" }, ;
@@ -80,7 +80,7 @@
    { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao" }, ;
    { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRecepcao" }, ;
    { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao" }, ;
-   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcao?wsdl" }, ;
+   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcao" }, ;
    { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
    { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
    { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
@@ -97,7 +97,7 @@
    { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao" }, ;
    { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRetRecepcao" }, ;
    { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao" }, ;
-   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao?wsdl" }, ;
+   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao" }, ;
    { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
    { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteRetRecepcao.asmx" }, ;
    { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" }, ;
@@ -107,7 +107,25 @@
 
 #define WS_CTE_QRCODE { ;
    ;
-   { "SP", "3.00P", "https://nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" }, ;
+   { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" }, ;
+   { "PR",   "3.00P", "http://www.fazenda.pr.gov.br/cte/qrcode" }, ;
+   { "MS",   "3.00P", "http://www.dfe.ms.gov.br/cte/qrcode" }, ;
+   { "MT",   "3.00P", "https://www.sefaz.mt.gov.br/cte/qrcode" }, ;
+   { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/portalcte/sistema/qrcode.xhtml" }, ;
+   { "RS",   "3.00P", "https://dfe-portal.svrs.rs.gov.br/cte/qrCode" }, ;
+   { "PI",   "3.00P", "http://www.sefaz.pi.gov.br/nfce/qrcode" }, ;
+   { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" }, ;
+   { "SVRS", "3.00P", "https://dfe-portal.svrs.rs.gov.br/cte/qrCode" }, ;
+   ;
+   { "SVRS", "3.00H", "https://dfe-portal.svrs.rs.gov.br/cte/qrCode" }, ;
+   { "SVSP", "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" }, ;
+   { "RS",   "3.00H", "https://dfe-portal.svrs.rs.gov.br/cte/qrCode" }, ;
+   { "PI",   "3.00H", "http://www.sefaz.pi.gov.br/nfce/qrcode" }, ;
+   { "MG",   "3.00H", "https://cte.fazenda.mg.gov.br/portalcte/sistema/qrcode.xhtml" }, ;
+   { "MT",   "3.00H", "https://homologacao.sefaz.mt.gov.br/cte/qrcode" }, ;
+   { "MS",   "3.00H", "http://www.dfe.ms.gov.br/cte/qrcode" }, ;
+   { "PR",   "3.00H", "http://www.fazenda.pr.gov.br/cte/qrcode" }, ;
+   { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" }, ;
    ;
    { "SP", "4.00P", "https://nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" }, ;
    ;
@@ -119,7 +137,7 @@
    { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteConsulta" }, ;
    { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta" }, ;
    { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx" }, ;
-   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteConsulta?wsdl" }, ;
+   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteConsulta" }, ;
    { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteConsulta.asmx" }, ;
    { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteconsulta/CteConsulta.asmx" }, ;
    ;
@@ -134,8 +152,8 @@
    ;
    { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/RecepcaoEvento" }, ;
    { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRecepcaoEvento" }, ;
-   { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews2/services/CteRecepcaoEvento?wsdl" }, ;
-   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcaoEvento?wsdl" }, ;
+   { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews2/services/CteRecepcaoEvento" }, ;
+   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcaoEvento" }, ;
    { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteweb/services/cteRecepcaoEvento.asmx" }, ;
    { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cterecepcaoevento/cterecepcaoevento.asmx" }, ;
    ;
@@ -151,7 +169,7 @@
    { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao" }, ;
    { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteInutilizacao" }, ;
    { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao" }, ;
-   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao?wsdl" }, ;
+   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao" }, ;
    { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
    { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" }, ;
    ;
@@ -451,12 +469,12 @@
    ;
    { "AM",   "4.00H",  "https://hnfe.sefaz.ba.gov.br/webservices/CadConsultaCadastro4/CadConsultaCadastro4.asmx" }, ;
    { "BA",   "4.00H",  "https://hnfe.sefaz.ba.gov.br/webservices/CadConsultaCadastro4/CadConsultaCadastro4.asmx" }, ;
-   { "GO",   "4.00H",  "https://homolog.sefaz.go.gov.br/nfe/services/CadConsultaCadastro4?wsdl" }, ;
+   { "GO",   "4.00H",  "https://homolog.sefaz.go.gov.br/nfe/services/CadConsultaCadastro4" }, ;
    { "MG",   "4.00H",  "https://hnfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2" }, ;
    { "MS",   "4.00H",  "https://hom.nfe.sefaz.ms.gov.br/ws/CadConsultaCadastro4" }, ;
-   { "MT",   "4.00H",  "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro4?wsdl" }, ;
+   { "MT",   "4.00H",  "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro4" }, ;
    { "PE",   "4.00H",  "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro4" }, ;
-   { "PR",   "4.00H",  "https://homologacao.nfe.sefa.pr.gov.br/nfe/CadConsultaCadastro4?wsdl" }, ;
+   { "PR",   "4.00H",  "https://homologacao.nfe.sefa.pr.gov.br/nfe/CadConsultaCadastro4" }, ;
    { "SP",   "4.00H",  "https://homologacao.nfe.fazenda.sp.gov.br/ws/cadconsultacadastro4.asmx" } }
 
 #define WS_NFE_CONSULTADEST { ;

@@ -965,7 +965,7 @@ FUNCTION DfeEmitente( cChave )
       ENDIF
    ENDIF
 
-   RETURN Right( cCnpj, 11 )
+   RETURN cCnpj
 
 FUNCTION DFeUF( cKey )
 
