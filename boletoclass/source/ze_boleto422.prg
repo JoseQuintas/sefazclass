@@ -13,9 +13,9 @@ FUNCTION ze_Calculo422( SELF )
    ::cBolConta  := StrZero( ::nAgencia, 5 ) + " / " + StrZero( ::nIdEmpresa, 9 )
 
    cBarras1 := StrZero( ::nBanco, 3 ) + "9" + StrZero( ::nFatorVen, 4 ) + ;
-      StrZero( ::nValor * 100, 10 ) + "F"
+      StrZero( ::nValor * 100, 10 ) + Right( ::cBancoDigito, 1 )
    cBarras2 := StrZero( ::nAgencia, 5 ) + StrZero( ::nConta, 9 ) + ;
-      StrZero( ::nBancario, 9 ) + "F"
+      StrZero( ::nBancario, 9 ) + "2" // 2=cobrança registrada
    ::cBarras := cBarras1 + ::Modulo10_All( cBarras1 ) + cBarras2 + ::Modulo10_All( cBarras2 )
 
    RETURN Nil
