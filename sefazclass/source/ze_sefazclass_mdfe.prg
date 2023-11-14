@@ -14,6 +14,11 @@ ZE_SEFAZCLASS_MDFE - Rotinas pra MDFe
 
 CREATE CLASS SefazClass_MDFE
 
+   METHOD MDFeLoteEnvia( cXml, cLote, ...)  INLINE (cLote), ::MDFeEnvio( cXml, ... )
+   METHOD MDFeConsultaRecibo( ... )         INLINE ::MDFeRetEnvio( ... )
+   METHOD MDFeConsultaProtocolo( ... )      INLINE ::MDFeProtocolo( ... )
+   METHOD MDFeStatusServico( ... )          INLINE ::MDFeStatus( ... )
+
    METHOD MDFeConsNaoEnc( CUF, cCNPJ , cCertificado, cAmbiente )
    METHOD MDFeProtocolo( cChave, cCertificado, cAmbiente )
    METHOD MDFeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente )

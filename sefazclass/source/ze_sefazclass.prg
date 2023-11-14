@@ -232,12 +232,14 @@ METHOD XmlSoapPost() CLASS SefazClass
       ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap += [</soap12:Body>]
    ELSE
-      ::cXmlSoap += [<soap12:Header>]
-      ::cXmlSoap +=    [<] + ::cProjeto + [CabecMsg xmlns="] + cSoapService + [">]
-      ::cXmlSoap +=       [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
-      ::cXmlSoap +=       [<versaoDados>] + cSoapVersion + [</versaoDados>]
-      ::cXmlSoap +=    [</] + ::cProjeto + [CabecMsg>]
-      ::cXmlSoap += [</soap12:Header>]
+      IF ! "NFERECEPCAOEVENTO" $ Upper( ::cSoapAction )
+         ::cXmlSoap += [<soap12:Header>]
+         ::cXmlSoap +=    [<] + ::cProjeto + [CabecMsg xmlns="] + cSoapService + [">]
+         ::cXmlSoap +=       [<cUF>] + ::UFCodigo( ::cUF ) + [</cUF>]
+         ::cXmlSoap +=       [<versaoDados>] + cSoapVersion + [</versaoDados>]
+         ::cXmlSoap +=    [</] + ::cProjeto + [CabecMsg>]
+         ::cXmlSoap += [</soap12:Header>]
+      ENDIF
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
       IF ::lSincrono .AND. ( ::cProjeto == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE )

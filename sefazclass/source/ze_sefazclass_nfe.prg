@@ -19,6 +19,11 @@ José Quintas
 
 CREATE CLASS SefazClass_nfe
 
+   METHOD NfeLoteEnvia( cXml, cLote, ... )  INLINE (cLote), ::NfeEnvio( cXml, ... )
+   METHOD NfeConsultaRecibo( ... )      INLINE ::NfeRetEnvio( ... )
+   METHOD NfeConsultaProtocolo( ... )   INLINE ::NfeProtocolo( ... )
+   METHOD NFeStatusServico( ... )       INLINE ::NfeStatus( ... )
+
    METHOD NFeConsultaCadastro( cCnpj, cUF, cCertificado, cAmbiente )
 
    // hb_MemoWrit( "arquivo.zip", XmlNode( ::cXmlRetorno, "docZip" ) )
@@ -326,7 +331,6 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
    ::cUF          := "AN"
    ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEventoNF"
    ::Setup( "AN", cCertificado, cAmbiente )
-   cCnpj := DfeEmitente( cCnpj )
 
    DO CASE
    CASE cCodigoEvento == "210200" ; cDescEvento := "Confirmacao da Operacao"
@@ -349,15 +353,13 @@ METHOD NFeEventoManifestacao( cChave, cCnpj, cCodigoEvento, xJust, cCertificado,
    ::cXmlDocumento +=          XmlTag( "descEvento", cDescEvento )
    IF cCodigoEvento == "210240"
       ::cXmlDocumento +=          XmlTag( "xJust", xJust )
-      //ELSE
-      //::cXmlDocumento += XmlTag( "xJust", cDescEvento ) // ----teste-----
    ENDIF
    ::cXmlDocumento +=       [</detEvento>]
    ::cXmlDocumento +=    [</infEvento>]
    ::cXmlDocumento += [</evento>]
    IF ::AssinaXml() == "OK"
       ::cXmlEnvio := [<envEvento versao="1.00" ] + WS_XMLNS_NFE + [>]
-      ::cXmlEnvio +=    XmlTag( "idLote", DfeNumero( cChave ) ) // usado numero da nota
+      ::cXmlEnvio +=    XmlTag( "idLote", "1" )
       ::cXmlEnvio +=    ::cXmlDocumento
       ::cXmlEnvio += [</envEvento>]
       ::XmlSoapPost()

@@ -14,6 +14,11 @@ ZE_SEFAZCLASS_CTE - Rotinas pra CTE
 
 CREATE CLASS SefazClass_CTE
 
+   METHOD CTeLoteEnvia( cXml, cLote, ... ) INLINE (cLote),::CteEnvio( cXml, ... )
+   METHOD CTeConsultaRecibo( ... )         INLINE ::CteRetEnvio( ... )
+   METHOD CteConsultaProtocolo( ... )      INLINE ::CteProtocolo( ... )
+   METHOD CteStatusServico( ... )          INLINE ::CteStatus( ... )
+
    METHOD CTeProtocolo( cChave, cCertificado, cAmbiente )
    METHOD CTeRetEnvio( cRecibo, cUF, cCertificado, cAmbiente )
    METHOD CTeEventoCancela( cChave, nSequencia, nProt, xJust, cCertificado, cAmbiente )

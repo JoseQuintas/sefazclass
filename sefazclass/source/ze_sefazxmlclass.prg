@@ -325,6 +325,10 @@ FUNCTION XmlToDoc( cXmlInput, lAutorizado )
       oDocSped:cModFis := "55"
       oDocSped:cEvento  := "110111"
       XmlToDocNfeCancel( cXmlInput, @oDocSped )
+   CASE "<procEventoNFe" $ cXmlInput .AND. "<descevento>EPEC" $ cXmlInput
+      oDocSped:cModFis := "55"
+      oDocSped:cEvento := "110140"
+      XmlToDocNfeEvento( cXmlInput, @oDocSped )
    CASE "<procEventoNFe" $ cXmlInput
       oDocSped:cModFis := "55"
       oDocSped:cEvento := XmlNode( cXmlInput, "tpEvento" )
@@ -343,11 +347,17 @@ FUNCTION XmlToDoc( cXmlInput, lAutorizado )
       oDocSped:cModFis := "58"
       oDocSped:cEvento  := "110111"
       XmlToDocMDFECancel( cXmlInput, @oDocSped )
+   CASE "<procEventoMDFe" $ cXmlInput .AND. "<descEvento>Encerramento" $ cXmlInput
+      oDocSped:cModFis := "58"
+      oDocSped:cEvento  := "110112"
+      IF Len( SoNumeros( oDocSped:cEvento ) ) == 6
+         XmlToDocMDFEEvento( cXmlInput, @oDocSped )
+      ENDIF
    CASE "<procEventoMDFe" $ cXmlInput
       oDocSped:cModFis := "58"
-      oDocSped:cEvento  := XmlNode( cXmlInput, "tpEvento" ) // "110112"
+      oDocSped:cEvento  := XmlNode( cXmlInput, "tpEvento" )
       IF Len( SoNumeros( oDocSped:cEvento ) ) == 6
-         XmlToDocMDFEEnc( cXmlInput, @oDocSped )
+         XmlToDocMDFEEvento( cXmlInput, @oDocSped )
       ENDIF
    CASE "<infMDFe" $ cXmlInput
       oDocSped:cModFis := "58"
@@ -755,7 +765,7 @@ STATIC FUNCTION XmlToDocMDFEEmi( cXmlInput, oMDFE )
 
    RETURN Nil
 
-STATIC FUNCTION XmlToDocMDFEEnc( XmlInput, oDocSped )
+STATIC FUNCTION XmlToDocMDFEEvento( XmlInput, oDocSped )
 
    LOCAL mXmlProcEvento, mXmlEvento, mXmlInfEvento
 
