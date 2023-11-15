@@ -1085,7 +1085,7 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_EAN,       LAYOUT_CONTEUDO ]  := { || ::aItem[ "cEAN" ] }
    ::aLayout[ LAYOUT_CST,       LAYOUT_TITULO1 ]   := "CST"
    ::aLayout[ LAYOUT_CST,       LAYOUT_TITULO2 ]   := "CSOSN"
-   ::aLayout[ LAYOUT_CST,       LAYOUT_CONTEUDO ]  := { || ::aItemICMS[ "orig" ] + iif( ::aEmit[ "CRT" ] == "1", ::aItemICMS[ "CSOSN" ], ::aItemICMS[ "CST" ] ) }
+   ::aLayout[ LAYOUT_CST,       LAYOUT_CONTEUDO ]  := { || ::aItemICMS[ "orig" ] + ::aItemICMS[ "CSOSN" ] + ::aItemICMS[ "CST" ] }
    ::aLayout[ LAYOUT_CFOP,      LAYOUT_TITULO1 ]   := "CFOP"
    ::aLayout[ LAYOUT_CFOP,      LAYOUT_CONTEUDO ]  := { || ::aItem[ "CFOP" ] }
    ::aLayout[ LAYOUT_UNIDADE,   LAYOUT_TITULO1 ]   := "UNID"

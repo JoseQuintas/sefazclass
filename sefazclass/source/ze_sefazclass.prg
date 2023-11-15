@@ -2,37 +2,34 @@
 /*
 ZE_SEFAZCLASS - Rotinas pra comunicação com SEFAZ
 José Quintas
-
-2019.07 - Início de desativação 3.10
-2019.09 - TODO: cMsg e xMsg no retorno da Fazenda com avisos da Sefaz
 */
 
 #include "hbclass.ch"
 #include "sefazclass.ch"
-#include "hb2xhb.ch"
 
-#ifdef __XHARBOUR__
-#define ALL_PARAMETERS P1, P2, P3, P4, P5, P6, P7, P8, P9, P10
-#else
-#define ALL_PARAMETERS ...
-#endif
-
-FUNCTION SefazClassValidaXml( cXml, cXsd )
-
-   LOCAL oSefaz := SefazClass():New()
-
-   RETURN oSefaz:ValidaXml( cXml, cXsd )
-
-FUNCTION SefazClassTipoXml( cXml )
-
-   LOCAL oSefaz := SefazClass():New()
-
-   RETURN oSefaz:TipoXml( cXml )
-
-CREATE CLASS SefazClass INHERIT Sefazclass_BPE, SefazClass_CTE, SefazClass_MDFE, SefazClass_NFE
+CREATE CLASS SefazClass
 
    /* compatibilidade */
-   METHOD cIndSinc( xValue ) SETGET
+   METHOD cIndSinc( cValue )                SETGET
+   METHOD CTeConsultaProtocolo( ... )       INLINE ::CTeProtocolo( ... )
+   METHOD CTeConsultaRecibo( ... )          INLINE ::CTeRetEnvio( ... )
+   METHOD CTeLoteEnvia( cXml, cLote, ... )  INLINE (cLote),::CTeEnvio( cXml, ... )
+   METHOD CTeStatusServico( ... )           INLINE ::CTeStatus( ... )
+   METHOD NFeLoteEnvia( cXml, cLote, ... )  INLINE (cLote), ::NFeEnvio( cXml, ... )
+   METHOD NFeConsultaRecibo( ... )          INLINE ::NFeRetEnvio( ... )
+   METHOD NFeConsultaProtocolo( ... )       INLINE ::NFeProtocolo( ... )
+   METHOD NFeStatusServico( ... )           INLINE ::NFeStatus( ... )
+   METHOD NFeConsultaCadastro( ... )        INLINE ::NFeCadastro( ... )
+   METHOD NFeConsultaGTIN( ... )            INLINE ::NFeGTIN( ... )
+   METHOD NFeDistribuicaoDFe( ... )         INLINE ::NFeDistribuicao( ... )
+   METHOD NFeConsultaDest( ... )            INLINE ::NfeDestinadas( ... )
+   METHOD MDFeLoteEnvia( cXml, cLote, ...)  INLINE (cLote), ::MDFeEnvio( cXml, ... )
+   METHOD MDFeConsultaRecibo( ... )         INLINE ::MDFeRetEnvio( ... )
+   METHOD MDFeConsultaProtocolo( ... )      INLINE ::MDFeProtocolo( ... )
+   METHOD MDFeStatusServico( ... )          INLINE ::MDFeStatus( ... )
+   METHOD MDFeConsNaoEnc( ... )             INLINE ::MDFeEmAberto( ... )
+   METHOD MDFeDistribuicaoDFe( ...)         INLINE ::MDFeDistribuicao( ... )
+   METHOD MDFeEventoInclusaoCondutor( ... ) INLINE ::MDFeCondutor( ... )
 
    /* configuração */
    VAR    cProjeto        INIT NIL
@@ -76,6 +73,58 @@ CREATE CLASS SefazClass INHERIT Sefazclass_BPE, SefazClass_CTE, SefazClass_MDFE,
    VAR    cNFCE           INIT "N"                     // Porque NFCE tem endereços diferentes
    VAR    aSoapUrlList    INIT {}
 
+   METHOD NFeDownload( cCnpj, cChave, cCertificado, cAmbiente ) ;
+      INLINE ::NfeDistribuicao( cCnpj, "", "", cChave, ::UFCodigo( Left( cChave, 2 ) ), cCertificado, cAmbiente )
+   METHOD BPeProtocolo( ... )             INLINE ze_sefaz_BPeProtocolo( Self, ... )
+   METHOD BPeStatus( ... )                INLINE ze_sefaz_BPeStatus( Self, ... )
+   METHOD CTeAddCancelamento( ... )       INLINE ze_sefaz_CTeAddCancelamento( Self, ... )
+   METHOD CTeEnvio( ... )                 INLINE ze_sefaz_CTeEnvio( Self, ... )
+   METHOD CTeEvento( ... )                INLINE ze_sefaz_CTeEvento( Self, ... )
+   METHOD CTeEventoCancela( ... )         INLINE ze_sefaz_CTeEventoCancela( Self, ... )
+   METHOD CTeEventoCancEntrega( ... )     INLINE ze_sefaz_CTeEventoCancEntrega( Self, ... )
+   METHOD CTeEventoCarta( ... )           INLINE ze_sefaz_CTeEventoCarta( Self, ... )
+   METHOD CTeEventoDesacordo( ... )       INLINE ze_sefaz_CTeEventoDesacordo( Self, ... )
+   METHOD CTeEventoEntrega( ... )         INLINE ze_sefaz_CTeEventoEntrega( Self, ... )
+   METHOD CTeGeraAutorizado( ... )        INLINE ze_sefaz_CTeGeraAutorizado( Self, ... )
+   METHOD CTeGeraEventoAutorizado( ... )  INLINE ze_sefaz_CTeGeraEventoAutorizado( Self, ... )
+   METHOD CTeInutiliza( ... )             INLINE ze_sefaz_CTeInutiliza( Self, ... )
+   METHOD CTeProtocolo( ... )             INLINE ze_sefaz_CTeProtocolo( Self, ... )
+   METHOD CTeRetEnvio( ... )              INLINE ze_sefaz_CTeRetEnvio( Self, ... )
+   METHOD CTeStatus( ... )                INLINE ze_sefaz_CTeStatus( Self, ... )
+   METHOD MDFeDistribuicao( ... )         INLINE ze_sefaz_MDFeDistribuicao( Self, ... )
+   METHOD MDFeEnvio( ... )                INLINE ze_sefaz_MDFeEnvio( Self, ... )
+   METHOD MDFeEmAberto( ... )             INLINE ze_sefaz_MDFeEmAberto( Self, ... )
+   METHOD MDFeEvento( ... )               INLINE ze_sefaz_MDFeEvento( Self, ... )
+   METHOD MDFeEventoCancela( ... )        INLINE ze_sefaz_MDFeEventoCancela( Self, ... )
+   METHOD MDFeEventoCondutor( ... )       INLINE ze_sefaz_MDFeEventoCondutor( Self, ... )
+   METHOD MDFeEventoEncerramento( ... )   INLINE ze_sefaz_MDFeEventoEncerramento( Self, ... )
+   METHOD MDFeEventoPagamento( ... )      INLINE ze_sefaz_MDFeEventoPagamento( Self, ... )
+   METHOD MDFeGeraAutorizado( ... )       INLINE ze_sefaz_MDFeGeraAutorizado( Self, ... )
+   METHOD MDFeGeraEventoAutorizado( ... ) INLINE ze_sefaz_MDFeGeraEventoAutorizado( Self, ... )
+   METHOD MDFeProtocolo( ... )            INLINE ze_sefaz_MDFeProtocolo( Self, ... )
+   METHOD MDFeRetEnvio( ... )             INLINE ze_sefaz_MDFeRetEnvio( Self, ... )
+   METHOD MDFeStatus( ... )               INLINE ze_sefaz_MDFeStatus( Self, ... )
+   METHOD NFeAddCancelamento( ... )       INLINE ze_sefaz_NFeAddCancelamento( Self, ... )
+   METHOD NFeCadastro( ... )              INLINE ze_sefaz_NFeCadastro( Self, ... )
+   METHOD NFeContingencia( ... )          INLINE ze_sefaz_NFeContingencia( Self, ... )
+   METHOD NFeDestinadas( ... )            INLINE ze_sefaz_NfeDestinadas( Self, ... )
+   METHOD NFeDistribuicao( ... )          INLINE ze_sefaz_NFeDistribuicao( Self, ... )
+   METHOD NFeEnvio( ... )                 INLINE ze_sefaz_NfeEnvio( Self, ... )
+   METHOD NFeEvento( ... )                INLINE ze_sefaz_NFeEvento( Self, ... )
+   METHOD NFeEventoAutor( ... )           INLINE ze_sefaz_NFeEventoAutor( Self, ... )
+   METHOD NFeEventoCancela( ... )         INLINE ze_sefaz_NFeEventoCancela( Self, ... )
+   METHOD NFeEventoCancelaSubstituicao( ... ) INLINE ze_sefaz_NFeEventoCancelaSubstituicao( Self, ... )
+   METHOD NFeEventoCarta( ... )           INLINE ze_sefaz_NFeEventoCarta( Self, ... )
+   METHOD NFeEventoManifestacao( ... )    INLINE ze_sefaz_NFeEventoManifestacao( Self, ... )
+   METHOD NFeGeraAutorizado( ... )        INLINE ze_sefaz_NFeGeraAutorizado( Self, ... )
+   METHOD NFeGeraEventoAutorizado( ... )  INLINE ze_sefaz_NFeGeraEventoAutorizado( Self, ... )
+   METHOD NFeGTIN( ... )                  INLINE ze_sefaz_NFeGTIN( Self, ... )
+   METHOD NFeInutiliza( ... )             INLINE ze_sefaz_NFeInutiliza( Self, ... )
+   METHOD NFeProtocolo( ... )             INLINE ze_sefaz_NfeProtocolo( Self, ... )
+   METHOD NFeRetEnvio( ... )              INLINE ze_sefaz_NFeRetEnvio( Self, ... )
+   METHOD NFeStatus( ... )                INLINE ze_sefaz_NFeStatus( Self, ... )
+   METHOD NFeStatusSVC( ... )             INLINE ze_sefaz_NFeStatusSVC( Self, ... )
+
    /* Uso interno */
    METHOD XmlSoapPost()
    METHOD MicrosoftXmlSoapPost()
@@ -89,12 +138,18 @@ CREATE CLASS SefazClass INHERIT Sefazclass_BPE, SefazClass_CTE, SefazClass_MDFE,
    METHOD ValidaXml( cXml, cFileXsd, cIgnoreList )    INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd, cIgnoreList )
    METHOD Setup( cUF, cCertificado, cAmbiente )
 
+   METHOD SoapUrlBpe( aSoapList, cUF, cVersao )
+   METHOD SoapUrlCte( aSoapList, cUF, cVersao )
+   METHOD SoapUrlMdfe( aSoapList, cUF, cVersao )
+   METHOD SoapUrlNfe( aSoapList, cUF, cVersao )
+   METHOD SoapUrlNFCe( aSoapList, cUf, cVersao )
+
    ENDCLASS
 
-METHOD cIndSinc( xValue ) CLASS SefazClass
+METHOD cIndSinc( cValue ) CLASS SefazClass
 
-   IF xValue != Nil
-      IF ValType( xValue ) == "C" .AND. xValue == "1"
+   IF cValue != Nil
+      IF ValType( cValue ) == "C" .AND. cValue == "1"
          ::lSincrono := .T.
       ELSE
          ::lSincrono := .F.
@@ -342,6 +397,85 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    ENDCASE
 
    RETURN NIL
+
+METHOD SoapUrlBpe( aSoapList, cUF, cVersao ) CLASS SefazClass
+
+   LOCAL nPos, cUrl
+
+   nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
+   IF nPos != 0
+      cUrl := aSoapList[ nPos, 3 ]
+   ENDIF
+
+   RETURN cUrl
+
+METHOD SoapUrlNfe( aSoapList, cUF, cVersao ) CLASS Sefazclass
+
+   LOCAL nPos, cUrl
+
+   nPos := hb_AScan( aSoapList, { | e | ( cUF == e[ 1 ] .OR. e[ 1 ] == "**" ) .AND. cVersao == e[ 2 ] } )
+   IF nPos != 0
+      cUrl := aSoapList[ nPos, 3 ]
+   ENDIF
+   DO CASE
+   CASE ! Empty( cUrl )
+   CASE cUf $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO"
+      cURL := ::SoapURLNFe( aSoapList, "SVRS", cVersao )
+   CASE cUf $ "MA,PA,PI"
+      cURL := ::SoapUrlNFe( aSoapList, "SVAN", cVersao )
+   ENDCASE
+
+   RETURN cUrl
+
+METHOD SoapUrlNFCe( aSoapList, cUf, cVersao ) CLASS Sefazclass
+
+   LOCAL cUrl, nPos
+
+   IF cUF $ "AC,ES,RO,RR"
+      cUrl := ::SoapUrlNFCe( aSoapList, "SVRS", cVersao  )
+   ELSE
+      nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao + "C" == e[ 2 ] } )
+      IF nPos != 0
+         cUrl := aSoapList[ nPos, 3 ]
+      ENDIF
+   ENDIF
+   IF Empty( cUrl )
+      cUrl := ::SoapUrlNFe( aSoapList, cUF, cVersao )
+   ENDIF
+
+   RETURN cUrl
+
+METHOD SoapUrlCte( aSoapList, cUF, cVersao ) CLASS Sefazclass
+
+   LOCAL nPos, cUrl
+
+   hb_Default( @::cVersao, WS_CTE_DEFAULT )
+   hb_Default( @::cProjeto, WS_PROJETO_CTE )
+   nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
+   IF nPos != 0
+      cUrl := aSoapList[ nPos, 3 ]
+   ENDIF
+   IF Empty( cUrl )
+      IF cUF $ "AP,PE,RR"
+         cUrl := ::SoapUrlCTe( aSoapList, "SVSP", cVersao )
+      ELSEIF cUF $ "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
+         cUrl := ::SoapUrlCTe( aSoapList, "SVRS", cVersao )
+      ENDIF
+   ENDIF
+
+   RETURN cUrl
+
+METHOD SoapUrlMdfe( aSoapList, cUF, cVersao ) CLASS Sefazclass
+
+   LOCAL cUrl, nPos
+
+   nPos := hb_AScan( aSoapList, { | e | cVersao == e[ 2 ] } )
+   IF nPos != 0
+      cUrl := aSoapList[ nPos, 3 ]
+   ENDIF
+   HB_SYMBOL_UNUSED( cUF )
+
+   RETURN cUrl
 
 STATIC FUNCTION UFCodigo( cSigla )
 
@@ -616,3 +750,16 @@ STATIC FUNCTION ProcFecha( cTag, aTagsAbre, cTxt )
    ENDIF
 
    RETURN .T.
+
+FUNCTION SefazClassValidaXml( cXml, cXsd )
+
+   LOCAL oSefaz := SefazClass():New()
+
+   RETURN oSefaz:ValidaXml( cXml, cXsd )
+
+FUNCTION SefazClassTipoXml( cXml )
+
+   LOCAL oSefaz := SefazClass():New()
+
+   RETURN oSefaz:TipoXml( cXml )
+

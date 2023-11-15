@@ -165,11 +165,12 @@ METHOD DrawBoleto( oBoleto, nVia, nLine ) CLASS BoletoPDFClass
    ::DrawText( nLine + 64, 159, "(=) Valor Cobrado", , ::nfontsizeSmall )
 
    ::DrawLine( nLine + 68,  20, nLine + 68, 197 )
-   ::DrawText( nLine + 71,  20, oBoleto:cCliNome, , ::nfontsizeNormal )
+   ::DrawText( nLine + 71,  20, "Pagador:",, ::nFontSizeSmall )
+   ::DrawText( nLine + 71,  30, oBoleto:cCliNome, , ::nfontsizeNormal )
    ::DrawText( nLine + 71, 150, "CNPJ",, ::nFontSizeSmall )
-   ::DrawText( nLine + 71, 160, FormatCnpj( oBoleto:cCliCnpj ),, ::nFontSizeNormal )
-   ::DrawText( nLine + 74,  20, oBoleto:cCliEnd, , ::nfontsizeNormal )
-   ::DrawText( nLine + 77,  20, oBoleto:cCliCep + " " + oBoleto:cCliEnd + " " + oBoleto:cCliCidade + " " + oBoleto:cCliUF, , ::nfontsizeNormal )
+   ::DrawText( nLine + 71, 170, FormatCnpj( oBoleto:cCliCnpj ),, ::nFontSizeNormal )
+   ::DrawText( nLine + 74,  30, oBoleto:cCliEnd, , ::nfontsizeNormal )
+   ::DrawText( nLine + 77,  30, oBoleto:cCliCep + " " + oBoleto:cCliEnd + " " + oBoleto:cCliCidade + " " + oBoleto:cCliUF, , ::nfontsizeNormal )
 
    ::DrawText( nLine + 82,  20, "Beneficiário final",, ::nFontSizeSmall )
    IF ! Empty( oBoleto:cPixCode )
