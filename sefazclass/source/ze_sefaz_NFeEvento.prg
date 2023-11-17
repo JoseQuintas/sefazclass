@@ -9,7 +9,7 @@ FUNCTION ze_sefaz_NFeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCerti
    hb_Default( @nSequencia, 1 )
    ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
    ::aSoapUrlList := WS_NFE_EVENTO
-   IF ::cUF $ "MS"
+   IF ::cUF $ "MA,MS,MT,PI,GO,MG"
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/RecepcaoEvento"
    ELSE
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEvento"

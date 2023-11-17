@@ -31,6 +31,7 @@ CREATE CLASS SefazClass
    METHOD MDFeConsNaoEnc( ... )             INLINE ::MDFeEmAberto( ... )
    METHOD MDFeDistribuicaoDFe( ...)         INLINE ::MDFeDistribuicao( ... )
    METHOD MDFeEventoInclusaoCondutor( ... ) INLINE ::MDFeCondutor( ... )
+   METHOD NFeStatusServicoSVC( ... )        INLINE ::NFeStatusSVC( ... )
 
    /* configuração */
    VAR    cProjeto        INIT NIL

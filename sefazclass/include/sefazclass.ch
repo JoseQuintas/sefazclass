@@ -330,7 +330,7 @@
    { "AM",    "4.00PC", "https://nfce.sefaz.am.gov.br/nfce-services/services/NfeAutorizacao4" }, ;
    { "MS",    "4.00PC", "https://nfce.sefaz.ms.gov.br/ws/NFeAutorizacao4" }, ;
    { "MT",    "4.00PC", "https://nfce.sefaz.mt.gov.br/nfcews/services/NfeAutorizacao4" }, ;
-   { "PR",    "4.00PC", "https://nfce.sefaz.pr.gov.br/nfce/NFeAutorizacao4" }, ;
+   { "PR",    "4.00PC", "https://nfce.sefa.pr.gov.br/nfce/NFeAutorizacao4" }, ;
    { "RS",    "4.00PC", "https://nfce.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
    { "SP",    "4.00PC", "https://nfce.fazenda.sp.gov.br/ws/NFeAutorizacao4.asmx" }, ;
    { "SVRS",  "4.00PC", "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
