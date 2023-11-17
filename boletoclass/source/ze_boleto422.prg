@@ -5,18 +5,15 @@ outubro/2023
 
 FUNCTION ze_Calculo422( SELF )
 
-   LOCAL cBarras1, cBarras2
-
    ::cBancoDigito := "422-7"
    ::cLocalPagto  := "PAGÁVEL EM QUALQUER BANCO DO SISTEMA DE COMPENSAÇÃO"
    ::cBolNumero := StrZero( ::nBancario, 9 )
    ::cBolConta  := StrZero( ::nAgencia, 5 ) + " / " + StrZero( ::nIdEmpresa, 9 )
 
-   cBarras1 := StrZero( ::nBanco, 3 ) + "9" + StrZero( ::nFatorVen, 4 ) + ;
+   ::cBarras := StrZero( ::nBanco, 3 ) + "9" + StrZero( ::nFatorVen, 4 ) + ;
       StrZero( ::nValor * 100, 10 ) + Right( ::cBancoDigito, 1 )
-   cBarras2 := StrZero( ::nAgencia, 5 ) + StrZero( ::nConta, 9 ) + ;
+   ::cBarras += StrZero( ::nAgencia, 5 ) + StrZero( ::nConta, 9 ) + ;
       StrZero( ::nBancario, 9 ) + "2" // 2=cobrança registrada
-   ::cBarras := cBarras1 + ::Modulo10_All( cBarras1 ) + cBarras2 + ::Modulo10_All( cBarras2 )
 
    RETURN Nil
 
