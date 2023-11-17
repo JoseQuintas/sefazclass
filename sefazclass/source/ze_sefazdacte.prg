@@ -308,12 +308,6 @@ METHOD GeraPDF( cFilePDF ) CLASS hbnfeDaCte
    ::oPDFFontNormal     := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
    ::oPDFFontBold := HPDF_GetFont( ::oPdf, "Times-Bold",  "CP1252" )
 
-#ifdef __XHARBOUR__
-   // Inserido por Anderson Camilo em 04/04/2012
-   ::cFonteCode128  := HPDF_LoadType1FontFromFile( ::oPdf, 'fontes\Code128bWinLarge.afm', 'fontes\Code128bWinLarge.pfb' )   // Code 128
-   ::cFonteCode128F := HPDF_GetFont( ::oPdf, ::cFonteCode128, "WinAnsiEncoding" )
-#endif
-
    DO WHILE .T.
       ::NovaPagina()
       ::GeraFolha()
@@ -456,9 +450,6 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    // box do controle do fisco
    ::DrawBox( 253, ::nLinhaPdf - 129, 260, 066, ::nLarguraBox )
    ::DrawTexto( 253, ::nLinhaPdf - 065, 398, Nil, "CONTROLE DO FISCO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 09 )
-#ifdef __XHARBOUR__
-   ::DrawTexto( 253, ::nLinhaPdf - 075, 538, Nil, ::xHarbourCode128c( ::cChave ), HPDF_TALIGN_CENTER, ::cFonteCode128F, 17 )
-#else
    ::DrawBarcode128( ::cChave, 260, ::nLinhaPDF - 110, 0.9, 30 )
    aList := WS_CTE_QRCODE
    nPos := hb_Ascan( aList, { | e | e[ 1 ] == DfeUF( ::cChave ) .AND. e[ 2 ] == "3.00" + iif( ::aIde[ "tpAmb" ] == "1", "P", "H" ) } )
@@ -466,7 +457,6 @@ METHOD GeraFolha() CLASS hbnfeDaCte
       cURLConsulta := aList[ nPos, 3 ]
    ENDIF
    ::DrawBarcodeQrCode( 520, ::nLinhaPDF - 60, 1.6, cURLConsulta + "?chCTe=" + ::cChave + "&" + "tpAmb=" + ::aIde[ "tpAmb" ] )
-#endif
    ::DrawTexto( 235, ::nLinhaPdf - 110, 538, Nil, "Chave de acesso p/consulta de autenticidade no site www.cte.fazenda.gov.br", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::DrawTexto( 235, ::nLinhaPdf - 119, 538, Nil, Transform( ::cChave, "@R 99.9999.99.999.999/9999-99-99-999-999.999.999-999.999.999-9" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
 

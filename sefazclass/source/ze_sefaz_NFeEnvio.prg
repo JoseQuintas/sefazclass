@@ -5,8 +5,12 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lSincrono 
    LOCAL oDoc, cChave
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
-   IF lSincrono != Nil .AND. ValType( lSincrono ) == "L"
-      ::lSincrono := lSincrono
+   IF lSincrono != Nil
+      IF ValType( lSincrono ) == "L"
+         ::lSincrono := lSincrono
+      ELSEIF ValType( lSIncrono ) == "C"
+         ::lSincrono := ( lSincrono == "1" )
+      ENDIF
    ENDIF
    ::cProjeto := WS_PROJETO_NFE
 

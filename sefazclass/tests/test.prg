@@ -361,14 +361,9 @@ FUNCTION SetupHarbour()
    Set( _SET_EVENTMASK, INKEY_ALL - INKEY_MOVE )
    SET CONFIRM ON
 
-#ifndef __XHARBOUR__
    hb_gtInfo( HB_GTI_INKEYFILTER, { | nKey | MyInkeyFilter( nKey ) } ) // pra funcionar control-V
-#endif
 
    RETURN Nil
-
-#ifndef __XHARBOUR__
-   // rotina do ctrl-v
 
 FUNCTION MyInkeyFilter( nKey )
 
@@ -385,7 +380,6 @@ FUNCTION MyInkeyFilter( nKey )
    ENDSWITCH
 
    RETURN nKey
-#endif
 
 FUNCTION TestDanfe()
 
@@ -415,13 +409,9 @@ FUNCTION PDFOpen( cFile )
 
    RETURN Nil
 
-#ifndef __XHARBOUR__
-
 FUNCTION JPEGImage()
 
 #pragma __binarystreaminclude "jpatecnologia.jpg"        | RETURN %s
-
-#endif
 
 STATIC FUNCTION CertificadoEscolhe( cCertificado )
 

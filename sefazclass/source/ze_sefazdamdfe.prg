@@ -183,11 +183,6 @@ METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
    ::oPDFFontNormal     := HPDF_GetFont( ::oPDF, "Times-Roman", "CP1252" )
    ::oPDFFontBold := HPDF_GetFont( ::oPDF, "Times-Bold", "CP1252" )
 
-#ifdef __XHARBOUR__
-   // Inserido por Anderson Camilo em 04/04/2012
-   ::cFonteCode128  := HPDF_LoadType1FontFromFile( ::oPDF, 'fontes\Code128bWinLarge.afm', 'fontes\Code128bWinLarge.pfb' )   // Code 128
-   ::cFonteCode128F := HPDF_GetFont( ::oPDF, ::cFonteCode128, "WinAnsiEncoding" )
-#endif
    // final da criacao e definicao do objeto pdf
    FOR nCont = 1 TO nQtFolhas
       ::nFolha := nCont
@@ -263,11 +258,7 @@ METHOD cabecalho( nQtFolhas ) CLASS hbnfeDaMdfe
    // box do controle do fisco + chave + protocolo
    ::DrawBox( 020, ::nLinhaPdf - 315, 555, 160, ::nLarguraBox )
    ::DrawTexto( 020, ::nLinhaPdf - 185, 560, Nil, "CONTROLE DO FISCO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 09 )
-#ifdef __XHARBOUR__
-   ::DrawTexto( 020, ::nLinhaPdf - 197, 575, Nil, ::xHarbourCode128c( ::cChave ), HPDF_TALIGN_CENTER, Nil, ::cFonteCode128F, 35 )
-#else
    ::DrawBarcode128( ::cChave, 150, ::nLinhaPDF - 242, 0.9, 40 )
-#endif
    aList := WS_MDFE_QRCODE
    nPos := hb_ASCan( aList, { | e | e[ 2 ] == "3.00P" } )
    IF nPos != 0

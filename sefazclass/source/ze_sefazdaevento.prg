@@ -278,11 +278,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
    ENDIF
 
    // codigo barras
-#ifdef __XHARBOUR__
-   ::DrawTexto( 291, ::nLinhaPDF -65, 555, Nil, ::xHarbourCode128c( ::cChaveNFe ), HPDF_TALIGN_CENTER, Nil, ::cFonteCode128F, 18 )
-#else
    ::DrawBarcode128( ::cChaveEvento, 300, ::nLinhaPDF -100, 0.9, 30 )
-#endif
 
    ::nLinhaPdf -= 106
 

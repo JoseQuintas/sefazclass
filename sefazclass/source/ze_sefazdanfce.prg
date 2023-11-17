@@ -9,17 +9,11 @@ Contribuição NFCE: LucianoConforto
 #include "harupdf.ch"
 #include "sefazclass.ch"
 
-#ifdef __XHARBOUR__
-#define ALL_PARAMETERS a, b, c, d, e, f, g
-#else
-#define ALL_PARAMETERS ...
-#endif
-
 CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
 
    METHOD ToPDF( cXmlNFCe, cFilePDF )
    METHOD BuscaDadosXML()
-   METHOD Execute( cXmlNFCe, cFilePDF, ALL_PARAMETERS ) INLINE ::ToPDF( cXmlNFce, cFilePDF, ALL_PARAMETERS )
+   METHOD Execute( cXmlNFCe, cFilePDF, ... ) INLINE ::ToPDF( cXmlNFce, cFilePDF, ... )
    METHOD CalculaPDF()
    METHOD GeraPDF( cFilePDF )
    METHOD NovaPagina()

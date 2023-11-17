@@ -162,7 +162,7 @@ METHOD cIndSinc( cValue ) CLASS SefazClass
 METHOD cFusoHorario( cValue ) CLASS SefazClass
 
    IF cValue != Nil
-      ::cUserTimeZone := cFusoHorario
+      ::cUserTimeZone := cValue
    ENDIF
 
    RETURN ::cUserTimeZone
