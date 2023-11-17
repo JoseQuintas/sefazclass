@@ -11,6 +11,7 @@ CREATE CLASS SefazClass
 
    /* compatibilidade */
    METHOD cIndSinc( cValue )                SETGET
+   METHOD cFusoHorario                      SETGET
    METHOD CTeConsultaProtocolo( ... )       INLINE ::CTeProtocolo( ... )
    METHOD CTeConsultaRecibo( ... )          INLINE ::CTeRetEnvio( ... )
    METHOD CTeLoteEnvia( cXml, cLote, ... )  INLINE (cLote),::CTeEnvio( cXml, ... )
@@ -157,6 +158,14 @@ METHOD cIndSinc( cValue ) CLASS SefazClass
    ENDIF
 
    RETURN iif( ::lSincrono, "1", "0" )
+
+METHOD cFusoHorario( cValue ) CLASS SefazClass
+
+   IF cValue != Nil
+      ::cUserTimeZone := cFusoHorario
+   ENDIF
+
+   RETURN ::cUserTimeZone
 
 METHOD AssinaXml() CLASS SefazClass
 
