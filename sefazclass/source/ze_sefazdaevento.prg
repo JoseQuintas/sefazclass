@@ -69,13 +69,13 @@ METHOD ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar ) CLASS hbnfeDaEvento
    ::cXmlEvento   := cXmlEvento
    ::cChaveEvento := Substr( ::cXmlEvento, At( "Id=", ::cXmlEvento ) + 3 + 9, 44 )
 
-   IF ! Empty( ::cXmlDocumento )
-      ::cChaveNFe := Substr( ::cXmlDocumento, At( "Id=", ::cXmlDocumento ) + 3 + 4, 44 )
-      IF ::cChaveEvento != ::cChaveNFe
-         ::cRetorno := "Arquivos XML com Chaves diferentes. Chave Doc: " + ::cChaveNFe + " Chave Evento: " + ::cChaveEvento
-         RETURN ::cRetorno
-      ENDIF
-   ENDIF
+   //IF ! Empty( ::cXmlDocumento )
+   //   ::cChaveNFe := Substr( ::cXmlDocumento, At( "Id=", ::cXmlDocumento ) + 3 + 4, 44 )
+   //   IF ::cChaveEvento != ::cChaveNFe
+   //      ::cRetorno := "Arquivos XML com Chaves diferentes. Chave Doc: " + ::cChaveNFe + " Chave Evento: " + ::cChaveEvento
+   //      RETURN ::cRetorno
+   //   ENDIF
+   //ENDIF
 
    IF ! ::BuscaDadosXML()
       RETURN ::cRetorno
