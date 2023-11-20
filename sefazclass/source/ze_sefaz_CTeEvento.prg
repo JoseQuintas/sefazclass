@@ -16,7 +16,8 @@ FUNCTION ze_sefaz_CTeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCerti
    ::Setup( cChave, cCertificado, cAmbiente )
    cCnpj = DfeEmitente( cChave )
    ::cXmlDocumento := [<eventoCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
+   ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, ;
+      iif( ::cVersao == "3.00", 2, 3 ) ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( iif( Len( cCnpj ) == 11 , "CPF", "CNPJ" ), cCnpj )
