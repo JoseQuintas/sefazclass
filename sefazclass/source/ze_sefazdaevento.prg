@@ -95,7 +95,8 @@ METHOD BuscaDadosXML() CLASS hbnfeDaEvento
    ::aCorrecoes := XmlNode( ::aCorrecoes , "evCCeCTe" )
    ::aCorrecoes := MultipleNodeToArray( ::aCorrecoes, "infCorrecao" )
 
-   ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "infEvento" ), { "tpEvento", "nSeqEvento", "verEvento", "xCorrecao" } )
+   ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "infEvento" ), { "tpEvento", "nSeqEvento", "xCorrecao" } )
+   ::aInfEvento[ "verEvento" ] := Substr( ::cXmlEvento, At( "versao=", ::cXmlEvento ) + 8, 4 )
    ::aInfEvento[ "cOrgao" ] := Left( ::cChaveEvento, 2 )
 
    IF At( "retEventoCTe", ::cXmlEvento ) > 0
