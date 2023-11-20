@@ -49,8 +49,12 @@ FUNCTION ze_sefaz_CTeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
    ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
    ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
    IF ! Empty( ::cRecibo ) .AND. ::cStatus != "999"
-      Inkey( ::nTempoEspera )
-      ::CteRetEnvio()
+      IF ::lSincrono
+         ::cXmlProtocolo := ::cXmlRecibo
+      ELSE
+         Inkey( ::nTempoEspera )
+         ::CteRetEnvio()
+      ENDIF
       ::CteGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo ) // runner
    ENDIF
 
