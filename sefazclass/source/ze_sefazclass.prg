@@ -12,6 +12,7 @@ CREATE CLASS SefazClass
    /* compatibilidade */
    METHOD cIndSinc( cValue )                SETGET
    METHOD cFusoHorario                      SETGET
+   METHOD cNFCe                             SETGET
    METHOD CTeConsultaProtocolo( ... )       INLINE ::CTeProtocolo( ... )
    METHOD CTeConsultaRecibo( ... )          INLINE ::CTeRetEnvio( ... )
    METHOD CTeLoteEnvia( cXml, cLote, ... )  INLINE (cLote),::CTeEnvio( cXml, ... )
@@ -42,6 +43,7 @@ CREATE CLASS SefazClass
    /* contingência e sinc/assinc */
    VAR    cScan           INIT "N"                     // Indicar SCAN/SVAN/SVRS testes iniciais
    VAR    lSincrono       INIT .F.                     // Poucas UFs opção de protocolo
+   VAR    lConsumidor     INIT .F.                     // NFCe
    /* pra NFCe */
    VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
    VAR    cCSC            INIT ""                      // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
@@ -72,7 +74,6 @@ CREATE CLASS SefazClass
    VAR    cSoapAction     INIT ""                      // webservice Action
    VAR    cSoapURL        INIT ""                      // webservice Endereço
    VAR    cXmlNameSpace   INIT "xmlns="
-   VAR    cNFCE           INIT "N"                     // Porque NFCE tem endereços diferentes
    VAR    aSoapUrlList    INIT {}
 
    METHOD NFeDownload( cCnpj, cChave, cCertificado, cAmbiente ) ;
@@ -126,6 +127,7 @@ CREATE CLASS SefazClass
    METHOD NFeRetEnvio( ... )              INLINE ze_sefaz_NFeRetEnvio( Self, ... )
    METHOD NFeStatus( ... )                INLINE ze_sefaz_NFeStatus( Self, ... )
    METHOD NFeStatusSVC( ... )             INLINE ze_sefaz_NFeStatusSVC( Self, ... )
+   METHOD Setup( ... )                    INLINE ze_sefaz_Setup( Self, ... )
 
    /* Uso interno */
    METHOD XmlSoapPost()
@@ -138,11 +140,7 @@ CREATE CLASS SefazClass
    METHOD UFSigla( cCodigo )                          INLINE UFSigla( cCodigo )
    METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( Empty( ::cUFTimeZone ), ::cUF, ::cUFTimeZone ), lUTC, ::cUserTimeZone )
    METHOD ValidaXml( cXml, cFileXsd, cIgnoreList )    INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd, cIgnoreList )
-   METHOD Setup( cUF, cCertificado, cAmbiente )
 
-   METHOD SoapUrlBpe( aSoapList, cUF, cVersao )
-   METHOD SoapUrlCte( aSoapList, cUF, cVersao )
-   METHOD SoapUrlMdfe( aSoapList, cUF, cVersao )
    METHOD SoapUrlNfe( aSoapList, cUF, cVersao )
    METHOD SoapUrlNFCe( aSoapList, cUf, cVersao )
 
@@ -168,6 +166,14 @@ METHOD cFusoHorario( cValue ) CLASS SefazClass
 
    RETURN ::cUserTimeZone
 
+METHOD cNFCe( cValue ) CLASS Sefazclass
+
+   IF cValue != Nil
+      ::lConsumidor := ( cValue == "S" )
+   ENDIF
+
+   RETURN iif( ::lConsumidor, "S", "N" )
+
 METHOD AssinaXml() CLASS SefazClass
 
    ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado,,::cPassword )
@@ -178,65 +184,6 @@ METHOD AssinaXml() CLASS SefazClass
    ENDIF
 
    RETURN ::cXmlRetorno
-
-METHOD Setup( cUF, cCertificado, cAmbiente ) CLASS SefazClass
-
-   LOCAL cProjeto, cNFCe, cScan, cVersao
-
-   DO CASE
-   CASE cUF == NIL
-   CASE Len( SoNumeros( cUF ) ) != 0
-      ::cUF := ::UFSigla( Left( cUF, 2 ) )
-   OTHERWISE
-      ::cUF := cUF
-   ENDCASE
-   ::cCertificado := iif( cCertificado == NIL, ::cCertificado, cCertificado )
-   ::cAmbiente    := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
-   ::cSoapURL := ""
-   cAmbiente  := ::cAmbiente
-   cUF        := ::cUF
-   cProjeto   := ::cProjeto
-   cNFCE      := ::cNFCE
-   cScan      := ::cScan
-   cVersao    := ::cVersao + iif( cAmbiente == WS_AMBIENTE_PRODUCAO, "P", "H" )
-   DO CASE
-   CASE cProjeto == WS_PROJETO_BPE
-      ::cSoapUrl := ::SoapUrlBpe( ::aSoapUrlList, cUF, cVersao )
-   CASE cProjeto == WS_PROJETO_CTE
-      IF cScan == "SVCAN"
-         IF cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
-            ::cSoapURL := ::SoapURLCTe( ::aSoapUrlList, "SVSP", cVersao ) // SVC_SP não existe
-         ELSEIF cUF $ "MS,MT,SP," + "AP,PE,RR"
-            ::cSoapURL := ::SoapUrlCTe( ::aSoapUrlList, "SVRS", cVersao ) // SVC_RS não existe
-         ENDIF
-      ELSE
-         ::cSoapUrl := ::SoapUrlCTe( ::aSoapUrlList, cUF, cVersao )
-      ENDIF
-   CASE cProjeto == WS_PROJETO_MDFE
-      ::cSoapURL := ::SoapURLMDFe( ::aSoapUrlList, "SVRS", cVersao )
-   CASE cProjeto == WS_PROJETO_NFE
-      DO CASE
-      CASE cNFCe == "S"
-         ::cSoapUrl := ::SoapUrlNFCe( ::aSoapUrlList, cUF, cVersao )
-         IF Empty( ::cSoapUrl )
-            ::cSoapUrl := ::SoapUrlNfe( ::aSoapUrlList, cUF, cVersao )
-         ENDIF
-      CASE cScan == "SCAN"
-         ::cSoapURL := ::SoapUrlNFe( ::aSoapUrlList, "SCAN", cVersao )
-      CASE cScan == "SVAN"
-         ::cSoapUrl := ::SoapUrlNFe( ::aSoapUrlList, "SVAN", cVersao )
-      CASE cScan == "SVCAN"
-         IF cUF $ "AM,BA,CE,GO,MA,MS,MT,PA,PE,PI,PR"
-            ::cSoapURL := ::SoapURLNfe( ::aSoapUrlList, "SVCRS", cVersao )
-         ELSE
-            ::cSoapURL := ::SoapUrlNFe( ::aSoapUrlList, "SVCAN", cVersao )
-         ENDIF
-      OTHERWISE
-         ::cSoapUrl := ::SoapUrlNfe( ::aSoapUrlList, cUF, cVersao )
-      ENDCASE
-   ENDCASE
-
-   RETURN NIL
 
 METHOD XmlSoapPost() CLASS SefazClass
 
@@ -408,17 +355,6 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
 
    RETURN NIL
 
-METHOD SoapUrlBpe( aSoapList, cUF, cVersao ) CLASS SefazClass
-
-   LOCAL nPos, cUrl
-
-   nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
-   IF nPos != 0
-      cUrl := aSoapList[ nPos, 3 ]
-   ENDIF
-
-   RETURN cUrl
-
 METHOD SoapUrlNfe( aSoapList, cUF, cVersao ) CLASS Sefazclass
 
    LOCAL nPos, cUrl
@@ -452,38 +388,6 @@ METHOD SoapUrlNFCe( aSoapList, cUf, cVersao ) CLASS Sefazclass
    IF Empty( cUrl )
       cUrl := ::SoapUrlNFe( aSoapList, cUF, cVersao )
    ENDIF
-
-   RETURN cUrl
-
-METHOD SoapUrlCte( aSoapList, cUF, cVersao ) CLASS Sefazclass
-
-   LOCAL nPos, cUrl
-
-   hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   hb_Default( @::cProjeto, WS_PROJETO_CTE )
-   nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
-   IF nPos != 0
-      cUrl := aSoapList[ nPos, 3 ]
-   ENDIF
-   IF Empty( cUrl )
-      IF cUF $ "AP,PE,RR"
-         cUrl := ::SoapUrlCTe( aSoapList, "SVSP", cVersao )
-      ELSEIF cUF $ "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
-         cUrl := ::SoapUrlCTe( aSoapList, "SVRS", cVersao )
-      ENDIF
-   ENDIF
-
-   RETURN cUrl
-
-METHOD SoapUrlMdfe( aSoapList, cUF, cVersao ) CLASS Sefazclass
-
-   LOCAL cUrl, nPos
-
-   nPos := hb_AScan( aSoapList, { | e | cVersao == e[ 2 ] } )
-   IF nPos != 0
-      cUrl := aSoapList[ nPos, 3 ]
-   ENDIF
-   HB_SYMBOL_UNUSED( cUF )
 
    RETURN cUrl
 

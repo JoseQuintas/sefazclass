@@ -83,7 +83,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       oSefaz:cUF          := aVarList[ VAR_UF ]
       oSefaz:cCertificado := aVarList[ VAR_CERTIFICADO ]
       oSefaz:cAmbiente    := aVarList[ VAR_AMBIENTE ]
-      oSefaz:cNFCE        := aVarList[ VAR_NFCE ]
+      oSefaz:lConsumidor  := ( aVarList[ VAR_NFCE ] == "S" )
 
       CLS
       @ Row() + 1, 5 PROMPT Str( OPC_DANFE, 2 )           + "-Teste Danfe (path atual)"

@@ -6,7 +6,7 @@ FUNCTION ze_Sefaz_NFeStatus( Self, cUF, cCertificado, cAmbiente )
    ::cProjeto := WS_PROJETO_NFE
    ::aSoapUrlList := WS_NFE_STATUSSERVICO
    ::Setup( cUF, cCertificado, cAmbiente )
-   IF ::cUF $ 'MA,MS,MT,PI,GO,MG' .and. ::cNFCE == "S"
+   IF ::cUF $ 'MA,MS,MT,PI,GO,MG' .and. ::lConsumidor
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4NfeStatusServico"
     ELSE
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4nfeStatusServicoNF"

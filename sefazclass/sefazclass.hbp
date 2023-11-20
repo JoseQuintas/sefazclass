@@ -82,3 +82,4 @@ source/ze_sefaz_NFeInutiliza.prg
 source/ze_sefaz_NFeProtocolo.prg
 source/ze_sefaz_NFeRetEnvio.prg
 source/ze_sefaz_NFeStatus.prg
+source/ze_sefaz_Setup.prg

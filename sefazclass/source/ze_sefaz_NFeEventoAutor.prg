@@ -7,7 +7,7 @@ FUNCTION ze_sefaz_NFeEventoAutor( Self, cChave, cCnpj, cOrgaoAutor, ctpAutor, cv
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::cProjeto := WS_PROJETO_NFE
    hb_Default( @cCnpj, "00000000000000" )
-   ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
+   ::lConsumidor := ( DfeModFis( cChave ) == "65" )
    ::aSoapUrlList := WS_NFE_EVENTO
    ::cUF          := "AN"
    ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEventoNF"

@@ -35,13 +35,13 @@ FUNCTION ze_sefaz_CTeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
 	cBlocoXml += "</qrCodCTe>"
 	cBlocoXml += "</infCTeSupl>"
 	::cXmlDocumento := StrTran( ::cXmlDocumento, "</infCte>", "</infCte>" + cBlocoXml )
-   IF ::cVersao == "3.00"
+   IF ::lSincrono // 4.00 obrigatório
+      ::cXmlEnvio := ::cXmlDocumento
+   ELSE
       ::cXmlEnvio := [<enviCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
       ::cXmlEnvio +=    XmlTag( "idLote", "1" )
       ::cXmlEnvio += ::cXmlDocumento
       ::cXmlEnvio += [</enviCTe>]
-   ELSE
-      ::cXmlEnvio := hb_Base64Encode( hb_gzCompress( ::cXmlDocumento ) )
    ENDIF
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno

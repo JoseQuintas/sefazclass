@@ -29,7 +29,7 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lSincrono 
    IF ::AssinaXml() != "OK"
       RETURN ::cXmlRetorno
    ENDIF
-   IF ::cNFCe == "S"
+   IF ::lConsumidor
       GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC, ::cVersao, ::cVersaoQrCode )
    ENDIF
 
@@ -204,7 +204,7 @@ FUNCTION ze_sefaz_NFeContingencia( Self, cXml, cUF, cCertificado, cAmbiente )
    ::cAmbiente     := iif( cAmbiente == NIL, ::cAmbiente, cAmbiente )
    ::cXmlDocumento := iif( cXml == NIL, ::cXmlDocumento, cXml )
    ::AssinaXml()
-   IF ::cNFCe == "S"
+   IF ::lConsumidor
       GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC, ::cVersao, ::cVersaoQrCode )
    ENDIF
 

@@ -4,7 +4,7 @@ FUNCTION ze_Sefaz_NFeProtocolo( Self, cChave, cCertificado, cAmbiente )
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::cProjeto := WS_PROJETO_NFE
-   ::cNFCe := iif( DfeModFis( cChave ) == "65", "S", "N" )
+   ::lConsumidor := ( DfeModFis( cChave ) == "65" )
    ::aSoapUrlList := WS_NFE_CONSULTAPROTOCOLO
    ::aSoapUrlList := WS_NFE_CONSULTAPROTOCOLO
    ::Setup( cChave, cCertificado, cAmbiente )
