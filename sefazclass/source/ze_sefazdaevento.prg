@@ -99,8 +99,10 @@ METHOD BuscaDadosXML() CLASS hbnfeDaEvento
    ::aInfEvento[ "verEvento" ] := Substr( ::cXmlEvento, At( "versao=", ::cXmlEvento ) + 8, 4 )
    ::aInfEvento[ "cOrgao" ] := Left( ::cChaveEvento, 2 )
 
-   IF At( "retEventoCTe", ::cXmlEvento ) > 0
+   IF "retEventoCTe" $ ::cXmlEvento
       ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "retEventoCTe" ), { "cStat", "xMotivo", "dhRegEvento", "nProt" }, ::aInfEvento )
+   ELSEIF "retEventoMDFe" $ ::cXmlEvento
+      ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "retEventoMDFe" ), { "cStat", "xMotivo", "dhRegEvento", "nProt" }, ::aInfEvento )
    ELSE
       ::aInfEvento := XmlToHash( XmlNode( ::cXmlEvento, "retEvento" ), { "cStat", "xMotivo", "dhRegEvento", "nProt" }, ::aInfEvento )
    ENDIF

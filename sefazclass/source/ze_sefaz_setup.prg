@@ -7,7 +7,7 @@ FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente ) // , lContingencia
    IF cCertificado != Nil
       ::cCertificado := cCertificado
    ENDIF
-   IF ::cAmbiente != Nil
+   IF cAmbiente != Nil
       ::cAmbiente := cAmbiente
    ENDIF
    //IF lContingencia != Nil
