@@ -342,30 +342,12 @@ METHOD NovaPagina() CLASS hbnfeDaCte
 
    nRadiano := nAngulo / 180 * 3.141592 /* Calcurate the radian value. */
 
-   IF ::aIde[ "tpAmb" ] = "2" .OR. Empty( ::ainfProt[ "nProt" ] )
+   IF ::aIde[ "tpAmb" ] = "2"
       ::DrawHomologacao()
-   ENDIF
-
-   IF ! Empty( ::aInfCanc[ "nProt" ] ) .AND. ::aInfCanc[ "cStat" ] $ "101,135,302" // 302=denegada
-
-      HPDF_Page_SetFontAndSize( ::oPdfPage, ::oPDFFontBold, 30 )
-      HPDF_Page_BeginText(::oPdfPage)
-      HPDF_Page_SetTextMatrix(::oPdfPage, cos(nRadiano), sin(nRadiano), -sin(nRadiano), cos(nRadiano), 15, 150)
-      HPDF_Page_SetRGBFill(::oPdfPage, 1, 0, 0)
-      HPDF_Page_ShowText(::oPdfPage, ::aInfCanc[ "xMotivo" ])
-      HPDF_Page_EndText(::oPdfPage)
-
-      HPDF_Page_SetRGBStroke(::oPdfPage, 0.75, 0.75, 0.75)
-      IF ::lPaisagem
-         ::DrawLine( 15, 95, 675, 475, 2.0)
-      ELSE
-         ::DrawLine( 15, 95, 550, 630, 2.0)
-      ENDIF
-
-      HPDF_Page_SetRGBStroke(::oPdfPage, 0, 0, 0) // reseta cor linhas
-
-      HPDF_Page_SetRGBFill(::oPdfPage, 0, 0, 0) // reseta cor fontes
-
+   ELSEIF ! Empty( ::aInfCanc[ "nProt" ] )
+      ::DrawHomologacao( ::aInfCanc[ "xMotivo" ] )
+   ELSEIF ::aInfProt[ "cStat" ] $ "101,302"
+      ::DrawHomologacao( ::aInfProt[ "xMotivo" ] )
    ENDIF
 
    RETURN Nil
@@ -402,7 +384,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    IF Len( ::aEmit[ "xNome" ] ) <= 25
       ::DrawTexto( 3, ::nLinhaPdf - 056, 245, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
    ELSE
-      ::DrawTexto( 3, ::nLinhaPdf - 056, 245, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+      ::DrawTexto( 3, ::nLinhaPdf - 056, 245, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
    ENDIF
    ::DrawTexto( 6, ::nLinhaPdf - 070, 245, Nil, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ] + " " + ::aEmit[ "xCpl" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::DrawTexto( 6, ::nLinhaPdf - 078, 245, Nil, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
@@ -445,7 +427,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    // box do data e hora
    ::DrawBox( 418, ::nLinhaPdf - 060, 095, 025, ::nLarguraBox )
    ::DrawTexto( 418, ::nLinhaPdf - 040, 513, Nil, "Data e Hora de Emissão", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 418, ::nLinhaPdf - 047, 513, Nil, Substr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 1, 4 ) + ' ' + Substr( ::aIde[ "dhEmi" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::DrawTexto( 418, ::nLinhaPdf - 047, 513, Nil, Substr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 1, 4 ) + ' ' + Substr( ::aIde[ "dhEmi" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
 
    // box do controle do fisco
    ::DrawBox( 253, ::nLinhaPdf - 129, 260, 066, ::nLarguraBox )
@@ -483,7 +465,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    ::DrawBox( 253, ::nLinhaPdf - 154, 145, 022, ::nLarguraBox )
    ::DrawTexto( 253, ::nLinhaPdf - 135, 398, Nil, "No. PROTOCOLO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    IF ! Empty( ::aInfProt[ "nProt" ] )
-      ::DrawTexto( 253, ::nLinhaPdf - 143, 398, Nil, ::aInfProt[ "nProt" ] + ' - ' + Substr( ::aInfProt[ "dhRecbto" ], 9, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 6, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 1, 4 ) + ' ' + Substr( ::aInfProt[ "dhRecbto" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
+      ::DrawTexto( 253, ::nLinhaPdf - 143, 398, Nil, ::aInfProt[ "nProt" ] + ' - ' + Substr( ::aInfProt[ "dhRecbto" ], 9, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 6, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 1, 4 ) + ' ' + Substr( ::aInfProt[ "dhRecbto" ], 12 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 7 )
    ENDIF
 
    // box da Insc. da Suframa

@@ -36,7 +36,7 @@ CREATE CLASS hbNFeDaGeral
    METHOD Desenvolvedor( nLinhaPDF )
    METHOD DrawBoxTituloTexto( x, y, w, h, cTitle, cText, nAlign, oPDFFont, nFontSize, nAngle )
    METHOD DrawAviso( cTexto )
-   METHOD DrawHomologacao()
+   METHOD DrawHomologacao( cTexto )
    METHOD DrawContingencia( cTexto1, cTexto2, cTexto3 )
 
    ENDCLASS
@@ -176,7 +176,7 @@ METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar ) CLASS hbNFeDaGeral
 
    RETURN oDanfe:ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar )
 
-METHOD DrawHomologacao() CLASS hbNFeDaGeral
+METHOD DrawHomologacao( cTexto ) CLASS hbNFeDaGeral
 
    LOCAL nRadiano := 45 / 180 * 3.141592 // rotation 45 degrees
 
@@ -184,7 +184,7 @@ METHOD DrawHomologacao() CLASS hbNFeDaGeral
    HPDF_Page_BeginText( ::oPdfPage )
    HPDF_Page_SetTextMatrix( ::oPdfPage, Cos( nRadiano ), Sin( nRadiano ), -Sin( nRadiano ), Cos( nRadiano ), 15, 100 )
    HPDF_Page_SetRGBFill( ::oPdfPage, 0.75, 0.75, 0.75 )
-   HPDF_Page_ShowText( ::oPdfPage, "AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL" )
+   HPDF_Page_ShowText( ::oPdfPage, iif( cTexto ) == Nil, "AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL", cTexto ) )
    HPDF_Page_EndText( ::oPdfPage )
    HPDF_Page_SetRGBStroke( ::oPdfPage, 0.75, 0.75, 0.75 )
    ::DrawLine( 15, 100, 550, 630, 2.0 )
