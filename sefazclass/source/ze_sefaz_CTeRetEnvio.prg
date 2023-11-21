@@ -7,7 +7,7 @@ FUNCTION ze_sefaz_CTeRetEnvio( Self, cRecibo, cUF, cCertificado, cAmbiente )
    IF cRecibo != NIL
       ::cRecibo := cRecibo
    ENDIF
-   ::aSoapUrlList := WS_CTE_RETAUTORIZACAO
+   ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao"
 
@@ -23,3 +23,20 @@ FUNCTION ze_sefaz_CTeRetEnvio( Self, cRecibo, cUF, cCertificado, cAmbiente )
    ENDIF
 
    RETURN ::cXmlRetorno // ? hb_Utf8ToStr()
+
+STATIC FUNCTION SoapList()
+
+RETURN { ;
+   ;
+   { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao" }, ;
+   { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRetRecepcao" }, ;
+   { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao" }, ;
+   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao" }, ;
+   { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
+   { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/CteRetRecepcao.asmx" }, ;
+   { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" }, ;
+   ;
+   { "PR",   "3.00H", "https://homologacao.cte.fazenda.pr.gov.br/cte/CteRetRecepcao" }, ;
+   { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx" }, ;
+   { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx" } }
+

@@ -10,10 +10,10 @@ FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lSincrono
       ::lSincrono := lSincrono
    ENDIF
    IF ::lSincrono
-      ::aSoapUrlList := WS_MDFE_RECEPCAOSINC
+      ::aSoapUrlList := SoapListSinc()
       ::cSoapAction := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc/mdfeRecepcao"
    ELSE
-      ::aSoapUrlList := WS_MDFE_AUTORIZACAO
+      ::aSoapUrlList := SoapList()
       ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao/MDFeRecepcao"
    ENDIF
    ::Setup( cUF, cCertificado, cAmbiente )
@@ -67,3 +67,18 @@ FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lSincrono
    ENDIF
 
    RETURN ::cXmlRetorno
+
+STATIC FUNCTION SoapList()
+
+RETURN { ;
+   ;
+   { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" }, ;
+   { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" } }
+
+STATIC FUNCTION SoapListSinc()
+
+RETURN { ;
+   ;
+   { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRecepcaoSinc/MDFeRecepcaoSinc.asmx" }, ;
+   ;
+   { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoSinc/MDFeRecepcaoSinc.asmx" } }

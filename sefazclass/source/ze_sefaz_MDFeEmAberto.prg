@@ -5,7 +5,7 @@ FUNCTION ze_sefaz_MDFeEmAberto( Self, cUF, cCNPJ , cCertificado, cAmbiente )
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
    ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc/mdfeConsNaoEnc"
-   ::aSoapUrlList := WS_MDFE_CONSULTANAOENCERRADOS
+   ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
    cCnpj := SoNumeros( cCnpj )
 
@@ -21,4 +21,12 @@ FUNCTION ze_sefaz_MDFeEmAberto( Self, cUF, cCNPJ , cCertificado, cAmbiente )
    ENDIF
 
    RETURN ::cXmlRetorno
+
+STATIC FUNCTION SoapList()
+
+RETURN { ;
+   ;
+   { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsNaoEnc/MDFeConsNaoEnc.asmx" }, ;
+   ;
+   { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/mdfeConsNaoEnc/mdfeConsNaoenc.asmx" } }
 

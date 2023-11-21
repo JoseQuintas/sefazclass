@@ -4,7 +4,7 @@ FUNCTION ze_Sefaz_MDFeProtocolo( Self, cChave, cCertificado, cAmbiente )
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
-   ::aSoapUrlList := WS_MDFE_CONSULTAPROTOCOLO
+   ::aSoapUrlList := SoapList()
    ::Setup( cChave, cCertificado, cAmbiente )
    ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsulta/mdfeConsultaMDF"
 
@@ -25,4 +25,12 @@ FUNCTION ze_Sefaz_MDFeProtocolo( Self, cChave, cCertificado, cAmbiente )
    ENDIF
 
    RETURN ::cXmlRetorno
+
+STATIC FUNCTION SoapList()
+
+RETURN { ;
+   ;
+   { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" }, ;
+   ;
+   { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsulta/MDFeConsulta.asmx" } }
 

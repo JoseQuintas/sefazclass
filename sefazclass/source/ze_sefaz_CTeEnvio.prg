@@ -6,7 +6,7 @@ FUNCTION ze_sefaz_CTeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
 
    ::cProjeto := WS_PROJETO_CTE
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
-   ::aSoapUrlList := WS_CTE_AUTORIZACAO
+   ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cVersao == "3.00"
       ::cSoapAction := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote"
@@ -60,3 +60,24 @@ FUNCTION ze_sefaz_CTeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 
+STATIC FUNCTION SoapList()
+
+   RETURN { ;
+   ;
+   { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao" }, ;
+   { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRecepcao" }, ;
+   { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao" }, ;
+   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcao" }, ;
+   { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+   { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+   { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
+   ;
+   { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
+   { "PR",   "3.00H", "https://homologacao.cte.fazenda.pr.gov.br/cte/CteRecepcao" }, ;
+   { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
+   ;
+   { "SP",   "4.00P", "https://nfe.fazenda.sp.gov.br/CTeWS/WS/CTeRecepcaoSincV4.asmx" }, ;
+   { "PR",   "4.00P", "https://cte.fazenda.pr.gov.br/cte4/CTeRecepcaoSincV4" }, ;
+   ;
+   { "SP",   "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeWS/WS/CTeRecepcaoSincV4.asmx" }, ;
+   { "PR",   "4.00H", "https://homologacao.cte.fazenda.pr.gov.br/cte4/CTeRecepcaoSincV4" } }

@@ -4,7 +4,7 @@ FUNCTION ze_Sefaz_MDFeStatus( Self, cUF, cCertificado, cAmbiente )
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
-   ::aSoapUrlList := WS_MDFE_STATUSSERVICO
+   ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeStatusServico/mdfeStatusServicoMDF"
 
@@ -16,4 +16,12 @@ FUNCTION ze_Sefaz_MDFeStatus( Self, cUF, cCertificado, cAmbiente )
    ::XmlSoapPost()
 
    RETURN ::cXmlRetorno
+
+STATIC FUNCTION SoapList()
+
+   RETURN { ;
+   ;
+   { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" }, ;
+   ;
+   { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeStatusServico/MDFeStatusServico.asmx" } }
 

@@ -7,7 +7,7 @@ FUNCTION ze_Sefaz_MDFeRetEnvio( Self, cRecibo, cUF, cCertificado, cAmbiente )
    IF cRecibo != NIL
       ::cRecibo := cRecibo
    ENDIF
-   ::aSoapUrlList := WS_MDFE_RETAUTORIZACAO
+   ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao/mdfeRetRecepcao"
 
@@ -28,4 +28,12 @@ FUNCTION ze_Sefaz_MDFeRetEnvio( Self, cRecibo, cUF, cCertificado, cAmbiente )
    ENDIF
 
    RETURN ::cXmlRetorno
+
+STATIC FUNCTION SoapList()
+
+RETURN { ;
+   ;
+   { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" }, ;
+   ;
+   { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" } }
 

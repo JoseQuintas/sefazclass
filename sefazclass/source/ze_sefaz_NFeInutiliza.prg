@@ -5,7 +5,7 @@ FUNCTION ze_sefaz_NFeInutiliza( Self, cAno, cCnpj, cMod, cSerie, cNumIni, cNumFi
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::cProjeto := WS_PROJETO_NFE
-   ::aSoapUrlList := WS_NFE_INUTILIZA
+   ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::cUF $ "NA,MS,MT,SP,PI,GO,MG"
       ::cSoapAction := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeInutilizacao4/NfeInutilizacao"
@@ -46,3 +46,54 @@ FUNCTION ze_sefaz_NFeInutiliza( Self, cAno, cCnpj, cMod, cSerie, cNumIni, cNumFi
    ENDIF
 
    RETURN ::cXmlRetorno
+
+STATIC FUNCTION SoapList()
+
+   RETURN { ;
+   ;
+   { "AM",    "4.00H",  "https://homnfe.sefaz.am.gov.br/services2/services/NfeInutilizacao4" }, ;
+   { "BA",    "4.00H",  "https://hnfe.sefaz.ba.gov.br/webservices/NFeInutilizacao4/NFeInutilizacao4.asmx" }, ;
+   { "CE",    "4.00H",  "https://nfeh.sefaz.ce.gov.br/nfe4/services/NFeInutilizacao4" }, ;
+   { "GO",    "4.00H",  "https://homolog.sefaz.go.gov.br/nfe/services/NFeInutilizacao4" }, ;
+   { "MG",    "4.00H",  "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeInutilizacao4" }, ;
+   { "MS",    "4.00H",  "https://hom.nfe.sefaz.ms.gov.br/ws/NFeInutilizacao4" }, ;
+   { "MT",    "4.00H",  "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao4" }, ;
+   { "PE",    "4.00H",  "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NFeInutilizacao4" }, ;
+   { "PR",    "4.00H",  "https://homologacao.nfe.sefa.pr.gov.br/nfe/NFeInutilizacao4" }, ;
+   { "RS",    "4.00H",  "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
+   { "SP",    "4.00H",  "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" }, ;
+   { "SVAN",  "4.00H",  "https://hom.sefazvirtual.fazenda.gov.br/NFeInutilizacao4/NFeInutilizacao4.asmx" }, ;
+   { "SVCRS", "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
+   { "SVRS",  "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
+   ;
+   { "AM",    "4.00HC", "https://homnfe.sefaz.am.gov.br/services2/services/NfeInutilizacao4" }, ;
+   { "MS",    "4.00HC", "https://hom.nfce.sefaz.ms.gov.br/ws/NFeInutilizacao4" }, ;
+   { "PR",    "4.00HC", "https://homologacao.nfce.sefa.pr.gov.br/nfce/NFeInutilizacao4" }, ;
+   { "RS",    "4.00HC", "https://nfce-homologacao.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
+   { "SP",    "4.00HC", "https://homologacao.nfce.fazenda.sp.gov.br/ws/NFeInutilizacao4.asmx" }, ;
+   { "SVRS",  "4.00HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
+   ;
+   { "AM",    "4.00P",  "https://nfe.sefaz.am.gov.br/services2/services/NfeInutilizacao4" }, ;
+   { "BA",    "4.00P",  "https://nfe.sefaz.ba.gov.br/webservices/NFeInutilizacao4/NFeInutilizacao4.asmx" }, ;
+   { "CE",    "4.00P",  "https://nfe.sefaz.ce.gov.br/nfe4/services/NFeInutilizacao4" }, ;
+   { "GO",    "4.00P",  "https://nfe.sefaz.go.gov.br/nfe/services/NFeInutilizacao4" }, ;
+   { "MG",    "4.00P",  "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeInutilizacao4" }, ;
+   { "MS",    "4.00P",  "https://nfe.sefaz.ms.gov.br/ws/NFeInutilizacao4" }, ;
+   { "MT",    "4.00P",  "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao4" }, ;
+   { "PE",    "4.00P",  "https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeInutilizacao4" }, ;
+   { "PR",    "4.00P",  "https://nfe.sefa.pr.gov.br/nfe/NFeInutilizacao4" }, ;
+   { "RS",    "4.00P",  "https://nfe.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
+   { "SP",    "4.00P",  "https://nfe.fazenda.sp.gov.br/ws/nfeinutilizacao4.asmx" }, ;
+   { "SVAN",  "4.00P",  "https://www.sefazvirtual.fazenda.gov.br/NFeInutilizacao4/NFeInutilizacao4.asmx" }, ;
+   { "SVCAN", "4.00P",  "https://www.svc.fazenda.gov.br/NFeInutilizacao4/NFeInutilizacao4.asmx" }, ;
+   { "SVCRS", "4.00P",  "https://nfe.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
+   { "SVRS",  "4.00P",  "https://nfe.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
+   ;
+   { "AM",    "4.00PC", "https://nfce.sefaz.am.gov.br/nfce-services/services/NfeInutilizacao4" }, ;
+   { "MS",    "4.00PC", "https://nfce.sefaz.ms.gov.br/ws/NFeInutilizacao4" }, ;
+   { "MT",    "4.00PC", "https://nfce.sefaz.mg.gov.br/nfce/services/NFeInutilizacao4" }, ;
+   { "PR",    "4.00PC", "https://nfce.sefa.pr.gov.br/nfce/NFeInutilizacao4" }, ;
+   { "RS",    "4.00PC", "https://nfce.sefazrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
+   { "SP",    "4.00PC", "https://nfce.fazenda.sp.gov.br/ws/NFeInutilizacao4.asmx" }, ;
+   { "SVRS",  "4.00PC", "https://nfce.svrs.rs.gov.br/ws/nfeinutilizacao/nfeinutilizacao4.asmx" }, ;
+   { "MG",    "4.00PC", "https://nfce.fazenda.mg.gov.br/nfce/services/NFeInutilizacao4" } }

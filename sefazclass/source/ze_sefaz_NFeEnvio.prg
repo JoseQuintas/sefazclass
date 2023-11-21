@@ -14,7 +14,7 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lSincrono 
    ENDIF
    ::cProjeto := WS_PROJETO_NFE
 
-   ::aSoapUrlList := WS_NFE_AUTORIZACAO
+   ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
    IF ::lSincrono
       // reservado pra implementacao futura em gzip
@@ -209,3 +209,55 @@ FUNCTION ze_sefaz_NFeContingencia( Self, cXml, cUF, cCertificado, cAmbiente )
    ENDIF
 
    RETURN ::cXmlDocumento
+
+STATIC FUNCTION SoapList()
+
+RETURN { ;
+   ;
+   { "AM",    "4.00H",  "https://homnfe.sefaz.am.gov.br/services2/services/NfeAutorizacao4" }, ;
+   { "BA",    "4.00H",  "https://hnfe.sefaz.ba.gov.br/webservices/NFeAutorizacao4/NFeAutorizacao4.asmx" }, ;
+   { "CE",    "4.00H",  "https://nfeh.sefaz.ce.gov.br/nfe4/services/NFeAutorizacao4" }, ;
+   { "GO",    "4.00H",  "https://homolog.sefaz.go.gov.br/nfe/services/NFeAutorizacao4" }, ;
+   { "MG",    "4.00H",  "https://hnfe.fazenda.mg.gov.br/nfe2/services/NFeAutorizacao4" }, ;
+   { "MS",    "4.00H",  "https://hom.nfe.sefaz.ms.gov.br/ws/NFeAutorizacao4" }, ;
+   { "MT",    "4.00H",  "https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeAutorizacao4" }, ;
+   { "PE",    "4.00H",  "https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NFeAutorizacao4" }, ;
+   { "PR",    "4.00H",  "https://homologacao.nfe.sefa.pr.gov.br/nfe/NFeAutorizacao4" }, ;
+   { "RS",    "4.00H",  "https://nfe-homologacao.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
+   { "SP",    "4.00H",  "https://homologacao.nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" }, ;
+   { "SVAN",  "4.00H",  "https://hom.sefazvirtual.fazenda.gov.br/NFeAutorizacao4/NFeAutorizacao4.asmx" }, ;
+   { "SVCAN", "4.00H",  "https://hom.svc.fazenda.gov.br/NFeAutorizacao4/NFeAutorizacao4.asmx" }, ;
+   { "SVCRS", "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
+   { "SVRS",  "4.00H",  "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
+   ;
+   { "AM",    "4.00HC", "https://homnfe.sefaz.am.gov.br/services2/services/NfeAutorizacao4" }, ;
+   { "MS",    "4.00HC", "https://hom.nfce.sefaz.ms.gov.br/ws/NFeAutorizacao4" }, ;
+   { "PR",    "4.00HC", "https://homologacao.nfce.sefa.pr.gov.br/nfce/NFeAutorizacao4" }, ;
+   { "RS",    "4.00HC", "https://nfce-homologacao.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
+   { "SP",    "4.00HC", "https://homologacao.nfce.fazenda.sp.gov.br/ws/NFeAutorizacao4.asmx" }, ;
+   { "SVRS",  "4.00HC", "https://nfce-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
+   ;
+   { "AM",    "4.00P",  "https://nfe.sefaz.am.gov.br/services2/services/NfeAutorizacao4" }, ;
+   { "BA",    "4.00P",  "https://nfe.sefaz.ba.gov.br/webservices/NFeAutorizacao4/NFeAutorizacao4.asmx" }, ;
+   { "CE",    "4.00P",  "https://nfe.sefaz.ce.gov.br/nfe4/services/NFeAutorizacao4" }, ;
+   { "GO",    "4.00P",  "https://nfe.sefaz.go.gov.br/nfe/services/NFeAutorizacao4" }, ;
+   { "MG",    "4.00P",  "https://nfe.fazenda.mg.gov.br/nfe2/services/NFeAutorizacao4" }, ;
+   { "MS",    "4.00P",  "https://nfe.sefaz.ms.gov.br/ws/NFeAutorizacao4" }, ;
+   { "MT",    "4.00P",  "https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeAutorizacao4" }, ;
+   { "PE",    "4.00P",  "https://nfe.sefaz.pe.gov.br/nfe-service/services/NFeAutorizacao4" }, ;
+   { "PR",    "4.00P",  "https://nfe.sefa.pr.gov.br/nfe/NFeAutorizacao4" }, ;
+   { "RS",    "4.00P",  "https://nfe.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
+   { "SP",    "4.00P",  "https://nfe.fazenda.sp.gov.br/ws/nfeautorizacao4.asmx" }, ;
+   { "SVAN",  "4.00P",  "https://www.sefazvirtual.fazenda.gov.br/NFeAutorizacao4/NFeAutorizacao4.asmx" }, ;
+   { "SVCAN", "4.00P",  "https://www.svc.fazenda.gov.br/NFeAutorizacao4/NFeAutorizacao4.asmx" }, ;
+   { "SVCRS", "4.00P",  "https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
+   { "SVRS",  "4.00P",  "https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
+   ;
+   { "AM",    "4.00PC", "https://nfce.sefaz.am.gov.br/nfce-services/services/NfeAutorizacao4" }, ;
+   { "MS",    "4.00PC", "https://nfce.sefaz.ms.gov.br/ws/NFeAutorizacao4" }, ;
+   { "MT",    "4.00PC", "https://nfce.sefaz.mt.gov.br/nfcews/services/NfeAutorizacao4" }, ;
+   { "PR",    "4.00PC", "https://nfce.sefa.pr.gov.br/nfce/NFeAutorizacao4" }, ;
+   { "RS",    "4.00PC", "https://nfce.sefazrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
+   { "SP",    "4.00PC", "https://nfce.fazenda.sp.gov.br/ws/NFeAutorizacao4.asmx" }, ;
+   { "SVRS",  "4.00PC", "https://nfce.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx" }, ;
+   { "MG",    "4.00PC", "https://nfce.fazenda.mg.gov.br/nfce/services/NFeAutorizacao4" } }

@@ -4,7 +4,7 @@ FUNCTION ze_sefaz_BPeProtocolo( Self, cChave, cCertificado, cAmbiente )
 
    hb_Default( @::cVersao, WS_BPE_DEFAULT )
    ::cProjeto := WS_PROJETO_BPE
-   ::aSoapUrlList := WS_BPE_CONSULTAPROTOCOLO
+   ::aSoapUrlList := SoapList()
    ::Setup( cChave, cCertificado, cAmbiente )
    ::cSoapAction  := "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP/BpeConsulta"
 
@@ -24,4 +24,15 @@ FUNCTION ze_sefaz_BPeProtocolo( Self, cChave, cCertificado, cAmbiente )
    ENDIF
 
    RETURN ::cXmlRetorno
+
+STATIC FUNCTION SoapList()
+
+   RETURN { ;
+   ;
+   { "MG",   "1.00P", "https://bpe.fazenda.mg.gov.br/bpe/services/BPeConsulta" }, ;
+   { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
+   { "PR",   "1.00P", "https://bpe.fazenda.pr.gov.br/bpe/BpeConsulta" }, ;
+   { "SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ms/bpeConsulta.asmx" }, ;
+   ;
+   { "MS",   "1.00H", "https://homologacao.bpe.ms.gov.br/ws/BPeConsulta" } }
 

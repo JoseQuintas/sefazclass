@@ -8,7 +8,7 @@ FUNCTION ze_sefaz_NFeDestinadas( Self, cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cC
    hb_Default( @cIndNFe, "0" )
    hb_Default( @cIndEmi, "0" )
 
-   ::aSoapUrlList := WS_NFE_CONSULTADEST
+   ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest/nfeConsultaNFDest"
 
@@ -24,4 +24,13 @@ FUNCTION ze_sefaz_NFeDestinadas( Self, cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cC
    ::XmlSoapPost()
 
    RETURN ::cXmlRetorno
+
+STATIC FUNCTION SoapList()
+
+   RETURN { ;
+   ;
+   { "RS",   "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx" }, ;
+   { "AN",   "3.10P", "https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx" }, ;
+   ;
+   { "RS",   "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx" } }
 

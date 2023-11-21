@@ -8,7 +8,7 @@ FUNCTION ze_sefaz_MDFeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCert
    hb_Default( @nSequencia, 1 )
    ::cProjeto := WS_PROJETO_MDFE
 
-   ::aSoapUrlList := WS_MDFE_EVENTO
+   ::aSoapUrlList := SoapList()
    ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento/mdfeRecepcaoEvento"
    ::Setup( cChave, cCertificado, cAmbiente )
    cCnpj := DfeEmitente( cChave )
@@ -32,4 +32,13 @@ FUNCTION ze_sefaz_MDFeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCert
    ENDIF
 
    RETURN ::cXmlRetorno
+
+STATIC FUNCTION SoapList()
+
+RETURN { ;
+   ;
+   { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" }, ;
+   ;
+   { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRecepcaoEvento/MDFeRecepcaoEvento.asmx" } }
+
 

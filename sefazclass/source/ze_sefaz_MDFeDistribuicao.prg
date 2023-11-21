@@ -7,7 +7,7 @@ FUNCTION ze_sefaz_MDFeDistribuicao( Self, cCnpj, cUltNSU, cNSU, cUF, cCertificad
    hb_Default( @cNSU, "" )
    ::cProjeto := WS_PROJETO_MDFE
 
-   ::aSoapUrlList := WS_MDFE_DISTRIBUICAO
+   ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
    ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe/mdfeDistDFeInteresse"
 
@@ -33,3 +33,10 @@ FUNCTION ze_sefaz_MDFeDistribuicao( Self, cCnpj, cUltNSU, cNSU, cUF, cCertificad
    // schema = schemma de validação do XML anexado ex. procMDFe_v1.00.xsd, procEventoMDFe_V1.00.xsd
 
    RETURN NIL
+
+STATIC FUNCTION SoapList()
+
+RETURN { ;
+   ;
+   { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/WS/MDFeDistribuicaoDFe/MDFeDistribuicaoDFe.asmx" } }
+
