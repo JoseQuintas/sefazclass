@@ -44,6 +44,9 @@
 
 #define WS_CTE_QRCODE { ;
    ;
+
+#define WS_CTE_QRCODE { ;
+   ;
    { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" }, ;
    { "PR",   "3.00P", "http://www.fazenda.pr.gov.br/cte/qrcode" }, ;
    { "MS",   "3.00P", "http://www.dfe.ms.gov.br/cte/qrcode" }, ;
@@ -65,8 +68,10 @@
    { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" }, ;
    ;
    { "SP", "4.00P", "https://nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" }, ;
+   { "PR", "4.00P", "http://www.fazenda.pr.gov.br/cte/qrcode" }, ;
    ;
-   { "SP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" } }
+   { "SP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeConsulta/qrCode" }, ;
+   { "PR", "4.00H", "http://www.fazenda.pr.gov.br/cte/qrcode" } }
 
 #define WS_MDFE_QRCODE { ;
    ;
