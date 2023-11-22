@@ -551,52 +551,6 @@ METHOD QuadroDestinatario() CLASS hbNFeDaNFe
 
    RETURN NIL
 
-METHOD QuadroLocalRetirada() CLASS hbNFeDaNFe
-
-   ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "INFORMAÇÕES DO LOCAL DE RETIRADA", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
-   ::nLinhaPdf -= 6
-   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 485, 16, "NOME / RAZÃO SOCIAL", ::aRetirada[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-   IF ! Empty( ::aDest[ "CNPJ" ] )
-      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aRetirada[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
-   ELSEIF ! Empty( ::aDest[ "CPF" ] )
-      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aRetirada[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ENDIF
-   ::nLinhaPdf -= 16
-   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 335, 16, "ENDEREÇO", ::aRetirada[ "xLgr" ] + " " + ::aRetirada[ "nro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawBoxTituloTexto( 340, ::nLinhaPdf, 190, 16, "BAIRRO", ::aRetirada[ "xBairro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-   ::DrawBoxTituloTexto( 530, ::nLinhaPdf, 60, 16, "C.E.P.", Transform( ::aRetirada[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ::nLinhaPdf -= 16
-   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 315, 16, "MUNICIPIO", ::aRetirada[ "xMun" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-   ::DrawBoxTituloTexto( 320, ::nLinhaPdf, 30, 16, "ESTADO", ::aRetirada[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ::DrawBoxTituloTexto( 350, ::nLinhaPdf, 150, 16, "FONE/FAX", ::FormataTelefone( ::aRetirada[ "fone" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ::DrawBoxTituloTexto( 500, ::nLinhaPdf, 90, 16, "INSCRIÇÃO ESTADUAL", ::aRetirada[ "IE" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ::nLinhaPdf -= 17
-
-   RETURN NIL
-
-METHOD QuadroLocalEntrega() CLASS hbNFeDaNFe
-
-   ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "INFORMAÇÕES DO LOCAL DE ENTREGA", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
-   ::nLinhaPdf -= 6
-   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 485, 16, "NOME / RAZÃO SOCIAL", ::aEntrega[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-   IF ! Empty( ::aDest[ "CNPJ" ] )
-      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aEntrega[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
-   ELSEIF ! Empty( ::aDest[ "CPF" ] )
-      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aEntrega[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ENDIF
-   ::nLinhaPdf -= 16
-   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 335, 16, "ENDEREÇO", ::aEntrega[ "xLgr" ] + " " + ::aEntrega[ "nro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-   ::DrawBoxTituloTexto( 340, ::nLinhaPdf, 190, 16, "BAIRRO", ::aEntrega[ "xBairro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-   ::DrawBoxTituloTexto( 530, ::nLinhaPdf, 60, 16, "C.E.P.", Transform( ::aEntrega[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ::nLinhaPdf -= 16
-   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 315, 16, "MUNICIPIO", ::aEntrega[ "xMun" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-   ::DrawBoxTituloTexto( 320, ::nLinhaPdf, 30, 16, "ESTADO", ::aEntrega[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ::DrawBoxTituloTexto( 350, ::nLinhaPdf, 150, 16, "FONE/FAX", ::FormataTelefone( ::aEntrega[ "fone" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ::DrawBoxTituloTexto( 500, ::nLinhaPdf, 90, 16, "INSCRIÇÃO ESTADUAL", ::aEntrega[ "IE" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ::nLinhaPdf -= 17
-
-   RETURN NIL
-
 METHOD QuadroDuplicatas() CLASS hbNFeDaNFe
 
    LOCAL nICob, nItensCob, nLinhaFinalCob, nTamanhoCob, aList, cTPag, nPos
@@ -1227,5 +1181,51 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       CASE nTentativa == 4 ; ::aLayout[ LAYOUT_SUBVAL, LAYOUT_IMPRIME ]   := LAYOUT_NAOIMPRIME
       ENDCASE
    NEXT
+
+   RETURN NIL
+
+METHOD QuadroLocalRetirada() CLASS hbNFeDaNFe
+
+   ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "INFORMAÇÕES DO LOCAL DE RETIRADA", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
+   ::nLinhaPdf -= 6
+   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 485, 16, "NOME / RAZÃO SOCIAL", ::aRetirada[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   IF ! Empty( ::aDest[ "CNPJ" ] )
+      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aRetirada[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
+   ELSEIF ! Empty( ::aDest[ "CPF" ] )
+      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aRetirada[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+   ENDIF
+   ::nLinhaPdf -= 16
+   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 335, 16, "ENDEREÇO", ::aRetirada[ "xLgr" ] + " " + ::aRetirada[ "nro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
+   ::DrawBoxTituloTexto( 340, ::nLinhaPdf, 190, 16, "BAIRRO", ::aRetirada[ "xBairro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 530, ::nLinhaPdf, 60, 16, "C.E.P.", Transform( ::aRetirada[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+   ::nLinhaPdf -= 16
+   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 315, 16, "MUNICIPIO", ::aRetirada[ "xMun" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 320, ::nLinhaPdf, 30, 16, "ESTADO", ::aRetirada[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 350, ::nLinhaPdf, 150, 16, "FONE/FAX", ::FormataTelefone( ::aRetirada[ "fone" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 500, ::nLinhaPdf, 90, 16, "INSCRIÇÃO ESTADUAL", ::aRetirada[ "IE" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+   ::nLinhaPdf -= 17
+
+   RETURN NIL
+
+METHOD QuadroLocalEntrega() CLASS hbNFeDaNFe
+
+   ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "INFORMAÇÕES DO LOCAL DE ENTREGA", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
+   ::nLinhaPdf -= 6
+   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 485, 16, "NOME / RAZÃO SOCIAL", ::aEntrega[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   IF ! Empty( ::aDest[ "CNPJ" ] )
+      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aEntrega[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
+   ELSEIF ! Empty( ::aDest[ "CPF" ] )
+      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aEntrega[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+   ENDIF
+   ::nLinhaPdf -= 16
+   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 335, 16, "ENDEREÇO", ::aEntrega[ "xLgr" ] + " " + ::aEntrega[ "nro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
+   ::DrawBoxTituloTexto( 340, ::nLinhaPdf, 190, 16, "BAIRRO", ::aEntrega[ "xBairro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 530, ::nLinhaPdf, 60, 16, "C.E.P.", Transform( ::aEntrega[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+   ::nLinhaPdf -= 16
+   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 315, 16, "MUNICIPIO", ::aEntrega[ "xMun" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 320, ::nLinhaPdf, 30, 16, "ESTADO", ::aEntrega[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 350, ::nLinhaPdf, 150, 16, "FONE/FAX", ::FormataTelefone( ::aEntrega[ "fone" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 500, ::nLinhaPdf, 90, 16, "INSCRIÇÃO ESTADUAL", ::aEntrega[ "IE" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
+   ::nLinhaPdf -= 17
 
    RETURN NIL
