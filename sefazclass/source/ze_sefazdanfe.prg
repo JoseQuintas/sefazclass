@@ -177,11 +177,11 @@ METHOD Init() CLASS hbNFeDaNFe
    ::aLayout := Array( LAYOUT_TOTCOLUNAS )
    FOR EACH oElement IN ::aLayout
       oElement := Array(10)
-      oElement[ LAYOUT_IMPRIME ]      := LAYOUT_IMPRIMENORMAL
-      oElement[ LAYOUT_TITULO1 ]      := ""
-      oElement[ LAYOUT_TITULO2 ]      := ""
-      oElement[ LAYOUT_CONTEUDO ]     := { || "" }
-      oElement[ LAYOUT_LARGURAPDF ]   := 1
+      oElement[ LAYOUT_IMPRIME ]    := LAYOUT_IMPRIMENORMAL
+      oElement[ LAYOUT_TITULO1 ]    := ""
+      oElement[ LAYOUT_TITULO2 ]    := ""
+      oElement[ LAYOUT_CONTEUDO ]   := { || "" }
+      oElement[ LAYOUT_LARGURAPDF ] := 1
    NEXT
    ::aLayout[ LAYOUT_DESCONTO,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
    ::aLayout[ LAYOUT_SUBBAS,     LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
@@ -189,9 +189,9 @@ METHOD Init() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_IPIVAL,     LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
    ::aLayout[ LAYOUT_IPIALI,     LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
    ::aLayout[ LAYOUT_EAN,        LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
-   ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
 
    RETURN SELF
 
@@ -805,27 +805,27 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
       IF ::nLinhaFolha + MLCount( ::aItem[ "xProd" ], 1000 ) + MLCount( ::aItem[ "infAdProd" ], 1000 ) > ::ItensDaFolha()
          ::saltaPagina()
       ENDIF
-      ::DrawTextoProduto( LAYOUT_CODIGO,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
-      ::DrawTextoProduto( LAYOUT_DESCRICAO, ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_LEFT )
-      ::DrawTextoProduto( LAYOUT_NCM,       ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
-      ::DrawTextoProduto( LAYOUT_EAN,       ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
-      ::DrawTextoProduto( LAYOUT_CST,       ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
-      ::DrawTextoProduto( LAYOUT_CFOP,      ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
-      ::DrawTextoProduto( LAYOUT_UNIDADE,   ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
-      ::DrawTextoProduto( LAYOUT_QTD,       ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_UNITARIO,  ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_TOTAL,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_DESCONTO,  ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_ICMBAS,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_ICMVAL,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_SUBBAS,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_SUBVAL,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_IPIVAL,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_ICMALI,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_IPIALI,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_UN_TRIB,   ::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_QTD_TRIB,  ::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_VALOR_TRIB,::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_CODIGO,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
+      ::DrawTextoProduto( LAYOUT_DESCRICAO,  ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_LEFT )
+      ::DrawTextoProduto( LAYOUT_NCM,        ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
+      ::DrawTextoProduto( LAYOUT_EAN,        ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
+      ::DrawTextoProduto( LAYOUT_CST,        ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
+      ::DrawTextoProduto( LAYOUT_CFOP,       ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
+      ::DrawTextoProduto( LAYOUT_UNIDADE,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
+      ::DrawTextoProduto( LAYOUT_QTD,        ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_UNITARIO,   ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_TOTAL,      ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_DESCONTO,   ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_ICMBAS,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_ICMVAL,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_SUBBAS,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_SUBVAL,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_IPIVAL,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_ICMALI,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_IPIALI,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_UN_TRIB,    ::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_QTD_TRIB,   ::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_VALOR_TRIB, ::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
       ::nLinhaPdf -= LAYOUT_FONTSIZE
       nItem++
       ::nLinhaFolha++
@@ -1069,67 +1069,67 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
    LOCAL oElement, nItem, nCont, nColunaFinal, nTentativa
 
    ::ProcessaItens( ::cXml, 1 ) // precisa de ::aItem pra gerar o codeblock
-   ::aLayout[ LAYOUT_CODIGO,    LAYOUT_TITULO1 ]   := "CÓDIGO"
-   ::aLayout[ LAYOUT_CODIGO,    LAYOUT_CONTEUDO ]  := { || ::aItem[ "cProd" ] }
-   ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_TITULO1 ]   := "DESCRIÇÃO DO PRODUTO / SERVIÇO"
-   ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_CONTEUDO ]  := { || MemoLine( ::aItem[ "xProd" ], ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURA ], 1 ) }
-   ::aLayout[ LAYOUT_NCM,       LAYOUT_TITULO1 ]   := "NCM/SH"
-   ::aLayout[ LAYOUT_NCM,       LAYOUT_CONTEUDO ]  := { || ::aItem[ "NCM" ] }
-   ::aLayout[ LAYOUT_EAN,       LAYOUT_TITULO1 ]   := "EAN"
-   ::aLayout[ LAYOUT_EAN,       LAYOUT_CONTEUDO ]  := { || ::aItem[ "cEAN" ] }
-   ::aLayout[ LAYOUT_CST,       LAYOUT_TITULO1 ]   := "CST"
-   ::aLayout[ LAYOUT_CST,       LAYOUT_TITULO2 ]   := "CSOSN"
-   ::aLayout[ LAYOUT_CST,       LAYOUT_CONTEUDO ]  := { || ::aItemICMS[ "orig" ] + ::aItemICMS[ "CSOSN" ] + ::aItemICMS[ "CST" ] }
-   ::aLayout[ LAYOUT_CFOP,      LAYOUT_TITULO1 ]   := "CFOP"
-   ::aLayout[ LAYOUT_CFOP,      LAYOUT_CONTEUDO ]  := { || ::aItem[ "CFOP" ] }
-   ::aLayout[ LAYOUT_UNIDADE,   LAYOUT_TITULO1 ]   := "UNID"
-   ::aLayout[ LAYOUT_UNIDADE,   LAYOUT_CONTEUDO ]  := { || ::aItem[ "uCom" ] }
-   ::aLayout[ LAYOUT_QTD,       LAYOUT_TITULO1 ]   := "QUANT"
-   ::aLayout[ LAYOUT_QTD,       LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "qCom" ] ), 15, ::aLayout[ LAYOUT_QTD, LAYOUT_DECIMAIS ] ) ) }
-   ::aLayout[ LAYOUT_UNITARIO,  LAYOUT_TITULO1 ]   := "VALOR"
-   ::aLayout[ LAYOUT_UNITARIO,  LAYOUT_TITULO2 ]   := "UNITÁRIO"
-   ::aLayout[ LAYOUT_UNITARIO,  LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "vUnCom" ] ), 15, ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] ) ) }
-   ::aLayout[ LAYOUT_TOTAL,     LAYOUT_TITULO1 ]   := "VALOR"
-   ::aLayout[ LAYOUT_TOTAL,     LAYOUT_TITULO2 ]   := "TOTAL"
-   ::aLayout[ LAYOUT_TOTAL,     LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "vProd" ] ), 15, 2 ) ) }
-   ::aLayout[ LAYOUT_DESCONTO,  LAYOUT_TITULO1 ]   := "VALOR"
-   ::aLayout[ LAYOUT_DESCONTO,  LAYOUT_TITULO2 ]   := "DESCTO"
-   ::aLayout[ LAYOUT_DESCONTO,  LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "vDesc" ] ), 15, 2 ) ) }
-   ::aLayout[ LAYOUT_ICMBAS,    LAYOUT_TITULO1 ]   := "B.CÁLC."
-   ::aLayout[ LAYOUT_ICMBAS,    LAYOUT_TITULO2 ]   := "ICMS"
-   ::aLayout[ LAYOUT_ICMBAS,    LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemICMS[ "vBC" ] ), 15, 2 ) ) }
-   ::aLayout[ LAYOUT_ICMVAL,    LAYOUT_TITULO1 ]   := "VALOR"
-   ::aLayout[ LAYOUT_ICMVAL,    LAYOUT_TITULO2 ]   := "ICMS"
-   ::aLayout[ LAYOUT_ICMVAL,    LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemICMS[ "vICMS" ] ), 15, 2 ) ) }
-   ::aLayout[ LAYOUT_SUBBAS,    LAYOUT_TITULO1 ]   := "B.CÁLC."
-   ::aLayout[ LAYOUT_SUBBAS,    LAYOUT_TITULO2 ]   := "ICMS ST"
-   ::aLayout[ LAYOUT_SUBBAS,    LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemICMS[ "vBCST" ] ), 15, 2 ) ) }
-   ::aLayout[ LAYOUT_SUBVAL,    LAYOUT_TITULO1 ]   := "VALOR"
-   ::aLayout[ LAYOUT_SUBVAL,    LAYOUT_TITULO2 ]   := "ICMS ST"
-   ::aLayout[ LAYOUT_SUBVAL,    LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemICMS[ "vICMSST" ] ), 15, 2 ) ) }
-   ::aLayout[ LAYOUT_IPIVAL,    LAYOUT_TITULO1 ]   := "VALOR"
-   ::aLayout[ LAYOUT_IPIVAL,    LAYOUT_TITULO2 ]   := "IPI"
-   ::aLayout[ LAYOUT_IPIVAL,    LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemIPI[ "vIPI" ] ), 15, 2 ) ) }
-   ::aLayout[ LAYOUT_ICMALI,    LAYOUT_TITULO1 ]   := "ALÍQ"
-   ::aLayout[ LAYOUT_ICMALI,    LAYOUT_TITULO2 ]   := "ICMS"
-   ::aLayout[ LAYOUT_ICMALI,    LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemICMS[ "pICMS" ] ), 15, 2 ) ) }
-   ::aLayout[ LAYOUT_IPIALI,    LAYOUT_TITULO1 ]   := "ALÍQ"
-   ::aLayout[ LAYOUT_IPIALI,    LAYOUT_TITULO2 ]   := "IPI"
-   ::aLayout[ LAYOUT_IPIALI,    LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemIPI[ "pIPI" ] ), 15, 2 ) ) }
-   ::aLayout[ LAYOUT_UN_TRIB,   LAYOUT_TITULO1 ]   := "UN"
-   ::aLayout[ LAYOUT_UN_TRIB,   LAYOUT_TITULO2 ]   := "TRIB"
-   ::aLayout[ LAYOUT_UN_TRIB,   LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "uTrib" ] ), 15, 2 ) ) }
-   ::aLayout[ LAYOUT_QTD_TRIB,  LAYOUT_TITULO1 ]   := "QTDE"
-   ::aLayout[ LAYOUT_QTD_TRIB,  LAYOUT_TITULO2 ]   := "TRIB"
-   ::aLayout[ LAYOUT_QTD_TRIB,  LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "qTrib" ] ), 15, ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] ) ) }
+   ::aLayout[ LAYOUT_CODIGO,     LAYOUT_TITULO1 ]   := "CÓDIGO"
+   ::aLayout[ LAYOUT_CODIGO,     LAYOUT_CONTEUDO ]  := { || ::aItem[ "cProd" ] }
+   ::aLayout[ LAYOUT_DESCRICAO,  LAYOUT_TITULO1 ]   := "DESCRIÇÃO DO PRODUTO / SERVIÇO"
+   ::aLayout[ LAYOUT_DESCRICAO,  LAYOUT_CONTEUDO ]  := { || MemoLine( ::aItem[ "xProd" ], ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURA ], 1 ) }
+   ::aLayout[ LAYOUT_NCM,        LAYOUT_TITULO1 ]   := "NCM/SH"
+   ::aLayout[ LAYOUT_NCM,        LAYOUT_CONTEUDO ]  := { || ::aItem[ "NCM" ] }
+   ::aLayout[ LAYOUT_EAN,        LAYOUT_TITULO1 ]   := "EAN"
+   ::aLayout[ LAYOUT_EAN,        LAYOUT_CONTEUDO ]  := { || ::aItem[ "cEAN" ] }
+   ::aLayout[ LAYOUT_CST,        LAYOUT_TITULO1 ]   := "CST"
+   ::aLayout[ LAYOUT_CST,        LAYOUT_TITULO2 ]   := "CSOSN"
+   ::aLayout[ LAYOUT_CST,        LAYOUT_CONTEUDO ]  := { || ::aItemICMS[ "orig" ] + ::aItemICMS[ "CSOSN" ] + ::aItemICMS[ "CST" ] }
+   ::aLayout[ LAYOUT_CFOP,       LAYOUT_TITULO1 ]   := "CFOP"
+   ::aLayout[ LAYOUT_CFOP,       LAYOUT_CONTEUDO ]  := { || ::aItem[ "CFOP" ] }
+   ::aLayout[ LAYOUT_UNIDADE,    LAYOUT_TITULO1 ]   := "UNID"
+   ::aLayout[ LAYOUT_UNIDADE,    LAYOUT_CONTEUDO ]  := { || ::aItem[ "uCom" ] }
+   ::aLayout[ LAYOUT_QTD,        LAYOUT_TITULO1 ]   := "QUANT"
+   ::aLayout[ LAYOUT_QTD,        LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "qCom" ] ), 15, ::aLayout[ LAYOUT_QTD, LAYOUT_DECIMAIS ] ) ) }
+   ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_TITULO1 ]   := "VALOR"
+   ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_TITULO2 ]   := "UNITÁRIO"
+   ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "vUnCom" ] ), 15, ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] ) ) }
+   ::aLayout[ LAYOUT_TOTAL,      LAYOUT_TITULO1 ]   := "VALOR"
+   ::aLayout[ LAYOUT_TOTAL,      LAYOUT_TITULO2 ]   := "TOTAL"
+   ::aLayout[ LAYOUT_TOTAL,      LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "vProd" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_DESCONTO,   LAYOUT_TITULO1 ]   := "VALOR"
+   ::aLayout[ LAYOUT_DESCONTO,   LAYOUT_TITULO2 ]   := "DESCTO"
+   ::aLayout[ LAYOUT_DESCONTO,   LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "vDesc" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_ICMBAS,     LAYOUT_TITULO1 ]   := "B.CÁLC."
+   ::aLayout[ LAYOUT_ICMBAS,     LAYOUT_TITULO2 ]   := "ICMS"
+   ::aLayout[ LAYOUT_ICMBAS,     LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemICMS[ "vBC" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_ICMVAL,     LAYOUT_TITULO1 ]   := "VALOR"
+   ::aLayout[ LAYOUT_ICMVAL,     LAYOUT_TITULO2 ]   := "ICMS"
+   ::aLayout[ LAYOUT_ICMVAL,     LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemICMS[ "vICMS" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_SUBBAS,     LAYOUT_TITULO1 ]   := "B.CÁLC."
+   ::aLayout[ LAYOUT_SUBBAS,     LAYOUT_TITULO2 ]   := "ICMS ST"
+   ::aLayout[ LAYOUT_SUBBAS,     LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemICMS[ "vBCST" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_SUBVAL,     LAYOUT_TITULO1 ]   := "VALOR"
+   ::aLayout[ LAYOUT_SUBVAL,     LAYOUT_TITULO2 ]   := "ICMS ST"
+   ::aLayout[ LAYOUT_SUBVAL,     LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemICMS[ "vICMSST" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_IPIVAL,     LAYOUT_TITULO1 ]   := "VALOR"
+   ::aLayout[ LAYOUT_IPIVAL,     LAYOUT_TITULO2 ]   := "IPI"
+   ::aLayout[ LAYOUT_IPIVAL,     LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemIPI[ "vIPI" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_ICMALI,     LAYOUT_TITULO1 ]   := "ALÍQ"
+   ::aLayout[ LAYOUT_ICMALI,     LAYOUT_TITULO2 ]   := "ICMS"
+   ::aLayout[ LAYOUT_ICMALI,     LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemICMS[ "pICMS" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_IPIALI,     LAYOUT_TITULO1 ]   := "ALÍQ"
+   ::aLayout[ LAYOUT_IPIALI,     LAYOUT_TITULO2 ]   := "IPI"
+   ::aLayout[ LAYOUT_IPIALI,     LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemIPI[ "pIPI" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_TITULO1 ]   := "UN"
+   ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_TITULO2 ]   := "TRIB"
+   ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "uTrib" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_TITULO1 ]   := "QTDE"
+   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_TITULO2 ]   := "TRIB"
+   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "qTrib" ] ), 15, ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] ) ) }
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_TITULO1 ]  := "VALOR"
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_TITULO2 ]  := "TRIB"
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_CONTEUDO ] := { || AllTrim( FormatNumber( Val( ::aItem[ "vUnTrib" ] ), 15, ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_DECIMAIS ] ) ) }
 
    // Define decimais default, mas será ajustado conforme conteúdo do XML
-   ::aLayout[ LAYOUT_QTD, LAYOUT_DECIMAIS ]      := 0
-   ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] := 2
-   ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ]  := 0
+   ::aLayout[ LAYOUT_QTD,        LAYOUT_DECIMAIS ]      := 0
+   ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_DECIMAIS ] := 2
+   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_DECIMAIS ]  := 0
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_DECIMAIS ] := 2
    FOR EACH oElement IN ::aLayout
       oElement[ LAYOUT_LARGURA ] := Max( Len( oElement[ LAYOUT_TITULO1 ] ), Len( oElement[ LAYOUT_TITULO2 ] ) )
