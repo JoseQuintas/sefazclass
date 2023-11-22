@@ -883,7 +883,7 @@ METHOD QuadroDadosAdicionais() CLASS hbNFeDaNFe
 
 METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
 
-   LOCAL cItem, aItem
+   LOCAL cItem, aItem, cDetalhamentoArma
 
    aItem := MultipleNodeToArray( cXml, "det" )
    IF Len( aItem ) < nItem
@@ -915,15 +915,15 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
       ::aItemCOFINS    := XmlToHash( XmlNode( cItem, "COFINS" ), { "CST", "vBC", "pCOFINS", "vCOFINS", "qBCProd", "vAliqProd" } )
       ::aItemCOFINSST  := XmlToHash( XmlNode( cItem, "COFINSST" ), { "vBC", "pCOFINS", "vCOFINS", "qBCProd", "vAliqProd" } )
       ::aItemISSQN     := XmlToHash( XmlNode( cItem, "ISSQN" ), { "vBC", "vAliq", "vISSQN", "cMunFG", "cListServ", "cSitTrib" } )
-      IF ! Empty( ::aItemArma[ "nSerie" ]
-         cDetalhamentoArma := 'TIPO DA ARMA: ' + ::aItemArma["tpArma"] + IIf( Val( ::aItemArma["tpArma"] ) == 0, '-Uso Permitido', '-Uso Restrito' ) + hb_Eol()
+      IF ! Empty( ::aItemArma[ "nSerie" ] )
+         cDetalhamentoArma := 'TIPO DA ARMA: ' + ::aItemArma["tpArma"] + iif( Val( ::aItemArma["tpArma"] ) == 0, '-Uso Permitido', '-Uso Restrito' ) + hb_Eol()
          cDetalhamentoArma += 'Nº SERIE ARMA: ' + ::aItemArma["nSerie"] + hb_Eol()
          cDetalhamentoArma += 'Nº SERIE CANO: ' + ::aItemArma["nCano"] + hb_Eol()
          cDetalhamentoArma += 'DESCRICAO ARMA: ' + ::aItemArma["descr"] + hb_Eol()
       ELSE
          cDetalhamentoArma := ''
       ENDIF
-      ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ], ";", Chr( 13 ) + Chr( 10 ) )
+      ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ], ";", hb_Eol() )
    ENDIF
 
    RETURN .T.
