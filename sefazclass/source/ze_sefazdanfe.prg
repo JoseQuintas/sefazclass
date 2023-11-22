@@ -29,6 +29,7 @@ Os campos que podem ser colocados na mesma coluna são:
 #define LAYOUT_IMPRIMENORMAL   1
 #define LAYOUT_IMPRIMESEGUNDA  2
 #define LAYOUT_IMPRIMEXMLTEM   3
+#define LAYOUT_IMPRIME2XMLTEM  4
 
 #define LAYOUT_TITULO          1
 #define LAYOUT_LARGURA         2
@@ -58,6 +59,11 @@ Os campos que podem ser colocados na mesma coluna são:
 #define LAYOUT_IPIVAL          16
 #define LAYOUT_ICMALI          17
 #define LAYOUT_IPIALI          18
+#define LAYOUT_UN_TRIB         19
+#define LAYOUT_QTD_TRIB        20
+#define LAYOUT_VALOR_TRIB      21
+
+#define LAYOUT_TOTCOLUNAS      21
 
 #define LAYOUT_FONTSIZE      8
 
@@ -168,7 +174,7 @@ METHOD Init() CLASS hbNFeDaNFe
 
    LOCAL oElement
 
-   ::aLayout := Array(18)
+   ::aLayout := Array( LAYOUT_TOTCOLUNAS )
    FOR EACH oElement IN ::aLayout
       oElement := Array(10)
       oElement[ LAYOUT_IMPRIME ]      := LAYOUT_IMPRIMENORMAL
@@ -177,12 +183,15 @@ METHOD Init() CLASS hbNFeDaNFe
       oElement[ LAYOUT_CONTEUDO ]     := { || "" }
       oElement[ LAYOUT_LARGURAPDF ]   := 1
    NEXT
-   ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
-   ::aLayout[ LAYOUT_SUBBAS,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
-   ::aLayout[ LAYOUT_SUBVAL,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
-   ::aLayout[ LAYOUT_IPIVAL,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
-   ::aLayout[ LAYOUT_IPIALI,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
-   ::aLayout[ LAYOUT_EAN,      LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_DESCONTO,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_SUBBAS,     LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_SUBVAL,     LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_IPIVAL,     LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_IPIALI,     LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_EAN,        LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
 
    RETURN SELF
 
@@ -814,6 +823,9 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
       ::DrawTextoProduto( LAYOUT_IPIVAL,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
       ::DrawTextoProduto( LAYOUT_ICMALI,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
       ::DrawTextoProduto( LAYOUT_IPIALI,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_UN_TRIB,   ::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_QTD_TRIB,  ::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_VALOR_TRIB,::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
       ::nLinhaPdf -= LAYOUT_FONTSIZE
       nItem++
       ::nLinhaFolha++
@@ -1104,10 +1116,21 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_IPIALI,    LAYOUT_TITULO1 ]   := "ALÍQ"
    ::aLayout[ LAYOUT_IPIALI,    LAYOUT_TITULO2 ]   := "IPI"
    ::aLayout[ LAYOUT_IPIALI,    LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItemIPI[ "pIPI" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_UN_TRIB,   LAYOUT_TITULO1 ]   := "UN"
+   ::aLayout[ LAYOUT_UN_TRIB,   LAYOUT_TITULO2 ]   := "TRIB"
+   ::aLayout[ LAYOUT_UN_TRIB,   LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "uTrib" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_QTD_TRIB,  LAYOUT_TITULO1 ]   := "QTDE"
+   ::aLayout[ LAYOUT_QTD_TRIB,  LAYOUT_TITULO2 ]   := "TRIB"
+   ::aLayout[ LAYOUT_QTD_TRIB,  LAYOUT_CONTEUDO ]  := { || AllTrim( FormatNumber( Val( ::aItem[ "qTrib" ] ), 15, ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] ) ) }
+   ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_TITULO1 ]  := "VALOR"
+   ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_TITULO2 ]  := "TRIB"
+   ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_CONTEUDO ] := { || AllTrim( FormatNumber( Val( ::aItem[ "vUnTrib" ] ), 15, ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_DECIMAIS ] ) ) }
 
    // Define decimais default, mas será ajustado conforme conteúdo do XML
    ::aLayout[ LAYOUT_QTD, LAYOUT_DECIMAIS ]      := 0
    ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] := 2
+   ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ]  := 0
+   ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_DECIMAIS ] := 2
    FOR EACH oElement IN ::aLayout
       oElement[ LAYOUT_LARGURA ] := Max( Len( oElement[ LAYOUT_TITULO1 ] ), Len( oElement[ LAYOUT_TITULO2 ] ) )
    NEXT
@@ -1149,6 +1172,21 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
             ::aLayout[ LAYOUT_EAN, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
          ENDIF
       ENDIF
+      IF ! AllTrim( ::aItem[ "uCom" ] ) == Alltrim( ::aItem[ "uTrib" ] )
+         IF ::aLayout[ LAYOUT_UN_TRIB, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
+            ::aLayout[ LAYOUT_UN_TRIB, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         ENDIF
+      ENDIF
+      IF ! AllTrim( ::aItem[ "qCom" ] ) == Alltrim( ::aItem[ "qTrib" ] )
+         IF ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
+            ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         ENDIF
+      ENDIF
+      IF ! AllTrim( ::aItem[ "vUnCom" ] ) == Alltrim( ::aItem[ "vUnTrib" ] )
+         IF ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
+            ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         ENDIF
+      ENDIF
    ENDDO
    // Define tamanho de colunas
    FOR EACH oElement IN ::aLayout
@@ -1166,8 +1204,8 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
       AEval( ::aLayout, { | oElement | oElement[ LAYOUT_LARGURAPDF ] := iif( oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIMENORMAL, oElement[ LAYOUT_LARGURAPDF ], 0 ) } )
       // Calcula posição das colunas
       nColunaFinal := 592
-      ::aLayout[ LAYOUT_IPIALI,    LAYOUT_COLUNAPDF ]  := nColunaFinal - ::aLayout[ LAYOUT_IPIALI,   LAYOUT_LARGURAPDF ]
-      FOR nCont = Len( ::aLayout ) - 1 TO 3 STEP -1
+      ::aLayout[ LAYOUT_TOTCOLUNAS,    LAYOUT_COLUNAPDF ]  := nColunaFinal - ::aLayout[ LAYOUT_TOTCOLUNAS,   LAYOUT_LARGURAPDF ]
+      FOR nCont = LAYOUT_TOTCOLUNAS - 1 TO 3 STEP -1
          ::aLayout[ nCont, LAYOUT_COLUNAPDF ] := ::aLayout[ nCont + 1, LAYOUT_COLUNAPDF ] - ::aLayout[ nCont, LAYOUT_LARGURAPDF ]
       NEXT
       ::aLayout[ LAYOUT_CODIGO,    LAYOUT_COLUNAPDF ]  := 6
@@ -1181,7 +1219,7 @@ METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
       IF ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] > 150
          EXIT
       ENDIF
-      // Se não sobrar espaço pra descrição, desativa colnas
+      // Se não sobrar espaço pra descrição, desativa colunas
       DO CASE
       CASE nTentativa == 1 ; ::aLayout[ LAYOUT_EAN, LAYOUT_IMPRIME ]      := LAYOUT_NAOIMPRIME
       CASE nTentativa == 2 ; ::aLayout[ LAYOUT_SUBBAS, LAYOUT_IMPRIME ]   := LAYOUT_NAOIMPRIME

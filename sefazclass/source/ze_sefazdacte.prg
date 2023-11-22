@@ -330,17 +330,12 @@ METHOD GeraPDF( cFilePDF ) CLASS hbnfeDaCte
 
 METHOD NovaPagina() CLASS hbnfeDaCte
 
-   LOCAL nRadiano, nAngulo
-
    ::oPdfPage := HPDF_AddPage( ::oPdf )
    AAdd( ::aPDFPageList, ::oPDFPage )
 
    HPDF_Page_SetSize( ::oPdfPage, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT )
 
    ::nLinhaPdf := HPDF_Page_GetHeight( ::oPDFPage ) - 3     // Margem Superior
-   nAngulo := 45                   /* A rotation of 45 degrees. */
-
-   nRadiano := nAngulo / 180 * 3.141592 /* Calcurate the radian value. */
 
    IF ::aIde[ "tpAmb" ] = "2"
       ::DrawHomologacao()
