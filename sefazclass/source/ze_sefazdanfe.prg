@@ -89,11 +89,11 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    METHOD QuadroDadosAdicionais()
    METHOD ProcessaItens( cXml, nItem )
    METHOD CalculaLayout()
-   METHOD LinhasPraProduto( nFolha )
+   METHOD ItensDaFolha( nFolha )
    METHOD Init()
    METHOD DrawTextoProduto( nCampo, nRow, nConteudo, nAlign )
    METHOD DrawBoxProduto( nCampo, nRow, nHeight )
-   METHOD DefineColunasProdutos()
+   METHOD DefineColunasQuadroProdutos()
    METHOD SetDescontoOff()      INLINE ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
    METHOD SetSubBasOff()        INLINE ::aLayout[ LAYOUT_SUBBAS,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
    METHOD SetSubValOff()        INLINE ::aLayout[ LAYOUT_SUBVAL,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
@@ -371,7 +371,7 @@ METHOD SaltaPagina() CLASS hbNFeDaNFe
    ::QuadroCanhoto()
    ::QuadroNotaFiscal()
    ::QuadroProdutosTitulo()
-   nAlturaQuadroProdutos := ( ::LinhasPraProduto() * LAYOUT_FONTSIZE ) + 2
+   nAlturaQuadroProdutos := ( ::ItensDaFolha() * LAYOUT_FONTSIZE ) + 2
    nLinhaFinalProd       := ::nLinhaPdf - nAlturaQuadroProdutos
    ::QuadroProdutosDesenho( nLinhaFinalProd, nAlturaQuadroProdutos )
 
@@ -790,8 +790,8 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
 
    LOCAL nLinhaFinalProd, nAlturaQuadroProdutos, nItem, nNumLinha, nCont
 
-   nLinhaFinalProd := ::nLinhaPdf - ( ::LinhasPraProduto() * LAYOUT_FONTSIZE ) - 2
-   nAlturaQuadroProdutos := ( ::LinhasPraProduto() * LAYOUT_FONTSIZE ) + 2
+   nLinhaFinalProd := ::nLinhaPdf - ( ::ItensDaFolha() * LAYOUT_FONTSIZE ) - 2
+   nAlturaQuadroProdutos := ( ::ItensDaFolha() * LAYOUT_FONTSIZE ) + 2
    ::QuadroProdutosDesenho( nLinhaFinalProd, nAlturaQuadroProdutos )
 
    nItem := 1
@@ -802,7 +802,7 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
       ENDIF
       ::aItem[ "xProd" ]     := ::FormataMemo( ::aItem[ "xProd" ],     ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] - 2 )
       ::aItem[ "infAdProd" ] := ::FormataMemo( ::aItem[ "infAdProd" ], ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] - 2 )
-      IF ::nLinhaFolha + MLCount( ::aItem[ "xProd" ], 1000 ) + MLCount( ::aItem[ "infAdProd" ], 1000 ) > ::LinhasPraProduto()
+      IF ::nLinhaFolha + MLCount( ::aItem[ "xProd" ], 1000 ) + MLCount( ::aItem[ "infAdProd" ], 1000 ) > ::ItensDaFolha()
          ::saltaPagina()
       ENDIF
       ::DrawTextoProduto( LAYOUT_CODIGO,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
@@ -830,7 +830,7 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
       nItem++
       ::nLinhaFolha++
       FOR nNumLinha = 2 TO MLCount( ::aItem[ "xProd" ], 1000 )
-//         IF ::nLinhaFolha > ::LinhasPraProduto()
+//         IF ::nLinhaFolha > ::ItensDaFolha()
 //            ::saltaPagina()
 //         ENDIF
          ::DrawTextoProduto( LAYOUT_DESCRICAO, ::nLinhaPdf, MemoLine( ::aItem[ "xProd" ], 1000, nNumLinha ), HPDF_TALIGN_LEFT )
@@ -838,7 +838,7 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
          ::nLinhaPdf -= LAYOUT_FONTSIZE
       NEXT
       FOR nNumLinha = 1 TO MLCount( ::aItem[ "infAdProd" ], 1000 )
-//         IF ::nLinhaFolha > ::LinhasPraProduto()
+//         IF ::nLinhaFolha > ::ItensDaFolha()
 //            ::saltaPagina()
 //         ENDIF
          ::DrawTextoProduto( LAYOUT_DESCRICAO, ::nLinhaPdf, MemoLine( ::aItem[ "infAdProd" ], 1000, nNumLinha ), HPDF_TALIGN_LEFT )
@@ -849,7 +849,7 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
          ::nLinhaPdf -= LAYOUT_FONTSIZE
          ::nLinhaFolha++
       ENDIF
-      IF ::nLinhaFolha <= ::LinhasPraProduto() .AND. ! ::lLayoutEspacoDuplo
+      IF ::nLinhaFolha <= ::ItensDaFolha() .AND. ! ::lLayoutEspacoDuplo
          ::DrawLine( 5, ::nLinhaPdf - 0.5, 590, ::nLinhaPdf - 0.5, ::nLarguraBox )
       ENDIF
    ENDDO
@@ -860,7 +860,7 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
       ::nLinhaFolha++
       ::nLinhaPdf -= LAYOUT_FONTSIZE
       FOR nCont = Int( 78 / LAYOUT_FONTSIZE ) + 1 TO MLCount( ::aInfAdic[ "infCpl" ], 1000 )
-         IF ::nLinhaFolha > ::LinhasPraProduto()
+         IF ::nLinhaFolha > ::ItensDaFolha()
             ::SaltaPagina()
             ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "*CONTINUACAO INFORMAÇÕES COMPLEMENTARES*", HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
             ::nLinhaFolha++
@@ -871,7 +871,7 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
          ::nLinhaPdf -= LAYOUT_FONTSIZE
       NEXT
    ENDIF
-   ::nLinhaPdf -= ( ( ::LinhasPraProduto() - ::nLinhaFolha + 1 ) * LAYOUT_FONTSIZE )
+   ::nLinhaPdf -= ( ( ::ItensDaFolha() - ::nLinhaFolha + 1 ) * LAYOUT_FONTSIZE )
    ::nLinhaPdf -= 2
 
    RETURN NIL
@@ -968,7 +968,7 @@ METHOD CalculaLayout() CLASS hbNFeDaNFe
 
    LOCAL nItem, nQtdLinhas
 
-   ::DefineColunasProdutos()
+   ::DefineColunasQuadroProdutos()
    ::aInfAdic[ "infCpl" ] := ::FormataMemo( ::aInfAdic[ "infCpl" ], 392 )
    ::nLayoutTotalFolhas := 1
    nQtdLinhas := 0
@@ -981,7 +981,7 @@ METHOD CalculaLayout() CLASS hbNFeDaNFe
       IF Len( ::aItem[ "infAdProd" ] ) > 0
          ::aItem[ "infAdProd" ] := ::FormataMemo( ::aItem[ "infAdProd" ], ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] - 2 )
       ENDIF
-      IF nQtdLinhas + MLCount( ::aItem[ "xProd" ], 1000 ) + MLCount( ::aItem[ "infAdProd" ], 1000 ) > ::LinhasPraProduto( ::nLayoutTotalFolhas )
+      IF nQtdLinhas + MLCount( ::aItem[ "xProd" ], 1000 ) + MLCount( ::aItem[ "infAdProd" ], 1000 ) > ::ItensDaFolha( ::nLayoutTotalFolhas )
          ::nLayoutTotalFolhas += 1
          nQtdLinhas := 0
       ENDIF
@@ -999,13 +999,13 @@ METHOD CalculaLayout() CLASS hbNFeDaNFe
    IF MLCount( ::ainfAdic[ "infCpl" ], 1000 ) > Int( 78 / LAYOUT_FONTSIZE )
       nQtdLinhas += 2 + MLCount( ::ainfAdic[ "infCpl" ], 1000 ) - Int( 78 / LAYOUT_FONTSIZE )
    ENDIF
-   IF nQtdLinhas > ::LinhasPraProduto( ::nLayoutTotalFolhas )
+   IF nQtdLinhas > ::ItensDaFolha( ::nLayoutTotalFolhas )
       ::nLayoutTotalFolhas += 1
    ENDIF
 
    RETURN NIL
 
-METHOD LinhasPraProduto( nFolha ) CLASS hbNFeDaNFe
+METHOD ItensDaFolha( nFolha ) CLASS hbNFeDaNFe
 
    LOCAL nQuadro := 630, nParcelas
 
@@ -1064,7 +1064,7 @@ METHOD DrawBoxProduto( nCampo, nRow, nHeight ) CLASS hbNfeDaNFe
 
    RETURN NIL
 
-METHOD DefineColunasProdutos() CLASS hbNFeDaNFe
+METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
 
    LOCAL oElement, nItem, nCont, nColunaFinal, nTentativa
 
