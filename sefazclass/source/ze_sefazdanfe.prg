@@ -130,6 +130,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    VAR aItem
    VAR aItemDI
    VAR aItemAdi
+   Var aItemArma
    VAR aItemICMS
    VAR aItemICMSPart
    VAR aItemICMSST
@@ -234,7 +235,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    //ENDIF
    ::aEmit       := XmlToHash( XmlNode( ::cXml, "emit" ), { "CNPJ", "CPF", "xNome", "xFant", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", ;
       "fone", "IE", "IEST", "IM", "CNAE", "CRT", "fone" } )
-   ::aDest       := XmlToHash( XmlNode( ::cXml, "dest" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", "fone", "IE", "ISUF", "email" } )
+   ::aDest       := XmlToHash( XmlNode( ::cXml, "dest" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", "fone", "IE", "ISUF", "email", "idEstrangeiro" } )
    ::aRetirada   := XmlToHash( XmlNode( ::cXml, "retirada" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "CEP", "cMun", "xMun", "UF", "fone", "IE" } )
    ::aEntrega    := XmlToHash( XmlNode( ::cXml, "entrega" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "CEP", "cMun", "xMun", "UF", "fone", "IE" } )
    ::aICMSTotal  := XmlToHash( XmlNode( ::cXml, "ICMSTot" ), { "vBC", "vICMS", "vBCST", "vST", "vProd", "vFrete", "vSeg", "vDesc", "vII", "vIPI", "vPIS", "vCOFINS", "vOutro", "vNF" } )
@@ -777,9 +778,9 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
       ::DrawTextoProduto( LAYOUT_IPIVAL,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
       ::DrawTextoProduto( LAYOUT_ICMALI,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
       ::DrawTextoProduto( LAYOUT_IPIALI,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_UN_TRIB,    ::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_QTD_TRIB,   ::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
-      ::DrawTextoProduto( LAYOUT_VALOR_TRIB, ::nLinhaPDF, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_UN_TRIB,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_QTD_TRIB,   ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTextoProduto( LAYOUT_VALOR_TRIB, ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
       ::nLinhaPdf -= LAYOUT_FONTSIZE
       nItem++
       ::nLinhaFolha++
@@ -895,6 +896,7 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
       ::aItem[ "cEANTrib" ] := iif( ::aItem[ "cEANTrib" ] == "SEM GTIN", "", ::aItem[ "cEANTrib" ] )
       ::aItemDI        := XmlToHash( XmlNode( cItem, "DI" ), { "nDI", "dDI", "xLocDesemb", "UFDesemb", "cExportador" } )
       ::aItemAdi       := XmlToHash( XmlNode( cItem, "adi" ), { "nAdicao", "nSeqAdic", "cFabricante", "vDescDI", "xPed", "nItemPed" } )
+      ::aItemArma      := XmlToHash( XmlNode( cItem, "arma" ), { "tpArma", "nSerie", "nCano", "descr" } )
       // todo veiculos (veicProd), medicamentos (med), armamentos (arm), combustiveis (comb)
       ::aItemICMS      := XmlToHash( XmlNode( cItem, "ICMS" ), { "orig", "CST", "CSOSN", "vBCSTRet", "vICMSSTRet", "modBC", "pRedBC", "vBC", "pICMS", "vICMS", "motDesICMS", "modBCST", "pMVAST", "pRedBCST", "vBCST", "pICMSST", "vICMSST" } )
       ::aItemICMSPart  := XmlToHash( XmlNode( cItem, "ICMSPart" ), { "orig", "CST", "modBC", "pRedBC", "vBC", "pICMS", "vICMS", "modBCST", "pMVAST", "pRedBCST", "vBCST", "pICMSST", "vICMSST", "pBCOp", "UFST" } )
@@ -913,6 +915,14 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
       ::aItemCOFINS    := XmlToHash( XmlNode( cItem, "COFINS" ), { "CST", "vBC", "pCOFINS", "vCOFINS", "qBCProd", "vAliqProd" } )
       ::aItemCOFINSST  := XmlToHash( XmlNode( cItem, "COFINSST" ), { "vBC", "pCOFINS", "vCOFINS", "qBCProd", "vAliqProd" } )
       ::aItemISSQN     := XmlToHash( XmlNode( cItem, "ISSQN" ), { "vBC", "vAliq", "vISSQN", "cMunFG", "cListServ", "cSitTrib" } )
+      IF ! Empty( ::aItemArma[ "nSerie" ]
+         cDetalhamentoArma := 'TIPO DA ARMA: ' + ::aItemArma["tpArma"] + IIf( Val( ::aItemArma["tpArma"] ) == 0, '-Uso Permitido', '-Uso Restrito' ) + hb_Eol()
+         cDetalhamentoArma += 'Nº SERIE ARMA: ' + ::aItemArma["nSerie"] + hb_Eol()
+         cDetalhamentoArma += 'Nº SERIE CANO: ' + ::aItemArma["nCano"] + hb_Eol()
+         cDetalhamentoArma += 'DESCRICAO ARMA: ' + ::aItemArma["descr"] + hb_Eol()
+      ELSE
+         cDetalhamentoArma := ''
+      ENDIF
       ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ], ";", Chr( 13 ) + Chr( 10 ) )
    ENDIF
 
