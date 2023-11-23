@@ -4,28 +4,11 @@ FUNCTION ze_sefaz_NFeEventoAutor( Self, cChave, cCnpj, cOrgaoAutor, ctpAutor, cv
 
    LOCAL cDescEvento
 
-   hb_Default( @::cVersao, WS_NFE_DEFAULT )
-   ::cProjeto := WS_PROJETO_NFE
    hb_Default( @cCnpj, "00000000000000" )
-   ::lConsumidor := ( DfeModFis( cChave ) == "65" )
-   ::aSoapUrlList := WS_NFE_EVENTO
    ::cUF          := "AN"
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEventoNF"
-   ::Setup( "AN", cCertificado, cAmbiente )
 
-   cDescEvento := "Ator interessado na NF-e"
-   cCnpj := DfeEmitente( cChave )
+   cDescEvento   := "Ator interessado na NF-e"
 
-   ::cXmlDocumento := [<evento versao="1.00" ] + WS_XMLNS_NFE + [>]
-   ::cXmlDocumento +=    [<infEvento Id="ID110150] + cChave + "01" + [">]
-   ::cXmlDocumento +=       XmlTag( "cOrgao", "91" )
-   ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
-   ::cXmlDocumento +=       XmlTag( iif( Len( cCnpj ) == 11, "CPF", "CNPJ" ), cCnpj )
-   ::cXmlDocumento +=       XmlTag( "chNFe", cChave )
-   ::cXmlDocumento +=       XmlTag( "dhEvento", ::DateTimeXml() )
-   ::cXmlDocumento +=       XmlTag( "tpEvento", "110150" )
-   ::cXmlDocumento +=       XmlTag( "nSeqEvento", "1" ) // obrigatoriamente 1
-   ::cXmlDocumento +=       XmlTag( "verEvento", "1.00" )
    ::cXmlDocumento +=       [<detEvento versao="1.00">]
    ::cXmlDocumento +=          XmlTag( "descEvento", cDescEvento )
    ::cXmlDocumento +=          XmlTag( "cOrgaoAutor", cOrgaoAutor )
@@ -42,17 +25,7 @@ FUNCTION ze_sefaz_NFeEventoAutor( Self, cChave, cCnpj, cOrgaoAutor, ctpAutor, cv
    ENDIF
    ::cXmlDocumento +=          [</autXML>]
    ::cXmlDocumento +=       [</detEvento>]
-   ::cXmlDocumento +=    [</infEvento>]
-   ::cXmlDocumento += [</evento>]
-   IF ::AssinaXml() == "OK"
-      ::cXmlEnvio := [<envEvento versao="1.00" ] + WS_XMLNS_NFE + [>]
-      ::cXmlEnvio +=    XmlTag( "idLote", DfeNumero( cChave ) ) // usado numero da nota
-      ::cXmlEnvio +=    ::cXmlDocumento
-      ::cXmlEnvio += [</envEvento>]
-      ::XmlSoapPost()
-      ::cXmlProtocolo := ::cXmlRetorno
-      ::NFeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
-   ENDIF
+   ::NFeEvento( cChave, 1, "110150", ::cXmlDocumento, cCertificado, cAmbiente )
 
    RETURN ::cXmlRetorno
 

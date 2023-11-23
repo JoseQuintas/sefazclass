@@ -168,7 +168,10 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    ::aObsCont[ "xTexto" ] := XmlNode( cCompl, "xTexto" )
 
    cEmit := XmlNode( ::cXml, "emit" )
-   ::aEmit := XmlToHash( cEmit, { "CNPJ", "IE", "xNome", "xFant", "fone" } )
+   ::aEmit := XmlToHash( cEmit, { "CNPJ", "CPF", "IE", "xNome", "xFant", "fone" } )
+   IF Empty( ::aEmit[ "CNPJ" ] )
+      ::aEmit[ "CNPJ" ] := ::aEmit[ "CPF" ]
+   ENDIF
    ::aEmit[ "xNome" ] := XmlToString( ::aEmit[ "xNome" ] )
    ::cTelefoneEmitente  := ::FormataTelefone( ::aEmit[ "fone" ] )
    cEmit := XmlNode( cEmit, "enderEmit" )
@@ -177,6 +180,9 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    NEXT
 
    ::aRem            := XmlToHash( XmlNode( ::cXml, "rem" ), { "CNPJ", "CPF", "IE", "xNome", "xFant", "fone", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "CEP", "UF", "cPais", "xPais" } )
+   IF Empty( ::aRem[ "CNPJ" ] )
+      ::aRem[ "CNPJ" ] := ::aRem[ "CPF" ]
+   ENDIF
    ::aRem[ "xNome" ] := XmlToString( ::aRem[ "xNome" ] )
 
    ::ainfNF := MultipleNodeToArray( XmlNode( ::cXml, "infDoc" ), "infNF" )
@@ -216,27 +222,41 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
 
    cDest := XmlNode( ::cXml, "dest" )
    ::aDest := XmlToHash( cDest, { "CNPJ", "CPF", "IE", "xNome", "fone", "ISUF", "email" } )
+   IF Empty( ::aDest[ "CNPJ" ] )
+      ::aDest[ "CNPJ" ] := ::aDest[ "CPF" ]
+   ENDIF
    ::aDest[ "xNome" ] := XmlToString( ::aDest[ "xNome" ] )
    ::aDest[ "email" ] := XmlToString( ::aDest[ "email" ] )
    ::aDest := XmlToHash( XmlNode( cDest, "enderDest" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais" }, ::aDest )
 
    ::alocEnt := XmlToHash( XmlNode( cDest, "locEnt" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "xMun", "UF" } )
-
+   IF Empty( ::aLocEnt[ "CNPJ" ] )
+      ::aLocEnt[ "CNPJ" ] := ::aLocEnt[ "CPF" ]
+   ENDIF
    // adicionado pra evitar erro
    cToma := XmlNode( ::cXml, "toma4" )
    ::aToma := XmlToHash( cToma, { "CNPJ", "CPF", "IE", "xNome", "fone", "email" } )
+   IF Empty( ::aToma[ "CNPJ" ] )
+      ::aToma[ "CNPJ" ] := ::aToma[ "CPF" ]
+   ENDIF
    ::aToma[ "xNome" ] := XmlToString( ::aToma[ "xNome" ] )
    ::aToma[ "email" ] := XmlToString( ::aToma[ "email" ] )
    ::aToma:= XmlToHash( XmlNode( cToma, "enderExped" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais" }, ::aToma )
 
    cExped := XmlNode( ::cXml, "exped" )
    ::aExped := XmlToHash( cExped, { "CNPJ", "CPF", "IE", "xNome", "fone", "email" } )
+   IF Empty( ::aExped[ "CNPJ" ] )
+      ::aExped[ "CNPJ" ] := ::aExped[ "CPF" ]
+   ENDIF
    ::aExped[ "xNome" ] := XmlToString( ::aExped[ "xNome" ] )
    ::aExped[ "email" ] := XmlToString( ::aExped[ "email" ] )
    ::aExped:= XmlToHash( XmlNode( cExped, "enderExped" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais" }, ::aExped )
 
    cReceb := XmlNode( ::cXml, "receb" )
    ::aReceb := XmlToHash( cReceb, { "CNPJ", "CPF", "IE", "xNome", "fone", "email" } )
+   IF Empty( ::aReceb[ "CNPJ" ] )
+      ::aReceb[ "CNPJ" ] := ::aReceb[ "CPF" ]
+   ENDIF
    ::aReceb[ "xNome" ] := XmlToString( ::aReceb[ "xNome" ] )
    ::aReceb[ "email" ] := XmlToString( ::aReceb[ "email" ] )
    ::aReceb := XmlToHash( XmlNode( cReceb, "enderReceb" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais" }, ::aReceb )
@@ -274,7 +294,9 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    ::aRodo    := XmlToHash( cRodo, { "RNTRC", "dPrev", "lota", "CIOT", "nLacre" } )
    ::aValePed := XmlToHash( XmlNode( cRodo, "valePed" ), { "CNPJForn", "nCompra", "CNPJPg" } )
    ::aProp    := XmlToHash( XmlNode( cRodo, "prop" ), { "CPF", "CNPJ", "RNTRC", "xNome", "IE", "UF", "tpProp" } )
-
+   IF Empty( ::aProp[ "CNPJ" ] )
+      ::aProp[ "CNPJ" ] := ::aProp[ "CPF" ]
+   ENDIF
    ::aVeiculo := MultipleNodeToArray( XmlNode( cinfCteNorm, "rodo" ), "veic" )
    FOR EACH oElement IN ::aVeiculo
       oElement := { XmlNode( oElement, "cInt" ), XmlNode( oElement, "RENAVAM" ), XmlNode( oElement, "placa" ), ;
@@ -345,7 +367,8 @@ METHOD NovaPagina() CLASS hbnfeDaCte
    IF ::aIde[ "tpAmb" ] = "2"
       ::DrawHomologacao()
    ELSEIF ! Empty( ::aInfCanc[ "nProt" ] )
-      ::DrawHomologacao( ::aInfCanc[ "xMotivo" ] )
+      ::DrawHomologacao( "CANCELADO EM " + ::aInfCanc[ "dhRegEvento" ] + ;
+         " nProt " + ::aInfCanc[ "nProt" ] )
    ELSEIF ::aInfProt[ "cStat" ] $ "101,302"
       ::DrawHomologacao( ::aInfProt[ "xMotivo" ] )
    ENDIF
@@ -390,7 +413,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    ::DrawTexto( 6, ::nLinhaPdf - 078, 245, Nil, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::DrawTexto( 6, ::nLinhaPdf - 086, 245, Nil, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::DrawTexto( 6, ::nLinhaPdf - 094, 245, Nil, iif( Empty( ::aEmit[ "fone" ] ), "", "Fone/Fax:" + ::FormataTelefone( ::aEmit[ "fone" ] ) ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::DrawTexto( 6, ::nLinhaPdf - 107, 245, Nil, 'CNPJ/CPF:' + Transform( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscr.Estadual:' + ::FormataIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::DrawTexto( 6, ::nLinhaPdf - 107, 245, Nil, 'CNPJ/CPF:' + FormatCnpj( ::aEmit[ "CNPJ" ] ) + '       Inscr.Estadual:' + ::FormataIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
 
    // box do nome do documento
    ::DrawBox( 253, ::nLinhaPdf - 032, 131, 032, ::nLarguraBox )
@@ -494,12 +517,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
       ::DrawTexto( 240, ::nLinhaPdf - 232, 260, Nil, "CEP", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
       ::DrawTexto( 260, ::nLinhaPdf - 233, 295, Nil, Substr( ::aRem[ "CEP" ], 1, 5 ) + '-' + Substr( ::aRem[ "CEP" ], 6, 3 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ::DrawTexto( 005, ::nLinhaPdf - 240, 042, Nil, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-      IF ! Empty( ::aRem[ "CNPJ" ] )
-         ::DrawTexto( 042, ::nLinhaPdf - 241, 150, Nil, Transform( ::aRem[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      ENDIF
-      IF ! Empty( ::aRem[ "CPF" ] )
-         ::DrawTexto( 042, ::nLinhaPdf - 241, 150, Nil, Transform( ::aRem[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      ENDIF
+      ::DrawTexto( 042, ::nLinhaPdf - 241, 150, Nil,FormatCnpj( ::aRem[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ::DrawTexto( 150, ::nLinhaPdf - 240, 250, Nil, "INSCRI플O ESTADUAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
       ::DrawTexto( 245, ::nLinhaPdf - 241, 295, Nil, ::FormataIE( ::aRem[ "IE" ], ::aRem[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ::DrawTexto( 005, ::nLinhaPdf - 248, 042, Nil, "Pais", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
@@ -519,12 +537,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
       ::DrawTexto( 535, ::nLinhaPdf - 232, 555, Nil, "CEP", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
       ::DrawTexto( 555, ::nLinhaPdf - 233, 588, Nil, Substr( ::aDest[ "CEP" ], 1, 5 ) + '-' + Substr( ::aDest[ "CEP" ], 6, 3 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ::DrawTexto( 305, ::nLinhaPdf - 240, 342, Nil, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-      IF ! Empty( ::aDest[ "CNPJ" ] )
-         ::DrawTexto( 342, ::nLinhaPdf - 241, 450, Nil, Transform( ::aDest[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      ENDIF
-      IF ! Empty( ::aDest[ "CPF" ] )
-         ::DrawTexto( 342, ::nLinhaPdf - 241, 450, Nil, Transform( ::aDest[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      ENDIF
+      ::DrawTexto( 342, ::nLinhaPdf - 241, 450, Nil, FormatCnpj( ::aDest[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ::DrawTexto( 430, ::nLinhaPdf - 240, 530, Nil, "INSCRI플O ESTADUAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
 
       ::DrawTexto( 530, ::nLinhaPdf - 241, 595, Nil, AllTrim( ::aDest[ "IE" ], ::aDest[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
@@ -555,12 +568,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
          ::DrawTexto( 260, ::nLinhaPdf - 289, 295, Nil, Substr( ::aExped[ "CEP" ], 1, 5 ) + '-' + Substr( ::aExped[ "CEP" ], 6, 3 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ENDIF
       ::DrawTexto( 005, ::nLinhaPdf - 296, 042, Nil, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-      IF ! Empty( ::aExped[ "CNPJ" ] )
-         ::DrawTexto( 042, ::nLinhaPdf - 297, 150, Nil, TRANSF( ::aExped[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      ENDIF
-      IF ! Empty( ::aExped[ "CPF" ] )
-         ::DrawTexto( 042, ::nLinhaPdf - 297, 150, Nil, TRANSF( ::aExped[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      ENDIF
+      ::DrawTexto( 042, ::nLinhaPdf - 297, 150, Nil, FormatCnpj( ::aExped[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ::DrawTexto( 150, ::nLinhaPdf - 296, 250, Nil, "INSCRI플O ESTADUAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
       ::DrawTexto( 245, ::nLinhaPdf - 297, 295, Nil, AllTrim( ::aExped[ "IE" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ::DrawTexto( 005, ::nLinhaPdf - 304, 042, Nil, "Pais", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
@@ -592,12 +600,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
          ::DrawTexto( 555, ::nLinhaPdf - 289, 588, Nil, Substr( ::aReceb[ "CEP" ], 1, 5 ) + '-' + Substr( ::aReceb[ "CEP" ], 6, 3 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ENDIF
       ::DrawTexto( 305, ::nLinhaPdf - 296, 342, Nil, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-      IF ! Empty( ::aReceb[ "CNPJ" ] )
-         ::DrawTexto( 342, ::nLinhaPdf - 297, 450, Nil, TRANSF( ::aReceb[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      ENDIF
-      IF ! Empty( ::aReceb[ "CPF" ] )
-         ::DrawTexto( 342, ::nLinhaPdf - 297, 450, Nil, TRANSF( ::aReceb[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      ENDIF
+      ::DrawTexto( 342, ::nLinhaPdf - 297, 450, Nil, FormatCnpj( ::aReceb[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ::DrawTexto( 440, ::nLinhaPdf - 296, 540, Nil, "INSCRI플O ESTADUAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
       ::DrawTexto( 540, ::nLinhaPdf - 297, 590, Nil, ::FormataIE( ::aReceb[ "IE" ], ::aReceb[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ::DrawTexto( 305, ::nLinhaPdf - 304, 342, Nil, "Pais", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
@@ -621,12 +624,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
       ::DrawTexto( 042, ::nLinhaPdf - 330, 590, Nil, ::aToma[ "xLgr" ] + " " + ::aToma[ "nro" ] + " " + ::aToma[ "xCpl" ] + ' - ' + ::aToma[ "xBairro" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ::DrawTexto( 005, ::nLinhaPdf - 337, 042, Nil, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
 
-      IF ! Empty( ::aToma[ "CNPJ" ] )
-         ::DrawTexto( 042, ::nLinhaPdf - 338, 150, Nil, TRANSF( ::aToma[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      ENDIF
-      IF ! Empty( ::aToma[ "CPF" ] )
-         ::DrawTexto( 042, ::nLinhaPdf - 338, 150, Nil, TRANSF( ::aToma[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      ENDIF
+      ::DrawTexto( 042, ::nLinhaPdf - 338, 150, Nil, FormatCnpj( ::aToma[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
 
       ::DrawTexto( 150, ::nLinhaPdf - 337, 250, Nil, "INSCRI플O ESTADUAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
       ::DrawTexto( 245, ::nLinhaPdf - 338, 295, Nil, ::FormataIE( ::aToma[ "IE" ], ::aToma[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
@@ -823,22 +821,12 @@ METHOD GeraFolha() CLASS hbnfeDaCte
       FOR nCont = 1 TO Len( ::aInfNF ) STEP 2
          IF !Empty( ::aInfNF[ nCont, 4 ] )
             ::DrawTexto( 005, ::nLinhaPdf - nLinha - 2, 353, Nil, "NOTA FISCAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
-            IF Val( ::aRem[ "CNPJ" ] ) > 0
-               ::DrawTexto( 050, ::nLinhaPdf - nLinha, 240, Nil, TRANSF( ::aRem[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-            ENDIF
-            IF Val( ::aRem[ "CPF" ] ) > 0
-               ::DrawTexto( 050, ::nLinhaPdf - nLinha, 240, Nil, TRANSF( ::aRem[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-            ENDIF
+            ::DrawTexto( 050, ::nLinhaPdf - nLinha, 240, Nil, FormatCnpj( ::aRem[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             ::DrawTexto( 240, ::nLinhaPdf - nLinha, 295, Nil, ::aInfNF[ nCont, 4 ] + '/' + ::aInfNF[ nCont, 5 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
          ENDIF
          IF nCont + 1 <= Len( ::aINfNF )
             ::DrawTexto( 300, ::nLinhaPdf - nLinha - 2, 353, Nil, "NOTA FISCAL", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
-            IF Val( ::aRem[ "CNPJ" ] ) > 0
-               ::DrawTexto( 345, ::nLinhaPdf - nLinha, 535, Nil, TRANSF( ::aRem[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-            ENDIF
-            IF Val( ::aRem[ "CPF" ] ) > 0
-               ::DrawTexto( 345, ::nLinhaPdf - nLinha, 535, Nil, TRANSF( ::aRem[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-            ENDIF
+            ::DrawTexto( 345, ::nLinhaPdf - nLinha, 535, Nil, FormatCnpj( ::aRem[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             ::DrawTexto( 535, ::nLinhaPdf - nLinha, 590, Nil, ::aInfNF[ nCont + 1, 4 ] + '/' + ::aInfNF[ nCont + 1, 5 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
          ENDIF
          nLinha += 10
@@ -858,12 +846,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
                cOutros := ::aInfOutros[ nCont, 2 ]
             ENDIF
             ::DrawTexto( 005, ::nLinhaPdf - nLinha, 240, Nil, cOutros, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
-            IF Val( ::aRem[ "CNPJ" ] ) > 0
-               ::DrawTexto( 170, ::nLinhaPdf - nLinha, 240, Nil, TRANSF( ::aRem[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-            ENDIF
-            IF Val( ::aRem[ "CPF" ] ) > 0
-               ::DrawTexto( 170, ::nLinhaPdf - nLinha, 240, Nil, TRANSF( ::aRem[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-            ENDIF
+            ::DrawTexto( 170, ::nLinhaPdf - nLinha, 240, Nil, FormatCnpj( ::aRem[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             ::DrawTexto( 240, ::nLinhaPdf - nLinha, 295, Nil, ::aInfOutros[ nCont, 3 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             IF nCont + 1 <= Len( ::aInfOutros )
                IF ::aInfOutros[ nCont + 1, 1 ] = '00'
@@ -874,12 +857,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
                   cOutros := ::aInfOutros[ nCont + 1, 2 ]
                ENDIF
                ::DrawTexto( 300, ::nLinhaPdf - nLinha, 535, Nil, cOutros, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
-               IF Val( ::aRem[ "CNPJ" ] ) > 0
-                  ::DrawTexto( 465, ::nLinhaPdf - nLinha, 535, Nil, TRANSF( ::aRem[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-               ENDIF
-               IF Val( ::aRem[ "CPF" ] ) > 0
-                  ::DrawTexto( 465, ::nLinhaPdf - nLinha, 535, Nil, TRANSF( ::aRem[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
-               ENDIF
+               ::DrawTexto( 465, ::nLinhaPdf - nLinha, 535, Nil, FormatCnpj( ::aRem[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
                ::DrawTexto( 535, ::nLinhaPdf - nLinha, 590, Nil, ::aInfOutros[ nCont + 1, 3 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             ENDIF
             nLinha += 10
@@ -904,10 +882,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
       IF ! Empty( ::alocEnt[ 'xNome' ] )
          cEntrega := 'Local de Entrega : '
          IF ! Empty( ::alocEnt[ "CNPJ" ] )
-            cEntrega += 'CNPJ:' + ::alocEnt[ "CNPJ" ]
-         ENDIF
-         IF ! Empty( ::alocEnt[ "CNPJ" ] )
-            cEntrega += 'CPF:' + ::alocEnt[ "CPF" ]
+            cEntrega += 'CNPJ/CPF:' + ::alocEnt[ "CNPJ" ]
          ENDIF
          IF ! Empty( ::alocEnt[ "xNome" ] )
             cEntrega += ' - ' + ::alocEnt[ "xNome" ]

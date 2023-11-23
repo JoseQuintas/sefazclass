@@ -4,14 +4,8 @@ FUNCTION ze_sefaz_NFeEventoManifestacao( Self, cChave, cCnpj, cCodigoEvento, xJu
 
    LOCAL cDescEvento
 
-   hb_Default( @::cVersao, WS_NFE_DEFAULT )
-   hb_Default( @cCnpj, "00000000000000" )
-   ::cProjeto := WS_PROJETO_NFE
-   ::lConsumidor := ( DfeModFis( cChave ) == "65" )
-   ::aSoapUrlList := WS_NFE_EVENTO
+   hb_Default( @cCnpj, Replicate( "0", 14 ) )
    ::cUF          := "AN"
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEventoNF"
-   ::Setup( "AN", cCertificado, cAmbiente )
 
    DO CASE
    CASE cCodigoEvento == "210200" ; cDescEvento := "Confirmacao da Operacao"

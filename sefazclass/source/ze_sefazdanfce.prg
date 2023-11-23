@@ -90,7 +90,13 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFCe
 
    ::aIde         := XmlToHash( XmlNode( ::cXml, "ide" ), { "tpAmb", "cUF", "serie", "nNF", "dhEmi", "tpEmis" } )
    ::aEmit        := XmlToHash( XmlNode( ::cXml, "emit" ), { "CNPJ", "CPF", "IE", "xNome", "xLgr", "nro", "xBairro", "xMun", "UF" } )
+   IF Empty( ::aEmit[ "CNPJ" ] )
+      ::aEmit[ "CNPJ" ] := ::aEmit[ "CPF" ]
+   ENDIF
    ::aDest        := XmlToHash( XmlNode( ::cXml, "dest" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xBairro", "xMun", "UF" } )
+   IF Empty( ::aDest[ "CNPJ" ] )
+      ::aDest[ "CNPJ" ] := ::aDest[ "CPF" ]
+   ENDIF
    ::aICMSTotal   := XmlToHash( XmlNode( ::cXml, "ICMSTot" ), { "vProd", "vFrete", "vSeg", "vOutro", "vDesc", "vNF", "vTotTrib" } )
    ::aInfProt     := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto" } )
    ::aInfAdic     := XmlToHash( XmlNode( ::cXml, "infAdic" ), { "infAdFisco", "infCpl" } )
@@ -242,7 +248,7 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
       ::DrawTexto( nPosIni, ::nLinhaPDF, 220, NIL, oElement, HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
       ::nLinhaPDF -= 10
    NEXT
-   FOR EACH oElement IN ::FormatMemoAsArray( "CNPJ: " + Transform( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + " - IE: " + ::aEmit[ "IE" ], nTamMax )
+   FOR EACH oElement IN ::FormatMemoAsArray( "CNPJ: " + Trim( FormatCnpj( ::aEmit[ "CNPJ" ] ) ) + " - IE: " + ::aEmit[ "IE" ], nTamMax )
       ::DrawTexto( nPosIni, ::nLinhaPDF, 220, NIL, oElement, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
       ::nLinhaPDF -= 10
    NEXT
@@ -460,11 +466,8 @@ METHOD Consumidor() CLASS hbNFeDaNFCe
    ::DrawTexto( 6, ::nLinhaPDF - 10, 220, NIL, "CONSUMIDOR", HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
 
    IF ! Empty( ::aDest[ "CNPJ" ] )
-      ::DrawTexto(  6, ::nLinhaPDF - 20, 220, NIL, "CNPJ: ", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
-      ::DrawTexto( 37, ::nLinhaPDF - 20, 220, NIL, Transform( ::aDest[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
-   ELSEIF ! Empty( ::aDest[ "CPF" ] )
-      ::DrawTexto(  6, ::nLinhaPDF - 20, 220, NIL, "CPF: ", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
-      ::DrawTexto( 37, ::nLinhaPDF - 20, 220, NIL, Transform( ::aDest[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
+      ::DrawTexto(  6, ::nLinhaPDF - 20, 220, NIL, "CNPJ/CPF: ", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
+      ::DrawTexto( 37, ::nLinhaPDF - 20, 220, NIL, FormatCnpj( ::aDest[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
    ELSE
       ::DrawTexto(  6, ::nLinhaPDF - 20, 220, NIL, "CONSUMIDOR NAO IDENTIFICADO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 7 )
    ENDIF
