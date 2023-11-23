@@ -94,12 +94,15 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    METHOD DrawTextoProduto( nCampo, nRow, nConteudo, nAlign )
    METHOD DrawBoxProduto( nCampo, nRow, nHeight )
    METHOD DefineColunasQuadroProdutos()
-   METHOD SetDescontoOff()      INLINE ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   METHOD SetSubBasOff()        INLINE ::aLayout[ LAYOUT_SUBBAS,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   METHOD SetSubValOff()        INLINE ::aLayout[ LAYOUT_SUBVAL,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   METHOD SetIpiValOff()        INLINE ::aLayout[ LAYOUT_IPIVAL,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   METHOD SetIpiAliOff()        INLINE ::aLayout[ LAYOUT_IPIALI,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
-   METHOD SetEanOff()           INLINE ::aLayout[ LAYOUT_EAN,      LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetDescontoOff()      INLINE ::aLayout[ LAYOUT_DESCONTO,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetSubBasOff()        INLINE ::aLayout[ LAYOUT_SUBBAS,     LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetSubValOff()        INLINE ::aLayout[ LAYOUT_SUBVAL,     LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetIpiValOff()        INLINE ::aLayout[ LAYOUT_IPIVAL,     LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetIpiAliOff()        INLINE ::aLayout[ LAYOUT_IPIALI,     LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetEanOff()           INLINE ::aLayout[ LAYOUT_EAN,        LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   METHOD SetDadosTribOff()     INLINE ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME, ;
+                                       ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME, ;
+                                       ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME }
 
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
@@ -150,8 +153,8 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    VAR aItemISSQN
 
    VAR cFonteNFe  INIT "Times"
-   VAR cFonteCode128            // Inserido por Anderson Camilo em 04/04/2012
-   VAR cFonteCode128F           // Inserido por Anderson Camilo em 04/04/2012
+   VAR cFonteCode128
+   VAR cFonteCode128F
    VAR oPdf
    VAR oPdfPage
    VAR oPDFFontNormal
@@ -168,6 +171,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    VAR nLinhaFolha
    VAR nLayoutTotalFolhas
    VAR lLayoutEspacoDuplo  INIT .T.
+   VAR lFantasiaCabecalho  INIT .F.
    VAR aLayout
 
    ENDCLASS
@@ -240,6 +244,9 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
       ::aEmit[ "CNPJ" ] := ::aEmit[ "CPF" ]
    ENDIF
    ::aDest       := XmlToHash( XmlNode( ::cXml, "dest" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", "fone", "IE", "ISUF", "email", "idEstrangeiro" } )
+   IF ! Empty( ::aDest[ "idEstrangeiro" ] )
+      ::aDest[ "IE" ] := ::aDest[ "idEstrangeiro" ]
+   ENDIF
    IF Empty( ::aDest[ "CNPJ" ] )
       ::aDest[ "CNPJ" ] := ::aDest[ "CPF" ]
    ENDIF
@@ -434,15 +441,20 @@ METHOD QuadroCanhoto() CLASS hbNFeDaNFe
 
 METHOD QuadroNotaFiscal() CLASS hbNFeDaNFe
 
-   LOCAL cTexto
+   LOCAL cTexto, cNomeEmpresa
 
+   IF ::lFantasiaCabecalho
+      cNomeEmpresa := ::aEmit[ "xFant" ]
+   ELSE
+      cNomeEmpresa := ::aEmit[ "xNome" ]
+   ENDIF
    ::DrawBox( 5, ::nLinhaPdf - 80, 585, 80, ::nLarguraBox )
    // logo/dados empresa
    ::DrawBox( 5, ::nLinhaPdf - 80, 240, 80, ::nLarguraBox )
    ::DrawTexto( 6, ::nLinhaPdf, 244, NIL, "IDENTIFICAÇÃO DO EMITENTE", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
    IF ::cLogoFile == NIL .OR. Empty( ::cLogoFile )
-      ::DrawTexto( 6, ::nLinhaPdf - 6, 244, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
-      ::DrawTexto( 6, ::nLinhaPdf - 18, 244, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+      ::DrawTexto( 6, ::nLinhaPdf - 6,  244, NIL, Trim( MemoLine( cEmpresaNome, 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+      ::DrawTexto( 6, ::nLinhaPdf - 18, 244, NIL, Trim( MemoLine( cEmpresaNome, 30, 2 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
       ::DrawTexto( 6, ::nLinhaPdf - 30, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
       ::DrawTexto( 6, ::nLinhaPdf - 38, 244, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
       ::DrawTexto( 6, ::nLinhaPdf - 46, 244, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
@@ -455,8 +467,8 @@ METHOD QuadroNotaFiscal() CLASS hbNFeDaNFe
       ELSEIF ::nLogoStyle == LAYOUT_LOGO_ESQUERDA
          ::DrawJPEGImage( ::cLogoFile, 6, ::nLinhaPdf - ( 60 + 6 ), 54, 48 )
          HPDF_Page_SetFontAndSize( ::oPDFPage, ::oPDFFontBold, 12 )
-         cTexto := ::FormataMemo( ::aEmit[ "xNome" ], 180 )
-         ::DrawTexto( 64, ::nLinhaPdf - 6, 244, NIL,  MemoLine( cTexto, 1000, 1 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+         cTexto := ::FormataMemo( cEmpresaNome, 180 )
+         ::DrawTexto( 64, ::nLinhaPdf - 6,  244, NIL,  MemoLine( cTexto, 1000, 1 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
          ::DrawTexto( 64, ::nLinhaPDF - 18, 244, NIL, MemoLine( cTexto, 1000, 2 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
          ::DrawTexto( 64, ::nLinhaPDF - 30, 244, NIL, MemoLine( cTexto, 1000, 3 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
          ::DrawTexto( 64, ::nLinhaPdf - 42, 244, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
@@ -467,8 +479,8 @@ METHOD QuadroNotaFiscal() CLASS hbNFeDaNFe
          //::DrawTexto( 50, ::nLinhaPdf - 82, 244, NIL, Trim( ::cEmailEmitente ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
       ELSEIF ::nLogoStyle == LAYOUT_LOGO_DIREITA
          ::DrawJPEGImage( ::cLogoFile, 182, ::nLinhaPdf - ( 72 + 6 ), 62, 72 )
-         ::DrawTexto( 6, ::nLinhaPdf - 6, 180, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
-         ::DrawTexto( 6, ::nLinhaPdf - 18, 180, NIL, Trim( MemoLine( ::aEmit[ "xNome" ], 30, 2 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+         ::DrawTexto( 6, ::nLinhaPdf - 6, 180, NIL, Trim( MemoLine( cEmpresaNome, 30, 1 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+         ::DrawTexto( 6, ::nLinhaPdf - 18, 180, NIL, Trim( MemoLine( cEmpresaNome, 30, 2 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
          ::DrawTexto( 6, ::nLinhaPdf - 30, 180, NIL, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
          ::DrawTexto( 6, ::nLinhaPdf - 38, 180, NIL, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
          ::DrawTexto( 6, ::nLinhaPdf - 46, 180, NIL, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
@@ -542,7 +554,7 @@ METHOD QuadroDestinatario() CLASS hbNFeDaNFe
 
    ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "DESTINATÁRIO/REMETENTE", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
    ::nLinhaPdf -= 6
-   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 415, 16, "NOME / RAZÃO SOCIAL", ::aDest[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 415, 16, "NOME / RAZÃO SOCIAL", ::FormataString( ::aDest[ "xNome" ], 415, 10 ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::DrawBoxTituloTexto( 420, ::nLinhaPdf, 100, 16, "CNPJ/CPF", FormatCnpj( ::aDest[ "CNPJ" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
    ::DrawBoxTituloTexto( 520, ::nLinhaPdf, 70, 16, "DATA DE EMISSÃO",  ;
       Substr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 1, 4 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
@@ -598,8 +610,8 @@ METHOD QuadroDuplicatas() CLASS hbNFeDaNFe
             nColuna := 1
          ENDIF
          ::DrawTexto( 6 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1,  80 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cNumero, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-         ::DrawTexto( 82 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 138 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
-         ::DrawTexto( 140 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 195 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 8 )
+         ::DrawTexto( 82 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 128 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cVencimento, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
+         ::DrawTexto( 130 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), ::nLinhaPdf - 1, 195 + ( ( ( nTamForm ) / 3 ) * ( nColuna - 1 ) ), NIL, cValor, HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 8 )
          nColuna++
       NEXT
       ::nLinhaPdf -= 12
@@ -1044,9 +1056,9 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_CST,        LAYOUT_CONTEUDO ]  := { || ::aItemICMS[ "orig" ] + ::aItemICMS[ "CSOSN" ] + ::aItemICMS[ "CST" ] }
    ::aLayout[ LAYOUT_CFOP,       LAYOUT_TITULO1 ]   := "CFOP"
    ::aLayout[ LAYOUT_CFOP,       LAYOUT_CONTEUDO ]  := { || ::aItem[ "CFOP" ] }
-   ::aLayout[ LAYOUT_UNIDADE,    LAYOUT_TITULO1 ]   := "UNID"
+   ::aLayout[ LAYOUT_UNIDADE,    LAYOUT_TITULO1 ]   := "UN"
    ::aLayout[ LAYOUT_UNIDADE,    LAYOUT_CONTEUDO ]  := { || ::aItem[ "uCom" ] }
-   ::aLayout[ LAYOUT_QTD,        LAYOUT_TITULO1 ]   := "QUANT"
+   ::aLayout[ LAYOUT_QTD,        LAYOUT_TITULO1 ]   := "QTD"
    ::aLayout[ LAYOUT_QTD,        LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "qCom" ] ), 15, ::aLayout[ LAYOUT_QTD, LAYOUT_DECIMAIS ] ) ) }
    ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_TITULO1 ]   := "VALOR"
    ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_TITULO2 ]   := "UNITÁRIO"
@@ -1080,7 +1092,7 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_IPIALI,     LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItemIPI[ "pIPI" ] ), 15, 2 ) ) }
    ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_TITULO1 ]   := "UN"
    ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_TITULO2 ]   := "TRIB"
-   ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "uTrib" ] ), 15, 2 ) ) }
+   ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_CONTEUDO ]  := { || ::aItem[ "uTrib" ] }
    ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_TITULO1 ]   := "QTDE"
    ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_TITULO2 ]   := "TRIB"
    ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "qTrib" ] ), 15, ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] ) ) }
@@ -1091,8 +1103,8 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
    // Define decimais default, mas será ajustado conforme conteúdo do XML
    ::aLayout[ LAYOUT_QTD,        LAYOUT_DECIMAIS ] := 0
    ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_DECIMAIS ] := 2
-   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "qTrib" ],   ::nLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] )
-   ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "vUnTrib" ], ::nLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] )
+   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_DECIMAIS ] := 0
+   ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_DECIMAIS ] := 2
    FOR EACH oElement IN ::aLayout
       oElement[ LAYOUT_LARGURA ] := Max( Len( oElement[ LAYOUT_TITULO1 ] ), Len( oElement[ LAYOUT_TITULO2 ] ) )
    NEXT
@@ -1104,6 +1116,7 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       nItem += 1
       ::aLayout[ LAYOUT_QTD,      LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "qCom" ],   ::aLayout[ LAYOUT_QTD,    LAYOUT_DECIMAIS ] )
       ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "vUnCom" ], ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] )
+      ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "qTrib" ],  ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] )
       FOR EACH oElement IN ::aLayout
          oElement[ LAYOUT_LARGURA ] := Max( oElement[ LAYOUT_LARGURA ], Len( Eval( oElement[ LAYOUT_CONTEUDO ] ) ) )
          oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( Eval( oElement[ LAYOUT_CONTEUDO ] ) ) )
