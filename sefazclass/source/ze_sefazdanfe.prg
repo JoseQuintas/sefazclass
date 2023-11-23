@@ -130,7 +130,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    VAR aItem
    VAR aItemDI
    VAR aItemAdi
-   Var aItemArma
+   VAR aItemArma
    VAR aItemICMS
    VAR aItemICMSPart
    VAR aItemICMSST
@@ -223,7 +223,7 @@ METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel ) CLASS hbNFeDaNFe
 
 METHOD BuscaDadosXML() CLASS hbNFeDaNFe
 
-   LOCAL cText, aNFRef, oElement
+   LOCAL cText, aNFRef, oElement, cItem
 
    ::aIde := XmlToHash( XmlNode( ::cXml, "ide" ), { "cUF", "cNF", "natOp", "indPag", "mod", "serie", "nNF", "dhEmi", "dhSaiEnt", "tpNF", "cMunFG", "tpImp", "tpEmis", ;
       "cDV", "tpAmb", "finNFe", "procEmi", "verProc" } )
@@ -235,9 +235,21 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    //ENDIF
    ::aEmit       := XmlToHash( XmlNode( ::cXml, "emit" ), { "CNPJ", "CPF", "xNome", "xFant", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", ;
       "fone", "IE", "IEST", "IM", "CNAE", "CRT", "fone" } )
+   IF Empty( ::aEmit[ "CNPJ" ] )
+      ::aEmit[ "CNPJ" ] := ::aEmit[ "CPF" ]
+   ENDIF
    ::aDest       := XmlToHash( XmlNode( ::cXml, "dest" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais", "fone", "IE", "ISUF", "email", "idEstrangeiro" } )
+   IF Empty( ::aDest[ "CNPJ" ] )
+      ::aDest[ "CNPJ" ] := ::aDest[ "CPF" ]
+   ENDIF
    ::aRetirada   := XmlToHash( XmlNode( ::cXml, "retirada" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "CEP", "cMun", "xMun", "UF", "fone", "IE" } )
+   IF Empty( ::aRetirada[ "CNPJ" ] )
+      ::aRetirada[ "CNPJ" ] := ::aRetirada[ "CPF" ]
+   ENDIF
    ::aEntrega    := XmlToHash( XmlNode( ::cXml, "entrega" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "CEP", "cMun", "xMun", "UF", "fone", "IE" } )
+   IF Empty( ::aEntrega[ "CNPJ" ] )
+      ::aEntrega[ "CNPJ" ] := ::aEntrega[ "CPF" ]
+   ENDIF
    ::aICMSTotal  := XmlToHash( XmlNode( ::cXml, "ICMSTot" ), { "vBC", "vICMS", "vBCST", "vST", "vProd", "vFrete", "vSeg", "vDesc", "vII", "vIPI", "vPIS", "vCOFINS", "vOutro", "vNF" } )
    ::aISSTotal   := XmlToHash( XmlNode( ::cXml, "ISSQNtot" ), { "vServ", "vBC", "vISS", "vPIS", "vCOFINS" } )
    ::aRetTrib    := XmlToHash( XmlNode( ::cXml, "RetTrib" ), { "vRetPIS", "vRetCOFINS", "vRetCSLL", "vBCIRRF", "vIRRF", "vBCRetPrev", "vRetPrev" } )
@@ -247,6 +259,17 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    ::cCobranca   := XmlNode( ::cXml, "cobr" )
    ::aDetPag     := MultipleNodeToArray( XmlNode( ::cXml, "pag" ), "detPag" )
    ::aInfAdic    := XmlToHash( XmlNode( ::cXml, "infAdic" ), { "infAdFisco", "infCpl" } )
+   // NF premiada MS
+   cText         := XmlNode( ::cXml, "cMsg" )
+   IF AllTrim( cText ) == "200"
+      IF Len( ::aInfAdic[ "infAdFisco" ] ) != 0
+         ::aInfAdic[ "infAdFisco" ] += " "
+      ENDIF
+      FOR EACH cItem IN hb_ATokens( XmlNode( ::cXml, "xMsg" ), "|" )
+         ::aInfAdic[ "infAdFisco" ] += AllTrim( cItem ) + iif( cItem:__EnumIsLast(), "", hb_Eol() )
+      NEXT
+      ::aInfAdic[ "infAdFisco" ] := AllTrim( ::aInfAdic[ "infAdFisco" ] )
+   ENDIF
    ::aObsCont    := XmlToHash( XmlNode( XmlNode( ::cXml, "infAdic" ), "obsCont" ), { "xCampo", "xTexto" } )
    ::aObsFisco   := XmlToHash( XmlNode( XmlNode( ::cXml, "infAdic" ), "obsFisco" ), { "xCampo", "xTexto" } )
    ::aExporta    := XmlToHash( XmlNode( XmlNode( ::cXml, "exporta" ), "infCpl" ), { "UFEmbarq", "xLocEmbarq" } )
@@ -272,10 +295,10 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
       ::aInfAdic[ "infCpl" ]     := StrTran( ::aInfAdic[ "infCpl" ], cText, hb_Eol() )
       ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], cText, hb_Eol() )
    NEXT
-   IF ! Empty( ::aInfAdic[ "infAdFisco" ] )
-      ::aInfAdic[ "infCpl" ]     := ::aInfAdic[ "infAdFisco" ] + hb_Eol() + ::aInfAdic[ "infCpl" ]
-      ::aInfAdic[ "infAdFisco" ] := ""
-   ENDIF
+   //IF ! Empty( ::aInfAdic[ "infAdFisco" ] )
+   //   ::aInfAdic[ "infCpl" ]     := ::aInfAdic[ "infAdFisco" ] + hb_Eol() + ::aInfAdic[ "infCpl" ]
+   //   ::aInfAdic[ "infAdFisco" ] := ""
+   //ENDIF
    aNFRef := MultipleNodeToArray( ::cXml, "refNFe" )
    IF ! Empty( aNFRef )
       cText := "NFe Referenciadas: "
@@ -519,7 +542,7 @@ METHOD QuadroNotaFiscal() CLASS hbNFeDaNFe
    ::nLinhaPdf -= 16
    ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 240, 16, "INSCRIÇÃO ESTADUAL", ::aEmit[ "IE" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::DrawBoxTituloTexto( 245, ::nLinhaPdf, 225, 16, "INSCRIÇÃO ESTADUAL DO SUBS. TRIBUTÁRIO", ::aEmit[ "IEST" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-   ::DrawBoxTituloTexto( 470, ::nLinhaPdf, 120, 16, "C.N.P.J.", Transform( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   ::DrawBoxTituloTexto( 470, ::nLinhaPdf, 120, 16, "C.N.P.J.", PicCnpj( ::aEmit[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::nLinhaPdf -= 17
 
    RETURN NIL
@@ -529,11 +552,7 @@ METHOD QuadroDestinatario() CLASS hbNFeDaNFe
    ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "DESTINATÁRIO/REMETENTE", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
    ::nLinhaPdf -= 6
    ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 415, 16, "NOME / RAZÃO SOCIAL", ::aDest[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-   IF ! Empty( ::aDest[ "CNPJ" ] )
-      ::DrawBoxTituloTexto( 420, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aDest[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
-   ELSEIF ! Empty( ::aDest[ "CPF" ] )
-      ::DrawBoxTituloTexto( 420, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aDest[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ENDIF
+   ::DrawBoxTituloTexto( 420, ::nLinhaPdf, 100, 16, "CNPJ/CPF", PicCnpj( ::aDest[ "CNPJ" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
    ::DrawBoxTituloTexto( 520, ::nLinhaPdf, 70, 16, "DATA DE EMISSÃO",  ;
       Substr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 1, 4 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
    ::nLinhaPdf -= 16
@@ -691,13 +710,7 @@ METHOD QuadroTransporte() CLASS hbNFeDaNFe
       ::DrawBoxTituloTexto( 310, ::nLinhaPdf, 110, 16, "CÓDIGO ANTT", ::aVeicTransp[ "RNTC" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
       ::DrawBoxTituloTexto( 420, ::nLinhaPdf, 60, 16, "PLACA DO VEÍCULO", ::aVeicTransp[ "placa" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
       ::DrawBoxTituloTexto( 480, ::nLinhaPdf, 20, 16, "UF", ::aVeicTransp[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-      IF ! Empty( ::aTransp[ "CNPJ" ] )
-         ::DrawBoxTituloTexto( 500, ::nLinhaPdf, 90, 16, "CNPJ / CPF", Transform( ::aTransp[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-      ELSEIF ! Empty( ::aTransp[ "CPF" ] )
-         ::DrawBoxTituloTexto( 500, ::nLinhaPdf, 90, 16, "CNPJ / CPF", Transform( ::aTransp[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-      ELSE
-         ::DrawBoxTituloTexto( 500, ::nLinhaPdf, 90, 16, "CNPJ / CPF", "", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-      ENDIF
+      ::DrawBoxTituloTexto( 500, ::nLinhaPdf, 90, 16, "CNPJ / CPF", PicCnpj( ::aTransp[ "CNPJ" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
       ::nLinhaPdf -= 16
       ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 265, 16, "ENDEREÇO", ::aTransp[ "xEnder" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
       ::DrawBoxTituloTexto( 270, ::nLinhaPdf, 210, 16, "MUNICÍPIO", ::aTransp[ "xMun" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
@@ -1199,11 +1212,7 @@ METHOD QuadroLocalRetirada() CLASS hbNFeDaNFe
    ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "INFORMAÇÕES DO LOCAL DE RETIRADA", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
    ::nLinhaPdf -= 6
    ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 485, 16, "NOME / RAZÃO SOCIAL", ::aRetirada[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-   IF ! Empty( ::aDest[ "CNPJ" ] )
-      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aRetirada[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
-   ELSEIF ! Empty( ::aDest[ "CPF" ] )
-      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aRetirada[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ENDIF
+   ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", PicCnpj( ::aRetirada[ "CNPJ" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
    ::nLinhaPdf -= 16
    ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 335, 16, "ENDEREÇO", ::aRetirada[ "xLgr" ] + " " + ::aRetirada[ "nro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
    ::DrawBoxTituloTexto( 340, ::nLinhaPdf, 190, 16, "BAIRRO", ::aRetirada[ "xBairro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
@@ -1222,11 +1231,7 @@ METHOD QuadroLocalEntrega() CLASS hbNFeDaNFe
    ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "INFORMAÇÕES DO LOCAL DE ENTREGA", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
    ::nLinhaPdf -= 6
    ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 485, 16, "NOME / RAZÃO SOCIAL", ::aEntrega[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
-   IF ! Empty( ::aDest[ "CNPJ" ] )
-      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aEntrega[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
-   ELSEIF ! Empty( ::aDest[ "CPF" ] )
-      ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", Transform( ::aEntrega[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
-   ENDIF
+   ::DrawBoxTituloTexto( 490, ::nLinhaPdf, 100, 16, "CNPJ/CPF", PicCnpj( ::aEntrega[ "CNPJ" ] ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 9 )
    ::nLinhaPdf -= 16
    ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 335, 16, "ENDEREÇO", ::aEntrega[ "xLgr" ] + " " + ::aEntrega[ "nro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
    ::DrawBoxTituloTexto( 340, ::nLinhaPdf, 190, 16, "BAIRRO", ::aEntrega[ "xBairro" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
