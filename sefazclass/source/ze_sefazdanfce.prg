@@ -88,6 +88,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFCe
 
    LOCAL aFPagsList, cItem, aItem, aFPags, cFPags, cTipoPgto, cDescPgto, cValorPgto, nPosX
 
+   ::cXml := XmlToString( ::cXml )
    ::aIde         := XmlToHash( XmlNode( ::cXml, "ide" ), { "tpAmb", "cUF", "serie", "nNF", "dhEmi", "tpEmis" } )
    ::aEmit        := XmlToHash( XmlNode( ::cXml, "emit" ), { "CNPJ", "CPF", "IE", "xNome", "xLgr", "nro", "xBairro", "xMun", "UF" } )
    IF Empty( ::aEmit[ "CNPJ" ] )
@@ -101,7 +102,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFCe
    ::aInfProt     := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto" } )
    ::aInfAdic     := XmlToHash( XmlNode( ::cXml, "infAdic" ), { "infAdFisco", "infCpl" } )
    ::cChave       := AllTrim( Substr( XmlElement( ::cXml, "Id" ), 4 ) )
-   ::cQRCode      := XmlToString( XmlNode( XmlNode( ::cXml, "infNFeSupl" ), "qrCode" ) )
+   ::cQRCode      := XmlNode( XmlNode( ::cXml, "infNFeSupl" ), "qrCode" )
 
    // Produtos / Servicos
    DO WHILE .T.

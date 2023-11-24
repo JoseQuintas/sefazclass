@@ -153,6 +153,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
 
    LOCAL cIde, cCompl, cEmit, cDest, cToma, cPrest, cImp, cinfCTeNorm, cRodo, cExped, cReceb, oElement
 
+   ::cXml := XmlToString( ::cXml )
    cIde   := XmlNode( ::cXml, "ide" )
    ::aIde := XmlToHash( cIde, { "cUF", "cCT", "CFOP", "natOp", "forPag", "mod", "serie", ;
       "nCT", "dhEmi", "tpImp", "tpEmis", "cDV", "tpAmb", "tpCTe", "procEmi", "verProc", ;
@@ -172,7 +173,6 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    IF Empty( ::aEmit[ "CNPJ" ] )
       ::aEmit[ "CNPJ" ] := ::aEmit[ "CPF" ]
    ENDIF
-   ::aEmit[ "xNome" ] := XmlToString( ::aEmit[ "xNome" ] )
    ::cTelefoneEmitente  := ::FormataTelefone( ::aEmit[ "fone" ] )
    cEmit := XmlNode( cEmit, "enderEmit" )
    FOR EACH oElement IN { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "CEP", "UF" }
@@ -183,7 +183,6 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    IF Empty( ::aRem[ "CNPJ" ] )
       ::aRem[ "CNPJ" ] := ::aRem[ "CPF" ]
    ENDIF
-   ::aRem[ "xNome" ] := XmlToString( ::aRem[ "xNome" ] )
 
    ::ainfNF := MultipleNodeToArray( XmlNode( ::cXml, "infDoc" ), "infNF" )
    FOR EACH oElement IN ::ainfNF
@@ -225,8 +224,6 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    IF Empty( ::aDest[ "CNPJ" ] )
       ::aDest[ "CNPJ" ] := ::aDest[ "CPF" ]
    ENDIF
-   ::aDest[ "xNome" ] := XmlToString( ::aDest[ "xNome" ] )
-   ::aDest[ "email" ] := XmlToString( ::aDest[ "email" ] )
    ::aDest := XmlToHash( XmlNode( cDest, "enderDest" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais" }, ::aDest )
 
    ::alocEnt := XmlToHash( XmlNode( cDest, "locEnt" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xCpl", "xBairro", "xMun", "UF" } )
@@ -239,8 +236,6 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    IF Empty( ::aToma[ "CNPJ" ] )
       ::aToma[ "CNPJ" ] := ::aToma[ "CPF" ]
    ENDIF
-   ::aToma[ "xNome" ] := XmlToString( ::aToma[ "xNome" ] )
-   ::aToma[ "email" ] := XmlToString( ::aToma[ "email" ] )
    ::aToma:= XmlToHash( XmlNode( cToma, "enderExped" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais" }, ::aToma )
 
    cExped := XmlNode( ::cXml, "exped" )
@@ -248,8 +243,6 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    IF Empty( ::aExped[ "CNPJ" ] )
       ::aExped[ "CNPJ" ] := ::aExped[ "CPF" ]
    ENDIF
-   ::aExped[ "xNome" ] := XmlToString( ::aExped[ "xNome" ] )
-   ::aExped[ "email" ] := XmlToString( ::aExped[ "email" ] )
    ::aExped:= XmlToHash( XmlNode( cExped, "enderExped" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais" }, ::aExped )
 
    cReceb := XmlNode( ::cXml, "receb" )
@@ -257,8 +250,6 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    IF Empty( ::aReceb[ "CNPJ" ] )
       ::aReceb[ "CNPJ" ] := ::aReceb[ "CPF" ]
    ENDIF
-   ::aReceb[ "xNome" ] := XmlToString( ::aReceb[ "xNome" ] )
-   ::aReceb[ "email" ] := XmlToString( ::aReceb[ "email" ] )
    ::aReceb := XmlToHash( XmlNode( cReceb, "enderReceb" ), { "xLgr", "nro", "xCpl", "xBairro", "cMun", "xMun", "UF", "CEP", "cPais", "xPais" }, ::aReceb )
 
    ::aPrest := XmlToHash( XmlNode( ::cXml, "vPrest" ), { "vTPrest", "vRec" } )

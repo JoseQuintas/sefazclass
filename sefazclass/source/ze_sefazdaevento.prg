@@ -91,6 +91,10 @@ METHOD ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar ) CLASS hbnfeDaEvento
 
 METHOD BuscaDadosXML() CLASS hbnfeDaEvento
 
+   IF ! Empty( ::cXmlDocumento )
+      ::cXmlDocumento := XmlToString( ::cXmlDocumento )
+   ENDIF
+
    ::aCorrecoes := XmlNode( ::cXmlEvento, "infEvento" )
    ::aCorrecoes := XmlNode( ::aCorrecoes , "evCCeCTe" )
    ::aCorrecoes := MultipleNodeToArray( ::aCorrecoes, "infCorrecao" )
@@ -114,11 +118,9 @@ METHOD BuscaDadosXML() CLASS hbnfeDaEvento
 
    ::aEmit := XmlToHash( XmlNode( ::cXmlDocumento, "emit" ), { "xNome", "xFant", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "fone", "IE" } )
    ::aEmit[ "CNPJ" ]    := DfeEmitente( ::cChaveEvento )
-   ::aEmit[ "xNome" ]   := XmlToString( ::aEmit[ "xNome" ] )
    ::cTelefoneEmitente  := ::FormataTelefone( ::aEmit[ "fone" ] )
 
    ::aDest := XmlToHash( XmlNode( ::cXmlDocumento, "dest" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "fone", "IE" } )
-   ::aDest[ "xNome" ] := XmlToString( ::aDest[ "xNome" ] )
 
    RETURN .T.
 

@@ -102,7 +102,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    METHOD SetEanOff()           INLINE ::aLayout[ LAYOUT_EAN,        LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
    METHOD SetDadosTribOff()     INLINE ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME, ;
                                        ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME, ;
-                                       ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME }
+                                       ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
 
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
@@ -230,6 +230,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
 
    LOCAL cText, aNFRef, oElement, cItem
 
+   ::cXml := XmlToString( ::cXml )
    ::aIde := XmlToHash( XmlNode( ::cXml, "ide" ), { "cUF", "cNF", "natOp", "indPag", "mod", "serie", "nNF", "dhEmi", "dhSaiEnt", "tpNF", "cMunFG", "tpImp", "tpEmis", ;
       "cDV", "tpAmb", "finNFe", "procEmi", "verProc" } )
    IF Empty( ::aIde[ "dhEmi" ] ) // NFE 2.0
@@ -282,8 +283,6 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    ::aCompra     := XmlToHash( XmlNode( ::cXml, "compra" ), { "xNEmp", "xPed", "xCont" } )
    ::aInfProt    := XmlToHash( ::cXml, { "nProt", "dhRecbto", "digVal", "cStat", "xEvento", "dhRegEvento", "xMotivo" } )
    ::aInfCanc    := XmlToHash( iif( Empty( ::cXmlCancel ), "", ::cXmlCancel ), { "nProt", "dhRecbto", "digVal", "cStat", "xEvento", "dhRegEvento", "xMotivo" } )
-   ::aEmit[ "xNome" ]  := XmlToString( ::aEmit[ "xNome" ] )
-   ::aDest[ "xNome" ]  := XmlToString( ::aDest[ "xNome" ] )
    ::cTelefoneEmitente := ::FormataTelefone( ::aEmit[ "fone" ] )
    ::aDest[ "fone" ]   := ::FormataTelefone( ::aDest[ "fone" ] )
    IF ! Empty( ::aEntrega[ "xLgr" ] )
@@ -441,12 +440,12 @@ METHOD QuadroCanhoto() CLASS hbNFeDaNFe
 
 METHOD QuadroNotaFiscal() CLASS hbNFeDaNFe
 
-   LOCAL cTexto, cNomeEmpresa
+   LOCAL cTexto, cEmpresaNome
 
    IF ::lFantasiaCabecalho
-      cNomeEmpresa := ::aEmit[ "xFant" ]
+      cEmpresaNome := ::aEmit[ "xFant" ]
    ELSE
-      cNomeEmpresa := ::aEmit[ "xNome" ]
+      cEmpresaNome := ::aEmit[ "xNome" ]
    ENDIF
    ::DrawBox( 5, ::nLinhaPdf - 80, 585, 80, ::nLarguraBox )
    // logo/dados empresa
@@ -698,7 +697,7 @@ METHOD QuadroTransporte() CLASS hbNFeDaNFe
    IF ::nFolha == 1
       ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "TRANSPORTADOR / VOLUMES TRANSPORTADOS", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
       ::nLinhaPdf -= 6
-      ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 215, 16, "NOME/RAZÃO SOCIAL", ::FormataString( XmlToString( ::aTransp[ "xNome" ] ), 215, 8 ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
+      ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 215, 16, "NOME/RAZÃO SOCIAL", ::FormataString( ::aTransp[ "xNome" ], 215, 8 ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
       IF ::aTransp[ "modFrete" ] == "0"
          ::DrawBoxTituloTexto( 220, ::nLinhaPdf, 90, 16, "FRETE POR CONTA", "0-EMITENTE", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 10 )
       ELSEIF ::aTransp[ "modFrete" ] == "1"
