@@ -173,6 +173,8 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    VAR lLayoutEspacoDuplo  INIT .T.
    VAR lFantasiaCabecalho  INIT .F.
    VAR aLayout
+   VAR aPageList           INIT {}
+   VAR aPageRow            INIT { 0, 0, 0 }
 
    ENDCLASS
 
@@ -310,6 +312,8 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
 
 METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFe
 
+   LOCAL oPage
+
    ::oPdf := HPDF_New()
    IF ::oPdf == NIL
       ::cRetorno := "Falha da criação do objeto PDF"
@@ -350,7 +354,14 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFe
    ::QuadroTotalServico()
    ::QuadroDadosAdicionais()
    ::Desenvolvedor()
-
+   IF Len( ::aPageList ) != 0
+      FOR EACH oPage IN ::aPageList
+         ::oPDFPage := oPage
+         ::DrawTexto( ::aPageRow[ 1 ], ::aPageRow[ 2 ], ::aPageRow[ 3 ], NIL, "SÉRIE: " + ::aIde[ "serie" ] + ;
+            " - FOLHA " + Alltrim( Str( oPage:__EnumIndex() ) ) + "/" + Alltrim( Str( Len( ::aPageList ) ) ), ;
+            HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
+      NEXT
+   ENDIF
    HPDF_SaveToFile( ::oPdf, cFilePDF )
    HPDF_Free( ::oPdf )
 
@@ -359,16 +370,16 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFe
 METHOD NovaPagina() CLASS hbNFeDaNFe
 
    ::oPdfPage := HPDF_AddPage( ::oPdf )
+   AAdd( ::aPageList, ::oPDFPage )
+
    HPDF_Page_SetSize( ::oPdfPage, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT )
 
    IF ::aIde[ "tpEmis" ] = "5" // Contingencia
       ::DrawContingencia( "", "DANFE EM CONTINGÊNCIA. IMPRESSO EM", "DECORRÊNCIA DE PROBLEMAS TÉCNICOS" )
    ENDIF
-
    IF ::aIde[ "tpEmis" ] == "4" // DEPEC
       ::DrawContingencia( "DANFE IMPRESSO EM CONTINGÊNCIA - DPEC", "REGULARMENTE RECEBIDO PELA RECEITA", "FEDERAL" )
    ENDIF
-
    IF ::aIde[ "tpAmb" ] == "2"
       ::DrawHomologacao()
    ELSEIF ! Empty( ::aInfCanc[ "nProt" ] )
@@ -501,7 +512,8 @@ METHOD QuadroNotaFiscal() CLASS hbNFeDaNFe
    ::DrawTexto( 341, ::nLinhaPdf - 40, 359, NIL, ::aIde[ "tpNF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
 
    ::DrawTexto( 246, ::nLinhaPdf - 56, 369, NIL, "Nº: " + Transform( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), "@R 999.999.999" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
-   ::DrawTexto( 246, ::nLinhaPdf - 66, 369, NIL, "SÉRIE: " + ::aIde[ "serie" ] + " - FOLHA " + Alltrim( Str( ::nFolha ) ) + "/" + Alltrim( Str( ::nLayoutTotalFolhas ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
+   ::aPageRow := { 246, ::nLinhaPdf - 66, 369 }
+//   ::DrawTexto( 246, ::nLinhaPdf - 66, 369, NIL, "SÉRIE: " + ::aIde[ "serie" ] + " - FOLHA " + Alltrim( Str( ::nFolha ) ) + "/" + Alltrim( Str( ::nLayoutTotalFolhas ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
 
    // codigo barras
    ::DrawBox( 370, ::nLinhaPdf - 35, 220, 35, ::nLarguraBox )
@@ -939,10 +951,11 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
 
 METHOD CalculaLayout() CLASS hbNFeDaNFe
 
-   LOCAL nItem, nQtdLinhas
+   /* LOCAL nItem, nQtdLinhas */
 
    ::DefineColunasQuadroProdutos()
    ::aInfAdic[ "infCpl" ] := ::FormataMemo( ::aInfAdic[ "infCpl" ], 392 )
+   /*
    ::nLayoutTotalFolhas := 1
    nQtdLinhas := 0
    nItem      := 1
@@ -975,6 +988,7 @@ METHOD CalculaLayout() CLASS hbNFeDaNFe
    IF nQtdLinhas > ::ItensDaFolha( ::nLayoutTotalFolhas )
       ::nLayoutTotalFolhas += 1
    ENDIF
+   */
 
    RETURN NIL
 

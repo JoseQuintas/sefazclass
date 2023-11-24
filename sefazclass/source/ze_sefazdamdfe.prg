@@ -79,6 +79,8 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
    VAR nLinhaFolha
    VAR nFolhas
    VAR nFolha
+   VAR aPageList  INIT {}
+   VAR aPageRow   INIT { 0, 0, 0 }
 
    VAR cRetorno
    VAR PastaPdf
@@ -165,7 +167,7 @@ METHOD buscaDadosXML() CLASS hbnfeDaMdfe
 
 METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
 
-   LOCAL nQtFolhas, nCont
+   LOCAL nQtFolhas, nCont, oPage
 
    nQtFolhas := 1
    IF Len( ::aInfDoc ) > 11
@@ -189,6 +191,14 @@ METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
       ::novaPagina()
       ::cabecalho( nQtFolhas )
    NEXT
+   IF Len( ::aPageList ) != 0
+      FOR EACH oPage IN ::aPageList
+         ::oPDFPage := oPage
+         ::DrawTexto( ::aPageRow[ 1 ], ::aPageRow[ 2 ], ::aPageRow[ 3 ], Nil, ;
+            LTrim( Str( oPage:__EnumIndex(), 3 ) ) + "/" + ;
+            Ltrim( Str( Len( ::aPageList ), 3 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+      NEXT
+   ENDIF
    HPDF_SaveToFile( ::oPDF, cFilePDF )
    HPDF_Free( ::oPdf )
 
@@ -197,6 +207,7 @@ METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
 METHOD NovaPagina() CLASS hbnfeDaMdfe
 
    ::oPdfPage := HPDF_AddPage( ::oPdf )
+   AAdd( ::aPageList, ::oPdfPage )
    HPDF_Page_SetSize( ::oPdfPage, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT )
    ::nLinhaPdf := HPDF_Page_GetHeight( ::oPDFPage ) - 20    // Margem Superior
 
@@ -236,6 +247,7 @@ METHOD cabecalho( nQtFolhas ) CLASS hbnfeDaMdfe
 
    LOCAL nCont, aList, nPos, cURLConsulta := "http:", nItem
 
+   (nQtFolhas)
    // box do logotipo e dados do emitente
 
    ::DrawBox( 020, ::nLinhaPdf - 150, 555, 150, ::nLarguraBox )
@@ -295,7 +307,8 @@ METHOD cabecalho( nQtFolhas ) CLASS hbnfeDaMdfe
    // box do fl
    ::DrawLine( 240, ::nLinhaPdf - 355, 240, ::nLinhaPdf - 320, ::nLarguraBox )
    ::DrawTexto( 245, ::nLinhaPdf - 320, 285, Nil, "FL", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 12 )
-   ::DrawTexto( 245, ::nLinhaPdf - 335, 285, Nil, Str( ::nFolha, 1 ) + "/" + Str( nQtFolhas, 1 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::aPageRow := { 245, ::nLinhaPDF - 335, 285 }
+   //::DrawTexto( 245, ::nLinhaPdf - 335, 285, Nil, Str( ::nFolha, 1 ) + "/" + Str( nQtFolhas, 1 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
 
    // box do data e hora
    ::DrawLine( 285, ::nLinhaPdf - 355, 285, ::nLinhaPdf - 320, ::nLarguraBox )

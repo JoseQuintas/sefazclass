@@ -114,7 +114,8 @@ CREATE CLASS hbnfeDacte INHERIT hbNFeDaGeral
    VAR nFolhas       INIT 1
    VAR nFolha        INIT 1
    VAR nNfeImpressas INIT 0
-   VAR aPDFPageList  INIT {}
+   VAR aPageList     INIT {}
+   VAR aPageRow      INIT { 0, 0, 0 }
 
    VAR lValorDesc INIT .F.
    VAR nCasasQtd INIT 2
@@ -315,7 +316,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
 
 METHOD GeraPDF( cFilePDF ) CLASS hbnfeDaCte
 
-   LOCAL nCont
+   LOCAL oPage
 
    ::oPdf := HPDF_New()
    IF ::oPdf == NIL
@@ -335,9 +336,11 @@ METHOD GeraPDF( cFilePDF ) CLASS hbnfeDaCte
       ::nFolha  += 1
       ::nFolhas += 1
    ENDDO
-   FOR nCont = 1 TO ::nFolhas
-      ::oPDFPage := ::aPDFPageList[ nCont ]
-      ::DrawTexto( 383, ::nLinhaPdf - 047, 418, Nil, Ltrim( Str( nCont, 3 ) ) + "/" + Ltrim( Str( ::nFolhas, 3 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   FOR EACH oPage IN ::aPageList
+      ::oPDFPage := oPage
+      ::DrawTexto( ::aPageRow[ 1 ], ::aPageRow[ 2 ], ::aPageRow[ 3 ], Nil, ;
+         Ltrim( Str( oPage:__EnumIndex(), 3 ) ) + "/" + ;
+         Ltrim( Str( Len( ::aPageList ), 3 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
    NEXT
 
    // Ajustar numeração
@@ -349,7 +352,7 @@ METHOD GeraPDF( cFilePDF ) CLASS hbnfeDaCte
 METHOD NovaPagina() CLASS hbnfeDaCte
 
    ::oPdfPage := HPDF_AddPage( ::oPdf )
-   AAdd( ::aPDFPageList, ::oPDFPage )
+   AAdd( ::aPageList, ::oPDFPage )
 
    HPDF_Page_SetSize( ::oPdfPage, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT )
 
@@ -437,6 +440,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    ::DrawBox( 383, ::nLinhaPdf - 060, 035, 025, ::nLarguraBox )
    ::DrawTexto( 383, ::nLinhaPdf - 040, 418, Nil, "FL", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    //::DrawTexto( 383, ::nLinhaPdf - 047, 418, Nil, "1/1", HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
+   ::aPageRow := { 383, ::nLinhaPdf - 47, 418 }
 
    // box do data e hora
    ::DrawBox( 418, ::nLinhaPdf - 060, 095, 025, ::nLarguraBox )
