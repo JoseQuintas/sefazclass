@@ -1,15 +1,15 @@
 #include "sefazclass.ch"
 
-FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lSincrono )
+FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc )
 
    LOCAL oDoc, cBlocoXml, aList, nPos, cURLConsulta := "http:"
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
-   IF lSincrono != Nil .AND. ValType( lSincrono ) == "L"
-      ::lSincrono := lSincrono
+   IF lEnvioSinc != Nil .AND. ValType( lEnvioSinc ) == "L"
+      ::lEnvioSinc := lEnvioSinc
    ENDIF
-   IF ::lSincrono
+   IF ::lEnvioSinc
       ::aSoapUrlList := SoapListSinc()
       ::cSoapAction := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc/mdfeRecepcao"
    ELSE
@@ -40,7 +40,7 @@ FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lSincrono
       cBlocoXml += "</infMDFeSupl>"
       ::cXmlDocumento := StrTran( ::cXmlDocumento, "</infMDFe>", "</infMDFe>" + cBlocoXml )
    ENDIF
-   IF ::lSincrono
+   IF ::lEnvioSinc
       ::cXmlEnvio := ::cXmlDocumento
    ELSE
       ::cXmlEnvio  := [<enviMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
@@ -50,7 +50,7 @@ FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lSincrono
    ENDIF
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno
-   IF ::lSincrono
+   IF ::lEnvioSinc
       ::cXmlProtocolo := ::cXmlRecibo
       ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
    ELSE

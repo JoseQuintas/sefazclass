@@ -1,6 +1,6 @@
 #include "sefazclass.ch"
 
-FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente ) // , lContingencia, lSincrono, lZip )
+FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente )
 
    LOCAL cProjeto, lConsumidor, cScan, cVersao
 
@@ -10,13 +10,6 @@ FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente ) // , lContingencia
    IF cAmbiente != Nil
       ::cAmbiente := cAmbiente
    ENDIF
-   //IF lContingencia != Nil
-   //   ::lContingencia := lContingencia
-   //ENDIF
-   //IF lSincrono != Nil
-   //   ::lSincrono := lSincrono
-   //ENDIF
-   //hb_Default( @lZip, .F. )
    DO CASE
    CASE cUF == NIL
    CASE Len( SoNumeros( cUF ) ) != 0
@@ -24,13 +17,13 @@ FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente ) // , lContingencia
    OTHERWISE
       ::cUF := cUF
    ENDCASE
-   ::cSoapURL := ""
-   cAmbiente  := ::cAmbiente
-   cUF        := ::cUF
-   cProjeto   := ::cProjeto
+   ::cSoapURL  := ""
+   cAmbiente   := ::cAmbiente
+   cUF         := ::cUF
+   cProjeto    := ::cProjeto
    lConsumidor := ::lConsumidor
-   cScan      := ::cScan
-   cVersao    := ::cVersao + iif( cAmbiente == WS_AMBIENTE_PRODUCAO, "P", "H" )
+   cScan       := ::cScan
+   cVersao     := ::cVersao + iif( cAmbiente == WS_AMBIENTE_PRODUCAO, "P", "H" )
    DO CASE
    CASE cProjeto == WS_PROJETO_BPE
       ::cSoapUrl := SoapUrlBpe( ::aSoapUrlList, cUF, cVersao )
@@ -111,4 +104,3 @@ FUNCTION SoapUrlMdfe( aSoapList, cUF, cVersao )
    HB_SYMBOL_UNUSED( cUF )
 
    RETURN cUrl
-

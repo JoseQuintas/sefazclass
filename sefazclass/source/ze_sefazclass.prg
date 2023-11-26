@@ -42,7 +42,8 @@ CREATE CLASS SefazClass
    VAR    cCertificado    INIT ""                      // CN (NOME) do certificado
    /* contingência e sinc/assinc */
    VAR    cScan           INIT "N"                     // Indicar SCAN/SVAN/SVRS testes iniciais
-   VAR    lSincrono       INIT .F.                     // Poucas UFs opção de protocolo
+   VAR    lEnvioSinc      INIT .F.                     // Poucas UFs opção de protocolo
+   VAR    lEnvioZip       INIT .F.
    VAR    lConsumidor     INIT .F.                     // NFCe
    /* pra NFCe */
    VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
@@ -150,13 +151,13 @@ METHOD cIndSinc( cValue ) CLASS SefazClass
 
    IF cValue != Nil
       IF ValType( cValue ) == "C" .AND. cValue == "1"
-         ::lSincrono := .T.
+         ::lEnvioSinc := .T.
       ELSE
-         ::lSincrono := .F.
+         ::lEnvioSinc := .F.
       ENDIF
    ENDIF
 
-   RETURN iif( ::lSincrono, "1", "0" )
+   RETURN iif( ::lEnvioSinc, "1", "0" )
 
 METHOD cFusoHorario( cValue ) CLASS SefazClass
 
@@ -236,7 +237,7 @@ METHOD XmlSoapPost() CLASS SefazClass
    ELSEIF ::cProjeto == WS_PROJETO_MDFE .OR. ( ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00" )
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
-      IF ::lSincrono
+      IF ::lEnvioSinc
          ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
       ELSE
          ::cXmlSoap +=       ::cXmlEnvio
@@ -254,7 +255,7 @@ METHOD XmlSoapPost() CLASS SefazClass
       ENDIF
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
-      IF ::lSincrono .AND. ( ::cProjeto == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE )
+      IF ::lEnvioSinc .AND. ( ::cProjeto == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE )
          ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
       ELSE
          ::cXmlSoap += ::cXmlEnvio
@@ -304,7 +305,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    IF cSoapAction != NIL .AND. ! Empty( cSoapAction )
       oServer:SetRequestHeader( "SOAPAction", cSoapAction )
    ENDIF
-   IF ::lSincrono .AND. ( ::cProjeto  == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE )
+   IF ::lEnvioSinc .AND. ( ::cProjeto  == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE )
       oServer:SetRequestHeader( "Accept-Encoding", "gzip,deflate" )
       oServer:SetRequestHeader( "Content-Encoding", "gzip" )
    ENDIF

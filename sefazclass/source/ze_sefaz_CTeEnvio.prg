@@ -12,7 +12,7 @@ FUNCTION ze_sefaz_CTeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
       ::cSoapAction := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote"
    ELSE
       ::cSoapAction := "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao"
-      ::lSincrono := .T.
+      ::lEnvioSinc := .T.
    ENDIF
    IF cXml != NIL
       ::cXmlDocumento := cXml
@@ -35,7 +35,7 @@ FUNCTION ze_sefaz_CTeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
 	cBlocoXml += "</qrCodCTe>"
 	cBlocoXml += "</infCTeSupl>"
 	::cXmlDocumento := StrTran( ::cXmlDocumento, "</infCte>", "</infCte>" + cBlocoXml )
-   IF ::lSincrono // 4.00 obrigatório
+   IF ::lEnvioSinc // 4.00 obrigatório
       ::cXmlEnvio := ::cXmlDocumento
    ELSE
       ::cXmlEnvio := [<enviCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
@@ -48,8 +48,8 @@ FUNCTION ze_sefaz_CTeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
    ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
    ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
    ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
-   IF ::lSincrono .OR. ( ! Empty( ::cRecibo ) .AND. ::cStatus != "999" )
-      IF ::lSincrono
+   IF ::lEnvioSinc .OR. ( ! Empty( ::cRecibo ) .AND. ::cStatus != "999" )
+      IF ::lEnvioSinc
          ::cXmlProtocolo := ::cXmlRecibo
       ELSE
          Inkey( ::nTempoEspera )

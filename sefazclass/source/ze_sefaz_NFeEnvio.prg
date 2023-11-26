@@ -1,22 +1,22 @@
 #include "sefazclass.ch"
 
-FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lSincrono )
+FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc )
 
    LOCAL oDoc, cChave
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
-   IF lSincrono != Nil
-      IF ValType( lSincrono ) == "L"
-         ::lSincrono := lSincrono
-      ELSEIF ValType( lSIncrono ) == "C"
-         ::lSincrono := ( lSincrono == "1" )
+   IF lEnvioSinc != Nil
+      IF ValType( lEnvioSinc ) == "L"
+         ::lEnvioSinc := lEnvioSinc
+      ELSEIF ValType( lEnvioSinc ) == "C"
+         ::lEnvioSinc := ( lEnvioSinc == "1" )
       ENDIF
    ENDIF
    ::cProjeto := WS_PROJETO_NFE
 
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   IF ::lSincrono
+   IF ::lEnvioSinc
       // reservado pra implementacao futura em gzip
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote"
    ELSE
@@ -36,12 +36,12 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lSincrono 
    ::cXmlEnvio    := [<enviNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    // FOR EACH cXmlNota IN aXmlNotas
    ::cXmlEnvio    += XmlTag( "idLote", "1" )
-   ::cXmlEnvio    += XmlTag( "indSinc",iif( ::lSincrono, "1", "0" ) )
+   ::cXmlEnvio    += XmlTag( "indSinc",iif( ::lEnvioSinc, "1", "0" ) )
    ::cXmlEnvio    += ::cXmlDocumento
    // NEXT
    ::cXmlEnvio    += [</enviNFe>]
    ::XmlSoapPost()
-   IF ! ::lSincrono
+   IF ! ::lEnvioSinc
       ::cXmlRecibo := ::cXmlRetorno
       ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
       ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
