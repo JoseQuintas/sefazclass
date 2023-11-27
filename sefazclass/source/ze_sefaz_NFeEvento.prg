@@ -1,8 +1,6 @@
 #include "sefazclass.ch"
 
-FUNCTION ze_sefaz_NFeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente )
-
-   LOCAL cCnpj
+FUNCTION ze_sefaz_NFeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCertificado, cAmbiente, cCnpj )
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::cProjeto := WS_PROJETO_NFE
@@ -16,11 +14,13 @@ FUNCTION ze_sefaz_NFeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCerti
    ELSE
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEvento"
    ENDIF
-   cCnpj := DfeEmitente( cChave )
+   IF cCnpj == Nil
+      cCnpj := DfeEmitente( cChave )
+   ENDIF
    ::Setup( iif( ::cUF == "AN", "AN", cChave ), cCertificado, cAmbiente )
    ::cXmlDocumento := [<evento versao="1.00" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
-   ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
+   ::cXmlDocumento +=       XmlTag( "cOrgao", iif( ::cUF == "AN", "91", Substr( cChave, 1, 2 ) ) )
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( iif( Len( cCnpj ) == 11, "CPF", "CNPJ" ), cCnpj )
    ::cXmlDocumento +=       XmlTag( "chNFe", cChave )

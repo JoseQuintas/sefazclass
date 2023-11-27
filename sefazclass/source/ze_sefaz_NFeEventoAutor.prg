@@ -1,6 +1,6 @@
 #include "sefazclass.ch"
 
-FUNCTION ze_sefaz_NFeEventoAutor( Self, cChave, cCnpj, cOrgaoAutor, ctpAutor, cverAplic, cAutorCnpj, ctpAutorizacao, cCertificado, cAmbiente )
+FUNCTION ze_sefaz_NFeEventoAutor( Self, cChave, cCnpj, cOrgaoAutor, ctpAutor, cverAplic, cCnpjLiberado, ctpAutorizacao, cCertificado, cAmbiente )
 
    LOCAL cDescEvento
 
@@ -15,7 +15,7 @@ FUNCTION ze_sefaz_NFeEventoAutor( Self, cChave, cCnpj, cOrgaoAutor, ctpAutor, cv
    ::cXmlDocumento +=          XmlTag( "tpAutor", ctpAutor ) // 1-Emitente, 2=Destinat, 3=Transp
    ::cXmlDocumento +=          XmlTag( "verAplic", cverAplic ) // versao aplicativo
    ::cXmlDocumento +=          [<autXML>]
-   ::cXmlDocumento +=          XmlTag( iif( Len( cAutorCnpj ) == 11, "CPF", "CNPJ" ), cAutorCnpj )
+   ::cXmlDocumento +=          XmlTag( iif( Len( cCnpjLiberado ) == 11, "CPF", "CNPJ" ), cCnpjLiberado )
    ::cXmlDocumento +=          XmlTag( "tpAutorizacao", ctpAutorizacao ) // 0=direto, 1=permite autorizar outros
    IF ctpAutorizacao == "1"
       ::cXmlDocumento +=       XmlTag( "xCondUso", "O emitente ou destinatario" + ;
@@ -25,7 +25,7 @@ FUNCTION ze_sefaz_NFeEventoAutor( Self, cChave, cCnpj, cOrgaoAutor, ctpAutor, cv
    ENDIF
    ::cXmlDocumento +=          [</autXML>]
    ::cXmlDocumento +=       [</detEvento>]
-   ::NFeEvento( cChave, 1, "110150", ::cXmlDocumento, cCertificado, cAmbiente )
+   ::NFeEvento( cChave, 1, "110150", ::cXmlDocumento, cCertificado, cAmbiente, cCnpj )
 
    RETURN ::cXmlRetorno
 

@@ -20,7 +20,7 @@ FUNCTION ze_sefaz_NFeEventoManifestacao( Self, cChave, cCnpj, cCodigoEvento, xJu
       ::cXmlDocumento +=          XmlTag( "xJust", xJust )
    ENDIF
    ::cXmlDocumento +=       [</detEvento>]
-   ::NFeEvento( cChave, 1, cCodigoEvento, ::cXmlDocumento, cCertificado, cAmbiente )
+   ::NFeEvento( cChave, 1, cCodigoEvento, ::cXmlDocumento, cCertificado, cAmbiente, cCnpj )
 
    RETURN ::cXmlRetorno
 
