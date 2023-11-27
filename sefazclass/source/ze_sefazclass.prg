@@ -45,6 +45,7 @@ CREATE CLASS SefazClass
    VAR    lEnvioSinc      INIT .F.                     // Poucas UFs opção de protocolo
    VAR    lEnvioZip       INIT .F.
    VAR    lConsumidor     INIT .F.                     // NFCe
+   VAR    lContingencia   INIT .F.
    /* pra NFCe */
    VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
    VAR    cCSC            INIT ""                      // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte

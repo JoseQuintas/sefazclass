@@ -5,7 +5,7 @@ FUNCTION ze_sefaz_NFeEventoManifestacao( Self, cChave, cCnpj, cCodigoEvento, xJu
    LOCAL cDescEvento
 
    hb_Default( @cCnpj, Replicate( "0", 14 ) )
-   ::cUF          := "AN"
+   ::cUF := "AN"
 
    DO CASE
    CASE cCodigoEvento == "210200" ; cDescEvento := "Confirmacao da Operacao"

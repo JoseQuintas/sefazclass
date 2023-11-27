@@ -41,15 +41,15 @@ FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente, lEnvioSinc, lEnvioZ
    CASE cProjeto == WS_PROJETO_BPE
       ::cSoapUrl := SoapUrlBpe( ::aSoapUrlList, cUF, cVersao )
    CASE cProjeto == WS_PROJETO_CTE
-      IF cScan == "SVCAN"
-         IF cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
-            ::cSoapURL := SoapURLCTe( ::aSoapUrlList, "SVSP", cVersao ) // SVC_SP não existe
-         ELSEIF cUF $ "MS,MT,SP," + "AP,PE,RR"
-            ::cSoapURL := SoapUrlCTe( ::aSoapUrlList, "SVRS", cVersao ) // SVC_RS não existe
-         ENDIF
-      ELSE
+      DO CASE
+      CASE cSCan == "SVCAN" .AND. cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
+         ::cSoapURL := SoapURLCTe( ::aSoapUrlList, "SVSP", cVersao ) // SVC_SP não existe
+      CASE cScan == "SVCAN" .AND. cUF $ "MS,MT,SP," + "AP,PE,RR"
+         ::cSoapURL := SoapUrlCTe( ::aSoapUrlList, "SVRS", cVersao ) // SVC_RS não existe
+      CASE ::lContingencia
+      OTHERWISE
          ::cSoapUrl := SoapUrlCTe( ::aSoapUrlList, cUF, cVersao )
-      ENDIF
+      ENDCASE
    CASE cProjeto == WS_PROJETO_MDFE
       ::cSoapURL := SoapURLMDFe( ::aSoapUrlList, "SVRS", cVersao )
    CASE cProjeto == WS_PROJETO_NFE
@@ -63,14 +63,29 @@ FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente, lEnvioSinc, lEnvioZ
          ::cSoapURL := ::SoapUrlNFe( ::aSoapUrlList, "SCAN", cVersao )
       CASE cScan == "SVAN"
          ::cSoapUrl := ::SoapUrlNFe( ::aSoapUrlList, "SVAN", cVersao )
+      CASE cScan == "SVCAN" .AND. cUF $ "AM,BA,CE,GO,MA,MS,MT,PA,PE,PI,PR"
+         ::cSoapURL := ::SoapURLNfe( ::aSoapUrlList, "SVCRS", cVersao )
       CASE cScan == "SVCAN"
-         IF cUF $ "AM,BA,CE,GO,MA,MS,MT,PA,PE,PI,PR"
-            ::cSoapURL := ::SoapURLNfe( ::aSoapUrlList, "SVCRS", cVersao )
-         ELSE
-            ::cSoapURL := ::SoapUrlNFe( ::aSoapUrlList, "SVCAN", cVersao )
-         ENDIF
+         ::cSoapURL := ::SoapUrlNFe( ::aSoapUrlList, "SVCAN", cVersao )
       OTHERWISE
-         ::cSoapUrl := ::SoapUrlNfe( ::aSoapUrlList, cUF, cVersao )
+         IF ::lContingencia
+            DO CASE
+            CASE cUF $ "AN," + "AC,AL,AP,CE,DF,ES,MG,,PA,PB,PI,RJ,RN,RO,RR,RS,SC,SE,SP,TO"
+               ::cSoapUrl := ::SoapUrlNfe( ::aSoapUrlList, "SVCAN", cVersao )
+            CASE cUF $ "AM,BA,GO,MA,MS,MT,PE,PR"
+               ::cSoapUrl := ::SoapUrlNfe( ::aSoapUrlList, "SVCRS", cVersao )
+            ENDCASE
+         ELSE
+            ::cSoapUrl := ::SoapUrlNfe( ::aSoapUrlList, cUF, cVersao )
+            IF Empty( ::cSoapUrl )
+               DO CASE
+               CASE cUF $ "MA"
+                  ::cSoapUrl := ::SoapUrlNFe( ::aSoapUrlList, "SVAN", cVersao )
+               CASE cUF $ "AC,AL,AP,CE,DF,ES,PA,PB,PI,RJ,RN,RO,RR,SC,SE,TO"
+                  ::cSoapUrl := ::SoapUrlNFe( ::aSoapUrlList, "SVRS", cVersao )
+               ENDCASE
+            ENDIF
+         ENDIF
       ENDCASE
    ENDCASE
 

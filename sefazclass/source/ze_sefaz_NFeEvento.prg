@@ -17,7 +17,7 @@ FUNCTION ze_sefaz_NFeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCerti
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEvento"
    ENDIF
    cCnpj := DfeEmitente( cChave )
-   ::Setup( cChave, cCertificado, cAmbiente )
+   ::Setup( iif( ::cUF == "AN", "AN", cChave ), cCertificado, cAmbiente )
    ::cXmlDocumento := [<evento versao="1.00" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", Substr( cChave, 1, 2 ) )
