@@ -280,7 +280,7 @@ STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cPassword,
       oCert := CapicomCertificado( cCertCn )
    ENDIF
    IF oCert == NIL
-      cRetorno := "Erro Assinatura: Certificado não encontrado ou vencido"
+      cRetorno := "Erro Assinatura: Certificado não encontrado"
       RETURN .F.
    ENDIF
 
