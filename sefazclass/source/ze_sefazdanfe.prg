@@ -1106,7 +1106,7 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_TITULO1 ]   := "UN"
    ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_TITULO2 ]   := "TRIB"
    ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_CONTEUDO ]  := { || ::aItem[ "uTrib" ] }
-   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_TITULO1 ]   := "QTDE"
+   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_TITULO1 ]   := "QTD"
    ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_TITULO2 ]   := "TRIB"
    ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "qTrib" ] ), 15, ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] ) ) }
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_TITULO1 ]   := "VALOR"
@@ -1134,51 +1134,33 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
          oElement[ LAYOUT_LARGURA ] := Max( oElement[ LAYOUT_LARGURA ], Len( Eval( oElement[ LAYOUT_CONTEUDO ] ) ) )
          oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( Eval( oElement[ LAYOUT_CONTEUDO ] ) ) )
       NEXT
-      IF Val( ::aItemIPI[ "pIPI" ]  ) > 0 .OR. Val( ::aItemIPI[ "vIPI" ] ) > 0 // Se houver IPI no XML, habilita coluna
-         IF ::aLayout[ LAYOUT_IPIVAL, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
-            ::aLayout[ LAYOUT_IPIVAL, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
-         ENDIF
-         IF ::aLayout[ LAYOUT_IPIALI, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
-            ::aLayout[ LAYOUT_IPIALI, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
-         ENDIF
+      IF Val( ::aItemIPI[ "pIPI" ]  ) > 0 .OR. Val( ::aItemIPI[ "vIPI" ] ) > 0
+         AtivaImprime( @::aLayout[ LAYOUT_IPIVAL, LAYOUT_IMPRIME ] )
+         AtivaImprime( @::aLayout[ LAYOUT_IPIALI, LAYOUT_IMPRIME ] )
       ENDIF
       IF Val( ::aItemICMS[ "vBCST" ] ) > 0 .OR. Val( ::aItemICMS[ "vICMSST" ] ) > 0
-         IF ::aLayout[ LAYOUT_SUBBAS, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
-            ::aLayout[ LAYOUT_SUBBAS, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
-         ENDIF
-         IF ::aLayout[ LAYOUT_SUBVAL, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
-            ::aLayout[ LAYOUT_SUBVAL, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
-         ENDIF
+         AtivaImprime( @::aLayout[ LAYOUT_SUBBAS, LAYOUT_IMPRIME ] )
+         AtivaImprime( @::aLayout[ LAYOUT_SUBVAL, LAYOUT_IMPRIME ] )
       ENDIF
       IF Val( ::aItem[ "vDesc" ] ) > 0
-         IF ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
-            ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
-         ENDIF
+         AtivaImprime( @::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] )
       ENDIF
       IF ! Empty( ::aItem[ "cEAN" ] )
-         IF ::aLayout[ LAYOUT_EAN, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
-            ::aLayout[ LAYOUT_EAN, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
-         ENDIF
+         AtivaImprime( @::aLayout[ LAYOUT_EAN, LAYOUT_IMPRIME ] )
       ENDIF
       IF ! Alltrim( ::aItem[ "uCom" ] ) == Alltrim( ::aItem[ "uTrib" ] )
-         IF ::aLayout[ LAYOUT_UN_TRIB, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
-            ::aLayout[ LAYOUT_UN_TRIB, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
-         ENDIF
+         AtivaImprime( @::aLayout[ LAYOUT_UN_TRIB, LAYOUT_IMPRIME ] )
       ENDIF
       IF ! Alltrim( ::aItem[ "qCom" ] ) == Alltrim( ::aItem[ "qTrib" ] )
-         IF ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
-            ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
-         ENDIF
+         AtivaImprime( @::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_IMPRIME ] )
       ENDIF
       IF ! Alltrim( ::aItem[ "vUnCom" ] ) == Alltrim( ::aItem[ "vUnTrib" ] )
-         IF ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
-            ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
-         ENDIF
+         AtivaImprime( @::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] )
       ENDIF
    ENDDO
    // Define tamanho de colunas
    FOR EACH oElement IN ::aLayout
-      IF oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
+      IF oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM .OR. oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIME2XMLTEM
          oElement[ LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME  // não tem no XML, então não sai
       ENDIF
       oElement[ LAYOUT_LARGURA ] += 1
@@ -1187,7 +1169,7 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       oElement[ LAYOUT_LARGURAPDF ] += 4
    NEXT
 
-   FOR nTentativa = 1 TO 5
+   FOR nTentativa = 1 TO 6
       // Desativa colunas não impressas - talvez linha 2
       AEval( ::aLayout, { | oElement | oElement[ LAYOUT_LARGURAPDF ] := iif( oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIMENORMAL, oElement[ LAYOUT_LARGURAPDF ], 0 ) } )
       // Calcula posição das colunas
@@ -1207,12 +1189,16 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       IF ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] > 150
          EXIT
       ENDIF
-      // Se não sobrar espaço pra descrição, desativa colunas
+      // Se não sobrar espaço suficiente pra descrição, desativa colunas
       DO CASE
       CASE nTentativa == 1 ; ::aLayout[ LAYOUT_EAN, LAYOUT_IMPRIME ]      := LAYOUT_NAOIMPRIME
       CASE nTentativa == 2 ; ::aLayout[ LAYOUT_SUBBAS, LAYOUT_IMPRIME ]   := LAYOUT_NAOIMPRIME
       CASE nTentativa == 3 ; ::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
       CASE nTentativa == 4 ; ::aLayout[ LAYOUT_SUBVAL, LAYOUT_IMPRIME ]   := LAYOUT_NAOIMPRIME
+      CASE nTentativa == 5
+         ::aLayout[ LAYOUT_UN_TRIB, LAYOUT_IMPRIME ]    := LAYOUT_NAOIMPRIME
+         ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_IMPRIME ]   := LAYOUT_NAOIMPRIME
+         ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
       ENDCASE
    NEXT
 
@@ -1255,3 +1241,13 @@ METHOD QuadroLocalEntrega() CLASS hbNFeDaNFe
    ::nLinhaPdf -= 17
 
    RETURN NIL
+
+STATIC FUNCTION AtivaImprime( nImprime )
+
+   IF nImprime == LAYOUT_IMPRIMEXMLTEM
+      nImprime := LAYOUT_IMPRIMENORMAL
+   ELSEIF nImprime == LAYOUT_IMPRIME2XMLTEM
+      nImprime := LAYOUT_IMPRIMESEGUNDA
+   ENDIF
+
+   RETURN Nil
