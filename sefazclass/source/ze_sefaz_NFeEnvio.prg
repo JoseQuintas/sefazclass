@@ -9,8 +9,8 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
 
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente, @lEnvioSinc, @lEnvioZip )
-   IF ::lEnvioSinc
-      ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote"
+   IF ::lEnvioZip
+      ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLoteZip"
    ELSE
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote"
    ENDIF

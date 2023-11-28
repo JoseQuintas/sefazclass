@@ -245,6 +245,13 @@ METHOD XmlSoapPost() CLASS SefazClass
       ENDIF
       ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap += [</soap12:Body>]
+   ELSEIF "LOTEZIP" $ Upper( ::cSoapAction )
+      ::cXmlSoap += [<soap12:Body>]
+      ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsgZip xmlns="] + cSoapService + [">]
+      ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
+      ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsgZip>]
+      ::cXmlSoap += [</soap12:Body>]
+
    ELSE
       IF ! "NFERECEPCAOEVENTO" $ Upper( ::cSoapAction )
          ::cXmlSoap += [<soap12:Header>]
@@ -306,7 +313,8 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    IF cSoapAction != NIL .AND. ! Empty( cSoapAction )
       oServer:SetRequestHeader( "SOAPAction", cSoapAction )
    ENDIF
-   IF ::lEnvioSinc .AND. ( ::cProjeto  == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE )
+   IF ( ::lEnvioSinc .AND. ( ::cProjeto  == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE ) ) ;
+      .OR. "LOTEZIP" $ Upper( ::cSoapAction )
       oServer:SetRequestHeader( "Accept-Encoding", "gzip,deflate" )
       oServer:SetRequestHeader( "Content-Encoding", "gzip" )
    ENDIF
@@ -318,7 +326,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       lOk := .T.
    ENDSEQUENCE
    IF ! lOk
-      ::cXmlRetorno := "<xml>*ERRO* Erro: No Send() para " + ::cSoapURL + "</xml>"
+      ::cXmlRetorno := "<xml>*ERRO* Erro: Send falhou " + ::cSoapURL + "</xml>"
       RETURN Nil
    ENDIF
    cRetorno := oServer:ResponseXML:XML
