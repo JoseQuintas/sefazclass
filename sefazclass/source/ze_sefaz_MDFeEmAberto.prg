@@ -4,9 +4,9 @@ FUNCTION ze_sefaz_MDFeEmAberto( Self, cUF, cCNPJ , cCertificado, cAmbiente )
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc/mdfeConsNaoEnc"
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc/mdfeConsNaoEnc"
    cCnpj := SoNumeros( cCnpj )
 
    ::cXmlEnvio := [<consMDFeNaoEnc versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]

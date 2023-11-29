@@ -9,8 +9,8 @@ FUNCTION ze_sefaz_MDFeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCert
    ::cProjeto := WS_PROJETO_MDFE
 
    ::aSoapUrlList := SoapList()
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento/mdfeRecepcaoEvento"
    ::Setup( cChave, cCertificado, cAmbiente )
+   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoEvento/mdfeRecepcaoEvento"
    cCnpj := DfeEmitente( cChave )
    ::cXmlDocumento := [<eventoMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, 2 ) + [">]

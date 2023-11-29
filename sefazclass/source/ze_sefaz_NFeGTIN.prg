@@ -6,7 +6,6 @@ FUNCTION ze_sefaz_NFeGTIN( Self, cGTIN, cCertificado )
    ::aSoapUrlList := SoapList()
    ::cVersao      := "1.00"
    ::Setup( ::cUF, cCertificado )
-   ::cSoapAction := "http://www.portalfiscal.inf.br/nfe/wsdl/ccgConsGtin/ccgConsGTIN"
 
    ::cXmlEnvio := [<consGTIN versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">]
    ::cXmlEnvio += [<GTIN>] + AllTrim( cGTIN ) + [</GTIN>]
@@ -19,4 +18,4 @@ STATIC FUNCTION SoapList()
 
    RETURN { ;
    ;
-   { "**", "1.00P", "https://dfe-servico.svrs.rs.gov.br/ws/ccgConsGTIN/ccgConsGTIN.asmx" } }
+   { "**", "1.00P", "https://dfe-servico.svrs.rs.gov.br/ws/ccgConsGTIN/ccgConsGTIN.asmx", "http://www.portalfiscal.inf.br/nfe/wsdl/ccgConsGtin/ccgConsGTIN" } }

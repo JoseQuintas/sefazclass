@@ -225,7 +225,7 @@ METHOD XmlSoapPost() CLASS SefazClass
    ENDIF
    ::cXmlSoap := XML_UTF8
    ::cXmlSoap += [<soap12:Envelope ] + cXmlns + [>]
-   IF "ccgConsGTIN" $ ::cSoapAction
+   IF "GTIN" $ Upper( ::cSoapAction )
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<ccgConsGTIN xmlns="] + cSoapService + [">]
       ::cXmlSoap +=       [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]

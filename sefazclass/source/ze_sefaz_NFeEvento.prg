@@ -7,6 +7,7 @@ FUNCTION ze_sefaz_NFeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCerti
    hb_Default( @nSequencia, 1 )
    ::lConsumidor := ( DfeModFis( cChave ) == "65" )
    ::aSoapUrlList := SoapList()
+   ::Setup( iif( ::cUF == "AN", "AN", cChave ), cCertificado, cAmbiente )
    IF ::cUF == "AN"
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4/nfeRecepcaoEventoNF"
    ELSEIF ::cUF $ "MA,MS,MT,PI,GO,MG"
@@ -17,7 +18,6 @@ FUNCTION ze_sefaz_NFeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCerti
    IF cCnpj == Nil
       cCnpj := DfeEmitente( cChave )
    ENDIF
-   ::Setup( iif( ::cUF == "AN", "AN", cChave ), cCertificado, cAmbiente )
    ::cXmlDocumento := [<evento versao="1.00" ] + WS_XMLNS_NFE + [>]
    ::cXmlDocumento +=    [<infEvento Id="ID] + cTipoEvento + cChave + StrZero( nSequencia, 2 ) + [">]
    ::cXmlDocumento +=       XmlTag( "cOrgao", iif( ::cUF == "AN", "91", Substr( cChave, 1, 2 ) ) )

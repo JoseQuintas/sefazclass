@@ -11,12 +11,16 @@ FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSin
    ENDIF
    IF ::lEnvioSinc
       ::aSoapUrlList := SoapListSinc()
-      ::cSoapAction := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc/mdfeRecepcao"
    ELSE
       ::aSoapUrlList := SoapList()
-      ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao/MDFeRecepcao"
    ENDIF
    ::Setup( cUF, cCertificado, cAmbiente )
+   // SoapAction depois do setup
+   IF ::lEnvioSinc
+      ::cSoapAction := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc/mdfeRecepcao"
+   ELSE
+      ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao/MDFeRecepcao"
+   ENDIF
 
    IF cXml != NIL
       ::cXmlDocumento := cXml
