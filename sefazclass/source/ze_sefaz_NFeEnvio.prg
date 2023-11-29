@@ -5,11 +5,12 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
    LOCAL oDoc, cChave
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
+   hb_Default( @lEnvioZip, .F. )
    ::cProjeto := WS_PROJETO_NFE
 
    ::aSoapUrlList := SoapList()
-   ::Setup( cUF, cCertificado, cAmbiente, @lEnvioSinc, @lEnvioZip )
-   IF ::lEnvioZip
+   ::Setup( cUF, cCertificado, cAmbiente, @lEnvioSinc )
+   IF lEnvioZip
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLoteZip"
    ELSE
       ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote"

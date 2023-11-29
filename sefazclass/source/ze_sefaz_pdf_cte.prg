@@ -1,6 +1,6 @@
 /*
 ZE_SPEDDACTE - Documento Auxiliar de Conhecimento Eletrônico
-Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
+Baseado no projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 Contribuição DaCTE: MSouzaRunner
 */
 

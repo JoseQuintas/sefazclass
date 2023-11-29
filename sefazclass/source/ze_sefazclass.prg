@@ -13,6 +13,7 @@ CREATE CLASS SefazClass
    METHOD cIndSinc( cValue )                SETGET
    METHOD cFusoHorario                      SETGET
    METHOD cNFCe                             SETGET
+   METHOD lSincrono                         SETGET
    METHOD CTeConsultaProtocolo( ... )       INLINE ::CTeProtocolo( ... )
    METHOD CTeConsultaRecibo( ... )          INLINE ::CTeRetEnvio( ... )
    METHOD CTeLoteEnvia( cXml, cLote, ... )  INLINE (cLote),::CTeEnvio( cXml, ... )
@@ -33,6 +34,8 @@ CREATE CLASS SefazClass
    METHOD MDFeDistribuicaoDFe( ...)         INLINE ::MDFeDistribuicao( ... )
    METHOD MDFeEventoInclusaoCondutor( ... ) INLINE ::MDFeCondutor( ... )
    METHOD NFeStatusServicoSVC( ... )        INLINE ::NFeStatusSVC( ... )
+   METHOD NFeDownload( cCnpj, cChave, cCertificado, cAmbiente ) ;
+      INLINE ::NfeDistribuicao( cCnpj, "", "", cChave, ::UFCodigo( Left( cChave, 2 ) ), cCertificado, cAmbiente )
 
    /* configuração */
    VAR    cProjeto        INIT NIL
@@ -43,7 +46,6 @@ CREATE CLASS SefazClass
    /* contingência e sinc/assinc */
    VAR    cScan           INIT "N"                     // Indicar SCAN/SVAN/SVRS testes iniciais
    VAR    lEnvioSinc      INIT .F.                     // Poucas UFs opção de protocolo
-   VAR    lEnvioZip       INIT .F.
    VAR    lConsumidor     INIT .F.                     // NFCe
    VAR    lContingencia   INIT .F.
    /* pra NFCe */
@@ -78,8 +80,6 @@ CREATE CLASS SefazClass
    VAR    cXmlNameSpace   INIT "xmlns="
    VAR    aSoapUrlList    INIT {}
 
-   METHOD NFeDownload( cCnpj, cChave, cCertificado, cAmbiente ) ;
-      INLINE ::NfeDistribuicao( cCnpj, "", "", cChave, ::UFCodigo( Left( cChave, 2 ) ), cCertificado, cAmbiente )
    METHOD BPeProtocolo( ... )             INLINE ze_sefaz_BPeProtocolo( Self, ... )
    METHOD BPeStatus( ... )                INLINE ze_sefaz_BPeStatus( Self, ... )
    METHOD CTeAddCancelamento( ... )       INLINE ze_sefaz_CTeAddCancelamento( Self, ... )
@@ -143,9 +143,6 @@ CREATE CLASS SefazClass
    METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( Empty( ::cUFTimeZone ), ::cUF, ::cUFTimeZone ), lUTC, ::cUserTimeZone )
    METHOD ValidaXml( cXml, cFileXsd, cIgnoreList )    INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd, cIgnoreList )
 
-   METHOD SoapUrlNfe( aSoapList, cUF, cVersao )
-   METHOD SoapUrlNFCe( aSoapList, cUf, cVersao )
-
    ENDCLASS
 
 METHOD cIndSinc( cValue ) CLASS SefazClass
@@ -175,6 +172,15 @@ METHOD cNFCe( cValue ) CLASS Sefazclass
    ENDIF
 
    RETURN iif( ::lConsumidor, "S", "N" )
+
+METHOD lSincrono( lValue ) CLASS SefazClass
+
+
+   IF lValue != Nil
+      ::lEnvioSinc := lValue
+   ENDIF
+
+   RETURN ::lEnvioSinc
 
 METHOD AssinaXml() CLASS SefazClass
 
@@ -364,42 +370,6 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    ENDCASE
 
    RETURN NIL
-
-METHOD SoapUrlNfe( aSoapList, cUF, cVersao ) CLASS Sefazclass
-
-   LOCAL nPos, cUrl
-
-   nPos := hb_AScan( aSoapList, { | e | ( cUF == e[ 1 ] .OR. e[ 1 ] == "**" ) .AND. cVersao == e[ 2 ] } )
-   IF nPos != 0
-      cUrl := aSoapList[ nPos, 3 ]
-   ENDIF
-   DO CASE
-   CASE ! Empty( cUrl )
-   CASE cUf $ "AC,AL,AP,DF,ES,PB,RJ,RN,RO,RR,SC,SE,TO"
-      cURL := ::SoapURLNFe( aSoapList, "SVRS", cVersao )
-   CASE cUf $ "MA,PA,PI"
-      cURL := ::SoapUrlNFe( aSoapList, "SVAN", cVersao )
-   ENDCASE
-
-   RETURN cUrl
-
-METHOD SoapUrlNFCe( aSoapList, cUf, cVersao ) CLASS Sefazclass
-
-   LOCAL cUrl, nPos
-
-   IF cUF $ "AC,ES,RO,RR"
-      cUrl := ::SoapUrlNFCe( aSoapList, "SVRS", cVersao  )
-   ELSE
-      nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao + "C" == e[ 2 ] } )
-      IF nPos != 0
-         cUrl := aSoapList[ nPos, 3 ]
-      ENDIF
-   ENDIF
-   IF Empty( cUrl )
-      cUrl := ::SoapUrlNFe( aSoapList, cUF, cVersao )
-   ENDIF
-
-   RETURN cUrl
 
 STATIC FUNCTION UFCodigo( cSigla )
 

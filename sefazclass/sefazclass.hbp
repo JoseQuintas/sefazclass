@@ -26,16 +26,16 @@ hbwin.hbc
 
 source/ze_atmseguroclass.prg
 source/ze_sefazclass.prg
-source/ze_sefazcapicom.prg
-source/ze_sefazAssina.prg
-source/ze_sefazAssinachk.prg
-source/ze_sefazDaCte.prg
-source/ze_sefazDaEvento.prg
-source/ze_sefazDaMdfe.prg
-source/ze_sefazDaNfe.prg
-source/ze_sefazDaNFCe.prg
-source/ze_sefazDadfe.prg
-source/ze_sefazxmlclass.prg
+source/ze_sefaz_capicom.prg
+source/ze_sefaz_Assina.prg
+source/ze_sefaz_Assinachk.prg
+source/ze_sefaz_pdf_cte.prg
+source/ze_sefaz_pdf_evento.prg
+source/ze_sefaz_pdf_mdfe.prg
+source/ze_sefaz_pdf_nfe.prg
+source/ze_sefaz_pdf_nfce.prg
+source/ze_sefaz_pdf_comum.prg
+source/ze_sefaz_xmlclass.prg
 source/ze_xmlfunc.prg
 source/ze_miscfunc.prg
 source/ze_digitodoc.prg

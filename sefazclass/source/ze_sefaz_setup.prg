@@ -1,6 +1,6 @@
 #include "sefazclass.ch"
 
-FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente, lEnvioSinc, lEnvioZip )
+FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente, lEnvioSinc )
 
    LOCAL cProjeto, lConsumidor, cScan, cVersao
 
@@ -15,11 +15,6 @@ FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente, lEnvioSinc, lEnvioZ
          ::lEnvioSinc := lEnvioSinc
       ELSEIF ValType( lEnvioSinc ) == "C"
          ::lEnvioSinc := ( lEnvioSinc == "1" )
-      ENDIF
-   ENDIF
-   IF lEnvioZip != Nil
-      IF ValType( lEnvioZip ) == "L"
-         ::lEnvioZip := lEnvioZip
       ENDIF
    ENDIF
 
@@ -46,89 +41,126 @@ FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente, lEnvioSinc, lEnvioZ
          ::cSoapURL := SoapURLCTe( ::aSoapUrlList, "SVSP", cVersao ) // SVC_SP não existe
       CASE cScan == "SVCAN" .AND. cUF $ "MS,MT,SP," + "AP,PE,RR"
          ::cSoapURL := SoapUrlCTe( ::aSoapUrlList, "SVRS", cVersao ) // SVC_RS não existe
-      CASE ::lContingencia
       OTHERWISE
-         ::cSoapUrl := SoapUrlCTe( ::aSoapUrlList, cUF, cVersao )
+         ::cSoapUrl := SoapUrlCTe( ::aSoapUrlList, cUF, cVersao, ::lContingencia )
       ENDCASE
    CASE cProjeto == WS_PROJETO_MDFE
       ::cSoapURL := SoapURLMDFe( ::aSoapUrlList, "SVRS", cVersao )
    CASE cProjeto == WS_PROJETO_NFE
-      DO CASE
-      CASE lConsumidor
-         ::cSoapUrl := ::SoapUrlNFCe( ::aSoapUrlList, cUF, cVersao )
-         IF Empty( ::cSoapUrl )
-            ::cSoapUrl := ::SoapUrlNfe( ::aSoapUrlList, cUF, cVersao )
-         ENDIF
-      CASE cScan == "SCAN"
-         ::cSoapURL := ::SoapUrlNFe( ::aSoapUrlList, "SCAN", cVersao )
-      CASE cScan == "SVAN"
-         ::cSoapUrl := ::SoapUrlNFe( ::aSoapUrlList, "SVAN", cVersao )
-      CASE cScan == "SVCAN" .AND. cUF $ "AM,BA,CE,GO,MA,MS,MT,PA,PE,PI,PR"
-         ::cSoapURL := ::SoapURLNfe( ::aSoapUrlList, "SVCRS", cVersao )
-      CASE cScan == "SVCAN"
-         ::cSoapURL := ::SoapUrlNFe( ::aSoapUrlList, "SVCAN", cVersao )
-      OTHERWISE
-         IF ::lContingencia
-            DO CASE
-            CASE cUF $ "AN," + "AC,AL,AP,CE,DF,ES,MG,,PA,PB,PI,RJ,RN,RO,RR,RS,SC,SE,SP,TO"
-               ::cSoapUrl := ::SoapUrlNfe( ::aSoapUrlList, "SVCAN", cVersao )
-            CASE cUF $ "AM,BA,GO,MA,MS,MT,PE,PR"
-               ::cSoapUrl := ::SoapUrlNfe( ::aSoapUrlList, "SVCRS", cVersao )
-            ENDCASE
-         ELSE
-            ::cSoapUrl := ::SoapUrlNfe( ::aSoapUrlList, cUF, cVersao )
-            IF Empty( ::cSoapUrl )
-               DO CASE
-               CASE cUF $ "MA"
-                  ::cSoapUrl := ::SoapUrlNFe( ::aSoapUrlList, "SVAN", cVersao )
-               CASE cUF $ "AC,AL,AP,CE,DF,ES,PA,PB,PI,RJ,RN,RO,RR,SC,SE,TO"
-                  ::cSoapUrl := ::SoapUrlNFe( ::aSoapUrlList, "SVRS", cVersao )
-               ENDCASE
-            ENDIF
-         ENDIF
-      ENDCASE
+      IF lConsumidor
+         ::cSoapUrl := SoapUrlNFCe( ::aSoapUrlList, cUF, cVersao )
+      ELSE
+         ::cSoapUrl := SoapUrlNfe( ::aSoapUrlList, cUF, cVersao, ::lContingencia )
+      ENDIF
    ENDCASE
 
    RETURN NIL
 
-FUNCTION SoapUrlBpe( aSoapList, cUF, cVersao )
+STATIC FUNCTION SoapUrlBpe( aList, cUF, cVersao )
 
    LOCAL nPos, cUrl
 
-   nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
+   nPos := hb_AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
    IF nPos != 0
-      cUrl := aSoapList[ nPos, 3 ]
+      cUrl := aList[ nPos, 3 ]
    ENDIF
 
    RETURN cUrl
 
-FUNCTION SoapUrlCte( aSoapList, cUF, cVersao )
+STATIC FUNCTION SoapUrlCte( aList, cUF, cVersao, lContingencia )
 
    LOCAL nPos, cUrl
 
-   hb_Default( cVersao, WS_CTE_DEFAULT )
-   nPos := hb_AScan( aSoapList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
-   IF nPos != 0
-      cUrl := aSoapList[ nPos, 3 ]
-   ENDIF
-   IF Empty( cUrl )
-      IF cUF $ "AP,PE,RR"
-         cUrl := SoapUrlCTe( aSoapList, "SVSP", cVersao )
-      ELSEIF cUF $ "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
-         cUrl := SoapUrlCTe( aSoapList, "SVRS", cVersao )
+   hb_Default( @lContingencia, .F. )
+   IF lContingencia
+      IF cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
+         cURL := SoapURLCTe( aList, "SVSP", cVersao )
+         IF Empty( cUrl )
+            cURL := SoapURLCTe( aList, "SP", cVersao )
+         ENDIF
+      ELSEIF cUF $ "MS,MT,SP," + "AP,PE,RR"
+         cURL := SoapUrlCTe( aList, "SVRS", cVersao )
+         IF Empty( cUrl )
+            cURL := SoapUrlCTe( aList, "RS", cVersao )
+         ENDIF
+      ENDIF
+   ELSE
+      nPos := hb_AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
+      IF nPos != 0
+         cUrl := aList[ nPos, 3 ]
+      ELSE
+         IF cUF $ "AP,PE,RR"
+            cUrl := SoapUrlCTe( aList, "SVSP", cVersao )
+            IF Empty( cUrl )
+               cUrl := SoapUrlCte( aList, "SP", cVersao )
+            ENDIF
+         ELSEIF cUF $ "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
+            cUrl := SoapUrlCTe( aList, "SVRS", cVersao )
+            IF Empty( cUrl )
+               cUrl := SoapUrlCTe( aList, "RS", cVersao )
+            ENDIF
+         ENDIF
       ENDIF
    ENDIF
 
    RETURN cUrl
 
-FUNCTION SoapUrlMdfe( aSoapList, cUF, cVersao )
+STATIC FUNCTION SoapUrlMdfe( aList, cUF, cVersao )
 
    LOCAL cUrl, nPos
 
-   nPos := hb_AScan( aSoapList, { | e | cVersao == e[ 2 ] } )
+   nPos := hb_AScan( aList, { | e | cVersao == e[ 2 ] } )
    IF nPos != 0
-      cUrl := aSoapList[ nPos, 3 ]
+      cUrl := aList[ nPos, 3 ]
    ENDIF
    HB_SYMBOL_UNUSED( cUF )
 
    RETURN cUrl
+
+STATIC FUNCTION SoapUrlNfe( aList, cUF, cVersao, lContingencia )
+
+   LOCAL nPos, cUrl
+
+   hb_Default( @lContingencia, .F. )
+
+   IF lContingencia
+      DO CASE
+      CASE cUF $ "AN,AC,AL,AP,CE,DF,ES,MG,,PA,PB,PI,RJ,RN,RO,RR,RS,SC,SE,SP,TO"
+         cUrl := SoapUrlNfe( aList, "SVCAN", cVersao )
+      CASE cUF $ "AM,BA,GO,MA,MS,MT,PE,PR"
+         cUrl := SoapUrlNfe( aList, "SVCRS", cVersao )
+      ENDCASE
+   ELSE
+      nPos := hb_AScan( aList, { | e | ( cUF == e[ 1 ] .OR. e[ 1 ] == "**" ) .AND. cVersao == e[ 2 ] } )
+      IF nPos != 0
+         cUrl := aList[ nPos, 3 ]
+      ELSE
+         DO CASE
+         CASE cUF $ "MA"
+            cUrl := SoapUrlNFe( aList, "SVAN", cVersao, lContingencia )
+         CASE cUF $ "AC,AL,AP,CE,DF,ES,PA,PB,PI,RJ,RN,RO,RR,SC,SE,TO"
+            cURL := SoapURLNFe( aList, "SVRS", cVersao, lContingencia )
+         ENDCASE
+      ENDIF
+   ENDIF
+
+   RETURN cUrl
+
+STATIC FUNCTION SoapUrlNFCe( aList, cUf, cVersao )
+
+   LOCAL cUrl, nPos
+
+   nPos := hb_AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao + "C" == e[ 2 ] } )
+   IF nPos != 0
+      cUrl := aList[ nPos, 3 ]
+   ELSE
+      IF cUF $ "AC,ES,RO,RR"
+         cUrl := SoapUrlNFCe( aList, "SVRS", cVersao  )
+      ENDIF
+   ENDIF
+   IF Empty( cUrl )
+      cUrl := SoapUrlNFe( aList, cUF, cVersao ) // tenta NFE normal
+   ENDIF
+
+   RETURN cUrl
+

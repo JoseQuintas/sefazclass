@@ -1,6 +1,6 @@
 /*
 ZE_SEFAZDAMDFE - Documento Auxiliar de Manifesto Eletrônico de Documentos Fiscais
-Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
+Baseado no projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 Contrbuição DaMdfe:MSouzaRunner
 */
 

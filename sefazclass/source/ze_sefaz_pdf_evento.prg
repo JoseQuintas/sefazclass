@@ -1,6 +1,6 @@
 /*
 ZE_SPEDDAEVENTO - Documento auxiliar de Eventos
-Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
+Baseado no projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 Contribuição DaEvento: MSouzaRunner
 */
 

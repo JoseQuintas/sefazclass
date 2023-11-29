@@ -1,6 +1,6 @@
 /*
 ZE_SPEDDANFE - Documento Auxiliar da Nota Fiscal Eletrônica
-Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
+Baseado no projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 
 Anotação (manual do usuário 6.0):
 Os campos que podem ser colocados na mesma coluna são:

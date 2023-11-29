@@ -1,5 +1,5 @@
 /*
-Fontes originais do projeto hbnfe em https://github.com/fernandoathayde/hbnfe
+Baseado no projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 Contribuição NFCE: LucianoConforto
 
 2018.03.06 Aumento do campo quantidade 7,3
