@@ -15,12 +15,11 @@ FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSin
       ::aSoapUrlList := SoapList()
    ENDIF
    ::Setup( cUF, cCertificado, cAmbiente )
-   // SoapAction depois do setup
-   IF ::lEnvioSinc
-      ::cSoapAction := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc/mdfeRecepcao"
-   ELSE
-      ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao/MDFeRecepcao"
-   ENDIF
+   //IF ::lEnvioSinc
+   //   ::cSoapAction := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc/mdfeRecepcao"
+   //ELSE
+   //   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao/MDFeRecepcao"
+   //ENDIF
 
    IF cXml != NIL
       ::cXmlDocumento := cXml
@@ -76,13 +75,13 @@ STATIC FUNCTION SoapList()
 
 RETURN { ;
    ;
-   { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" }, ;
-   { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx" } }
+   { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx", "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao/mdfeRecepcaoLote" }, ;
+   { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFerecepcao/MDFeRecepcao.asmx", "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao/mdfeRecepcaoLote" } }
 
 STATIC FUNCTION SoapListSinc()
 
 RETURN { ;
    ;
-   { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRecepcaoSinc/MDFeRecepcaoSinc.asmx" }, ;
+   { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRecepcaoSinc/MDFeRecepcaoSinc.asmx", "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc/mdfeRecepcao" }, ;
    ;
-   { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoSinc/MDFeRecepcaoSinc.asmx" } }
+   { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRecepcaoSinc/MDFeRecepcaoSinc.asmx", "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc/mdfeRecepcao" } }

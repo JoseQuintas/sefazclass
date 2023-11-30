@@ -6,7 +6,6 @@ FUNCTION ze_sefaz_BPeProtocolo( Self, cChave, cCertificado, cAmbiente )
    ::cProjeto := WS_PROJETO_BPE
    ::aSoapUrlList := SoapList()
    ::Setup( cChave, cCertificado, cAmbiente )
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP/BpeConsulta"
 
    ::cXmlEnvio := [<consSitBPe> versao="] + ::cVersao + [" ] + WS_XMLNS_BPE + [>]
    ::cXmlEnvio +=   XmlTag( "tpAmb", ::cAmbiente )
@@ -29,10 +28,17 @@ STATIC FUNCTION SoapList()
 
    RETURN { ;
    ;
-   { "MG",   "1.00P", "https://bpe.fazenda.mg.gov.br/bpe/services/BPeConsulta" }, ;
-   { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta" }, ;
-   { "PR",   "1.00P", "https://bpe.fazenda.pr.gov.br/bpe/BpeConsulta" }, ;
-   { "SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ms/bpeConsulta.asmx" }, ;
+   { "MG", "1.00H", "https://bpe.fazenda.mg.gov.br/bpe/services/BPeConsulta", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
+   { "MS", "1.00H", "https://homologacao.bpe.ms.gov.br/ws/BPeConsulta", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
+   { "MT", "1.00H", "https://homologacao.sefaz.mt.gov.br/bpe-ws/services/BPeConsulta", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
+   { "PR", "1.00H", "https://homologacao.bpe.fazenda.pr.gov.br/bpe/BPeConsulta", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsultaBP/bpeConsultaBP" }, ;
+   { "RS/SVRS", "1.00H", "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeConsulta/bpeConsulta.asmx", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
+   { "SP", "1.00H", "https://homologacao.bpe.fazenda.sp.gov.br/BPeWeb/services/BPeConsulta.asmx", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
    ;
-   { "MS",   "1.00H", "https://homologacao.bpe.ms.gov.br/ws/BPeConsulta" } }
-
+   { "MG", "1.00P", "https://bpe.fazenda.mg.gov.br/bpe/services/BPeConsulta", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
+   { "MS", "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP"}, ;
+   { "MS", "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeConsulta", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
+   { "MT", "1.00P", "https://www.sefaz.mt.gov.br/bpe-ws/services/BPeConsulta", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" }, ;
+   { "PR", "1.00P", "https://bpe.fazenda.pr.gov.br/bpe/BPeConsulta", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsultaBP/bpeConsultaBP" }, ;
+   { "RS/SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ws/bpeConsulta/bpeConsulta.asmx", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP"}, ;
+   { "SP", "1.00P", "https://bpe.fazenda.sp.gov.br/BPeWeb/services/BPeConsulta.asmx", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeConsulta/bpeConsultaBP" } }

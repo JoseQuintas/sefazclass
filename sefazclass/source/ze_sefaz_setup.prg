@@ -61,7 +61,7 @@ STATIC FUNCTION SoapUrlBpe( aList, cUF, cVersao, cSoapAction )
 
    LOCAL nPos, cUrl
 
-   nPos := hb_AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
+   nPos := hb_AScan( aList, { | e | cUF $ e[ 1 ] .AND. cVersao == e[ 2 ] } )
    IF nPos != 0
       cUrl := aList[ nPos, 3 ]
       IF Len( aList[ nPos ] ) > 3
@@ -79,17 +79,11 @@ STATIC FUNCTION SoapUrlCte( aList, cUF, cVersao, cSoapAction, lContingencia )
    IF lContingencia
       IF cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
          cURL := SoapURLCTe( aList, "SVSP", cVersao, @cSoapAction )
-         IF Empty( cUrl )
-            cURL := SoapURLCTe( aList, "SP", cVersao, @cSoapAction )
-         ENDIF
       ELSEIF cUF $ "MS,MT,SP," + "AP,PE,RR"
          cURL := SoapUrlCTe( aList, "SVRS", cVersao, @cSoapAction )
-         IF Empty( cUrl )
-            cURL := SoapUrlCTe( aList, "RS", cVersao, @cSoapAction )
-         ENDIF
       ENDIF
    ELSE
-      nPos := hb_AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao == e[ 2 ] } )
+      nPos := hb_AScan( aList, { | e | cUF $ e[ 1 ] .AND. cVersao == e[ 2 ] } )
       IF nPos != 0
          cUrl := aList[ nPos, 3 ]
          IF Len( aList[ nPos ] ) > 3
@@ -98,14 +92,8 @@ STATIC FUNCTION SoapUrlCte( aList, cUF, cVersao, cSoapAction, lContingencia )
       ELSE
          IF cUF $ "AP,PE,RR"
             cUrl := SoapUrlCTe( aList, "SVSP", cVersao, @cSoapAction )
-            IF Empty( cUrl )
-               cUrl := SoapUrlCte( aList, "SP", cVersao, @cSoapAction )
-            ENDIF
          ELSEIF cUF $ "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
             cUrl := SoapUrlCTe( aList, "SVRS", cVersao, @cSoapAction )
-            IF Empty( cUrl )
-               cUrl := SoapUrlCTe( aList, "RS", cVersao, @cSoapAction )
-            ENDIF
          ENDIF
       ENDIF
    ENDIF
@@ -141,7 +129,7 @@ STATIC FUNCTION SoapUrlNfe( aList, cUF, cVersao, cSoapAction, lContingencia )
          cUrl := SoapUrlNfe( aList, "SVCRS", cVersao, @cSoapAction )
       ENDCASE
    ELSE
-      nPos := hb_AScan( aList, { | e | ( cUF == e[ 1 ] .OR. e[ 1 ] == "**" ) .AND. cVersao == e[ 2 ] } )
+      nPos := hb_AScan( aList, { | e | ( cUF $ e[ 1 ] .OR. e[ 1 ] == "**" ) .AND. cVersao == e[ 2 ] } )
       IF nPos != 0
          cUrl := aList[ nPos, 3 ]
          IF Len( aList[ nPos ] ) > 3
@@ -163,7 +151,7 @@ STATIC FUNCTION SoapUrlNFCe( aList, cUf, cVersao, cSoapAction )
 
    LOCAL cUrl, nPos
 
-   nPos := hb_AScan( aList, { | e | cUF == e[ 1 ] .AND. cVersao + "C" == e[ 2 ] } )
+   nPos := hb_AScan( aList, { | e | cUF $ e[ 1 ] .AND. cVersao + "C" == e[ 2 ] } )
    IF nPos != 0
       cUrl := aList[ nPos, 3 ]
       IF Len( aList[ nPos ] ) > 3
@@ -179,4 +167,3 @@ STATIC FUNCTION SoapUrlNFCe( aList, cUf, cVersao, cSoapAction )
    ENDIF
 
    RETURN cUrl
-

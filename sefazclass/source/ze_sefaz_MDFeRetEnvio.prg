@@ -9,7 +9,6 @@ FUNCTION ze_Sefaz_MDFeRetEnvio( Self, cRecibo, cUF, cCertificado, cAmbiente )
    ENDIF
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao/mdfeRetRecepcao"
 
    ::cXmlEnvio := [<consReciMDFe versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -33,7 +32,6 @@ STATIC FUNCTION SoapList()
 
 RETURN { ;
    ;
-   { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" }, ;
+   { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx", "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao/mdfeRetRecepcao" }, ;
    ;
-   { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx" } }
-
+   { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/MDFeRetRecepcao/MDFeRetRecepcao.asmx", "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRetRecepcao/mdfeRetRecepcao" } }

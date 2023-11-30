@@ -6,7 +6,6 @@ FUNCTION ze_sefaz_MDFeEmAberto( Self, cUF, cCNPJ , cCertificado, cAmbiente )
    ::cProjeto := WS_PROJETO_MDFE
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc/mdfeConsNaoEnc"
    cCnpj := SoNumeros( cCnpj )
 
    ::cXmlEnvio := [<consMDFeNaoEnc versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
@@ -26,7 +25,6 @@ STATIC FUNCTION SoapList()
 
 RETURN { ;
    ;
-   { "**",   "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsNaoEnc/MDFeConsNaoEnc.asmx" }, ;
+   { "**", "3.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeConsNaoEnc/MDFeConsNaoEnc.asmx", "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc/mdfeConsNaoEnc" }, ;
    ;
-   { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/ws/mdfeConsNaoEnc/mdfeConsNaoenc.asmx" } }
-
+   { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/ws/mdfeConsNaoEnc/mdfeConsNaoenc.asmx", "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeConsNaoEnc/mdfeConsNaoEnc" } }

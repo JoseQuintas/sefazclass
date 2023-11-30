@@ -9,7 +9,6 @@ FUNCTION ze_sefaz_MDFeDistribuicao( Self, cCnpj, cUltNSU, cNSU, cUF, cCertificad
 
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/MDFeDistribuicaoDFe/mdfeDistDFeInteresse"
 
    ::cXmlEnvio    := [<distDFeInt versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -38,5 +37,6 @@ STATIC FUNCTION SoapList()
 
 RETURN { ;
    ;
-   { "**",   "3.00P", "https://mdfe.svrs.rs.gov.br/WS/MDFeDistribuicaoDFe/MDFeDistribuicaoDFe.asmx" } }
-
+   { "**", "1.00H", "https://mdfe-homologacao.svrs.rs.gov.br/ws/MDFeDistribuicaoDFe/MDFeDistribuicaoDFe.asmx", "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeDistribuicaoDFe/mdfeDistDFeInteresse" }, ;
+   ;
+   { "**", "3.00P", "https://mdfe.svrs.rs.gov.br/WS/MDFeDistribuicaoDFe/MDFeDistribuicaoDFe.asmx", "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeDistribuicaoDFe/mdfeDistDFeInteresse" } }

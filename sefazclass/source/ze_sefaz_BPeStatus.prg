@@ -6,23 +6,31 @@ FUNCTION ze_sefaz_BPeStatus( Self, cUF, cCertificado, cAmbiente )
    ::cProjeto := WS_PROJETO_BPE
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/BpeStatusServicoBP"
 
    ::cXmlEnvio := [<consStatServBPe versao="] + ::cVersao + [" ] + WS_XMLNS_BPE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio +=    XmlTag( "xServ", "STATUS" )
    ::cXmlEnvio += [</consStatServBPe>]
    ::XmlSoapPost()
+   ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+   ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
 
    RETURN ::cXmlRetorno
 
 STATIC FUNCTION SoapList()
 
    RETURN { ;
-   { "MG",   "1.00P", "https://bpe.fazenda.mg.gov.br/bpe/BPeStatusServico" }, ;
-   { "MS",   "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeStatusServico" }, ;
-   { "PR",   "1.00P", "https://bpe.fazenda.pr.gov.br/bpe/BPeStatusServico" }, ;
-   { "SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ms/bpeStatusServico/bpeStatusServico.asmx" }, ;
+   { "MS", "1.00H", "https://homologacao.bpe.ms.gov.br/ws/BPeStatusServico", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoBP" }, ;
+   { "MT", "1.00H", "https://homologacao.sefaz.mt.gov.br/bpe-ws/services/BPeStatusServico", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoBP" }, ;
+   { "PR", "1.00H", "https://homologacao.bpe.fazenda.pr.gov.br/bpe/BPeStatusServico", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoBP" }, ;
+   { "RS/SVRS", "1.00H", "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeStatusServico/bpeStatusServico.asmx", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoCT" }, ;
+   { "SP", "1.00H", "https://homologacao.bpe.fazenda.sp.gov.br/BPeWeb/services/BPeStatusServico.asmx", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoBP" }, ;
+   { "SVRS", "1.00H", "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeStatusServico/bpeStatusServico.asmx", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoCT" }, ;
    ;
-   { "MS",   "1.00H", "https://homologacao.bpe.ms.gov.br/ws/BPeStatusServico" }, ;
-   { "SVRS", "1.00H", "https://bpe-homologacao.svrs.rs.gov.br/ws/bpeStatusServico/bpeStatusServico.asmx" } }
+   { "MG", "1.00P", "https://bpe.fazenda.mg.gov.br/bpe/services/BPeStatusServico", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoBP" }, ;
+   { "MS", "1.00P", "https://bpe.fazenda.ms.gov.br/ws/BPeStatusServico", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoBP" }, ;
+   { "MT", "1.00P", "https://www.sefaz.mt.gov.br/bpe-ws/services/BPeStatusServico", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoBP" }, ;
+   { "PR", "1.00P", "https://bpe.fazenda.pr.gov.br/bpe/BPeStatusServico", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoBP" }, ;
+   { "RS/SVRS", "1.00P", "https://bpe.svrs.rs.gov.br/ws/bpeStatusServico/bpeStatusServico.asmx", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoCT" }, ;
+   { "SP", "1.00P", "https://bpe.fazenda.sp.gov.br/BPeWeb/services/BPeStatusServico.asmx", "http://www.portalfiscal.inf.br/bpe/wsdl/BPeStatusServico/bpeStatusServicoBP" } }
+
