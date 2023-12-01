@@ -12,7 +12,6 @@ FUNCTION ze_sefaz_NFeDistribuicao( Self, cCnpj, cUltNSU, cNSU, cChave, cUF, cCer
    ::cUF := "AN"
    ::aSoapUrlList := SoapList()
    ::Setup( "AN", cCertificado, cAmbiente )
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe/nfeDistDFeInteresse"
    ::cXmlEnvio    := [<distDFeInt ] + WS_XMLNS_NFE + [ versao="1.01">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    IF ! Empty( cUF )
@@ -49,8 +48,10 @@ STATIC FUNCTION SoapList()
 
    RETURN { ;
    ;
-   { "AN",   "3.10P", "https://www1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx" }, ;
+   { "AN", "3.10H", "https://hom1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe/nfeDistDFeInteresse" }, ;
    ;
-   { "AN",   "4.00P", "https://www1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx" }, ;
+   { "AN", "3.10P", "https://www1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe/nfeDistDFeInteresse" }, ;
    ;
-   { "AN",   "4.00H", "https://hom1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx" } }
+   { "AN", "4.00H", "https://hom1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe/nfeDistDFeInteresse" }, ;
+   ;
+   { "AN", "4.00P", "https://www1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeDistribuicaoDFe/nfeDistDFeInteresse" } }

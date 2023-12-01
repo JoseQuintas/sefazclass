@@ -8,10 +8,7 @@ FUNCTION ze_sefaz_CTeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   IF ::cVersao == "3.00"
-      ::cSoapAction := "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote"
-   ELSE
-      ::cSoapAction := "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao"
+   IF ::cVersao == "4.00"
       ::lEnvioSinc := .T.
    ENDIF
    IF cXml != NIL
@@ -64,20 +61,30 @@ STATIC FUNCTION SoapList()
 
    RETURN { ;
    ;
-   { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao" }, ;
-   { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteRecepcao" }, ;
-   { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao" }, ;
-   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcao" }, ;
-   { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-   { "SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-   { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
+   { "MG",      "3.00H", "https://hcte.fazenda.mg.gov.br/cte/services/CteRecepcao", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
+   { "MS",      "3.00H", "https://homologacao.cte.ms.gov.br/ws/CteRecepcao", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
+   { "MT",      "3.00H", "https://homologacao.sefaz.mt.gov.br/ctews/services/CteRecepcao", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
+   { "PR",      "3.00H", "https://homologacao.cte.fazenda.pr.gov.br/cte/CteRecepcao", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
+   { "RS/SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
+   { "SP/SVSP", "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
    ;
-   { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx" }, ;
-   { "PR",   "3.00H", "https://homologacao.cte.fazenda.pr.gov.br/cte/CteRecepcao" }, ;
-   { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx" }, ;
+   { "MG",      "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
+   { "MS",      "3.00P", "https://producao.cte.ms.gov.br/ws/CteRecepcao", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
+   { "MT",      "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
+   { "PR",      "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteRecepcao", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
+   { "RS/SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
+   { "SP/SVSP", "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote" }, ;
    ;
-   { "SP",   "4.00P", "https://nfe.fazenda.sp.gov.br/CTeWS/WS/CTeRecepcaoSincV4.asmx" }, ;
-   { "PR",   "4.00P", "https://cte.fazenda.pr.gov.br/cte4/CTeRecepcaoSincV4" }, ;
+   { "MG",      "4.00H", "https://hcte.fazenda.mg.gov.br/cte/services/CTeRecepcaoSincV4", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" }, ;
+   { "MS",      "4.00H", "https://homologacao.cte.ms.gov.br/ws/CTeRecepcaoSincV4", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" }, ;
+   { "MT",      "4.00H", "https://homologacao.sefaz.mt.gov.br/ctews2/services/CTeRecepcaoSincV4", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" }, ;
+   { "PR",      "4.00H", "https://homologacao.cte.fazenda.pr.gov.br/cte4/CTeRecepcaoSincV4", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" }, ;
+   { "RS/SVRS", "4.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/CTeRecepcaoSincV4/CTeRecepcaoSincV4.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" }, ;
+   { "SP/SVSP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeWS/WS/CTeRecepcaoSincV4.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" }, ;
    ;
-   { "SP",   "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeWS/WS/CTeRecepcaoSincV4.asmx" }, ;
-   { "PR",   "4.00H", "https://homologacao.cte.fazenda.pr.gov.br/cte4/CTeRecepcaoSincV4" } }
+   { "MG",      "4.00P", "https://cte.fazenda.mg.gov.br/cte/services/CTeRecepcaoSincV4", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" }, ;
+   { "MS",      "4.00P", "https://producao.cte.ms.gov.br/ws/CTeRecepcaoSincV4", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" }, ;
+   { "MT",      "4.00P", "https://cte.sefaz.mt.gov.br/ctews2/services/CTeRecepcaoSincV4", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" }, ;
+   { "PR",      "4.00P", "https://cte.fazenda.pr.gov.br/cte4/CTeRecepcaoSincV4", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" }, ;
+   { "RS/SVRS", "4.00P", "https://cte.svrs.rs.gov.br/ws/CTeRecepcaoSincV4/CTeRecepcaoSincV4.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" }, ;
+   { "SP/SVSP", "4.00P", "https://nfe.fazenda.sp.gov.br/CTeWS/WS/CTeRecepcaoSincV4.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CTeRecepcaoSincV4/cteRecepcao" } }

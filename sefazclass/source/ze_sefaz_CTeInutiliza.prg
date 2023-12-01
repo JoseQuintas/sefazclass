@@ -6,7 +6,6 @@ FUNCTION ze_sefaz_CTeInutiliza( Self, cAno, cCnpj, cMod, cSerie, cNumIni, cNumFi
    ::cProjeto := WS_PROJETO_CTE
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction  := "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT"
    cCnpj := SoNumeros( cCnpj )
 
    IF Len( cAno ) != 2
@@ -49,14 +48,11 @@ STATIC FUNCTION SoapList()
 
 RETURN { ;
    ;
-   { "MG",   "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao" }, ;
-   { "MS",   "3.00P", "https://producao.cte.ms.gov.br/ws/CteInutilizacao" }, ;
-   { "MT",   "3.00P", "https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao" }, ;
-   { "PR",   "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao" }, ;
-   { "SP",   "3.00P", "https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
-   { "SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" }, ;
+   { "MG",      "3.00H", "https://hcte.fazenda.mg.gov.br/cte/services/CteInutilizacao", "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT" }, ;
+   { "MT",      "3.00H", "https://homologacao.sefaz.mt.gov.br/ctews/services/CteInutilizacao", "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT" }, ;
+   { "PR",      "3.00H", "https://homologacao.cte.fazenda.pr.gov.br/cte/CteInutilizacao", "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT" }, ;
+   { "RS/SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT" }, ;
    ;
-   { "SP",   "3.00H", "https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx" }, ;
-   { "PR",   "3.00H", "https://homologacao.cte.fazenda.pr.gov.br/cte/CteInutilizacao" }, ;
-   { "SVRS", "3.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx" } }
-
+   { "MG",      "3.00P", "https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao", "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT" }, ;
+   { "PR",      "3.00P", "https://cte.fazenda.pr.gov.br/cte/CteInutilizacao", "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT" }, ;
+   { "RS/SVRS", "3.00P", "https://cte.svrs.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT" } }

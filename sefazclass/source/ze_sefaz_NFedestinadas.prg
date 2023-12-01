@@ -10,7 +10,6 @@ FUNCTION ze_sefaz_NFeDestinadas( Self, cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cC
 
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   ::cSoapAction := "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest/nfeConsultaNFDest"
 
    ::cXmlEnvio    := [<consNFeDest versao="] + ::cVersao + [">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
@@ -29,8 +28,7 @@ STATIC FUNCTION SoapList()
 
    RETURN { ;
    ;
-   { "RS",   "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx" }, ;
-   { "AN",   "3.10P", "https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx" }, ;
+   { "RS",   "3.10P", "https://nfe.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest/nfeConsultaNFDest" }, ;
+   { "AN",   "3.10P", "https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest/nfeConsultaNFDest" }, ;
    ;
-   { "RS",   "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx" } }
-
+   { "RS",   "3.10H", "https://nfe-homologacao.sefazrs.rs.gov.br/ws/nfeConsultaDest/nfeConsultaDest.asmx", "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest/nfeConsultaNFDest" } }
