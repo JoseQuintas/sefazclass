@@ -48,7 +48,6 @@ RETURN { ;
    { "MT",      "4.00H", "https://homologacao.sefaz.mt.gov.br/ctews2/services/CTeStatusServicoV4", "http://www.portalfiscal.inf.br/cte/wsdl/CTeStatusServicoV4/cteStatusServicoCT" }, ;
    { "PR",      "4.00H", "https://homologacao.cte.fazenda.pr.gov.br/cte4/CTeStatusServicoV4", "http://www.portalfiscal.inf.br/cte/wsdl/CTeStatusServicoV4/cteStatusServicoCT" }, ;
    { "RS/SVRS", "4.00H", "https://cte-homologacao.svrs.rs.gov.br/ws/CTeStatusServicoV4/CTeStatusServicoV4.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CTeStatusServicoV4/cteStatusServicoCT" }, ;
-   { "SP",      "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeWS/WS/CTeStatusServicoV4.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CTeStatusServicoV4/cteStatusServicoCT" }, ;
    { "SP/SVSP", "4.00H", "https://homologacao.nfe.fazenda.sp.gov.br/CTeWS/WS/CTeStatusServicoV4.asmx", "http://www.portalfiscal.inf.br/cte/wsdl/CTeStatusServicoV4/cteStatusServicoCT" }, ;
    ;
    { "MG",      "4.00P", "https://cte.fazenda.mg.gov.br/cte/services/CTeConsultaV4", "http://www.portalfiscal.inf.br/cte/wsdl/CTeConsultaV4/cteConsultaCT" }, ;
