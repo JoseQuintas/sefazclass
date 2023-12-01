@@ -18,7 +18,7 @@
 
 #define WS_BPE_DEFAULT  "1.00"
 #define WS_NFE_DEFAULT  "4.00"
-#define WS_CTE_DEFAULT  "3.00"
+#define WS_CTE_DEFAULT  "4.00"
 #define WS_MDFE_DEFAULT "3.00"
 
 #define WS_BPE_RECEPCAO { ;
