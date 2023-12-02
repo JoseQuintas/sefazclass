@@ -16,7 +16,7 @@ CREATE CLASS hbNFeDaGeral
    VAR    cDesenvolvedor INIT ""
    VAR    cLogoFile      INIT ""
    VAR    cRetorno       INIT ""
-   VAR    lQuadroEntrega INIT .F.
+   VAR    lQuadroEntrega INIT .T.
 
    METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar )
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
