@@ -5,15 +5,15 @@ Outubro/2023
 
 FUNCTION ze_Calculo341( SELF )
 
-   LOCAL cDigitoNosso
+   LOCAL cDigitoNBancario
 
    ::cBancoDigito := "341-7"
    ::cLocalPagto  := "PAGUE PELO APLICATIVO, INTERNET, AGÊNCIAS OU CORRESPONDENTES"
-   cDigitoNosso := ::Modulo10_All( StrZero( ::nAgencia, 4 ) + ;
+   cDigitoNBancario := ::Modulo10_All( StrZero( ::nAgencia, 4 ) + ;
       Left( StrZero( ::nConta, 6 ), 5 ) + ;
       StrZero( ::nCarteira, 3 ) + ;
       StrZero( ::nBancario, 8 ) )
-   ::cBolNumero := StrZero( ::nCarteira, 3 ) + "/" + StrZero( ::nBancario, 8 ) + "-" + cDigitoNosso
+   ::cBolNumero := StrZero( ::nCarteira, 3 ) + "/" + StrZero( ::nBancario, 8 ) + "-" + cDigitoNBancario
    ::cBolConta  := StrZero( ::nAgencia, 4 ) + " / " + Transform( StrZero( ::nConta, 6 ), "@R 99999-9" )
 
    // Codigo de barras
@@ -24,7 +24,7 @@ FUNCTION ze_Calculo341( SELF )
       StrZero( ::nValor * 100, 10 ) + ;
       StrZero( ::nCarteira, 3 ) + ;
       StrZero( ::nBancario, 8 ) + ;
-      cDigitoNosso + ;
+      cDigitoNBancario + ;
       StrZero( ::nAgencia, 4 ) + ;
       StrZero( ::nConta, 6 ) + ;
       "000"
