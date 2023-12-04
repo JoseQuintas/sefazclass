@@ -2,7 +2,7 @@
 
 FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente, lEnvioSinc )
 
-   LOCAL cProjeto, lConsumidor, cScan, cVersao
+   LOCAL cProjeto, lConsumidor, cVersao
 
    IF cCertificado != Nil
       ::cCertificado := cCertificado
@@ -31,20 +31,12 @@ FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente, lEnvioSinc )
    cUF           := ::cUF
    cProjeto      := ::cProjeto
    lConsumidor   := ::lConsumidor
-   cScan         := ::cScan
    cVersao       := ::cVersao + iif( cAmbiente == WS_AMBIENTE_PRODUCAO, "P", "H" )
    DO CASE
    CASE cProjeto == WS_PROJETO_BPE
       ::cSoapUrl := SoapUrlBpe( ::aSoapUrlList, cUF, cVersao, @::cSoapAction )
    CASE cProjeto == WS_PROJETO_CTE
-      DO CASE
-      CASE cSCan == "SVCAN" .AND. cUF $ "MG,PR,RS," + "AC,AL,AM,BA,CE,DF,ES,GO,MA,PA,PB,PI,RJ,RN,RO,RS,SC,SE,TO"
-         ::cSoapURL := SoapURLCTe( ::aSoapUrlList, "SVSP", cVersao, @::cSoapAction ) // SVC_SP não existe
-      CASE cScan == "SVCAN" .AND. cUF $ "MS,MT,SP," + "AP,PE,RR"
-         ::cSoapURL := SoapUrlCTe( ::aSoapUrlList, "SVRS", cVersao, @::cSoapAction ) // SVC_RS não existe
-      OTHERWISE
-         ::cSoapUrl := SoapUrlCTe( ::aSoapUrlList, cUF, cVersao, @::cSoapAction, ::lContingencia )
-      ENDCASE
+      ::cSoapUrl := SoapUrlCTe( ::aSoapUrlList, cUF, cVersao, @::cSoapAction, ::lContingencia )
    CASE cProjeto == WS_PROJETO_MDFE
       ::cSoapURL := SoapURLMDFe( ::aSoapUrlList, "SVRS", cVersao, @::cSoapAction )
    CASE cProjeto == WS_PROJETO_NFE
