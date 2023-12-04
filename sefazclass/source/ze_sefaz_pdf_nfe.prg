@@ -385,7 +385,7 @@ METHOD NovaPagina() CLASS hbNFeDaNFe
    ELSEIF ! Empty( ::aInfCanc[ "nProt" ] )
       ::DrawAviso( "CANCELADO EM " + ::aInfCanc[ "dhRegEvento" ] + " nProt " + ::aInfCanc[ "nProt" ] )
    ELSEIF ::aInfProt[ "cStat" ] $ "302"
-      ::DrawAviso( ::aInfProt[ "xMotivo" ] + " " + ::aInfProt[ "dhRegReceb" ] + " nProt " + ::aInfProt[ "nProt" ] )
+      ::DrawAviso( ::aInfProt[ "xMotivo" ] + " " + ::aInfProt[ "dhRecbto" ] + " nProt " + ::aInfProt[ "nProt" ] )
    ENDIF
    ::nLinhaPdf := HPDF_Page_GetHeight( ::oPDFPage ) - 8                    // Margem Superior
 
