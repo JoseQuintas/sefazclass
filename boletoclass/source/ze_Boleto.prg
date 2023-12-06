@@ -2,14 +2,14 @@
 
 CREATE CLASS BoletoClass
 
-   VAR    nBanco       INIT 0
-   VAR    nAgencia     INIT 0 // com dígito, ver banco
-   VAR    nConta       INIT 0
+   VAR    nBanco       INIT 0 // Conforme banco, não é o que parece
+   VAR    nAgencia     INIT 0 // Conforme banco, não é o que parece
+   VAR    nConta       INIT 0 // Conforme banco, não é o que parece
    VAR    nCarteira    INIT 0
    VAR    cAceite      INIT "N"
-   VAR    cNumDoc      INIT ""
+   VAR    cNumDoc      INIT "" // Tem banco que limita a números
    VAR    cNumDocAux   INIT ""
-   VAR    nBancario    INIT 0
+   VAR    nBancario    INIT 0 // Itaú limitado a 8 dígitos
    VAR    dDatEmi      INIT Date()
    VAR    dDatVen      INIT Date()
    VAR    nValor       INIT 0
@@ -34,15 +34,15 @@ CREATE CLASS BoletoClass
    VAR    cAvalCnpj    INIT ""
    VAR    nFormato     INIT 0 // Pra exceções temporárias ou não
    // ver manual do banco
-   VAR    nMoeda       INIT 9  // No boleto é sempre real
-   VAR    nEspecie     INIT 1  // Duplicata mercantil
+   VAR    nMoeda       INIT 9    // No boleto é sempre real
+   VAR    nEspecie     INIT 1    // Duplicata mercantil
    VAR    cBolEspecie  INIT "DM" // para o PDF
-   VAR    nIdEmpresa   INIT 0  // alguns bancos
+   VAR    nIdEmpresa   INIT 0    // alguns bancos
    VAR    aMsgCodList  INIT { Space(2), Space(2) } // alguns bancos
-   VAR    aMsgTxtList  INIT {} // alguns bancos
-   VAR    cPixCode     INIT "" // ver banco
-   VAR    nRemessa     INIT 1  // ver banco
-   // Preenchidos por Calculo()
+   VAR    aMsgTxtList  INIT {}   // alguns bancos
+   VAR    cPixCode     INIT ""   // ver banco
+   VAR    nRemessa     INIT 1    // ver banco
+   // Preenchidos por Calculo() e usados no PDF/boleto
    VAR    cBolNumero   INIT ""
    VAR    cBolConta    INIT ""
    VAR    cBancoDigito INIT ""
