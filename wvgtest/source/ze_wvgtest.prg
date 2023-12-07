@@ -426,31 +426,31 @@ METHOD wvgTstUpDown:SetValues( nValue, nRangeMin, nRangeMax )
 //   nControlId := iif( HB_ISNUMERIC( nControlId ), nControlId, -1 )
 //
 //   DO CASE
-//   CASE .T.                            ; RETURN NIL // remove when need debug
-//   CASE nEvent == 0 /* WM_NULL */      ; /*   0 */ xEvent := "WM_NULL"
-//   CASE nEvent == WM_CREATE        ; /*   1 */ xEvent := "WM_CREATE"
-//   CASE nEvent == WM_DESTROY       ; /*   2 */ xEvent := "WM_DESTROY"
-//   CASE nEvent == WM_MOVE          ; /*   3 */ xEvent := "WM_MOVE "
-//   CASE nEvent == WM_SIZE          ; /*   5 */ xEvent := "WM_SIZE"
-//   CASE nEVent == WM_ACTIVATE      ; /*   6 */ xEvent := "WM_ACTIVATE"
-//   CASE nEvent == WM_SETFOCUS      ; /*   7 */ xEvent := "WM_SETFOCUS"
-//   CASE nEvent == WM_KILLFOCUS     ; /*   8 */ xEvent := "WM_KILLFOCUS"
-//   CASE nEvent == WM_ENABLE        ; /*  10 */ RETURN NIL // xEvent := "WM_ENABLE"
-//   CASE nEvent == WM_SETREDRAW     ; /*  11 */ xEvent := "WM_SETREDRAW"
-//   CASE nEvent == WM_SETTEXT       ; /*  12 */ RETURN NIL // xEvent := "WM_SETTEXT"
-//   CASE nEVent == WM_GETTEXT       ; /*  13 */ xEvent := "WM_GETTEXT"
-//   CASE nEvent == WM_GETTEXTLENGTH ; /*  14 */ xEvent := "WM_GETTEXTLENGTH"
-//   CASE nEvent == WM_PAINT         ; /*  15 */ xEvent := "WM_PAINT"
-//   CASE nEvent == WM_CLOSE         ; /*  16 */ xEvent := "WM_CLOSE"       // On Trackbar means value changed
-//   CASE nEvent == WM_QUERYENDSESSION ; /* 17 */ xEvent := "WM_QUERYENDSESSION"
-//   CASE nEvent == WM_ERASEBKGND    ; /*  20 */ xEvent := "WM_ERASEBKGND"
+//   CASE .T.  ; RETURN NIL // remove when need debug
+//   CASE nEvent == 0 /* WM_NULL */ ;      /*   0 */ xEvent := "WM_NULL"
+//   CASE nEvent == WM_CREATE ;            /*   1 */ xEvent := "WM_CREATE"
+//   CASE nEvent == WM_DESTROY ;           /*   2 */ xEvent := "WM_DESTROY"
+//   CASE nEvent == WM_MOVE ;              /*   3 */ xEvent := "WM_MOVE "
+//   CASE nEvent == WM_SIZE ;              /*   5 */ xEvent := "WM_SIZE"
+//   CASE nEVent == WM_ACTIVATE ;          /*   6 */ xEvent := "WM_ACTIVATE"
+//   CASE nEvent == WM_SETFOCUS ;          /*   7 */ xEvent := "WM_SETFOCUS"
+//   CASE nEvent == WM_KILLFOCUS ;         /*   8 */ xEvent := "WM_KILLFOCUS"
+//   CASE nEvent == WM_ENABLE ;            /*  10 */ RETURN NIL // xEvent := "WM_ENABLE"
+//   CASE nEvent == WM_SETREDRAW ;         /*  11 */ xEvent := "WM_SETREDRAW"
+//   CASE nEvent == WM_SETTEXT ;           /*  12 */ RETURN NIL // xEvent := "WM_SETTEXT"
+//   CASE nEVent == WM_GETTEXT ;           /*  13 */ xEvent := "WM_GETTEXT"
+//   CASE nEvent == WM_GETTEXTLENGTH ;     /*  14 */ xEvent := "WM_GETTEXTLENGTH"
+//   CASE nEvent == WM_PAINT ;             /*  15 */ xEvent := "WM_PAINT"
+//   CASE nEvent == WM_CLOSE ;             /*  16 */ xEvent := "WM_CLOSE"       // On Trackbar value changed
+//   CASE nEvent == WM_QUERYENDSESSION ;   /*  17 */ xEvent := "WM_QUERYENDSESSION"
+//   CASE nEvent == WM_ERASEBKGND ;        /*  20 */ xEvent := "WM_ERASEBKGND"
 //   CASE nEvent == 25 /* WM_CTLCOLOR */ ; /*  25 */ xEvent := "WM_CTLCOLOR"
-//   CASE nEvent == WM_SETFONT       ; /*  48 */ xEvent := "WM_SETFONT"
-//   CASE nEvent == WM_GETFONT       ; /*  49 */ xEvent := "WM_GETFONT"
-//   CASE nEvent == WM_NOTIFY        ; /*  78 */ xEvent := "WM_NOTIFY"
-//   CASE nEvent == WM_GETICON       ; /* 127 */ xEvent := "WM_GETICON"
-//   CASE nEvent == WM_SETICON       ; /* 128 */ xEvent := "WM_SETICON"
-//   CASE nEvent == WM_COMMAND       ; /* 273 */ xEvent := "WM_COMMAND"
+//   CASE nEvent == WM_SETFONT ;           /*  48 */ xEvent := "WM_SETFONT"
+//   CASE nEvent == WM_GETFONT ;           /*  49 */ xEvent := "WM_GETFONT"
+//   CASE nEvent == WM_NOTIFY ;            /*  78 */ xEvent := "WM_NOTIFY"
+//   CASE nEvent == WM_GETICON ;           /* 127 */ xEvent := "WM_GETICON"
+//   CASE nEvent == WM_SETICON ;           /* 128 */ xEvent := "WM_SETICON"
+//   CASE nEvent == WM_COMMAND ;           /* 273 */ xEvent := "WM_COMMAND"
 //   OTHERWISE
 //   ENDCASE
 //   xText := Time() + " " + cWhere + " " + Str( nControlId, 6 ) + " " + Str( nEvent, 6 ) + " " + xEvent
