@@ -7,7 +7,9 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    hb_Default( @lEnvioZip, .F. )
    ::cProjeto := WS_PROJETO_NFE
-
+   IF lEnvioSinc != Nil
+      ::lEnvioSinc := lEnvioSinc
+   ENDIF
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente, @lEnvioSinc )
    IF lEnvioZip
