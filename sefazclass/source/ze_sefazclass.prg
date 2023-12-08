@@ -44,7 +44,8 @@ CREATE CLASS SefazClass
    VAR    cUF             INIT "SP"                    // Modificada conforme método
    VAR    cCertificado    INIT ""                      // CN (NOME) do certificado
    /* contingência e sinc/assinc */
-   VAR    lEnvioSinc      INIT .F.                     // Poucas UFs opção de protocolo
+   VAR    lEnvioSinc      INIT .F.                     // Envio já retorna protocolo
+   VAR    lEnvioZip       INIT .F.                     // Envio de zip
    VAR    lConsumidor     INIT .F.                     // NFCe
    VAR    lContingencia   INIT .F.
    /* pra NFCe */

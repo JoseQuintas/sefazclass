@@ -10,9 +10,12 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
    IF lEnvioSinc != Nil
       ::lEnvioSinc := lEnvioSinc
    ENDIF
+   IF lEnvioZip != Nil
+      ::lEnvioZip := lEnvioZip
+   ENDIF
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente, @lEnvioSinc )
-   IF lEnvioZip
+   IF ::lEnvioZip
       ::cSoapAction += "Zip"
    ENDIF
 
