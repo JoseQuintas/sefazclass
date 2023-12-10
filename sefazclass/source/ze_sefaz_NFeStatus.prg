@@ -9,11 +9,6 @@ FUNCTION ze_Sefaz_NFeStatus( Self, cUF, cCertificado, cAmbiente, lContingencia )
    ENDIF
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   //IF ::lContingencia .OR. ( ::cUF $ 'MA,MS,MT,PI,GO,MG' .AND. ::lConsumidor )
-   //   ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4/NfeStatusServico"
-   //ELSE
-   //   ::cSoapAction  := "http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4/nfeStatusServicoNF"
-   //ENDIF
 
    ::cXmlEnvio    := [<consStatServ versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
