@@ -50,5 +50,5 @@ Cabe ao usuário da classe fazer os testes finais e informar algum endereço errad
 
 NFE 4.00
 NFCE 4.00
-CTE 3.00
+CTE 4.00
 MDFE 3.00
