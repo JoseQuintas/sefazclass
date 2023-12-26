@@ -31,33 +31,26 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
 
    ::cXmlEnvio := [<enviNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
    ::cXmlEnvio += XmlTag( "idLote", "1" )
-   ::cXmlEnvio += XmlTag( "indSinc",iif( ::lEnvioSinc, "1", "0" ) )
+   ::cXmlEnvio += XmlTag( "indSinc", iif( ::lEnvioSinc, "1", "0" ) )
    ::cXmlEnvio += ::cXmlDocumento
    ::cXmlEnvio += [</enviNFe>]
    ::XmlSoapPost()
-   IF ! ::lEnvioSinc
-      ::cXmlRecibo := ::cXmlRetorno
-      ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
-      ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
-      ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
-      IF ! Empty( ::cRecibo )
-         Inkey( ::nTempoEspera )
-         ::NfeRetEnvio()
-         IF hb_ASCan( { "104", "105" }, ::cStatus,,, .T. ) != 0
-            oDoc   := XmlToDoc( ::cXmlDocumento, .F. )
-            cChave := oDoc:cChave
-            Inkey( ::nTempoEspera )
-            ::NfeProtocolo( cChave, ::cUF, ::cCertificado, ::cAmbiente )
-            IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
-               ::cXmlProtocolo := ::cXmlRetorno
-            ENDIF
-         ENDIF
-         ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
-      ENDIF
-   ELSE
-      ::cXmlRecibo    := ::cXmlRetorno
+   ::cXmlRecibo := ::cXmlRetorno
+   ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
+   ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
+   ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
+   IF ! "infProt" $ ::cXmlRetorno
+      Inkey( ::nTempoEspera )
+      ::NfeRetEnvio()
+   ENDIF
+   IF ! "infProt" $ ::cXmlRetorno .AND. hb_ASCan( { "103", "104", "105" }, ::cStatus,,, .T. ) != 0
+      oDoc   := XmlToDoc( ::cXmlDocumento, .F. )
+      cChave := oDoc:cChave
+      Inkey( ::nTempoEspera )
+      ::NfeProtocolo( cChave, ::cUF, ::cCertificado, ::cAmbiente )
+   ENDIF
+   IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
       ::cXmlProtocolo := ::cXmlRetorno
-      ::cRecibo       := ""
       ::NfeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
    ENDIF
 

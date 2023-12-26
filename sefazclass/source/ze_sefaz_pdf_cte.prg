@@ -361,7 +361,7 @@ METHOD NovaPagina() CLASS hbnfeDaCte
    IF ::aIde[ "tpAmb" ] = "2"
       ::DrawHomologacao()
    ELSEIF ! Empty( ::aInfCanc[ "nProt" ] )
-      ::DrawHomologacao( "CANCELADO EM " + ::aInfCanc[ "dhRegEvento" ] + ;
+      ::DrawHomologacao( "CANCELADO EM " + ::aInfCanc[ "dhRecbto" ] + ;
          " nProt " + ::aInfCanc[ "nProt" ] )
    ELSEIF ::aInfProt[ "cStat" ] $ "101,302"
       ::DrawHomologacao( ::aInfProt[ "xMotivo" ] )
