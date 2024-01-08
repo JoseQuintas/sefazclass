@@ -23,23 +23,22 @@ REQUEST HB_CODEPAGE_PTISO
 #define OPC_AMBIENTE        5
 #define OPC_NFCE            6
 #define OPC_STATUS_NFE      7
-#define OPC_STATUS_CTE      8
-#define OPC_STATUS_MDFE     9
-#define OPC_CADASTRO        10
-#define OPC_PROTOCOLO_NFE   11
-#define OPC_PROTOCOLO_CTE   12
-#define OPC_PROTOCOLO_MDFE  13
-#define OPC_DESTINADAS      14
-#define OPC_VALIDA_XML      15
-#define OPC_ASSINA_TESTE    16
-#define OPC_ASSINA_USUARIO  17
-#define OPC_CONSULTA_RECIBO 18
-#define OPC_ENVIO_TESTE     19
-#define OPC_ENVIO_USUARIO   20
-#define OPC_MANIFESTACAO    21
-#define OPC_DOWNLOAD_NFE    22
-#define OPC_CERT_REMOVE     23
-#define OPC_STATUSGERAL     24
+#define OPC_CADASTRO        8
+#define OPC_PROTOCOLO_NFE   9
+#define OPC_DESTINADAS      10
+#define OPC_VALIDA_XML      11
+#define OPC_ASSINA_TESTE    12
+#define OPC_ASSINA_USUARIO  13
+#define OPC_CONSULTA_RECIBO 14
+#define OPC_ENVIO_TESTE     15
+#define OPC_ENVIO_USUARIO   16
+#define OPC_MANIFESTACAO    17
+#define OPC_DOWNLOAD_NFE    18
+#define OPC_STATUSGERAL     19
+#define OPC_STATUS_MDFE     20
+#define OPC_PROTOCOLO_MDFE  21
+#define OPC_STATUS_CTE      22
+#define OPC_PROTOCOLO_CTE   23
 
 #define VAR_CERTIFICADO 1
 #define VAR_UF          2
@@ -86,30 +85,35 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       oSefaz:lConsumidor  := ( aVarList[ VAR_NFCE ] == "S" )
 
       CLS
-      @ Row() + 1, 5 PROMPT Str( OPC_DANFE, 2 )           + "-Teste Danfe (path atual)"
-      @ Row() + 1, 5 PROMPT Str( OPC_CERTIFICADO, 2 )     + "-Seleciona certificado (atual=" + aVarList[ VAR_CERTIFICADO ] + ")"
-      @ Row() + 1, 5 PROMPT Str( OPC_CERT_VALIDADE, 2 )   + "-Validade do certificado"
-      @ Row() + 1, 5 PROMPT Str( OPC_UF, 2 )              + "-UF (atual=" + aVarList[ VAR_UF ] + ")"
-      @ Row() + 1, 5 PROMPT Str( OPC_AMBIENTE, 2 )        + "-Ambiente (atual=" + iif( aVarList[ VAR_AMBIENTE ] == WS_AMBIENTE_PRODUCAO, "Produção", "Homologação" ) + ")"
-      @ Row() + 1, 5 PROMPT Str( OPC_NFCE, 2 )            + "-Nota (atual=" + iif( aVarList[ VAR_NFCE ] == "S", "NFCE", "NFE" ) + ")"
-      @ Row() + 1, 5 PROMPT Str( OPC_STATUS_NFE, 2 )      + "-Consulta Status NFE"
-      @ Row() + 1, 5 PROMPT Str( OPC_STATUS_CTE, 2 )      + "-Consulta Status CTE"
-      @ Row() + 1, 5 PROMPT Str( OPC_STATUS_MDFE, 2 )     + "-Consulta Status MDFE"
-      @ Row() + 1, 5 PROMPT Str( OPC_CADASTRO, 2 )        + "-Consulta Cadastro NFE (digitado)"
-      @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_NFE, 2 )   + "-Protocolo NFE (digitado)"
-      @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_CTE, 2 )   + "-Protocolo CTE 4.00 (digitado)"
-      @ Row() + 1, 5 PROMPT Str( OPC_PROTOCOLO_MDFE, 2 )  + "-Protocolo MDFE 3.00 (digitado)"
-      @ Row() + 1, 5 PROMPT Str( OPC_DESTINADAS, 2 )      + "-Consulta Destinadas (digitado)"
-      @ Row() + 1, 5 PROMPT Str( OPC_VALIDA_XML, 2 )      + "-Valida XML (Basico) (disco)"
-      @ Row() + 1, 5 PROMPT Str( OPC_ASSINA_TESTE, 2 )    + "-Assinatura - arquivo teste"
-      @ Row() + 1, 5 PROMPT Str( OPC_ASSINA_USUARIO, 2 )  + "-Assinatura - arquivo do usuário (disco)"
-      @ Row() + 1, 5 PROMPT Str( OPC_CONSULTA_RECIBO, 2 ) + "-Consulta Recibo - número do usuário"
-      @ Row() + 1, 5 PROMPT Str( OPC_ENVIO_TESTE, 2 )     + "-Envio de XML de teste"
-      @ Row() + 1, 5 PROMPT Str( OPC_ENVIO_USUARIO, 2 )   + "-Envio de XML do usuário (disco)"
-      @ Row() + 1, 5 PROMPT Str( OPC_MANIFESTACAO, 2 )    + "-Manifestacao Destinatario (digitado)"
-      @ Row() + 1, 5 PROMPT Str( OPC_DOWNLOAD_NFE, 2 )    + "-Download DFE (Documentos) (digitado)"
-      @ Row() + 1, 5 PROMPT Str( OPC_CERT_REMOVE, 2 )     + "-Remove Certificado"
-      @ Row() + 1, 5 PROMPT Str( OPC_STATUSGERAL, 2 )     + "-Status Geral"
+      @ 0, 0 SAY ""
+      @ Row() + 1, 5 SAY "---SETUP---"
+      @ Row() + 2, 5 PROMPT "Teste Danfe (path atual)"
+      @ Row() + 1, 5 PROMPT "Seleciona certificado (atual=" + aVarList[ VAR_CERTIFICADO ] + ")"
+      @ Row() + 1, 5 PROMPT "Validade do certificado"
+      @ Row() + 1, 5 PROMPT "UF (atual=" + aVarList[ VAR_UF ] + ")"
+      @ Row() + 1, 5 PROMPT "Ambiente (atual=" + iif( aVarList[ VAR_AMBIENTE ] == WS_AMBIENTE_PRODUCAO, "Produção", "Homologação" ) + ")"
+      @ Row() + 1, 5 PROMPT "Nota (atual=" + iif( aVarList[ VAR_NFCE ] == "S", "NFCE", "NFE" ) + ")"
+      @ Row() + 2, 5 SAY "---NFE---"
+      @ Row() + 2, 5 PROMPT "Consulta Status NFE"
+      @ Row() + 1, 5 PROMPT "Consulta Cadastro NFE (digitado)"
+      @ Row() + 1, 5 PROMPT "Protocolo NFE (digitado)"
+      @ Row() + 1, 5 PROMPT "Consulta Destinadas (digitado)"
+      @ Row() + 1, 5 PROMPT "Valida XML (Basico) (disco)"
+      @ Row() + 1, 5 PROMPT "Assinatura - arquivo teste"
+      @ Row() + 1, 5 PROMPT "Assinatura - arquivo do usuário (disco)"
+      @ Row() + 1, 5 PROMPT "Consulta Recibo - número do usuário"
+      @ Row() + 1, 5 PROMPT "Envio de XML de teste"
+      @ Row() + 1, 5 PROMPT "Envio de XML do usuário (disco)"
+      @ Row() + 1, 5 PROMPT "Manifestacao Destinatario (digitado)"
+      @ Row() + 1, 5 PROMPT "Download DFE (Documentos) (digitado)"
+      @ Row() + 1, 5 PROMPT "Status Geral"
+      @ 0, 0 SAY ""
+      @ Row() + 1, 50 SAY "---MDFE---"
+      @ Row() + 2, 50 PROMPT "Consulta Status MDFE"
+      @ Row() + 1, 50 PROMPT "Protocolo MDFE 3.00 (digitado)"
+      @ Row() + 2, 50 SAY "---CTE---"
+      @ Row() + 2, 50 PROMPT "Consulta Status CTE"
+      @ Row() + 1, 50 PROMPT "Protocolo CTE (digitado)"
       MENU TO nOpc
       DO CASE
       CASE LastKey() == K_ESC
@@ -332,9 +336,6 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
             ENDIF
          ENDIF
 
-      CASE nOpc == OPC_CERT_REMOVE
-         CapicomRemoveCertificado( aVarList[ VAR_CERTIFICADO ] )
-
       CASE nOpc == OPC_STATUSGERAL
          FOR EACH cAmbiente IN { "1", "2" }
             FOR EACH cUF IN { "AM", "BA", "CE", "GO", "MG", "MS", "MT", "PE", "PR", "RS", "SP" }
@@ -354,7 +355,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
 FUNCTION SetupHarbour()
 
-   SetMode( 33, 80 )
+   SetMode( 33, 100 )
    CLS
    SET DATE BRITISH
    Set( _SET_CODEPAGE, "PTISO" )
