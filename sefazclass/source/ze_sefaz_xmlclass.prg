@@ -969,8 +969,8 @@ FUNCTION DfeEmitente( cChave )
 
    IF Left( cChave, 3 ) == "000"
       // se não tá zerado, não é CPF
-      // já fica o teste, caso precise alterar este outro teste
-      IF ! ValidCnpj( cCnpj )
+      // já fica o teste, caso precise alterar
+      IF ValidCPF( Right( cCnpj, 11 ) )
          cCnpj := Right( cCnpj, 11 )
       ENDIF
    ENDIF
