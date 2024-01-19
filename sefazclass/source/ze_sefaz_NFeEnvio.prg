@@ -77,7 +77,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
    // 1¦ Parte ( Endereco da Consulta - Fonte: http://nfce.encat.org/desenvolvedor/qrcode/ )
    nPos       := hb_AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
       ( e[ 2 ] == cVersao + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) .OR. ;
-      e[ 2 ] == "4.00"  + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) ) } )
+      e[ 2 ] == cVersaoQRCode  + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) ) } )
    QRCode_Url := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
 
    // 2¦ Parte (Parametros)
@@ -165,13 +165,11 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
       cXmlAssinado += [<] + "infNFeSupl"+[>]
       cXmlAssinado += [<] + "qrCode"+[>] + QRCODE_cTag + [</] + "qrCode" + [>]
 
-      IF cVersao == "4.00"
-         aUrlList := WS_NFE_CHAVE
-         nPos     := hb_AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
-            e[ 2 ] == cVersaoQrCode + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) } )
-         QRCode_UrlChave := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
-         cXmlAssinado += XmlTag( "urlChave", QRCode_UrlChave )
-      ENDIF
+      aUrlList := WS_NFE_CHAVE
+      nPos     := hb_AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
+         e[ 2 ] == cVersaoQrCode + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) } )
+      QRCode_UrlChave := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
+      cXmlAssinado += XmlTag( "urlChave", QRCode_UrlChave )
 
       cXmlAssinado += [</] + "infNFeSupl"+[>]
       cXmlAssinado += cSignature
