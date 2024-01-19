@@ -284,7 +284,7 @@ METHOD XmlSoapPost() CLASS SefazClass
 
 METHOD MicrosoftXmlSoapPost() CLASS SefazClass
 
-   LOCAL oServer, nCont, cRetorno, lOk
+   LOCAL oServer, nCont, cRetorno, lOk, cBlocoValido
    LOCAL cSoapAction
 
    cSoapAction := ::cSoapAction
@@ -352,24 +352,25 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
          ::cXmlRetorno += Chr( cRetorno[ nCont ] )
       NEXT
    ENDIF
-   DO CASE
-   CASE ! Empty( XmlNode( ::cXmlRetorno, "soap:Body" ) )
-      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soap:Body" )
-   CASE ! Empty( XmlNode( ::cXmlRetorno, "soapenv:Body" ) )
-      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soapenv:Body" )
-   CASE ! Empty( XmlNode( ::cXmlRetorno, "env:Body" ) )
-      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "env:Body" )
-   CASE ! Empty( XmlNode( ::cXmlRetorno, "S:Body" ) )
-      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "S:Body" )
-   CASE "not have permission to view" $ ::cXmlRetorno
+   IF "not have permission to view" $ ::cXmlRetorno
       ::cStatus     := "999"
       ::cMotivo     := "problemas com Sefaz e/ou certificado"
       ::cXmlRetorno := "<xml>*ERRO* Erro: Sefaz e/ou certificado</xml>"
-   OTHERWISE
-      // teste usando procname(2)
-      ::cXmlRetorno := "<xml>*ERRO* Erro de retorno " + ProcName(2) + ;
-         " body não identificado " + ::cXmlRetorno + "</xml>"
-   ENDCASE
+   ELSE
+      lOk := .F.
+      FOR EACH cBlocoValido IN { "soap:Body", "soapenv:Body", "env:Body", "S:Body" }
+         IF ! Empty( XmlNode( ::cXmlRetorno, cBlocoValido ) )
+            ::cXmlRetorno := XmlNode( ::cXmlRetorno, cBlocoValido )
+            lOk := .T.
+            EXIT
+         ENDIF
+      NEXT
+      IF ! lOk
+         // teste usando procname(2)
+         ::cXmlRetorno := "<xml>*ERRO* Erro de retorno " + ProcName(2) + ;
+            " body não identificado " + ::cXmlRetorno + "</xml>"
+      ENDIF
+   ENDIF
 
    RETURN NIL
 
