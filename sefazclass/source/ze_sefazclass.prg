@@ -359,6 +359,8 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "soapenv:Body" )
    CASE ! Empty( XmlNode( ::cXmlRetorno, "env:Body" ) )
       ::cXmlRetorno := XmlNode( ::cXmlRetorno, "env:Body" )
+   CASE ! Empty( XmlNode( ::cXmlRetorno, "S:Body" ) )
+      ::cXmlRetorno := XmlNode( ::cXmlRetorno, "S:Body" )
    CASE "not have permission to view" $ ::cXmlRetorno
       ::cStatus     := "999"
       ::cMotivo     := "problemas com Sefaz e/ou certificado"
