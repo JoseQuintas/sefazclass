@@ -25,7 +25,7 @@ FUNCTION ze_Sefaz_NFeProtocolo( Self, cChave, cCertificado, cAmbiente )
    IF ! DfeModFis( cChave ) $ "55,65"
       ::cStatus     := "999"
       ::cMotivo     := "Chave não se refere a NFE/NFCE"
-      ::cXmlRetorno := [<erro text="*ERRO* NfeConsultaProtocolo() ] + ::cMotivo + [" />]
+      ::cXmlRetorno := [<erro text="*ERRO* NfeProtocolo() ] + ::cMotivo + [" />]
    ELSE
       ::XmlSoapPost()
    ENDIF
