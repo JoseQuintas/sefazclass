@@ -9,34 +9,6 @@ José Quintas
 
 CREATE CLASS SefazClass
 
-   /* compatibilidade */
-   METHOD cIndSinc( cValue )                SETGET
-   METHOD cFusoHorario                      SETGET
-   METHOD cNFCe                             SETGET
-   METHOD lSincrono                         SETGET
-   METHOD CTeConsultaProtocolo( ... )       INLINE ::CTeProtocolo( ... )
-   METHOD CTeConsultaRecibo( ... )          INLINE ::CTeRetEnvio( ... )
-   METHOD CTeLoteEnvia( cXml, cLote, ... )  INLINE (cLote),::CTeEnvio( cXml, ... )
-   METHOD CTeStatusServico( ... )           INLINE ::CTeStatus( ... )
-   METHOD NFeLoteEnvia( cXml, cLote, ... )  INLINE (cLote), ::NFeEnvio( cXml, ... )
-   METHOD NFeConsultaRecibo( ... )          INLINE ::NFeRetEnvio( ... )
-   METHOD NFeConsultaProtocolo( ... )       INLINE ::NFeProtocolo( ... )
-   METHOD NFeStatusServico( ... )           INLINE ::NFeStatus( ... )
-   METHOD NFeConsultaCadastro( ... )        INLINE ::NFeCadastro( ... )
-   METHOD NFeConsultaGTIN( ... )            INLINE ::NFeGTIN( ... )
-   METHOD NFeDistribuicaoDFe( ... )         INLINE ::NFeDistribuicao( ... )
-   METHOD NFeConsultaDest( ... )            INLINE ::NfeDestinadas( ... )
-   METHOD MDFeLoteEnvia( cXml, cLote, ...)  INLINE (cLote), ::MDFeEnvio( cXml, ... )
-   METHOD MDFeConsultaRecibo( ... )         INLINE ::MDFeRetEnvio( ... )
-   METHOD MDFeConsultaProtocolo( ... )      INLINE ::MDFeProtocolo( ... )
-   METHOD MDFeStatusServico( ... )          INLINE ::MDFeStatus( ... )
-   METHOD MDFeConsNaoEnc( ... )             INLINE ::MDFeEmAberto( ... )
-   METHOD MDFeDistribuicaoDFe( ...)         INLINE ::MDFeDistribuicao( ... )
-   METHOD MDFeEventoInclusaoCondutor( ... ) INLINE ::MDFeCondutor( ... )
-   METHOD NFeStatusServicoSVC( ... )        INLINE ::NFeStatusSVC( ... )
-   METHOD NFeDownload( cCnpj, cChave, cCertificado, cAmbiente ) ;
-      INLINE ::NfeDistribuicao( cCnpj, "", "", cChave, ::UFCodigo( Left( cChave, 2 ) ), cCertificado, cAmbiente )
-
    /* configuração */
    VAR    cProjeto        INIT NIL
    VAR    cAmbiente       INIT WS_AMBIENTE_PRODUCAO
@@ -114,6 +86,8 @@ CREATE CLASS SefazClass
    METHOD NFeContingencia( ... )          INLINE ze_sefaz_NFeContingencia( Self, ... )
    METHOD NFeDestinadas( ... )            INLINE ze_sefaz_NfeDestinadas( Self, ... )
    METHOD NFeDistribuicao( ... )          INLINE ze_sefaz_NFeDistribuicao( Self, ... )
+   METHOD NFeDownload( cCnpj, cChave, cCertificado, cAmbiente ) ;
+      INLINE ::NfeDistribuicao( cCnpj, "", "", cChave, ::UFCodigo( Left( cChave, 2 ) ), cCertificado, cAmbiente )
    METHOD NFeEnvio( ... )                 INLINE ze_sefaz_NfeEnvio( Self, ... )
    METHOD NFeEvento( ... )                INLINE ze_sefaz_NFeEvento( Self, ... )
    METHOD NFeEventoAutor( ... )           INLINE ze_sefaz_NFeEventoAutor( Self, ... )
@@ -142,6 +116,32 @@ CREATE CLASS SefazClass
    METHOD UFSigla( cCodigo )                          INLINE UFSigla( cCodigo )
    METHOD DateTimeXml( dDate, cTime, lUTC )           INLINE DateTimeXml( dDate, cTime, iif( Empty( ::cUFTimeZone ), ::cUF, ::cUFTimeZone ), lUTC, ::cUserTimeZone )
    METHOD ValidaXml( cXml, cFileXsd, cIgnoreList )    INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd, cIgnoreList )
+
+   /* obsoleto / compatibilidade */
+   METHOD cIndSinc( cValue )                SETGET
+   METHOD cFusoHorario                      SETGET
+   METHOD cNFCe                             SETGET
+   METHOD lSincrono                         SETGET
+   METHOD CTeConsultaProtocolo( ... )       INLINE ::CTeProtocolo( ... )
+   METHOD CTeConsultaRecibo( ... )          INLINE ::CTeRetEnvio( ... )
+   METHOD CTeLoteEnvia( cXml, cLote, ... )  INLINE (cLote),::CTeEnvio( cXml, ... )
+   METHOD CTeStatusServico( ... )           INLINE ::CTeStatus( ... )
+   METHOD NFeLoteEnvia( cXml, cLote, ... )  INLINE (cLote), ::NFeEnvio( cXml, ... )
+   METHOD NFeConsultaRecibo( ... )          INLINE ::NFeRetEnvio( ... )
+   METHOD NFeConsultaProtocolo( ... )       INLINE ::NFeProtocolo( ... )
+   METHOD NFeStatusServico( ... )           INLINE ::NFeStatus( ... )
+   METHOD NFeConsultaCadastro( ... )        INLINE ::NFeCadastro( ... )
+   METHOD NFeConsultaGTIN( ... )            INLINE ::NFeGTIN( ... )
+   METHOD NFeDistribuicaoDFe( ... )         INLINE ::NFeDistribuicao( ... )
+   METHOD NFeConsultaDest( ... )            INLINE ::NfeDestinadas( ... )
+   METHOD MDFeLoteEnvia( cXml, cLote, ...)  INLINE (cLote), ::MDFeEnvio( cXml, ... )
+   METHOD MDFeConsultaRecibo( ... )         INLINE ::MDFeRetEnvio( ... )
+   METHOD MDFeConsultaProtocolo( ... )      INLINE ::MDFeProtocolo( ... )
+   METHOD MDFeStatusServico( ... )          INLINE ::MDFeStatus( ... )
+   METHOD MDFeConsNaoEnc( ... )             INLINE ::MDFeEmAberto( ... )
+   METHOD MDFeDistribuicaoDFe( ...)         INLINE ::MDFeDistribuicao( ... )
+   METHOD MDFeEventoInclusaoCondutor( ... ) INLINE ::MDFeCondutor( ... )
+   METHOD NFeStatusServicoSVC( ... )        INLINE ::NFeStatusSVC( ... )
 
    ENDCLASS
 
