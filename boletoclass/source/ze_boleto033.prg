@@ -13,7 +13,7 @@ FUNCTION ze_Calculo033( SELF )
 
    ::cBarras    := StrZero( ::nBanco, 3 ) + "9" + StrZero( ::nFatorVen, 4 ) + ;
       StrZero( ::nValor * 100, 10 ) + "9" + StrZero( ::nidEmpresa, 7 ) + ;
-      StrZero( ::nBancario, 13 ) + "0" + StrZero( ::nCarteira, 3 )
+      ::cBolNumero + "0" + StrZero( ::nCarteira, 3 )
 
    RETURN Nil
 
@@ -115,8 +115,8 @@ FUNCTION ze_Cnab033( aBoletoList )
          /* 166-180 */ cTxt += StrZero( 0, 15 )
          /* 181-195 */ cTxt += StrZero( 0, 15 )
          /* 196-220 */ cTxt += Space(25)
-         /* 221-221 */ cTxt += "0"
-         /* 222-223 */ cTxt += "00"
+         /* 221-221 */ cTxt += "1"  // protestar 1=dias corridos 2=dias úteis 3=usar perfil
+         /* 222-223 */ cTxt += "05" // protestar em 5 dias
          /* 224-224 */ cTxt += "3"
          /* 225-225 */ cTxt += "0"
          /* 226-227 */ cTxt += "00"
