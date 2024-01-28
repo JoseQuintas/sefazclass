@@ -151,19 +151,6 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          MsgBox( cTexto, "Informação Extraída", "NFE STATUS " )
 
       CASE nOpc == OPC_STATUS_CTE
-         oSefaz:cVersao := "3.00"
-         cXmlRetorno := oSefaz:CteStatus()
-         //wapi_MessageBox( , oSefaz:cXmlSoap, "XML enviado" )
-         wapi_MessageBox( , oSefaz:cXmlRetorno, "XML retornado" )
-         cTexto := "Tipo Ambiente:"     + XmlNode( cXmlRetorno, "tpAmb" )    + hb_Eol()
-         cTexto += "Versão Aplicativo:" + XmlNode( cXmlRetorno, "verAplic" ) + hb_Eol()
-         cTexto += "Status:"            + XmlNode( cXmlRetorno, "cStat" )    + hb_Eol()
-         cTexto += "Motivo:"            + XmlNode( cXmlRetorno, "xMotivo" )  + hb_Eol()
-         cTexto += "UF:"                + XmlNode( cXmlRetorno, "cUF" )      + hb_Eol()
-         cTexto += "Data/Hora:"         + XmlNode( cXmlRetorno, "dhRecbto" ) + hb_Eol()
-         cTexto += "Tempo Médio:"       + XmlNode( cXmlRetorno, "tMed" )     + hb_Eol()
-         MsgBox( cTexto, "Informação Extraída", "CTE STATUS 3.00" )
-
          oSefaz:cVersao := "4.00"
          cXmlRetorno := oSefaz:CteStatus()
          MsgBox( oSefaz:cXmlRetorno, "XML retornado" )
@@ -266,9 +253,6 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          ENDIF
          oSefaz:nfeDistribuicaoDFe( aVarList[ VAR_CNPJ ], "0" )
          MsgBox( oSefaz:cXmlRetorno, "NFE DISTRIBUICAO" )
-
-         oSefaz:nfeConsultaDest( aVarList[ VAR_CNPJ ] , "0" )
-         MsgBox( oSefaz:cXmlRetorno, "NFE DESTINADAS" )
 
       CASE nOpc == OPC_VALIDA_XML
          cXml := MemoRead( win_GetOpenFileName(, "Arquivo a validar", "importa\", "XML", "*.XML", 1 ) )

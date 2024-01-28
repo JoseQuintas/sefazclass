@@ -1,11 +1,11 @@
 #include "sefazclass.ch"
 
-FUNCTION ze_sefaz_NFeDistribuicao( Self, cCnpj, cUltNSU, cNSU, cChave, cUF, cCertificado, cAmbiente )
+FUNCTION ze_sefaz_NFeDistribuicao( Self, cCnpj, nUltNSU, nNSU, cChave, cUF, cCertificado, cAmbiente )
 
    hb_Default( @::cVersao, WS_NFE_DEFAULT )
    ::cProjeto := WS_PROJETO_NFE
-   hb_Default( @cUltNSU, "0" )
-   hb_Default( @cNSU, "" )
+   hb_Default( @nUltNSU, 0 )
+   hb_Default( @nNSU, 0 )
    hb_Default( @cChave, "" )
    hb_Default( @cUF, "" )
 
@@ -27,13 +27,13 @@ FUNCTION ze_sefaz_NFeDistribuicao( Self, cCnpj, cUltNSU, cNSU, cChave, cUF, cCer
       ::cXmlEnvio += [<consChNFe>]
       ::cXmlEnvio +=    XmlTag( "chNFe", cChave )
       ::cXmlEnvio += [</consChNFe>]
-   ELSEIF ! Empty( cNSU )
+   ELSEIF nNSU != 0
       ::cXmlEnvio +=   [<consNSU>]
-      ::cXmlEnvio +=      XmlTag( "NSU", StrZero( Val( cNSU ), 15 ) )
+      ::cXmlEnvio +=      XmlTag( "NSU", StrZero( nNSU, 15 ) )
       ::cXmlEnvio +=   [</consNSU>]
    ELSE
       ::cXmlEnvio +=   [<distNSU>]
-      ::cXmlEnvio +=      XmlTag( "ultNSU", StrZero( Val( cUltNSU ), 15 ) )
+      ::cXmlEnvio +=      XmlTag( "ultNSU", StrZero( nUltNSU, 15 ) )
       ::cXmlEnvio +=   [</distNSU>]
    ENDIF
    ::cXmlEnvio   += [</distDFeInt>]
