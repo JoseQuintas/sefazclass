@@ -491,6 +491,7 @@ METHOD LstToPdf( cInputFile ) CLASS PDFClass
             cTxtPage := Substr( cTxtPage, 2 )
          ENDIF
          ::AddPage()
+         oPDF:nPage += 1
          nRow := 0
          DO WHILE At( hb_eol(), cTxtPage ) != 0
             cTxtLine := Substr( cTxtPage, 1, At( hb_eol(), cTxtPage ) - 1 )
