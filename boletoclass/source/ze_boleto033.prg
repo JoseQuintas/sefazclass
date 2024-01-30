@@ -115,8 +115,13 @@ FUNCTION ze_Cnab033( aBoletoList )
          /* 166-180 */ cTxt += StrZero( 0, 15 )
          /* 181-195 */ cTxt += StrZero( 0, 15 )
          /* 196-220 */ cTxt += Space(25)
-         /* 221-221 */ cTxt += "1"  // protestar 1=dias corridos 2=dias úteis 3=usar perfil
-         /* 222-223 */ cTxt += "05" // protestar em 5 dias
+         IF :nProtesto == 0
+            /* 221-221 */ cTxt += "0"  // protestar 1=dias corridos 2=dias úteis 3=usar perfil
+            /* 222-223 */ cTxt += "00" // protestar em n dias
+         ELSE
+            cTxt += "1"
+            cTxt += StrZero( :nProtesto, 2 )
+         ENDIF
          /* 224-224 */ cTxt += "3"
          /* 225-225 */ cTxt += "0"
          /* 226-227 */ cTxt += "00"

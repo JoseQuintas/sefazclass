@@ -68,6 +68,10 @@ METHOD DrawBoleto( oBoleto, nVia, nLine ) CLASS BoletoPDFClass
    ENDIF
    IF hb_AScan( oBoleto:aMsgCodList, { | e | e == "43" } ) != 0
       AAdd( aMsgTxtList, "SUJEITO A PROTESTO SE NÃO FOR PAGO NO VENCIMENTO" )
+   ELSE
+      IF oBoleto:nProtesto != 0
+         AAdd( aMsgTxtList, "PROTESTAR EM " + Ltrim( Str( oBoleto:nProtesto, 2 ) ) + " DIAS" )
+      ENDIF
    ENDIF
    FOR EACH cTxt IN oBoleto:aMsgTxtList
       AAdd( aMsgTxtList, cTxt )

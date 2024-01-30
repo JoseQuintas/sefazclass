@@ -110,8 +110,13 @@ FUNCTION ze_Cnab237( aBoletoList )
          /* 148-149 */ cTxt += StrZero( :nEspecie, 2 )
          /* 150-150 */ cTxt += "N"                                   // Sempre N - identificacao
          /* 151-156 */ cTxt += hb_Dtoc( :dDatEmi, "DDMMYY" )       // Data de emissao do titulo DDMMAA
-         /* 157-158 */ cTxt += "00"                                  // Instrucao - olhar pag. 20 // 00=nada,06=protestar,18=Baixar
-         /* 159-160 */ cTxt += "00"                                  // Instrucao - olhar pag. 20 // complemento do anterior, indicando qtde. dias
+         //IF :nProtesto == 0
+            /* 157-158 */ cTxt += "00"                                  // Instrucao - olhar pag. 20 // 00=nada,06=protestar,18=Baixar
+            /* 159-160 */ cTxt += "00"                                  // Instrucao - olhar pag. 20 // complemento do anterior, indicando qtde. dias
+         //ELSE
+         //   cTxt += "06"
+         //   cTxt += StrZero( :nProtesto, 2 )
+         //ENDIF
          /* 161-173 */ cTxt += StrZero( Round( :nJuros * :nValor / 30, 0 ), 13 )    // Multa por dia - olhar pag. 21
          /* 174-179 */ cTxt += StrZero( 0, 6 )                       // Data limite pra desconto
          /* 180-192 */ cTxt += StrZero( 0, 13 )                      // Valor do desconto

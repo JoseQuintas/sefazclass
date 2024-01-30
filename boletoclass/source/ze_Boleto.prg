@@ -15,6 +15,7 @@ CREATE CLASS BoletoClass
    VAR    nValor       INIT 0
    VAR    nJuros       INIT 0
    VAR    nMulta       INIT 0
+   VAR    nProtesto    INIT 0  // inicialmente Santander, dias corridos
    VAR    cEmpNome     INIT ""
    VAR    cEmpCnpj     INIT ""
    VAR    cEmpEnd      INIT ""
