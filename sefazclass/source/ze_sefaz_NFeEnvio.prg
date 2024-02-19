@@ -39,7 +39,7 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
    ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
    ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
    ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
-   IF ! "infProt" $ ::cXmlRetorno
+   IF ! "infProt" $ ::cXmlRetorno .AND. Val( ::cRecibo ) != 0
       Inkey( ::nTempoEspera )
       ::NfeRetEnvio()
    ENDIF
