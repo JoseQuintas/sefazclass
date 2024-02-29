@@ -43,11 +43,11 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
       Inkey( ::nTempoEspera )
       ::NfeRetEnvio()
    ENDIF
-   IF ! "infProt" $ ::cXmlRetorno .AND. hb_ASCan( { "103", "104", "105" }, ::cStatus,,, .T. ) != 0
+   IF ! "infProt" $ ::cXmlRetorno .AND. hb_ASCan( { "103", "104", "105" }, { | e | e == ::cStatus } ) != 0
       oDoc   := XmlToDoc( ::cXmlDocumento, .F. )
       cChave := oDoc:cChave
       Inkey( ::nTempoEspera )
-      ::NfeProtocolo( cChave, ::cUF, ::cCertificado, ::cAmbiente )
+      ::NfeProtocolo( cChave, ::cCertificado, ::cAmbiente )
    ENDIF
    IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
       ::cXmlProtocolo := ::cXmlRetorno

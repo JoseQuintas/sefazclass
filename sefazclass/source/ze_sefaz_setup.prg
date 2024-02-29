@@ -19,7 +19,7 @@ FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente, lEnvioSinc )
    ENDIF
 
    DO CASE
-   CASE cUF == NIL
+   CASE cUF == NIL .OR. Empty( cUF )
    CASE Len( SoNumeros( cUF ) ) != 0
       ::cUF := ::UFSigla( Left( cUF, 2 ) )
    OTHERWISE
