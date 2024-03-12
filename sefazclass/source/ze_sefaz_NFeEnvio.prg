@@ -168,7 +168,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
       aUrlList := WS_NFE_CHAVE
       nPos     := hb_AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
          e[ 2 ] == cVersaoQrCode + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) } )
-      QRCode_UrlChave := iif( nPos == 0, "", aUrlList[ nPos, 3 ] + "?" )
+      QRCode_UrlChave := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
       cXmlAssinado += XmlTag( "urlChave", QRCode_UrlChave )
 
       cXmlAssinado += [</] + "infNFeSupl"+[>]
