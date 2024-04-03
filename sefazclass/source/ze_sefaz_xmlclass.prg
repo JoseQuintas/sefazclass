@@ -832,7 +832,7 @@ STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
                                 SoNumeros( oDocSped:Emitente:Cnpj ) + ;
                                 cModelo + ;
                                 cSerie + ;
-                                oDocSped:cNumDoc + ;
+                                StrZero( Val( oDocSped:cNumDoc ), 9 ) + ;
                                 "1" + ;
                                 StrZero( 0, 8 )
       oDocSped:cChave         := oDocSped:cChave + CalculaDigito( oDocSped:cChave, "11" )
