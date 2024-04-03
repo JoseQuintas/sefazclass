@@ -38,6 +38,7 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior, cPassword, lComURI
    LOCAL SIGNEDKEY, DSIGKEY
    LOCAL cXmlTagInicial, cXmlTagFinal, cRetorno := ""
    LOCAL cDllFile, acDllList := { "msxml5.dll", "msxml5r.dll", "capicom.dll" }
+   LOCAL oNodeList, oTemp, oThisNode
 
    hb_Default( @lRemoveAnterior, .T. )
    hb_Default( @lComURI, .T. )
@@ -58,20 +59,36 @@ FUNCTION CapicomAssinaXml( cTxtXml, cCertCN, lRemoveAnterior, cPassword, lComURI
       RETURN cRetorno
    ENDIF
 
-   BEGIN SEQUENCE WITH __BreakBlock()
-
+   xmldsig := win_OleCreateObject( "MSXML2.MXDigitalSignature.5.0" )
+   IF xmldsig == NIL
       cRetorno := "Erro Assinatura: Não carregado MSXML2.MXDigitalSignature.5.0"
-      xmldsig := win_OleCreateObject( "MSXML2.MXDigitalSignature.5.0" )
+      BREAK
+   ENDIF
+   cRetorno := "Erro Assinatura: Template de assinatura não encontrado"
+   xmldsig:signature := oDOMDocument:selectSingleNode(".//ds:Signature")
+   //oNodeList := oDomDocument:SelectNodes( "../ds:Signature" )
+   //DO WHILE .T.
+   //   oTemp := oNodeList:NextNode()
+   //   IF ValType( oTemp ) != "O"
+   //      EXIT
+   //   ENDIF
+   //   oThisNode := oTemp
+   //ENDDO
+   //IF ValType( oThisNode ) != "O"
+   //   cRetorno := "Erro Assinatura: Template de assinatura não encontrado"
+   //   BREAK
+   //ENDIF
 
-      cRetorno := "Erro Assinatura: Template de assinatura não encontrado"
-      xmldsig:signature := oDOMDocument:selectSingleNode(".//ds:Signature")
+   //xmldSig:Signature := oThisNode
+
+   BEGIN SEQUENCE WITH __BreakBlock()
 
       cRetorno := "Erro assinatura: Certificado pra assinar XmlDSig:Store"
       xmldsig:store := oCapicomStore
 
       dsigKey  := xmldsig:CreateKeyFromCSP( oCert:PrivateKey:ProviderType, oCert:PrivateKey:ProviderName, oCert:PrivateKey:ContainerName, 0 )
       IF ( dsigKey = NIL )
-         cRetorno := "Erro assinatura: Ao criar a chave do CSP."
+         cRetorno := "Erro assinatura: ao usar certificado (CSP)."
          BREAK
       ENDIF
       cRetorno := "Erro assinatura: assinar XmlDSig:Sign()"
