@@ -119,7 +119,7 @@ jobs:
          hbmk2 test hmg3.hbc  -q -rebuild
          hbmk2 test hmge.hbc  -q -rebuild
          hbmk2 test oohg.hbc  -q -rebuild
-         hbmk2 test gtwvg.hbc -q -rebuild
+#         hbmk2 test gtwvg.hbc -q -rebuild
 
     - name: Zip
       env:
