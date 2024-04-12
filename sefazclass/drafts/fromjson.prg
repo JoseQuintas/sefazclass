@@ -1,3 +1,11 @@
+/*
+use xharbour function !!!!! This is a workaround only !!!!!
+use a função do xharbour !!!!! Este é apenas um quebra-galho !!!!!
+
+2024-04-12 - Simple test. Today error/situation about variable ins't a hash
+*/
+
+
 REQUEST HB_CODEPAGE_PTISO
 
 PROCEDURE Main
@@ -57,7 +65,7 @@ FUNCTION ze_JsonDecodeValue( cTxt, xValue )
          ENDDO
          lReturn := .T.
          EXIT
-      CASE Left( cTxt, 1 ) $ "-123456789"
+      CASE Left( cTxt, 1 ) $ "-0123456789"
          xValue := ""
          DO WHILE Left( cTxt, 1 ) $ "-0123456789." .AND. Len( cTxt ) > 0
             xValue += Left( cTxt, 1 )
