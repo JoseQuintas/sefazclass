@@ -16,7 +16,7 @@ PROCEDURE Main
 
    LOCAL cNumero := "10000234375788918100013162590000001217"
 
-   SetMode( 40, 100 )
+   SetMode( 30, 100 )
    ? cNumero
    ? ValidSeguroAverbacao( @cNumero, .T. )
    ? cNumero

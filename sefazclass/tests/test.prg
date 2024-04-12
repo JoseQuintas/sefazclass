@@ -339,7 +339,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
 FUNCTION SetupHarbour()
 
-   SetMode( 33, 100 )
+   SetMode( 30, 100 )
    CLS
    SET DATE BRITISH
    Set( _SET_CODEPAGE, "PTISO" )

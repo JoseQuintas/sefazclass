@@ -11,7 +11,7 @@ FUNCTION Main()
 
    LOCAL nRow, aControlList := {}, oControl
 
-   SetMode(40,132)
+   SetMode(30,132)
    SetColor( "W/B" )
    CLS
    nRow := Int( ( MaxRow() - 16 ) / 2 )

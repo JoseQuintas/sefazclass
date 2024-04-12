@@ -12,7 +12,7 @@ PROCEDURE Main
    LOCAL aCtlList := Array(50), GetList := {}, cText := "This is a GET", nCont, nCtlIndex := 1
 
    hb_gtReLoad( "WVG" )
-   SetMode( 28, 120 )
+   SetMode( 30, 120 )
    SetColor("N/W,N/W")
    SET SCOREBOARD OFF
    CLS

@@ -5,7 +5,7 @@ PROCEDURE Main
    LOCAL GetList := {}, xValue1 := 0.00, xValue2 := Space(5), xValue3 := 0.00
    LOCAL xValue4 := Space(20), xValue5 := Space(40)
 
-   SetMode( 25, 80 )
+   SetMode( 30, 100 )
    SetColor( "W/B" )
    CLS
    @ 2, 1 SAY "Any...:" GET xValue1
