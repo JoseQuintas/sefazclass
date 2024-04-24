@@ -4,6 +4,7 @@
 
 CREATE CLASS wvgTstPushButton INHERIT wvgPushButton
 
+   VAR    lImageSizeMax INIT .F.
    METHOD setCaption( xCaption, cDll )
 
 ENDCLASS
@@ -39,8 +40,13 @@ METHOD wvgTstPushButton:setCaption( xCaption, cDll )
       ENDIF
       IF ! Empty( xCaption[ 2 ] )
          aSize := ::CurrentSize()
-         nWidth  := aSize[1] / 2 // aSize[ 1 ] - 8
-         nHeight := aSize[1] / 2 // aSize[ 2 ] - wvt_GetFontInfo()[ 6 ] - 8
+         IF ::lImageSizeMax
+            nWidth := aSize[1] // aSize[ 1 ] - 8
+            nHeight := aSize[2] // aSize[ 2 ] - wvt_GetFontInfo()[ 6 ] - 8
+         ELSE
+            nWidth  := Min( aSize[1], aSize[2] ) / 2
+            nHeight := nWidth
+         ENDIF
          SWITCH xCaption[ 2 ]
          CASE WVG_IMAGE_ICONFILE
             wvg_SendMessage( ::hWnd, BM_SETIMAGE, IMAGE_ICON, wvg_LoadImage( xCaption[ 3 ], nLoadFromDiskFile, IMAGE_ICON, nWidth, nHeight ) )
