@@ -39,8 +39,8 @@ METHOD wvgTstPushButton:setCaption( xCaption, cDll )
       ENDIF
       IF ! Empty( xCaption[ 2 ] )
          aSize := ::CurrentSize()
-         nWidth  := aSize[ 1 ] - 8
-         nHeight := aSize[ 2 ] - wvt_GetFontInfo()[ 6 ] - 8
+         nWidth  := aSize[1] / 2 // aSize[ 1 ] - 8
+         nHeight := aSize[1] / 2 // aSize[ 2 ] - wvt_GetFontInfo()[ 6 ] - 8
          SWITCH xCaption[ 2 ]
          CASE WVG_IMAGE_ICONFILE
             wvg_SendMessage( ::hWnd, BM_SETIMAGE, IMAGE_ICON, wvg_LoadImage( xCaption[ 3 ], nLoadFromDiskFile, IMAGE_ICON, nWidth, nHeight ) )
