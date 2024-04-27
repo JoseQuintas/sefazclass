@@ -2,7 +2,7 @@ PROCEDURE Main
 
    LOCAL nCont, nOpc := 1, oControlList := Array(21)
 
-   SetMode(30,100)
+   SetMode( 33, 100 )
    SetColor( "W/B" )
    CLS
    FOR nCont = 1 TO 21
