@@ -83,7 +83,7 @@ FUNCTION ze_Cnab341( aBoletoList )
          /* 022-023 */ cTxt += "00"
          /* 024-029 */ cTxt += StrZero( :nConta, 6 )
          /* 030-033 */ cTxt += Space(4)
-         /* 034-037 */ cTxt += Space(4) // nota 27
+         /* 034-037 */ cTxt += StrZero(0,4) ///// Space(4) // nota 27 //// 2024.05.15 zeros
          IF Empty( :cAvalCnpj )
             /* 038-062 */ cTxt += Pad( oBoleto:cNumDoc, 25 )
          ELSE
@@ -108,13 +108,13 @@ FUNCTION ze_Cnab341( aBoletoList )
          /* 127-139 */ cTxt += StrZero( :nValor * 100, 13 )
          /* 140-142 */ cTxt += "341"
          /* 143-147 */ cTxt += StrZero( 0, 5 )
-         /* 148-149 */ cTxt += StrZero( :nEspecie, 2 ) // com.c
+         /* 148-149 */ cTxt += StrZero( :nEspecie, 2 ) // coml.cor
          /* 150-150 */ cTxt += iif( :cAceite == "N", "N", "A" )
          /* 151-156 */ cTxt += hb_Dtoc( :dDatEmi, "DDMMYY" )
-         /* 157-158 */ cTxt += :aMsgCodList[ 1 ]
-         /* 159-160 */ cTxt += :aMsgCodList[ 2 ]
+         /* 157-158 */ cTxt += StrZero( Val( :aMsgCodList[ 1 ] ), 2 ) /////// 2024.05.15 zeros
+         /* 159-160 */ cTxt += StrZero( Val( :aMsgCodList[ 2 ] ), 2 )  /////// 2024.05.15 zeros
          /* 161-173 */ cTxt += StrZero( :nValor * :nJuros / 30, 13 ) // no CNAB 100 é 1.00
-         /* 174-179 */ cTxt += Space(6)
+         /* 174-179 */ cTxt += StrZero( 0, 6 ) /////// Space(6) //////// 2024.05.15 zeros
          /* 180-192 */ cTxt += StrZero( 0, 13 )
          /* 193-205 */ cTxt += StrZero( 0, 13 )
          /* 206-218 */ cTxt += StrZero( 0, 13 )

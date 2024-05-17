@@ -22,7 +22,7 @@ jobs:
     steps:
 
     - name: mingw 7.3
-      uses: dawidd6/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v3
       with:
          workflow: mingw_0703.yml
          workflow_conclusion: success
@@ -31,7 +31,7 @@ jobs:
          repo: JoseQuintas/sefazclass
 
     - name: harbour 3.2
-      uses: dawidd6/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v3
       with:
          workflow: hb32_0703.yml
          workflow_conclusion: success
@@ -129,7 +129,7 @@ jobs:
          7z a -r c:\temp\hb32pack.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
 
 #    - name: upload
-#      uses: actions/upload-artifact@v2
+#      uses: actions/upload-artifact@v
 #      with:
 #         name: assets-for-download
 #         path: c:\temp\harbour

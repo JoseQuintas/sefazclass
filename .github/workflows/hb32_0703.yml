@@ -29,7 +29,7 @@ jobs:
          cd \temp\harbour32
 
     - name: mingw 7.3
-      uses: dawidd6/action-download-artifact@v2
+      uses: dawidd6/action-download-artifact@v3
       with:
          workflow: mingw_0703.yml
          workflow_conclusion: success
