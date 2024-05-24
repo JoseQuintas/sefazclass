@@ -457,7 +457,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    LOCAL DASH_MODE3 := { 8, 7, 2, 7 }
    LOCAL nCont, oElement, cTexto, nPos
    LOCAL aList, cUrlConsulta := "http"
-   LOCAL cTipo, cTipoDoc, nContObs := 0
+   LOCAL nContObs := 0
 
    // box do logotipo e dados do emitente
    ::DrawBox( 003, ::nLinhaPdf - 119, 245, 119, ::nLarguraBox )
@@ -858,34 +858,13 @@ METHOD GeraFolha() CLASS hbnfeDaCte
       nLinha := nLinhaRef + 10
       FOR nCont = ::nNfeImpressas + 1 TO Len( ::aInfNFe ) STEP 2
          IF ! Empty( ::aInfNFe[ nCont, 1 ] )
-
-            cTipo := DfeModFis( ::aInfNFe[ nCont, 1 ] )
-            DO CASE
-            CASE cTipo == '55' ; cTipoDoc := "NF-E"
-            CASE cTipo == '65' ; cTipoDoc := "NFC-E"
-            CASE cTipo == '57' ; cTipoDoc := "CT-E"
-            CASE cTipo == '58' ; cTipoDoc := "MDF-E"
-            OTHERWISE ;          cTipoDoc := "NF"
-            ENDCASE
-
-            ::DrawTexto( 005, ::nLinhaPdf - nLinha, 353, Nil, cTipoDoc, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
+            ::DrawTexto( 005, ::nLinhaPdf - nLinha, 353, Nil, DfeModFisDescricao( ::aInfNfe[ nCont, 1 ] ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
             ::DrawTexto( 050, ::nLinhaPdf - nLinha, 240, Nil, ::aInfNFe[ nCont, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             ::DrawTexto( 240, ::nLinhaPdf - nLinha, 295, Nil, Substr( ::aInfNFe[ nCont, 1 ], 23, 3 ) + '/' + Substr( ::aInfNFe[ nCont, 1 ], 26, 9 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             ::nNfeImpressas += 1
          ENDIF
          IF nCont + 1 <= Len( ::aInfNFe )
-            cTipo    := DfeModFis( ::aInfNFe[ nCont + 1, 1 ] )
-            cTipoDoc := "NF-E"
-            if     Alltrim(cTipo) == '55'
-               cTipoDoc := "NF-E"
-            elseif Alltrim(cTipo) == '65'
-               cTipoDoc := "NFC-E"
-            elseif Alltrim(cTipo) == '57'
-               cTipoDoc := "CT-E"
-            elseif Alltrim(cTipo) == '58'
-               cTipoDoc := "MDF-E"
-            endif
-            ::DrawTexto( 300, ::nLinhaPdf - nLinha, 353, Nil, cTipoDoc, HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
+            ::DrawTexto( 300, ::nLinhaPdf - nLinha, 353, Nil, DfeModFisDescricao( ::aInfNfe[ nCont + 1, 1 ] ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 8 )
             ::DrawTexto( 345, ::nLinhaPdf - nLinha, 535, Nil, ::aInfNFe[ nCont + 1, 1 ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             ::DrawTexto( 535, ::nLinhaPdf - nLinha, 590, Nil, Substr( ::aInfNFe[ nCont + 1, 1 ], 23, 3 ) + '/' + Substr( ::aInfNFe[ nCont + 1, 1 ], 26, 9 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
             ::nNfeImpressas += 1
@@ -1113,3 +1092,18 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    ENDIF
 
    RETURN Nil
+
+STATIC FUNCTION DfeModFisDescricao( cChave )
+
+   LOCAL cTipoDoc, cTipo
+
+   cTipo := DfeModFis( cChave )
+   DO CASE
+   CASE cTipo == '55' ; cTipoDoc := "NF-E"
+   CASE cTipo == '65' ; cTipoDoc := "NFC-E"
+   CASE cTipo == '57' ; cTipoDoc := "CT-E"
+   CASE cTipo == '58' ; cTipoDoc := "MDF-E"
+   OTHERWISE ;          cTipoDoc := "NF"
+   ENDCASE
+
+   RETURN cTipoDoc
