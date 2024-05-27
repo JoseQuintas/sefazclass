@@ -290,6 +290,7 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
    ::aInfCarga := XmlToHash( XmlNode( cinfCteNorm, "infCarga" ), { "vCarga", "proPred", "xOutCat" } )
 
    ::aInfQ := MultipleNodeToArray( XmlNode( cinfCteNorm, "infCarga" ), "infQ" )
+
    FOR EACH oElement IN ::aInfQ
       oElement := { XmlNode( oElement, "cUnid" ), XmlNode( oElement, "tpMed" ), XmlNode( oElement, "qCarga" ) }
    NEXT
@@ -705,11 +706,11 @@ METHOD GeraFolha() CLASS hbnfeDaCte
       ::DrawTexto( 473, ::nLinhaPdf - 358, 580, Nil, Transform( Val( ::aInfCarga[ "vCarga" ] ), '@E 9,999,999.99' ), HPDF_TALIGN_RIGHT, ::oPDFFontBold, 12 )
 
       // Box das Quantidades
-      cTexto := iif( ! Len( ::aInfQ ) > 0, "", AllTrim( Transform( Val( ::aInfQ[ 1, 3 ] ), '@E 999,999.999' ) ) + '/' + aUnid[ Val( ::aInfQ[ 1, 1 ] ) + 1 ] + '/' + ::aInfQ[ 1, 2 ] )
+      cTexto := iif( ! Len( ::aInfQ ) > 0, "", AllTrim( Transform( Val( ::aInfQ[ 1, 3 ] ), '@E 999,999.999' ) ) + ' ' + aUnid[ Val( ::aInfQ[ 1, 1 ] ) + 1 ] + ' ' + ::aInfQ[ 1, 2 ] )
       ::DrawBoxTituloTexto( 003, ::nLinhaPdf - 373, 090, 025, "QT./UN./Medida", cTexto, HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      cTexto := iif( ! Len( ::aInfQ ) > 1, "", AllTrim( Transform( Val( ::aInfQ[ 2, 3 ] ), '@E 999,999.999' ) ) + '/' + aUnid[ Val( ::aInfQ[ 2, 1 ] ) + 1 ] + '/' + ::aInfQ[ 2, 2 ] )
+      cTexto := iif( ! Len( ::aInfQ ) > 1, "", AllTrim( Transform( Val( ::aInfQ[ 2, 3 ] ), '@E 999,999.999' ) ) + ' ' + aUnid[ Val( ::aInfQ[ 2, 1 ] ) + 1 ] + ' ' + ::aInfQ[ 2, 2 ] )
       ::DrawBoxTituloTexto( 093, ::nLinhaPdf - 373, 090, 025, "QT./UN./Medida", cTexto, HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
-      cTexto := iif( ! Len( ::aInfQ ) > 2, "", AllTrim( Transform( Val( ::aInfQ[ 3, 3 ] ), '@E 999,999.999' ) ) + '/' + aUnid[ Val( ::aInfQ[ 3, 1 ] ) + 1 ] + '/' + ::aInfQ[ 3, 2 ] )
+      cTexto := iif( ! Len( ::aInfQ ) > 2, "", AllTrim( Transform( Val( ::aInfQ[ 3, 3 ] ), '@E 999,999.999' ) ) + ' ' + aUnid[ Val( ::aInfQ[ 3, 1 ] ) + 1 ] + ' ' + ::aInfQ[ 3, 2 ] )
       ::DrawBoxTituloTexto( 183, ::nLinhaPdf - 373, 090, 025, "QT./UN./Medida", cTexto, HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
 
       // Box da Seguradora
