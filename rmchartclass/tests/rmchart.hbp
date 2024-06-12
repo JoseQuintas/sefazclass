@@ -1,8 +1,0 @@
-rmchart.prg
--L..
--I../include
-wvgtest.hbc
-hbct.hbc
-rmchartclass.hbc
--w3
--es2

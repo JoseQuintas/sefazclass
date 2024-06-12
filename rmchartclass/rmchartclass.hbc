@@ -1,3 +1,0 @@
-incpaths=include
-libpaths=../lib
-{!hblib}libs=rmchartclass
