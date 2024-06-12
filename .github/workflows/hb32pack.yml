@@ -62,7 +62,7 @@ jobs:
          PATH_SEFAZ:    c:\temp\harbour\addons\sefazclass
          PATH_BOLETO:   c:\temp\harbour\addons\boletoclass
          PATH_RMCHART:  c:\temp\harbour\addons\rmchartclass
-         REPO_WVGTEST:  c:\temp\harbour\addons\wvgtest
+         PATH_WVGTEST:  c:\temp\harbour\addons\wvgtest
          PATH_HWGUI:    c:\temp\harbour\addons\hwgui
          PATH_HMGE:     c:\temp\harbour\addons\hmge
          PATH_HMG3:     c:\temp\harbour\addons\hmg3
