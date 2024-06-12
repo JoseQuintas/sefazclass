@@ -49,12 +49,20 @@ jobs:
 
     - name: Load Source Code
       env:
-         REPO_ZEPACK:   https://github.com/JoseQuintas/zepack
+         REPO_SEFAZ:    https://github.com/JoseQuintas/sefazclass
+         REPO_BOLETO:   https://github.com/JoseQuintas/boletoclass
+         REPO_RMCHART:  https://github.com/JoseQuintas/rmchartclass
+         REPO_WVGTEST:  https://github.com/JoseQuintas/wvgtest
+         REPO_PDFCLASS: http://github.com/JoseQuintas/pdfclass
          REPO_HWGUI:    https://github.com/JoseQuintas/hwgui
          REPO_HMGE:     https://github.com/JoseQuintas/hmge
          REPO_HMG3:     https://github.com/JoseQuintas/hmg3
          REPO_OOHG:     https://github.com/JoseQuintas/oohg
          REPO_DLGAUTO:  https://github.com/JoseQuintas/dlgauto
+         PATH_SEFAZ:    c:\temp\harbour\addons\sefazclass
+         PATH_BOLETO:   c:\temp\harbour\addons\boletoclass
+         PATH_RMCHART:  c:\temp\harbour\addons\rmchartclass
+         REPO_WVGTEST:  c:\temp\harbour\addons\wvgtest
          PATH_HWGUI:    c:\temp\harbour\addons\hwgui
          PATH_HMGE:     c:\temp\harbour\addons\hmge
          PATH_HMG3:     c:\temp\harbour\addons\hmg3
@@ -63,12 +71,16 @@ jobs:
          PATH_DLGAUTO:  c:\temp\harbour\addons\dlgauto
       run: |
          c:
-         git clone $env:REPO_ZEPACK  $env:PATH_ZEPACK  --depth 1
-         git clone $env:REPO_HWGUI   $env:PATH_HWGUI   --depth 1
-         git clone $env:REPO_HMGE    $env:PATH_HMGE    --depth 1
-         git clone $env:REPO_HMG3    $env:PATH_HMG3    --depth 1
-         git clone $env:REPO_OOHG    $env:PATH_OOHG    --depth 1
-         git clone $env:REPO_DLGAUTO $env:PATH_DLGAUTO --depth 1
+         git clone $env:REPO_SEFAZ    $env:PATH_SEFAZ   --depth 1
+         git clone $env:REPO_BOLETO   $env:PATH_BOLETO --depth 1
+         git clone $env:REPO_RMCHART  $env:PATH_RMCHART --depth 1
+         git clone $env:REPO_WVGTEST  $env:PATH_WVGTEST --depth 1
+         git clone $env:REPO_PDFCLASS $env:PATH_PDFCLASS --depth 1
+         git clone $env:REPO_HWGUI    $env:PATH_HWGUI   --depth 1
+         git clone $env:REPO_HMGE     $env:PATH_HMGE    --depth 1
+         git clone $env:REPO_HMG3     $env:PATH_HMG3    --depth 1
+         git clone $env:REPO_OOHG     $env:PATH_OOHG    --depth 1
+         git clone $env:REPO_DLGAUTO  $env:PATH_DLGAUTO --depth 1
 
     - name: Build All
       env:
@@ -81,23 +93,23 @@ jobs:
          c:
          #copy c:\temp\harbour\sefazclass\gtwvg.hbc c:\temp\harbour\contrib\gtwvg
 
-         cd c:\temp\harbour\addons\zepack\sefazclass
+         cd c:\temp\harbour\addons\sefazclass
          hbmk2 sefazclass.hbp -q -rebuild
 
-         cd c:\temp\harbour\addons\zepack\boletoclass
+         cd c:\temp\harbour\addons\boletoclass
          hbmk2 boletoclass.hbp -q -rebuild
 
-         cd c:\temp\harbour\addons\zepack\bostaurus
-         hbmk2 bostaurus.hbp -q -rebuild
-
-         cd c:\temp\harbour\addons\zepack\rmchartclass
+         cd c:\temp\harbour\addons\rmchartclass
          hbmk2 rmchartclass.hbp -q -rebuild
 
-         cd c:\temp\harbour\addons\zepack\pdfclass
+         cd c:\temp\harbour\addons\pdfclass
          hbmk2 pdfclass.hbp -q -rebuild
 
-         cd c:\temp\harbour\addons\zepack\wvgtest
+         cd c:\temp\harbour\addons\wvgtest\wvgtest
          hbmk2 wvgtest.hbp -q -rebuild
+
+         cd c:\temp\harbour\addons\wvgtest\bostaurus
+         hbmk2 bostaurus.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\hwgui
          hbmk2 hbxml.hbp    -q -rebuild
