@@ -136,55 +136,55 @@ FUNCTION XmlTransform( cXml )
 
 FUNCTION XmlNode( cXml, cNode, lComTag )
 
-   LOCAL nInicio, nFim, cResultado := ""
-   LOCAL nInicio2
+   LOCAL nStart, nEnd, cResult := ""
+   LOCAL nStart2
 
    hb_Default( @lComTag, .F. )
-   nInicio  := At( "<" + cNode + ">", cXml )
-   nInicio2 := At( "<" + cNode + " ", cXml )
-   IF nInicio == 0
-      nInicio := nInicio2
-   ELSEIF nInicio2 != 0 .AND. nInicio2 < nInicio
-      nInicio := nInicio2
+   nStart  := At( "<" + cNode + ">", cXml )
+   nStart2 := At( "<" + cNode + " ", cXml )
+   IF nStart == 0
+      nStart := nStart2
+   ELSEIF nStart2 != 0 .AND. nStart2 < nStart
+      nStart := nStart2
    ENDIF
-   // a linha abaixo é depois de pegar o início, senão falha
+   // after to get nStart or fail
    IF " " $ cNode
       cNode := Substr( cNode, 1, At( " ", cNode ) - 1 )
    ENDIF
-   IF nInicio != 0
+   IF nStart != 0
       IF ! lComTag
-         nInicio := nInicio + Len( cNode ) + 2
-         IF nInicio != 1 .AND. Substr( cXml, nInicio - 1, 1 ) != ">" // Quando tem elementos no bloco
-            nInicio := hb_At( ">", cXml, nInicio ) + 1
+         nStart := nStart + Len( cNode ) + 2
+         IF nStart != 1 .AND. Substr( cXml, nStart - 1, 1 ) != ">" // when have elements on block
+            nStart := hb_At( ">", cXml, nStart ) + 1
          ENDIF
       ENDIF
-      nFim := hb_At( "</" + cNode + ">", cXml, nInicio )
-      IF nFim != 0
-         nFim -=1
+      nEnd := hb_At( "</" + cNode + ">", cXml, nStart )
+      IF nEnd != 0
+         nEnd -=1
          IF lComTag
-            nFim := nFim + Len( cNode ) + 3
+            nEnd := nEnd + Len( cNode ) + 3
          ENDIF
-         cResultado := Substr( cXml, nInicio, nFim - nInicio + 1 )
+         cResult := Substr( cXml, nStart, nEnd - nStart + 1 )
       ENDIF
    ENDIF
 
-   RETURN cResultado
+   RETURN cResult
 
 FUNCTION XmlElement( cXml, cElement )
 
-   LOCAL nInicio, nFim, cResultado := ""
+   LOCAL nStart, nEnd, cResult := ""
 
-   nInicio := At( cElement + "=", cXml )
-   IF nInicio != 0
-      nInicio += 1
-      nInicio := hb_At( "=", cXml, nInicio ) + 2
+   nStart := At( cElement + "=", cXml )
+   IF nStart != 0
+      nStart += 1
+      nStart := hb_At( "=", cXml, nStart ) + 2
    ENDIF
-   nFim    := hb_At( ["], cXml, nInicio ) - 1
-   IF nInicio > 0 .AND. nFim > 0 .AND. nFim > nInicio
-      cResultado := Substr( cXml, nInicio, nFim - nInicio + 1 )
+   nEnd    := hb_At( ["], cXml, nStart ) - 1
+   IF nStart > 0 .AND. nEnd > 0 .AND. nEnd > nStart
+      cResult := Substr( cXml, nStart, nEnd - nStart + 1 )
    ENDIF
 
-   RETURN cResultado
+   RETURN cResult
 
 FUNCTION XmlDate( cData )
 
