@@ -241,7 +241,6 @@ RETURN { ;
    { "SVRS",  "4.00P", "https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote" }, ;
    ;
    { "AM",    "4.00PC", "https://nfce.sefaz.am.gov.br/nfce-services/services/NfeAutorizacao4", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote" }, ;
-   { "BA",    "4.00PC", "https://nfe.sefaz.ba.gov.br/webservices/NFeAutorizacao4/NFeAutorizacao4.asmx", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote" }, ;
    { "GO",    "4.00PC", "https://nfe.sefaz.go.gov.br/nfe/services/NFeAutorizacao4", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote" }, ;
    { "MG",    "4.00PC", "https://nfce.fazenda.mg.gov.br/nfce/services/NFeAutorizacao4", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote" }, ;
    { "MS",    "4.00PC", "https://nfce.sefaz.ms.gov.br/ws/NFeAutorizacao4", "http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4/nfeAutorizacaoLote" }, ;
