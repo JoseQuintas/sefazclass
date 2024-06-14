@@ -150,7 +150,6 @@
    { "MS", "2.00H", "http://www.dfe.ms.gov.br/nfce/consulta" }, ;
    { "MT", "2.00H", "http://www.sefaz.mt.gov.br/nfce/consultanfce" }, ;
    { "PA", "2.00H", "http://www.sefa.pa.gov.br/nfce/consulta" }, ;
-   { "PB", "2.00H", "http://www.receita.pb.gov.br/nfcehom" }, ;
    { "PE", "2.00H", "http://nfce.sefaz.pe.gov.br/nfce/consulta" }, ;
    { "PI", "2.00H", "http://www.sefaz.pi.gov.br/nfce/consulta" }, ;
    { "PR", "2.00H", "http://www.fazenda.pr.gov.br/nfce/consulta" }, ;
@@ -171,7 +170,7 @@
    { "MS", "2.00P", "http://www.dfe.ms.gov.br/nfce/consulta" }, ;
    { "MT", "2.00P", "http://www.sefaz.mt.gov.br/nfce/consultanfce" }, ;
    { "PA", "2.00H", "http://www.sefa.pa.gov.br/nfce/consulta" }, ;
-   { "PB", "2.00H", "http://nfce.sefaz.pe.gov.br/nfce/consulta" }, ;
+   { "PE", "2.00H", "http://nfce.sefaz.pe.gov.br/nfce/consulta" }, ;
    { "PI", "2.00P", "http://www.sefaz.pi.gov.br/nfce/consulta" }, ;
    { "PR", "2.00P", "http://www.fazenda.pr.gov.br/nfce/consulta" }, ;
    { "RJ", "2.00P", "http://www.fazenda.rj.gov.br/nfce/consulta" }, ;
