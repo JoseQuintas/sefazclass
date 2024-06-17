@@ -258,7 +258,7 @@ METHOD cabecalho( nQtFolhas ) CLASS hbnfeDaMdfe
    IF ::cLogoFile != NIL .AND. ! Empty( ::cLogoFile )
       ::DrawJPEGImage( ::cLogoFile, 025, ::nLinhaPdf - ( 142 + 1 ), 200, 132 )
    ENDIF
-   ::DrawTexto( 240, ::nLinhaPdf -018, 560, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 16 )
+   ::DrawTexto( 240, ::nLinhaPdf -005, 560, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 16 )
    ::DrawTexto( 240, ::nLinhaPdf -060, 560, Nil, 'CNPJ: ' + TRANSF( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscrição Estadual: ' + ::FormataIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::DrawTexto( 240, ::nLinhaPdf -072, 560, Nil, 'Logradouro: ' + ::aEmit[ "xLgr" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::DrawTexto( 240, ::nLinhaPdf -084, 560, Nil, "No.: " + ::aEmit[ "nro" ] + " " + ::aEmit[ "xCpl" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
