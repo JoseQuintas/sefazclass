@@ -40,7 +40,7 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
    VAR cRntrcEmit
    VAR cRntrcProp
    VAR cCiot
-   VAR aCondutor
+   VAR aCondutor INIT {}
    VAR aInfDoc
    VAR ainfOutros
    VAR aValePed
@@ -158,7 +158,11 @@ METHOD buscaDadosXML() CLASS hbnfeDaMdfe
    ::cCiot      := XmlNode( XmlNode( ::cXml, "rodo" ), "CIOT" )
    ::aVeiculo   := XmlToHash( XmlNode( ::cXml, "veicTracao" ), { "placa", "tara" } )
    ::aProp      := XmlToHash( XmlNode( ::cXml, "prop" ), { "RNTRC" } )
-   ::aCondutor  := XmlToHash( XmlNode( ::cXml, "condutor" ), { "xNome", "CPF" } )
+   aList := MultipleNodeToArray( ::cXml, "condutor" )
+   FOR EACH xItem IN aList
+      AAdd( ::aCondutor, XmlToHash( xItem, { "xNome", "CPF" } ) )
+   NEXT
+   //::aCondutor  := XmlToHash( XmlNode( ::cXml, "condutor" ), { "xNome", "CPF" } )
    ::aReboque   := XmlToHash( XmlNode( ::cXml, "veicReboque" ), { "placa", "tara", "capKG", "RNTRC" } )
    ::aValePed   := XmlToHash( XmlNode( ::cXml, "valePed" ), { "CNPJForn", "CNPJPg", "nCompra" } )
    ::aProtocolo := XmlToHash( XmlNode( ::cXml, "infProt" ), { "nProt", "dhRecbto" } )
@@ -245,7 +249,7 @@ METHOD NovaPagina() CLASS hbnfeDaMdfe
 
 METHOD cabecalho( nQtFolhas ) CLASS hbnfeDaMdfe
 
-   LOCAL nCont, aList, nPos, cURLConsulta := "http:", nItem
+   LOCAL nCont, aList, nPos, cURLConsulta := "http:", nItem, xItem
 
    (nQtFolhas)
    // box do logotipo e dados do emitente
@@ -373,8 +377,11 @@ METHOD cabecalho( nQtFolhas ) CLASS hbnfeDaMdfe
    ELSE
       ::DrawTexto( 115, ::nLinhaPdf - 445, 240, Nil, ::cRntrcEmit, HPDF_TALIGN_LEFT, ::oPDFFontBold, 10 )
    ENDIF
-   ::DrawTexto( 245, ::nLinhaPdf - 445, 320, Nil, TRANSF( ::aCondutor[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 10 )
-   ::DrawTexto( 325, ::nLinhaPdf - 445, 560, Nil, ::aCondutor[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 10 )
+
+   FOR EACH xItem IN ::aCondutor
+      ::DrawTexto( 245, ::nLinhaPdf - 445 - ( ( xItem:__EnumIndex - 1 ) * 13 ), 320, Nil, TRANSF( xItem[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 10 )
+      ::DrawTexto( 325, ::nLinhaPdf - 445 - ( ( xItem:__EnumIndex - 1 ) * 13 ), 560, Nil, xItem[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 10 )
+   NEXT
 
    ::DrawTexto( 025, ::nLinhaPdf - 460, 110, Nil, ::aReboque[ "placa" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 10 )
    ::DrawTexto( 115, ::nLinhaPdf - 460, 240, Nil, ::aReboque[ "RNTRC" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 10 )
