@@ -6,7 +6,7 @@ FUNCTION ze_sefaz_CTeInutiliza( Self, cAno, cCnpj, cMod, cSerie, cNumIni, cNumFi
    ::cProjeto := WS_PROJETO_CTE
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   cCnpj := SoNumeros( cCnpj )
+   cCnpj := SoNumero( cCnpj )
 
    IF Len( cAno ) != 2
       cAno := Right( cAno, 2 )

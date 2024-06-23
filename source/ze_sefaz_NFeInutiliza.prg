@@ -20,7 +20,7 @@ FUNCTION ze_sefaz_NFeInutiliza( Self, cAno, cCnpj, cMod, cSerie, cNumIni, cNumFi
    ::cXmlDocumento +=       XmlTag( "xServ", "INUTILIZAR" )
    ::cXmlDocumento +=       XmlTag( "cUF", ::UFCodigo( ::cUF ) )
    ::cXmlDocumento +=       XmlTag( "ano", Right( cAno, 2 ) )
-   ::cXmlDocumento +=       XmlTag( "CNPJ", SoNumeros( cCnpj ) )
+   ::cXmlDocumento +=       XmlTag( "CNPJ", SoNumero( cCnpj ) )
    ::cXmlDocumento +=       XmlTag( "mod", cMod )
    ::cXmlDocumento +=       XmlTag( "serie", cSerie )
    ::cXmlDocumento +=       XmlTag( "nNFIni", cNumIni )

@@ -11,7 +11,7 @@ FUNCTION ValidIE( cInscricao, cUF )
       RETURN .T.
    ENDIF
    nLen       := Len( cInscricao )
-   cInscricao := SoNumeros( cInscricao )
+   cInscricao := SoNumero( cInscricao )
    DO CASE
    CASE cUf == "AC" ; lOk := ValidIE_AC( @cInscricao )
    CASE cUf == "AL" ; lOk := ValidIE_AL( @cInscricao )

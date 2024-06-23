@@ -14,7 +14,7 @@ FUNCTION ze_sefaz_NFeDestinadas( Self, cCnpj, cUltNsu, cIndNFe, cIndEmi, cUf, cC
    ::cXmlEnvio    := [<consNFeDest versao="] + ::cVersao + [">]
    ::cXmlEnvio    +=    XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "xServ", "CONSULTAR NFE DEST" )
-   ::cXmlEnvio    +=    XmlTag( "CNPJ", SoNumeros( cCnpj ) )
+   ::cXmlEnvio    +=    XmlTag( "CNPJ", SoNumero( cCnpj ) )
    ::cXmlEnvio    +=    XmlTag( "indNFe", "0" ) // 0=todas,1=sem manif,2=sem nada
    ::cXmlEnvio    +=    XmlTag( "indEmi", "0" ) // 0=todas, 1=sem cnpj raiz(sem matriz/filial)
    ::cXmlEnvio    +=    XmlTag( "ultNSU", cUltNsu )

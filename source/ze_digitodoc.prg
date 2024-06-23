@@ -7,21 +7,21 @@ José Quintas
 
 FUNCTION IsCnpj( cValue )
 
-   RETURN Len( SoNumeros( cValue ) ) == 14
+   RETURN Len( SoNumero( cValue ) ) == 14
 
 FUNCTION IsCpf( cValue )
 
-   RETURN Len( SoNumeros( cValue ) ) == 11
+   RETURN Len( SoNumero( cValue ) ) == 11
 
 FUNCTION ValidCnpj( cCnpj )
 
    LOCAL cNumero, lOk, cPicture := "@R 99.999.999/9999-99"
 
-   cNumero := StrZero( Val( SoNumeros( cCnpj ) ), 14 )
+   cNumero := StrZero( Val( SoNumero( cCnpj ) ), 14 )
    cNumero := Left( cNumero, 12 )
    cNumero := cNumero + CalculaDigito( cNumero, "11" )
    cNumero := cNumero + CalculaDigito( cNumero, "11" )
-   lOk     := ( SoNumeros( cNumero ) == SoNumeros( cCnpj ) )
+   lOk     := ( SoNumero( cNumero ) == SoNumero( cCnpj ) )
    IF lOk
       cCnpj := Pad( Transform( cNumero, cPicture ), Max( 18, Len( cCnpj ) ) )
    ENDIF
@@ -32,11 +32,11 @@ FUNCTION ValidCpf( cCpf )
 
    LOCAL cNumero, lOk, cPicture := "@R 999.999.999-99"
 
-   cNumero := StrZero( Val( SoNumeros( cCpf ) ), 11 )
+   cNumero := StrZero( Val( SoNumero( cCpf ) ), 11 )
    cNumero := Left( cNumero, 9 )
    cNumero := cNumero + CalculaDigito( cNumero, "10" )
    cNumero := cNumero + CalculaDigito( cNumero, "10" )
-   lOk     := ( SoNumeros( cCpf ) == SoNumeros( cNumero ) )
+   lOk     := ( SoNumero( cCpf ) == SoNumero( cNumero ) )
    IF lOk
       cCpf := Pad( Transform( cNumero, cPicture ), Max( 14, Len( cCpf ) ) )
    ENDIF
@@ -55,7 +55,7 @@ FUNCTION FormatCnpj( cValue )
 
    LOCAL cPicture := "@X"
 
-   cValue := SoNumeros( cValue )
+   cValue := SoNumero( cValue )
    IF Len( cValue ) == 14
       cPicture := "@R 99.999.999/9999-99"
    ELSEIF Len( cValue ) == 11
@@ -68,7 +68,7 @@ FUNCTION ValidRenavam( cRenavam )
 
    LOCAL nSoma, nCont, nDigito, lOk
 
-   cRenavam := SoNumeros( cRenavam )
+   cRenavam := SoNumero( cRenavam )
    cRenavam := StrZero( Val( cRenavam ), 11 )
    nSoma := 0
    FOR nCont = 1 To 10
@@ -162,7 +162,7 @@ FUNCTION ValidCnhImpresso( cNumero )
 
    LOCAL lOk := .F., nDigito
 
-   cNumero = SoNumeros( cNumero )
+   cNumero = SoNumero( cNumero )
    IF Len( cNumero ) <> 0
       nDigito := 11 - Mod( Val( Substr( cNumero, 1, Len( cNumero ) - 1 ) ), 11 )
       nDigito := iif( nDigito > 9, 0, nDigito )
@@ -178,7 +178,7 @@ FUNCTION ValidGTIN( cCodigo )
    IF Val( cCodigo ) == 0
       cCodigo := Pad( "SEM GTIN", 14 )
    ELSE
-      cCodigo := SoNumeros( cCodigo )
+      cCodigo := SoNumero( cCodigo )
       nMultiplicador = 3
       nSoma := 0
       FOR EACH cChar IN Left( cCodigo, Len( cCodigo ) - 1 ) DESCEND
@@ -254,7 +254,7 @@ FUNCTION CalculaDigito( cNumero, cModulo )
 
 FUNCTION ValidPis( cPis )
 
-   cPis := SoNumeros( cPis )
+   cPis := SoNumero( cPis )
    IF Len( cPis ) != 11
       RETURN .F.
    ENDIF

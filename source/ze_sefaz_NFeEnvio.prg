@@ -82,7 +82,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
 
    // 2¦ Parte (Parametros)
    QRCODE_chNFe    := AllTrim( Substr( XmlElement( cInfNFe, "Id" ), 4 ) )
-   QRCODE_nVersao  := SoNumeros( cVersaoQRCode )
+   QRCODE_nVersao  := SoNumero( cVersaoQRCode )
    QRCODE_tpAmb    := cAmbiente
    QRCODE_cDest    := XmlNode( XmlNode( cInfNFe, "dest" ), "CPF" )
    IF Empty( QRCODE_cDest )

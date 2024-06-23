@@ -332,7 +332,7 @@ FUNCTION XmlToDoc( cXmlInput, lAutorizado )
    CASE "<procEventoNFe" $ cXmlInput
       oDocSped:cModFis := "55"
       oDocSped:cEvento := XmlNode( cXmlInput, "tpEvento" )
-      IF Len( SoNumeros( oDocSped:cEvento ) ) == 6
+      IF Len( SoNumero( oDocSped:cEvento ) ) == 6
          XmlToDocNfeEvento( cXmlInput, @oDocSped )
       ENDIF
    CASE "<procCancNFe" $ cXmlInput .AND. "<xServ>CANCELAR" $ cXmlInput
@@ -350,13 +350,13 @@ FUNCTION XmlToDoc( cXmlInput, lAutorizado )
    CASE "<procEventoMDFe" $ cXmlInput .AND. "<descEvento>Encerramento" $ cXmlInput
       oDocSped:cModFis := "58"
       oDocSped:cEvento  := "110112"
-      IF Len( SoNumeros( oDocSped:cEvento ) ) == 6
+      IF Len( SoNumero( oDocSped:cEvento ) ) == 6
          XmlToDocMDFEEvento( cXmlInput, @oDocSped )
       ENDIF
    CASE "<procEventoMDFe" $ cXmlInput
       oDocSped:cModFis := "58"
       oDocSped:cEvento  := XmlNode( cXmlInput, "tpEvento" )
-      IF Len( SoNumeros( oDocSped:cEvento ) ) == 6
+      IF Len( SoNumero( oDocSped:cEvento ) ) == 6
          XmlToDocMDFEEvento( cXmlInput, @oDocSped )
       ENDIF
    CASE "<infMDFe" $ cXmlInput
@@ -381,7 +381,7 @@ FUNCTION XmlToDoc( cXmlInput, lAutorizado )
    IF Empty( oDocSped:Destinatario:Cnpj ) .AND. Empty( oDocSped:Destinatario:Nome )
       oDocSped:Destinatario := oDocSped:Emitente
    ENDIF
-   oDocSped:cChave := SoNumeros( oDocSped:cChave )
+   oDocSped:cChave := SoNumero( oDocSped:cChave )
    IF Len( oDocSped:cChave ) == 44
       oDocSped:cModFis := DfeModFis( oDocSped:cChave )
       oDocSped:cSerie  := Substr( oDocSped:cChave, 23, 3 )
@@ -550,9 +550,9 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
             :Nome            := Upper( XmlNode( cBlocoProd, "xProd" ) )
             :CFOP            := Transform( XmlNode( cBlocoProd, "CFOP" ), "@R 9.9999" )
             :NCM             := XmlNode( cBlocoProd, "NCM" )
-            :GTIN            := SoNumeros( XmlNode( cBlocoProd, "cEAN" ) )
-            :GTINTrib        := SoNumeros( XmlNode( cBlocoProd, "cEANTrib" ) )
-            :CEST            := SoNumeros( XmlNode( cBLocoProd, "CEST" ) )
+            :GTIN            := SoNumero( XmlNode( cBlocoProd, "cEAN" ) )
+            :GTINTrib        := SoNumero( XmlNode( cBlocoProd, "cEANTrib" ) )
+            :CEST            := SoNumero( XmlNode( cBLocoProd, "CEST" ) )
             IF Empty( :GTINTrib )
                :GTINTrib := :GTIN
             ENDIF
@@ -817,19 +817,19 @@ STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
    oDocSped:cAmbiente := XmlNode( cXmlInput, "tpAmb" )
    nPosIni := At( cXmlInput, [<InfInut] )
    IF nPosIni != 0
-      oDocSped:DataEmissao   := Stod( Left( SoNumeros( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
+      oDocSped:DataEmissao   := Stod( Left( SoNumero( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
       oDocSped:Emitente:Cnpj := Transform( XmlNode( cXmlInput, "CNPJ" ), "@R 99.999.999/9999-99" )
       oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
       oDocSped:cSequencia    := "01"
       oDocSped:Protocolo     := XmlNode( cXmlInput, "infInut" )
       oDocSped:Status        := "111"
-      oDocSped:DataEmissao   := Stod( Left( SoNumeros( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
+      oDocSped:DataEmissao   := Stod( Left( SoNumero( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
       cModelo                := StrZero( Val( XmlNode( cXmlInput, "mod" ) ), 2 )
       cSerie                 := Str( Val( XmlNode( cXmlInput, "serie" ) ), 1 )
       oDocSped:cNumDoc       := StrZero( Val( XmlNode( cXmlInput, "nNFIni" ) ), 9 )
-      oDocSped:cChave        := Substr( SoNumeros( Substr( cXmlInput, nPosIni, 60 ) ), 1, 2 ) + ;
+      oDocSped:cChave        := Substr( SoNumero( Substr( cXmlInput, nPosIni, 60 ) ), 1, 2 ) + ;
                                 Substr( Dtos( oDocSped:DataEmissao ), 3, 4 ) + ;
-                                SoNumeros( oDocSped:Emitente:Cnpj ) + ;
+                                SoNumero( oDocSped:Emitente:Cnpj ) + ;
                                 cModelo + ;
                                 cSerie + ;
                                 StrZero( Val( oDocSped:cNumDoc ), 9 ) + ;

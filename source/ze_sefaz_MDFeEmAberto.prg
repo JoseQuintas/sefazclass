@@ -6,7 +6,7 @@ FUNCTION ze_sefaz_MDFeEmAberto( Self, cUF, cCNPJ , cCertificado, cAmbiente )
    ::cProjeto := WS_PROJETO_MDFE
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   cCnpj := SoNumeros( cCnpj )
+   cCnpj := SoNumero( cCnpj )
 
    ::cXmlEnvio := [<consMDFeNaoEnc versao="] + ::cVersao + [" ] + WS_XMLNS_MDFE + [>]
    ::cXmlEnvio +=    XmlTag( "tpAmb", ::cAmbiente )

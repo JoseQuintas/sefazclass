@@ -2,7 +2,7 @@
 ZE_MISCFUNC - Miscelânea de funções
 */
 
-FUNCTION SoNumeros( cTxt )
+FUNCTION SoNumero( cTxt )
 
    LOCAL cSoNumeros := "", cChar
 

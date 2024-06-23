@@ -295,7 +295,7 @@ STATIC FUNCTION hbNFe_FormataTelefone( cText )
    LOCAL cPicture := ""
 
    cText := iif( ValType( cText ) == "N", Ltrim( Str( cText ) ), cText )
-   cText := SoNumeros( cText )
+   cText := SoNumero( cText )
    DO CASE
    CASE Len( cText ) == 8  ; cPicture := "@R 9999-9999"
    CASE Len( cText ) == 9  ; cPicture := "@R 99999-9999"
@@ -313,7 +313,7 @@ STATIC FUNCTION hbNFe_FormataIE( cIE, cUF )
    IF cIE == "ISENTO" .OR. Empty( cIE )
       RETURN cIE
    ENDIF
-   cIE := SoNumeros( cIE )
+   cIE := SoNumero( cIE )
 
    HB_SYMBOL_UNUSED( cUF )
 
