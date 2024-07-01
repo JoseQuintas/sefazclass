@@ -9,17 +9,15 @@ FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSin
    IF lEnvioSinc != Nil .AND. ValType( lEnvioSinc ) == "L"
       ::lEnvioSinc := lEnvioSinc
    ENDIF
+   // ---default síncrono 2024.07.01
+   ::lEnvioSinc := .T.
+   // ---fim default
    IF ::lEnvioSinc
       ::aSoapUrlList := SoapListSinc()
    ELSE
       ::aSoapUrlList := SoapList()
    ENDIF
    ::Setup( cUF, cCertificado, cAmbiente )
-   //IF ::lEnvioSinc
-   //   ::cSoapAction := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcaoSinc/mdfeRecepcao"
-   //ELSE
-   //   ::cSoapAction  := "http://www.portalfiscal.inf.br/mdfe/wsdl/MDFeRecepcao/MDFeRecepcao"
-   //ENDIF
 
    IF cXml != NIL
       ::cXmlDocumento := cXml
