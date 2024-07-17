@@ -155,6 +155,7 @@
    { "PR", "2.00H", "http://www.fazenda.pr.gov.br/nfce/consulta" }, ;
    { "RJ", "2.00H", "http://www.fazenda.rj.gov.br/nfce/consulta" }, ;
    { "RR", "2.00H", "http://www.sefaz.rr.gov.br/nfce/consulta" }, ;
+   { "RS", "2.00H", "http://www.sefaz.rs.gov.br/nfce/consulta" }, ;
    { "SP", "2.00H", "https://www.homologacao.nfce.fazenda.sp.gov.br/consulta" }, ;
    ;
    { "AC", "2.00P", "http://www.sefaznet.ac.gov.br/nfce/consulta" }, ;
@@ -175,4 +176,5 @@
    { "PR", "2.00P", "http://www.fazenda.pr.gov.br/nfce/consulta" }, ;
    { "RJ", "2.00P", "http://www.fazenda.rj.gov.br/nfce/consulta" }, ;
    { "RR", "2.00P", "http://www.sefaz.rr.gov.br/nfce/consulta" }, ;
+   { "RS", "2.00P", "http://www.sefaz.rs.gov.br/nfce/consulta" }, ;
    { "SP", "2.00P", "https://www.nfce.fazenda.sp.gov.br/consulta" } }
