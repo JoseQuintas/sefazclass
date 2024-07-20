@@ -97,8 +97,15 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
    QRCODE_cCSC     := cCsc
    QRCODE_tpEmis   := XmlNode( XmlNode( cInfNFe, "ide" ), "tpEmis" )
 
-   IF ! Empty( QRCODE_chNFe ) .AND. ! Empty( QRCODE_nVersao ) .AND. ! Empty( QRCODE_tpAmb ) .AND. ! Empty( QRCODE_dhEmi ) .AND. !Empty( QRCODE_vNF ) .AND. ;
-         ! Empty( QRCODE_vICMS ) .AND. ! Empty( QRCODE_digVal  ) .AND. ! Empty( QRCODE_cIdToken ) .AND. ! Empty( QRCODE_cCSC  )
+   IF ! Empty( QRCODE_chNFe ) ;
+      .AND. ! Empty( QRCODE_nVersao ) ;
+      .AND. ! Empty( QRCODE_tpAmb ) ;
+      .AND. ! Empty( QRCODE_dhEmi ) ;
+      .AND. ! Empty( QRCODE_vNF ) ;
+      ; // .AND. ! Empty( QRCODE_vICMS ) ; // 2024.07.20 sem ICMS ok
+      .AND. ! Empty( QRCODE_digVal  ) ;
+      .AND. ! Empty( QRCODE_cIdToken ) ;
+      .AND. ! Empty( QRCODE_cCSC  )
 
       IF cVersaoQRCode == "2.00"
          IF QRCODE_tpEmis != "9"
