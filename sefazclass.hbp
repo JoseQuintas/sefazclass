@@ -10,11 +10,7 @@ hbhpdf.hbc
 hbzebra.hbc
 hbct.hbc
 hbwin.hbc
--w3
--es2
--m
--n
--q
+-m -n -w3 -es2
 
 -hblib
 
