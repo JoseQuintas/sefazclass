@@ -106,7 +106,7 @@ jobs:
          cd c:\temp\harbour\addons\pdfclass
          hbmk2 pdfclass.hbp -q -rebuild
 
-         cd c:\temp\harbour\addons\wvgtest\wvgtest
+         cd c:\temp\harbour\addons\wvgtest
          hbmk2 wvgtest.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\wvgtest\bostaurus
