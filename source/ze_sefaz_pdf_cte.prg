@@ -464,11 +464,8 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    ::DrawBox( 003, ::nLinhaPdf - 119, 245, 119, ::nLarguraBox )
 
    ::DrawJPEGImage( ::cLogoFile, 115, ::nLinhaPdf - ( 52 + 1 ), 100, 052 )
-   IF Len( ::aEmit[ "xNome" ] ) <= 25
-      ::DrawTexto( 3, ::nLinhaPdf - 056, 245, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
-   ELSE
-      ::DrawTexto( 3, ::nLinhaPdf - 056, 245, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
-   ENDIF
+   ::DrawTexto( 3, ::nLinhaPdf - 052, 245, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, ;
+      iif( Len( ::aEmit[ "xNome" ] ) <= 25, 12, 8 ) )
    ::DrawTexto( 6, ::nLinhaPdf - 070, 245, Nil, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ] + " " + ::aEmit[ "xCpl" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::DrawTexto( 6, ::nLinhaPdf - 078, 245, Nil, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::DrawTexto( 6, ::nLinhaPdf - 086, 245, Nil, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
