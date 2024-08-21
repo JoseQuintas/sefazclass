@@ -1,8 +1,6 @@
 /*
 Baseado no projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 Contribuição NFCE: LucianoConforto
-
-2018.03.06 Aumento do campo quantidade 7,3
 */
 
 #include "hbclass.ch"
@@ -126,9 +124,19 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFCe
       { "11", "Vale Refeicao" }, ;
       { "12", "Vale Presente" }, ;
       { "13", "Vale Combustivel" }, ;
+      { "14", "Duplicata" }, ;
+      { "15", "Boleto Bancário" }, ;
+      { "16", "Depósito Bancário" }, ;
+      { "17", "Pagamento Instantâneo(PIX)" }, ;
+      { "18", "Transferência Bancária" }, ;
+      { "19", "Programa de Fidelidade" }, ;
+      { "20", "Pagamento Instantâneo(PIX) Estático" }, ;
+      { "21", "Crédito em Loja" }, ;
+      { "22", "Pagto Eletrônico Não Informado - falha harware" }, ;
+      { "90", "Sem Pagamento" }, ;
       { "99", "Outros" } }
 
-   aFPags := MultipleNodeToArray( ::cXml, "pag" )
+   aFPags := MultipleNodeToArray( ::cXml, "detPag" )
 
    FOR EACH cFPags IN aFPags
       cTipoPgto := XmlNode( cFPags, "tPag" )

@@ -44,15 +44,16 @@ CREATE CLASS hbNFeDaGeral
 METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 ) CLASS hbNFeDaGeral
 
    IF cJPEGImage == NIL .OR. Empty( cJPEGImage )
-      RETURN NIL
+      RETURN Nil
    ENDIF
    IF Len( cJPEGImage ) < 100
-      IF File( cJPEGImage )
-         cJPEGImage := HPDF_LoadJpegImageFromFile( ::oPDF, cJPEGImage )
+      IF ! File( cJPEGImage )
+         RETURN Nil
       ENDIF
-   ELSE
-      cJPEGImage := HPDF_LoadJpegImageFromMem( ::oPDF, cJPEGImage, Len( cJPEGImage ) )
+      cJPEGImage := MemoRead( cJPEGImage )
+      //cJPEGImage := HPDF_LoadJpegImageFromFile( ::oPDF, cJPEGImage )
    ENDIF
+   cJPEGImage := HPDF_LoadJpegImageFromMem( ::oPDF, cJPEGImage, Len( cJPEGImage ) )
    HPDF_Page_DrawImage( ::oPDFPage, cJPEGImage, x1, y1, x2, y2 )
 
    RETURN NIL
