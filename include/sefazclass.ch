@@ -146,7 +146,7 @@
    { "ES", "2.00H", "http://www.sefaz.es.gov.br/nfce/consulta" }, ;
    { "GO", "2.00H", "http://www.sefaz.go.gov.br/nfce/consulta" }, ;
    { "MA", "2.00H", "http://www.sefaz.ma.gov.br/nfce/consulta" }, ;
-   { "MG", "2.00H", "http://hinternet.sefaz.ba.gov.br/nfce/consulta" }, ;
+   { "MG", "2.00H", " https://hportalsped.fazenda.mg.gov.br/portalnfce" }, ;
    { "MS", "2.00H", "http://www.dfe.ms.gov.br/nfce/consulta" }, ;
    { "MT", "2.00H", "http://www.sefaz.mt.gov.br/nfce/consultanfce" }, ;
    { "PA", "2.00H", "http://www.sefa.pa.gov.br/nfce/consulta" }, ;
@@ -167,7 +167,7 @@
    { "DF", "2.00P", "http://www.fazenda.df.gov.br/nfce/consulta" }, ;
    { "GO", "2.00P", "http://www.sefaz.go.gov.br/nfce/consulta" }, ;
    { "MA", "2.00P", "http://www.sefaz.ma.gov.br/nfce/consulta" }, ;
-   { "MG", "2.00P", "http://nfce.fazenda.mg.gov.br/portalnfce" }, ;
+   { "MG", "2.00P", "http://portalsped.fazenda.mg.gov.br/portalnfce" }, ;
    { "MS", "2.00P", "http://www.dfe.ms.gov.br/nfce/consulta" }, ;
    { "MT", "2.00P", "http://www.sefaz.mt.gov.br/nfce/consultanfce" }, ;
    { "PA", "2.00P", "http://www.sefa.pa.gov.br/nfce/consulta" }, ;
