@@ -209,6 +209,7 @@ CREATE CLASS NfeProdutoClass STATIC
    VAR  II
    VAR  InfAdicional  INIT "" // 2018.01.23 Jackson
    VAR  Rastro        INIT {}
+   VAR  FCI           INIT ""
    METHOD Init()
 
    ENDCLASS
@@ -566,6 +567,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
             :ValorTotal      := Val( XmlNode( cBlocoProd, "vProd" ) )
             :Desconto        := Val( XmlNode( cBlocoProd, "vDesc" ) ) // 2018.01.23 Jackson
             :Pedido          := Val( XmlNode( cBlocoProd, "xPed" ) ) // 2018.01.23 Jackson
+            :FCI             := XmlNode( cBlocoProd, "nFCI" ) // 2024.09.01
             :InfAdicional    := XmlNode( cBlocoProd, "infAdProd" ) // 2018.01.23 Jackson
          cBlocoIpi := XmlNode( cBlocoItem, "IPI" )
             :Ipi:Base        := Val( XmlNode( cBlocoIpi, "vBC" ) )

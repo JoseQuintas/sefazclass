@@ -913,7 +913,7 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
       cItem := aItem[ nItem ]
 
       ::aItem          := XmlToHash( cItem, { "cProd", "cEAN", "xProd", "NCM", "EXTIPI", "CFOP", "uCom", "qCom", "vUnCom", "vProd", "cEANTrib", "uTrib", "qTrib", "vUnTrib", "vFrete", ;
-         "vSeg", "vDesc", "vOutro", "indTot", "infAdProd", "cProdANP", "descANP" } )
+         "vSeg", "vDesc", "vOutro", "indTot", "infAdProd", "cProdANP", "descANP", "nFCI" } )
       ::aItem[ "cEAN" ] := iif( ::aItem[ "cEAN" ] == "SEM GTIN", "", ::aItem[ "cEAN" ] )
       ::aItem[ "cEANTrib" ] := iif( ::aItem[ "cEANTrib" ] == "SEM GTIN", "", ::aItem[ "cEANTrib" ] )
       ::aItemDI        := XmlToHash( XmlNode( cItem, "DI" ), { "nDI", "dDI", "xLocDesemb", "UFDesemb", "cExportador" } )
@@ -951,6 +951,11 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
             iif( Empty( ::aItem[ "infAdProd" ] ), "", hb_Eol() ) + ;
             "Cód.ANP " + ::aItem[ "cProdANP" ] + ;
             " Desc.ANP " + ::aItem[ "descANP" ]
+      ENDIF
+      IF ! Empty( ::aItem[ "nFCI" ] )
+         ::aItem[ "infAdProd" ] += ;
+            iif( Empty( ::aItem[ "infAdProd" ] ), "", hb_Eol() ) + ;
+            "nFCI " + ::aItem[ "nFCI" ]
       ENDIF
 
    ENDIF
