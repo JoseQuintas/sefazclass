@@ -568,7 +568,6 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
             :Desconto        := Val( XmlNode( cBlocoProd, "vDesc" ) ) // 2018.01.23 Jackson
             :Pedido          := Val( XmlNode( cBlocoProd, "xPed" ) ) // 2018.01.23 Jackson
             :FCI             := XmlNode( cBlocoProd, "nFCI" ) // 2024.09.01
-            :InfAdicional    := XmlNode( cBlocoProd, "infAdProd" ) // 2018.01.23 Jackson
          cBlocoIpi := XmlNode( cBlocoItem, "IPI" )
             :Ipi:Base        := Val( XmlNode( cBlocoIpi, "vBC" ) )
             :Ipi:Aliquota    := Val( XmlNode( cBlocoIpi, "pIPI" ) )
@@ -612,6 +611,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
                   :dVal  := XmlDate( XmlNode( cBlocoRastro, "dVal" ) )
                ENDWITH
             NEXT
+         :InfAdicional := XmlNode( cBlocoItem, "infAdProd" ) // 2018.01.23 Jackson
       ENDWITH
    NEXT
 
