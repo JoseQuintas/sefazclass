@@ -278,12 +278,12 @@ METHOD Cabecalho() CLASS hbNFeDaNFCe
    ::nLinhaPDF -= 10
    ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, "Não permite aproveitamento de crédito do ICMS" , HPDF_TALIGN_CENTER, ::oPDFFontBold, 7 )
    ::nLinhaPDF -= 10
+   ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
+   ::nLinhaPDF -= 10
 
    ::MsgHomologacao()
    ::MsgContingencia()
 
-   ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-   ::nLinhaPDF -= 10
 
    RETURN NIL
 
@@ -640,11 +640,11 @@ METHOD MsgContingencia() CLASS hbNFeDaNFCe
 METHOD MsgHomologacao() CLASS hbNFeDaNFCe
 
    IF ::aIde[ "tpAmb" ] == WS_AMBIENTE_HOMOLOGACAO
-      ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
-      ::nLinhaPDF -= 10
       ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, "EMITIDA EM AMBIENTE DE HOMOLOGAÇÃO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
       ::nLinhaPDF -= 10
       ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, "SEM VALOR FISCAL", HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
+      ::nLinhaPDF -= 10
+      ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
       ::nLinhaPDF -= 10
    ENDIF
 

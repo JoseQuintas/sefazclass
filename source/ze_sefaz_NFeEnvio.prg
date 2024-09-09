@@ -22,10 +22,12 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
    IF cXml != NIL
       ::cXmlDocumento := cXml
    ENDIF
-   IF ::AssinaXml() != "OK"
-      RETURN ::cXmlRetorno
+   IF ! ( ::lConsumidor .AND. ::lContingencia )
+      IF ::AssinaXml() != "OK"
+         RETURN ::cXmlRetorno
+      ENDIF
    ENDIF
-   IF ::lConsumidor
+   IF ::lConsumidor .AND. ! ::lContingencia
       GeraQRCode( @::cXmlDocumento, ::cIdToken, ::cCSC, ::cVersao, ::cVersaoQrCode )
    ENDIF
 
