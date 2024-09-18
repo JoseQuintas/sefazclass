@@ -240,6 +240,7 @@ CREATE CLASS NfePagamentosClass STATIC
 
 CREATE CLASS NfeDuplicataClass STATIC
 
+   VAR  Fatura     INIT ""
    VAR  Duplicata  INIT ""  // 2018.01.23 Jackson
    VAR  Vencimento INIT Ctod("" )
    VAR  Valor      INIT 0
@@ -624,6 +625,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
       //ENDIF
       AAdd( oDocSped:Duplicata, NFEDuplicataClass():New() )
       WITH OBJECT Atail( oDocSped:Duplicata )
+         :Fatura     := XmlNode( cBlocoCobranca, "nFat" ) // 2024.09.18 Queiroz
          :Duplicata  := XmlNode( cBlocoDup, "nDup" ) // 2018.01.23 Jackson
          :Vencimento := XmlDate( XmlNode( cBlocoDup, "dVenc" ) )
          :Valor      := Val( XmlNode( cBlocoDup, "vDup" ) )
