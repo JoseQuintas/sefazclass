@@ -112,16 +112,15 @@ CREATE CLASS hbnfeDacte INHERIT hbNFeDaGeral
 
    VAR nItensFolha
    VAR nLinhaFolha
-   VAR nFolhas       INIT 1
-   VAR nFolha        INIT 1
-   VAR nNfeImpressas INIT 0
-   VAR nObsImpressas INIT 0
-   VAR aPageList     INIT {}
-   VAR aPageRow      INIT { 0, 0, 0 }
+   VAR nFolhas          INIT 1
+   VAR nFolha           INIT 1
+   VAR nNfeImpressas    INIT 0
+   VAR nObsImpressas    INIT 0
+   VAR aPageList        INIT {}
+   VAR aPageRow         INIT { 0, 0, 0 }
 
-   VAR lValorDesc INIT .F.
-   VAR nCasasQtd INIT 2
-   VAR nCasasVUn INIT 2
+   VAR lPreVisualizacao INIT .F.
+   VAR lValorDesc       INIT .F.
    VAR cRetorno
 
    ENDCLASS
@@ -424,7 +423,9 @@ METHOD NovaPagina() CLASS hbnfeDaCte
 
    ::nLinhaPdf := HPDF_Page_GetHeight( ::oPDFPage ) - 3     // Margem Superior
 
-   IF ::aIde[ "tpAmb" ] = "2"
+   IF ::lPreVisualizacao
+      ::DrawHomologacao('PRÉ-VISUALIZAÇÃO CTE - SEM VALOR FISCAL')
+   ELSEIF ::aIde[ "tpAmb" ] = "2"
       ::DrawHomologacao()
    ELSEIF ! Empty( ::aInfCanc[ "nProt" ] )
       ::DrawHomologacao( "CANCELADO EM " + ::aInfCanc[ "dhRecbto" ] + ;
@@ -464,8 +465,11 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    ::DrawBox( 003, ::nLinhaPdf - 119, 245, 119, ::nLarguraBox )
 
    ::DrawJPEGImage( ::cLogoFile, 115, ::nLinhaPdf - ( 52 + 1 ), 100, 052 )
-   ::DrawTexto( 3, ::nLinhaPdf - 052, 245, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, ;
-      iif( Len( ::aEmit[ "xNome" ] ) <= 25, 12, 8 ) )
+   IF Len( ::aEmit[ "xNome" ] ) <= 25
+      ::DrawTexto( 3, ::nLinhaPdf - 052, 245, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 12 )
+   ELSE
+      ::DrawTexto( 3, ::nLinhaPdf - 052, 245, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
+   ENDIF
    ::DrawTexto( 6, ::nLinhaPdf - 070, 245, Nil, ::aEmit[ "xLgr" ] + " " + ::aEmit[ "nro" ] + " " + ::aEmit[ "xCpl" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::DrawTexto( 6, ::nLinhaPdf - 078, 245, Nil, ::aEmit[ "xBairro" ] + " - " + Transform( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::DrawTexto( 6, ::nLinhaPdf - 086, 245, Nil, ::aEmit[ "xMun" ] + " - " + ::aEmit[ "UF" ], HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
