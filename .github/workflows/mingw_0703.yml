@@ -30,7 +30,7 @@ jobs:
          repo: JoseQuintas/sefazclass
 
     - name: Save
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
          name: mingw_0703
          path: c:\temp\mingw_0703.7z

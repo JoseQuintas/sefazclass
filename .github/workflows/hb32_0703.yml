@@ -76,7 +76,7 @@ jobs:
          7z a -r c:\temp\hb32_0703.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
 
     - name: Save
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
          name: hb32_0703
          path: c:\temp\hb32_0703.7z
