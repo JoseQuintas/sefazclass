@@ -290,7 +290,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
    // CNPJ
    ::DrawBox( 30, ::nLinhaPDF -20,   535,  20, ::nLarguraBox )    // Quadro CNPJ/INSCRIÇÃO
    ::DrawTexto( 32, ::nLinhaPdf,      160, Nil, "CNPJ", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
-   ::DrawTexto( 31, ::nLinhaPDF -6,    160, Nil, Transform( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
+   ::DrawTexto( 31, ::nLinhaPDF -6,    160, Nil, Transform( ::aEmit[ "CNPJ" ], "@R !!.!!!.!!!/!!!!-!!" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
 
    // I.E.
    ::DrawBox( 160, ::nLinhaPDF -20,  130,  20, ::nLarguraBox )    // Quadro INSCRIÇÃO
@@ -342,7 +342,7 @@ METHOD Destinatario() CLASS hbnfeDaEvento
    ::DrawBox( 455, ::nLinhaPDF -20, 110, 20, ::nLarguraBox )
    ::DrawTexto( 457, ::nLinhaPdf, 565, Nil, "CNPJ/CPF", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 6 )
    IF ! Empty( ::aDest[ "CNPJ" ] )
-      ::DrawTexto( 457, ::nLinhaPDF -6, 565, Nil, Transform( ::aDest[ "CNPJ" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
+      ::DrawTexto( 457, ::nLinhaPDF -6, 565, Nil, Transform( ::aDest[ "CNPJ" ], "@R !!.!!!.!!!/!!!!-!!" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )
    ELSE
       IF ::aDest[ "CPF" ] <> Nil
          ::DrawTexto( 457, ::nLinhaPDF -6, 565, Nil, Transform( ::aDest[ "CPF" ], "@R 999.999.999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 11 )

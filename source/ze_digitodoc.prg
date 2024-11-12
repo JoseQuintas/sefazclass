@@ -15,9 +15,9 @@ FUNCTION IsCpf( cValue )
 
 FUNCTION ValidCnpj( cCnpj )
 
-   LOCAL cNumero, lOk, cPicture := "@R 99.999.999/9999-99"
+   LOCAL cNumero, lOk, cPicture := "@R !!.!!!.!!!/!!!!-!!"
 
-   cNumero := StrZero( Val( SoNumero( cCnpj ) ), 14 )
+   cNumero := PadL( SoNumeroCnpj( cCnpj ), 14, "0" )
    cNumero := Left( cNumero, 12 )
    cNumero := cNumero + CalculaDigito( cNumero, "11" )
    cNumero := cNumero + CalculaDigito( cNumero, "11" )
@@ -55,24 +55,24 @@ FUNCTION FormatCnpj( cValue )
 
    LOCAL cPicture := "@X"
 
-   cValue := SoNumero( cValue )
+   cValue := SoNumeroCnpj( cValue )
    IF Len( cValue ) == 14
-      cPicture := "@R 99.999.999/9999-99"
+      cPicture := "@R !!.!!!.!!!/!!!!-!!"
    ELSEIF Len( cValue ) == 11
-      cPicture := "@R 999.999.999-99"
+      cPicture := "@R !!!.!!!.!!!-!!"
    ENDIF
 
    RETURN Pad( Transform( cValue, cPicture ), 18 )
 
 FUNCTION ValidRenavam( cRenavam )
 
-   LOCAL nSoma, nCont, nDigito, lOk
+   LOCAL nSoma, nPos, nDigito, lOk
 
    cRenavam := SoNumero( cRenavam )
    cRenavam := StrZero( Val( cRenavam ), 11 )
    nSoma := 0
-   FOR nCont = 1 To 10
-      nSoma += ( Val( Substr( cRenavam, nCont, 1 ) ) * Val( Substr( "8923456789", nCont, 1 ) ) )
+   FOR nPos = 1 To 10
+      nSoma += ( Val( Substr( cRenavam, nPos, 1 ) ) * Val( Substr( "8923456789", nPos, 1 ) ) )
    NEXT
    nDigito := Mod( nSoma, 11 )
    nDigito := iif( nDigito == 10, 0, nDigito )
@@ -198,10 +198,10 @@ FUNCTION ValidGTIN( cCodigo )
 
 FUNCTION ValidCartao( mNumero )
 
-   LOCAL nCont, mSoma := 0, mMultiplica := 2, lReturn, mSingleNumber, mResultado, mAdiciona
+   LOCAL nPos, mSoma := 0, mMultiplica := 2, lReturn, mSingleNumber, mResultado, mAdiciona
 
-   FOR nCont = Len( Trim( mNumero ) ) - 1 TO 1 STEP -1
-      mSingleNumber := Val( Substr( mNumero, nCont, 1 ) )
+   FOR nPos = Len( Trim( mNumero ) ) - 1 TO 1 STEP -1
+      mSingleNumber := Val( Substr( mNumero, nPos, 1 ) )
       mResultado    := mSingleNumber * mMultiplica
       mAdiciona     := Val( Right( Str( mResultado, 2 ), 1 ) )
       IF mResultado > 9
@@ -219,7 +219,7 @@ FUNCTION ValidCartao( mNumero )
 
 FUNCTION CalculaDigito( cNumero, cModulo )
 
-   LOCAL nFator, nCont, nSoma, nResto, nModulo, cCalculo
+   LOCAL nFator, nPos, nSoma, nResto, nModulo, cCalculo
 
    hb_Default( @cModulo, "11" )
    IF Empty( cNumero )
@@ -230,13 +230,13 @@ FUNCTION CalculaDigito( cNumero, cModulo )
    nFator   := 2
    nSoma    := 0
    IF nModulo == 10
-      FOR nCont = Len( cCalculo ) To 1 Step -1
-         nSoma += Val( Substr( cCalculo, nCont, 1 ) ) * nFator
+      FOR nPos = Len( cCalculo ) To 1 Step -1
+         nSoma += Val( Substr( cCalculo, nPos, 1 ) ) * nFator
          nFator += 1
       NEXT
    ELSE
-      FOR nCont = Len( cCalculo ) To 1 Step -1
-         nSoma += Val( Substr( cCalculo, nCont, 1 ) ) * nFator
+      FOR nPos = Len( cCalculo ) To 1 Step -1
+         nSoma += ( Asc( Substr( cCalculo, nPos, 1 ) ) - 48 ) * nFator
          IF nFator == 9
             nFator := 2
          ELSE

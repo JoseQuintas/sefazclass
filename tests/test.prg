@@ -180,7 +180,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       CASE nOpc == OPC_CADASTRO
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )
          @ 8, 0 SAY "UF"   GET aVarList[ VAR_UF ] PICTURE "@!"
-         @ 9, 0 SAY "CNPJ" GET aVarList[ VAR_CNPJ ] PICTURE "@R 99.999.999/9999-99"
+         @ 9, 0 SAY "CNPJ" GET aVarList[ VAR_CNPJ ] PICTURE "@R !!.!!!.!!!/!!!!-!!"
          READ
          IF LastKey() == K_ESC
             LOOP

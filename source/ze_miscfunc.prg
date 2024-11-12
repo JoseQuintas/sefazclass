@@ -14,6 +14,18 @@ FUNCTION SoNumero( cTxt )
 
    RETURN cSoNumeros
 
+FUNCTION SoNumeroCnpj( cTxt )
+
+   LOCAL cSoNumeros := "", cChar
+
+   FOR EACH cChar IN cTxt
+      IF ( cChar >= "0" .AND. cChar <= "9" ) .OR. ( cChar >= "A" .AND. cChar <= "Z" )
+         cSoNumeros += cChar
+      ENDIF
+   NEXT
+
+   RETURN cSoNumeros
+
 FUNCTION FormatNumber( nValor, nTamanho, nDecimais )
 
    LOCAL cPicture

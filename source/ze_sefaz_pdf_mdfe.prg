@@ -259,7 +259,7 @@ METHOD cabecalho( nQtFolhas ) CLASS hbnfeDaMdfe
       ::DrawJPEGImage( ::cLogoFile, 025, ::nLinhaPdf - ( 142 + 1 ), 200, 132 )
    ENDIF
    ::DrawTexto( 240, ::nLinhaPdf -005, 560, Nil, ::aEmit[ "xNome" ], HPDF_TALIGN_LEFT, ::oPDFFontBold, 14 )
-   ::DrawTexto( 240, ::nLinhaPdf -060, 560, Nil, 'CNPJ: ' + TRANSF( ::aEmit[ "CNPJ" ], "@R 99.999.999/9999-99" ) + '       Inscrição Estadual: ' + ::FormataIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   ::DrawTexto( 240, ::nLinhaPdf -060, 560, Nil, 'CNPJ: ' + TRANSF( ::aEmit[ "CNPJ" ], "@R !!.!!!.!!!/!!!!-!!" ) + '       Inscrição Estadual: ' + ::FormataIE( ::aEmit[ "IE" ], ::aEmit[ "UF" ] ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::DrawTexto( 240, ::nLinhaPdf -072, 560, Nil, 'Logradouro: ' + ::aEmit[ "xLgr" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::DrawTexto( 240, ::nLinhaPdf -084, 560, Nil, "No.: " + ::aEmit[ "nro" ] + " " + ::aEmit[ "xCpl" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::DrawTexto( 240, ::nLinhaPdf -096, 560, Nil, 'Bairro: ' + ::aEmit[ "xBairro" ] + " - CEP: " + TRANSF( ::aEmit[ "CEP" ], "@R 99999-999" ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
@@ -394,10 +394,10 @@ METHOD cabecalho( nQtFolhas ) CLASS hbnfeDaMdfe
    ::DrawTexto( 100, ::nLinhaPdf - 535, 170, Nil, "Fornecedor CNPJ", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 08 )
    ::DrawTexto( 175, ::nLinhaPdf - 535, 240, Nil, "No.Comprovante", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 08 )
    IF ! Empty( ::aValePed[ "CNPJPg" ] )
-      ::DrawTexto( 025, ::nLinhaPdf - 550, 095, Nil, TRANSF( ::aValePed[ "CNPJPg" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 08 )
+      ::DrawTexto( 025, ::nLinhaPdf - 550, 095, Nil, TRANSF( ::aValePed[ "CNPJPg" ], "@R !!.!!!.!!!/!!!!-!!" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 08 )
    ENDIF
    IF ! Empty( ::aValePed[ "CNPJForn" ] )
-      ::DrawTexto( 100, ::nLinhaPdf - 550, 170, Nil, TRANSF( ::aValePed[ "CNPJForn" ], "@R 99.999.999/9999-99" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 08 )
+      ::DrawTexto( 100, ::nLinhaPdf - 550, 170, Nil, TRANSF( ::aValePed[ "CNPJForn" ], "@R !!.!!!.!!!/!!!!-!!" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 08 )
    ENDIF
    IF ! Empty( ::aValePed[ "nCompra" ] )
       ::DrawTexto( 175, ::nLinhaPdf - 550, 240, Nil, ::aValePed[ "nCompra" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 08 )
