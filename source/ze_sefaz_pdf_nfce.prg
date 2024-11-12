@@ -394,87 +394,25 @@ METHOD ConsultaChaveQRCode() CLASS hbNFeDaNFCe
 
 METHOD ConsultaChaveAcesso() CLASS hbNFeDaNFCe
 
-   LOCAL cUF, cUFList, cUrl
+   LOCAL cUF, cUrl, cVersao, aUrlList, nPos
 
    // DIVISAO IV - Informacoes da consulta via chave de acesso -------------------------------------------------------------------
-   cUFList := "AC,12,AL,27,AM,13,AP,16,BA,29,CE,23,DF,53,ES,32,GO,52,MG,31,MS,50,MT,51,MA,21,PA,15,PB,25,PE,26,PI,22,PR,41,RJ,33,RO,11,RN,24,RR,14,RS,43,SC,42,SE,28,SP,35,TO,17,"
-   cUF     := Substr( cUFList, At( ::aIde[ "cUF" ], cUFList ) - 3, 2 )
+   // ATENÇÃO: Depende dos endereços em sefazclass.ch
 
-   // Fonte: http://nfce.encat.org/consumidor/consulte-sua-nota/
-   IF ::aIde[ "tpAmb" ] == WS_AMBIENTE_PRODUCAO
-      DO CASE
-      CASE cUF == "AC" ; cUrl := "www.sefaznet.ac.gov.br/nfce/consulta"
-      CASE cUF == "AL" ; cUrl := "http://nfce.sefaz.al.gov.br/consultaNFCe.htm"
-      CASE cUF == "AP" ; cUrl := "https://www.sefaz.ap.gov.br/sate/seg/SEGf_AcessarFuncao.jsp?cdFuncao=FIS_1261"
-      CASE cUF == "AM" ; cUrl := "sistemas.sefaz.am.gov.br/nfceweb/formConsulta.do"
-      CASE cUF == "BA" ; cUrl := "nfe.sefaz.ba.gov.br/servicos/nfce/default.aspx"
-      CASE cUF == "CE" ; cUrl := ""
-      CASE cUF == "DF" ; cUrl := "http://dec.fazenda.df.gov.br/NFCE/"
-      CASE cUF == "ES" ; cUrl := "http://app.sefaz.es.gov.br/ConsultaNFCe"
-      CASE cUF == "GO" ; cUrl := ""
-      CASE cUF == "MA" ; cUrl := "http://www.nfce.sefaz.ma.gov.br/portal/consultaNFe.do?method=preFilterCupom&"
-      CASE cUF == "MT" ; cUrl := "http://www.sefaz.mt.gov.br/nfce/consultanfce"
-      CASE cUF == "MS" ; cUrl := "http://www.dfe.ms.gov.br/nfce"
-      CASE cUF == "MG" ; cUrl := ""
-      CASE cUF == "PA" ; cUrl := "https://appnfc.sefa.pa.gov.br/portal/view/consultas/nfce/consultanfce.seam"
-      CASE cUF == "PB" ; cUrl := "www.receita.pb.gov.br/nfce"
-      CASE cUF == "PR" ; cUrl := "http://www.fazenda.pr.gov.br"
-      CASE cUF == "PE" ; cUrl := ""
-      CASE cUF == "PI" ; cUrl := "http://webas.sefaz.pi.gov.br/nfceweb/consultarNFCe.jsf"
-      CASE cUF == "RJ" ; cUrl := "www.nfce.fazenda.rj.gov.br/consulta"
-      CASE cUF == "RN" ; cUrl := "http://nfce.set.rn.gov.br/consultarNFCe.aspx"
-      CASE cUF == "RS" ; cUrl := "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx"
-      CASE cUF == "RO" ; cUrl := "http://www.nfce.sefin.ro.gov.br"
-      CASE cUF == "RR" ; cUrl := "https://www.sefaz.rr.gov.br/nfce/servlet/wp_consulta_nfce"
-      CASE cUF == "SC" ; cUrl := ""
-      CASE cUF == "SP" ; cUrl := "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaPublica.aspx"
-      CASE cUF == "SE" ; cUrl := "http://www.nfce.se.gov.br/portal/portalNoticias.jsp"
-      CASE cUF == "TO" ; cUrl := ""
-      ENDCASE
-   ELSE
-      DO CASE
-      CASE cUF == "AC" ; cUrl := "http://hml.sefaznet.ac.gov.br/nfce/consulta"
-      CASE cUF == "AL" ; cUrl := "http://nfce.sefaz.al.gov.br/consultaNFCe.htm"
-      CASE cUF == "AP" ; cUrl := "https://www.sefaz.ap.gov.br/sate1/seg/SEGf_AcessarFuncao.jsp?cdFuncao=FIS_1261"
-      CASE cUF == "AM" ; cUrl := "homnfce.sefaz.am.gov.br/nfceweb/formConsulta.do"
-      CASE cUF == "BA" ; cUrl := "http://hnfe.sefaz.ba.gov.br/servicos/nfce/default.aspx"
-      CASE cUF == "CE" ; cUrl := "http://nfceh.sefaz.ce.gov.br/pages/consultaNota.jsf"
-      CASE cUF == "DF" ; cUrl := "http://dec.fazenda.df.gov.br/NFCE/"
-      CASE cUF == "ES" ; cUrl := "http://homologacao.sefaz.es.gov.br/ConsultaNFCe"
-      CASE cUF == "GO" ; cUrl := ""
-      CASE cUF == "MA" ; cUrl := "http://www.hom.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp"
-      CASE cUF == "MT" ; cUrl := "http://homologacao.sefaz.mt.gov.br/nfce/consultanfce"
-      CASE cUF == "MS" ; cUrl := "http://www.dfe.ms.gov.br/nfce"
-      CASE cUF == "MG" ; cUrl := ""
-      CASE cUF == "PA" ; cUrl := "https://appnfc.sefa.pa.gov.br/portal-homologacao/view/consultas/nfce/consultanfce.seam"
-      CASE cUF == "PB" ; cUrl := ""
-      CASE cUF == "PR" ; cUrl := "http://www.fazenda.pr.gov.br"
-      CASE cUF == "PE" ; cUrl := ""
-      CASE cUF == "PI" ; cUrl := "http://webas.sefaz.pi.gov.br/nfceweb-homologacao/consultarNFCe.jsf"
-      CASE cUF == "RJ" ; cUrl := "www.nfce.fazenda.rj.gov.br/consulta"
-      CASE cUF == "RN" ; cUrl := "http://nfce.set.rn.gov.br/consultarNFCe.aspx"
-      CASE cUF == "RS" ; cUrl := "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx"
-      CASE cUF == "RO" ; cUrl := "http://www.nfce.sefin.ro.gov.br"
-      CASE cUF == "RR" ; cUrl := "http://200.174.88.103:8080/nfce/servlet/wp_consulta_nfce"
-      CASE cUF == "SC" ; cUrl := ""
-      CASE cUF == "SP" ; cUrl := "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaPublica.aspx"
-      CASE cUF == "SE" ; cUrl := "http://www.hom.nfe.se.gov.br/portal/portalNoticias.jsp"
-      CASE cUF == "TO" ; cUrl := ""
-      ENDCASE
-   ENDIF
+   cUF      := SefazClass():UFSigla( ::aIde[ "cUF" ] )
+   aUrlList := WS_NFE_CHAVE
+   cVersao  := "2.00" + iif( ::aIde[ "tpAmb" ] == WS_AMBIENTE_PRODUCAO, "P", "H" )
+   nPos     := hb_AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. e[ 2 ] == cVersao } )
+   cUrl     := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
 
    ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, "Consulte pela Chave de Acesso em:", HPDF_TALIGN_CENTER, ::oPDFFontBold, 7 )
    ::nLinhaPDF -= 10
 
-   IF Len( cUrl ) <= 69
-      ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, cUrl, HPDF_TALIGN_CENTER, ::oPDFFontBold, 7 )
+   DO WHILE ! Empty( cUrl )
+      ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, Left( cUrl, 65 ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 7 )
       ::nLinhaPDF -= 10
-   ELSE
-      ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, Trim( MemoLine( cUrl, 69, 1 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 7 )
-      ::nLinhaPDF -= 10
-      ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, Trim( MemoLine( cUrl, 69, 2 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 7 )
-      ::nLinhaPDF -= 10
-   ENDIF
+      cUrl := Substr( cUrl, 66 )
+   ENDDO
 
    ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, "CHAVE DE ACESSO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 7 )
       ::nLinhaPDF -= 10
@@ -487,6 +425,7 @@ METHOD ConsultaChaveAcesso() CLASS hbNFeDaNFCe
 METHOD Consumidor() CLASS hbNFeDaNFCe
 
    LOCAL cItem
+
 
    // DIVISAO VI - Informacoes sobre o Consumidor--------------------------------------------------------------------------------
    IF ! Empty( ::aDest[ "CNPJ" ] )
