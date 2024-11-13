@@ -1,18 +1,23 @@
 #
-# use: mingw_0703.yml
-# use: hb32_0703.yml
+# addons_hb32_mingw_1420.yml
+#
+# input:  mingw_1420.zip
+# input:  hb32_mingw_1420.zip
+# input:  github sources
+# output: addons_hb32_mingw_1420.zip
+#
 
-name: hb32pack
+name: addons_hb32_mingw_1420
 
 on:
-  push:
+#  push:
   schedule:
-   - cron: "45 5 2 * *"
+   - cron: "0 4 1 * *"
   workflow_dispatch:
     inputs:
       name:
-        description: 'hb32pack'
-        default: 'hb32pack'
+        description: 'addons_hb32_mingw_1420'
+        default: 'addons_hb32_mingw_1420'
         required: true
 
 jobs:
@@ -21,31 +26,32 @@ jobs:
     runs-on: windows-latest
     steps:
 
-    - name: mingw 7.3
+    - name: load mingw_1420.zip from workflow
       uses: dawidd6/action-download-artifact@v3
       with:
-         workflow: mingw_0703.yml
+         workflow: mingw_1420.yml
          workflow_conclusion: success
-         name: mingw_0703
+         name: mingw_1420
          path: c:\temp
          repo: JoseQuintas/sefazclass
 
-    - name: harbour 3.2
+    - name: load hb32_mingw_1420.zip from workflow
       uses: dawidd6/action-download-artifact@v3
       with:
-         workflow: hb32_0703.yml
+         workflow: hb32_mingw_1420.yml
          workflow_conclusion: success
-         name: hb32_0703
+         name: hb32_mingw_1420
          path: c:\temp
          repo: JoseQuintas/sefazclass
 
-    - name: Unzip
+    - name: Unzip All
       env:
          PATH: c:\program files\7-zip
       run: |
          c:
-         7z x -y c:\temp\hb32_0703.7z -oc:\temp\harbour
-         7z x -y c:\temp\mingw_0703.7z -oc:\temp\mingw
+         7z x -y c:\temp\hb32_mingw_1420.7z -oc:\temp\harbour
+         md c:\temp\harbour\comp
+         7z x -y c:\temp\mingw_1420.7z -oc:\temp\harbour\comp
 
     - name: Load Source Code
       env:
@@ -58,6 +64,7 @@ jobs:
          REPO_HMGE:     https://github.com/JoseQuintas/hmge
          REPO_HMG3:     https://github.com/JoseQuintas/hmg3
          REPO_OOHG:     https://github.com/JoseQuintas/oohg
+         REPO_OOHGSAMP: https://github.com/JoseQuintas/oohg/samples
          REPO_DLGAUTO:  https://github.com/JoseQuintas/dlgauto
          PATH_SEFAZ:    c:\temp\harbour\addons\sefazclass
          PATH_BOLETO:   c:\temp\harbour\addons\boletoclass
@@ -72,16 +79,17 @@ jobs:
          PATH_DLGAUTO:  c:\temp\harbour\addons\dlgauto
       run: |
          c:
-         git clone $env:REPO_SEFAZ    $env:PATH_SEFAZ   --depth 1
-         git clone $env:REPO_BOLETO   $env:PATH_BOLETO --depth 1
-         git clone $env:REPO_RMCHART  $env:PATH_RMCHART --depth 1
-         git clone $env:REPO_WVGTEST  $env:PATH_WVGTEST --depth 1
-         git clone $env:REPO_PDFCLASS $env:PATH_PDFCLASS --depth 1
-         git clone $env:REPO_HWGUI    $env:PATH_HWGUI   --depth 1
-         git clone $env:REPO_HMGE     $env:PATH_HMGE    --depth 1
-         git clone $env:REPO_HMG3     $env:PATH_HMG3    --depth 1
-         git clone $env:REPO_OOHG     $env:PATH_OOHG    --depth 1
-         git clone $env:REPO_DLGAUTO  $env:PATH_DLGAUTO --depth 1
+         git clone $env:REPO_SEFAZ       $env:PATH_SEFAZ        --depth 1
+         git clone $env:REPO_BOLETO      $env:PATH_BOLETO       --depth 1
+         git clone $env:REPO_RMCHART     $env:PATH_RMCHART      --depth 1
+         git clone $env:REPO_WVGTEST     $env:PATH_WVGTEST      --depth 1
+         git clone $env:REPO_PDFCLASS    $env:PATH_PDFCLASS     --depth 1
+         git clone $env:REPO_HWGUI       $env:PATH_HWGUI        --depth 1
+         git clone $env:REPO_HMGE        $env:PATH_HMGE         --depth 1
+         git clone $env:REPO_HMG3        $env:PATH_HMG3         --depth 1
+         git clone $env:REPO_OOHG        $env:PATH_OOHG         --depth 1
+         git clone $env:REPO_OOHGSAMP    $env:PATH_OOHG\SAMPLES --depth 1
+         git clone $env:REPO_DLGAUTO     $env:PATH_DLGAUTO      --depth 1
 
     - name: Build All
       env:
@@ -89,10 +97,9 @@ jobs:
          HB_COMPILER: mingw
          HB_INSTALL_PREFIX: c:\temp\harbour
          HBMK_CMD: -workdir=c:\temp -q -quiet
-         PATH: c:\temp\mingw\mingw32\bin;c:\temp\harbour\bin
+         PATH: c:\temp\harbour\bin;c:\temp\harbour\comp\mingw32\bin
       run: |
          c:
-         #copy c:\temp\harbour\sefazclass\gtwvg.hbc c:\temp\harbour\contrib\gtwvg
 
          cd c:\temp\harbour\addons\sefazclass
          hbmk2 sefazclass.hbp -q -rebuild
@@ -125,7 +132,7 @@ jobs:
          hbmk2 hmg3.hbp -q -rebuild
 
          cd c:\temp\harbour\addons\oohg
-         hbmk2 oohg.hbp -q -rebuild
+         hbmk2 oohg.hbp -q -w0 -rebuild
 
          cd c:\temp\harbour\addons\dlgauto\source
          hbmk2 test hwgui.hbc -q -rebuild
@@ -134,22 +141,16 @@ jobs:
          hbmk2 test oohg.hbc  -q -rebuild
 #         hbmk2 test gtwvg.hbc -q -rebuild
 
-    - name: Zip
+    - name: Create addons_hb32_mingw_1420.zip
       env:
          PATH: c:\program files\7-zip
       run: |
          c:
-         7z a -r c:\temp\hb32pack.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
+         7z a -r c:\temp\addons_hb32_mingw_1420.7z c:\temp\harbour\addons\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
 
-#    - name: upload
-#      uses: actions/upload-artifact@v4
-#      with:
-#         name: assets-for-download
-#         path: c:\temp\harbour
-
-    - name: Save
+    - name: Save addons_hb32_mingw_1420
       uses: actions/upload-artifact@v4
       with:
-         name: harbour
-         path: c:\temp\hb32pack.7z
+         name: addons_hb32_mingw_1420
+         path: c:\temp\addons_hb32_mingw_1420.7z
 

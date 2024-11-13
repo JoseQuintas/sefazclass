@@ -1,16 +1,20 @@
 #
-# create: JoseQuintas/addons/mingw_0703
+# mingw_0703.yml
+#
+# input: mingw_0703.zip
+# output: mingw_0703.zip
+#
 
-name: mingw 7.3
+name: mingw_0703
 
 on:
 #  push:
   schedule:
-   - cron: "0 5 1 * *"
+   - cron: "0 1 1 * *"
   workflow_dispatch:
     inputs:
       name:
-        description: 'mingw 7.3 32bits'
+        description: 'mingw_0703'
         default: 'mingw_0703'
         required: true
 
@@ -20,7 +24,7 @@ jobs:
     runs-on: windows-latest
     steps:
 
-    - name: mingw 7.3
+    - name: load mingw_0703.zip from workflow
       uses: dawidd6/action-download-artifact@v3
       with:
          workflow: mingw_0703.yml
@@ -29,7 +33,7 @@ jobs:
          path: c:\temp
          repo: JoseQuintas/sefazclass
 
-    - name: Save
+    - name: Save mingw_0703.zip to workflow
       uses: actions/upload-artifact@v4
       with:
          name: mingw_0703

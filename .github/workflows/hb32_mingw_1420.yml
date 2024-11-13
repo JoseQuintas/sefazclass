@@ -1,17 +1,22 @@
 #
-# create: JoseQuintas/addons/hb32_0703
+# hb32_mingw_1420.yml
+#
+# input:  mingw_1420.zip
+# input:  github sources
+# output: hb32_mingw_1420.zip
+#
 
-name: Harbour 3.2 mingw 7.3
+name: hb32_mingw_1420
 
 on:
 #  push:
   schedule:
-   - cron: "15 5 1 * *"
+   - cron: "30 3 1 * *"
   workflow_dispatch:
     inputs:
       name:
-        description: 'Harbour 3.2 mingw 7.3'
-        default: 'hb32_0703'
+        description: 'hb32_mingw_1420'
+        default: 'hb32_mingw_1420'
         required: true
 
 jobs:
@@ -26,25 +31,23 @@ jobs:
       run: |
          c:
          git clone https://github.com/$env:repo c:\temp\harbour32 --depth 1
-         cd \temp\harbour32
 
-    - name: mingw 7.3
+    - name: load mingw_1420.zip from workflow
       uses: dawidd6/action-download-artifact@v3
       with:
-         workflow: mingw_0703.yml
+         workflow: mingw_1420.yml
          workflow_conclusion: success
-         name: mingw_0703
+         name: mingw_1420
          path: c:\temp
          repo: JoseQuintas/sefazclass
 
-    - name: Unzip
+    - name: Unzip All
       env:
          PATH: c:\program files\7-zip
       run: |
          c:
-         md c:\temp\harbour
-         md c:\temp\harbour\comp
-         7z x -y c:\temp\mingw_0703.7z -oc:\temp\comp
+         md c:\temp\comp
+         7z x -y c:\temp\mingw_1420.7z -oc:\temp\comp
 
     - name: Build 32 bits
       env:
@@ -57,26 +60,15 @@ jobs:
          cd c:\temp\harbour32
          mingw32-make clean install
 
-    #- name: Build 64 bits
-    #  env:
-    #     HB_BUILD_STRIP: all
-    #     HB_COMPILER: mingw64
-    #     HB_INSTALL_PREFIX: c:\temp\harbour
-    #     PATH: c:\temp\comp\mingw64\bin;c:\temp\harbour\bin
-    #  run: |
-    #     c:
-    #     cd \temp\harbour34
-    #     mingw32-make clean install
-
-    - name: Zip
+    - name: Create hb32_mingw_1420.zip
       env:
          PATH: c:\program files\7-zip
       run: |
          c:
-         7z a -r c:\temp\hb32_0703.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
+         7z a -r c:\temp\hb32_mingw_1420.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
 
-    - name: Save
+    - name: Save hb32_mingw_1420.zip to workflow
       uses: actions/upload-artifact@v4
       with:
-         name: hb32_0703
-         path: c:\temp\hb32_0703.7z
+         name: hb32_mingw_1420
+         path: c:\temp\hb32_mingw_1420.7z

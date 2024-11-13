@@ -1,0 +1,40 @@
+#
+# mingw_1420.yml
+#
+# input: mingw_1420.zip
+# output: mingw_1420.zip
+#
+
+name: mingw_1420
+
+on:
+#  push:
+  schedule:
+   - cron: "0 3 1 * *"
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'mingw_1420'
+        default: 'mingw_1420'
+        required: true
+
+jobs:
+
+  Build:
+    runs-on: windows-latest
+    steps:
+
+    - name: load mingw_1420.zip from workflow
+      uses: dawidd6/action-download-artifact@v3
+      with:
+         workflow: mingw_1420.yml
+         workflow_conclusion: success
+         name: mingw_1420
+         path: c:\temp
+         repo: JoseQuintas/sefazclass
+
+    - name: Save mingw_1420.zip to workflow
+      uses: actions/upload-artifact@v4
+      with:
+         name: mingw_1420
+         path: c:\temp\mingw_1420.7z
