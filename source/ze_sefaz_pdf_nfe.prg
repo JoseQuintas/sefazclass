@@ -1139,13 +1139,11 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       IF ! ::ProcessaItens( ::cXml, nItem )
          EXIT
       ENDIF
-      nItem += 1
-      ::aLayout[ LAYOUT_QTD,      LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "qCom" ],   ::aLayout[ LAYOUT_QTD,    LAYOUT_DECIMAIS ] )
+      ::aLayout[ LAYOUT_QTD,      LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "qCom" ],   ::aLayout[ LAYOUT_QTD,      LAYOUT_DECIMAIS ] )
       ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "vUnCom" ], ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] )
       ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "qTrib" ],  ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] )
       FOR EACH oElement IN ::aLayout
          oElement[ LAYOUT_LARGURA ] := Max( oElement[ LAYOUT_LARGURA ], Len( Eval( oElement[ LAYOUT_CONTEUDO ] ) ) )
-         oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( Eval( oElement[ LAYOUT_CONTEUDO ] ) ) )
       NEXT
       IF Val( ::aItemIPI[ "pIPI" ]  ) > 0 .OR. Val( ::aItemIPI[ "vIPI" ] ) > 0
          AtivaImprime( @::aLayout[ LAYOUT_IPIVAL, LAYOUT_IMPRIME ] )
@@ -1170,7 +1168,21 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       IF ! Alltrim( ::aItem[ "vUnCom" ] ) == Alltrim( ::aItem[ "vUnTrib" ] )
          AtivaImprime( @::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] )
       ENDIF
+      nItem += 1
    ENDDO
+
+   // De novo, porque larguraPDF só dá certo depois de definir decimais
+   nItem := 1
+   DO WHILE .T.
+      IF ! ::ProcessaItens( ::cXml, nItem )
+         EXIT
+      ENDIF
+      FOR EACH oElement IN ::aLayout
+         oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( Eval( oElement[ LAYOUT_CONTEUDO ] ) ) )
+      NEXT
+      nItem += 1
+   ENDDO
+
    // Define tamanho de colunas
    FOR EACH oElement IN ::aLayout
       IF oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM .OR. oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIME2XMLTEM
@@ -1178,7 +1190,7 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       ENDIF
       oElement[ LAYOUT_LARGURA ] += 1
       oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( oElement[ LAYOUT_TITULO1 ] ) )
-      oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( oELement[ LAYOUT_TITULO2 ] ) )
+      oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( oElement[ LAYOUT_TITULO2 ] ) )
       oElement[ LAYOUT_LARGURAPDF ] += 4
    NEXT
 

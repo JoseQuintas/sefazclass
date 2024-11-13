@@ -22,17 +22,17 @@ CREATE CLASS hbNFeDaGeral
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
    METHOD DrawBarcodeQRCode( nX, nY, nLineWidth, cCode, nFlags )
    METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 )
-   METHOD DrawBox( x1, y1, x2, y2, nPen )                                           INLINE hbNFe_Box_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen )
-   METHOD DrawLine( x1, y1, x2, y2, nPen, FLAG )                                    INLINE hbNFe_Line_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen, FLAG )
+   METHOD DrawBox( x1, y1, x2, y2, nPen )            INLINE hbNFe_Box_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen )
+   METHOD DrawLine( x1, y1, x2, y2, nPen, FLAG )     INLINE hbNFe_Line_Hpdf( ::oPDFPage, x1, y1, x2, y2, nPen, FLAG )
    METHOD DrawTexto( x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )  INLINE hbNFe_Texto_Hpdf( ::oPDFPage, x1, y1, x2, y2, cText, align, oFontePDF, nTamFonte, nAngulo )
    METHOD DefineDecimais( xValue, nDecimais )
    METHOD FormataString( cTexto, nLarguraPDF, nFontSize )                           INLINE ;
                                                 HPDF_Page_SetFontAndSize( ::oPDFPage, ::oPDFFontNormal, nFontSize ), ;
                                                 MemoLine( ::FormataMemo( cTexto, nLarguraPDF ), 1000, 1 )
    METHOD FormataMemo( cMemo, nLarguraPDF )
-   METHOD LarguraTexto( cText )                                                     INLINE HPDF_Page_TextWidth( ::oPDFPage, cText ) + 4
-   METHOD FormataTelefone( cText )                                                  INLINE hbNFe_FormataTelefone( cText )
-   METHOD FormataIE( cText )                                                        INLINE hbNFe_FormataIE( cText )
+   METHOD LarguraTexto( cText )                      INLINE HPDF_Page_TextWidth( ::oPDFPage, cText + "." ) // 1 caractere pra espaço
+   METHOD FormataTelefone( cText )                   INLINE hbNFe_FormataTelefone( cText )
+   METHOD FormataIE( cText )                         INLINE hbNFe_FormataIE( cText )
    METHOD Desenvolvedor( nLinhaPDF )
    METHOD DrawBoxTituloTexto( x, y, w, h, cTitle, cText, nAlign, oPDFFont, nFontSize, nAngle )
    METHOD DrawAviso( cTexto )
