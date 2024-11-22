@@ -474,3 +474,4 @@ STATIC FUNCTION MsgBox( cTexto, cTitulo )
 
 FUNCTION AppVersaoExe(); RETURN ""
 FUNCTION AppUserName(); RETURN ""
+FUNCTION PostQuitMessage(); RETURN Nil

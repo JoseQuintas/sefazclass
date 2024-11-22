@@ -29,7 +29,6 @@ Os campos que podem ser colocados na mesma coluna são:
 #define LAYOUT_IMPRIMENORMAL   1
 #define LAYOUT_IMPRIMESEGUNDA  2
 #define LAYOUT_IMPRIMEXMLTEM   3
-#define LAYOUT_IMPRIME2XMLTEM  4
 
 #define LAYOUT_TITULO          1
 #define LAYOUT_LARGURA         2
@@ -1185,7 +1184,7 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
 
    // Define tamanho de colunas
    FOR EACH oElement IN ::aLayout
-      IF oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM .OR. oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIME2XMLTEM
+      IF oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIMEXMLTEM
          oElement[ LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME  // não tem no XML, então não sai
       ENDIF
       oElement[ LAYOUT_LARGURA ] += 1
@@ -1193,6 +1192,16 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( oElement[ LAYOUT_TITULO2 ] ) )
       oElement[ LAYOUT_LARGURAPDF ] += 4
    NEXT
+
+// Pode juntar na mesma coluna:
+// Código do produto/NCM
+// CST e CFOP
+// Qtde. e unidade
+// valor unitário e desconto
+// valor total e base icms
+// base icms e base st
+// icms e ipi
+// aliquota icms e ipi
 
    FOR nTentativa = 1 TO 6
       // Desativa colunas não impressas - talvez linha 2
@@ -1271,8 +1280,6 @@ STATIC FUNCTION AtivaImprime( nImprime )
 
    IF nImprime == LAYOUT_IMPRIMEXMLTEM
       nImprime := LAYOUT_IMPRIMENORMAL
-   ELSEIF nImprime == LAYOUT_IMPRIME2XMLTEM
-      nImprime := LAYOUT_IMPRIMESEGUNDA
    ENDIF
 
    RETURN Nil
