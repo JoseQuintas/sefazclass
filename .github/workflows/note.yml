@@ -50,7 +50,7 @@ jobs:
 #        (New-Object System.Net.WebClient).DownloadFile('http://www.example.com.br/arquivos/mingw_0703.zip', 'c:\temp\mingw_0703posix.7z')
 
 #    - name: Download artifact
-#      uses: dawidd6/action-download-artifact@v3
+#      uses: dawidd6/action-download-artifact@v6
 #      with:
 #         workflow: bcc_0582.yml
 #         workflow_conclusion: success

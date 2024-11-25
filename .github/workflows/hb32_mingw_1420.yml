@@ -33,7 +33,7 @@ jobs:
          git clone https://github.com/$env:repo c:\temp\harbour32 --depth 1
 
     - name: load mingw_1420.zip from workflow
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@v6
       with:
          workflow: mingw_1420.yml
          workflow_conclusion: success

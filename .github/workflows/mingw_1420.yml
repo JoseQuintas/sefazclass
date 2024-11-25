@@ -25,7 +25,7 @@ jobs:
     steps:
 
     - name: load mingw_1420.zip from workflow
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@v6
       with:
          workflow: mingw_1420.yml
          workflow_conclusion: success
