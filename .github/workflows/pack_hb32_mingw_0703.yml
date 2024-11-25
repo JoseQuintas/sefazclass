@@ -27,7 +27,7 @@ jobs:
     steps:
 
     - name: load mingw_0703.zip from workflow
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@v6
       with:
          workflow: mingw_0703.yml
          workflow_conclusion: success
@@ -36,7 +36,7 @@ jobs:
          repo: JoseQuintas/sefazclass
 
     - name: load hb32_mingw_0703.zip from workflow
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@v6
       with:
          workflow: hb32_mingw_0703.yml
          workflow_conclusion: success
@@ -45,7 +45,7 @@ jobs:
          repo: JoseQuintas/sefazclass
 
     - name: load addons_hb32_mingw_0703.zip from workflow
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@v6
       with:
          workflow: addons_hb32_mingw_0703.yml
          workflow_conclusion: success
