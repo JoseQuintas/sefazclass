@@ -8,11 +8,11 @@ José Quintas
 
 FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
 
-   LOCAL oCertificado, oCapicomStore, cNomeCertificado := "NENHUM", oColecao
+   LOCAL oCertificado, oStore, cNomeCertificado := "NENHUM", oColecao
 
-   oCapicomStore := win_oleCreateObject( "CAPICOM.Store" )
-   oCapicomStore:Open( CAPICOM_CURRENT_USER_STORE, 'My', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
-   oColecao := oCapicomStore:Certificates()
+   oStore := win_oleCreateObject( "CAPICOM.Store" )
+   oStore:Open( CAPICOM_CURRENT_USER_STORE, 'My', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
+   oColecao := oStore:Certificates()
    DO CASE
    CASE oColecao:Count() == 1
       oCertificado     := oColecao:item(1)
@@ -31,29 +31,32 @@ FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
          cNomeCertificado := Substr( cNomeCertificado, 1, At( ",", cNomeCertificado ) - 1 )
       ENDIF
    ENDIF
-   // oCapicomStore:Close()
+   // oStore:Close()
 
    RETURN cNomeCertificado
 
-FUNCTION CapicomCertificado( cNomeCertificado, dValidFrom, dValidTo )
+FUNCTION CapicomCertificado( cNomeCertificado, dValidFrom, dValidTo, lValidDate )
 
-   LOCAL oCapicomStore, oColecao, oCertificado, nCont //, aList
+   LOCAL oStore, oColecao, oCertificado, nCont, lValid
 
-   oCapicomStore := Win_OleCreateObject( "CAPICOM.Store" )
-   oCapicomStore:Open( CAPICOM_CURRENT_USER_STORE, "My", CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
-   oColecao := oCapicomStore:Certificates()
+   hb_Default( @lValidDate, .T. )
+   oStore := Win_OleCreateObject( "CAPICOM.Store" )
+   oStore:Open( CAPICOM_CURRENT_USER_STORE, "My", CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
+   oColecao := oStore:Certificates()
    //aList := oColecao:Find( CAPICOM_CERTIFICATE_FIND_ISSUER_NAME, cNomeCertificado, .T. )
    FOR nCont = 1 TO oColecao:Count()
       IF cNomeCertificado $ oColecao:Item( nCont ):SubjectName
-         IF oColecao:Item( nCont ):ValidFromDate <= Date() .AND. oColecao:Item( nCont ):ValidToDate >= Date()
-            oCertificado := oColecao:Item( nCont )
-            dValidFrom   := oCertificado:ValidFromDate
-            dValidTo     := oCertificado:ValidToDate
-            EXIT
+         lValid := oColecao:Item( nCont ):ValidFromDate <= Date() .AND. oColecao:Item( nCont ):ValidToDate >= Date()
+         IF ! ( lValid == lValidDate )
+            LOOP
          ENDIF
+         oCertificado := oColecao:Item( nCont )
+         dValidFrom   := oCertificado:ValidFromDate
+         dValidTo     := oCertificado:ValidToDate
+         EXIT
       ENDIF
    NEXT
-   oCapicomStore:Close()
+   oStore:Close()
    //IF aList:Count() > 0
    //   oCertificado := aList:Item(0)
    //   dValidFrom   := oCertificado:ValidFromDate
@@ -62,15 +65,18 @@ FUNCTION CapicomCertificado( cNomeCertificado, dValidFrom, dValidTo )
 
    RETURN oCertificado
 
-FUNCTION CapicomRemoveCertificado( cNomeCertificado )
+FUNCTION CapicomRemoveCertificado( cNomeCertificado, lValidDate )
 
    LOCAL oCertificado, oStore
 
-   oCertificado := CapicomCertificado( cNomeCertificado )
+   hb_Default( @lValidDate, .F. )
+
+   oCertificado := CapicomCertificado( cNomeCertificado,, lValidDate )
    IF ValType( oCertificado ) == "O"
       oStore := win_OleCreateObject( "CAPICOM.Store" )
       oStore:open( CAPICOM_CURRENT_USER_STORE, CAPICOM_MY_STORE, CAPICOM_STORE_OPEN_READ_WRITE )
       oStore:Remove( oCertificado )
+      oStore:Close()
    ENDIF
 
    RETURN NIL
