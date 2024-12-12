@@ -101,39 +101,83 @@ jobs:
       run: |
          c:
 
+         Write-Output ""
+         Write-Output ""
+         Write-Output "sefazclass"
+         Write-Output ""
          cd c:\temp\harbour\addons\sefazclass
          hbmk2 sefazclass.hbp -q -rebuild
 
+         Write-Output ""
+         Write-Output ""
+         Write-Output "boletoclass"
+         Write-Output ""
          cd c:\temp\harbour\addons\boletoclass
          hbmk2 boletoclass.hbp -q -rebuild
 
+         Write-Output ""
+         Write-Output ""
+         Write-Output "rmchartclass"
+         Write-Output ""
          cd c:\temp\harbour\addons\rmchartclass
          hbmk2 rmchartclass.hbp -q -rebuild
 
+         Write-Output ""
+         Write-Output ""
+         Write-Output "pdfclass"
+         Write-Output ""
          cd c:\temp\harbour\addons\pdfclass
          hbmk2 pdfclass.hbp -q -rebuild
 
+         Write-Output ""
+         Write-Output ""
+         Write-Output "wvgtest"
+         Write-Output ""
          cd c:\temp\harbour\addons\wvgtest
          hbmk2 wvgtest.hbp -q -rebuild
 
+         Write-Output ""
+         Write-Output ""
+         Write-Output "bostaurus"
+         Write-Output ""
          cd c:\temp\harbour\addons\wvgtest\bostaurus
          hbmk2 bostaurus.hbp -q -rebuild
 
+         Write-Output ""
+         Write-Output ""
+         Write-Output "hwgui"
+         Write-Output ""
          cd c:\temp\harbour\addons\hwgui
          hbmk2 hbxml.hbp    -q -rebuild
          hbmk2 hwgui.hbp    -q -rebuild
          hbmk2 hwgdebug.hbp -q -rebuild
          hbmk2 procmisc.hbp -q -rebuild
 
+         Write-Output ""
+         Write-Output ""
+         Write-Output "hmge"
+         Write-Output ""
          cd c:\temp\harbour\addons\hmge
          hbmk2 hmge.hbp -q -rebuild
 
+         Write-Output ""
+         Write-Output ""
+         Write-Output "hmg3"
+         Write-Output ""
          cd c:\temp\harbour\addons\hmg3
          hbmk2 hmg3.hbp -q -rebuild
 
+         Write-Output ""
+         Write-Output ""
+         Write-Output "oohg"
+         Write-Output ""
          cd c:\temp\harbour\addons\oohg
          hbmk2 oohg.hbp -q -w0 -rebuild
 
+         Write-Output ""
+         Write-Output ""
+         Write-Output "test dlgauto"
+         Write-Output ""
          cd c:\temp\harbour\addons\dlgauto\source
          hbmk2 test hwgui.hbc -q -rebuild
          hbmk2 test hmg3.hbc  -q -rebuild
