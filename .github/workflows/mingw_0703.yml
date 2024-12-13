@@ -21,11 +21,14 @@ on:
 jobs:
 
   Build:
+    #if: env.GITHUB_EVENT_NAME == 'schedulle' || env.GITHUB_EVENT_NAME == 'workflow_dispatch'
     runs-on: windows-latest
+
     steps:
 
     - name: load mingw_0703.zip from workflow
       uses: dawidd6/action-download-artifact@v6
+      #if: $( { github.event_name = 'schedule' || github.event_name = 'workflow_dispatch' } )
       with:
          workflow: mingw_0703.yml
          workflow_conclusion: success
