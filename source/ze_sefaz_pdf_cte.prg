@@ -772,15 +772,15 @@ METHOD GeraFolha() CLASS hbnfeDaCte
          cTexto := "SIMPLES NACIONAL"
       CASE ! Empty( ::aIcms00[ "CST" ] )
          cTexto := "00 - Tributação normal do ICMS"
-         nBase := ::aIcms00[ "vBC" ]
-         nAliq := ::aIcms00[ "pICMS" ]
+         nBase  := ::aIcms00[ "vBC" ]
+         nAliq  := ::aIcms00[ "pICMS" ]
          nValor := ::aIcms00[ "vICMS" ]
          nReduc := ''
          nST := ''
       CASE ! Empty( ::aIcms20[ "CST" ] )
          cTexto := "20 - Tributação com BC reduzida do ICMS"
-         nBase := ::aIcms20[ "vBC" ]
-         nAliq := ::aIcms20[ "pICMS" ]
+         nBase  := ::aIcms20[ "vBC" ]
+         nAliq  := ::aIcms20[ "pICMS" ]
          nValor := ::aIcms20[ "vICMS" ]
          nReduc := ::aIcms20[ "pRedBC" ]
          nST := ''
@@ -794,25 +794,25 @@ METHOD GeraFolha() CLASS hbnfeDaCte
          ENDIF
       CASE ! Empty( ::aIcms60[ "CST" ] )
          cTexto := "60 - ICMS cobrado anteriormente por substituição tributária"
-         nBase := ::aIcms60[ "vBCSTRet" ]
-         nAliq := ::aIcms60[ "pICMSSTRet" ]
+         nBase  := ::aIcms60[ "vBCSTRet" ]
+         nAliq  := ::aIcms60[ "pICMSSTRet" ]
          nValor := ::aIcms60[ "vICMSSTRet" ]
          nReduc := ''
          nST := ::aIcms60[ "vCred" ]
       CASE ! Empty( ::aIcms90[ "CST" ] )
          cTexto := "90 - ICMS Outros"
-         nBase := ::aIcms60[ "vBC" ]
-         nAliq := ::aIcms60[ "pICMS" ]
-         nValor := ::aIcms60[ "vICMS" ]
+         nBase  := ::aIcms90[ "vBC" ]
+         nAliq  := ::aIcms90[ "pICMS" ]
+         nValor := ::aIcms90[ "vICMS" ]
          nReduc := ::aIcms90[ "pRedBC" ]
-         nST := ::aIcms60[ "vCred" ]
+         nST    := ::aIcms90[ "vCred" ]
       CASE ! Empty( ::aIcmsUF[ "CST" ] )
          cTexto := "90 - ICMS Outros"
-         nBase := ::aIcmsUF[ "vBCOutraUF" ]
-         nAliq := ::aIcmsUF[ "pICMSOutraUF" ]
+         nBase  := ::aIcmsUF[ "vBCOutraUF" ]
+         nAliq  := ::aIcmsUF[ "pICMSOutraUF" ]
          nValor := ::aIcmsUF[ "vICMSOutraUF" ]
          nReduc := ::aIcmsUF[ "pRedBCOutraUF" ]
-         nST := ''
+         nST    := ''
       OTHERWISE
          cTexto := "Sem Imposto de ICMS"
       ENDCASE
