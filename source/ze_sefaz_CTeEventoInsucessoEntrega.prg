@@ -14,7 +14,7 @@ FUNCTION ze_sefaz_CTeEventoInsucessoEntrega( Self, cChave, nSequencia, nProt, ;
    cXml +=       XmlTag( "descEvento", "Insucesso na Entrega do CT-e" )
    cXml +=       XmlTag( "nProt", Ltrim( Str( nProt ) ) )
    cXml +=       XmlTag( "dhTentativaEntrega", DateTimeXml( dDataEntrega, cHoraEntrega, ::cUF ) )
-   cXml +=       XmlTag( "nTentativa", Ltrim( Str( nTentativa ) ) )
+   cXml +=       XmlTag( "nTentativa", StrZero( nTentativa, 3 ) )
    cXml +=       XmlTag( "tpMotivo", Ltrim( cMotivo ) )
 
    if Alltrim(cMotivo) == '4'
