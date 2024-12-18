@@ -45,6 +45,7 @@ source/ze_sefaz_CTeEventoCancEntrega.prg
 source/ze_sefaz_CTeEventoCarta.prg
 source/ze_sefaz_CTeEventoDesacordo.prg
 source/ze_sefaz_CTeEventoEntrega.prg
+source/ze_sefaz_CTeEventoInsucessoEntrega.prg
 source/ze_sefaz_CTeGeraAutorizado.prg
 source/ze_sefaz_CTeGeraEventoAutorizado.prg
 source/ze_sefaz_CTeInutiliza.prg
