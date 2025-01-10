@@ -1,0 +1,197 @@
+#
+# pack_hb32_mingw.yml
+#
+# input:  hb32_mingw_0703.zip
+# input:  hb32_mingw_1420.zip
+# input:  hb32_mingw_1500.zip
+# input:  mingw_0703.zip
+# input:  mingw_1420.zip
+# input:  mingw_1500.zip
+# input:  addons_hb32_mingw_0703.zip
+# input:  addons_hb32_mingw_1420.zip
+# input:  addons_hb32_mingw_1500.zip
+# output: pack_hb32_mingw_0703.zip
+# output: pack_hb32_mingw_1420.zip
+# output: pack_hb32_mingw_1500.zip
+#
+
+name: pack_hb32_mingw
+
+on:
+  #push:
+  schedule:
+   - cron: "30 4 1 * *"
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'pack_hb32_mingw'
+        default: 'pack_hb32_mingw'
+        required: true
+
+jobs:
+
+  mingw_0703:
+    runs-on: windows-latest
+    steps:
+
+    - name: load mingw_0703.zip from workflow
+      uses: dawidd6/action-download-artifact@v6
+      with:
+         workflow: mingw.yml
+         workflow_conclusion: success
+         name: mingw_0703
+         path: c:\temp
+         repo: JoseQuintas/sefazclass
+
+    - name: load hb32_mingw_0703.zip from workflow
+      uses: dawidd6/action-download-artifact@v6
+      with:
+         workflow: hb32_mingw.yml
+         workflow_conclusion: success
+         name: hb32_mingw_0703
+         path: c:\temp
+         repo: JoseQuintas/sefazclass
+
+    - name: load addons_hb32_mingw_0703.zip from workflow
+      uses: dawidd6/action-download-artifact@v6
+      with:
+         workflow: addons_hb32_mingw.yml
+         workflow_conclusion: success
+         name: addons_hb32_mingw_0703
+         path: c:\temp
+         repo: JoseQuintas/sefazclass
+
+    - name: Unzip All
+      env:
+         PATH: c:\program files\7-zip
+      run: |
+         c:
+         7z x -y c:\temp\hb32_mingw_0703.7z -oc:\temp\harbour
+         md c:\harbour\comp
+         7z x -y c:\temp\mingw_0703.7z -oc:\temp\harbour\comp
+         md c:\harbour\addons
+         7z x -y c:\temp\addons_hb32_mingw_0703.7z -oc:\temp\harbour\addons
+
+    - name: Create pack_hb32_mingw_0703.zip
+      env:
+         PATH: c:\program files\7-zip
+      run: |
+         c:
+         7z a -r c:\temp\pack_hb32_mingw_0703.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
+
+    - name: Save pack_hb32_mingw_0703.zip to workflow
+      uses: actions/upload-artifact@v4
+      with:
+         name: pack_hb32_mingw_0703
+         path: c:\temp\pack_hb32_mingw_0703.7z
+
+  mingw_1420:
+    runs-on: windows-latest
+    steps:
+
+    - name: load mingw_1420.zip from workflow
+      uses: dawidd6/action-download-artifact@v6
+      with:
+         workflow: mingw.yml
+         workflow_conclusion: success
+         name: mingw_1420
+         path: c:\temp
+         repo: JoseQuintas/sefazclass
+
+    - name: load hb32_mingw_1420.zip from workflow
+      uses: dawidd6/action-download-artifact@v6
+      with:
+         workflow: hb32_mingw.yml
+         workflow_conclusion: success
+         name: hb32_mingw_1420
+         path: c:\temp
+         repo: JoseQuintas/sefazclass
+
+    - name: load addons_hb32_mingw_1420.zip from workflow
+      uses: dawidd6/action-download-artifact@v6
+      with:
+         workflow: addons_hb32_mingw.yml
+         workflow_conclusion: success
+         name: addons_hb32_mingw_1420
+         path: c:\temp
+         repo: JoseQuintas/sefazclass
+
+    - name: Unzip all
+      env:
+         PATH: c:\program files\7-zip
+      run: |
+         c:
+         7z x -y c:\temp\hb32_mingw_1420.7z -oc:\temp\harbour
+         md c:\temp\harbour\comp
+         7z x -y c:\temp\mingw_1420.7z -oc:\temp\harbour\comp
+         md c:\temp\harbour\addons
+         7z x -y c:\temp\addons_hb32_mingw_1420.7z -oc:\temp\harbour\addons
+
+    - name: Create pack_hb32_mingw_1420.zip
+      env:
+         PATH: c:\program files\7-zip
+      run: |
+         c:
+         7z a -r c:\temp\pack_hb32_mingw_1420.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
+
+    - name: Save ZIP on workflow
+      uses: actions/upload-artifact@v4
+      with:
+         name: pack_hb32_mingw_1420
+         path: c:\temp\pack_hb32_mingw_1420.7z
+
+  mingw_1500:
+    runs-on: windows-latest
+    steps:
+
+    - name: load mingw_1500.zip from workflow
+      uses: dawidd6/action-download-artifact@v6
+      with:
+         workflow: mingw.yml
+         workflow_conclusion: success
+         name: mingw_1500
+         path: c:\temp
+         repo: JoseQuintas/sefazclass
+
+    - name: load hb32_mingw_1500.zip from workflow
+      uses: dawidd6/action-download-artifact@v6
+      with:
+         workflow: hb32_mingw.yml
+         workflow_conclusion: success
+         name: hb32_mingw_1500
+         path: c:\temp
+         repo: JoseQuintas/sefazclass
+
+    - name: load addons_hb32_mingw_1500.zip from workflow
+      uses: dawidd6/action-download-artifact@v6
+      with:
+         workflow: addons_hb32_mingw.yml
+         workflow_conclusion: success
+         name: addons_hb32_mingw_1500
+         path: c:\temp
+         repo: JoseQuintas/sefazclass
+
+    - name: Unzip all
+      env:
+         PATH: c:\program files\7-zip
+      run: |
+         c:
+         7z x -y c:\temp\hb32_mingw_1500.7z -oc:\temp\harbour
+         md c:\temp\harbour\comp
+         7z x -y c:\temp\mingw_1500.7z -oc:\temp\harbour\comp
+         md c:\temp\harbour\addons
+         7z x -y c:\temp\addons_hb32_mingw_1500.7z -oc:\temp\harbour\addons
+
+    - name: Create pack_hb32_mingw_1500.zip
+      env:
+         PATH: c:\program files\7-zip
+      run: |
+         c:
+         7z a -r c:\temp\pack_hb32_mingw_1500.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
+
+    - name: Save ZIP on workflow
+      uses: actions/upload-artifact@v4
+      with:
+         name: pack_hb32_mingw_1500
+         path: c:\temp\pack_hb32_mingw_1500.7z
+
