@@ -14,6 +14,9 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
       ::lEnvioZip := lEnvioZip
    ENDIF
    ::aSoapUrlList := SoapList()
+   IF XmlNode( cXml, "mod" ) == "65"
+      ::lConsumidor := .T.
+   ENDIF
    ::Setup( cUF, cCertificado, cAmbiente, @lEnvioSinc )
    IF ::lEnvioZip
       ::cSoapAction += "Zip"
@@ -64,10 +67,6 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
    LOCAL cInfNFe, cSignature, cAmbiente, cUF, nPos
    LOCAL aUrlList := WS_NFE_QRCODE
 
-   hb_Default( @cIdToken, StrZero( 0, 6 ) )
-   hb_Default( @cCsc, StrZero( 0, 36 ) )
-   hb_Default( @cVersaoQRCode, "2.00" )
-
    cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
    cSignature := XmlNode( cXmlAssinado, "Signature", .T. )
 
@@ -102,10 +101,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
       .AND. ! Empty( QRCODE_tpAmb ) ;
       .AND. ! Empty( QRCODE_dhEmi ) ;
       .AND. ! Empty( QRCODE_vNF ) ;
-      ; // .AND. ! Empty( QRCODE_vICMS ) ; // 2024.07.20 sem ICMS ok
-      .AND. ! Empty( QRCODE_digVal  ) ;
-      .AND. ! Empty( QRCODE_cIdToken ) ;
-      .AND. ! Empty( QRCODE_cCSC  )
+      .AND. ! Empty( QRCODE_digVal  )
 
       IF cVersaoQRCode == "2.00"
          IF QRCODE_tpEmis != "9"

@@ -294,7 +294,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          oSefaz:AssinaXml()
          MsgBox( oSefaz:cXmlRetorno, "RETORNO ASSINA XML USUARIO" )
          MsgBox( oSefaz:cXmlDocumento, "XML ASSINADO" )
-         //hb_MemoWrit( Substr( cFileName, 1, Rat( ".", cFileName ) - 1 ) + "-assinado.xml", oSefaz:cXmlDocumento )
+         hb_MemoWrit( Substr( cFileName, 1, Rat( ".", cFileName ) - 1 ) + "-assinado.xml", oSefaz:cXmlDocumento )
 
       CASE nOpc == OPC_MANIFESTACAO
          Scroll( 8, 0, MaxRow(), MaxCol(), 0 )

@@ -21,8 +21,8 @@ CREATE CLASS SefazClass
    VAR    lConsumidor     INIT .F.                     // NFCe
    VAR    lContingencia   INIT .F.
    /* pra NFCe */
-   VAR    cIdToken        INIT ""                      // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
-   VAR    cCSC            INIT ""                      // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
+   VAR    cIdToken        INIT StrZero( 0, 6 )         // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
+   VAR    cCSC            INIT StrZero( 0, 36 )        // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
    /* configuração não comum */
    VAR    cVersaoQrCode   INIT "2.00"                  // Versao do QRCode
    VAR    nTempoEspera    INIT 10                      // intervalo entre envia lote e consulta recibo
