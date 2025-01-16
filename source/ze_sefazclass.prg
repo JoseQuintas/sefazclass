@@ -10,20 +10,27 @@ José Quintas
 CREATE CLASS SefazClass
 
    /* configuração */
+
    VAR    cProjeto        INIT NIL
    VAR    cAmbiente       INIT WS_AMBIENTE_PRODUCAO
    VAR    cVersao         INIT NIL
    VAR    cUF             INIT "SP"                    // Modificada conforme método
    VAR    cCertificado    INIT ""                      // CN (NOME) do certificado
+
    /* contingência e sinc/assinc */
+
    VAR    lEnvioSinc      INIT .F.                     // Envio já retorna protocolo
    VAR    lEnvioZip       INIT .F.                     // Envio de zip
    VAR    lConsumidor     INIT .F.                     // NFCe
-   VAR    lContingencia   INIT .F.
+
    /* pra NFCe */
+
+   VAR    lContingencia   INIT .F.
    VAR    cIdToken        INIT StrZero( 0, 6 )         // Para NFCe obrigatorio identificador do CSC Código de Segurança do Contribuinte
    VAR    cCSC            INIT StrZero( 0, 36 )        // Para NFCe obrigatorio CSC Código de Segurança do Contribuinte
+
    /* configuração não comum */
+
    VAR    cVersaoQrCode   INIT "2.00"                  // Versao do QRCode
    VAR    nTempoEspera    INIT 10                      // intervalo entre envia lote e consulta recibo
    VAR    nSoapTimeOut    INIT 15000                  // Limite de espera por resposta em segundos * 1000
@@ -35,7 +42,9 @@ CREATE CLASS SefazClass
    VAR    cProxyUrl       INIT ""
    VAR    cProxyUser      INIT ""
    VAR    cProxyPassword  INIT ""
+
    /* XMLs de cada etapa, se precisar conferir */
+
    VAR    cXmlDocumento   INIT ""                      // O documento oficial, com ou sem assinatura, depende do documento
    VAR    cXmlEnvio       INIT ""                      // usado pra criar/complementar XML do documento
    VAR    cXmlSoap        INIT ""                      // XML completo enviado pra Sefaz, incluindo informações do envelope
@@ -46,7 +55,9 @@ CREATE CLASS SefazClass
    VAR    cStatus         INIT Space(3)                // Status obtido da resposta final da Fazenda
    VAR    cRecibo         INIT ""                      // Número do recibo
    VAR    cMotivo         INIT ""                      // Motivo constante no Recibo
+
    /* uso interno */
+
    VAR    cSoapAction     INIT ""                      // webservice Action
    VAR    cSoapURL        INIT ""                      // webservice Endereço
    VAR    cXmlNameSpace   INIT "xmlns="
@@ -104,14 +115,16 @@ CREATE CLASS SefazClass
    METHOD NFeProtocolo( ... )             INLINE ze_sefaz_NfeProtocolo( Self, ... )
    METHOD NFeRetEnvio( ... )              INLINE ze_sefaz_NFeRetEnvio( Self, ... )
    METHOD NFeStatus( ... )                INLINE ze_sefaz_NFeStatus( Self, ... )
-   METHOD NFeStatusSVC( ... )             INLINE ze_sefaz_NFeStatusSVC( Self, ... )
+
    METHOD Setup( ... )                    INLINE ze_sefaz_Setup( Self, ... )
 
    /* Uso interno */
+
    METHOD XmlSoapPost()
    METHOD MicrosoftXmlSoapPost()
 
    /* Apenas redirecionamento */
+
    METHOD AssinaXml()
    METHOD TipoXml( cXml )                             INLINE TipoXml( cXml )
    METHOD UFCodigo( cSigla )                          INLINE UFCodigo( cSigla )
@@ -120,6 +133,9 @@ CREATE CLASS SefazClass
    METHOD ValidaXml( cXml, cFileXsd, cIgnoreList )    INLINE ::cXmlRetorno := DomDocValidaXml( cXml, cFileXsd, cIgnoreList )
 
    /* obsoleto / compatibilidade */
+
+   METHOD NFeStatusSVC( cUF, cCertificado, cAmbiente ) ;
+                                          INLINE ::NfeStatus( cUF, cCertificado, cAmbiente, .T. )
    METHOD cIndSinc( cValue )                SETGET
    METHOD cFusoHorario                      SETGET
    METHOD cNFCe                             SETGET

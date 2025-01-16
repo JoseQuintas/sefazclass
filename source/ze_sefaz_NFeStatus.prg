@@ -21,12 +21,6 @@ FUNCTION ze_Sefaz_NFeStatus( Self, cUF, cCertificado, cAmbiente, lContingencia )
 
    RETURN ::cXmlRetorno
 
-FUNCTION ze_Sefaz_NFeStatusSVC( Self, cUF, cCertificado, cAmbiente )
-
-   ze_Sefaz_NfeStatus( Self, cUF, cCertificado, cAmbiente, .T. )
-
-   RETURN ::cXmlRetorno
-
 STATIC FUNCTION SoapList()
 
 RETURN { ;
