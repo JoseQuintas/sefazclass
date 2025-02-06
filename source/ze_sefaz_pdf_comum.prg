@@ -76,8 +76,8 @@ METHOD DrawBarcodeQRCode( nX, nY, nLineWidth, cCode, nFlags )
    LOCAL nLineHeight, hZebra
 
    hZebra := hb_Zebra_Create_QRCode( cCode, nFlags )
-   nLineHeight := nLineWidth
    IF hb_Zebra_GetError( hZebra ) == 0
+      nLineHeight := nLineWidth
       hb_Zebra_Draw( hZebra, { | x, y, w, h | HPDF_Page_Rectangle( ::oPDFPage, x, y, w, h ) }, nX, nY, nLineWidth, -nLineHeight )
       HPDF_Page_Fill( ::oPDFPage )
       hb_Zebra_Destroy( hZebra )
