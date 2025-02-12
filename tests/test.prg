@@ -11,10 +11,7 @@ REQUEST HB_CODEPAGE_PTISO
 #include "hbgtinfo.ch"
 #include "directry.ch"
 #include "sefazclass.ch"
-
-#ifndef WIN_SW_SHOWNORMAL
-#define WIN_SW_SHOWNORMAL 0
-#endif
+#define WIN_SW_SHOWNORMAL   1
 
 #define OPC_DANFE           1
 #define OPC_CERTIFICADO     2
@@ -388,7 +385,7 @@ FUNCTION TestDanfe()
 FUNCTION PDFOpen( cFile )
 
    IF File( cFile )
-      WAPI_ShellExecute( Nil, "open", cFile, "",, WIN_SW_SHOWNORMAL )
+      ShellExecuteOpen( cFile )
       Inkey(1)
    ENDIF
 
@@ -475,3 +472,8 @@ STATIC FUNCTION MsgBox( cTexto, cTitulo )
 FUNCTION AppVersaoExe(); RETURN ""
 FUNCTION AppUserName(); RETURN ""
 FUNCTION PostQuitMessage(); RETURN Nil
+FUNCTION ShellExecuteOpen( cFileName, cParameters, cPath, nShow )
+
+   wapi_ShellExecute( Nil, "open", cFileName, cParameters, cPath, hb_DefaultValue( nShow, WIN_SW_SHOWNORMAL ) )
+
+   RETURN Nil
