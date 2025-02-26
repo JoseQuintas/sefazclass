@@ -337,39 +337,41 @@ STATIC FUNCTION ValidIE_MG( cInscricao )
 
    LOCAL lOk := .T., nSoma, cNumero, nMultip, cChecar, nCont
 
-   IF Len( cInscricao ) != 13
+   IF Len( cInscricao ) > 13
+      RETURN .F.
+   ENDIF
+   IF Len( cInscricao ) < 13
+      cInscricao := PadL( cInscricao, 13, "0" )
+   ENDIF
+   cNumero := ""
+   nMultip := 1
+   cChecar := Substr( cInscricao, 1, 3 ) + "0" + Substr( cInscricao, 4, 8 )
+   FOR nCont = 1 to Len(cChecar)
+      cNumero := cNumero + LTrim( Str( Val( Substr( cChecar, nCont, 1 ) ) * nMultip ) )
+      nMultip := iif( nMultip == 1, 2, 1 )
+   NEXT
+   nSoma := 0
+   FOR nCont = 1 to Len( cNumero )
+      nSoma += Val( Substr( cNumero, nCont, 1 ) )
+   NEXT
+   nSoma := Mod( nSoma, 10 )
+   IF nSoma != 0
+      nSoma := 10 - nSoma
+   ENDIF
+   IF nSoma != Val( Substr( cInscricao, 12, 1 ) )
       lOk := .F.
    ELSE
-      cNumero := ""
-      nMultip := 1
-      cChecar := Substr( cInscricao, 1, 3 ) + "0" + Substr( cInscricao, 4, 8 )
-      FOR nCont = 1 to Len(cChecar)
-         cNumero := cNumero + LTrim( Str( Val( Substr( cChecar, nCont, 1 ) ) * nMultip ) )
-         nMultip := iif( nMultip == 1, 2, 1 )
-      NEXT
       nSoma := 0
-      FOR nCont = 1 to Len( cNumero )
-         nSoma += Val( Substr( cNumero, nCont, 1 ) )
+      nMultip := 2
+      FOR nCont = 12 to 1 step -1
+         nSoma += ( nMultip * Val( Substr( cInscricao, nCont, 1 ) ) )
+         nMultip += 1
+         nMultip := iif( nMultip == 12, 2, nMultip )
       NEXT
-      nSoma := Mod( nSoma, 10 )
-      IF nSoma != 0
-         nSoma := 10 - nSoma
-      ENDIF
-      IF nSoma != Val( Substr( cInscricao, 12, 1 ) )
+      nSoma := 11 - Mod( nSoma, 11 )
+      nSoma := iif( nSoma > 9, 0, nSoma )
+      IF nSoma != Val( Substr( cInscricao, 13, 1 ) )
          lOk := .F.
-      ELSE
-         nSoma := 0
-         nMultip := 2
-         FOR nCont = 12 to 1 step -1
-            nSoma += ( nMultip * Val( Substr( cInscricao, nCont, 1 ) ) )
-            nMultip += 1
-            nMultip := iif( nMultip == 12, 2, nMultip )
-         NEXT
-         nSoma := 11 - Mod( nSoma, 11 )
-         nSoma := iif( nSoma > 9, 0, nSoma )
-         IF nSoma != Val( Substr( cInscricao, 13, 1 ) )
-            lOk := .F.
-         ENDIF
       ENDIF
    ENDIF
    IF lOk
