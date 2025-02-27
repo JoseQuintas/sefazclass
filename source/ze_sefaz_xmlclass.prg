@@ -55,6 +55,7 @@ CREATE CLASS NfeVolumesClass STATIC // From NfeTransporteClass
 
 CREATE CLASS NfeTransporteClass STATIC
 
+   VAR  ModFrete          INIT ""
    VAR  Nome              INIT ""
    VAR  Cnpj              INIT ""
    VAR  InscricaoEstadual INIT ""
@@ -109,6 +110,8 @@ CREATE CLASS NfeIIClass STATIC
 
 CREATE CLASS NfeIpiClass STATIC
 
+   VAR  Cst      INIT ""
+   VAR  Enq      INIT ""
    VAR  Base     INIT 0
    VAR  Aliquota INIT 0
    VAR  Valor    INIT 0
@@ -503,6 +506,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
 
    cBlocoTransporte := XmlNode( cXmlInput, "transp" )
       WITH OBJECT oDocSped:Transporte
+         :ModFrete := XmlNode( cBlocoTransporte, "modFrete" )
          cBlocoTransp := XmlNode( cBlocoTransporte, "transporta" )
             :Cnpj              := Transform( XmlNode( cBlocoTransp, "CNPJ" ), "@R !!.!!!.!!!/!!!!-!!" )
             :Nome              := Upper( XmlNode( cBlocoTransp, "xNome" ) )
@@ -570,6 +574,8 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
             :Pedido          := Val( XmlNode( cBlocoProd, "xPed" ) ) // 2018.01.23 Jackson
             :FCI             := XmlNode( cBlocoProd, "nFCI" ) // 2024.09.01
          cBlocoIpi := XmlNode( cBlocoItem, "IPI" )
+            :Ipi:Cst         := XmlNode( cBlocoIpi, "CST" )
+            :Ipi:Enq         := XmlNode( cBlocoIpi, "cEnq" )
             :Ipi:Base        := Val( XmlNode( cBlocoIpi, "vBC" ) )
             :Ipi:Aliquota    := Val( XmlNode( cBlocoIpi, "pIPI" ) )
             :Ipi:Valor       := Val( XmlNode( cBlocoIpi, "vIPI" ) )
