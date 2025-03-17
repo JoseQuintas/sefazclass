@@ -13,10 +13,11 @@ Baseado no projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 CREATE CLASS hbNFeDaGeral
 
    VAR    oPDFPage
-   VAR    cDesenvolvedor INIT ""
-   VAR    cLogoFile      INIT ""
-   VAR    cRetorno       INIT ""
-   VAR    lQuadroEntrega INIT .T.
+   VAR    cDesenvolvedor      INIT ""
+   VAR    cLogoFile           INIT ""
+   VAR    cRetorno            INIT ""
+   VAR    lQuadroEntrega      INIT .T.
+   VAR    nLinhaDesenvolvedor INIT 7
 
    METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar )
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
@@ -125,7 +126,7 @@ METHOD DefineDecimais( xValue, nDecimais ) CLASS hbNFeDaGeral
 
 METHOD Desenvolvedor( nLinhaPDF ) CLASS hbNFeDaGeral
 
-   hb_Default( @nLinhaPDF, 10 )
+   hb_Default( @nLinhaPDF, ::nLinhaDesenvolvedor )
    ::DrawTexto( 1, nLinhaPDF, 590, NIL, ::cDesenvolvedor, HPDF_TALIGN_RIGHT, ::oPdfFontBold, 6 )
    IF .F.
       ::DrawTexto( 20, nLinhaPDF, 300, NIL, "DATA DA IMPRESSÃO: " + Dtoc( Date() ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
