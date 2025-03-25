@@ -14,9 +14,9 @@ Contribuição DaCTE: MSouzaRunner
 
 CREATE CLASS hbnfeDacte INHERIT hbNFeDaGeral
 
-   METHOD ToPDF( cXmlCTE, cFilePDF, cXmlCancel )
+   METHOD ToPDF( cXmlCTE, cFilePDF, cXmlCancel, oPDF, lEnd )
    METHOD BuscaDadosXML()
-   METHOD GeraPDF( cFilePDF )
+   METHOD GeraPDF( cFilePDF, oPDF, lEnd )
    METHOD NovaPagina()
    METHOD GeraFolha()
 
@@ -125,8 +125,9 @@ CREATE CLASS hbnfeDacte INHERIT hbNFeDaGeral
 
    ENDCLASS
 
-METHOD ToPDF( cXmlCTE, cFilePDF, cXmlCancel ) CLASS hbnfeDaCte
+METHOD ToPDF( cXmlCTE, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbnfeDaCte
 
+   hb_Default( @lEnd, .T. )
    IF cXmlCTE == NIL
       ::cRetorno := "Não informado texto do XML"
       RETURN ::cRetorno
@@ -142,7 +143,13 @@ METHOD ToPDF( cXmlCTE, cFilePDF, cXmlCancel ) CLASS hbnfeDaCte
    ::nLarguraDescricao  := 39
    ::nLarguraCodigo     := 13
 
-   IF ! ::GeraPdf( cFilePDF )
+   IF ! lEnd
+      ::GeraPDF( cFilePDF, oPDF, lEnd )
+      oPDF := ::oPDF
+      RETURN oPDF
+   ENDIF
+
+   IF ! ::GeraPdf( cFilePDF, oPDF, lEnd )
       ::cRetorno := "Problema ao gerar o PDF !"
       RETURN ::cRetorno
    ENDIF
@@ -361,16 +368,21 @@ METHOD BuscaDadosXML() CLASS hbnfeDaCte
 
    RETURN Nil
 
-METHOD GeraPDF( cFilePDF ) CLASS hbnfeDaCte
+METHOD GeraPDF( cFilePDF, oPDF, lEnd ) CLASS hbnfeDaCte
 
    LOCAL oPage
 
-   ::oPdf := HPDF_New()
-   IF ::oPdf == NIL
-      ::cRetorno := "Falha da criação do objeto PDF !"
-      RETURN .F.
+   hb_Default( @lEnd, .T. )
+   IF oPDF != Nil
+      ::oPDF := oPDF
+   ELSE
+      ::oPdf := HPDF_New()
+      IF ::oPdf == NIL
+         ::cRetorno := "Falha da criação do objeto PDF !"
+         RETURN .F.
+      ENDIF
+      HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
    ENDIF
-   HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
    ::oPDFFontNormal     := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
    ::oPDFFontBold := HPDF_GetFont( ::oPdf, "Times-Bold",  "CP1252" )
 
@@ -390,6 +402,10 @@ METHOD GeraPDF( cFilePDF ) CLASS hbnfeDaCte
          Ltrim( Str( Len( ::aPageList ), 3 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
    NEXT
 
+   IF ! lEnd
+      oPDF := ::oPDF
+      RETURN oPDF
+   ENDIF
    // Ajustar numeração
    HPDF_SaveToFile( ::oPdf, cFilePDF )
    HPDF_Free( ::oPdf )

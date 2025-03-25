@@ -15,9 +15,9 @@ Contrbuição DaMdfe:MSouzaRunner
 
 CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
 
-   METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel )
+   METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel, oPDF, lEnd )
    METHOD buscaDadosXML()
-   METHOD geraPDF( cFilePDF )
+   METHOD geraPDF( cFilePDF, oPDF, lEnd )
    METHOD novaPagina()
    METHOD cabecalho( nQtFolhas )
 
@@ -87,8 +87,9 @@ CREATE CLASS hbnfeDaMDFe INHERIT hbNFeDaGeral
 
    ENDCLASS
 
-METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel ) CLASS hbnfeDaMdfe
+METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbnfeDaMdfe
 
+   hb_Default( @lEnd, .T. )
    IF cXmlMDFE == NIL .OR. Empty( cXmlMDFE )
       ::cRetorno := "Sem conteúdo XML pra gerar PDF"
       RETURN ::cRetorno
@@ -104,6 +105,11 @@ METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel ) CLASS hbnfeDaMdfe
 
    ::lPaisagem := .F.
 
+   IF oPDF != Nil
+      ::GeraPDF( cFilePDF, oPDF, lEnd )
+      oPDF := ::oPDF
+      RETURN oPDF
+   ENDIF
    IF ! ::GeraPdf( cFilePDF )
       ::cRetorno := "Problema ao gerar o PDF !"
       RETURN ::cRetorno
@@ -169,22 +175,27 @@ METHOD buscaDadosXML() CLASS hbnfeDaMdfe
 
    RETURN .T.
 
-METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
+METHOD geraPDF( cFilePDF, oPDF, lEnd ) CLASS hbnfeDaMdfe
 
    LOCAL nQtFolhas, nCont, oPage
 
+   hb_Default( @lEnd, .T. )
    nQtFolhas := 1
    IF Len( ::aInfDoc ) > 11
       nQtFolhas := Int( ( Len( ::aInfDoc ) + 10 ) / 11 )
    ENDIF
-   // criacao objeto pdf
-   ::oPDF := HPDF_New()
-   IF ::oPDF == NIL
-      ::cRetorno := "Falha da criação do objeto PDF !"
-      RETURN .F.
+   IF oPDF != Nil
+      ::oPDF := oPDF
+   ELSE
+      // criacao objeto pdf
+      ::oPDF := HPDF_New()
+      IF ::oPDF == NIL
+         ::cRetorno := "Falha da criação do objeto PDF !"
+         RETURN .F.
+      ENDIF
+      /* set compression mode */
+      HPDF_SetCompressionMode( ::oPDF, HPDF_COMP_ALL )
    ENDIF
-   /* set compression mode */
-   HPDF_SetCompressionMode( ::oPDF, HPDF_COMP_ALL )
    /* setando fonte */
    ::oPDFFontNormal     := HPDF_GetFont( ::oPDF, "Times-Roman", "CP1252" )
    ::oPDFFontBold := HPDF_GetFont( ::oPDF, "Times-Bold", "CP1252" )
@@ -202,6 +213,10 @@ METHOD geraPDF( cFilePDF ) CLASS hbnfeDaMdfe
             LTrim( Str( oPage:__EnumIndex(), 3 ) ) + "/" + ;
             Ltrim( Str( Len( ::aPageList ), 3 ) ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
       NEXT
+   ENDIF
+   IF ! lEnd
+      oPDF := ::oPDF
+      RETURN oPDF
    ENDIF
    HPDF_SaveToFile( ::oPDF, cFilePDF )
    HPDF_Free( ::oPdf )

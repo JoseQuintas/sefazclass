@@ -19,7 +19,7 @@ CREATE CLASS hbNFeDaGeral
    VAR    lQuadroEntrega      INIT .T.
    VAR    nLinhaDesenvolvedor INIT 7
 
-   METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar )
+   METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar, oPDF, lEnd )
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
    METHOD DrawBarcodeQRCode( nX, nY, nLineWidth, cCode, nFlags )
    METHOD DrawJPEGImage( cJPEGImage, x1, y1, x2, y2 )
@@ -146,10 +146,11 @@ METHOD DrawBoxTituloTexto( x, y, w, h, cTitle, cText, nAlign, oPDFFont, nFontSiz
 
    RETURN NIL
 
-METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar ) CLASS hbNFeDaGeral
+METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar, oPDF, lEnd ) CLASS hbNFeDaGeral
 
    LOCAL oDanfe
 
+   hb_Default( @lEnd, .T. )
    IF cXmlDocumento == NIL .OR. Empty( cXmlDocumento )
       RETURN "XML inválido"
    ENDIF
@@ -176,7 +177,13 @@ METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar ) CLASS hbNFeDaGeral
    oDanfe:cLogoFile      := ::cLogoFile
    oDanfe:cDesenvolvedor := ::cDesenvolvedor
 
-   RETURN oDanfe:ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar )
+   IF ! lEnd
+      oDanfe:ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar, oPDF, lEnd )
+      oPDF := oDanfe:oPDF
+      RETURN oPDF
+   ENDIF
+
+   RETURN oDanfe:ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar, oPDF, lEnd )
 
 METHOD DrawHomologacao( cTexto ) CLASS hbNFeDaGeral
 

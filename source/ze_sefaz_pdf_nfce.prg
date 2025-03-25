@@ -9,11 +9,11 @@ Contribuição NFCE: LucianoConforto
 
 CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
 
-   METHOD ToPDF( cXmlNFCe, cFilePDF )
+   METHOD ToPDF( cXmlNFCe, cFilePDF, cXmlCancel, oPDF, lEnd )
    METHOD BuscaDadosXML()
    METHOD Execute( cXmlNFCe, cFilePDF, ... ) INLINE ::ToPDF( cXmlNFce, cFilePDF, ... )
    METHOD CalculaPDF()
-   METHOD GeraPDF( cFilePDF )
+   METHOD GeraPDF( cFilePDF, oPDF, lEnd )
    METHOD NovaPagina()
    METHOD Desenvolvedor()
 
@@ -56,8 +56,9 @@ CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
 
    ENDCLASS
 
-METHOD ToPDF( cXmlNFCe, cFilePDF ) CLASS hbNFeDaNFCe
+METHOD ToPDF( cXmlNFCe, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbNFeDaNFCe
 
+   hb_Default( @lEnd, .T. )
    ::cXml     := cXmlNFCe
    ::cRetorno := "OK"
 
@@ -75,11 +76,18 @@ METHOD ToPDF( cXmlNFCe, cFilePDF ) CLASS hbNFeDaNFCe
       ::cRetorno := "Problema ao calcular tamanho do PDF"
       RETURN ::cRetorno
    ENDIF
+   IF ! lEnd
+      ::GeraPDF( cFilePDF, oPDF, lEnd )
+      oPDF := ::oPDF
+      RETURN oPDF
+   ENDIF
 
    IF ! ::GeraPDF( cFilePDF )
       ::cRetorno := "Problema ao gerar o PDF"
       RETURN ::cRetorno
    ENDIF
+
+   (cXmlCancel)
 
    RETURN ::cRetorno
 
@@ -198,16 +206,24 @@ METHOD CalculaPDF() CLASS hbNFeDaNFCe
 
    RETURN .T.
 
-METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFCe
+METHOD GeraPDF( cFilePDF, oPDF, lEnd ) CLASS hbNFeDaNFCe
 
-   ::oPDF := HPDF_New()
+   hb_Default( @lEnd, .T. )
+
+   IF oPDF != Nil
+      ::oPDF := oPDF
+   ELSE
+      ::oPDF := HPDF_New()
+   ENDIF
 
    IF ::oPDF == NIL
       ::cRetorno := "Falha da criação do objeto PDF"
       RETURN .F.
    ENDIF
 
-   HPDF_SetCompressionMode( ::oPDF, HPDF_COMP_ALL )
+   IF oPDF != Nil
+      HPDF_SetCompressionMode( ::oPDF, HPDF_COMP_ALL )
+   ENDIF
 
    ::oPDFFontNormal := HPDF_GetFont( ::oPDF, "Times-Roman", "CP1252" )
    ::oPDFFontBold   := HPDF_GetFont( ::oPDF, "Times-Bold" , "CP1252" )
@@ -224,6 +240,10 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFCe
    ::MensagemInteresseContribuinte()
    ::Desenvolvedor()
 
+   IF ! lEnd
+      oPDF := ::oPDF
+      RETURN oPDF
+   ENDIF
    HPDF_SaveToFile( ::oPDF, cFilePDF )
    HPDF_Free( ::oPDF )
 

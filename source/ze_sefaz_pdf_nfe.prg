@@ -68,9 +68,9 @@ Os campos que podem ser colocados na mesma coluna são:
 
 CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
 
-   METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel )
+   METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel, oPDF, lEnd )
    METHOD BuscaDadosXML()
-   METHOD GeraPDF( cFilePDF )
+   METHOD GeraPDF( cFilePDF, oPDF, lEnd )
    METHOD NovaPagina()
    METHOD SaltaPagina()
    METHOD QuadroNotaFiscal()
@@ -103,6 +103,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
                                        ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME, ;
                                        ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
 
+   VAR lGroupPDF         INIT .F.
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
    VAR cEmailEmitente    INIT ""
@@ -202,8 +203,9 @@ METHOD Init() CLASS hbNFeDaNFe
 
    RETURN SELF
 
-METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel ) CLASS hbNFeDaNFe
+METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbNFeDaNFe
 
+   hb_Default( @lEnd, .T. )
    IF Empty( cXmlNFE )
       ::cRetorno := "XML sem conteúdo"
       RETURN ::cRetorno
@@ -219,6 +221,15 @@ METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel ) CLASS hbNFeDaNFe
       RETURN ::cRetorno
    ENDIF
 
+   //IF oOldPDF != Nil
+      //RETURN ::oPDF
+   //ENDIF
+
+   IF ! lEnd
+      ::GeraPDF( cFilePDF, oPDF, lEnd )
+      oPDF := ::oPDF
+      RETURN oPDF
+   ENDIF
    IF ! ::GeraPDF( cFilePDF )
       ::cRetorno := "Problema ao gerar o PDF"
       RETURN ::cRetorno
@@ -309,16 +320,21 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
 
    RETURN .T.
 
-METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFe
+METHOD GeraPDF( cFilePDF, oPDF, lEnd ) CLASS hbNFeDaNFe
 
    LOCAL oPage
 
-   ::oPdf := HPDF_New()
-   IF ::oPdf == NIL
-      ::cRetorno := "Falha da criação do objeto PDF"
-      RETURN .F.
+   hb_Default( @lEnd, .T. )
+   IF oPdf != Nil
+      ::oPDF := oPdf
+   ELSE
+      ::oPdf := HPDF_New()
+      IF ::oPdf == NIL
+         ::cRetorno := "Falha da criação do objeto PDF"
+         RETURN .F.
+      ENDIF
+      HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
    ENDIF
-   HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
    IF ::cFonteNFe == "Times"
       ::oPDFFontNormal     := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
       ::oPDFFontBold := HPDF_GetFont( ::oPdf, "Times-Bold", "CP1252" )
@@ -360,6 +376,10 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNFeDaNFe
             " - FOLHA " + Alltrim( Str( oPage:__EnumIndex() ) ) + "/" + Alltrim( Str( Len( ::aPageList ) ) ), ;
             HPDF_TALIGN_CENTER, ::oPDFFontBold, 9 )
       NEXT
+   ENDIF
+   IF ! lEnd
+      oPDF := ::oPDF
+      RETURN oPDF
    ENDIF
    HPDF_SaveToFile( ::oPdf, cFilePDF )
    HPDF_Free( ::oPdf )

@@ -13,9 +13,9 @@ Contribuição DaEvento: MSouzaRunner
 
 CREATE CLASS hbnfeDaEvento INHERIT hbNFeDaGeral
 
-   METHOD ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar )
+   METHOD ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar, oPDF, lEnd )
    METHOD BuscaDadosXML()
-   METHOD GeraPDF( cFilePDF )
+   METHOD GeraPDF( cFilePDF, oPDF, lEnd )
    METHOD Cabecalho()
    METHOD Destinatario()
    METHOD Eventos()
@@ -56,8 +56,9 @@ CREATE CLASS hbnfeDaEvento INHERIT hbNFeDaGeral
 
    ENDCLASS
 
-METHOD ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar ) CLASS hbnfeDaEvento
+METHOD ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar, oPDF, lEnd ) CLASS hbnfeDaEvento
 
+   hb_Default( @lEnd, .T. )
    IF Empty( cXmlEvento )
       ::cRetorno := "Não tem conteúdo do XML da carta de correção"
       RETURN ::cRetorno
@@ -81,6 +82,11 @@ METHOD ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar ) CLASS hbnfeDaEvento
       RETURN ::cRetorno
    ENDIF
 
+   IF ! lEnd
+      ::GeraPDF( cFilePDF, oPDF, lEnd )
+      oPDF := ::oPDF
+      RETURN oPDF
+   ENDIF
    IF ! ::GeraPDF( cFilePDF )
       ::cRetorno := "Problema ao gerar o PDF da Carta de Correção"
       RETURN ::cRetorno
@@ -124,19 +130,23 @@ METHOD BuscaDadosXML() CLASS hbnfeDaEvento
 
    RETURN .T.
 
-METHOD GeraPDF( cFilePDF ) CLASS hbNfeDaEvento
+METHOD GeraPDF( cFilePDF, oPDF, lEnd ) CLASS hbNfeDaEvento
 
    LOCAL nAltura
 
-   // criacao objeto pdf
-   ::oPdf := HPDF_New()
-   IF ::oPdf == NIL
-      ::cRetorno := "Falha da criação do objeto PDF da Carta de Correção!"
-      RETURN ::cRetorno
+   hb_Default( @lEnd, .T. )
+   IF oPDF != Nil
+      ::oPDF := oPDF
+   ELSE
+      // criacao objeto pdf
+      ::oPdf := HPDF_New()
+      IF ::oPdf == NIL
+         ::cRetorno := "Falha da criação do objeto PDF da Carta de Correção!"
+         RETURN ::cRetorno
+      ENDIF
+      /* set compression mode */
+      HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
    ENDIF
-
-   /* set compression mode */
-   HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
 
    /* setando fonte */
    DO CASE
@@ -172,6 +182,10 @@ METHOD GeraPDF( cFilePDF ) CLASS hbNfeDaEvento
    ::Eventos()
    ::Rodape()
 
+   IF ! lEnd
+      oPDF := ::oPDF
+      RETURN oPDF
+   ENDIF
    HPDF_SaveToFile( ::oPdf, cFilePDF )
    HPDF_Free( ::oPdf )
 

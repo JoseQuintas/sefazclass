@@ -365,20 +365,21 @@ FUNCTION MyInkeyFilter( nKey )
 
 FUNCTION TestDanfe()
 
-   LOCAL oDanfe, oFile, oFileList, cFilePdf
+   LOCAL oDanfe, oFile, oFileList, cFilePdf, oPDF := Nil, cLastName
 
    oFileList := Directory( "*.xml" )
    FOR EACH oFile IN oFileList
       oDanfe := hbNfeDaGeral():New()
       cFilePdf := Substr( oFile[ F_NAME ], 1, At( ".", oFile[ F_NAME ] ) ) + "pdf"
+      ? oFile[ F_NAME ], oDanfe:cRetorno
       fErase( cFilePdf )
       //oDanfe:cLogoFile := JPEGImage()
       oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:lQuadroEntrega := .T.
-      oDanfe:ToPDF( oFile[ F_NAME ], cFilePdf )
-      ? oFile[ F_NAME ], oDanfe:cRetorno
-      PDFOpen( cFilePdf )
+      oPDF := oDanfe:ToPDF( oFile[ F_NAME ], cFilePdf, ,oPDF , oFile:__EnumIsLast() )
+      cLastName := cFilePDF
    NEXT
+   PDFOpen( cLastName )
 
    RETURN Nil
 
