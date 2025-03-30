@@ -70,7 +70,7 @@ jobs:
          REPO_HMGE:     https://github.com/JoseQuintas/hmge_fork
          REPO_HMG3:     https://github.com/JoseQuintas/hmg3_fork
          REPO_OOHG:     https://github.com/JoseQuintas/oohg_fork
-         REPO_OOHGSAMP: https://github.com/JoseQuintas/oohg/samples
+         REPO_OOHGSAMP: https://github.com/JoseQuintas/oohg/samples_fork
          REPO_DLGAUTO:  https://github.com/JoseQuintas/dlgauto
          PATH_SEFAZ:    c:\temp\harbour\addons\sefazclass
          PATH_BOLETO:   c:\temp\harbour\addons\boletoclass
