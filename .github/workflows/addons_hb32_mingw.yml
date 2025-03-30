@@ -66,10 +66,10 @@ jobs:
          REPO_RMCHART:  https://github.com/JoseQuintas/rmchartclass
          REPO_WVGTEST:  https://github.com/JoseQuintas/wvgtest
          REPO_PDFCLASS: http://github.com/JoseQuintas/pdfclass
-         REPO_HWGUI:    https://github.com/JoseQuintas/hwgui
-         REPO_HMGE:     https://github.com/JoseQuintas/hmge
-         REPO_HMG3:     https://github.com/JoseQuintas/hmg3
-         REPO_OOHG:     https://github.com/JoseQuintas/oohg
+         REPO_HWGUI:    https://github.com/JoseQuintas/hwgui_fork
+         REPO_HMGE:     https://github.com/JoseQuintas/hmge_fork
+         REPO_HMG3:     https://github.com/JoseQuintas/hmg3_fork
+         REPO_OOHG:     https://github.com/JoseQuintas/oohg_fork
          REPO_OOHGSAMP: https://github.com/JoseQuintas/oohg/samples
          REPO_DLGAUTO:  https://github.com/JoseQuintas/dlgauto
          PATH_SEFAZ:    c:\temp\harbour\addons\sefazclass
@@ -242,10 +242,10 @@ jobs:
          REPO_RMCHART:  https://github.com/JoseQuintas/rmchartclass
          REPO_WVGTEST:  https://github.com/JoseQuintas/wvgtest
          REPO_PDFCLASS: http://github.com/JoseQuintas/pdfclass
-         REPO_HWGUI:    https://github.com/JoseQuintas/hwgui
-         REPO_HMGE:     https://github.com/JoseQuintas/hmge
-         REPO_HMG3:     https://github.com/JoseQuintas/hmg3
-         REPO_OOHG:     https://github.com/JoseQuintas/oohg
+         REPO_HWGUI:    https://github.com/JoseQuintas/hwgui_fork
+         REPO_HMGE:     https://github.com/JoseQuintas/hmge_fork
+         REPO_HMG3:     https://github.com/JoseQuintas/hmg3_fork
+         REPO_OOHG:     https://github.com/JoseQuintas/oohg_fork
          REPO_OOHGSAMP: https://github.com/JoseQuintas/oohg/samples
          REPO_DLGAUTO:  https://github.com/JoseQuintas/dlgauto
          PATH_SEFAZ:    c:\temp\harbour\addons\sefazclass
@@ -418,10 +418,10 @@ jobs:
          REPO_RMCHART:  https://github.com/JoseQuintas/rmchartclass
          REPO_WVGTEST:  https://github.com/JoseQuintas/wvgtest
          REPO_PDFCLASS: http://github.com/JoseQuintas/pdfclass
-         REPO_HWGUI:    https://github.com/JoseQuintas/hwgui
-         REPO_HMGE:     https://github.com/JoseQuintas/hmge
-         REPO_HMG3:     https://github.com/JoseQuintas/hmg3
-         REPO_OOHG:     https://github.com/JoseQuintas/oohg
+         REPO_HWGUI:    https://github.com/JoseQuintas/hwgui_fork
+         REPO_HMGE:     https://github.com/JoseQuintas/hmge_fork
+         REPO_HMG3:     https://github.com/JoseQuintas/hmg3_fork
+         REPO_OOHG:     https://github.com/JoseQuintas/oohg_fork
          REPO_OOHGSAMP: https://github.com/JoseQuintas/oohg/samples
          REPO_DLGAUTO:  https://github.com/JoseQuintas/dlgauto
          PATH_SEFAZ:    c:\temp\harbour\addons\sefazclass

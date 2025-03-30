@@ -31,7 +31,7 @@ jobs:
 
     - name: Load Source Code
       env:
-         REPO: JoseQuintas/harbour32
+         REPO: JoseQuintas/harbour32_fork
       run: |
          c:
          git clone https://github.com/$env:repo c:\temp\harbour32 --depth 1
@@ -85,7 +85,7 @@ jobs:
 
     - name: Load Source Code
       env:
-         REPO: JoseQuintas/harbour32
+         REPO: JoseQuintas/harbour32_fork
       run: |
          c:
          git clone https://github.com/$env:repo c:\temp\harbour32 --depth 1
@@ -137,7 +137,7 @@ jobs:
 
     - name: Load Source Code
       env:
-         REPO: JoseQuintas/harbour32
+         REPO: JoseQuintas/harbour32_fork
       run: |
          c:
          git clone https://github.com/$env:repo c:\temp\harbour32 --depth 1
