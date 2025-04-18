@@ -6,7 +6,7 @@
 # input:  mingw_1500.zip
 # output: mingw_0703.zip
 # output: mingw_1420.zip
-# output: mingw_1500.zip
+# output: mingw_xxxx.zip
 #
 
 name: mingw
@@ -26,57 +26,25 @@ jobs:
 
   mingw0703:
     runs-on: windows-latest
+    strategy:
+       matrix:
+          compiler:
+          - mingw_0703
+          - mingw_1420
+          - mingw_1500
     steps:
 
-    - name: load mingw_0703.zip from workflow
+    - name: load mingw_xxxx.zip from workflow
       uses: dawidd6/action-download-artifact@v6
       with:
          workflow: mingw.yml
          workflow_conclusion: success
-         name: mingw_0703
+         name: ${{matrix.compiler}}
          path: c:\temp
          repo: JoseQuintas/sefazclass
 
-    - name: Save mingw_0703.zip to workflow
+    - name: Save mingw_xxxx.zip to workflow
       uses: actions/upload-artifact@v4
       with:
-         name: mingw_0703
-         path: c:\temp\mingw_0703.7z
-
-  mingw1420:
-    runs-on: windows-latest
-    steps:
-
-    - name: load mingw_1420.zip from workflow
-      uses: dawidd6/action-download-artifact@v6
-      with:
-         workflow: mingw.yml
-         workflow_conclusion: success
-         name: mingw_1420
-         path: c:\temp
-         repo: JoseQuintas/sefazclass
-
-    - name: Save mingw_1420.zip to workflow
-      uses: actions/upload-artifact@v4
-      with:
-         name: mingw_1420
-         path: c:\temp\mingw_1420.7z
-
-  mingw1500:
-    runs-on: windows-latest
-    steps:
-
-    - name: load mingw_1500.zip from workflow
-      uses: dawidd6/action-download-artifact@v6
-      with:
-         workflow: mingw.yml
-         workflow_conclusion: success
-         name: mingw_1500
-         path: c:\temp
-         repo: JoseQuintas/sefazclass
-
-    - name: Save mingw_1500.zip to workflow
-      uses: actions/upload-artifact@v4
-      with:
-         name: mingw_1500
-         path: c:\temp\mingw_1500.7z
+         name: ${{matrix.compiler}}
+         path: c:\temp\${{matrix.compiler}}.7z

@@ -1,13 +1,9 @@
 #
 # hb32_mingw.yml
 #
-# input:  mingw_0703.zip
-# input:  mingw_1420.zip
-# input:  mingw_1500.zip
+# input:  mingw_xxx.zip
 # input:  github sources
-# output: hb32_mingw_0703.zip
-# output: hb32_mingw_1420.zip
-# output: hb32_mingw_1500.zip
+# output: hb32_mingw_xxxx.zip
 #
 
 name: hb32_mingw
@@ -25,8 +21,15 @@ on:
 
 jobs:
 
-  mingw0703:
+  buildharbour:
     runs-on: windows-latest
+    strategy:
+       matrix:
+          compiler:
+          - mingw_0703
+          - mingw_1420
+          - mingw_1500
+
     steps:
 
     - name: Load Source Code
@@ -37,12 +40,12 @@ jobs:
          git clone https://github.com/$env:repo c:\temp\harbour32 --depth 1
          cd \temp\harbour32
 
-    - name: load mingw_0703.zip from workflow
+    - name: load mingw_xxxx.zip from workflow
       uses: dawidd6/action-download-artifact@v6
       with:
          workflow: mingw.yml
          workflow_conclusion: success
-         name: mingw_0703
+         name: ${{matrix.compiler}}
          path: c:\temp
          repo: JoseQuintas/sefazclass
 
@@ -53,7 +56,7 @@ jobs:
          c:
          md c:\temp\harbour
          md c:\temp\comp
-         7z x -y c:\temp\mingw_0703.7z -oc:\temp\comp
+         7z x -y c:\temp\${{matrix.compiler}.7z -oc:\temp\comp
 
     - name: Build 32 bits
       env:
@@ -66,119 +69,15 @@ jobs:
          cd c:\temp\harbour32
          mingw32-make clean install
 
-    - name: Create hb32_mingw_0703.zip
+    - name: Create hb32_mingw_xxxx.zip
       env:
          PATH: c:\program files\7-zip
       run: |
          c:
-         7z a -r c:\temp\hb32_mingw_0703.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
+         7z a -r c:\temp\hb32_mingw_$${{matrix.compiler}.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
 
-    - name: Save hb32_mingw_0703.zip to workflow
+    - name: Save hb32_mingw_xxxx.zip to workflow
       uses: actions/upload-artifact@v4
       with:
-         name: hb32_mingw_0703
-         path: c:\temp\hb32_mingw_0703.7z
-
-  mingw1420:
-    runs-on: windows-latest
-    steps:
-
-    - name: Load Source Code
-      env:
-         REPO: JoseQuintas/harbour32_fork
-      run: |
-         c:
-         git clone https://github.com/$env:repo c:\temp\harbour32 --depth 1
-
-    - name: load mingw_1420.zip from workflow
-      uses: dawidd6/action-download-artifact@v6
-      with:
-         workflow: mingw.yml
-         workflow_conclusion: success
-         name: mingw_1420
-         path: c:\temp
-         repo: JoseQuintas/sefazclass
-
-    - name: Unzip All
-      env:
-         PATH: c:\program files\7-zip
-      run: |
-         c:
-         md c:\temp\comp
-         7z x -y c:\temp\mingw_1420.7z -oc:\temp\comp
-
-    - name: Build 32 bits
-      env:
-         HB_BUILD_STRIP: all
-         HB_COMPILER: mingw
-         HB_INSTALL_PREFIX: c:\temp\harbour
-         PATH: c:\temp\comp\mingw32\bin;c:\temp\harbour\bin
-      run: |
-         c:
-         cd c:\temp\harbour32
-         mingw32-make clean install
-
-    - name: Create hb32_mingw_1420.zip
-      env:
-         PATH: c:\program files\7-zip
-      run: |
-         c:
-         7z a -r c:\temp\hb32_mingw_1420.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
-
-    - name: Save hb32_mingw_1420.zip to workflow
-      uses: actions/upload-artifact@v4
-      with:
-         name: hb32_mingw_1420
-         path: c:\temp\hb32_mingw_1420.7z
-
-  mingw1500:
-    runs-on: windows-latest
-    steps:
-
-    - name: Load Source Code
-      env:
-         REPO: JoseQuintas/harbour32_fork
-      run: |
-         c:
-         git clone https://github.com/$env:repo c:\temp\harbour32 --depth 1
-
-    - name: load mingw_1500.zip from workflow
-      uses: dawidd6/action-download-artifact@v6
-      with:
-         workflow: mingw.yml
-         workflow_conclusion: success
-         name: mingw_1500
-         path: c:\temp
-         repo: JoseQuintas/sefazclass
-
-    - name: Unzip All
-      env:
-         PATH: c:\program files\7-zip
-      run: |
-         c:
-         md c:\temp\comp
-         7z x -y c:\temp\mingw_1500.7z -oc:\temp\comp
-
-    - name: Build 32 bits
-      env:
-         HB_BUILD_STRIP: all
-         HB_COMPILER: mingw
-         HB_INSTALL_PREFIX: c:\temp\harbour
-         PATH: c:\temp\comp\mingw32\bin;c:\temp\harbour\bin
-      run: |
-         c:
-         cd c:\temp\harbour32
-         mingw32-make clean install
-
-    - name: Create hb32_mingw_1500.zip
-      env:
-         PATH: c:\program files\7-zip
-      run: |
-         c:
-         7z a -r c:\temp\hb32_mingw_1500.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
-
-    - name: Save hb32_mingw_1500.zip to workflow
-      uses: actions/upload-artifact@v4
-      with:
-         name: hb32_mingw_1500
-         path: c:\temp\hb32_mingw_1500.7z
+         name: hb32_${{matrix.compiler}}
+         path: c:\temp\hb32_mingw_${{matrix.compiler}.7z
