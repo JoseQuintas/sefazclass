@@ -52,7 +52,7 @@ jobs:
          repo: JoseQuintas/sefazclass
 
     - name: load hb32_xxxx.zip
-      if: ${{ github.event_name == 'push' }}
+      if: ${{ github.event_name == 'push' && matrix.compiler == 'mingw_1420' }}
       uses: dawidd6/action-download-artifact@v6
       with:
          workflow: buildall.yml
@@ -81,7 +81,7 @@ jobs:
          7z x -y c:\temp\${{matrix.compiler}}.7z -oc:\temp\mingw
 
     - name: Unzip hb32_xxxx
-      if: ${{ github.event_name == 'push' }}
+      if: ${{ github.event_name == 'push' && matrix.compiler == 'mingw_1420' }}
       env:
          PATH: c:\program files\7-zip
       run: |
@@ -101,7 +101,7 @@ jobs:
 #----- load source -----
 
     - name: Load harbour.git
-      if: ${{ github.event_name != 'push' }}
+      if: ${{ github.event_name != 'push' && matrix.compiler == 'mingw_1420' }}
       env:
          REPO_HARBOUR: https://github.com/JoseQuintas/harbour32_fork
          PATH_HARBOUR: c:\temp\harbour32
@@ -110,6 +110,7 @@ jobs:
          git clone $env:REPO_HARBOUR   $env:PATH_HARBOUR --depth 1
 
     - name: Load Source Code
+      if: ${{ matrix.compiler == 'mingw_1420' }}
       env:
          REPO_SEFAZ:    https://github.com/JoseQuintas/sefazclass
          REPO_BOLETO:   https://github.com/JoseQuintas/boletoclass
@@ -150,7 +151,7 @@ jobs:
 #----- build -----
 
     - name: Build harbour 32 bits
-      if: ${{ github.event_name != 'push' }}
+      if: ${{ github.event_name != 'push' && matrix.compiler == 'mingw_1420' }}
       env:
          HB_BUILD_STRIP: all
          HB_COMPILER: mingw
@@ -162,6 +163,7 @@ jobs:
          mingw32-make clean install
 
     - name: Build libs 32 bits
+      if: ${{ matrix.compiler == 'mingw_1420' }}
       env:
          HB_BUILD_STRIP: all
          HB_COMPILER: mingw
@@ -258,7 +260,7 @@ jobs:
 #----- create zip -----
 
     - name: Create hb32_xxxx.zip
-      if: ${{ github.event_name != 'push' }}
+      if: ${{ github.event_name != 'push' && matrix.compiler == 'mingw_1420' }}
       env:
          PATH: c:\program files\7-zip
       run: |
@@ -266,6 +268,7 @@ jobs:
          7z a -r c:\temp\hb32_${{matrix.compiler}}.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk' -xr'!addons'
 
     - name: Create addons_hb32_xxxx.zip
+      if: ${{  matrix.compiler == 'mingw_1420' }}
       env:
          PATH: c:\program files\7-zip
       run: |
@@ -287,12 +290,14 @@ jobs:
          path: c:\temp\${{matrix.compiler}}.7z
 
     - name: Save hb32_xxxx.zip
+      if: ${{ matrix.compiler == 'mingw_1420' }}
       uses: actions/upload-artifact@v4
       with:
          name: hb32_${{matrix.compiler}}
          path: c:\temp\hb32_${{matrix.compiler}}.7z
 
     - name: Save addons_hb32_xxxx.zip
+      if: ${{ matrix.compiler == 'mingw_1420' }}
       uses: actions/upload-artifact@v4
       with:
          name: addons_hb32_${{matrix.compiler}}
