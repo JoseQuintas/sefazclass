@@ -29,6 +29,7 @@ Os campos que podem ser colocados na mesma coluna são:
 #define LAYOUT_IMPRIMENORMAL   1
 #define LAYOUT_IMPRIMESEGUNDA  2
 #define LAYOUT_IMPRIMEXMLTEM   3
+#define LAYOUT_IMPRIME2XMLTEM  4
 
 #define LAYOUT_TITULO          1
 #define LAYOUT_LARGURA         2
@@ -135,6 +136,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    VAR aItemDI
    VAR aItemAdi
    VAR aItemArma
+   VAR aItemVeicProd
    VAR aItemICMS
    VAR aItemICMSPart
    VAR aItemICMSST
@@ -206,6 +208,7 @@ METHOD Init() CLASS hbNFeDaNFe
 METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbNFeDaNFe
 
    hb_Default( @lEnd, .T. )
+
    IF Empty( cXmlNFE )
       ::cRetorno := "XML sem conteúdo"
       RETURN ::cRetorno
@@ -220,10 +223,6 @@ METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbNFeDaNFe
    IF ! ::BuscaDadosXML()
       RETURN ::cRetorno
    ENDIF
-
-   //IF oOldPDF != Nil
-      //RETURN ::oPDF
-   //ENDIF
 
    IF ! lEnd
       ::GeraPDF( cFilePDF, oPDF, lEnd )
@@ -326,10 +325,10 @@ METHOD GeraPDF( cFilePDF, oPDF, lEnd ) CLASS hbNFeDaNFe
 
    hb_Default( @lEnd, .T. )
    IF oPdf != Nil
-      ::oPDF := oPdf
+      ::oPdf := oPdf
    ELSE
       ::oPdf := HPDF_New()
-      IF ::oPdf == NIL
+      IF ::oPdf == Nil
          ::cRetorno := "Falha da criação do objeto PDF"
          RETURN .F.
       ENDIF
@@ -378,8 +377,8 @@ METHOD GeraPDF( cFilePDF, oPDF, lEnd ) CLASS hbNFeDaNFe
       NEXT
    ENDIF
    IF ! lEnd
-      oPDF := ::oPDF
-      RETURN oPDF
+      oPdf := ::oPdf
+      RETURN oPdf
    ENDIF
    HPDF_SaveToFile( ::oPdf, cFilePDF )
    HPDF_Free( ::oPdf )
@@ -923,7 +922,7 @@ METHOD QuadroDadosAdicionais() CLASS hbNFeDaNFe
 
 METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
 
-   LOCAL cItem, aItem, cDetalhamentoArma
+   LOCAL cItem, aItem, cDetalhamentoArma, cDetalhamentoVeiculo, xValue, cTxt
 
    aItem := MultipleNodeToArray( cXml, "det" )
    IF Len( aItem ) < nItem
@@ -938,7 +937,9 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
       ::aItemDI        := XmlToHash( XmlNode( cItem, "DI" ), { "nDI", "dDI", "xLocDesemb", "UFDesemb", "cExportador" } )
       ::aItemAdi       := XmlToHash( XmlNode( cItem, "adi" ), { "nAdicao", "nSeqAdic", "cFabricante", "vDescDI", "xPed", "nItemPed" } )
       ::aItemArma      := XmlToHash( XmlNode( cItem, "arma" ), { "tpArma", "nSerie", "nCano", "descr" } )
-      // todo veiculos (veicProd), medicamentos (med), combustiveis (comb)
+      ::aItemVeicProd  := XmlToHash( XmlNode( cItem, "veicProd" ), { "tpOp", "chassi", "cCor", "xCor", "pot", "cilin", "pesoL", "pesoB", "nSerie", "tpComb", "nMotor", "CMT", "dist", "anoMod", "anoFab", "tpPint", "tpVeic", "espVeic", "VIN", "condVeic", "cMod", "cCorDENATRAN", "lota", "tpRest" } )
+
+      // todo medicamentos (med), combustiveis (comb)
       ::aItemICMS      := XmlToHash( XmlNode( cItem, "ICMS" ), { "orig", "CST", "CSOSN", "vBCSTRet", "vICMSSTRet", "modBC", "pRedBC", "vBC", "pICMS", "vICMS", "motDesICMS", "modBCST", "pMVAST", "pRedBCST", "vBCST", "pICMSST", "vICMSST" } )
       ::aItemICMSPart  := XmlToHash( XmlNode( cItem, "ICMSPart" ), { "orig", "CST", "modBC", "pRedBC", "vBC", "pICMS", "vICMS", "modBCST", "pMVAST", "pRedBCST", "vBCST", "pICMSST", "vICMSST", "pBCOp", "UFST" } )
       ::aItemICMSST    := XmlToHash( XmlNode( cItem, "ICMSST" ), { "orig", "CST", "vBCSTRet", "vICMSSTRet", "vBCSTDest", "vICMSSTDest" } )
@@ -964,7 +965,47 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
       ELSE
          cDetalhamentoArma := ""
       ENDIF
-      ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ] + cDetalhamentoArma, ";", hb_Eol() )
+
+      IF Empty( ::aItemVeicProd[ "chassi" ] )
+         cTxt := ""
+      ELSE
+         cTxt := "TIPO DE OPERACAO: "     + ::aItemVeicProd[ "tpOp" ]
+         cTxt +=    Veiculo_TipoOperacao( Alltrim(::aItemVeicProd[ "tpOp" ] ) )
+         cTxt += " CHASSI: "              + Alltrim( ::aItemVeicProd[ "chassi" ] )
+         cTxt += " COR: "                 + Alltrim( ::aItemVeicProd[ "cCor" ] )
+         cTxt +=    "-" + Alltrim( ::aItemVeicProd[ "xCor" ] )
+         cTxt += " POTENCIA: "            + Alltrim( ::aItemVeicProd[ "pot" ] ) + " CV"
+         cTxt += " CILINDRADAS: "         + Alltrim( ::aItemVeicProd[ "cilin" ] ) + " CC"
+         cTxt += " PESO LIQ: "            + Alltrim( ::aItemVeicProd[ "pesoL" ] )
+         cTxt += " PESO BRUTO: "          + Alltrim( ::aItemVeicProd[ "pesoB" ] )
+         cTxt += " SERIE: "               + Alltrim( ::aItemVeicProd[ "nSerie" ] )
+         cTxt += " COMBUSTIVEL: "         + Alltrim( ::aItemVeicProd[ "tpComb" ] )
+         cTxt += " OBS MOTOR: "           + Alltrim( ::aItemVeicProd[ "nMotor" ] )
+         cTxt += " CAPACIDADE MAX TRACAO: " + Alltrim( ::aItemVeicProd[ "CMT" ] )
+         cTxt += " DIST. ENTRE EIXOS: "   + Alltrim( ::aItemVeicProd[ "dist" ] )
+         cTxt += " ANO MODELO: "          + Alltrim( ::aItemVeicProd[ "anoMod" ] )
+         cTxt += " ANO FABRICACAO: "      + Alltrim( ::aItemVeicProd[ "anoFab" ] )
+         cTxt += " TIPO PINTURA: "        + Alltrim( ::aItemVeicProd[ "tpPint" ] )
+         cTxt += " TIPO VEICULO: "        + Alltrim( ::aItemVeicProd[ "tpVeic" ] )
+         cTxt += Veiculo_Tipo( Alltrim( ::aItemVeicProd[ "tpVeic" ] ) )
+         cTxt += " ESPECIE VEICULO: "     + Alltrim( ::aItemVeicProd[ "espVeic" ] )
+         cTxt +=    Veiculo_Especie( Alltrim( ::aItemVeicProd[ "espVeic" ] ) )
+         cTxt += " VIN (CHASSI): "        + Alltrim( ::aItemVeicProd[ "VIN" ] )
+         xValue := Alltrim( ::aItemVeicProd[ "VIN" ] )
+         cTxt += iif( xValue == 'R', "-REMARCADO", iif( xValue == 'N', "-NORMAL", "" ) )
+         xValue := Alltrim( ::aItemVeicProd[ "condVeic" ] )
+         cTxt += " CONDICAO VEICULO: "    + Alltrim( ::aItemVeicProd[ "condVeic" ] )
+         cTxt += iif( xValue == '1', "-ACABADO", iif( xValue == '2', ;
+            "-INACABADO", iif( xValue == '3', "-SEMIACABADO", "" ) ) )
+         cTxt += " CODIGO MARCA/MODELO: " + Alltrim( ::aItemVeicProd[ "cMod" ] )
+         cTxt += " COR DENATRAN: "        + Alltrim( ::aItemVeicProd[ "cCorDENATRAN" ] )
+         cTxt +=    Veiculo_Cor( Alltrim(::aItemVeicProd[ "cCorDENATRAN"] ) )
+         cTxt += " LOTACAO MAX: "         + Alltrim( ::aItemVeicProd[ "lota" ] )
+         cTxt += " RESTRICAO: "           + Alltrim( ::aItemVeicProd[ "tpRest" ] )
+         cTxt +=    Veiculo_Restricao( Alltrim(::aItemVeicProd[ "tpRest"] ) ) + hb_Eol()
+      ENDIF
+      cDetalhamentoVeiculo := cTxt
+      ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ] + cDetalhamentoArma + cDetalhamentoVeiculo, ";", hb_Eol() )
       IF ! Empty( ::aItem[ "descANP" ] )
          ::aItem[ "infAdProd" ] += ;
             iif( Empty( ::aItem[ "infAdProd" ] ), "", hb_Eol() ) + ;
@@ -1213,16 +1254,6 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       oElement[ LAYOUT_LARGURAPDF ] += 4
    NEXT
 
-// Pode juntar na mesma coluna:
-// Código do produto/NCM
-// CST e CFOP
-// Qtde. e unidade
-// valor unitário e desconto
-// valor total e base icms
-// base icms e base st
-// icms e ipi
-// aliquota icms e ipi
-
    FOR nTentativa = 1 TO 6
       // Desativa colunas não impressas - talvez linha 2
       AEval( ::aLayout, { | oElement | oElement[ LAYOUT_LARGURAPDF ] := iif( oElement[ LAYOUT_IMPRIME ] == LAYOUT_IMPRIMENORMAL, oElement[ LAYOUT_LARGURAPDF ], 0 ) } )
@@ -1255,6 +1286,16 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
          ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
       ENDCASE
    NEXT
+
+// Pode juntar na mesma coluna:
+// Código do produto/NCM
+// CST e CFOP
+// Qtde. e unidade
+// valor unitário e desconto
+// valor total e base icms
+// base icms e base st
+// icms e ipi
+// aliquota icms e ipi
 
    RETURN NIL
 
@@ -1300,6 +1341,105 @@ STATIC FUNCTION AtivaImprime( nImprime )
 
    IF nImprime == LAYOUT_IMPRIMEXMLTEM
       nImprime := LAYOUT_IMPRIMENORMAL
+   ELSEIF nImprime == LAYOUT_IMPRIME2XMLTEM
+      nImprime := LAYOUT_IMPRIMESEGUNDA
    ENDIF
 
    RETURN Nil
+
+STATIC FUNCTION Veiculo_Restricao( xValue )
+
+LOCAL cTxt := ''
+
+   DO CASE
+   CASE xValue == '0' ; cTxt := '-NAO HA'
+   CASE xValue == '1' ; cTxt := '-ALIENACAO FIDUCIARIA'
+   CASE xValue == '2' ; cTxt := '-ARRENDAMENTO MERCANTIL'
+   CASE xValue == '3' ; cTxt := '-RESERVA DE DOMINIO'
+   CASE xValue == '4' ; cTxt := '-PENHOR DE VEICULOS'
+   CASE xValue == '9' ; cTxt := '-OUTRAS'
+   ENDCASE
+
+   RETURN cTxt
+
+STATIC FUNCTION Veiculo_TipoOperacao( xValue )
+
+   LOCAL cTxt := ''
+
+   DO CASE
+   CASE xValue == '0' ; cTxt := '-OUTROS'
+   CASE xValue == '1' ; cTxt := '-VENDA CONCESSIONARIA'
+   CASE xValue == '2' ; cTxt := '-FATURAMENTO DIRETO PARA CONSUMIDOR FINAL'
+   CASE xValue == '3' ; cTxt := '-VENDA DIRETA PARA GRANDES CONSUMIDORES'
+   ENDCASE
+
+   RETURN cTxt
+
+STATIC FUNCTION Veiculo_Tipo( xValue )
+
+   LOCAL cTxt := ''
+
+   DO CASE
+   CASE xValue == '02' ; cTxt := '-CICLOMOTOR'
+   CASE xValue == '03' ; cTxt := '-MOTONETA'
+   CASE xValue == '04' ; cTxt := '-MOTOCICLETA'
+   CASE xValue == '05' ; cTxt := '-TRICICLO'
+   CASE xValue == '06' ; cTxt := '-AUTOMOVEL'
+   CASE xValue == '07' ; cTxt := '-MICRO ONIBUS'
+   CASE xValue == '08' ; cTxt := '-ONIBUS'
+   CASE xValue == '10' ; cTxt := '-REBOQUE'
+   CASE xValue == '11' ; cTxt := '-SEMIRREBOQUE'
+   CASE xValue == '13' ; cTxt := '-CAMINHONETA'
+   CASE xValue == '14' ; cTxt := '-CAMINHAO'
+   CASE xValue == '17' ; cTxt := '-C.TRATOR'
+   CASE xValue == '18' ; cTxt := '-TR.RODAS'
+   CASE xValue == '19' ; cTxt := '-TR.ESTEIRAS'
+   CASE xValue == '20' ; cTxt := '-TR.MISTO'
+   CASE xValue == '21' ; cTxt := '-QUADRICICLO'
+   CASE xValue == '22' ; cTxt := '-CHASSIS-PLATAFORMA'
+   CASE xValue == '23' ; cTxt := '-CAMINHONETE'
+   CASE xValue == '25' ; cTxt := '-UTILITARIO'
+   CASE xValue == '26' ; cTxt := '-MOTORCASA'
+   ENDCASE
+
+   RETURN cTxt
+
+STATIC FUNCTION Veiculo_Especie( xValue )
+
+   LOCAL cTxt := ''
+
+   DO CASE
+   CASE xValue == '1' ; cTxt := '-PASSAGEIRO'
+   CASE xValue == '2' ; cTxt := '-CARGA'
+   CASE xValue == '3' ; cTxt := '-MISTO'
+   CASE xValue == '4' ; cTxt := '-CORRIDA'
+   CASE xValue == '5' ; cTxt := '-TRACAO'
+   CASE xValue == '6' ; cTxt := '-ESPECIAL'
+   ENDCASE
+
+   RETURN cTxt
+
+STATIC FUNCTION Veiculo_Cor( xValue )
+
+   LOCAL cTxt := ''
+
+   DO CASE
+   CASE xValue == '01' ; cTxt := '-AMARELO'
+   CASE xValue == '02' ; cTxt := '-AZUL'
+   CASE xValue == '03' ; cTxt := '-BEGE'
+   CASE xValue == '04' ; cTxt := '-BRANCA'
+   CASE xValue == '05' ; cTxt := '-CINZA'
+   CASE xValue == '06' ; cTxt := '-DOURADA'
+   CASE xValue == '07' ; cTxt := '-GRENA'
+   CASE xValue == '08' ; cTxt := '-LARANJA'
+   CASE xValue == '09' ; cTxt := '-MARROM'
+   CASE xValue == '10' ; cTxt := '-PRATA'
+   CASE xValue == '11' ; cTxt := '-PRETA'
+   CASE xValue == '12' ; cTxt := '-ROSA'
+   CASE xValue == '13' ; cTxt := '-ROXA'
+   CASE xValue == '14' ; cTxt := '-VERDE'
+   CASE xValue == '15' ; cTxt := '-VERMELHA'
+   CASE xValue == '16' ; cTxt := '-FANTASIA'
+   ENDCASE
+
+   RETURN cTxt
