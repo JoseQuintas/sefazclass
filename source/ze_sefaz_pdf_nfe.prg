@@ -174,6 +174,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    VAR nLayoutTotalFolhas
    VAR lLayoutEspacoDuplo  INIT .T.
    VAR lFantasiaCabecalho  INIT .F.
+   VAR lLayoutPreview      INIT .F.
    VAR aLayout
    VAR aPageList           INIT {}
    VAR aPageRow            INIT { 0, 0, 0 }
@@ -392,6 +393,9 @@ METHOD NovaPagina() CLASS hbNFeDaNFe
 
    HPDF_Page_SetSize( ::oPdfPage, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT )
 
+   IF ::lLayoutPreview
+      ::DrawAviso( "PREVIEW - SEM VALOR FISCAL" )
+   ENDIF
    IF ::aIde[ "tpEmis" ] = "5" // Contingencia
       ::DrawContingencia( "", "DANFE EM CONTINGÊNCIA. IMPRESSO EM", "DECORRÊNCIA DE PROBLEMAS TÉCNICOS" )
    ENDIF
