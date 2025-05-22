@@ -915,7 +915,7 @@ METHOD QuadroDadosAdicionais() CLASS hbNFeDaNFe
       FOR nCont = 1 TO Min( MLCount( cMemo, 1000 ), Int( 78 / LAYOUT_FONTSIZE ) )
          ::DrawTexto( 6, ::nLinhaPDF - ( ( nCont - 1 ) * LAYOUT_FONTSIZE ), 399, NIL, Trim( MemoLine( cMemo, 1000, nCont ) ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, LAYOUT_FONTSIZE )
       NEXT
-      cMemo := ::FormataMemo( ::aInfAdic[ "infAdFisco" ], 186 )
+      cMemo := ::FormataMemo( ::aInfAdic[ "infAdFisco" ], 170 )
       FOR nCont = 1 TO Min( MLCount( cMemo, 1000 ), Int( 78 / LAYOUT_FONTSIZE ) )
          ::DrawTexto( 401, ::nLinhaPDF - ( ( nCont - 1 ) * LAYOUT_FONTSIZE ), 588, NIL, Trim( MemoLine( cMemo, 1000, nCont ) ), HPDF_TALIGN_LEFT, ::oPDFFontBold, LAYOUT_FONTSIZE )
       NEXT
