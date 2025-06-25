@@ -96,7 +96,17 @@ METHOD ToPDF( cXmlMDFE, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbnfeDaMdfe
    ENDIF
 
    ::cXML       := cXmlMDFE
-   ::cXmlCancel := cXmlCancel
+   IF ! Empty( ::cXmlCancel )
+      ::cXmlCancel := cXmlCancel
+   ENDIF
+
+   IF Len( ::cXml ) < 100
+      ::cXml := Memoread( ::cXml )
+   ENDIF
+   IF ! Empty( ::cXmlCancel ) .AND. Len( ::cXmlCancel ) < 100
+      ::cXmlCancel := MemoRead( ::cXmlCancel )
+   ENDIF
+
    ::cChave     := Substr( ::cXml, At( 'Id=', ::cXml ) + 8, 44 )
 
    IF !::buscaDadosXML()

@@ -59,12 +59,20 @@ CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
 METHOD ToPDF( cXmlNFCe, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbNFeDaNFCe
 
    hb_Default( @lEnd, .T. )
-   ::cXml     := cXmlNFCe
+   ::cXml       := cXmlNFCe
+   ::cXmlCancel := cXmlCancel
    ::cRetorno := "OK"
 
    IF Empty( ::cXml )
       ::cRetorno := "XML sem conteúdo"
       RETURN ::cRetorno
+   ENDIF
+
+   IF Len( ::cXml ) < 100
+      ::cXml := Memoread( ::cXml )
+   ENDIF
+   IF ! Empty( ::cXmlCancel ) .AND. Len( ::cXmlCancel ) < 100
+      ::cXmlCancel := MemoRead( ::cXmlCancel )
    ENDIF
 
    IF ! ::BuscaDadosXML()

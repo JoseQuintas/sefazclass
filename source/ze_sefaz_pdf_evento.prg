@@ -68,6 +68,14 @@ METHOD ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar, oPDF, lEnd ) CLASS hbnfeDaEven
       ::cXmlDocumento := cXmlAuxiliar
    ENDIF
    ::cXmlEvento   := cXmlEvento
+
+   IF Len( ::cXmlEvento ) < 100
+      ::cXmlEvento := Memoread( ::cXmlEvento )
+   ENDIF
+   IF ! Empty( ::cXmlDocumento ) .AND. Len( ::cXmlDocumento ) < 100
+      ::cXmlDocumento := MemoRead( ::cXmlDocumento )
+   ENDIF
+
    ::cChaveEvento := Substr( ::cXmlEvento, At( "Id=", ::cXmlEvento ) + 3 + 9, 44 )
 
    //IF ! Empty( ::cXmlDocumento )

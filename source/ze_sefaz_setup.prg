@@ -150,7 +150,7 @@ STATIC FUNCTION SoapUrlNFCe( aList, cUf, cVersao, cSoapAction )
          cSoapAction := aList[ nPos, 4 ]
       ENDIF
    ELSE
-      IF cUF $ "AC,AL,AP,BA,DF,ES,MA,PB,PE,PI,RJ,RN,RO,RR,SE,TO"
+      IF cUF $ "AC,AL,AP,BA,CE,DF,ES,MA,PB,PE,PI,RJ,RN,RO,RR,SE,TO"
          cUrl := SoapUrlNFCe( aList, "SVRS", cVersao, @cSoapAction  )
       ENDIF
    ENDIF

@@ -135,6 +135,14 @@ METHOD ToPDF( cXmlCTE, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbnfeDaCte
    ::cXmlCancel := iif( cXmlCancel == NIL, "", cXmlCancel )
 
    ::cXml   := cXmlCTE
+
+   IF Len( ::cXml ) < 100
+      ::cXml := Memoread( ::cXml )
+   ENDIF
+   IF ! Empty( ::cXmlCancel ) .AND. Len( ::cXmlCancel ) < 100
+      ::cXmlCancel := MemoRead( ::cXmlCancel )
+   ENDIF
+
    ::cChave := Substr( ::cXML, At( "Id=", ::cXML ) + 3 + 4, 44 )
 
    ::buscaDadosXML()

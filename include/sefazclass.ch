@@ -93,7 +93,7 @@
    { "CE",   "4.00H", "http://nfceh.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
    { "DF",   "4.00H", "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
    { "ES",   "4.00H", "http://homologacao.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx" }, ;
-   { "GO",   "4.00H", "http://homolog.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
+   { "GO",   "4.00H", "https://nfewebhomolog.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
    { "MA",   "4.00H", "http://homologacao.sefaz.ma.gov.br/portal/consultarNFCe.jsp" }, ;
    { "MG",   "4.00H", "https://portalsped.fazenda.mg.gov.br/portalnfce/sistema/qrcode.xhtml" }, ;
    { "MS",   "4.00H", "http://www.dfe.ms.gov.br/nfce/qrcode" }, ;
@@ -115,7 +115,7 @@
    { "AL",   "4.00P", "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp" }, ;
    { "BA",   "4.00P", "http://nfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
    { "DF",   "4.00P", "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
-   { "GO",   "4.00P", "http://nfe.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
+   { "GO",   "4.00P", "https://nfeweb.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
    { "MA",   "4.00P", "http://www.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp" }, ;
    { "MG",   "4.00P", "https://portalsped.fazenda.mg.gov.br/portalnfce/sistema/qrcode.xhtml" }, ;
    { "MS",   "4.00P", "http://www.dfe.ms.gov.br/nfce/qrcode" }, ;

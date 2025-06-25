@@ -366,6 +366,7 @@ FUNCTION MyInkeyFilter( nKey )
 FUNCTION TestDanfe()
 
    LOCAL oDanfe, oFile, oFileList, cFilePdf, oPDF := Nil, cLastName
+   LOCAL lUnicoPDF := .F.
 
    oFileList := Directory( "*.xml" )
    FOR EACH oFile IN oFileList
@@ -376,10 +377,17 @@ FUNCTION TestDanfe()
       //oDanfe:cLogoFile := JPEGImage()
       oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:lQuadroEntrega := .T.
-      oPDF := oDanfe:ToPDF( oFile[ F_NAME ], cFilePdf, ,oPDF , oFile:__EnumIsLast() )
-      cLastName := cFilePDF
+      IF lUnicoPDF
+         oPDF := oDanfe:ToPDF( oFile[ F_NAME ], cFilePdf, ,oPDF , oFile:__EnumIsLast() )
+         cLastName := cFilePDF
+      ELSE
+         oPDF := oDanfe:ToPDF( oFile[ F_NAME ], cFilePDF )
+         PDFOpen( cFilePDF )
+      ENDIF
    NEXT
-   PDFOpen( cLastName )
+   IF lUnicoPDF
+      PDFOpen( cLastName )
+   ENDIF
 
    RETURN Nil
 

@@ -219,6 +219,14 @@ METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbNFeDaNFe
    ENDIF
 
    ::cXML   := cXmlNFE
+
+   IF Len( ::cXml ) < 100
+      ::cXml := Memoread( ::cXml )
+   ENDIF
+   IF ! Empty( ::cXmlCancel ) .AND. Len( ::cXmlCancel ) < 100
+      ::cXmlCancel := MemoRead( ::cXmlCancel )
+   ENDIF
+
    ::cChave := Substr( ::cXML, At( "Id=", ::cXML ) + 3 + 4, 44 )
 
    IF ! ::BuscaDadosXML()
@@ -1112,9 +1120,9 @@ METHOD DrawTextoProduto( nCampo, nRow, nConteudo, nAlign ) CLASS hbNFeDaNFe
             cTexto := Eval( cTexto )
          ENDIF
       ENDIF
-      IF ::aLayout[ nCampo, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMESEGUNDA
-         nRow -= LAYOUT_FONTSIZE
-      ENDIF
+      //IF ::aLayout[ nCampo, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMESEGUNDA
+      //   nRow -= LAYOUT_FONTSIZE
+      //ENDIF
       ::DrawTexto( nColunaInicial, nRow, nColunaFinal, NIL, cTexto, nAlign, ::oPDFFontNormal, LAYOUT_FONTSIZE )
    ENDIF
 
@@ -1292,7 +1300,7 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
    NEXT
 
 // Pode juntar na mesma coluna:
-// Código do produto/NCM
+// Código do produto e NCM
 // CST e CFOP
 // Qtde. e unidade
 // valor unitário e desconto
