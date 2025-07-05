@@ -17,6 +17,9 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
    IF XmlNode( cXml, "mod" ) == "65"
       ::lConsumidor := .T.
    ENDIF
+   IF ::cUF == "SP"
+      ::lEnvioSinc := .T.
+   ENDIF
    ::Setup( cUF, cCertificado, cAmbiente, @lEnvioSinc )
    IF ::lEnvioZip
       ::cSoapAction += "Zip"
@@ -42,15 +45,17 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
    ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
    ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
    ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
-   IF ! "infProt" $ ::cXmlRetorno .AND. Val( ::cRecibo ) != 0
+   IF ! ::lEnvioSinc .AND. ! "infProt" $ ::cXmlRetorno .AND. Val( ::cRecibo ) != 0
       Inkey( ::nTempoEspera )
       ::NfeRetEnvio()
    ENDIF
    IF ! "infProt" $ ::cXmlRetorno .AND. hb_ASCan( { "103", "104", "105" }, { | e | e == ::cStatus } ) != 0
-      oDoc   := XmlToDoc( ::cXmlDocumento, .F. )
-      cChave := oDoc:cChave
-      Inkey( ::nTempoEspera )
-      ::NfeProtocolo( cChave, ::cCertificado, ::cAmbiente )
+      IF ! ::lEnvioSinc
+         oDoc   := XmlToDoc( ::cXmlDocumento, .F. )
+         cChave := oDoc:cChave
+         Inkey( ::nTempoEspera )
+         ::NfeProtocolo( cChave, ::cCertificado, ::cAmbiente )
+      ENDIF
    ENDIF
    IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
       ::cXmlProtocolo := ::cXmlRetorno

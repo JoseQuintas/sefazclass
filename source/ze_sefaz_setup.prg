@@ -25,6 +25,9 @@ FUNCTION ze_sefaz_Setup( Self, cUF, cCertificado, cAmbiente, lEnvioSinc )
    OTHERWISE
       ::cUF := cUF
    ENDCASE
+   IF ::cUF == "SP"
+      ::lEnvioSinc := .T.
+   ENDIF
    ::cSoapURL    := ""
    ::cSoapAction := ""
    cAmbiente     := ::cAmbiente
