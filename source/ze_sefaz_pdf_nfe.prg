@@ -1019,10 +1019,10 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
       cDetalhamentoVeiculo := cTxt
       ::aItem[ "infAdProd" ] := StrTran( ::aItem[ "infAdProd" ] + cDetalhamentoArma + cDetalhamentoVeiculo, ";", hb_Eol() )
       IF ! Empty( ::aItem[ "descANP" ] )
-         ::aItem[ "infAdProd" ] += ;
-            iif( Empty( ::aItem[ "infAdProd" ] ), "", hb_Eol() ) + ;
-            "Cód.ANP " + ::aItem[ "cProdANP" ] + ;
-            " Desc.ANP " + ::aItem[ "descANP" ]
+         //::aItem[ "infAdProd" ] += ;
+         //   iif( Empty( ::aItem[ "infAdProd" ] ), "", hb_Eol() ) + ;
+         //   "Cód.ANP " + ::aItem[ "cProdANP" ] + ;
+         //   " Desc.ANP " + ::aItem[ "descANP" ]
       ENDIF
       IF ! Empty( ::aItem[ "nFCI" ] )
          ::aItem[ "infAdProd" ] += ;
