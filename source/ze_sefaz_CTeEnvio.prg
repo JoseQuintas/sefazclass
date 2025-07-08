@@ -8,9 +8,8 @@ FUNCTION ze_sefaz_CTeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
    hb_Default( @::cVersao, WS_CTE_DEFAULT )
    ::aSoapUrlList := SoapList()
    ::Setup( cUF, cCertificado, cAmbiente )
-   IF ::cVersao == "4.00"
-      ::lEnvioSinc := .T.
-   ENDIF
+   ::lEnvioSinc := .T.
+   ::lEnvioZip  := .T.
    IF cXml != NIL
       ::cXmlDocumento := cXml
    ENDIF

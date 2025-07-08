@@ -13,12 +13,13 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
    IF lEnvioZip != Nil
       ::lEnvioZip := lEnvioZip
    ENDIF
+   IF ::cUF == "SP"
+      ::lEnvioSinc := .T.
+      ::lEnvioZip  := .T.
+   ENDIF
    ::aSoapUrlList := SoapList()
    IF XmlNode( cXml, "mod" ) == "65"
       ::lConsumidor := .T.
-   ENDIF
-   IF ::cUF == "SP"
-      ::lEnvioSinc := .T.
    ENDIF
    ::Setup( cUF, cCertificado, cAmbiente, @lEnvioSinc )
    IF ::lEnvioZip
@@ -29,6 +30,7 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
       ::cXmlDocumento := cXml
    ENDIF
    IF ::AssinaXml() != "OK"
+      ::lEnvioZip := .F.
       RETURN ::cXmlRetorno
    ENDIF
    IF ::lConsumidor
@@ -143,6 +145,7 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
                QRCODE_cHash + "]]>"
          ENDIF
       ELSE
+         // antigo
          QRCODE_chNFe    := "chNFe="    + QRCODE_chNFe    + "&"
          QRCODE_nVersao  := "nVersao="  + QRCODE_nVersao  + "&"
          QRCODE_tpAmb    := "tpAmb="    + QRCODE_tpAmb    + "&"

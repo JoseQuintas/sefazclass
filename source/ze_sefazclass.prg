@@ -259,23 +259,22 @@ METHOD XmlSoapPost() CLASS SefazClass
       ::cXmlSoap +=       [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap +=    [</nfeDistDFeInteresse>]
       ::cXmlSoap += [</soap12:Body>]
-   ELSEIF ::cProjeto == WS_PROJETO_MDFE .OR. ( ::cProjeto == WS_PROJETO_CTE .AND. ::cVersao == "4.00" )
+   ELSEIF ::cProjeto == WS_PROJETO_MDFE .OR. ::cProjeto == WS_PROJETO_CTE
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
-      IF ::lEnvioSinc
+      IF ::lEnvioZip
          ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
       ELSE
          ::cXmlSoap +=       ::cXmlEnvio
       ENDIF
       ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsg>]
       ::cXmlSoap += [</soap12:Body>]
-   ELSEIF "LOTEZIP" $ Upper( ::cSoapAction )
+   ELSEIF "LOTEZIP" $ Upper( ::cSoapAction ) // aqui DadosMsgZip
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsgZip xmlns="] + cSoapService + [">]
       ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
       ::cXmlSoap +=    [</] + ::cProjeto + [DadosMsgZip>]
       ::cXmlSoap += [</soap12:Body>]
-
    ELSE
       IF ! "NFERECEPCAOEVENTO" $ Upper( ::cSoapAction )
          ::cXmlSoap += [<soap12:Header>]
@@ -287,7 +286,7 @@ METHOD XmlSoapPost() CLASS SefazClass
       ENDIF
       ::cXmlSoap += [<soap12:Body>]
       ::cXmlSoap +=    [<] + ::cProjeto + [DadosMsg xmlns="] + cSoapService + [">]
-      IF ::lEnvioSinc .AND. ( ::cProjeto == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE )
+      IF ::lEnvioZip
          ::cXmlSoap += hb_base64Encode( hb_gzCompress( ::cXmlEnvio ) )
       ELSE
          ::cXmlSoap += ::cXmlEnvio
@@ -297,6 +296,7 @@ METHOD XmlSoapPost() CLASS SefazClass
    ENDIF
    ::cXmlSoap += [</soap12:Envelope>]
    ::MicrosoftXmlSoapPost()
+   ::lEnvioZip := .F. // somente autorização é zip
 
    RETURN NIL
 
@@ -337,8 +337,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
    IF cSoapAction != NIL .AND. ! Empty( cSoapAction )
       oServer:SetRequestHeader( "SOAPAction", cSoapAction )
    ENDIF
-   IF ( ::lEnvioSinc .AND. ( ::cProjeto  == WS_PROJETO_CTE .OR. ::cProjeto == WS_PROJETO_MDFE ) ) ;
-      .OR. "LOTEZIP" $ Upper( ::cSoapAction )
+   IF ::lEnvioZip
       oServer:SetRequestHeader( "Accept-Encoding", "gzip,deflate" )
       oServer:SetRequestHeader( "Content-Encoding", "gzip" )
    ENDIF

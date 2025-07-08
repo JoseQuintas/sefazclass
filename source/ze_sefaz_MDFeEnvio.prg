@@ -1,16 +1,14 @@
 #include "sefazclass.ch"
 
-FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc )
+FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
 
    LOCAL oDoc, cBlocoXml, aList, nPos, cURLConsulta := "http:"
 
    hb_Default( @::cVersao, WS_MDFE_DEFAULT )
    ::cProjeto := WS_PROJETO_MDFE
-   IF lEnvioSinc != Nil .AND. ValType( lEnvioSinc ) == "L"
-      ::lEnvioSinc := lEnvioSinc
-   ENDIF
    // ---default síncrono 2024.07.01
    ::lEnvioSinc := .T.
+   ::lEnvioZip  := .T.
    // ---fim default
    IF ::lEnvioSinc
       ::aSoapUrlList := SoapListSinc()
