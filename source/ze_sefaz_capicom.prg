@@ -111,3 +111,62 @@ FUNCTION CapicomInstalaPFX( cFileName, cPassword, lREMOVER )
    ENDSEQUENCE
 
    RETURN cID
+
+FUNCTION CapicomInstalaCER( cFileName, cPassword, lREMOVER ) // administrator
+
+   LOCAL oCertificado, oStore, cID
+
+   hb_Default( @lREMOVER, .F. )
+
+   BEGIN SEQUENCE WITH __BreakBlock()
+
+      oCertificado := win_OleCreateObject( "CAPICOM.Certificate" )
+      oCertificado:Load( cFileName, cPassword, CAPICOM_KEY_STORAGE_DEFAULT, 0 )
+      cID := oCertificado:SubjectName
+
+      IF "CN=" $ cID
+         cID := Substr( cID, At( "CN=", cID ) + 3 )
+         IF "," $ cID
+            cID := Substr( cID, 1, At( ",", cID ) - 1 )
+         ENDIF
+      ENDIF
+
+      oStore := win_OleCreateObject( "CAPICOM.Store" )
+      oStore:open( CAPICOM_LOCAL_MACHINE_STORE, "Root", CAPICOM_STORE_OPEN_READ_WRITE )
+      IF lREMOVER
+         BEGIN SEQUENCE WITH __BreakBlock()
+            oStore:Remove( oCertificado )
+         ENDSEQUENCE
+      ELSE
+         oStore:Add( oCertificado )
+      ENDIF
+      oStore:Close() // Not sure
+
+   ENDSEQUENCE
+
+   RETURN cID
+
+FUNCTION CapicomCertificadoRoot( cNomeCertificado, dValidFrom, dValidTo, lValidDate )
+
+   LOCAL oStore, oColecao, oCertificado, nCont, lValid
+
+   hb_Default( @lValidDate, .T. )
+   oStore := Win_OleCreateObject( "CAPICOM.Store" )
+   oStore:Open( CAPICOM_CURRENT_USER_STORE, "Root", CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED )
+   oColecao := oStore:Certificates()
+   //aList := oColecao:Find( CAPICOM_CERTIFICATE_FIND_ISSUER_NAME, cNomeCertificado, .T. )
+   FOR nCont = 1 TO oColecao:Count()
+      IF cNomeCertificado $ oColecao:Item( nCont ):SubjectName
+         lValid := oColecao:Item( nCont ):ValidFromDate <= Date() .AND. oColecao:Item( nCont ):ValidToDate >= Date()
+         IF ! ( lValid == lValidDate )
+            LOOP
+         ENDIF
+         oCertificado := oColecao:Item( nCont )
+         dValidFrom   := oCertificado:ValidFromDate
+         dValidTo     := oCertificado:ValidToDate
+         EXIT
+      ENDIF
+   NEXT
+   oStore:Close()
+
+   RETURN oCertificado
