@@ -249,7 +249,7 @@ jobs:
          Write-Output "oohg"
          Write-Output ""
          cd c:\temp\harbour\addons\oohg
-         hbmk2 oohg.hbp -q -w0 -rebuild
+         hbmk2 oohg_hb.hbp -q -w0 -rebuild
 
          Write-Output ""
          Write-Output ""
@@ -259,7 +259,7 @@ jobs:
          hbmk2 test hwgui.hbc -q -rebuild
          hbmk2 test hmg3.hbc  -q -rebuild
          hbmk2 test hmge.hbc  -q -rebuild
-         hbmk2 test oohg.hbc  -q -rebuild
+         hbmk2 test oohg_hb.hbc  -q -rebuild
 #         hbmk2 test gtwvg.hbc -q -rebuild
 
 #----- create zip -----
