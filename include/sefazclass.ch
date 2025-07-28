@@ -114,6 +114,7 @@
    { "AC",   "4.00P", "http://www.sefaznet.ac.gov.br/nfce/qrcode" }, ;
    { "AL",   "4.00P", "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp" }, ;
    { "BA",   "4.00P", "http://nfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
+   { "CE",   "4.00H", "http://nfce.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
    { "DF",   "4.00P", "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
    { "GO",   "4.00P", "https://nfeweb.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
    { "MA",   "4.00P", "http://www.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp" }, ;
