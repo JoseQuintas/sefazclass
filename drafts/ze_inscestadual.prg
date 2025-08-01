@@ -423,7 +423,7 @@ STATIC FUNCTION ValidIE_PA( cInscricao )
 
    IF Len( cInscricao ) != 9
       lOk := .F.
-   ELSEIF Left( cInscricao, 2 ) != "15"
+   ELSEIF ! Left( cInscricao, 2 ) $ "15,75,76,77,78,79"
       lOk := .F.
    ELSE
       IF CalculaDigito( Substr( cInscricao, 1, 8 ), "11" ) != Substr( cInscricao, 9, 1 )
