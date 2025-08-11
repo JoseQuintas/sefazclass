@@ -22,14 +22,13 @@ on:
 
 jobs:
 
-  mingwxxxx:
+  mingwall:
     runs-on: windows-latest
     strategy:
        matrix:
           compiler:
-          - mingw_0703
-          - mingw_1420
           - mingw_1501
+          - mingw_1502
 
     steps:
 
@@ -43,6 +42,7 @@ jobs:
 #----- restore zip -----
 
     - name: load mingw_xxxx.zip
+      ##if: ${{ matrix.compiler != 'mingw_1502' && matrix.compiler != 'mingw_1502' }}
       uses: dawidd6/action-download-artifact@v6
       with:
          workflow: buildall.yml
@@ -51,9 +51,8 @@ jobs:
          path: c:\temp
          repo: JoseQuintas/sefazclass
 
-    - name: load hb32_xxxx.zip
+    - name: load hb32_xxx.zip
       if: ${{ github.event_name == 'push' }}
-      #####&& matrix.compiler == 'mingw_14xx' }}
       uses: dawidd6/action-download-artifact@v6
       with:
          workflow: buildall.yml
@@ -74,8 +73,12 @@ jobs:
 
 #----- unzip -----
 
+    #- name: mingw1502
+    #  run: |
+    #     git clone https://github.com/JoseQuintas/sefazclass c:\temp\lixo --depth 1
+    #     Copy-Item -Path "c:\temp\lixo\mingw_1520.7z" -Destination "c:\temp\mingw_1502.7z"
+
     - name: Unzip mingw_xxxx
-      #####if: ${{ github.event_name == 'push' && matrix.compiler == 'mingw_14xx' }}
       env:
          PATH: c:\program files\7-zip
       run: |
@@ -84,7 +87,6 @@ jobs:
 
     - name: Unzip hb32_xxxx
       if: ${{ github.event_name == 'push' }}
-      #####&& matrix.compiler == 'mingw_14xx' }}
       env:
          PATH: c:\program files\7-zip
       run: |
@@ -93,7 +95,7 @@ jobs:
          7z x -y c:\temp\hb32_${{matrix.compiler}}.7z -oc:\temp\harbour
 
     - name: Unzip addons
-      if: ${{ github.event_name == 'none' }}
+      if: ${{ 'true' == 'false' }}
       env:
          PATH: c:\program files\7-zip
       run: |
@@ -105,7 +107,6 @@ jobs:
 
     - name: Load harbour.git
       if: ${{ github.event_name != 'push' }}
-      #####&& matrix.compiler == 'mingw_1420' }}
       env:
          REPO_HARBOUR: https://github.com/JoseQuintas/harbour32_fork
          PATH_HARBOUR: c:\temp\harbour32
@@ -114,7 +115,6 @@ jobs:
          git clone $env:REPO_HARBOUR   $env:PATH_HARBOUR --depth 1
 
     - name: Load Source Code
-      #####if: ${{ matrix.compiler == 'mingw_1420' }}
       env:
          REPO_SEFAZ:    https://github.com/JoseQuintas/sefazclass
          REPO_BOLETO:   https://github.com/JoseQuintas/boletoclass
@@ -156,7 +156,6 @@ jobs:
 
     - name: Build harbour 32 bits
       if: ${{ github.event_name != 'push' }}
-      #####&& matrix.compiler == 'mingw_14xx' }}
       env:
          HB_BUILD_STRIP: all
          HB_COMPILER: mingw
@@ -168,7 +167,6 @@ jobs:
          mingw32-make clean install
 
     - name: Build libs 32 bits
-      #####if: ${{ matrix.compiler == 'mingw_14xx' }}
       env:
          HB_BUILD_STRIP: all
          HB_COMPILER: mingw
@@ -265,8 +263,7 @@ jobs:
 #----- create zip -----
 
     - name: Create hb32_xxxx.zip
-      ####if: ${{ github.event_name != 'push' }}
-      #####&& matrix.compiler == 'mingw_14xx' }}
+      if: ${{ github.event_name != 'push' }}
       env:
          PATH: c:\program files\7-zip
       run: |
@@ -274,7 +271,6 @@ jobs:
          7z a -r c:\temp\hb32_${{matrix.compiler}}.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk' -xr'!addons'
 
     - name: Create addons_hb32_xxxx.zip
-      #####if: ${{  matrix.compiler == 'mingw_14xx' }}
       env:
          PATH: c:\program files\7-zip
       run: |
@@ -282,7 +278,7 @@ jobs:
          7z a -r c:\temp\addons_hb32_${{matrix.compiler}}.7z c:\temp\harbour\addons\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
 
     - name: Create pack_hb32_xxxx.zip
-      if: ${{ github.event_name == 'none' }}
+      if: ${{ 'true' == 'false' }}
       env:
          PATH: c:\program files\7-zip
       run: |
@@ -296,21 +292,19 @@ jobs:
          path: c:\temp\${{matrix.compiler}}.7z
 
     - name: Save hb32_xxxx.zip
-      #####if: ${{ matrix.compiler == 'mingw_14xx' }}
       uses: actions/upload-artifact@v4
       with:
          name: hb32_${{matrix.compiler}}
          path: c:\temp\hb32_${{matrix.compiler}}.7z
 
     - name: Save addons_hb32_xxxx.zip
-      ######if: ${{ matrix.compiler == 'mingw_14xx' }}
       uses: actions/upload-artifact@v4
       with:
          name: addons_hb32_${{matrix.compiler}}
          path: c:\temp\addons_hb32_${{matrix.compiler}}.7z
 
     - name: Save pack_hb32_xxxx.zip
-      if: ${{ github.event_name == 'none' }}
+      if: ${{ 'true' == 'false' }}
       uses: actions/upload-artifact@v4
       with:
          name: pack_hb32_${{matrix.compiler}}
