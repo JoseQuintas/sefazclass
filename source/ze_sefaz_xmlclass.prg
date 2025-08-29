@@ -100,6 +100,13 @@ CREATE CLASS NfeTotaisClass STATIC
 
    ENDCLASS
 
+CREATE CLASS NfeTributosClass STATIC
+
+   VAR TriCBS INIT ""
+   VAR TriIS  INIT ""
+
+   ENDCLASS
+
 CREATE CLASS NfeIIClass STATIC
 
    VAR  Base     INIT 0
@@ -202,6 +209,7 @@ CREATE CLASS NfeProdutoClass STATIC
    VAR  ValUnitTrib   INIT 0 // 2019.01.08 Fernando Queiroz
    VAR  ValorTotal    INIT 0
    VAR  Desconto      INIT 0 // 2018.01.23 Jackson
+   VAR  Tributos
    VAR  Icms
    VAR  IcmsSt
    VAR  IcmsMono
@@ -227,6 +235,7 @@ METHOD Init() CLASS NfeProdutoClass
    ::Ipi      := NfeIpiClass():New()
    ::Pis      := NfePisClass():New()
    ::Cofins   := NfeCofinsClass():New()
+   ::Tributos := NfeTributosClass():New()
 
    RETURN SELF
 
@@ -423,7 +432,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
    LOCAL cBlocoInfNfeComTag, cBlocoChave, cBlocoIde, cBlocoInfAdic
    LOCAL cBlocoEmit, cBlocoEndereco, cBlocoDest, cBlocoTransporte, cBlocoTransp, cBlocoVeiculo, cBlocoVol, cBlocoTotal
    LOCAL cBlocoItem, cBlocoProd,  cBlocoIpi, cBlocoIcms, cBlocoPis, cBlocoCofins, cBlocoRastro
-   LOCAL cBlocoComb, cBlocoCobranca, cBlocoDup, cBlocoPG
+   LOCAL cBlocoComb, cBlocoCobranca, cBlocoDup, cBlocoPG, cBlocoTributos
 
    cBlocoInfNfeComTag := XmlNode( cXmlInput, "infNFe", .T. )
 
@@ -573,6 +582,9 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
             :Desconto        := Val( XmlNode( cBlocoProd, "vDesc" ) ) // 2018.01.23 Jackson
             :Pedido          := Val( XmlNode( cBlocoProd, "xPed" ) ) // 2018.01.23 Jackson
             :FCI             := XmlNode( cBlocoProd, "nFCI" ) // 2024.09.01
+         cBlocoTributos := XmlNode( cBlocoItem, "IBSCBS" )
+            :Tributos:TriCBS          := XmlNode( cBlocoTributos, "cClassTrib" )
+            :Tributos:TriIS           := XmlNode( cBlocoTributos, "xxx" ) // a definir
          cBlocoIpi := XmlNode( cBlocoItem, "IPI" )
             :Ipi:Cst         := XmlNode( cBlocoIpi, "CST" )
             :Ipi:Enq         := XmlNode( cBlocoIpi, "cEnq" )
