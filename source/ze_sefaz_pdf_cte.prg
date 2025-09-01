@@ -25,8 +25,6 @@ CREATE CLASS hbnfeDacte INHERIT hbNFeDaGeral
    VAR cTelefoneEmitente INIT ""
    VAR cSiteEmitente     INIT ""
    VAR cEmailEmitente    INIT ""
-   VAR cXML
-   VAR cXmlCancel        INIT ""
    VAR cChave
    VAR aIde
    VAR aCompl

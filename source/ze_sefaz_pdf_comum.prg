@@ -13,6 +13,8 @@ Baseado no projeto hbnfe em https://github.com/fernandoathayde/hbnfe
 CREATE CLASS hbNFeDaGeral
 
    VAR    oPDFPage
+   VAR    cXml                INIT ""
+   VAR    cXmlCancel          INIT ""
    VAR    cDesenvolvedor      INIT ""
    VAR    cLogoFile           INIT ""
    VAR    cRetorno            INIT ""
