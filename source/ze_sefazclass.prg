@@ -20,7 +20,7 @@ CREATE CLASS SefazClass
    /* contingência e sinc/assinc */
 
    VAR    lEnvioSinc      INIT .T.                     // Envio já retorna protocolo
-   VAR    lEnvioZip       INIT .T.                     // Envio de zip
+   VAR    lEnvioZip       INIT .F.                     // Envio de zip
    VAR    lConsumidor     INIT .F.                     // NFCe
 
    /* pra NFCe */
