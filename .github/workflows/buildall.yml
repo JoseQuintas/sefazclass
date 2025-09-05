@@ -241,6 +241,8 @@ jobs:
          Write-Output ""
          cd c:\temp\harbour\addons\hmg3
          hbmk2 hmg3.hbp -q -rebuild
+         cd c:\temp\harbour\addons\hmg3\source\ide
+         hbmk2 *.hbp -q -rebuild
 
          Write-Output ""
          Write-Output ""
