@@ -20,6 +20,7 @@ CREATE CLASS hbNFeDaGeral
    VAR    cRetorno            INIT ""
    VAR    lQuadroEntrega      INIT .T.
    VAR    nLinhaDesenvolvedor INIT 7
+   VAR    lBarCodeChave       INIT .F.
 
    METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar, oPDF, lEnd )
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
@@ -178,6 +179,7 @@ METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar, oPDF, lEnd ) CLASS hbNFeDaG
    oDanfe:lQuadroEntrega := ::lQuadroEntrega
    oDanfe:cLogoFile      := ::cLogoFile
    oDanfe:cDesenvolvedor := ::cDesenvolvedor
+   oDanfe:lBarcodeChave  := ::lBarcodeChave
 
    IF ! lEnd
       oDanfe:ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar, oPDF, lEnd )
