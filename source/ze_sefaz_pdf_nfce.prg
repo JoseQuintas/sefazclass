@@ -41,6 +41,7 @@ CREATE CLASS hbNFeDaNFCe INHERIT hbNFeDaGeral
    VAR cQRCode
    VAR aInfProt
    VAR aInfAdic
+   VAR lBarcodeChave     INIT .F.
 
    VAR oPDF
    VAR oPDFPage
@@ -447,6 +448,10 @@ METHOD ConsultaChaveAcesso() CLASS hbNFeDaNFCe
    ::DrawTexto( 6, ::nLinhaPDF, 220, NIL, Transform( ::cChave, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
    //::DrawTexto( 6, ::nLinhaPDF - 25, 220, NIL, Replicate( "-", 80 ), HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::nLinhaPDF -= 10
+   IF ::lBarcodeChave
+      ::DrawBarcode128( ::cChave, 6, ::nLinhaPdf - 32, 0.7, 30 )
+      ::nLinhaPDF -= 37
+   ENDIF
 
    RETURN NIL
 
@@ -457,24 +462,24 @@ METHOD Consumidor() CLASS hbNFeDaNFCe
 
    // DIVISAO VI - Informacoes sobre o Consumidor--------------------------------------------------------------------------------
    IF ! Empty( ::aDest[ "CNPJ" ] )
-      ::DrawTexto( 65, ::nLinhaPDF, 220, NIL, "CONSUMIDOR " + ;
+      ::DrawTexto( 70, ::nLinhaPDF, 220, NIL, "CONSUMIDOR " + ;
          iif( Len( ::aDest[ "CNPJ" ] ) == 11, "CPF", "CNPJ" ) + ": " + ;
          FormatCnpj( ::aDest[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ELSE
-      ::DrawTexto( 65, ::nLinhaPDF, 220, NIL, "CONSUMIDOR NÃO IDENTIFICADO", HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
+      ::DrawTexto( 70, ::nLinhaPDF, 220, NIL, "CONSUMIDOR NÃO IDENTIFICADO", HPDF_TALIGN_LEFT, ::oPDFFontBold, 7 )
    ENDIF
    ::nLinhaPDF -= 10
 
    IF ! Empty( ::aDest[ "xNome" ] )
       FOR EACH cItem IN ::FormatMemoAsArray( ::aDest[ "xNome" ], 44 )
-         ::DrawTexto( 65, ::nLinhaPDF, 220, NIL, cItem, HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
+         ::DrawTexto( 70, ::nLinhaPDF, 220, NIL, cItem, HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
          ::nLinhaPDF -= 10
       NEXT
    ENDIF
    IF ! Empty( ::aDest[ "xLgr" ] )
       //::DrawTexto(  6, ::nLinhaPDF - 10, 220, NIL, "Endereco: ", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
       FOR EACH cItem IN ::FormatMemoAsArray( ::aDest[ "xLgr" ] + ", " + ::aDest[ "nro" ] + ", " + ::aDest[ "xBairro" ] + ", " + ::aDest[ "xMun" ] + ", " + ::aDest[ "UF" ], 44 )
-         ::DrawTexto( 65, ::nLinhaPDF, 220, NIL, cItem, HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
+         ::DrawTexto( 70, ::nLinhaPDF, 220, NIL, cItem, HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
          ::nLinhaPDF -= 10
       NEXT
    ENDIF
@@ -487,15 +492,15 @@ METHOD Consumidor() CLASS hbNFeDaNFCe
 METHOD IdentificacaoNFCeProtocolo() CLASS hbNFeDaNFCe
 
    // DIVISAO VII - Informacoes de Identificacao da NFC-e e do Protocolo de Autorizacao------------------------------------------
-   ::DrawTexto( 65, ::nLinhaPDF, 220, NIL, "Número: "  + Transform( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), "@R 999999999" ) + " - Serie: " + Transform( StrZero( Val( ::aIde[ "serie" ] ), 3 ), "@R 999" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawTexto( 70, ::nLinhaPDF, 220, NIL, "Número: "  + Transform( StrZero( Val( ::aIde[ "nNF" ] ), 9 ), "@R 999999999" ) + " - Serie: " + Transform( StrZero( Val( ::aIde[ "serie" ] ), 3 ), "@R 999" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
    ::nLinhaPDF -= 10
-   ::DrawTexto( 65, ::nLinhaPDF, 220, NIL, "Emissão: " + Substr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 1, 4 ) + "  " + Substr( ::aIde[ "dhEmi" ], 12, 8 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
+   ::DrawTexto( 70, ::nLinhaPDF, 220, NIL, "Emissão: " + Substr( ::aIde[ "dhEmi" ], 9, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 6, 2 ) + "/" + Substr( ::aIde[ "dhEmi" ], 1, 4 ) + "  " + Substr( ::aIde[ "dhEmi" ], 12, 8 ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 8 )
    ::nLinhaPDF -= 10
    //::DrawTexto( 65, ::nLinhaPDF, 220, NIL, "Via Consumidor", HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
    //::nLinhaPDF -= 10
-   ::DrawTexto( 65, ::nLinhaPDF, 220, NIL, "Protocolo de autorização: " + ::aInfProt[ "nProt" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
+   ::DrawTexto( 70, ::nLinhaPDF, 220, NIL, "Protocolo de autorização: " + ::aInfProt[ "nProt" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
    ::nLinhaPDF -= 10
-   ::DrawTexto( 65, ::nLinhaPDF, 220, NIL, "Data de autorização: " + Substr( ::aInfProt[ "dhRecbto" ], 9, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 6, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 1, 4 ) + " " + Substr( ::aInfProt[ "dhRecbto" ], 12, 8 ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
+   ::DrawTexto( 70, ::nLinhaPDF, 220, NIL, "Data de autorização: " + Substr( ::aInfProt[ "dhRecbto" ], 9, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 6, 2 ) + "/" + Substr( ::aInfProt[ "dhRecbto" ], 1, 4 ) + " " + Substr( ::aInfProt[ "dhRecbto" ], 12, 8 ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 7 )
    ::nLinhaPDF -= 10
 
    ::nLinhaPDF := Min( ::nLinhaAposQrCode, ::nLinhaPDF )
