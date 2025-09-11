@@ -27,7 +27,7 @@ jobs:
     strategy:
        matrix:
           compiler:
-          - mingw_1501
+          ##- mingw_1501
           - mingw_1502
 
     steps:
