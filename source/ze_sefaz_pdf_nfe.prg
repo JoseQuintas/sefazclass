@@ -657,19 +657,7 @@ METHOD QuadroDuplicatas() CLASS hbNFeDaNFe
       NEXT
       ::nLinhaPdf -= 12
    CASE Len( ::aDetPag ) > 0
-      aList := { ;
-         { "01", "DINHEIRO" }, ;
-         { "02", "CHEQUE" }, ;
-         { "03", "CARTAO DE CREDITO" }, ;
-         { "04", "CARTAO DE DEBITO" }, ;
-         { "05", "CREDITO LOJA" }, ;
-         { "10", "VALE ALIMENTACAO" }, ;
-         { "11", "VALE REFEICAO" }, ;
-         { "12", "VALE PRESENTE" }, ;
-         { "13", "VALE COMBUSTIVEL" }, ;
-         { "15", "BOLETO BANCARIO" }, ;
-         { "90", "SEM PAGAMENTO" }, ;
-         { "99", "OUTROS" } }
+      aList := hb_JsonDecode( LoadJson( "tpag.json" ) )
       nItensCob      := 1 + Int( ( Len( ::aDetPag ) - 1 ) / 3 )
       nLinhaFinalCob := ::nLinhaPdf - ( nItensCob * 8 ) - 2
       nTamanhoCob    := ( nItensCob * 8 ) + 2
@@ -1455,3 +1443,11 @@ STATIC FUNCTION Veiculo_Cor( xValue )
    ENDCASE
 
    RETURN cTxt
+
+STATIC FUNCTION LoadJson( cTipo )
+
+   DO CASE
+   CASE cTipo == "tpag.json"; #pragma __binarystreaminclude "..\json\sefaztpag.json" | RETURN %s
+   ENDCASE
+
+   RETURN Nil

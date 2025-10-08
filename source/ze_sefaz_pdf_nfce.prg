@@ -132,27 +132,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFCe
    ENDDO
 
    // Formas de Pagamento
-   aFPagsList := { ;
-      { "01", "Dinheiro" }, ;
-      { "02", "Cheque" }, ;
-      { "03", "Cartão de Crédito" }, ;
-      { "04", "Cartão de Débito" }, ;
-      { "05", "Crédito Loja" }, ;
-      { "10", "Vale Alimentação" }, ;
-      { "11", "Vale Refeição" }, ;
-      { "12", "Vale Presente" }, ;
-      { "13", "Vale Combustível" }, ;
-      { "14", "Duplicata" }, ;
-      { "15", "Boleto Bancário" }, ;
-      { "16", "Depósito Bancário" }, ;
-      { "17", "Pagamento Instantâneo(PIX)" }, ;
-      { "18", "Transferência Bancária" }, ;
-      { "19", "Programa de Fidelidade" }, ;
-      { "20", "Pagamento Instantâneo(PIX) Estático" }, ;
-      { "21", "Crédito em Loja" }, ;
-      { "22", "Pagto Eletrônico Não Informado - falha harware" }, ;
-      { "90", "Sem Pagamento" }, ;
-      { "99", "Outros" } }
+   aFPagsList := hb_jsonDecode( Loadjson( "tpag.json" ) )
 
    aFPags := MultipleNodeToArray( ::cXml, "detPag" )
    FOR EACH cItem IN aFPags
@@ -621,3 +601,11 @@ METHOD MsgHomologacao() CLASS hbNFeDaNFCe
    ENDIF
 
    RETURN NIL
+
+STATIC FUNCTION LoadJson( cTipo )
+
+   DO CASE
+   CASE cTipo == "tpag.json"; #pragma __binarystreaminclude "..\json\sefaztpag.json" | RETURN %s
+   ENDCASE
+
+   RETURN Nil
