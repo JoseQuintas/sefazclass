@@ -137,6 +137,7 @@ CREATE CLASS NfeIcmsClass STATIC
 
    VAR  Cst      INIT ""
    VAR  Base     INIT 0
+   VAR  ModBC    INIT 0
    VAR  Reducao  INIT 0
    VAR  Aliquota INIT 0
    VAR  Valor    INIT 0
@@ -515,7 +516,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
 
    cBlocoTransporte := XmlNode( cXmlInput, "transp" )
       WITH OBJECT oDocSped:Transporte
-         :ModFrete := XmlNode( cBlocoTransporte, "modFrete" )
+         :ModFrete             := XmlNode( cBlocoTransporte, "modFrete" )
          cBlocoTransp := XmlNode( cBlocoTransporte, "transporta" )
             :Cnpj              := Transform( XmlNode( cBlocoTransp, "CNPJ" ), "@R !!.!!!.!!!/!!!!-!!" )
             :Nome              := Upper( XmlNode( cBlocoTransp, "xNome" ) )
@@ -593,6 +594,7 @@ STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
             :Ipi:Valor       := Val( XmlNode( cBlocoIpi, "vIPI" ) )
          cBlocoIcms := XmlNode( cBlocoItem, "ICMS" )
             :Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CST" )
+            :Icms:modBC   := Val( XmlNode( cBlocoIcms, "modBC" ) )
             IF Len( :Icms:Cst ) < 3
                :Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CSOSN" )
             ENDIF
