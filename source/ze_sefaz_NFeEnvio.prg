@@ -71,8 +71,13 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
    LOCAL QRCODE_cTag, QRCODE_Url, QRCODE_chNFe, QRCODE_nVersao, QRCODE_tpAmb
    LOCAL QRCODE_cDest, QRCODE_dhEmi, QRCODE_vNF, QRCODE_vICMS, QRCODE_digVal
    LOCAL QRCODE_cIdToken, QRCODE_cCSC, QRCODE_cHash, QRCODE_UrlChave, QRCODE_tpEmis
-   LOCAL cInfNFe, cSignature, cAmbiente, cUF, nPos
+   LOCAL cInfNFe, cSignature, cAmbiente, cUF, nPos, lQRCode_Condicao, QRCODE_IDEstrangeiro
+   LOCAL QRCODE_tpidDest, QRCODE_idDest
    LOCAL aUrlList := WS_NFE_QRCODE
+
+   hb_Default( @cIdToken, StrZero( 0, 6 ) )
+   hb_Default( @cCsc, StrZero( 0, 36 ) )
+   hb_Default( @cVersaoQRCode, "2.00" )
 
    cInfNFe    := XmlNode( cXmlAssinado, "infNFe", .T. )
    cSignature := XmlNode( cXmlAssinado, "Signature", .T. )
@@ -90,9 +95,22 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
    QRCODE_chNFe    := AllTrim( Substr( XmlElement( cInfNFe, "Id" ), 4 ) )
    QRCODE_nVersao  := SoNumero( cVersaoQRCode )
    QRCODE_tpAmb    := cAmbiente
+
    QRCODE_cDest    := XmlNode( XmlNode( cInfNFe, "dest" ), "CPF" )
+   QRCODE_tpidDest := '2'
+   QRCODE_idDest   := QRCODE_cDest
+
    IF Empty( QRCODE_cDest )
-      QRCODE_cDest := XmlNode( XmlNode( cInfNFe, "dest" ), "CNPJ" )
+      QRCODE_cDest    := XmlNode( XmlNode( cInfNFe, "dest" ), "CNPJ" )
+      QRCODE_tpidDest := '1'
+      QRCODE_idDest   := QRCODE_cDest
+   ENDIF
+
+   IF Empty(QRCODE_cDest)
+      QRCODE_IDEstrangeiro := XmlNode( XmlNode( cInfNFe, "dest" ), "idEstrangeiro" )
+      QRCODE_tpidDest      := '3'
+      QRCODE_idDest        := '' //Identificação do Destinatário CPF ou CNPJ na NFC-e. Caso Destinatário estrangeiro ou não identificado, informar apenas o separador “|”.
+      (QRCODE_IDEstrangeiro) // não usado ???
    ENDIF
 
    QRCODE_dhEmi    := XmlNode( XmlNode( cInfNFe, "ide" ), "dhEmi" )
@@ -103,14 +121,62 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
    QRCODE_cCSC     := cCsc
    QRCODE_tpEmis   := XmlNode( XmlNode( cInfNFe, "ide" ), "tpEmis" )
 
-   IF ! Empty( QRCODE_chNFe ) ;
-      .AND. ! Empty( QRCODE_nVersao ) ;
-      .AND. ! Empty( QRCODE_tpAmb ) ;
-      .AND. ! Empty( QRCODE_dhEmi ) ;
-      .AND. ! Empty( QRCODE_vNF ) ;
-      .AND. ! Empty( QRCODE_digVal  )
+   IF cVersaoQRCode == "3.00"
+      lQRCode_Condicao := ! Empty( QRCODE_chNFe ) ;
+                          .AND. ! Empty( QRCODE_nVersao ) ;
+                          .AND. ! Empty( QRCODE_tpAmb ) ;
+                          .AND. ! Empty( QRCODE_dhEmi ) ;
+                          .AND. ! Empty( QRCODE_vNF ) ;
+                          ; // .AND. ! Empty( QRCODE_vICMS ) ; // 2024.07.20 sem ICMS ok
+                          .AND. ! Empty( QRCODE_digVal  )
+   ELSE
+      lQRCode_Condicao := ! Empty( QRCODE_chNFe ) ;
+                          .AND. ! Empty( QRCODE_nVersao ) ;
+                          .AND. ! Empty( QRCODE_tpAmb ) ;
+                          .AND. ! Empty( QRCODE_dhEmi ) ;
+                          .AND. ! Empty( QRCODE_vNF ) ;
+                          ; // .AND. ! Empty( QRCODE_vICMS ) ; // 2024.07.20 sem ICMS ok
+                          .AND. ! Empty( QRCODE_digVal  ) ;
+                          .AND. ! Empty( QRCODE_cIdToken ) ;
+                          .AND. ! Empty( QRCODE_cCSC  )
+   ENDIF
 
-      IF cVersaoQRCode == "2.00"
+   IF lQRCode_Condicao
+
+      IF cVersaoQRCode == "3.00"
+
+         IF QRCODE_tpEmis != "9"
+	   		QRCODE_chNFe    := QRCODE_chNFe    + "|"
+	   		QRCODE_nVersao  := "3"             + "|"
+  	   	   QRCODE_tpAmb    := QRCODE_tpAmb
+            QRCODE_cTag     := QRCODE_Url + "p=" +;
+                               QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb
+         ELSE
+
+            QRCODE_chNFe    := QRCODE_chNFe                   + "|"
+            QRCODE_nVersao  := "3"                            + "|"
+            QRCODE_tpAmb    := QRCODE_tpAmb                   + "|"
+            QRCODE_dhEmi    := Substr( QRCODE_dhEmi, 9, 2 )   + "|"
+            QRCODE_vNF      := QRCODE_vNF                     + "|"
+
+            QRCODE_tpidDest := QRCODE_tpidDest                + "|"
+            QRCODE_idDest   := QRCODE_idDest   + "|"
+
+            QRCODE_cHash    := Upper( HB_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_dhEmi + QRCODE_vNF + QRCODE_tpidDest + QRCODE_idDest ) )
+
+            // Resultado da URL formada a ser incluida na imagem QR Code
+            QRCODE_cTag     := QRCODE_Url + "p=" +;
+                               QRCODE_chNFe      +;
+                               QRCODE_nVersao    +;
+                               QRCODE_tpAmb      +;
+                               QRCODE_dhEmi      +;
+                               QRCODE_vNF        +;
+                               QRCODE_tpidDest   +;
+                               QRCODE_idDest     +;
+                               QRCODE_cHash
+         ENDIF
+
+      ELSEIF cVersaoQRCode == "2.00"
          IF QRCODE_tpEmis != "9"
             QRCODE_chNFe    := QRCODE_chNFe    + "|"
             QRCODE_nVersao  := "2"             + "|"
@@ -125,10 +191,10 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
             QRCODE_cTag  := "<![CDATA[" + QRCODE_Url + "p=" + QRCODE_chNFe + QRCODE_nVersao + ;
                QRCODE_tpAmb + QRCODE_cIdToken  + QRCODE_cHash + "]]>"
          ELSE
-            QRCODE_chNFe    := QRCODE_chNFe                  + "|"
+            QRCODE_chNFe    := QRCODE_chNFe                   + "|"
             QRCODE_nVersao  := "2"                            + "|"
             QRCODE_tpAmb    := QRCODE_tpAmb                   + "|"
-            QRCODE_dhEmi    := Substr( QRCODE_dhEmi, 9, 2 ) + "|"
+            QRCODE_dhEmi    := Substr( QRCODE_dhEmi, 9, 2 )   + "|"
             QRCODE_vNF      := QRCODE_vNF                     + "|"
             QRCODE_digVal   := QRCODE_digVal                  + "|"
             QRCODE_cIdToken := LTrim( Str( Val( QRCODE_cIdToken ), 16, 0 ) )
@@ -145,7 +211,6 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
                QRCODE_cHash + "]]>"
          ENDIF
       ELSE
-         // antigo
          QRCODE_chNFe    := "chNFe="    + QRCODE_chNFe    + "&"
          QRCODE_nVersao  := "nVersao="  + QRCODE_nVersao  + "&"
          QRCODE_tpAmb    := "tpAmb="    + QRCODE_tpAmb    + "&"
@@ -181,7 +246,9 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
       aUrlList := WS_NFE_CHAVE
       nPos     := hb_AScan( aUrlList, { | e | e[ 1 ] == cUF .AND. ;
          e[ 2 ] == cVersaoQrCode + iif( cAmbiente == WS_AMBIENTE_HOMOLOGACAO, "H", "P" ) } )
+
       QRCode_UrlChave := iif( nPos == 0, "", aUrlList[ nPos, 3 ] )
+
       cXmlAssinado += XmlTag( "urlChave", QRCode_UrlChave )
 
       cXmlAssinado += [</] + "infNFeSupl"+[>]
