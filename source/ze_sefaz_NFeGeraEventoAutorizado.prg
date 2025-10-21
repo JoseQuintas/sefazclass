@@ -8,11 +8,11 @@ FUNCTION ze_sefaz_NFeGeraEventoAutorizado( Self, cXmlAssinado, cXmlProtocolo )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
-   IF ::cStatus != "999"
-      ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "cStat" ), 3 )
+   IF ::nStatus != 999
+      ::nStatus := Val( XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "cStat" ) )
       ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "retEvento" ), "xMotivo" ) // runner
    ENDIF
-   IF ! ::cStatus $ "135,155"
+   IF ::nStatus != 135 .AND. ::nStatus != 155
       ::cXmlRetorno := [<erro text="*ERRO* NFEGeraEventoAutorizado() Status inválido pra autorização" />] + ::cXmlRetorno
       RETURN NIL
    ENDIF

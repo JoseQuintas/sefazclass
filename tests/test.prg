@@ -312,7 +312,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          IF LastKey() != K_ESC
             oSefaz:NfeDownload( aVarList[ VAR_CNPJ ], aVarList[ VAR_CHAVE ], aVarList[ VAR_CERTIFICADO ], aVarList[ VAR_AMBIENTE ] )
             MsgBox( oSefaz:cXmlRetorno, "NFE DOWNLOAD" )
-            IF oSefaz:cStatus == "138"
+            IF oSefaz:nStatus == 138
                //hb_MemoWrit( "arquivo.zip", hb_Base64Decode( XmlNode( oSefaz:cXmlRetorno, "docZip" ) ) )
             ENDIF
          ENDIF
@@ -323,7 +323,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
                oSefaz:cUF       := cUF
                oSefaz:cAmbiente := cAmbiente
                oSefaz:NfeStatus()
-               ? oSefaz:cAmbiente, oSefaz:cUF, oSefaz:cStatus
+               ? oSefaz:cAmbiente, oSefaz:cUF, oSefaz:nStatus
                Inkey(2)
             NEXT
          NEXT

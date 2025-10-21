@@ -8,14 +8,13 @@ FUNCTION ze_sefaz_CTeGeraAutorizado( Self, cXmlAssinado, cXmlProtocolo )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
    IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
-      ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
+      ::nStatus       := Val( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ) )
       ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
    ELSE
-      ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+      ::nStatus := Val( XmlNode( ::cXmlRetorno, "cStat" ) )
       ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
    ENDIF
-   //::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "protCTe" ), "cStat" ), 3 )
-   IF ! ::cStatus $ "100,101,150,301,302"
+   IF hb_AScan( { 100, 101, 150, 301, 302 }, { | e | e == ::nStatus } ) == 0
       ::cXmlRetorno := [<erro text="*ERRO* CTEGeraAutorizado() Não autorizado" />] + cXmlProtocolo
       RETURN NIL
    ENDIF

@@ -45,13 +45,13 @@ FUNCTION ze_Sefaz_NFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente, lEnvioSinc
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno
    ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
-   ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStat" ), 3 )
+   ::nStatus    := Val( XmlNode( ::cXmlRecibo, "cStat" ) )
    ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
    IF ! ::lEnvioSinc .AND. ! "infProt" $ ::cXmlRetorno .AND. Val( ::cRecibo ) != 0
       Inkey( ::nTempoEspera )
       ::NfeRetEnvio()
    ENDIF
-   IF ! "infProt" $ ::cXmlRetorno .AND. hb_ASCan( { "103", "104", "105" }, { | e | e == ::cStatus } ) != 0
+   IF ! "infProt" $ ::cXmlRetorno .AND. hb_ASCan( { 103, 104, 105 }, { | e | e == ::nStatus } ) != 0
       IF ! ::lEnvioSinc
          oDoc   := XmlToDoc( ::cXmlDocumento, .F. )
          cChave := oDoc:cChave

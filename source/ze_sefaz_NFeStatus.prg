@@ -16,7 +16,7 @@ FUNCTION ze_Sefaz_NFeStatus( Self, cUF, cCertificado, cAmbiente, lContingencia )
    ::cXmlEnvio    +=    XmlTag( "xServ", "STATUS" )
    ::cXmlEnvio    += [</consStatServ>]
    ::XmlSoapPost()
-   ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+   ::nStatus := Val( XmlNode( ::cXmlRetorno, "cStat" ) )
    ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
 
    RETURN ::cXmlRetorno

@@ -14,8 +14,8 @@ FUNCTION ze_sefaz_MDFeEmAberto( Self, cUF, cCNPJ , cCertificado, cAmbiente )
    ::cXmlEnvio +=    XmlTag( iif( Len( cCnpj ) == 11, "CPF", "CNPJ" ), cCNPJ )
    ::cXmlEnvio += [</consMDFeNaoEnc>]
    ::XmlSoapPost()
-   IF ::cStatus != "999"
-      ::cStatus := Pad( XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "cStat" ), 3 )
+   IF ::nStatus != 999
+      ::nStatus := Val( XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "cStat" ) )
       ::cMotivo := XmlNode( XmlNode( ::cXmlRetorno , "retConsMDFeNaoEnc" ) , "xMotivo" )
    ENDIF
 

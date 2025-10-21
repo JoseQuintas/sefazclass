@@ -42,9 +42,9 @@ FUNCTION ze_sefaz_CTeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
    ::XmlSoapPost()
    ::cXmlRecibo := ::cXmlRetorno
    ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
-   ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
+   ::nStatus    := Val( XmlNode( ::cXmlRecibo, "cStatus" ) )
    ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
-   IF ::lEnvioSinc .OR. ( ! Empty( ::cRecibo ) .AND. ::cStatus != "999" )
+   IF ::lEnvioSinc .OR. ( ! Empty( ::cRecibo ) .AND. ::nStatus != 999 )
       IF ::lEnvioSinc
          ::cXmlProtocolo := ::cXmlRecibo
       ELSE

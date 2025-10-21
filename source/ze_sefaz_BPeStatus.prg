@@ -12,7 +12,7 @@ FUNCTION ze_sefaz_BPeStatus( Self, cUF, cCertificado, cAmbiente )
    ::cXmlEnvio +=    XmlTag( "xServ", "STATUS" )
    ::cXmlEnvio += [</consStatServBPe>]
    ::XmlSoapPost()
-   ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+   ::nStatus := Val( XmlNode( ::cXmlRetorno, "cStat" ) )
    ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
 
    RETURN ::cXmlRetorno

@@ -18,8 +18,8 @@ FUNCTION ze_Sefaz_MDFeProtocolo( Self, cChave, cCertificado, cAmbiente )
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
    ENDIF
-   IF ::cStatus != "999"
-      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+   IF ::nStatus != 999
+      ::nStatus := Val( XmlNode( ::cXmlRetorno, "cStat" ) )
       ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
    ENDIF
 

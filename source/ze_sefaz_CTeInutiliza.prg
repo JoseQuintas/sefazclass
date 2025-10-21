@@ -29,11 +29,11 @@ FUNCTION ze_sefaz_CTeInutiliza( Self, cAno, cCnpj, cMod, cSerie, cNumIni, cNumFi
    IF ::AssinaXml() == "OK"
       ::cXmlEnvio := ::cXmlDocumento
       ::XmlSoapPost()
-      IF ::cStatus != "999"
-         ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+      IF ::nStatus != 999
+         ::nStatus := Val( XmlNode( ::cXmlRetorno, "cStat" ) )
          ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
       ENDIF
-      IF ::cStatus == "102"
+      IF ::nStatus == 102
          ::cXmlAutorizado := XML_UTF8
          ::cXmlAutorizado += [<ProcInutCTe versao="] + ::cVersao + [" ] + WS_XMLNS_CTE + [>]
          ::cXmlAutorizado += ::cXmlDocumento

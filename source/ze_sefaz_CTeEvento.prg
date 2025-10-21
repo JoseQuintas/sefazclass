@@ -28,7 +28,7 @@ FUNCTION ze_sefaz_CTeEvento( Self, cChave, nSequencia, cTipoEvento, cXml, cCerti
       ::cXmlEnvio := ::cXmlDocumento
       ::XmlSoapPost()
       ::cXmlProtocolo := ::cXmlRetorno
-      IF ::cStatus != "999"
+      IF ::nStatus != 999
          ::CTeGeraEventoAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
       ENDIF
    ENDIF

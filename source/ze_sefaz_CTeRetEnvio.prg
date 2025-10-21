@@ -16,8 +16,8 @@ FUNCTION ze_sefaz_CTeRetEnvio( Self, cRecibo, cUF, cCertificado, cAmbiente )
    ::cXmlEnvio     += [</consReciCTe>]
    ::XmlSoapPost()
    ::cXmlProtocolo := ::cXmlRetorno  // ? hb_Utf8ToStr()
-   IF ::cStatus != "999"
-      ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
+   IF ::nStatus != 999
+      ::nStatus       := Val( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ) )
       ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
    ENDIF
 

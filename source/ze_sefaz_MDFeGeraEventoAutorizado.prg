@@ -7,9 +7,9 @@ FUNCTION ze_sefaz_MDFeGeraEventoAutorizado( Self, cXmlAssinado, cXmlProtocolo )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
-   ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "cStat" ), 3 )
+   ::nStatus := Val( XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "cStat" ) )
    ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "retEventoMDFe" ), "xMotivo" ) // hb_utf8tostr()
-   IF ! ::cStatus $ "135,136"
+   IF hb_AScan( { 135, 136 }, { | e | e == ::nStatus } ) == 0
       ::cXmlRetorno := [<erro Text="*ERRO* MDFeGeraEventoAutorizado() Status inválido" />] + ::cXmlRetorno
       RETURN NIL
    ENDIF

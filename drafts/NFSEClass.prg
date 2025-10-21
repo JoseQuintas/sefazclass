@@ -1,5 +1,5 @@
 /*
-ZE_SPEDSEFAZCLASS - Rotinas pra comunicação com SEFAZ
+NFSEClass - Rotinas comunicação NF Serviço
 José Quintas
 */
 
@@ -17,7 +17,7 @@ José Quintas
    #define XML_UTF8                     [<?xml version="1.0" encoding="UTF-8"?>]
 #endif
 
-CREATE CLASS SefazClass
+CREATE CLASS NFSEClass
 
    /* configuração */
    VAR    cAmbiente      INIT WS_AMBIENTE_PRODUCAO
@@ -31,7 +31,7 @@ CREATE CLASS SefazClass
    VAR    cXmlRetorno    INIT "Erro Desconhecido"     // Retorno do webservice e/ou rotina
    VAR    cXmlProtocolo  INIT ""                      // XML protocolo (obtido no consulta recibo e/ou envio de outros docs)
    VAR    cXmlAutorizado INIT ""                      // XML autorizado, caso tudo ocorra sem problemas
-   VAR    cStatus        INIT Space(3)                // Status obtido da resposta final da Fazenda
+   VAR    nStatus        INIT 0                       // Status obtido da resposta final da Fazenda
    /* uso interno */
    VAR    cSoapService   INIT ""                      // webservice Serviço
    VAR    cSoapAction    INIT ""                      // webservice Action
@@ -47,7 +47,7 @@ CREATE CLASS SefazClass
 
    ENDCLASS
 
-METHOD EnvioRPS( cXml, cCertificado, cAmbiente ) CLASS SefazClass
+METHOD EnvioRPS( cXml, cCertificado, cAmbiente ) CLASS NFSEClass
 
    ::Setup( cCertificado, cAmbiente, WS_ENVIOLOTERPS )
    ::cXmlEnvio := ::AssinaXml( cXml )
@@ -75,7 +75,7 @@ METHOD Setup( cCertificado, cAmbiente, nWsServico ) CLASS SefazClass
 
    RETURN Nil
 
-METHOD XmlSoapPost() CLASS SefazClass
+METHOD XmlSoapPost() CLASS NFSEClass
 
    DO CASE
    CASE Empty( ::cSoapURL )
@@ -96,7 +96,7 @@ METHOD XmlSoapPost() CLASS SefazClass
 
    RETURN Nil
 
-METHOD XmlSoapEnvelope() CLASS SefazClass
+METHOD XmlSoapEnvelope() CLASS NFSEClass
 
    ::cXmlSoap    := XML_UTF8
    ::cXmlSoap    += [<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ]
@@ -114,7 +114,7 @@ METHOD XmlSoapEnvelope() CLASS SefazClass
 
    RETURN Nil
 
-METHOD MicrosoftXmlSoapPost() CLASS SefazClass
+METHOD MicrosoftXmlSoapPost() CLASS NFSEClass
 
    LOCAL oServer, nCont, cRetorno
    LOCAL cSoapAction

@@ -17,13 +17,13 @@ FUNCTION ze_sefaz_NFeGeraAutorizado( Self, cXmlAssinado, cXmlProtocolo )
    ENDIF
 
    IF ! Empty( XmlNode( cXmlProtocolo, "infProt" ) )
-      ::cStatus       := Pad( XmlNode( XmlNode( cXmlProtocolo, "infProt" ), "cStat" ), 3 )
+      ::nStatus       := Val( XmlNode( XmlNode( cXmlProtocolo, "infProt" ), "cStat" ) )
       ::cMotivo       := XmlNode( XmlNode( cXmlProtocolo, "infProt" ), "xMotivo" )
    ELSE
-      ::cStatus := Pad( XmlNode( cXmlProtocolo, "cStat" ), 3 )
+      ::nStatus := Val( XmlNode( cXmlProtocolo, "cStat" ) )
       ::cMotivo := XmlNode( cXmlProtocolo, "xMotivo" )
    ENDIF
-   IF ! ::cStatus $ "100,101,150"
+   IF hb_AScan( { 100, 101, 150 }, { | e | e == ::nStatus != 100 } ) == 0
       ::cXmlRetorno := [<erro text="*ERRO* NFeGeraAutorizado() Não autorizado" />] + cXmlProtocolo
       RETURN Nil
    ENDIF

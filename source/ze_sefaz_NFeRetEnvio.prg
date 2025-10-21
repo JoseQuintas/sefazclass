@@ -23,11 +23,11 @@ FUNCTION ze_Sefaz_NFeRetEnvio( Self, cRecibo, cUF, cCertificado, cAmbiente )
    ::XmlSoapPost()
    ::cXmlProtocolo := ::cXmlRetorno
    IF "<infProt" $ ::cXmlRetorno
-      ::cStatus := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
+      ::nStatus := Val( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ) )
       ::cMotivo := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
-   ELSEIF ::cStatus != "999"
+   ELSEIF ::nStatus != 999
       ::cMotivo       := XmlNode( ::cXmlRetorno, "xMotivo" )
-      ::cStatus       := XmlNode( ::cXmlRetorno, "cStat" )
+      ::nStatus       := Val( XmlNode( ::cXmlRetorno, "cStat" ) )
    ENDIF
 
    RETURN ::cXmlRetorno

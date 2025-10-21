@@ -7,9 +7,9 @@ FUNCTION ze_sefaz_CTeGeraEventoAutorizado( Self, cXmlAssinado, cXmlProtocolo )
    cXmlAssinado  := iif( cXmlAssinado == NIL, ::cXmlDocumento, cXmlAssinado )
    cXmlProtocolo := iif( cXmlProtocolo == NIL, ::cXmlProtocolo, cXmlProtocolo )
 
-   ::cStatus := Pad( XmlNode( XmlNode( cXmlProtocolo, "retEventoCTe" ), "cStat" ), 3 )
+   ::nStatus := Val( XmlNode( XmlNode( cXmlProtocolo, "retEventoCTe" ), "cStat" ) )
    ::cMotivo := XmlNode( XmlNode( cXmlProtocolo, "retEventoCTe" ), "xMotivo" ) // runner
-   IF ! ::cStatus $ "135,155"
+   IF hb_AScan( { 135, 155 }, { | e | e == ::nStatus } ) == 0
       ::cXmlRetorno := [<erro text="*ERRO* CteGeraEventoAutorizado() Não autorizado" />] + cXmlProtocolo
       RETURN NIL
    ENDIF

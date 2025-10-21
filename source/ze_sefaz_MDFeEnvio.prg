@@ -54,11 +54,11 @@ FUNCTION ze_Sefaz_MDFeEnvio( Self, cXml, cUF, cCertificado, cAmbiente )
       ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )
    ELSE
       ::cRecibo    := XmlNode( ::cXmlRecibo, "nRec" )
-      IF ::cStatus != "999"
-         ::cStatus    := Pad( XmlNode( ::cXmlRecibo, "cStatus" ), 3 )
+      IF ::nStatus != 999
+         ::nStatus    := Val( XmlNode( ::cXmlRecibo, "cStatus" ) )
          ::cMotivo    := XmlNode( ::cXmlRecibo, "xMotivo" )
       ENDIF
-      IF ! Empty( ::cRecibo ) .AND. ::cStatus != "999"
+      IF ! Empty( ::cRecibo ) .AND. ::nStatus != 999
          Inkey( ::nTempoEspera )
          ::MDFeRetEnvio()
          ::MDFeGeraAutorizado( ::cXmlDocumento, ::cXmlProtocolo )

@@ -52,9 +52,9 @@ CREATE CLASS SefazClass
    VAR    cXmlRecibo      INIT ""                      // XML recibo (obtido no envio do lote)
    VAR    cXmlProtocolo   INIT ""                      // XML protocolo (obtido no consulta recibo e/ou envio de outros docs)
    VAR    cXmlAutorizado  INIT ""                      // XML autorizado, caso tudo ocorra sem problemas
-   VAR    cStatus         INIT Space(3)                // Status obtido da resposta final da Fazenda
    VAR    cRecibo         INIT ""                      // Número do recibo
    VAR    cMotivo         INIT ""                      // Motivo constante no Recibo
+   VAR    nStatus         INIT 0                       // Status retornado pela SEFAZ
 
    /* uso interno */
 
@@ -134,6 +134,7 @@ CREATE CLASS SefazClass
 
    /* obsoleto / compatibilidade */
 
+   METHOD cStatus         SETGET           // Status da resposta da SEFAZ, 3 ou 4 caracteres
    METHOD NFeStatusSVC( cUF, cCertificado, cAmbiente ) ;
                                           INLINE ::NfeStatus( cUF, cCertificado, cAmbiente, .T. )
    METHOD cIndSinc( cValue )                SETGET
@@ -162,6 +163,16 @@ CREATE CLASS SefazClass
    METHOD NFeStatusServicoSVC( ... )        INLINE ::NFeStatusSVC( ... )
 
    ENDCLASS
+
+METHOD cStatus( xValue )  CLASS SefazClass
+
+   IF ::nStatus < 1000
+      xValue := StrZero( ::nStatus, 3 )
+   ELSE
+      xValue := StrZero( ::nStatus, 4 )
+   ENDIF
+
+   RETURN xValue
 
 METHOD cIndSinc( cValue ) CLASS SefazClass
 
@@ -204,7 +215,7 @@ METHOD AssinaXml() CLASS SefazClass
 
    ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado,,::cPassword )
    IF ::cXmlRetorno != "OK"
-      ::cStatus := "999"
+      ::nStatus := 999
       ::cMotivo := ::cXmlRetorno
       ::cXmlRetorno := [<erro text="] + "*erro* " + ::cXmlRetorno + ["</erro>]
    ENDIF
@@ -222,12 +233,12 @@ METHOD XmlSoapPost() CLASS SefazClass
    DO CASE
    CASE Empty( ::cSoapURL )
       ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há endereço de webservice" />]
-      ::cStatus     := "999"
+      ::nStatus     := 999
       ::cMotivo     := "Erro de comunicação: sem endereço de internet"
       RETURN NIL
    CASE Empty( ::cSoapAction )
       ::cXmlRetorno := [<erro text="*ERRO* XmlSoapPost(): Não há endereço de SOAP Action" />]
-      ::cStatus     := "999"
+      ::nStatus     := 999
       ::cMotivo     := "Erro de comunicação: sem SOAP Action"
       RETURN NIL
    ENDCASE
@@ -370,7 +381,7 @@ METHOD MicrosoftXmlSoapPost() CLASS SefazClass
       NEXT
    ENDIF
    IF "not have permission to view" $ ::cXmlRetorno
-      ::cStatus     := "999"
+      ::nStatus     := 999
       ::cMotivo     := "problemas com Sefaz e/ou certificado"
       ::cXmlRetorno := "<xml>*ERRO* Erro: Sefaz e/ou certificado</xml>"
    ELSE

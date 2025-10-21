@@ -13,7 +13,7 @@ FUNCTION ze_Sefaz_MDFeStatus( Self, cUF, cCertificado, cAmbiente )
    ::cXmlEnvio +=    XmlTag( "xServ", "STATUS" )
    ::cXmlEnvio += [</consStatServMDFe>]
    ::XmlSoapPost()
-   ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+   ::nStatus := Val( XmlNode( ::cXmlRetorno, "cStat" ) )
    ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
 
    RETURN ::cXmlRetorno

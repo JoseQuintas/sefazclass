@@ -39,7 +39,7 @@ FUNCTION ze_sefaz_NFeDistribuicao( Self, cCnpj, nUltNSU, nNSU, cChave, cUF, cCer
    ::cXmlEnvio   += [</distDFeInt>]
    ::XmlSoapPost()
    IF ! Empty( XmlNode( ::cXmlRetorno, "cStat" ) )
-      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+      ::nStatus := Val( XmlNode( ::cXmlRetorno, "cStat" ) )
    ENDIF
 
    RETURN ::cXmlRetorno

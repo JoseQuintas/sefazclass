@@ -23,14 +23,14 @@ FUNCTION ze_Sefaz_NFeProtocolo( Self, cChave, cCertificado, cAmbiente )
    ::cXmlEnvio    +=    XmlTag( "chNFe", cChave )
    ::cXmlEnvio    += [</consSitNFe>]
    IF ! DfeModFis( cChave ) $ "55,65"
-      ::cStatus     := "999"
+      ::nStatus     := 999
       ::cMotivo     := "Chave não se refere a NFE/NFCE"
       ::cXmlRetorno := [<erro text="*ERRO* NfeProtocolo() ] + ::cMotivo + [" />]
    ELSE
       ::XmlSoapPost()
    ENDIF
-   IF ::cStatus != "999"
-      ::cStatus := XmlNode( ::cXmlRetorno, "cStat" )
+   IF ::nStatus != 999
+      ::nStatus := Val( XmlNode( ::cXmlRetorno, "cStat" ) )
       ::cMotivo := XmlNode( ::cXmlRetorno, "xMotivo" )
    ENDIF
 

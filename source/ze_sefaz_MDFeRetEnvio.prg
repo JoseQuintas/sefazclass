@@ -16,12 +16,12 @@ FUNCTION ze_Sefaz_MDFeRetEnvio( Self, cRecibo, cUF, cCertificado, cAmbiente )
    ::cXmlEnvio += [</consReciMDFe>]
    ::XmlSoapPost()
    ::cXmlProtocolo := ::cXmlRetorno
-   IF ::cStatus != "999"
+   IF ::nStatus != 999
       IF ! Empty( XmlNode( ::cXmlRetorno, "infProt" ) )
-         ::cStatus       := Pad( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ), 3 )
+         ::nStatus       := Val( XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "cStat" ) )
          ::cMotivo       := XmlNode( XmlNode( ::cXmlRetorno, "infProt" ), "xMotivo" )
       ELSE
-         ::cStatus := Pad( XmlNode( ::cXmlRetorno, "cStat" ), 3 )
+         ::nStatus := Val( XmlNode( ::cXmlRetorno, "cStat" ) )
          ::cMotivo  := XmlNode( ::cXmlRetorno, "xMotivo" )
       ENDIF
    ENDIF
