@@ -93,14 +93,14 @@
    { "CE",   "4.00H", "http://nfceh.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
    { "DF",   "4.00H", "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
    { "ES",   "4.00H", "http://homologacao.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx" }, ;
-   { "GO",   "4.00H", "https://nfewebhomolog.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
+   { "GO",   "4.00H", "http://homolog.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
    { "MA",   "4.00H", "http://homologacao.sefaz.ma.gov.br/portal/consultarNFCe.jsp" }, ;
    { "MG",   "4.00H", "https://portalsped.fazenda.mg.gov.br/portalnfce/sistema/qrcode.xhtml" }, ;
    { "MS",   "4.00H", "http://www.dfe.ms.gov.br/nfce/qrcode" }, ;
    { "MT",   "4.00H", "http://homologacao.sefaz.mt.gov.br/nfce/consultanfce" }, ;
    { "PA",   "4.00H", "https://appnfc.sefa.pa.gov.br/portal-homologacao/view/consultas/nfce/nfceForm.seam" }, ;
    { "PB",   "4.00H", "http://www.receita.pb.gov.br/nfcehom" }, ;
-   { "PR",   "4.00H", "http://www.fazenda.pr.gov.br/nfce/qrcode" }, ;
+   { "PR",   "4.00H", "https://www.fazenda.pr.gov.br/nfce/qrcode" }, ;
    { "PE",   "4.00H", "http://nfcehomolog.sefaz.pe.gov.br/nfce/consulta" }, ;
    { "PI",   "4.00H", "http://webas.sefaz.pi.gov.br/nfceweb-homologacao/consultarNFCe.jsf" }, ;
    { "RJ",   "4.00H", "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode" }, ;
@@ -110,13 +110,14 @@
    { "RS",   "4.00H", "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx" }, ;
    { "SP",   "4.00H", "https://www.homologacao.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
    { "TO",   "4.00H", "http://apps.sefaz.to.gov.br/portal-nfce-homologacao/qrcodeNFCe"  }, ;
+   { "SC",   "4.00H", "https://hom.sat.sef.sc.gov.br/nfce/consulta"  }, ;
    ;
    { "AC",   "4.00P", "http://www.sefaznet.ac.gov.br/nfce/qrcode" }, ;
    { "AL",   "4.00P", "http://nfce.sefaz.al.gov.br/QRCode/consultarNFCe.jsp" }, ;
    { "BA",   "4.00P", "http://nfe.sefaz.ba.gov.br/servicos/nfce/modulos/geral/NFCEC_consulta_chave_acesso.aspx" }, ;
-   { "CE",   "4.00H", "http://nfce.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
+   { "CE",   "4.00P", "http://nfce.sefaz.ce.gov.br/pages/ShowNFCe.html" }, ;
    { "DF",   "4.00P", "http://dec.fazenda.df.gov.br/ConsultarNFCe.aspx" }, ;
-   { "GO",   "4.00P", "https://nfeweb.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
+   { "GO",   "4.00P", "http://nfe.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe" }, ;
    { "MA",   "4.00P", "http://www.nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp" }, ;
    { "MG",   "4.00P", "https://portalsped.fazenda.mg.gov.br/portalnfce/sistema/qrcode.xhtml" }, ;
    { "MS",   "4.00P", "http://www.dfe.ms.gov.br/nfce/qrcode" }, ;
@@ -125,7 +126,7 @@
    { "PB",   "4.00P", "http://www.receita.pb.gov.br/nfce" }, ;
    { "PE",   "4.00P", "http://nfce.sefaz.pe.gov.br/nfce-web/consultarNFCe" }, ;
    { "PI",   "4.00P", "http://webas.sefaz.pi.gov.br/nfceweb/consultarNFCe.jsf" }, ;
-   { "PR",   "4.00P", "http://www.fazenda.pr.gov.br/nfce/qrcode" }, ;
+   { "PR",   "4.00P", "https://www.fazenda.pr.gov.br/nfce/qrcode" }, ;
    { "RJ",   "4.00P", "http://www4.fazenda.rj.gov.br/consultaNFCe/QRCode" }, ;
    { "RN",   "4.00P", "http://nfce.set.rn.gov.br/consultarNFCe.aspx" }, ;
    { "RS",   "4.00P", "https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx" }, ;
@@ -133,7 +134,8 @@
    { "RR",   "4.00P", "https://www.sefaz.rr.gov.br/nfce/servlet/qrcode" }, ;
    { "SE",   "4.00P", "http://www.nfe.se.gov.br/portal/consultarNFCe.jsp" }, ;
    { "SP",   "4.00P", "https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaQRCode.aspx" }, ;
-   { "TO",   "4.00P", "http://apps.sefaz.to.gov.br/portal-nce/qrcodeNFCe" } }
+   { "TO",   "4.00P", "http://apps.sefaz.to.gov.br/portal-nce/qrcodeNFCe" },;
+   { "SC",   "4.00P", "https://sat.sef.sc.gov.br/nfce/consulta" } }
 
 #define WS_NFE_CHAVE { ;
    ;
@@ -147,17 +149,20 @@
    { "ES", "2.00H", "http://www.sefaz.es.gov.br/nfce/consulta" }, ;
    { "GO", "2.00H", "http://www.sefaz.go.gov.br/nfce/consulta" }, ;
    { "MA", "2.00H", "http://www.sefaz.ma.gov.br/nfce/consulta" }, ;
-   { "MG", "2.00H", " https://hportalsped.fazenda.mg.gov.br/portalnfce" }, ;
+   { "MG", "2.00H", "https://hportalsped.fazenda.mg.gov.br/portalnfce" }, ;
    { "MS", "2.00H", "http://www.dfe.ms.gov.br/nfce/consulta" }, ;
    { "MT", "2.00H", "http://www.sefaz.mt.gov.br/nfce/consultanfce" }, ;
    { "PA", "2.00H", "http://www.sefa.pa.gov.br/nfce/consulta" }, ;
+   { "PB", "2.00H", "http://www.receita.pb.gov.br/nfcehom" }, ;
    { "PE", "2.00H", "http://nfce.sefaz.pe.gov.br/nfce/consulta" }, ;
    { "PI", "2.00H", "http://www.sefaz.pi.gov.br/nfce/consulta" }, ;
    { "PR", "2.00H", "http://www.fazenda.pr.gov.br/nfce/consulta" }, ;
+   { "PR", "3.00H", "http://www.fazenda.pr.gov.br/nfce/consulta" }, ;
    { "RJ", "2.00H", "http://www.fazenda.rj.gov.br/nfce/consulta" }, ;
-   { "RR", "2.00H", "http://www.sefaz.rr.gov.br/nfce/consulta" }, ;
    { "RS", "2.00H", "http://www.sefaz.rs.gov.br/nfce/consulta" }, ;
+   { "RR", "2.00H", "http://www.sefaz.rr.gov.br/nfce/consulta" }, ;
    { "SP", "2.00H", "https://www.homologacao.nfce.fazenda.sp.gov.br/consulta" }, ;
+   { "SC", "2.00H", "https://hom.sat.sef.sc.gov.br/nfce/consulta" }, ;
    ;
    { "AC", "2.00P", "http://www.sefaznet.ac.gov.br/nfce/consulta" }, ;
    { "AL", "2.00P", "http://www.sefaz.al.gov.br/nfce/consulta" }, ;
@@ -168,14 +173,16 @@
    { "DF", "2.00P", "http://www.fazenda.df.gov.br/nfce/consulta" }, ;
    { "GO", "2.00P", "http://www.sefaz.go.gov.br/nfce/consulta" }, ;
    { "MA", "2.00P", "http://www.sefaz.ma.gov.br/nfce/consulta" }, ;
-   { "MG", "2.00P", "http://portalsped.fazenda.mg.gov.br/portalnfce" }, ;
+   { "MG", "2.00P", "https://portalsped.fazenda.mg.gov.br/portalnfce" }, ;
    { "MS", "2.00P", "http://www.dfe.ms.gov.br/nfce/consulta" }, ;
    { "MT", "2.00P", "http://www.sefaz.mt.gov.br/nfce/consultanfce" }, ;
    { "PA", "2.00P", "http://www.sefa.pa.gov.br/nfce/consulta" }, ;
    { "PE", "2.00P", "http://nfce.sefaz.pe.gov.br/nfce/consulta" }, ;
    { "PI", "2.00P", "http://www.sefaz.pi.gov.br/nfce/consulta" }, ;
    { "PR", "2.00P", "http://www.fazenda.pr.gov.br/nfce/consulta" }, ;
+   { "PR", "3.00P", "http://www.fazenda.pr.gov.br/nfce/consulta" }, ;
    { "RJ", "2.00P", "http://www.fazenda.rj.gov.br/nfce/consulta" }, ;
-   { "RR", "2.00P", "http://www.sefaz.rr.gov.br/nfce/consulta" }, ;
    { "RS", "2.00P", "http://www.sefaz.rs.gov.br/nfce/consulta" }, ;
-   { "SP", "2.00P", "https://www.nfce.fazenda.sp.gov.br/consulta" } }
+   { "RR", "2.00P", "http://www.sefaz.rr.gov.br/nfce/consulta" }, ;
+   { "SP", "2.00P", "https://www.nfce.fazenda.sp.gov.br/consulta" },;
+   { "SC", "2.00P", "https://sat.sef.sc.gov.br/nfce/consulta" } }
