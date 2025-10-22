@@ -23,7 +23,7 @@ FUNCTION ze_sefaz_NFeGeraAutorizado( Self, cXmlAssinado, cXmlProtocolo )
       ::nStatus := Val( XmlNode( cXmlProtocolo, "cStat" ) )
       ::cMotivo := XmlNode( cXmlProtocolo, "xMotivo" )
    ENDIF
-   IF hb_AScan( { 100, 101, 150 }, { | e | e == ::nStatus != 100 } ) == 0
+   IF hb_AScan( { 100, 101, 150 }, { | e | e == ::nStatus } ) == 0
       ::cXmlRetorno := [<erro text="*ERRO* NFeGeraAutorizado() Não autorizado" />] + cXmlProtocolo
       RETURN Nil
    ENDIF
