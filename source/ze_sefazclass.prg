@@ -107,6 +107,7 @@ CREATE CLASS SefazClass
    METHOD NFeEventoCancela( ... )         INLINE ze_sefaz_NFeEventoCancela( Self, ... )
    METHOD NFeEventoCancelaSubstituicao( ... ) INLINE ze_sefaz_NFeEventoCancelaSubstituicao( Self, ... )
    METHOD NFeEventoCarta( ... )           INLINE ze_sefaz_NFeEventoCarta( Self, ... )
+   METHOD NFeEventoDataEntrega( ... )     INLINE ze_sefaz_NFeEventoDataEntrega( Self, ... )
    METHOD NFeEventoManifestacao( ... )    INLINE ze_sefaz_NFeEventoManifestacao( Self, ... )
    METHOD NFeGeraAutorizado( ... )        INLINE ze_sefaz_NFeGeraAutorizado( Self, ... )
    METHOD NFeGeraEventoAutorizado( ... )  INLINE ze_sefaz_NFeGeraEventoAutorizado( Self, ... )

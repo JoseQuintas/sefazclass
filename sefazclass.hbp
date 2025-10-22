@@ -76,6 +76,7 @@ source/ze_sefaz_NFeEvento.prg
 source/ze_sefaz_NFeEventoAutor.prg
 source/ze_sefaz_NFeEventoCancela.prg
 source/ze_sefaz_NFeEventoCancelaSubstituicao.prg
+source/ze_sefaz_NFeEventoDataEntrega.prg
 source/ze_sefaz_NFeEventoManifestacao.prg
 source/ze_sefaz_NFeGeraAutorizado.prg
 source/ze_sefaz_NFeGeraEventoAutorizado.prg

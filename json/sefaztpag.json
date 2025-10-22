@@ -17,5 +17,6 @@
 [ "21", "Crédito em Loja, pago anteriormente, devolução, etc" ],
 [ "22", "Pagto Eletrônico não informado, por falha de hardware" ],
 [ "90", "Sem pagamento" ],
+[ "91", "Pagamento Posterior" ],
 [ "99", "Outros" ]
 ]
