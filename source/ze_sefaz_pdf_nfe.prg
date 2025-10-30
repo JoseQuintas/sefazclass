@@ -279,7 +279,7 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    IF Empty( ::aEntrega[ "CNPJ" ] )
       ::aEntrega[ "CNPJ" ] := ::aEntrega[ "CPF" ]
    ENDIF
-   ::aICMSTotal  := XmlToHash( XmlNode( ::cXml, "ICMSTot" ), { "vBC", "vICMS", "vBCST", "vST", "vProd", "vFrete", "vSeg", "vDesc", "vII", "vIPI", "vPIS", "vCOFINS", "vOutro", "vNF" } )
+   ::aICMSTotal  := XmlToHash( XmlNode( ::cXml, "ICMSTot" ), { "vBC", "vICMS", "vBCST", "vST", "vICMSUFDest","vProd", "vFrete", "vSeg", "vDesc", "vII", "vIPI", "vPIS", "vCOFINS", "vOutro", "vNF" } )
    ::aISSTotal   := XmlToHash( XmlNode( ::cXml, "ISSQNtot" ), { "vServ", "vBC", "vISS", "vPIS", "vCOFINS" } )
    ::aRetTrib    := XmlToHash( XmlNode( ::cXml, "RetTrib" ), { "vRetPIS", "vRetCOFINS", "vRetCSLL", "vBCIRRF", "vIRRF", "vBCRetPrev", "vRetPrev" } )
    ::aTransp     := XmlToHash( XmlNode( ::cXml, "transp" ), { "modFrete", "CNPJ", "CPF", "xNome", "IE", "xEnder", "xMun", "UF", "qVol", "esp", "marca", "nVol", "pesoL", "pesoB", "nLacre" } )
@@ -702,22 +702,42 @@ METHOD QuadroDuplicatas() CLASS hbNFeDaNFe
 
 METHOD QuadroImposto() CLASS hbNFeDaNFe
 
+   LOCAL aList := { ;
+      { "BASE DE CÁLCULO DO ICMS",             Val( ::aIcmsTotal[ "vBC" ] ) }, ;
+      { "VALOR DO ICMS",                       Val( ::aICMSTotal[ "vICMS" ] ) }, ;
+      { "BASE DE CÁLCULO DO ICMS SUBS. TRIB.", Val( ::aICMSTotal[ "vBCST" ] ) }, ;
+      { "VALOR DO ICMS SUBS.TRIB.",            Val( ::aICMSTotal[ "vST" ] ) }, ;
+      { "V.ICMS UF DEST",                      Val( ::aICMSTotal[ "vICMSUFDest" ] ) }, ;
+      { "VALOR TOTAL DOS PRODUTOS",            Val( ::aICMSTotal[ "vProd" ] ) }, ; // último primeira linha
+      { "VALOR DO FRETE",                      Val( ::aICMSTotal[ "vFrete" ] ) }, ;
+      { "VALOR DO SEGURO",                     Val( ::aICMSTotal[ "vSeg" ] ) }, ;
+      { "DESCONTO",                            Val( ::aICMSTotal[ "vDesc" ] ) }, ;
+      { "OUTRAS DESP. ACESSÓRIAS",             Val( ::aICMSTotal[ "vOutro" ] ) }, ;
+      { "VALOR DO IPI",                        Val( ::aICMSTotal[ "vIPI" ] ) }, ;
+      { "VALOR TOTAL DA NOTA FISCAL",          Val( ::aICMSTotal[ "vNF" ] ) } } // último segunda linha
+   LOCAL nHalf, nWidth, aItem, nCol := 5
+
+   nHalf    := Round( Len( aList ) / 2 + 0.4, 0 )
+
    IF ::nFolha == 1
       ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "CÁLCULO DO IMPOSTO", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
       ::nLinhaPdf -= 6
-      ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 110, 16, "BASE DE CÁLCULO DO ICMS", Alltrim( FormatNumber( Val( ::aICMSTotal[ "vBC" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
-      ::DrawBoxTituloTexto( 115, ::nLinhaPdf, 100, 16, "VALOR DO ICMS", Alltrim( FormatNumber( Val( ::aICMSTotal[ "vICMS" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
-      ::DrawBoxTituloTexto( 215, ::nLinhaPdf, 130, 16, "BASE DE CÁLCULO DO ICMS SUBS. TRIB.", Alltrim( FormatNumber( Val( ::aICMSTotal[ "vBCST" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
-      ::DrawBoxTituloTexto( 345, ::nLinhaPdf, 100, 16, "VALOR DO ICMS SUBST.", Alltrim( FormatNumber( Val( ::aICMSTotal[ "vST" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
-      ::DrawBoxTituloTexto( 445, ::nLinhaPdf, 145, 16, "VALOR TOTAL DOS PRODUTOS", Alltrim( FormatNumber( Val( ::aICMSTotal[ "vProd" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
-      ::nLinhaPdf -= 16
-      ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 88, 16, "VALOR DO FRETE", Alltrim( FormatNumber( Val( ::aICMSTotal[ "vFrete" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
-      ::DrawBoxTituloTexto( 93, ::nLinhaPdf, 88, 16, "VALOR DO SEGURO", Alltrim( FormatNumber( Val( ::aICMSTotal[ "vSeg" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
-      ::DrawBoxTituloTexto( 181, ::nLinhaPdf, 88, 16, "DESCONTO", Alltrim( FormatNumber( Val( ::aICMSTotal[ "vDesc" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
-      ::DrawBoxTituloTexto( 269, ::nLinhaPdf, 88, 16, "OUTRAS DESP. ACESSÓRIAS", Alltrim( FormatNumber( Val( ::aICMSTotal[ "vOutro" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
-      ::DrawBoxTituloTexto( 357, ::nLinhaPdf, 88, 16, "VALOR DO IPI", Alltrim( FormatNumber( Val( ::aICMSTotal[ "vIPI" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
-      ::DrawBoxTituloTexto( 445, ::nLinhaPdf, 145, 16, "VALOR TOTAL DA NOTA FISCAL", Alltrim( FormatNumber( Val( ::aICMSTotal[ "vNF" ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
-      ::nLinhaPdf -= 17
+      FOR EACH aItem IN aList
+         nWidth := Int( 590 / nHalf )
+         IF aItem:__EnumIndex() == 1 .OR. aItem:__EnumIndex() == nHalf + 1
+            nCol := 5
+         ENDIF
+         IF aItem:__EnumIndex() == nHalf .OR. aItem:__EnumIndex() == Len( aList )
+            nWidth += ( 590 - nCol - nWidth )
+         ENDIF
+         ::DrawBoxTituloTexto( nCol, ::nLinhaPDF, nWidth, 16, aItem[ 1 ], ;
+            AllTrim( FormatNumber( aItem[ 2 ], 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
+         IF aItem:__EnumIndex()   == nHalf
+            ::nLinhaPDF -= 16
+         ENDIF
+         nCol := nCol + nWidth
+      NEXT
+      ::nLinhaPDF -= 17
    ENDIF
 
    RETURN NIL
