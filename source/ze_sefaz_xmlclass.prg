@@ -294,6 +294,7 @@ CREATE CLASS DocSpedClass STATIC
    VAR  ValorCarga              INIT 0  // Cte
    VAR  Status                  INIT ""
    VAR  Pagamentos              INIT {} // 2018.01.23 Jackson
+   VAR  DocList                 INIT {}
    METHOD Init()
 
    ENDCLASS
@@ -930,6 +931,10 @@ STATIC FUNCTION XmlToDocCteEmi( XmlInput, oDocSped )
       oDocSped:PesoCarga  := Val( XmlNode( XmlCte, "qCarga" ) )
       oDocSped:ValorCarga := Val( XmlNode( XmlCte, "vCarga" ) )
       oDocSped:cAssinatura := XmlNode( XmlCte, "Signature" )
+
+   mTemp := XmlNode( XmlProc, "infDoc" )
+   AAdd( oDocSped:NfeList, XmlNode( mTemp, "chave" ) )
+
    XmlProt := XmlNode(XmlProc, "protCTe" )
       XmlInfProt := XmlNode( XmlProt, "infProt" )
       oDocSped:Protocolo := XmlNode( XmlInfProt, "nProt" )
