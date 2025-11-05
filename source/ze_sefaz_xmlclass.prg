@@ -933,7 +933,7 @@ STATIC FUNCTION XmlToDocCteEmi( XmlInput, oDocSped )
       oDocSped:cAssinatura := XmlNode( XmlCte, "Signature" )
 
    mTemp := XmlNode( XmlProc, "infDoc" )
-   AAdd( oDocSped:NfeList, XmlNode( mTemp, "chave" ) )
+   AAdd( oDocSped:DocList, XmlNode( mTemp, "chave" ) )
 
    XmlProt := XmlNode(XmlProc, "protCTe" )
       XmlInfProt := XmlNode( XmlProt, "infProt" )
