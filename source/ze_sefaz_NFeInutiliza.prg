@@ -14,17 +14,18 @@ FUNCTION ze_sefaz_NFeInutiliza( Self, cAno, cCnpj, cMod, cSerie, cNumIni, cNumFi
    //ENDIF
 
    ::cXmlDocumento := [<inutNFe versao="] + ::cVersao + [" ] + WS_XMLNS_NFE + [>]
-   ::cXmlDocumento +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + Right( cAno, 2 ) + cCnpj + cMod + StrZero( Val( cSerie ), 3 )
+   ::cXmlDocumento +=    [<infInut Id="ID] + ::UFCodigo( ::cUF ) + Right( cAno, 2 ) + ;
+                         SoNumero( cCnpj ) + cMod + StrZero( Val( cSerie ), 3 )
    ::cXmlDocumento +=    StrZero( Val( cNumIni ), 9 ) + StrZero( Val( cNumFim ), 9 ) + [">]
    ::cXmlDocumento +=       XmlTag( "tpAmb", ::cAmbiente )
    ::cXmlDocumento +=       XmlTag( "xServ", "INUTILIZAR" )
    ::cXmlDocumento +=       XmlTag( "cUF", ::UFCodigo( ::cUF ) )
    ::cXmlDocumento +=       XmlTag( "ano", Right( cAno, 2 ) )
    ::cXmlDocumento +=       XmlTag( "CNPJ", SoNumero( cCnpj ) )
-   ::cXmlDocumento +=       XmlTag( "mod", cMod )
-   ::cXmlDocumento +=       XmlTag( "serie", cSerie )
-   ::cXmlDocumento +=       XmlTag( "nNFIni", cNumIni )
-   ::cXmlDocumento +=       XmlTag( "nNFFin", cNumFim )
+   ::cXmlDocumento +=       XmlTag( "mod", StrZero( Val( cMod ), 3 ) )
+   ::cXmlDocumento +=       XmlTag( "serie", StrZero( Val( cSerie ), 3 ) )
+   ::cXmlDocumento +=       XmlTag( "nNFIni", StrZero( Val( cNumIni ), 9 ) )
+   ::cXmlDocumento +=       XmlTag( "nNFFin", StrZero( Val( cNumFim ), 9 ) )
    ::cXmlDocumento +=       XmlTag( "xJust", cJustificativa )
    ::cXmlDocumento +=    [</infInut>]
    ::cXmlDocumento += [</inutNFe>]
