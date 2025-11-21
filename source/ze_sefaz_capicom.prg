@@ -37,7 +37,7 @@ FUNCTION CapicomEscolheCertificado( dValidFrom, dValidTo )
 
 FUNCTION CapicomCertificado( cNomeCertificado, dValidFrom, dValidTo, lValidDate )
 
-   LOCAL oStore, oColecao, oCertificado, nCont, lValid
+   LOCAL oStore, oColecao, oCertificado, nCont, lValid, lSelected := .F.
 
    hb_Default( @lValidDate, .T. )
    oStore := Win_OleCreateObject( "CAPICOM.Store" )
@@ -46,14 +46,18 @@ FUNCTION CapicomCertificado( cNomeCertificado, dValidFrom, dValidTo, lValidDate 
    //aList := oColecao:Find( CAPICOM_CERTIFICATE_FIND_ISSUER_NAME, cNomeCertificado, .T. )
    FOR nCont = 1 TO oColecao:Count()
       IF cNomeCertificado $ oColecao:Item( nCont ):SubjectName
-         lValid := oColecao:Item( nCont ):ValidFromDate <= Date() .AND. oColecao:Item( nCont ):ValidToDate >= Date()
+         lValid := oColecao:Item( nCont ):ValidFromDate <= Date() ;
+         .AND. oColecao:Item( nCont ):ValidToDate >= Date()
          IF ! ( lValid == lValidDate )
             LOOP
          ENDIF
-         oCertificado := oColecao:Item( nCont )
-         dValidFrom   := oCertificado:ValidFromDate
-         dValidTo     := oCertificado:ValidToDate
-         EXIT
+         // se tem A3 e A1 na mesma máquina, ambos válidos, pega o A1
+         IF ! lSelected .OR. "PJ A1" $ oColecao:Item( nCont ):SubjectName
+            oCertificado := oColecao:Item( nCont )
+            dValidFrom   := oCertificado:ValidFromDate
+            dValidTo     := oCertificado:ValidToDate
+            lSelected    := .T.
+         ENDIF
       ENDIF
    NEXT
    oStore:Close()
