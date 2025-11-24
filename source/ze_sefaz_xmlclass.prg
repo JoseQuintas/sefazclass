@@ -82,8 +82,8 @@ CREATE CLASS NfeTotaisClass STATIC
    VAR  IcmVal     INIT 0
    VAR  SubBas     INIT 0
    VAR  SubVal     INIT 0
-   VAR  MonBas    INIT 0
-   VAR  MonVal    INIT 0
+   VAR  MonBas     INIT 0
+   VAR  MonVal     INIT 0
    VAR  IpiVal     INIT 0
    VAR  IIVal      INIT 0
    VAR  IssVal     INIT 0
