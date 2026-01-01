@@ -239,6 +239,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
          oSefaz:cVersao := "3.00"
          oSefaz:MDFeProtocolo( aVarList[ VAR_CHAVE ] )
          MsgBox( oSefaz:cXmlRetorno, "MDFE PROTOCOLO" )
+         msgbox( oSefaz:cXmlSoap )
          hb_MemoWrit( "consultamdfe.xml", oSefaz:cXmlRetorno )
 
       CASE nOpc == OPC_DESTINADAS
@@ -412,8 +413,10 @@ STATIC FUNCTION CertificadoEscolhe( cCertificado )
       cCertificado := CapicomEscolheCertificado()
       dValidFrom   := CapicomCertificado( cCertificado ):ValidFromDate
       dValidTo     := CapicomCertificado( cCertificado ):ValidToDate
-      wapi_MessageBox( , "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
-         iif( dValidTo < Date(), "VENCIDO!!!!!!", "" ) )
+      wapi_MessageBox( , "Thumbprint:" + hb_ValToExp( CapicomCertificado( cCertificado ):ThumbPrint ) + hb_Eol() + ;
+         "Validade " + hb_ValToExp( dValidFrom ) + hb_Eol() + ;
+         " a " + hb_ValToExp( dValidTo ) + hb_Eol() + ;
+         iif( hb_TToc( dValidTo ) < Dtos( Date() ) + " " + Time(), "VENCIDO!!!!!!", "" ) )
    ENDSEQUENCE
 
    RETURN Nil
@@ -422,13 +425,11 @@ STATIC FUNCTION CertificadoValidade( cCertificado )
 
    LOCAL dValidFrom, dValidTo
 
-   //BEGIN SEQUENCE WITH __BreakBlock()
    dValidFrom := CapicomCertificado( cCertificado ):ValidFromDate
    dValidTo   := CapicomCertificado( cCertificado ):ValidToDate
-   wapi_MessageBox( , cCertificado + hb_Eol() + ;
-      "Validade " + Dtoc( dValidFrom ) + " a " + Dtoc( dValidTo ) + ;
-      iif( dValidTo < Date(), " VENCIDO!!!!!!", "" ) )
-   //ENDSEQUENCE
+   wapi_MessageBox( , "Validade " + hb_ValToExp( dValidFrom ) + hb_Eol() + ;
+      " a " + hb_ValToExp( dValidTo ) + hb_Eol() + ;
+      iif( hb_TToc( dValidTo ) < hb_Dtoc( Date(), "YYYY-MM-DD" ) + " " + Time(), "VENCIDO!!!!!!", "" ) )
 
    RETURN Nil
 

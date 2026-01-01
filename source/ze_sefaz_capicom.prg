@@ -45,7 +45,8 @@ FUNCTION CapicomCertificado( cNomeCertificado, dValidFrom, dValidTo, lValidDate 
    oColecao := oStore:Certificates()
    //aList := oColecao:Find( CAPICOM_CERTIFICATE_FIND_ISSUER_NAME, cNomeCertificado, .T. )
    FOR nCont = 1 TO oColecao:Count()
-      IF cNomeCertificado $ oColecao:Item( nCont ):SubjectName
+      IF cNomeCertificado $ oColecao:Item( nCont ):SubjectName ;
+         .OR. cNomeCertificado == oColecao:Item( nCont ):ThumbPrint
          lValid := oColecao:Item( nCont ):ValidFromDate <= Date() ;
          .AND. oColecao:Item( nCont ):ValidToDate >= Date()
          IF ! ( lValid == lValidDate )

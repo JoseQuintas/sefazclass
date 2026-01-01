@@ -283,6 +283,9 @@ STATIC FUNCTION AssinaLoadCertificado( cCertCN, oCert, oCapicomStore, cPassword,
       cRetorno := "Erro Assinatura: Certificado não encontrado"
       RETURN .F.
    ENDIF
+   IF hb_TToC( oCert:ValidToDate ) < hb_Dtoc( Date(), "YYYY-YY-YY" ) + " " + Time()
+      cRetorno := "Certificado venceu em " + hb_ValToExp( oCert:ValidToDate )
+   ENDIF
 
    BEGIN SEQUENCE WITH __BreakBlock()
 

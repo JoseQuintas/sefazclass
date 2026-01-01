@@ -27,9 +27,11 @@ Os campos que podem ser colocados na mesma coluna são:
 
 #define LAYOUT_NAOIMPRIME      0
 #define LAYOUT_IMPRIMENORMAL   1
-#define LAYOUT_IMPRIMESEGUNDA  2
-#define LAYOUT_IMPRIMEXMLTEM   3
+#define LAYOUT_IMPRIMEXMLTEM   2
+#define LAYOUT_IMPRIME2NORMAL  3
 #define LAYOUT_IMPRIME2XMLTEM  4
+#define LAYOUT_IMPRIME3NORMAL  5
+#define LAYOUT_IMPRIME3XMLTEM  6
 
 #define LAYOUT_TITULO          1
 #define LAYOUT_LARGURA         2
@@ -1362,7 +1364,7 @@ STATIC FUNCTION AtivaImprime( nImprime )
    IF nImprime == LAYOUT_IMPRIMEXMLTEM
       nImprime := LAYOUT_IMPRIMENORMAL
    ELSEIF nImprime == LAYOUT_IMPRIME2XMLTEM
-      nImprime := LAYOUT_IMPRIMESEGUNDA
+      nImprime := LAYOUT_IMPRIME2NORMAL
    ENDIF
 
    RETURN Nil
