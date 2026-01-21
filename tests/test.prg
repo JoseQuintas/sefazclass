@@ -416,7 +416,7 @@ STATIC FUNCTION CertificadoEscolhe( cCertificado )
       wapi_MessageBox( , "Thumbprint:" + hb_ValToExp( CapicomCertificado( cCertificado ):ThumbPrint ) + hb_Eol() + ;
          "Validade " + hb_ValToExp( dValidFrom ) + hb_Eol() + ;
          " a " + hb_ValToExp( dValidTo ) + hb_Eol() + ;
-         iif( hb_TToc( dValidTo ) < Dtos( Date() ) + " " + Time(), "VENCIDO!!!!!!", "" ) )
+         iif( dValidTo < Date(), "VENCIDO!!!!!!", "" ) )
    ENDSEQUENCE
 
    RETURN Nil
