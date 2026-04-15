@@ -11,10 +11,13 @@ ZE_SPEDXMLCLASS - CLASSES PARA NFE/CTE/MDFE/CCE
 CREATE CLASS NfeCadastroClass STATIC
 
    VAR  Nome                INIT ""
+   VAR  Fantasia            INIT ""
    VAR  Cnpj                INIT ""
    VAR  InscricaoEstadual   INIT ""
    VAR  InscricaoMunicipal  INIT ""
    VAR  CNAE                INIT ""
+   VAR  CRT                 INIT ""
+   VAR  IndIEDest           INIT ""
    VAR  Endereco            INIT ""
    VAR  Numero              INIT ""
    VAR  Complemento         INIT ""
@@ -78,25 +81,44 @@ METHOD Init() CLASS NfeTransporteClass
 
 CREATE CLASS NfeTotaisClass STATIC
 
-   VAR  IcmBas     INIT 0
-   VAR  IcmVal     INIT 0
-   VAR  SubBas     INIT 0
-   VAR  SubVal     INIT 0
-   VAR  MonBas     INIT 0
-   VAR  MonVal     INIT 0
-   VAR  IpiVal     INIT 0
-   VAR  IIVal      INIT 0
-   VAR  IssVal     INIT 0
-   VAR  PisVal     INIT 0
-   VAR  CofVal     INIT 0
-   VAR  ValPro     INIT 0
-   VAR  ValSeg     INIT 0
-   VAR  ValFre     INIT 0
-   VAR  ValDesc    INIT 0 // 2018.01.23 Jackson
-   VAR  ValOut     INIT 0
-   VAR  ValNot     INIT 0
-   VAR  ValTrib    INIT 0 // 2018.01.23 Jackson
-   VAR  VIcmsDeson INIT 0 // 2018.03.27 Jackson
+   VAR  IcmBas               INIT 0
+   VAR  IcmVal               INIT 0
+   VAR  SubBas               INIT 0
+   VAR  SubVal               INIT 0
+   VAR  MonBas               INIT 0
+   VAR  MonVal               INIT 0
+   VAR  IpiVal               INIT 0
+   VAR  IIVal                INIT 0
+   VAR  IssVal               INIT 0
+   VAR  PisVal               INIT 0
+   VAR  CofVal               INIT 0
+   VAR  ValPro               INIT 0
+   VAR  ValSeg               INIT 0
+   VAR  ValFre               INIT 0
+   VAR  ValDesc              INIT 0
+   VAR  ValOut               INIT 0
+   VAR  ValNot               INIT 0
+   VAR  ValTrib              INIT 0
+   VAR  VIcmsDeson           INIT 0
+
+   VAR  VFCPUFDest           INIT 0
+   VAR  VICMSUFDest          INIT 0
+   VAR  VICMSUFRemet         INIT 0
+   VAR  VFCP                 INIT 0
+   VAR  VFCPST               INIT 0
+   VAR  VFCPSTRet            INIT 0
+   VAR  VIPIDevol            INIT 0
+
+   * Reforma Tributária - totais
+   VAR  RT_vBCIBSCBS         INIT 0
+   VAR  RT_vIBSUF            INIT 0
+   VAR  RT_vIBSMun           INIT 0
+   VAR  RT_vIBS              INIT 0
+   VAR  RT_vCBS              INIT 0
+   VAR  RT_vCredPresIBS      INIT 0
+   VAR  RT_vCredPresCBS      INIT 0
+   VAR  RT_vCredPresCondIBS  INIT 0
+   VAR  RT_vCredPresCondCBS  INIT 0
 
    ENDCLASS
 
@@ -104,6 +126,31 @@ CREATE CLASS NfeTributosClass STATIC
 
    VAR TriCBS INIT ""
    VAR TriIS  INIT ""
+
+   * Reforma Tributária - item
+   VAR RTCST              INIT ""
+   VAR RTcClassTrib       INIT ""
+   VAR RTvBC              INIT 0
+
+   VAR RTpIBSUF           INIT 0
+   VAR RTpRedAliqIBSUF    INIT 0
+   VAR RTpAliqEfetIBSUF   INIT 0
+   VAR RTvIBSUF           INIT 0
+
+   VAR RTpIBSMUN          INIT 0
+   VAR RTpRedAliqIBSMUN   INIT 0
+   VAR RTpAliqEfetIBSMUN  INIT 0
+   VAR RTvIBSMUN          INIT 0
+
+   VAR RTvIBS             INIT 0
+
+   VAR RTpCBS             INIT 0
+   VAR RTpRedAliqCBS      INIT 0
+   VAR RTpAliqEfetCBS     INIT 0
+   VAR RTvCBS             INIT 0
+
+   VAR RTpIS              INIT 0
+   VAR RTvIS              INIT 0
 
    ENDCLASS
 
@@ -147,11 +194,21 @@ CREATE CLASS NfeIcmsClass STATIC
 
 CREATE CLASS NfeIcmsStClass STATIC
 
-   VAR  Base      INIT 0
-   VAR  IVA       INIT 0
-   VAR  Reducao   INIT 0
-   VAR  Aliquota  INIT 0
-   VAR  Valor     INIT 0
+   VAR  Base             INIT 0
+   VAR  IVA              INIT 0
+   VAR  Reducao          INIT 0
+   VAR  Aliquota         INIT 0
+   VAR  Valor            INIT 0
+
+   VAR  BaseRet          INIT 0
+   VAR  ValorRet         INIT 0
+   VAR  ValorSubstituto  INIT 0
+   VAR  pST              INIT 0
+
+   VAR  pRedBCEfet       INIT 0
+   VAR  vBCEfet          INIT 0
+   VAR  pICMSEfet        INIT 0
+   VAR  vICMSEfet        INIT 0
 
    ENDCLASS
 
@@ -242,12 +299,13 @@ METHOD Init() CLASS NfeProdutoClass
 
 CREATE CLASS NfePagamentosClass STATIC
 
-   VAR  TipoPago    INIT ""  // 2018.01.23 Jackson
-   VAR  ValorPago   INIT 0   // 2018.01.23 Jackson
-   VAR  Integracao  INIT ""  // 2018.01.23 Jackson
-   VAR  Cnpj_Ope    INIT ""  // 2018.01.23 Jackson
-   VAR  Bandeira    INIT ""  // 2018.01.23 Jackson
-   VAR  Autorizacao INIT ""  // 2018.01.23 Jackson
+   VAR  IndPag       INIT ""
+   VAR  TipoPago     INIT ""
+   VAR  ValorPago    INIT 0
+   VAR  Integracao   INIT ""
+   VAR  Cnpj_Ope     INIT ""
+   VAR  Bandeira     INIT ""
+   VAR  Autorizacao  INIT ""
 
    END CLASS
 
@@ -263,37 +321,61 @@ CREATE CLASS NfeDuplicataClass STATIC
 CREATE CLASS DocSpedClass STATIC
 
    VAR  cChave                  INIT ""
-   VAR  cModFis                 INIT "" // 2014.11.20
-   VAR  TipoNFe                 INIT "" // 2018.01.23 Jackson
-   VAR  TipoEmissao             INIT "" // 2018.01.23 Jackson
-   VAR  cEvento                 INIT "" // 2014.11.20
+   VAR  cModFis                 INIT ""
+   VAR  TipoNFe                 INIT ""
+   VAR  TipoEmissao             INIT ""
+   VAR  cEvento                 INIT ""
    VAR  Protocolo               INIT ""
    VAR  cNumDoc                 INIT ""
-   VAR  cSerie                  INIT "" // 2018.01.23 Jackson
+   VAR  cSerie                  INIT ""
    VAR  DataEmissao             INIT Ctod( "" )
-   VAR  DataHora                INIT ""  // 2018.01.23 Jackson
+   VAR  DataHora                INIT ""
    VAR  DataSaida               INIT Ctod( "" )
+   VAR  DataSaidaHora           INIT ""
    VAR  cAmbiente               INIT ""
    VAR  NaturezaOperacao        INIT ""
-   VAR  Emitente             // --- init
-   VAR  Destinatario         // --- init
-   VAR  Remetente            // --- init // CTE
-   VAR  EnderecoEntrega      // --- init
+
+   * IDE
+   VAR  cUF                     INIT ""
+   VAR  cNF                     INIT ""
+   VAR  cDV                     INIT ""
+   VAR  idDest                  INIT ""
+   VAR  tpImp                   INIT ""
+   VAR  tpEmis                  INIT ""
+   VAR  finNFe                  INIT ""
+   VAR  indFinal                INIT ""
+   VAR  indPres                 INIT ""
+   VAR  indIntermed             INIT ""
+   VAR  procEmi                 INIT ""
+   VAR  verProc                 INIT ""
+   VAR  cMunFG                  INIT ""
+
+   * Protocolo / retorno
+   VAR  VerAplic                INIT ""
+   VAR  DigVal                  INIT ""
+   VAR  DhRecbto                INIT ""
+   VAR  xMotivo                 INIT ""
+
+   VAR  Emitente
+   VAR  Destinatario
+   VAR  Remetente
+   VAR  EnderecoEntrega
    VAR  Produto                 INIT {}
-   VAR  Transporte           // --- init
+   VAR  Transporte
    VAR  Duplicata               INIT {}
-   VAR  Totais               // --- init
+   VAR  Totais
    VAR  ExportacaoUfEmbarque    INIT ""
    VAR  ExportacaoLocalEmbarque INIT ""
    VAR  InfAdicionais           INIT ""
+   VAR  InfAdFisco              INIT ""
    VAR  cAssinatura             INIT ""
-   VAR  cSequencia              INIT "01" // Carta Correção
-   VAR  Valor                   INIT 0  // CTE
-   VAR  cErro                   INIT "" // Texto do erro
-   VAR  PesoCarga               INIT 0  // Cte
-   VAR  ValorCarga              INIT 0  // Cte
+   VAR  cSequencia              INIT "01"
+   VAR  Valor                   INIT 0
+   VAR  cErro                   INIT ""
+   VAR  PesoCarga               INIT 0
+   VAR  ValorCarga              INIT 0
    VAR  Status                  INIT ""
-   VAR  Pagamentos              INIT {} // 2018.01.23 Jackson
+   VAR  Pagamentos              INIT {}
    VAR  DocList                 INIT {}
    METHOD Init()
 
@@ -428,249 +510,449 @@ FUNCTION XmlToDoc( cXmlInput, lAutorizado )
 
    RETURN oDocSped
 
+STATIC FUNCTION XmlNodeC( cXml, cTag )
+
+   RETURN AllTrim( XmlNode( cXml, cTag ) )
+
+STATIC FUNCTION XmlNodeN( cXml, cTag )
+
+   RETURN Val( XmlNode( cXml, cTag ) )
+
+STATIC FUNCTION XmlNodeDateOnly( cXml, cTag )
+
+   LOCAL cRet := XmlNode( cXml, cTag )
+   LOCAL cNum := SoNumero( cRet )
+
+   IF Len( cNum ) >= 8
+      RETURN Stod( Left( cNum, 8 ) )
+   ENDIF
+
+   RETURN Ctod("")
+
+STATIC FUNCTION XmlNodeDateTime( cXml, cTag )
+
+   RETURN AllTrim( XmlNode( cXml, cTag ) )
+
+STATIC FUNCTION XmlPickNode( cXml, aTags )
+
+   LOCAL xTag
+   LOCAL cRet
+
+   FOR EACH xTag IN aTags
+      cRet := XmlNode( cXml, xTag )
+      IF ! Empty( AllTrim( cRet ) )
+         RETURN cRet
+      ENDIF
+   NEXT
+
+   RETURN ""
+
+STATIC FUNCTION XmlUpper( cText )
+
+   RETURN Upper( AllTrim( cText ) )
+
 STATIC FUNCTION XmlToDocNfeEmi( cXmlInput, oDocSped )
 
    LOCAL aList, aList2
    LOCAL cBlocoInfNfeComTag, cBlocoChave, cBlocoIde, cBlocoInfAdic
-   LOCAL cBlocoEmit, cBlocoEndereco, cBlocoDest, cBlocoTransporte, cBlocoTransp, cBlocoVeiculo, cBlocoVol, cBlocoTotal
-   LOCAL cBlocoItem, cBlocoProd,  cBlocoIpi, cBlocoIcms, cBlocoPis, cBlocoCofins, cBlocoRastro
-   LOCAL cBlocoComb, cBlocoCobranca, cBlocoDup, cBlocoPG, cBlocoTributos
+   LOCAL cBlocoEmit, cBlocoEndereco, cBlocoDest, cBlocoTransporte, cBlocoTransp, cBlocoVeiculo, cBlocoVol
+   LOCAL cBlocoICMSTot, cBlocoIBSTot, cBlocoIBSGeral, cBlocoIBSUF, cBlocoIBSMUN, cBlocoCBS
+   LOCAL cBlocoItem, cBlocoProd, cBlocoIpi, cBlocoIcms, cBlocoPis, cBlocoCofins, cBlocoRastro
+   LOCAL cBlocoComb, cBlocoCobranca, cBlocoDup, cBlocoPG, cBlocoTributos, cBlocoPGPai
+   LOCAL cBlocoIBSItem, cBlocoIBSItemUF, cBlocoIBSItemMUN, cBlocoIBSItemCBS
+   LOCAL cTmp
 
    cBlocoInfNfeComTag := XmlNode( cXmlInput, "infNFe", .T. )
 
    cBlocoChave := XmlElement( cBlocoInfNfeComTag, "Id" )
    cBlocoChave := Substr( cBlocoChave, 4 )
    cBlocoChave := AllTrim( cBlocoChave )
+
    IF Len( cBlocoChave ) <> 44
       oDocSped:cErro := "Chave de Acesso Inválida"
       RETURN Nil
    ENDIF
+
    WITH OBJECT oDocSped
       :cChave := cBlocoChave
       :cAssinatura := XmlNode( cXmlInput, "Signature" )
-      cBlocoIde := XmlNode( cXmlInput, "ide" )
-         :cNumDoc := XmlNode( cBlocoIde, "nNF" )
-         IF Empty( oDocSped:cNumDoc )
-            oDocSped:cErro := "Sem número de documento"
-            RETURN Nil
-         ENDIF
-         :cNumDoc          := StrZero( Val( :cNumDoc ), 9 )
-         :TipoNFe          := XmlNode( cBlocoIde, "tpNF" )  // 2018.02.23 Jackson
-         :TipoEmissao      := XmlNode( cBlocoIde, "tpEmis" ) // 2018.01.23 Jackson
-         :NaturezaOperacao := XmlNode( cBlocoIde, "natOp" ) // 2018.01.23 Jackson
-         IF ! Empty( XmlDate( XmlNode( cBlocoIde, "dhEmi" ) ) )
-            :DataHora    := XmlNode( cBlocoIde, "dEmi" ) // 2018.01.23 Jackson
-            :DataEmissao := XmlDate( XmlNode( cBlocoIde, "dhEmi" ) )
-            :DataSaida   := XmlDate( XmlNode( cBlocoIde, "dhSaiEnt" ) )
-         ELSE
-            :DataEmissao := XmlDate( XmlNode( cBlocoIde, "dEmi" ) )
-            :DataSaida   := XmlDate( XmlNode( cBlocoIde, "dSaiEnt" ) )
-         ENDIF
-         IF Empty( :DataSaida )
-            :DataSaida := oDocSped:DataEmissao
-         ENDIF
-         :cAmbiente := XmlNode( cBlocoIde, "tpAmb" )
 
-      cBlocoInfAdic := XmlNode( cXmlInput, "InfAdic" )
-         :InfAdicionais := XmlNode( cBlocoInfAdic, "InfCpl" )
+      cBlocoIde := XmlNode( cXmlInput, "ide" )
+
+      :cNumDoc := XmlNodeC( cBlocoIde, "nNF" )
+      IF Empty( :cNumDoc )
+         oDocSped:cErro := "Sem número de documento"
+         RETURN Nil
+      ENDIF
+
+      :cNumDoc          := StrZero( Val( :cNumDoc ), 9 )
+      :TipoNFe          := XmlNodeC( cBlocoIde, "tpNF" )
+      :TipoEmissao      := XmlNodeC( cBlocoIde, "tpEmis" )
+      :NaturezaOperacao := XmlNodeC( cBlocoIde, "natOp" )
+
+      :cUF         := XmlNodeC( cBlocoIde, "cUF" )
+      :cNF         := XmlNodeC( cBlocoIde, "cNF" )
+      :cDV         := XmlNodeC( cBlocoIde, "cDV" )
+      :idDest      := XmlNodeC( cBlocoIde, "idDest" )
+      :tpImp       := XmlNodeC( cBlocoIde, "tpImp" )
+      :tpEmis      := XmlNodeC( cBlocoIde, "tpEmis" )
+      :finNFe      := XmlNodeC( cBlocoIde, "finNFe" )
+      :indFinal    := XmlNodeC( cBlocoIde, "indFinal" )
+      :indPres     := XmlNodeC( cBlocoIde, "indPres" )
+      :indIntermed := XmlNodeC( cBlocoIde, "indIntermed" )
+      :procEmi     := XmlNodeC( cBlocoIde, "procEmi" )
+      :verProc     := XmlNodeC( cBlocoIde, "verProc" )
+      :cMunFG      := XmlNodeC( cBlocoIde, "cMunFG" )
+
+      IF ! Empty( XmlNode( cBlocoIde, "dhEmi" ) )
+         :DataHora    := XmlNodeDateTime( cBlocoIde, "dhEmi" )
+         :DataEmissao := XmlNodeDateOnly( cBlocoIde, "dhEmi" )
+         :DataSaidaHora := XmlNodeDateTime( cBlocoIde, "dhSaiEnt" )
+         :DataSaida   := XmlNodeDateOnly( cBlocoIde, "dhSaiEnt" )
+      ELSE
+         :DataEmissao := XmlNodeDateOnly( cBlocoIde, "dEmi" )
+         :DataSaida   := XmlNodeDateOnly( cBlocoIde, "dSaiEnt" )
+      ENDIF
+
+      IF Empty( :DataSaida )
+         :DataSaida := :DataEmissao
+      ENDIF
+
+      :cAmbiente := XmlNodeC( cBlocoIde, "tpAmb" )
+
+      cBlocoInfAdic := XmlNode( cXmlInput, "infAdic" )
+      IF Empty( cBlocoInfAdic )
+         cBlocoInfAdic := XmlNode( cXmlInput, "InfAdic" )
+      ENDIF
+
+      :InfAdicionais := XmlPickNode( cBlocoInfAdic, { "infCpl", "InfCpl" } )
+      :InfAdFisco    := XmlPickNode( cBlocoInfAdic, { "infAdFisco", "InfAdFisco" } )
    ENDWITH
 
    cBlocoEmit := XmlNode( cXmlInput, "emit" )
-      WITH OBJECT oDocSped:Emitente
-         :Cnpj              := Transform( DfeEmitente( oDocSped:cChave ), "@R !!.!!!.!!!/!!!!-!!" )
-         :Nome              := Upper( XmlNode( cBlocoEmit, "xNome" ) )
-         :InscricaoEstadual := XmlNode( cBlocoEmit, "IE" )
-         cBlocoEndereco := XmlNode( cBlocoEmit, "enderEmit" )
-            :Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
-            :Numero     := XmlNode( cBlocoEndereco, "nro" )
-            :Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
-            :Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
-            :CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
-            :Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
-            :Uf         := Upper( XmlNode( cBlocoEndereco, "UF" ) )
-            :Cep        := Transform( XmlNode( cBlocoEndereco, "CEP" ), "@R 99999-999" )
-            :Telefone   := XmlNode( cBlocoEndereco, "fone" )
-         ENDWITH
+   WITH OBJECT oDocSped:Emitente
+      :Cnpj              := Transform( DfeEmitente( oDocSped:cChave ), "@R !!.!!!.!!!/!!!!-!!" )
+      :Nome              := XmlUpper( XmlNodeC( cBlocoEmit, "xNome" ) )
+      :Fantasia          := XmlUpper( XmlNodeC( cBlocoEmit, "xFant" ) )
+      :InscricaoEstadual := XmlNodeC( cBlocoEmit, "IE" )
+      :InscricaoMunicipal:= XmlNodeC( cBlocoEmit, "IM" )
+      :CNAE              := XmlNodeC( cBlocoEmit, "CNAE" )
+      :CRT               := XmlNodeC( cBlocoEmit, "CRT" )
 
-      cBlocoDest := XmlNode( cXmlInput, "dest" )
-      WITH OBJECT oDocSped:Destinatario
-         :Cnpj := Trim( XmlNode( cBlocoDest, "CNPJ" ) )
-         IF Len( Trim( :Cnpj ) ) = 0
-            :Cnpj := XmlNode( cBlocoDest, "CPF" )
-            :Cnpj := Transform( :Cnpj, "@R 999.999.999-99" )
-         ELSE
-            :Cnpj := Transform( :Cnpj, "@R !!.!!!.!!!/!!!!-!!" )
-         ENDIF
-         :Nome := Upper( XmlNode( cBlocoDest, "xNome" ) )
-         :InscricaoEstadual := XmlNode( cBlocoDest, "IE" )
-         cBlocoEndereco := XmlNode( cBlocoDest, "enderDest" )
-            :Endereco   := Upper( XmlNode( cBlocoEndereco, "xLgr" ) )
-            :Numero     := XmlNode( cBlocoEndereco, "nro" )
-            :Complemento:= XmlNode( cBlocoEndereco, "xCpl" )
-            :Bairro     := Upper( XmlNode( cBlocoEndereco, "xBairro" ) )
-            :CidadeIbge := XmlNode( cBlocoEndereco, "cMun" )
-            :Cidade     := Upper( XmlNode( cBlocoEndereco, "xMun" ) )
-            :Uf         := Upper( XmlNode( cBlocoEndereco, "UF" ) )
-            :Cep        := Transform( XmlNode( cBlocoEndereco, "CEP" ), "@R 99999-999" )
-            :Telefone   := XmlNode( cBlocoEndereco, "fone" )
-      ENDWITH
+      cBlocoEndereco := XmlNode( cBlocoEmit, "enderEmit" )
+      :Endereco      := XmlUpper( XmlNodeC( cBlocoEndereco, "xLgr" ) )
+      :Numero        := XmlNodeC( cBlocoEndereco, "nro" )
+      :Complemento   := XmlNodeC( cBlocoEndereco, "xCpl" )
+      :Bairro        := XmlUpper( XmlNodeC( cBlocoEndereco, "xBairro" ) )
+      :CidadeIbge    := XmlNodeC( cBlocoEndereco, "cMun" )
+      :Cidade        := XmlUpper( XmlNodeC( cBlocoEndereco, "xMun" ) )
+      :Uf            := XmlUpper( XmlNodeC( cBlocoEndereco, "UF" ) )
+      :Cep           := Transform( XmlNodeC( cBlocoEndereco, "CEP" ), "@R 99999-999" )
+      :PaisBACEN     := XmlNodeC( cBlocoEndereco, "cPais" )
+      :Pais          := XmlUpper( XmlNodeC( cBlocoEndereco, "xPais" ) )
+      :Telefone      := XmlNodeC( cBlocoEndereco, "fone" )
+   ENDWITH
+
+   cBlocoDest := XmlNode( cXmlInput, "dest" )
+   WITH OBJECT oDocSped:Destinatario
+      :Cnpj := Trim( XmlNode( cBlocoDest, "CNPJ" ) )
+      IF Len( Trim( :Cnpj ) ) = 0
+         :Cnpj := XmlNode( cBlocoDest, "CPF" )
+         :Cnpj := Transform( :Cnpj, "@R 999.999.999-99" )
+      ELSE
+         :Cnpj := Transform( :Cnpj, "@R !!.!!!.!!!/!!!!-!!" )
+      ENDIF
+
+      :Nome              := XmlUpper( XmlNodeC( cBlocoDest, "xNome" ) )
+      :InscricaoEstadual := XmlNodeC( cBlocoDest, "IE" )
+      :InscricaoMunicipal:= XmlNodeC( cBlocoDest, "IM" )
+      :IndIEDest         := XmlNodeC( cBlocoDest, "indIEDest" )
+
+      cBlocoEndereco := XmlNode( cBlocoDest, "enderDest" )
+      :Endereco      := XmlUpper( XmlNodeC( cBlocoEndereco, "xLgr" ) )
+      :Numero        := XmlNodeC( cBlocoEndereco, "nro" )
+      :Complemento   := XmlNodeC( cBlocoEndereco, "xCpl" )
+      :Bairro        := XmlUpper( XmlNodeC( cBlocoEndereco, "xBairro" ) )
+      :CidadeIbge    := XmlNodeC( cBlocoEndereco, "cMun" )
+      :Cidade        := XmlUpper( XmlNodeC( cBlocoEndereco, "xMun" ) )
+      :Uf            := XmlUpper( XmlNodeC( cBlocoEndereco, "UF" ) )
+      :Cep           := Transform( XmlNodeC( cBlocoEndereco, "CEP" ), "@R 99999-999" )
+      :PaisBACEN     := XmlNodeC( cBlocoEndereco, "cPais" )
+      :Pais          := XmlUpper( XmlNodeC( cBlocoEndereco, "xPais" ) )
+      :Telefone      := XmlNodeC( cBlocoEndereco, "fone" )
+   ENDWITH
 
    cBlocoTransporte := XmlNode( cXmlInput, "transp" )
-      WITH OBJECT oDocSped:Transporte
-         :ModFrete             := XmlNode( cBlocoTransporte, "modFrete" )
-         cBlocoTransp := XmlNode( cBlocoTransporte, "transporta" )
-            :Cnpj              := Transform( XmlNode( cBlocoTransp, "CNPJ" ), "@R !!.!!!.!!!/!!!!-!!" )
-            :Nome              := Upper( XmlNode( cBlocoTransp, "xNome" ) )
-            :InscricaoEstadual := XmlNode( cBlocoTransp, "IE" )
-            :Endereco          := Upper( XmlNode( cBlocoTransp, "xEnder" ) )
-            :Cidade            := Upper( XmlNode( cBlocoTransp, "xMun" ) )
-            :Uf                := Upper( XmlNode( cBlocoTransp, "UF" ) )
-         cBlocoVol := XmlNode( cBlocoTransporte, "vol" )
-            :Volumes:Qtde        := Val( XmlNode( cBlocoVol, "qVol" ) )
-            :Volumes:Especie     := Left( Upper( XmlNode( cBlocoVol, "esp" ) ), 10 )
-            :Volumes:Marca       := Upper( XmlNode( cBlocoVol, "marca" ) )
-            :Volumes:PesoLiquido := Val( XmlNode( cBlocoVol, "pesoL" ) )
-            :Volumes:PesoBruto   := Val( XmlNode( cBlocoVol, "pesoB" ) )
-            :Volumes:Numeros     := XmlNode( cBlocoVol, "nvol" ) // 2018.01.23 Jackson
-         cBlocoVeiculo := XmlNode( cBlocoTransporte, "veicTransp" )
-            :PlacaUf := Upper( XmlNode( cBlocoVeiculo, "UF" ) )
-            :Placa   := Upper( XmlNode( cBlocoVeiculo, "placa" ) )
-      ENDWITH
+   WITH OBJECT oDocSped:Transporte
+      :ModFrete := XmlNodeC( cBlocoTransporte, "modFrete" )
 
-   cBlocoTotal := XmlNode( cXmlInput, "total" )
+      cBlocoTransp := XmlNode( cBlocoTransporte, "transporta" )
+      :Cnpj              := Transform( XmlNodeC( cBlocoTransp, "CNPJ" ), "@R !!.!!!.!!!/!!!!-!!" )
+      :Nome              := XmlUpper( XmlNodeC( cBlocoTransp, "xNome" ) )
+      :InscricaoEstadual := XmlNodeC( cBlocoTransp, "IE" )
+      :Endereco          := XmlUpper( XmlNodeC( cBlocoTransp, "xEnder" ) )
+      :Cidade            := XmlUpper( XmlNodeC( cBlocoTransp, "xMun" ) )
+      :Uf                := XmlUpper( XmlNodeC( cBlocoTransp, "UF" ) )
+
+      cBlocoVol := XmlNode( cBlocoTransporte, "vol" )
+      :Volumes:Qtde        := XmlNodeN( cBlocoVol, "qVol" )
+      :Volumes:Especie     := XmlUpper( XmlNodeC( cBlocoVol, "esp" ) )
+      :Volumes:Marca       := XmlUpper( XmlNodeC( cBlocoVol, "marca" ) )
+      :Volumes:PesoLiquido := XmlNodeN( cBlocoVol, "pesoL" )
+      :Volumes:PesoBruto   := XmlNodeN( cBlocoVol, "pesoB" )
+      :Volumes:Numeros     := XmlPickNode( cBlocoVol, { "nVol", "nvol" } )
+
+      cBlocoVeiculo := XmlNode( cBlocoTransporte, "veicTransp" )
+      :PlacaUf := XmlUpper( XmlNodeC( cBlocoVeiculo, "UF" ) )
+      :Placa   := XmlUpper( XmlNodeC( cBlocoVeiculo, "placa" ) )
+   ENDWITH
+
+   cBlocoICMSTot := XmlNode( cXmlInput, "ICMSTot" )
+   WITH OBJECT oDocSped:Totais
+      :IpiVal      := XmlNodeN( cBlocoICMSTot, "vIPI" )
+      :IIVal       := XmlNodeN( cBlocoICMSTot, "vII" )
+      :IcmBas      := XmlNodeN( cBlocoICMSTot, "vBC" )
+      :IcmVal      := XmlNodeN( cBlocoICMSTot, "vICMS" )
+      :SubBas      := XmlNodeN( cBlocoICMSTot, "vBCST" )
+      :SubVal      := XmlNodeN( cBlocoICMSTot, "vST" )
+      :MonBas      := XmlNodeN( cBlocoICMSTot, "qBCMono" )
+      :MonVal      := XmlNodeN( cBlocoICMSTot, "vICMSMono" )
+      :PisVal      := XmlNodeN( cBlocoICMSTot, "vPIS" )
+      :CofVal      := XmlNodeN( cBlocoICMSTot, "vCOFINS" )
+      :ValPro      := XmlNodeN( cBlocoICMSTot, "vProd" )
+      :ValSeg      := XmlNodeN( cBlocoICMSTot, "vSeg" )
+      :ValFre      := XmlNodeN( cBlocoICMSTot, "vFrete" )
+      :ValDesc     := XmlNodeN( cBlocoICMSTot, "vDesc" )
+      :ValOut      := XmlNodeN( cBlocoICMSTot, "vOutro" )
+      :ValNot      := XmlNodeN( cBlocoICMSTot, "vNF" )
+      :ValTrib     := XmlNodeN( cBlocoICMSTot, "vTotTrib" )
+      :VIcmsDeson  := XmlNodeN( cBlocoICMSTot, "vICMSDeson" )
+      :VFCPUFDest  := XmlNodeN( cBlocoICMSTot, "vFCPUFDest" )
+      :VICMSUFDest := XmlNodeN( cBlocoICMSTot, "vICMSUFDest" )
+      :VICMSUFRemet:= XmlNodeN( cBlocoICMSTot, "vICMSUFRemet" )
+      :VFCP        := XmlNodeN( cBlocoICMSTot, "vFCP" )
+      :VFCPST      := XmlNodeN( cBlocoICMSTot, "vFCPST" )
+      :VFCPSTRet   := XmlNodeN( cBlocoICMSTot, "vFCPSTRet" )
+      :VIPIDevol   := XmlNodeN( cBlocoICMSTot, "vIPIDevol" )
+   ENDWITH
+
+   cBlocoIBSTot := XmlNode( cXmlInput, "IBSCBSTot" )
+   IF ! Empty( cBlocoIBSTot )
       WITH OBJECT oDocSped:Totais
-         :IpiVal   := Val( XmlNode( cBlocoTotal, "vIPI" ) )
-         :IIVal    := Val( XmlNode( cBlocoTotal, "vII" ) )
-         :IcmBas   := Val( XmlNode( cBlocoTotal, "vBC" ) )
-         :IcmVal   := Val( XmlNode( cBlocoTotal, "vICMS" ) )
-         :SubBas   := Val( XmlNode( cBlocoTotal, "vBCST" ) )
-         :SubVal   := Val( XmlNode( cBlocoTotal, "vST" ) )
-         :MonBas   := Val( XmlNode( cBlocoTotal, "qBCMono" ) )
-         :MonVal   := Val( XmlNode( cBlocoTotal, "vICMSMono" ) )
-         :PisVal   := Val( XmlNode( cBlocoTotal, "vPIS" ) )
-         :CofVal   := Val( XmlNode( cBlocoTotal, "vCOFINS" ) )
-         :ValPro   := Val( XmlNode( cBlocoTotal, "vProd" ) )
-         :ValSeg   := Val( XmlNode( cBlocoTotal, "vSeg" ) )
-         :ValFre   := Val( XmlNode( cBlocoTotal, "vFrete" ) )
-         :ValDesc  := Val( XmlNode( cBlocoTotal, "vDesc" ) ) // 2018.01.23 Jackson
-         :ValOut   := Val( XmlNode( cBlocoTotal, "vOutro" ) )
-         :ValNot   := Val( XmlNode( cBlocoTotal, "vNF" ) )
-         :ValTrib  := Val( XmlNode( cBlocoTotal, "vTotTrib" ) ) // 2018.01.23 Jackson
+         :RT_vBCIBSCBS := XmlNodeN( cBlocoIBSTot, "vBCIBSCBS" )
+
+         cBlocoIBSGeral := XmlNode( cBlocoIBSTot, "gIBS" )
+         cBlocoIBSUF    := XmlNode( cBlocoIBSGeral, "gIBSUF" )
+         cBlocoIBSMUN   := XmlNode( cBlocoIBSGeral, "gIBSMun" )
+         cBlocoCBS      := XmlNode( cBlocoIBSTot, "gCBS" )
+
+         :RT_vIBSUF           := XmlNodeN( cBlocoIBSUF, "vIBSUF" )
+         :RT_vIBSMun          := XmlNodeN( cBlocoIBSMUN, "vIBSMun" )
+         :RT_vIBS             := XmlNodeN( cBlocoIBSGeral, "vIBS" )
+         :RT_vCredPresIBS     := XmlNodeN( cBlocoIBSGeral, "vCredPres" )
+         :RT_vCredPresCondIBS := XmlNodeN( cBlocoIBSGeral, "vCredPresCondSus" )
+
+         :RT_vCBS             := XmlNodeN( cBlocoCBS, "vCBS" )
+         :RT_vCredPresCBS     := XmlNodeN( cBlocoCBS, "vCredPres" )
+         :RT_vCredPresCondCBS := XmlNodeN( cBlocoCBS, "vCredPresCondSus" )
       ENDWITH
+   ENDIF
 
    aList := MultipleNodeToArray( cXmlInput, "det" )
    FOR EACH cBlocoItem IN aList
       AAdd( oDocSped:Produto, NFEProdutoClass():New() )
+
       WITH OBJECT Atail( oDocSped:Produto )
+
          cBlocoProd := XmlNode( cBlocoItem, "prod" )
-            :Codigo          := XmlNode( cBlocoProd, "cProd" )
-            :Nome            := Upper( XmlNode( cBlocoProd, "xProd" ) )
-            :CFOP            := Transform( XmlNode( cBlocoProd, "CFOP" ), "@R 9.9999" )
-            :NCM             := XmlNode( cBlocoProd, "NCM" )
-            :GTIN            := SoNumero( XmlNode( cBlocoProd, "cEAN" ) )
-            :GTINTrib        := SoNumero( XmlNode( cBlocoProd, "cEANTrib" ) )
-            :CEST            := SoNumero( XmlNode( cBLocoProd, "CEST" ) )
-            IF Empty( :GTINTrib )
-               :GTINTrib := :GTIN
-            ENDIF
-            :CBenef          := XmlNode( cBlocoProd, "cBenef" )
-            :Unidade         := Upper( XmlNode( cBlocoProd, "uCom" ) )
-            :UnidTrib        := Upper( XmlNode( cBlocoProd, "uTrib" ) ) // 2019.01.08 Fernando Queiroz
-            :Qtde            := Val( XmlNode( cBlocoProd, "qCom" ) )
-            :QtdeTrib        := Val( XmlNode( cBlocoProd, "qTrib" ) ) // 2019.01.08 Fernando Queiroz
-            :ValorUnitario   := Val( XmlNode( cBlocoProd, "vUnCom" ) )
-            :ValUnitTrib     := Val( XmlNode( cBlocoProd, "vUnTrib" ) ) // 2019.01.08 Fernando Queiroz
-            :ValorTotal      := Val( XmlNode( cBlocoProd, "vProd" ) )
-            :Desconto        := Val( XmlNode( cBlocoProd, "vDesc" ) ) // 2018.01.23 Jackson
-            :Pedido          := Val( XmlNode( cBlocoProd, "xPed" ) ) // 2018.01.23 Jackson
-            :FCI             := XmlNode( cBlocoProd, "nFCI" ) // 2024.09.01
+         :Codigo          := XmlNodeC( cBlocoProd, "cProd" )
+         :Nome            := XmlUpper( XmlNodeC( cBlocoProd, "xProd" ) )
+         :CFOP            := Transform( XmlNodeC( cBlocoProd, "CFOP" ), "@R 9.9999" )
+         :NCM             := XmlNodeC( cBlocoProd, "NCM" )
+         :GTIN            := SoNumero( XmlNodeC( cBlocoProd, "cEAN" ) )
+         :GTINTRIB        := SoNumero( XmlNodeC( cBlocoProd, "cEANTrib" ) )
+         :CEST            := SoNumero( XmlNodeC( cBlocoProd, "CEST" ) )
+         IF Empty( :GTINTRIB )
+            :GTINTRIB := :GTIN
+         ENDIF
+         :CBenef          := XmlNodeC( cBlocoProd, "cBenef" )
+         :Unidade         := XmlUpper( XmlNodeC( cBlocoProd, "uCom" ) )
+         :UnidTrib        := XmlUpper( XmlNodeC( cBlocoProd, "uTrib" ) )
+         :Qtde            := XmlNodeN( cBlocoProd, "qCom" )
+         :QtdeTrib        := XmlNodeN( cBlocoProd, "qTrib" )
+         :ValorUnitario   := XmlNodeN( cBlocoProd, "vUnCom" )
+         :ValUnitTrib     := XmlNodeN( cBlocoProd, "vUnTrib" )
+         :ValorTotal      := XmlNodeN( cBlocoProd, "vProd" )
+         :Desconto        := XmlNodeN( cBlocoProd, "vDesc" )
+         :Pedido          := XmlNodeC( cBlocoProd, "xPed" )
+         :FCI             := XmlNodeC( cBlocoProd, "nFCI" )
+
          cBlocoTributos := XmlNode( cBlocoItem, "IBSCBS" )
-            :Tributos:TriCBS          := XmlNode( cBlocoTributos, "cClassTrib" )
-            :Tributos:TriIS           := XmlNode( cBlocoTributos, "xxx" ) // a definir
-         cBlocoIpi := XmlNode( cBlocoItem, "IPI" )
-            :Ipi:Cst         := XmlNode( cBlocoIpi, "CST" )
-            :Ipi:Enq         := XmlNode( cBlocoIpi, "cEnq" )
-            :Ipi:Base        := Val( XmlNode( cBlocoIpi, "vBC" ) )
-            :Ipi:Aliquota    := Val( XmlNode( cBlocoIpi, "pIPI" ) )
-            :Ipi:Valor       := Val( XmlNode( cBlocoIpi, "vIPI" ) )
-         cBlocoIcms := XmlNode( cBlocoItem, "ICMS" )
-            :Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CST" )
-            :Icms:modBC   := Val( XmlNode( cBlocoIcms, "modBC" ) )
-            IF Len( :Icms:Cst ) < 3
-               :Icms:Cst     := XmlNode( cBlocoIcms, "orig" ) + XmlNode( cBlocoIcms, "CSOSN" )
+         IF ! Empty( cBlocoTributos )
+            :Tributos:TriCBS       := XmlNodeC( cBlocoTributos, "cClassTrib" )
+            :Tributos:RTcClassTrib := XmlNodeC( cBlocoTributos, "cClassTrib" )
+            :Tributos:RTCST        := XmlNodeC( cBlocoTributos, "CST" )
+
+            cBlocoIBSItem := XmlNode( cBlocoTributos, "gIBSCBS" )
+            :Tributos:RTvBC  := XmlNodeN( cBlocoIBSItem, "vBC" )
+            :Tributos:RTvIBS := XmlNodeN( cBlocoIBSItem, "vIBS" )
+
+            cBlocoIBSItemUF := XmlNode( cBlocoIBSItem, "gIBSUF" )
+            :Tributos:RTpIBSUF := XmlNodeN( cBlocoIBSItemUF, "pIBSUF" )
+            :Tributos:RTvIBSUF := XmlNodeN( cBlocoIBSItemUF, "vIBSUF" )
+            :Tributos:RTpRedAliqIBSUF := XmlNodeN( cBlocoIBSItemUF, "pRedAliq" )
+            IF :Tributos:RTpRedAliqIBSUF = 0
+               cTmp := XmlNode( cBlocoIBSItemUF, "gRed" )
+               :Tributos:RTpRedAliqIBSUF  := XmlNodeN( cTmp, "pRedAliq" )
+               :Tributos:RTpAliqEfetIBSUF := XmlNodeN( cTmp, "pAliqEfet" )
+            ELSE
+               :Tributos:RTpAliqEfetIBSUF := XmlNodeN( cBlocoIBSItemUF, "pAliqEfet" )
             ENDIF
-            :Icms:Base       := Val( XmlNode( cBlocoIcms, "vBC" ) )
-            :Icms:Reducao    := Val( XmlNode( cBlocoIcms, "pRedBC" ) )
-            :Icms:Aliquota   := Val( XmlNode( cBlocoIcms, "pICMS" ) )
-            :Icms:Valor      := Val( XmlNode( cBlocoIcms, "vICMS" ) )
-            :IcmsSt:Base     := Val( XmlNode( cBlocoIcms, "vBCST" ) )
-            :IcmsSt:Iva      := Val( XmlNode( cBlocoIcms, "pMVAST" ) )
-            :IcmsSt:Reducao  := Val( XmlNode( cBlocoIcms, "pRedBCST" ) )
-            :IcmsSt:Aliquota := Val( XmlNode( cBlocoIcms, "pICMSST" ) )
-            :IcmsSt:Valor    := Val( XmlNode( cBlocoIcms, "vICMSST" ) )
-            :IcmsMono:Base   := Val( XmlNode( cBlocoIcms, "qBCMono" ) )
-            :IcmsMono:Aliquota := Val( XmlNode( cBlocoIcms, "adRemICMS" ) )
-            :IcmsMono:Valor  := Val( XmlNode( cBlocoIcms, "vICMSMono" ) )
+
+            cBlocoIBSItemMUN := XmlNode( cBlocoIBSItem, "gIBSMun" )
+            :Tributos:RTpIBSMUN := XmlNodeN( cBlocoIBSItemMUN, "pIBSMun" )
+            :Tributos:RTvIBSMUN := XmlNodeN( cBlocoIBSItemMUN, "vIBSMun" )
+            :Tributos:RTpRedAliqIBSMUN := XmlNodeN( cBlocoIBSItemMUN, "pRedAliq" )
+            IF :Tributos:RTpRedAliqIBSMUN = 0
+               cTmp := XmlNode( cBlocoIBSItemMUN, "gRed" )
+               :Tributos:RTpRedAliqIBSMUN  := XmlNodeN( cTmp, "pRedAliq" )
+               :Tributos:RTpAliqEfetIBSMUN := XmlNodeN( cTmp, "pAliqEfet" )
+            ELSE
+               :Tributos:RTpAliqEfetIBSMUN := XmlNodeN( cBlocoIBSItemMUN, "pAliqEfet" )
+            ENDIF
+
+            cBlocoIBSItemCBS := XmlNode( cBlocoIBSItem, "gCBS" )
+            :Tributos:RTpCBS := XmlNodeN( cBlocoIBSItemCBS, "pCBS" )
+            :Tributos:RTvCBS := XmlNodeN( cBlocoIBSItemCBS, "vCBS" )
+            :Tributos:RTpRedAliqCBS := XmlNodeN( cBlocoIBSItemCBS, "pRedAliq" )
+            IF :Tributos:RTpRedAliqCBS = 0
+               cTmp := XmlNode( cBlocoIBSItemCBS, "gRed" )
+               :Tributos:RTpRedAliqCBS  := XmlNodeN( cTmp, "pRedAliq" )
+               :Tributos:RTpAliqEfetCBS := XmlNodeN( cTmp, "pAliqEfet" )
+            ELSE
+               :Tributos:RTpAliqEfetCBS := XmlNodeN( cBlocoIBSItemCBS, "pAliqEfet" )
+            ENDIF
+
+            :Tributos:RTpIS := XmlNodeN( cBlocoTributos, "pIS" )
+            :Tributos:RTvIS := XmlNodeN( cBlocoTributos, "vIS" )
+         ENDIF
+
+         cBlocoIpi := XmlNode( cBlocoItem, "IPI" )
+         :Ipi:Cst         := XmlNodeC( cBlocoIpi, "CST" )
+         :Ipi:Enq         := XmlNodeC( cBlocoIpi, "cEnq" )
+         :Ipi:Base        := XmlNodeN( cBlocoIpi, "vBC" )
+         :Ipi:Aliquota    := XmlNodeN( cBlocoIpi, "pIPI" )
+         :Ipi:Valor       := XmlNodeN( cBlocoIpi, "vIPI" )
+
+         cBlocoIcms := XmlNode( cBlocoItem, "ICMS" )
+         :Icms:Cst     := XmlNodeC( cBlocoIcms, "orig" ) + XmlNodeC( cBlocoIcms, "CST" )
+         :Icms:modBC   := XmlNodeN( cBlocoIcms, "modBC" )
+         IF Len( :Icms:Cst ) < 3
+            :Icms:Cst := XmlNodeC( cBlocoIcms, "orig" ) + XmlNodeC( cBlocoIcms, "CSOSN" )
+         ENDIF
+         :Icms:Base       := XmlNodeN( cBlocoIcms, "vBC" )
+         :Icms:Reducao    := XmlNodeN( cBlocoIcms, "pRedBC" )
+         :Icms:Aliquota   := XmlNodeN( cBlocoIcms, "pICMS" )
+         :Icms:Valor      := XmlNodeN( cBlocoIcms, "vICMS" )
+         :Icms:VDeson     := XmlNodeN( cBlocoIcms, "vICMSDeson" )
+
+         :IcmsSt:Base            := XmlNodeN( cBlocoIcms, "vBCST" )
+         :IcmsSt:IVA             := XmlNodeN( cBlocoIcms, "pMVAST" )
+         :IcmsSt:Reducao         := XmlNodeN( cBlocoIcms, "pRedBCST" )
+         :IcmsSt:Aliquota        := XmlNodeN( cBlocoIcms, "pICMSST" )
+         :IcmsSt:Valor           := XmlNodeN( cBlocoIcms, "vICMSST" )
+         :IcmsSt:BaseRet         := XmlNodeN( cBlocoIcms, "vBCSTRet" )
+         :IcmsSt:ValorRet        := XmlNodeN( cBlocoIcms, "vICMSSTRet" )
+         :IcmsSt:ValorSubstituto := XmlNodeN( cBlocoIcms, "vICMSSubstituto" )
+         :IcmsSt:pST             := XmlNodeN( cBlocoIcms, "pST" )
+         :IcmsSt:pRedBCEfet      := XmlNodeN( cBlocoIcms, "pRedBCEfet" )
+         :IcmsSt:vBCEfet         := XmlNodeN( cBlocoIcms, "vBCEfet" )
+         :IcmsSt:pICMSEfet       := XmlNodeN( cBlocoIcms, "pICMSEfet" )
+         :IcmsSt:vICMSEfet       := XmlNodeN( cBlocoIcms, "vICMSEfet" )
+
+         :IcmsMono:Base   := XmlNodeN( cBlocoIcms, "qBCMono" )
+         :IcmsMono:Aliquota := XmlNodeN( cBlocoIcms, "adRemICMS" )
+         :IcmsMono:Valor  := XmlNodeN( cBlocoIcms, "vICMSMono" )
+
          cBlocoPis := XmlNode( cBlocoItem, "PIS" )
-            :Pis:Cst         := XmlNode( cBlocoPis, "CST" )
-            :Pis:Base        := Val( XmlNode( cBlocoPis, "vBC" ) )
-            :Pis:Aliquota    := Val( XmlNode( cBlocoPis, "pPIS" ) )
-            :Pis:Valor       := Val( XmlNode( cBlocoPis, "vPIS" ) )
+         :Pis:Cst         := XmlNodeC( cBlocoPis, "CST" )
+         :Pis:Base        := XmlNodeN( cBlocoPis, "vBC" )
+         :Pis:Aliquota    := XmlNodeN( cBlocoPis, "pPIS" )
+         :Pis:Valor       := XmlNodeN( cBlocoPis, "vPIS" )
+
          cBlocoCofins := XmlNode( cBlocoItem, "COFINS" )
-            :Cofins:Cst      := XmlNode( cBlocoCofins, "CST" )
-            :Cofins:Base     := Val( XmlNode( cBlocoCofins, "vBC" ) )
-            :Cofins:Aliquota := Val( XmlNode( cBlocoCofins, "pCOFINS" ) )
-            :Cofins:Valor    := Val( XmlNode( cBlocoCofins, "vCOFINS" ) )
+         :Cofins:Cst      := XmlNodeC( cBlocoCofins, "CST" )
+         :Cofins:Base     := XmlNodeN( cBlocoCofins, "vBC" )
+         :Cofins:Aliquota := XmlNodeN( cBlocoCofins, "pCOFINS" )
+         :Cofins:Valor    := XmlNodeN( cBlocoCofins, "vCOFINS" )
+
          cBlocoComb := XmlNode( cBlocoItem, "comb" )
-            :Anp             := XmlNode( cBlocoComb, "cProdANP" )
+         :Anp := XmlNodeC( cBlocoComb, "cProdANP" )
+
          aList2 := MultipleNodeToArray( cBlocoItem, "rastro" )
-            FOR EACH cBlocoRastro IN aList2
-               AAdd( :Rastro, NfeRastroClass() )
-               WITH OBJECT Atail( :Rastro )
-                  :nLote := XmlNode( cBlocoRastro, "nLote" )
-                  :qLote := Val( XmlNode( cBlocoRastro, "qLote" ) )
-                  :dFab  := XmlDate( XmlNode( cBlocoRastro, "dFab" ) )
-                  :dVal  := XmlDate( XmlNode( cBlocoRastro, "dVal" ) )
-               ENDWITH
-            NEXT
-         :InfAdicional := XmlNode( cBlocoItem, "infAdProd" ) // 2018.01.23 Jackson
+         FOR EACH cBlocoRastro IN aList2
+            AAdd( :Rastro, NfeRastroClass():New() )
+            WITH OBJECT Atail( :Rastro )
+               :nLote := XmlNodeC( cBlocoRastro, "nLote" )
+               :qLote := XmlNodeN( cBlocoRastro, "qLote" )
+               :dFab  := XmlDate( XmlNode( cBlocoRastro, "dFab" ) )
+               :dVal  := XmlDate( XmlNode( cBlocoRastro, "dVal" ) )
+            ENDWITH
+         NEXT
+
+         :InfAdicional := XmlNodeC( cBlocoItem, "infAdProd" )
       ENDWITH
    NEXT
 
    cBlocoCobranca := XmlNode( cXmlInput, "cobr" )
    aList := MultipleNodeToArray( cBlocoCobranca, "dup" )
    FOR EACH cBlocoDup IN aList
-      //cBlocoDup := XmlNode( cBlocoCobranca, "dup" )
-      //IF Len( Trim( cBlocoDup ) ) = 0
-      //   EXIT
-      //ENDIF
       AAdd( oDocSped:Duplicata, NFEDuplicataClass():New() )
       WITH OBJECT Atail( oDocSped:Duplicata )
-         :Fatura     := XmlNode( cBlocoCobranca, "nFat" ) // 2024.09.18 Queiroz
-         :Duplicata  := XmlNode( cBlocoDup, "nDup" ) // 2018.01.23 Jackson
+         :Fatura     := XmlNodeC( cBlocoCobranca, "nFat" )
+         :Duplicata  := XmlNodeC( cBlocoDup, "nDup" )
          :Vencimento := XmlDate( XmlNode( cBlocoDup, "dVenc" ) )
-         :Valor      := Val( XmlNode( cBlocoDup, "vDup" ) )
+         :Valor      := XmlNodeN( cBlocoDup, "vDup" )
       ENDWITH
    NEXT
 
-   // Detalhes dos Blocos de Pagamentos na NFCe
-   // 2018.02.23 Jackson
-   aList := MultipleNodeToArray( cXmlInput, "pag" )
+   aList := MultipleNodeToArray( cXmlInput, "detPag" )
    FOR EACH cBlocoPG IN aList
       AAdd( oDocSped:Pagamentos, NfePagamentosClass():New() )
       WITH OBJECT Atail( oDocSped:Pagamentos )
-         :TipoPago    := XmlNode( cBlocoPG, "tPag" )
-         :ValorPago   := Val( XmlNode( cBlocoPG, "vPag" ) )
-         :Integracao  := XmlNode( cBlocoPG, "tpIntegra" )
-         :Cnpj_Ope    := XmlNode( cBlocoPG, "CNPJ" )
-         :Bandeira    := XmlNode( cBlocoPG, "tBand" )
-         :Autorizacao := XmlNode( cBlocoPG, "cAut" )
+         :IndPag      := XmlNodeC( cBlocoPG, "indPag" )
+         :TipoPago    := XmlNodeC( cBlocoPG, "tPag" )
+         :ValorPago   := XmlNodeN( cBlocoPG, "vPag" )
+         :Integracao  := XmlNodeC( cBlocoPG, "tpIntegra" )
+         :Cnpj_Ope    := XmlNodeC( cBlocoPG, "CNPJ" )
+         :Bandeira    := XmlNodeC( cBlocoPG, "tBand" )
+         :Autorizacao := XmlNodeC( cBlocoPG, "cAut" )
       ENDWITH
    NEXT
 
-   WITH OBJECT oDocSPed
-      :Protocolo := XmlNode( cXmlInput, "nProt" )
-      :Status    := XmlNode( cXmlInput, "cStat" )
+   IF Len( oDocSped:Pagamentos ) = 0
+      aList := MultipleNodeToArray( cXmlInput, "pag" )
+      FOR EACH cBlocoPGPai IN aList
+         AAdd( oDocSped:Pagamentos, NfePagamentosClass():New() )
+         WITH OBJECT Atail( oDocSped:Pagamentos )
+            :IndPag      := XmlNodeC( cBlocoPGPai, "indPag" )
+            :TipoPago    := XmlNodeC( cBlocoPGPai, "tPag" )
+            :ValorPago   := XmlNodeN( cBlocoPGPai, "vPag" )
+            :Integracao  := XmlNodeC( cBlocoPGPai, "tpIntegra" )
+            :Cnpj_Ope    := XmlNodeC( cBlocoPGPai, "CNPJ" )
+            :Bandeira    := XmlNodeC( cBlocoPGPai, "tBand" )
+            :Autorizacao := XmlNodeC( cBlocoPGPai, "cAut" )
+         ENDWITH
+      NEXT
+   ENDIF
+
+   WITH OBJECT oDocSped
+      :Protocolo := XmlNodeC( cXmlInput, "nProt" )
+      :Status    := XmlNodeC( cXmlInput, "cStat" )
+      :VerAplic  := XmlNodeC( cXmlInput, "verAplic" )
+      :DhRecbto  := XmlNodeC( cXmlInput, "dhRecbto" )
+      :DigVal    := XmlNodeC( cXmlInput, "digVal" )
+      :xMotivo   := XmlNodeC( cXmlInput, "xMotivo" )
    ENDWITH
 
    RETURN Nil
