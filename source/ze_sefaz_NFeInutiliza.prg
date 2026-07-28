@@ -22,10 +22,10 @@ FUNCTION ze_sefaz_NFeInutiliza( Self, cAno, cCnpj, cMod, cSerie, cNumIni, cNumFi
    ::cXmlDocumento +=       XmlTag( "cUF", ::UFCodigo( ::cUF ) )
    ::cXmlDocumento +=       XmlTag( "ano", Right( cAno, 2 ) )
    ::cXmlDocumento +=       XmlTag( "CNPJ", SoNumero( cCnpj ) )
-   ::cXmlDocumento +=       XmlTag( "mod", StrZero( Val( cMod ), 3 ) )
-   ::cXmlDocumento +=       XmlTag( "serie", StrZero( Val( cSerie ), 3 ) )
-   ::cXmlDocumento +=       XmlTag( "nNFIni", StrZero( Val( cNumIni ), 9 ) )
-   ::cXmlDocumento +=       XmlTag( "nNFFin", StrZero( Val( cNumFim ), 9 ) )
+   ::cXmlDocumento +=       XmlTag( "mod", StrZero( Val( cMod ), 2 ) )
+   ::cXmlDocumento +=       XmlTag( "serie", Ltrim( Str( Val( cSerie ) ) ) )
+   ::cXmlDocumento +=       XmlTag( "nNFIni", Ltrim( Str( Val( cNumIni ) ) ) )
+   ::cXmlDocumento +=       XmlTag( "nNFFin", Ltrim( Str( ( Val( cNumFim ) ) ) ) )
    ::cXmlDocumento +=       XmlTag( "xJust", cJustificativa )
    ::cXmlDocumento +=    [</infInut>]
    ::cXmlDocumento += [</inutNFe>]
