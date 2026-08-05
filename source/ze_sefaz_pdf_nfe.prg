@@ -281,7 +281,8 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
    IF Empty( ::aEntrega[ "CNPJ" ] )
       ::aEntrega[ "CNPJ" ] := ::aEntrega[ "CPF" ]
    ENDIF
-   ::aICMSTotal  := XmlToHash( XmlNode( ::cXml, "ICMSTot" ), { "vBC", "vICMS", "vBCST", "vST", "vICMSUFDest","vProd", "vFrete", "vSeg", "vDesc", "vII", "vIPI", "vPIS", "vCOFINS", "vOutro", "vNF" } )
+   ::aICMSTotal  := XmlToHash( XmlNode( ::cXml, "ICMSTot" ), { "vBC", "vICMS", ;
+      "vBCST", "vST", "vICMSUFDest","qBCMonoRet", "vICMSMonoRet", "vProd", "vFrete", "vSeg", "vDesc", "vII", "vIPI", "vPIS", "vCOFINS", "vOutro", "vNF" } )
    ::aISSTotal   := XmlToHash( XmlNode( ::cXml, "ISSQNtot" ), { "vServ", "vBC", "vISS", "vPIS", "vCOFINS" } )
    ::aRetTrib    := XmlToHash( XmlNode( ::cXml, "RetTrib" ), { "vRetPIS", "vRetCOFINS", "vRetCSLL", "vBCIRRF", "vIRRF", "vBCRetPrev", "vRetPrev" } )
    ::aTransp     := XmlToHash( XmlNode( ::cXml, "transp" ), { "modFrete", "CNPJ", "CPF", "xNome", "IE", "xEnder", "xMun", "UF", "qVol", "esp", "marca", "nVol", "pesoL", "pesoB", "nLacre" } )
@@ -718,6 +719,14 @@ METHOD QuadroImposto() CLASS hbNFeDaNFe
       { "VALOR DO IPI",                        Val( ::aICMSTotal[ "vIPI" ] ) }, ;
       { "VALOR TOTAL DA NOTA FISCAL",          Val( ::aICMSTotal[ "vNF" ] ) } } // último segunda linha
    LOCAL nHalf, nWidth, aItem, nCol := 5
+
+   // monofásico para crédito, caso não tenha ST
+   IF Val( ::aICMSTotal[ "vICMSMonoRet" ] ) != 0 .AND. Val( ::aICMSTotal[ "vST" ] ) == 0
+      aList[ 3, 1 ] := "BASE DE CÁLCULO ICMS MONOFÁSICO"
+      aList[ 3, 2 ] := Val( ::aICMSTotal[ "qBCMonoRet" ] )
+      aList[ 4, 1 ] := "VALOR ICMS MONOFÁSICO"
+      aList[ 4, 2 ] := Val( ::aICMSTotal[ "vICMSMonoRet" ] )
+   ENDIF
 
    nHalf    := Round( Len( aList ) / 2 + 0.4, 0 )
 
