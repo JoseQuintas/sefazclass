@@ -9,12 +9,12 @@ PROCEDURE Main
    oSignedCode := win_OleCreateObject( "CAPICOM.SignedCode" )
    oSigner     := win_OleCreateObject( "CAPICOM.Signer" )
 
-   oSignedCode:FileName       := "d:\temp\test2.exe"
+   oSignedCode:FileName       := "d:\temp\test.exe"
    oSignedCode:Description    := "José M. C. Quintas"
    oSignedCode:DescriptionURL := "www.jpatecnologia.com.br"
    ? oSignedCode:Sign( oSigner )
-   ? oSignedCode:TimeStamp( URL )
-   ? oSignedCode:Verify()
+   //? oSignedCode:TimeStamp( URL )
+   //? oSignedCode:Verify()
 
    FOR EACH oElement IN oSignedCode:Certificates
       ? oElement:SubjectName

@@ -162,7 +162,9 @@ STATIC FUNCTION GeraQRCode( cXmlAssinado, cIdToken, cCSC, cVersao, cVersaoQrCode
             QRCODE_tpidDest := QRCODE_tpidDest                + "|"
             QRCODE_idDest   := QRCODE_idDest   + "|"
 
-            QRCODE_cHash    := Upper( HB_SHA1( QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_dhEmi + QRCODE_vNF + QRCODE_tpidDest + QRCODE_idDest ) )
+            QRCODE_cHash    := QRCODE_chNFe + QRCODE_nVersao + QRCODE_tpAmb + QRCODE_dhEmi + QRCODE_vNF + QRCODE_tpidDest + QRCODE_idDest
+            // trocar pra assinar
+            QRCODE_cHash    := Upper( HB_SHA1( QRCODE_cHash ) )
 
             // Resultado da URL formada a ser incluida na imagem QR Code
             QRCODE_cTag     := QRCODE_Url + "p=" +;
