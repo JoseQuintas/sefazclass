@@ -316,6 +316,13 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
       ::aInfAdic[ "infCpl" ] += ";" + TrimXml( "LOCAL DE RETIRADA: " + ::aRetirada[ "xLgr" ] + " " + ::aRetirada[ "nro" ] + " " + ;
          ::aRetirada[ "xBairro" ] + " " + ::aRetirada[ "xMun" ] + " " + ::aRetirada[ "UF" ] )
    ENDIF
+   // ref empresa com permissão de crédito
+   IF Val( ::aIcmsTotal[ "vICMSMonoRet" ] ) != 0 .AND. ! "monofasico" $ Lower( ::aInfAdic[ "infCpl" ] )
+      ::aInfAdic[ "infCpl" ] += ";"
+      ::aInfAdic[ "infCpl" ] += "CST 61 ICMS MONOFASICO COBRADO ANTERIORMENTE CONVENIO 199/2022"
+      ::aInfAdic[ "infCpl" ] += " BASE DE CALCULO " + Ltrim( Str( Val( ::aIcmsTotal[ "qBCMonoRet" ] ), 14, 2 ) )
+      ::aInfAdic[ "infCpl" ] += " IMPOSTO " + Ltrim( Transform( Val( ::aIcmsTotal[ "vICMSMonoRet" ] ), "@E 999,999,999.99" ) )
+   ENDIF
    FOR EACH cText IN { ";;", ";", "|" }
       ::aInfAdic[ "infCpl" ]     := StrTran( ::aInfAdic[ "infCpl" ], cText, hb_Eol() )
       ::aInfAdic[ "infAdFisco" ] := StrTran( ::aInfAdic[ "infAdFisco" ], cText, hb_Eol() )
