@@ -728,12 +728,12 @@ METHOD QuadroImposto() CLASS hbNFeDaNFe
    LOCAL nHalf, nWidth, aItem, nCol := 5
 
    // monofásico para crédito, caso não tenha ST
-   IF Val( ::aICMSTotal[ "vICMSMonoRet" ] ) != 0 .AND. Val( ::aICMSTotal[ "vST" ] ) == 0
-      aList[ 3, 1 ] := "BASE DE CÁLCULO ICMS MONOFÁSICO"
-      aList[ 3, 2 ] := Val( ::aICMSTotal[ "qBCMonoRet" ] )
-      aList[ 4, 1 ] := "VALOR ICMS MONOFÁSICO"
-      aList[ 4, 2 ] := Val( ::aICMSTotal[ "vICMSMonoRet" ] )
-   ENDIF
+   //IF Val( ::aICMSTotal[ "vICMSMonoRet" ] ) != 0 .AND. Val( ::aICMSTotal[ "vST" ] ) == 0
+   //   aList[ 3, 1 ] := "BASE DE CÁLCULO ICMS MONOFÁSICO"
+   //   aList[ 3, 2 ] := Val( ::aICMSTotal[ "qBCMonoRet" ] )
+   //   aList[ 4, 1 ] := "VALOR ICMS MONOFÁSICO"
+   //   aList[ 4, 2 ] := Val( ::aICMSTotal[ "vICMSMonoRet" ] )
+   //ENDIF
 
    nHalf    := Round( Len( aList ) / 2 + 0.4, 0 )
 
