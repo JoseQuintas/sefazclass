@@ -1122,7 +1122,7 @@ STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
    LOCAL nPosIni, cModelo, cSerie
 
    oDocSped:cAmbiente := XmlNode( cXmlInput, "tpAmb" )
-   nPosIni := At( cXmlInput, [<InfInut] )
+   nPosIni := At( cXmlInput, [<infInut] )
    IF nPosIni != 0
       oDocSped:DataEmissao   := Stod( Left( SoNumero( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
       oDocSped:Emitente:Cnpj := Transform( XmlNode( cXmlInput, "CNPJ" ), "@R !!.!!!.!!!/!!!!-!!" )
