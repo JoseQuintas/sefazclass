@@ -25,10 +25,13 @@ jobs:
   mingwall:
     runs-on: windows-latest
     strategy:
+       fail-fast: false
        matrix:
           compiler:
           ##- mingw_1501
           - mingw_1502
+          ## winlibs.com GCC 16.2.0 + MinGW-w64 14.0.0, 32 bits, msvcrt, posix-dwarf, no clang
+          - mingw_1602
 
     steps:
 
@@ -50,6 +53,7 @@ jobs:
          name: ${{matrix.compiler}}
          path: c:\temp
          repo: JoseQuintas/sefazclass
+         if_no_artifact_found: warn
 
     - name: load hb32_xxx.zip
       if: ${{ github.event_name == 'push' }}
@@ -60,6 +64,7 @@ jobs:
          name: hb32_${{matrix.compiler}}
          path: c:\temp
          repo: JoseQuintas/sefazclass
+         if_no_artifact_found: warn
 
     - name: load addons_hb32_xxxx.zip
       if: ${{ github.event_name == 'none' }}
@@ -78,6 +83,19 @@ jobs:
     #     git clone https://github.com/JoseQuintas/sefazclass c:\temp\lixo --depth 1
     #     Copy-Item -Path "c:\temp\lixo\mingw_1520.7z" -Destination "c:\temp\mingw_1502.7z"
 
+    # mingw_1602: first run only (no artifact saved yet), get it from winlibs.com
+    # GCC 16.2.0 posix-dwarf + MinGW-w64 14.0.0 msvcrt, 32 bits, no clang (extracts to mingw32\bin)
+    - name: Download mingw_1602 from winlibs
+      if: ${{ matrix.compiler == 'mingw_1602' }}
+      env:
+         WINLIBS_URL: https://github.com/brechtsanders/winlibs_mingw/releases/download/16.2.0posix-14.0.0-msvcrt-r1/winlibs-i686-posix-dwarf-gcc-16.2.0-mingw-w64msvcrt-14.0.0-r1.7z
+      run: |
+         c:
+         if (-not (Test-Path c:\temp\mingw_1602.7z)) {
+            New-Item -ItemType Directory -Force -Path c:\temp | Out-Null
+            Invoke-WebRequest -Uri $env:WINLIBS_URL -OutFile c:\temp\mingw_1602.7z
+         }
+
     - name: Unzip mingw_xxxx
       env:
          PATH: c:\program files\7-zip
@@ -91,8 +109,17 @@ jobs:
          PATH: c:\program files\7-zip
       run: |
          c:
-         md c:\temp\harbour\comp
-         7z x -y c:\temp\hb32_${{matrix.compiler}}.7z -oc:\temp\harbour
+         if (Test-Path c:\temp\hb32_${{matrix.compiler}}.7z) {
+            md c:\temp\harbour\comp
+            7z x -y c:\temp\hb32_${{matrix.compiler}}.7z -oc:\temp\harbour
+         }
+
+    # push normally reuses hb32_xxxx from previous run
+    # if it does not exist yet (new compiler), harbour is built too
+    - name: Check harbour prebuilt
+      id: hbcheck
+      run: |
+         if (Test-Path c:\temp\harbour\bin\hbmk2.exe) { "prebuilt=true" >> $env:GITHUB_OUTPUT } else { "prebuilt=false" >> $env:GITHUB_OUTPUT }
 
     - name: Unzip addons
       if: ${{ 'true' == 'false' }}
@@ -106,7 +133,7 @@ jobs:
 #----- load source -----
 
     - name: Load harbour.git
-      if: ${{ github.event_name != 'push' }}
+      if: ${{ github.event_name != 'push' || steps.hbcheck.outputs.prebuilt != 'true' }}
       env:
          REPO_HARBOUR: https://github.com/JoseQuintas/harbour32_fork
          PATH_HARBOUR: c:\temp\harbour32
@@ -155,7 +182,7 @@ jobs:
 #----- build -----
 
     - name: Build harbour 32 bits
-      if: ${{ github.event_name != 'push' }}
+      if: ${{ github.event_name != 'push' || steps.hbcheck.outputs.prebuilt != 'true' }}
       env:
          HB_BUILD_STRIP: all
          HB_COMPILER: mingw
@@ -265,7 +292,7 @@ jobs:
 #----- create zip -----
 
     - name: Create hb32_xxxx.zip
-      if: ${{ github.event_name != 'push' }}
+      if: ${{ github.event_name != 'push' || steps.hbcheck.outputs.prebuilt != 'true' }}
       env:
          PATH: c:\program files\7-zip
       run: |
