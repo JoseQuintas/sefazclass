@@ -107,6 +107,14 @@ jobs:
          c:
          7z x -y c:\temp\${{matrix.compiler}}.7z -oc:\temp\mingw
 
+    # mingw_1602: default-manifest.o (language 0x409) conflicts with manifest from application .rc
+    # ld: .rsrc merge failure: multiple non-default manifests
+    - name: Remove default-manifest.o (mingw_1602)
+      if: ${{ matrix.compiler == 'mingw_1602' }}
+      run: |
+         c:
+         Remove-Item -Force -ErrorAction SilentlyContinue c:\temp\mingw\mingw32\i686-w64-mingw32\lib\default-manifest.o
+
     - name: Unzip hb32_xxxx
       if: ${{ github.event_name == 'push' }}
       env:
