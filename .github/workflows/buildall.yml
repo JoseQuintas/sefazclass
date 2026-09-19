@@ -29,6 +29,7 @@ jobs:
        matrix:
           compiler:
           ##- mingw_1501
+          ## winlibs.com GCC 15.2.0 + MinGW-w64 14.0.0, 32 bits, msvcrt, posix-dwarf (r7, used only if no artifact)
           - mingw_1502
           ## winlibs.com GCC 16.2.0 + MinGW-w64 14.0.0, 32 bits, msvcrt, posix-dwarf, no clang
           - mingw_1602
@@ -83,17 +84,20 @@ jobs:
     #     git clone https://github.com/JoseQuintas/sefazclass c:\temp\lixo --depth 1
     #     Copy-Item -Path "c:\temp\lixo\mingw_1520.7z" -Destination "c:\temp\mingw_1502.7z"
 
-    # mingw_1602: first run only (no artifact saved yet), get it from winlibs.com
-    # GCC 16.2.0 posix-dwarf + MinGW-w64 14.0.0 msvcrt, 32 bits, no clang (extracts to mingw32\bin)
-    - name: Download mingw_1602 from winlibs
-      if: ${{ matrix.compiler == 'mingw_1602' }}
+    # only if artifact mingw_xxxx was not found (first run, or artifact expired), get it from winlibs.com
+    # winlibs posix-dwarf + MinGW-w64 14.0.0 msvcrt, 32 bits, no clang (extracts to mingw32\bin)
+    - name: Download mingw_xxxx from winlibs (if no artifact)
       env:
-         WINLIBS_URL: https://github.com/brechtsanders/winlibs_mingw/releases/download/16.2.0posix-14.0.0-msvcrt-r1/winlibs-i686-posix-dwarf-gcc-16.2.0-mingw-w64msvcrt-14.0.0-r1.7z
+         URL_MINGW_1502: https://github.com/brechtsanders/winlibs_mingw/releases/download/15.2.0posix-14.0.0-msvcrt-r7/winlibs-i686-posix-dwarf-gcc-15.2.0-mingw-w64msvcrt-14.0.0-r7.7z
+         URL_MINGW_1602: https://github.com/brechtsanders/winlibs_mingw/releases/download/16.2.0posix-14.0.0-msvcrt-r1/winlibs-i686-posix-dwarf-gcc-16.2.0-mingw-w64msvcrt-14.0.0-r1.7z
       run: |
          c:
-         if (-not (Test-Path c:\temp\mingw_1602.7z)) {
+         $file = "c:\temp\${{matrix.compiler}}.7z"
+         if (-not (Test-Path $file)) {
+            $url = @{ mingw_1502 = $env:URL_MINGW_1502; mingw_1602 = $env:URL_MINGW_1602 }["${{matrix.compiler}}"]
+            if (-not $url) { throw "no winlibs url for ${{matrix.compiler}}" }
             New-Item -ItemType Directory -Force -Path c:\temp | Out-Null
-            Invoke-WebRequest -Uri $env:WINLIBS_URL -OutFile c:\temp\mingw_1602.7z
+            Invoke-WebRequest -Uri $url -OutFile $file
          }
 
     - name: Unzip mingw_xxxx
