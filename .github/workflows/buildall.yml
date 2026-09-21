@@ -47,7 +47,7 @@ jobs:
 
     - name: load mingw_xxxx.zip
       ##if: ${{ matrix.compiler != 'mingw_1502' && matrix.compiler != 'mingw_1502' }}
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v21
       with:
          workflow: buildall.yml
          workflow_conclusion: success
@@ -58,7 +58,7 @@ jobs:
 
     - name: load hb32_xxx.zip
       if: ${{ github.event_name == 'push' }}
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v21
       with:
          workflow: buildall.yml
          workflow_conclusion: success
@@ -69,7 +69,7 @@ jobs:
 
     - name: load addons_hb32_xxxx.zip
       if: ${{ github.event_name == 'none' }}
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v21
       with:
          workflow: buildall.yml
          workflow_conclusion: success
