@@ -480,7 +480,7 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    LOCAL nST        := ''
    LOCAL DASH_MODE3 := { 8, 7, 2, 7 }
    LOCAL nCont, oElement, cTexto, nPos
-   LOCAL aList, cUrlConsulta := "http"
+   LOCAL aList, cUrlConsulta := "http", cQrCode, cVersao
    LOCAL nContObs := 0
 
    // box do logotipo e dados do emitente
@@ -540,12 +540,22 @@ METHOD GeraFolha() CLASS hbnfeDaCte
    ::DrawBox( 253, ::nLinhaPdf - 129, 260, 066, ::nLarguraBox )
    ::DrawTexto( 253, ::nLinhaPdf - 065, 398, Nil, "CONTROLE DO FISCO", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 09 )
    ::DrawBarcode128( ::cChave, 260, ::nLinhaPDF - 110, 0.9, 30 )
-   aList := WS_CTE_QRCODE
-   nPos := hb_Ascan( aList, { | e | e[ 1 ] == DfeUF( ::cChave ) .AND. e[ 2 ] == "3.00" + iif( ::aIde[ "tpAmb" ] == "1", "P", "H" ) } )
-   IF nPos != 0
-      cURLConsulta := aList[ nPos, 3 ]
+   // QR Code do XML autorizado; so monta se nao existir (CT-e sem infCTeSupl)
+   cQrCode := XmlNode( XmlNode( ::cXml, "infCTeSupl" ), "qrCodCTe" )
+   IF Left( cQrCode, 9 ) == "<![CDATA["
+      cQrCode := Substr( cQrCode, 10, Len( cQrCode ) - 12 )
    ENDIF
-   ::DrawBarcodeQrCode( 520, ::nLinhaPDF - 60, 1.6, cURLConsulta + "?chCTe=" + ::cChave + "&" + "tpAmb=" + ::aIde[ "tpAmb" ] )
+   IF Empty( cQrCode )
+      cVersao := Substr( ::cXml, At( "<infCte", ::cXml ), 200 )
+      cVersao := iif( [versao="] $ cVersao, Substr( cVersao, At( [versao="], cVersao ) + 8, 4 ), "3.00" )
+      aList := WS_CTE_QRCODE
+      nPos := hb_Ascan( aList, { | e | e[ 1 ] == DfeUF( ::cChave ) .AND. e[ 2 ] == cVersao + iif( ::aIde[ "tpAmb" ] == "1", "P", "H" ) } )
+      IF nPos != 0
+         cURLConsulta := aList[ nPos, 3 ]
+      ENDIF
+      cQrCode := cURLConsulta + "?chCTe=" + ::cChave + "&" + "tpAmb=" + ::aIde[ "tpAmb" ]
+   ENDIF
+   ::DrawBarcodeQrCode( 520, ::nLinhaPDF - 60, 1.6, cQrCode )
    ::DrawTexto( 235, ::nLinhaPdf - 110, 538, Nil, "Chave de acesso p/consulta de autenticidade no site www.cte.fazenda.gov.br", HPDF_TALIGN_CENTER, ::oPDFFontNormal, 8 )
    ::DrawTexto( 235, ::nLinhaPdf - 119, 538, Nil, Transform( ::cChave, "@R 99.9999.99.999.999/9999-99-99-999-999.999.999-999.999.999-9" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 8 )
 
