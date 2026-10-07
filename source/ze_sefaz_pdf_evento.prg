@@ -15,6 +15,7 @@ CREATE CLASS hbnfeDaEvento INHERIT hbNFeDaGeral
 
    METHOD ToPDF( cXmlEvento, cFilePDF, cXmlAuxiliar, oPDF, lEnd )
    METHOD BuscaDadosXML()
+   METHOD BuscaDadosInut()
    METHOD GeraPDF( cFilePDF, oPDF, lEnd )
    METHOD Cabecalho()
    METHOD Destinatario()
@@ -109,6 +110,10 @@ METHOD BuscaDadosXML() CLASS hbnfeDaEvento
       ::cXmlDocumento := XmlToString( ::cXmlDocumento )
    ENDIF
 
+   IF "<retInutNFe" $ ::cXmlEvento
+      RETURN ::BuscaDadosInut()
+   ENDIF
+
    ::aCorrecoes := XmlNode( ::cXmlEvento, "infEvento" )
    ::aCorrecoes := XmlNode( ::aCorrecoes , "evCCeCTe" )
    ::aCorrecoes := MultipleNodeToArray( ::aCorrecoes, "infCorrecao" )
@@ -135,6 +140,47 @@ METHOD BuscaDadosXML() CLASS hbnfeDaEvento
    ::cTelefoneEmitente  := ::FormataTelefone( ::aEmit[ "fone" ] )
 
    ::aDest := XmlToHash( XmlNode( ::cXmlDocumento, "dest" ), { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "fone", "IE" } )
+
+   RETURN .T.
+
+METHOD BuscaDadosInut() CLASS hbnfeDaEvento
+
+   LOCAL cRetInut, cIni, cFim, cNumeracao
+
+   cRetInut := XmlNode( XmlNode( ::cXmlEvento, "retInutNFe" ), "infInut" )
+   cIni     := StrZero( Val( XmlNode( ::cXmlEvento, "nNFIni" ) ), 9 )
+   cFim     := StrZero( Val( XmlNode( ::cXmlEvento, "nNFFin" ) ), 9 )
+   IF cIni == cFim
+      cNumeracao := "NÚMERO " + Transform( cIni, "@R 999.999.999" )
+   ELSE
+      cNumeracao := "NÚMEROS " + Transform( cIni, "@R 999.999.999" ) + " A " + Transform( cFim, "@R 999.999.999" )
+   ENDIF
+   ::cChaveEvento := XmlToDoc( ::cXmlEvento ):cChave
+   ::aCorrecoes   := {}
+
+   ::aInfEvento := hb_Hash()
+   ::aInfEvento[ "tpEvento" ]    := "110999"
+   ::aInfEvento[ "nSeqEvento" ]  := "1"
+   ::aInfEvento[ "verEvento" ]   := Substr( ::cXmlEvento, At( "versao=", ::cXmlEvento ) + 8, 4 )
+   ::aInfEvento[ "cOrgao" ]      := XmlNode( ::cXmlEvento, "cUF" )
+   ::aInfEvento[ "cStat" ]       := XmlNode( cRetInut, "cStat" )
+   ::aInfEvento[ "xMotivo" ]     := XmlNode( cRetInut, "xMotivo" )
+   ::aInfEvento[ "dhRegEvento" ] := XmlNode( cRetInut, "dhRecbto" )
+   ::aInfEvento[ "nProt" ]       := XmlNode( cRetInut, "nProt" )
+   ::aInfEvento[ "xCorrecao" ]   := "INUTILIZAÇÃO DA NUMERAÇÃO DE NF-E MODELO " + XmlNode( ::cXmlEvento, "mod" ) + ;
+      " SÉRIE " + XmlNode( ::cXmlEvento, "serie" ) + " " + cNumeracao + ";;JUSTIFICATIVA: " + XmlNode( ::cXmlEvento, "xJust" )
+
+   ::aIde := hb_Hash()
+   ::aIde[ "mod" ]   := XmlNode( ::cXmlEvento, "mod" )
+   ::aIde[ "serie" ] := XmlNode( ::cXmlEvento, "serie" )
+   ::aIde[ "nNF" ]   := cIni
+   ::aIde[ "dhEmi" ] := ::aInfEvento[ "dhRegEvento" ]
+
+   ::aEmit := XmlToHash( XmlNode( ::cXmlDocumento, "emit" ), { "xNome", "xFant", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "fone", "IE" } )
+   ::aEmit[ "CNPJ" ]    := XmlNode( ::cXmlEvento, "CNPJ" )
+   ::cTelefoneEmitente  := ::FormataTelefone( ::aEmit[ "fone" ] )
+
+   ::aDest := XmlToHash( "", { "CNPJ", "CPF", "xNome", "xLgr", "nro", "xBairro", "cMun", "xMun", "UF", "CEP", "fone", "IE" } )
 
    RETURN .T.
 
@@ -290,6 +336,8 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
       DO CASE
       CASE ::aInfEvento[ "tpEvento" ] == "110111"
          ::DrawTexto( 296, ::nLinhaPDF -22, 554, Nil, "CANCELAMENTO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 14 )
+      CASE ::aInfEvento[ "tpEvento" ] == "110999"
+         ::DrawTexto( 296, ::nLinhaPDF -22, 554, Nil, "INUTILIZAÇÃO", HPDF_TALIGN_CENTER, ::oPDFFontBold, 14 )
       OTHERWISE
          ::DrawTexto( 296, ::nLinhaPDF -22, 554, Nil, "EVENTO " + ::aInfEvento[ "tpEvento" ], HPDF_TALIGN_CENTER, ::oPDFFontBold, 14 )
       ENDCASE
@@ -297,7 +345,7 @@ METHOD Cabecalho() CLASS hbnfeDaEvento
 
    // chave de acesso
    ::DrawBox( 290, ::nLinhaPDF -61,  275,  20, ::nLarguraBox )
-   ::DrawTexto( 291, ::nLinhaPDF -42, 534, Nil, "CHAVE DE ACESSO", HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
+   ::DrawTexto( 291, ::nLinhaPDF -42, 534, Nil, iif( ::aInfEvento[ "tpEvento" ] == "110999", "CHAVE INTERNA - SEM VALOR NA SEFAZ", "CHAVE DE ACESSO" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
    IF ::cFonteEvento == "Times"
       ::DrawTexto( 292, ::nLinhaPDF -49, 554, Nil, Transform( ::cChaveEvento, "@R 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999 9999" ), HPDF_TALIGN_CENTER, ::oPDFFontBold, 10 )
    ELSE
@@ -349,6 +397,10 @@ METHOD Destinatario() CLASS hbnfeDaEvento
    // REMETENTE / DESTINATARIO
 
    ::nLinhaPdf -= 24
+
+   IF ::aInfEvento[ "tpEvento" ] == "110999" // inutilizacao nao tem destinatario
+      RETURN NIL
+   ENDIF
 
    IF At( "retEventoCTe", ::cXmlEvento ) > 0  // runner
       ::DrawTexto( 30, ::nLinhaPdf, 565, Nil, "DESTINATÁRIO", HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
@@ -462,7 +514,7 @@ METHOD Eventos() CLASS hbnfeDaEvento
 
    // Correções
 
-   ::DrawTexto( 30, ::nLinhaPdf, 565, Nil, "CORREÇÕES", HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
+   ::DrawTexto( 30, ::nLinhaPdf, 565, Nil, iif( ::aInfEvento[ "tpEvento" ] == "110999", "DESCRIÇÃO", "CORREÇÕES" ), HPDF_TALIGN_LEFT, ::oPDFFontBold, 6 )
    ::DrawBox( 30, ::nLinhaPDF -188,   535,  180, ::nLarguraBox )
 
    ::nLinhaPdf -= 12
