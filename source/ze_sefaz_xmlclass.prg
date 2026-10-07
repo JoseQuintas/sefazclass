@@ -1122,17 +1122,16 @@ STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
    LOCAL nPosIni, cModelo, cSerie
 
    oDocSped:cAmbiente := XmlNode( cXmlInput, "tpAmb" )
-   nPosIni := At( cXmlInput, [<infInut] )
+   nPosIni := At( [<infInut], cXmlInput )
    IF nPosIni != 0
       oDocSped:DataEmissao   := Stod( Left( SoNumero( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
       oDocSped:Emitente:Cnpj := Transform( XmlNode( cXmlInput, "CNPJ" ), "@R !!.!!!.!!!/!!!!-!!" )
       oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
       oDocSped:cSequencia    := "01"
       oDocSped:Protocolo     := XmlNode( cXmlInput, "infInut" )
-      oDocSped:Status        := "111"
-      oDocSped:DataEmissao   := Stod( Left( SoNumero( XmlNode( cXmlInput, "dhRecbto" ) ), 8 ) )
+      oDocSped:Status        := "999" // inutilizada, evento 110999
       cModelo                := StrZero( Val( XmlNode( cXmlInput, "mod" ) ), 2 )
-      cSerie                 := Str( Val( XmlNode( cXmlInput, "serie" ) ), 1 )
+      cSerie                 := StrZero( Val( XmlNode( cXmlInput, "serie" ) ), 3 )
       oDocSped:cNumDoc       := StrZero( Val( XmlNode( cXmlInput, "nNFIni" ) ), 9 )
       oDocSped:cChave        := Substr( SoNumero( Substr( cXmlInput, nPosIni, 60 ) ), 1, 2 ) + ;
                                 Substr( Dtos( oDocSped:DataEmissao ), 3, 4 ) + ;
