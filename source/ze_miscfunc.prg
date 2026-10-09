@@ -18,7 +18,7 @@ FUNCTION SoNumeroCnpj( cTxt )
 
    LOCAL cSoNumeros := "", cChar
 
-   FOR EACH cChar IN cTxt
+   FOR EACH cChar IN Upper( cTxt )
       IF ( cChar >= "0" .AND. cChar <= "9" ) .OR. ( cChar >= "A" .AND. cChar <= "Z" )
          cSoNumeros += cChar
       ENDIF
