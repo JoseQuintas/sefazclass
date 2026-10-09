@@ -7,7 +7,7 @@ José Quintas
 
 FUNCTION IsCnpj( cValue )
 
-   RETURN Len( SoNumero( cValue ) ) == 14
+   RETURN Len( SoNumeroCnpj( cValue ) ) == 14
 
 FUNCTION IsCpf( cValue )
 
@@ -21,7 +21,7 @@ FUNCTION ValidCnpj( cCnpj )
    cNumero := Left( cNumero, 12 )
    cNumero := cNumero + CalculaDigito( cNumero, "11" )
    cNumero := cNumero + CalculaDigito( cNumero, "11" )
-   lOk     := ( SoNumero( cNumero ) == SoNumero( cCnpj ) )
+   lOk     := ( cNumero == SoNumeroCnpj( cCnpj ) )
    IF lOk
       cCnpj := Pad( Transform( cNumero, cPicture ), Max( 18, Len( cCnpj ) ) )
    ENDIF
