@@ -210,7 +210,7 @@ METHOD GeraPDF( cFilePDF, oPDF, lEnd ) CLASS hbNFeDaNFCe
       RETURN .F.
    ENDIF
 
-   IF oPDF != Nil
+   IF oPDF == Nil
       HPDF_SetCompressionMode( ::oPDF, HPDF_COMP_ALL )
    ENDIF
 
