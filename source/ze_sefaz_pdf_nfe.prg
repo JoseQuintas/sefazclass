@@ -88,6 +88,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    METHOD QuadroCanhoto()
    METHOD QuadroImposto()
    METHOD QuadroImpostoReforma()
+   METHOD ListaImpostoReforma()
    METHOD TemMonofasicoReforma() INLINE ! Empty( XmlNode( XmlNode( ::cXml, "IBSCBSTot" ), "gMono" ) )
    METHOD QuadroTransporte()
    METHOD QuadroProdutosTitulo()
@@ -307,7 +308,8 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
       ::aEntrega[ "CNPJ" ] := ::aEntrega[ "CPF" ]
    ENDIF
    ::aICMSTotal  := XmlToHash( XmlNode( ::cXml, "ICMSTot" ), { "vBC", "vICMS", ;
-      "vBCST", "vST", "vICMSUFDest","qBCMonoRet", "vICMSMonoRet", "vProd", "vFrete", "vSeg", "vDesc", "vII", "vIPI", "vPIS", "vCOFINS", "vOutro", "vNF" } )
+      "vBCST", "vST", "vICMSUFDest","qBCMonoRet", "vICMSMonoRet", "vFCP", "vFCPST", "vFCPUFDest", ;
+      "qBCMono", "vICMSMono", "qBCMonoReten", "vICMSMonoReten", "vProd", "vFrete", "vSeg", "vDesc", "vII", "vIPI", "vPIS", "vCOFINS", "vOutro", "vNF" } )
    ::aISSTotal   := XmlToHash( XmlNode( ::cXml, "ISSQNtot" ), { "vServ", "vBC", "vISS", "vPIS", "vCOFINS" } )
    ::aRetTrib    := XmlToHash( XmlNode( ::cXml, "RetTrib" ), { "vRetPIS", "vRetCOFINS", "vRetCSLL", "vBCIRRF", "vIRRF", "vBCRetPrev", "vRetPrev" } )
    ::aTransp     := XmlToHash( XmlNode( ::cXml, "transp" ), { "modFrete", "CNPJ", "CPF", "xNome", "IE", "xEnder", "xMun", "UF", "qVol", "esp", "marca", "nVol", "pesoL", "pesoB", "nLacre" } )
@@ -760,6 +762,10 @@ METHOD QuadroImposto() CLASS hbNFeDaNFe
       { "VALOR TOTAL DA NOTA FISCAL",          Val( ::aICMSTotal[ "vNF" ] ) } } // último segunda linha
    LOCAL nHalf, nWidth, aItem, nCol := 5
 
+   IF ::lLayoutReforma // NT 2026.010 chama de DIFAL
+      aList[ 5, 1 ] := "VALOR DO DIFAL UF DESTINO"
+   ENDIF
+
    // monofásico para crédito, caso não tenha ST
    //IF Val( ::aICMSTotal[ "vICMSMonoRet" ] ) != 0 .AND. Val( ::aICMSTotal[ "vST" ] ) == 0
    //   aList[ 3, 1 ] := "BASE DE CÁLCULO ICMS MONOFÁSICO"
@@ -788,10 +794,48 @@ METHOD QuadroImposto() CLASS hbNFeDaNFe
          ENDIF
          nCol := nCol + nWidth
       NEXT
+      // NT 2026.010: FCP e ICMS monofásico em linha extra, só os que tiverem valor
+      IF ::lLayoutReforma
+         aList := ::ListaImpostoReforma()
+         FOR EACH aItem IN aList
+            IF ( aItem:__EnumIndex() - 1 ) % 6 == 0
+               ::nLinhaPDF -= 16
+               nCol   := 5
+               nWidth := Int( 585 / Min( 6, Len( aList ) - aItem:__EnumIndex() + 1 ) )
+            ENDIF
+            IF aItem:__EnumIndex() % 6 == 0 .OR. aItem:__EnumIsLast()
+               nWidth := 590 - nCol
+            ENDIF
+            ::DrawBoxTituloTexto( nCol, ::nLinhaPDF, nWidth, 16, aItem[ 1 ], ;
+               AllTrim( FormatNumber( Val( aItem[ 2 ] ), 15, ::DefineDecimais( aItem[ 2 ], 2 ) ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
+            nCol += nWidth
+         NEXT
+      ENDIF
       ::nLinhaPDF -= 17
    ENDIF
 
    RETURN NIL
+
+METHOD ListaImpostoReforma() CLASS hbNFeDaNFe
+
+   LOCAL aList := {}, aItem
+
+   FOR EACH aItem IN { ;
+      { "VALOR DO FCP",                    ::aICMSTotal[ "vFCP" ] }, ;
+      { "VALOR DO FCP RETIDO POR ST",      ::aICMSTotal[ "vFCPST" ] }, ;
+      { "VALOR DO FCP UF DESTINO",         ::aICMSTotal[ "vFCPUFDest" ] }, ;
+      { "BC ICMS MONOFÁSICO",              ::aICMSTotal[ "qBCMono" ] }, ;
+      { "VALOR ICMS MONOFÁSICO",           ::aICMSTotal[ "vICMSMono" ] }, ;
+      { "BC ICMS MONOF. RETENÇÃO",         ::aICMSTotal[ "qBCMonoReten" ] }, ;
+      { "VALOR ICMS MONOF. RETENÇÃO",      ::aICMSTotal[ "vICMSMonoReten" ] }, ;
+      { "BC ICMS MONOF. RETIDO ANTERIOR",  ::aICMSTotal[ "qBCMonoRet" ] }, ;
+      { "VALOR ICMS MONOF. RETIDO ANTERIOR", ::aICMSTotal[ "vICMSMonoRet" ] } }
+      IF Val( aItem[ 2 ] ) > 0
+         AAdd( aList, aItem )
+      ENDIF
+   NEXT
+
+   RETURN aList
 
 // NT 2026.010: Total do IBS/CBS/IS, depois do cálculo do imposto
 METHOD QuadroImpostoReforma() CLASS hbNFeDaNFe
@@ -1242,6 +1286,7 @@ METHOD ItensDaFolha( nFolha ) CLASS hbNFeDaNFe
       nQuadro -= 16 // CRT e regime de apuração no quadro do emitente
       IF nFolha == 1
          nQuadro -= 23 + iif( ::TemMonofasicoReforma(), 16, 0 ) // total do IBS/CBS/IS
+         nQuadro -= 16 * Int( ( Len( ::ListaImpostoReforma() ) + 5 ) / 6 ) // FCP e ICMS monofásico
       ENDIF
    ENDIF
 
