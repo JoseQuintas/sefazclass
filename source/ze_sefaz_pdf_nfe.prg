@@ -1269,10 +1269,10 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_UNIDADE,    LAYOUT_TITULO1 ]   := "UN"
    ::aLayout[ LAYOUT_UNIDADE,    LAYOUT_CONTEUDO ]  := { || ::aItem[ "uCom" ] }
    ::aLayout[ LAYOUT_QTD,        LAYOUT_TITULO1 ]   := "QTD"
-   ::aLayout[ LAYOUT_QTD,        LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "qCom" ] ), 15, ::aLayout[ LAYOUT_QTD, LAYOUT_DECIMAIS ] ) ) }
+   ::aLayout[ LAYOUT_QTD,        LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "qCom" ] ), 15, ::DefineDecimais( ::aItem[ "qCom" ], 0 ) ) ) }
    ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_TITULO1 ]   := "VALOR"
    ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_TITULO2 ]   := "UNITÁRIO"
-   ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "vUnCom" ] ), 15, ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] ) ) }
+   ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "vUnCom" ] ), 15, ::DefineDecimais( ::aItem[ "vUnCom" ], 2 ) ) ) } // casas do item, mínimo 2
    ::aLayout[ LAYOUT_TOTAL,      LAYOUT_TITULO1 ]   := "VALOR"
    ::aLayout[ LAYOUT_TOTAL,      LAYOUT_TITULO2 ]   := "TOTAL"
    ::aLayout[ LAYOUT_TOTAL,      LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "vProd" ] ), 15, 2 ) ) }
@@ -1305,10 +1305,10 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_CONTEUDO ]  := { || ::aItem[ "uTrib" ] }
    ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_TITULO1 ]   := "QTD"
    ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_TITULO2 ]   := "TRIB"
-   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "qTrib" ] ), 15, ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] ) ) }
+   ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "qTrib" ] ), 15, ::DefineDecimais( ::aItem[ "qTrib" ], 0 ) ) ) }
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_TITULO1 ]   := "VALOR"
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_TITULO2 ]   := "TRIB"
-   ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "vUnTrib" ] ), 15, ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_DECIMAIS ] ) ) }
+   ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "vUnTrib" ] ), 15, ::DefineDecimais( ::aItem[ "vUnTrib" ], 2 ) ) ) }
    ::aLayout[ LAYOUT_TRINOME,    LAYOUT_TITULO1 ]   := "TRIBUTO"
    ::aLayout[ LAYOUT_TRINOME,    LAYOUT_CONTEUDO ]  := { || ::TextoTributo( LAYOUT_TRINOME ) }
    ::aLayout[ LAYOUT_TRIBAS,     LAYOUT_TITULO1 ]   := "B.CÁLC."
