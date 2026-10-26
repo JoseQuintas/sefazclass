@@ -21,7 +21,7 @@ CREATE CLASS hbNFeDaGeral
    VAR    lQuadroEntrega      INIT .T.
    VAR    nLinhaDesenvolvedor INIT 7
    VAR    lBarCodeChave       INIT .F.
-   VAR    lLayoutReforma      INIT .F.
+   VAR    lLayoutReforma      INIT NIL // NT 2026.010: NIL automático pela emissão, .T./.F. força
 
    METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar, oPDF, lEnd )
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
@@ -181,6 +181,7 @@ METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar, oPDF, lEnd ) CLASS hbNFeDaG
    oDanfe:cLogoFile      := ::cLogoFile
    oDanfe:cDesenvolvedor := ::cDesenvolvedor
    oDanfe:lBarcodeChave  := ::lBarcodeChave
+   oDanfe:lLayoutReforma := ::lLayoutReforma
 
    IF ! lEnd
       oDanfe:ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar, oPDF, lEnd )
