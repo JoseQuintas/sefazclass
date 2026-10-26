@@ -19,23 +19,24 @@ REQUEST HB_CODEPAGE_PTISO
 #define OPC_UF              4
 #define OPC_AMBIENTE        5
 #define OPC_NFCE            6
-#define OPC_STATUS_NFE      7
-#define OPC_CADASTRO        8
-#define OPC_PROTOCOLO_NFE   9
-#define OPC_DESTINADAS      10
-#define OPC_VALIDA_XML      11
-#define OPC_ASSINA_TESTE    12
-#define OPC_ASSINA_USUARIO  13
-#define OPC_CONSULTA_RECIBO 14
-#define OPC_ENVIO_TESTE     15
-#define OPC_ENVIO_USUARIO   16
-#define OPC_MANIFESTACAO    17
-#define OPC_DOWNLOAD_NFE    18
-#define OPC_STATUSGERAL     19
-#define OPC_STATUS_MDFE     20
-#define OPC_PROTOCOLO_MDFE  21
-#define OPC_STATUS_CTE      22
-#define OPC_PROTOCOLO_CTE   23
+#define OPC_LAYOUT          7
+#define OPC_STATUS_NFE      8
+#define OPC_CADASTRO        9
+#define OPC_PROTOCOLO_NFE   10
+#define OPC_DESTINADAS      11
+#define OPC_VALIDA_XML      12
+#define OPC_ASSINA_TESTE    13
+#define OPC_ASSINA_USUARIO  14
+#define OPC_CONSULTA_RECIBO 15
+#define OPC_ENVIO_TESTE     16
+#define OPC_ENVIO_USUARIO   17
+#define OPC_MANIFESTACAO    18
+#define OPC_DOWNLOAD_NFE    19
+#define OPC_STATUSGERAL     20
+#define OPC_STATUS_MDFE     21
+#define OPC_PROTOCOLO_MDFE  22
+#define OPC_STATUS_CTE      23
+#define OPC_PROTOCOLO_CTE   24
 
 #define VAR_CERTIFICADO 1
 #define VAR_UF          2
@@ -46,6 +47,7 @@ REQUEST HB_CODEPAGE_PTISO
 #define VAR_CHAVE       7
 #define VAR_RECIBO      8
 #define VAR_VALIDFROM   9
+#define VAR_LAYOUT      10
 
 MEMVAR aVarList, oSefaz
 
@@ -64,6 +66,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
    aVarList[ VAR_CNPJ ]        := Space(14)
    aVarList[ VAR_CHAVE ]       := Space(44)
    aVarList[ VAR_RECIBO ]      := Space(20)
+   aVarList[ VAR_LAYOUT ]      := Nil // danfe: Nil automático, .F. atual, .T. reforma
 
    SetupHarbour()
 
@@ -90,6 +93,7 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
       @ Row() + 1, 5 PROMPT "UF (atual=" + aVarList[ VAR_UF ] + ")"
       @ Row() + 1, 5 PROMPT "Ambiente (atual=" + iif( aVarList[ VAR_AMBIENTE ] == WS_AMBIENTE_PRODUCAO, "Produção", "Homologação" ) + ")"
       @ Row() + 1, 5 PROMPT "Nota (atual=" + iif( aVarList[ VAR_NFCE ] == "S", "NFCE", "NFE" ) + ")"
+      @ Row() + 1, 5 PROMPT "Layout Danfe (atual=" + iif( aVarList[ VAR_LAYOUT ] == Nil, "Automático", iif( aVarList[ VAR_LAYOUT ], "Reforma", "Atual" ) ) + ")"
       @ Row() + 2, 5 SAY "---NFE---"
       @ Row() + 2, 5 PROMPT "Consulta Status NFE"
       @ Row() + 1, 5 PROMPT "Consulta Cadastro NFE (digitado)"
@@ -134,6 +138,9 @@ FUNCTION Main( cXmlDocumento, cLogoFile, cXmlAuxiliar )
 
       CASE nOpc == OPC_NFCE
          aVarList[ VAR_NFCE ] := iif( aVarList[ VAR_NFCE ] == "S", "N", "S" )
+
+      CASE nOpc == OPC_LAYOUT
+         aVarList[ VAR_LAYOUT ] := iif( aVarList[ VAR_LAYOUT ] == Nil, .F., iif( aVarList[ VAR_LAYOUT ], Nil, .T. ) )
 
       CASE nOpc == OPC_STATUS_NFE
          cXmlRetorno := oSefaz:NfeStatus()
@@ -378,6 +385,7 @@ FUNCTION TestDanfe()
       //oDanfe:cLogoFile := JPEGImage()
       oDanfe:cDesenvolvedor := "www.jpatecnologia.com.br"
       oDanfe:lQuadroEntrega := .T.
+      oDanfe:lLayoutReforma := aVarList[ VAR_LAYOUT ]
       IF lUnicoPDF
          oPDF := oDanfe:ToPDF( oFile[ F_NAME ], cFilePdf, ,oPDF , oFile:__EnumIsLast() )
          cLastName := cFilePDF
