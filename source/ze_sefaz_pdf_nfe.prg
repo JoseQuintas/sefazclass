@@ -87,6 +87,8 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    METHOD QuadroDuplicatas()
    METHOD QuadroCanhoto()
    METHOD QuadroImposto()
+   METHOD QuadroImpostoReforma()
+   METHOD TemMonofasicoReforma() INLINE ! Empty( XmlNode( XmlNode( ::cXml, "IBSCBSTot" ), "gMono" ) )
    METHOD QuadroTransporte()
    METHOD QuadroProdutosTitulo()
    METHOD QuadroProdutosDesenho( nLinhaFinalProd, nAlturaQuadroProdutos )
@@ -222,6 +224,8 @@ METHOD Init() CLASS hbNFeDaNFe
 
 METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbNFeDaNFe
 
+   LOCAL xLayoutReforma := ::lLayoutReforma // automático vale só pra esta nota
+
    hb_Default( @lEnd, .T. )
 
    IF Empty( cXmlNFE )
@@ -244,18 +248,22 @@ METHOD ToPDF( cXmlNFE, cFilePDF, cXmlCancel, oPDF, lEnd ) CLASS hbNFeDaNFe
    ::cChave := Substr( ::cXML, At( "Id=", ::cXML ) + 3 + 4, 44 )
 
    IF ! ::BuscaDadosXML()
+      ::lLayoutReforma := xLayoutReforma
       RETURN ::cRetorno
    ENDIF
 
    IF ! lEnd
       ::GeraPDF( cFilePDF, oPDF, lEnd )
+      ::lLayoutReforma := xLayoutReforma
       oPDF := ::oPDF
       RETURN oPDF
    ENDIF
    IF ! ::GeraPDF( cFilePDF )
+      ::lLayoutReforma := xLayoutReforma
       ::cRetorno := "Problema ao gerar o PDF"
       RETURN ::cRetorno
    ENDIF
+   ::lLayoutReforma := xLayoutReforma
    ::cRetorno := "OK"
 
    RETURN ::cRetorno
@@ -269,6 +277,10 @@ METHOD BuscaDadosXML() CLASS hbNFeDaNFe
       "cDV", "tpAmb", "finNFe", "procEmi", "verProc" } )
    IF Empty( ::aIde[ "dhEmi" ] ) // NFE 2.0
       ::aIde[ "dhEmi" ] := XmlNode( XmlNode( ::cXml, "ide" ), "dEmi" )
+   ENDIF
+   // NT 2026.010: layout da reforma obrigatório para emissão a partir de 01/12/2026
+   IF ::lLayoutReforma == NIL
+      ::lLayoutReforma := Left( ::aIde[ "dhEmi" ], 10 ) >= "2026-12-01"
    ENDIF
    //IF Empty( ::aIde[ "dhSaiEnt" ] ) // NFE 2.0
    //   ::aIde[ "dhSaiEnt" ] := XmlNode( XmlNode( ::cXml, "ide" ), "dSaiEnt" )
@@ -393,6 +405,9 @@ METHOD GeraPDF( cFilePDF, oPDF, lEnd ) CLASS hbNFeDaNFe
    ENDIF
    ::QuadroDuplicatas()
    ::QuadroImposto()
+   IF ::lLayoutReforma
+      ::QuadroImpostoReforma()
+   ENDIF
    ::QuadroTransporte()
    ::QuadroProdutosTitulo()
    ::QuadroProdutos()
@@ -771,6 +786,46 @@ METHOD QuadroImposto() CLASS hbNFeDaNFe
             ::nLinhaPDF -= 16
          ENDIF
          nCol := nCol + nWidth
+      NEXT
+      ::nLinhaPDF -= 17
+   ENDIF
+
+   RETURN NIL
+
+// NT 2026.010: Total do IBS/CBS/IS, depois do cálculo do imposto
+METHOD QuadroImpostoReforma() CLASS hbNFeDaNFe
+
+   LOCAL cTotal := XmlNode( ::cXml, "IBSCBSTot" ), cMono, aList, aItem, nCol, nWidth
+
+   IF ::nFolha == 1
+      aList := { ;
+         { "VALOR DA CBS",               XmlNode( XmlNode( cTotal, "gCBS" ), "vCBS" ) }, ;
+         { "VALOR DO IBS UF",            XmlNode( XmlNode( cTotal, "gIBSUF" ), "vIBSUF" ) }, ;
+         { "VALOR DO IBS MUNICÍPIO",     XmlNode( XmlNode( cTotal, "gIBSMun" ), "vIBSMun" ) }, ;
+         { "VALOR DO IMPOSTO SELETIVO",  XmlNode( XmlNode( ::cXml, "ISTot" ), "vIS" ) } }
+      IF ::TemMonofasicoReforma()
+         cMono := XmlNode( cTotal, "gMono" )
+         AAdd( aList, { "VALOR DO IBS MONOFÁSICO",              XmlNode( cMono, "vIBSMono" ) } )
+         AAdd( aList, { "VALOR DA CBS MONOFÁSICA",              XmlNode( cMono, "vCBSMono" ) } )
+         AAdd( aList, { "VALOR DO IBS MONOFÁSICO POR RETENÇÃO", XmlNode( cMono, "vIBSMonoReten" ) } )
+         AAdd( aList, { "VALOR DA CBS MONOFÁSICA POR RETENÇÃO", XmlNode( cMono, "vCBSMonoReten" ) } )
+      ENDIF
+      ::DrawTexto( 5, ::nLinhaPdf, 589, NIL, "TOTAL DO IBS / CBS / IS", HPDF_TALIGN_LEFT, ::oPDFFontBold, 5 )
+      ::nLinhaPdf -= 6
+      nCol   := 5
+      nWidth := Int( 585 / 4 )
+      FOR EACH aItem IN aList
+         IF aItem:__EnumIndex() % 4 == 0 // último da linha completa até a margem
+            nWidth := 590 - nCol
+         ENDIF
+         ::DrawBoxTituloTexto( nCol, ::nLinhaPDF, nWidth, 16, aItem[ 1 ], ;
+            AllTrim( FormatNumber( Val( aItem[ 2 ] ), 15, 2 ) ), HPDF_TALIGN_RIGHT, ::oPDFFontNormal, 10 )
+         nCol += nWidth
+         IF aItem:__EnumIndex() % 4 == 0 .AND. ! aItem:__EnumIsLast()
+            ::nLinhaPDF -= 16
+            nCol   := 5
+            nWidth := Int( 585 / 4 )
+         ENDIF
       NEXT
       ::nLinhaPDF -= 17
    ENDIF
@@ -1183,6 +1238,9 @@ METHOD ItensDaFolha( nFolha ) CLASS hbNFeDaNFe
    ENDIF
    IF ::lLayoutReforma
       nQuadro -= 16 // CRT e regime de apuração no quadro do emitente
+      IF nFolha == 1
+         nQuadro -= 23 + iif( ::TemMonofasicoReforma(), 16, 0 ) // total do IBS/CBS/IS
+      ENDIF
    ENDIF
 
    RETURN Int( nQuadro / LAYOUT_FONTSIZE )
