@@ -105,6 +105,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    METHOD DefineColunasQuadroProdutos()
    METHOD TextoTributo( nCampo, nLinha )
    METHOD DrawTributos( nLinha, nRow )
+   METHOD LinhasReforma() INLINE Max( Len( ::aItemTributos ), iif( Empty( ::aItem[ "cClassTrib" ] ), 0, 2 ) )
    METHOD SetDescontoOff()      INLINE ::aLayout[ LAYOUT_DESCONTO,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
    METHOD SetSubBasOff()        INLINE ::aLayout[ LAYOUT_SUBBAS,     LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
    METHOD SetSubValOff()        INLINE ::aLayout[ LAYOUT_SUBVAL,     LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
@@ -912,7 +913,7 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
       ENDIF
       ::aItem[ "xProd" ]     := ::FormataMemo( ::aItem[ "xProd" ],     ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] - 2 )
       ::aItem[ "infAdProd" ] := ::FormataMemo( ::aItem[ "infAdProd" ], ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] - 2 )
-      IF ::nLinhaFolha + Max( MLCount( ::aItem[ "xProd" ], 1000 ) + MLCount( ::aItem[ "infAdProd" ], 1000 ), Len( ::aItemTributos ) ) > ::ItensDaFolha()
+      IF ::nLinhaFolha + Max( MLCount( ::aItem[ "xProd" ], 1000 ) + MLCount( ::aItem[ "infAdProd" ], 1000 ), ::LinhasReforma() ) > ::ItensDaFolha()
          ::saltaPagina()
       ENDIF
       ::DrawTextoProduto( LAYOUT_CODIGO,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
@@ -959,7 +960,7 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
          ::nLinhaFolha++
          ::nLinhaPdf -= LAYOUT_FONTSIZE
       NEXT
-      DO WHILE nLinhaTrib <= Len( ::aItemTributos )
+      DO WHILE nLinhaTrib <= ::LinhasReforma()
          ::DrawTributos( nLinhaTrib++, ::nLinhaPdf )
          ::nLinhaFolha++
          ::nLinhaPdf -= LAYOUT_FONTSIZE
@@ -1139,6 +1140,7 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
 
       // NT 2026.010: uma linha por tributo { nome, base, alíquota, valor }
       ::aItemTributos := {}
+      ::aItem[ "cClassTrib" ] := iif( ::lLayoutReforma, XmlNode( XmlNode( cItem, "IBSCBS" ), "cClassTrib" ), "" )
       IF ::lLayoutReforma
          IF Val( ::aItemICMS[ "vBC" ] ) > 0 .OR. Val( ::aItemICMS[ "vICMS" ] ) > 0
             AAdd( ::aItemTributos, { "ICMS", ::aItemICMS[ "vBC" ], ::aItemICMS[ "pICMS" ], ::aItemICMS[ "vICMS" ] } )
@@ -1323,6 +1325,10 @@ METHOD TextoTributo( nCampo, nLinha ) CLASS hbNFeDaNFe
 
 METHOD DrawTributos( nLinha, nRow ) CLASS hbNFeDaNFe
 
+   IF nLinha == 2 // NT 2026.010: cClassTrib na segunda linha da coluna NCM
+      ::DrawTextoProduto( LAYOUT_NCM, nRow, ::aItem[ "cClassTrib" ], HPDF_TALIGN_CENTER )
+   ENDIF
+
    ::DrawTextoProduto( LAYOUT_TRINOME, nRow, ::TextoTributo( LAYOUT_TRINOME, nLinha ), HPDF_TALIGN_LEFT )
    ::DrawTextoProduto( LAYOUT_TRIBAS,  nRow, ::TextoTributo( LAYOUT_TRIBAS,  nLinha ), HPDF_TALIGN_RIGHT )
    ::DrawTextoProduto( LAYOUT_TRIALI,  nRow, ::TextoTributo( LAYOUT_TRIALI,  nLinha ), HPDF_TALIGN_RIGHT )
@@ -1445,6 +1451,10 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       ENDIF
       IF Val( ::aItem[ "vDesc" ] ) > 0
          AtivaImprime( @::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] )
+      ENDIF
+      IF ! Empty( ::aItem[ "cClassTrib" ] ) // NT 2026.010: cClassTrib sai na coluna NCM
+         ::aLayout[ LAYOUT_NCM, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMENORMAL
+         ::aLayout[ LAYOUT_NCM, LAYOUT_TITULO2 ] := "cClassTrib"
       ENDIF
       IF Len( ::aItemTributos ) > 0
          AtivaImprime( @::aLayout[ LAYOUT_TRINOME, LAYOUT_IMPRIME ] )
