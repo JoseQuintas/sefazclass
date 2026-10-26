@@ -98,6 +98,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    METHOD ItensDaFolha( nFolha )
    METHOD Init()
    METHOD DrawTextoProduto( nCampo, nRow, nConteudo, nAlign )
+   METHOD LarguraDecimais( nCampo )
    METHOD DrawBoxProduto( nCampo, nRow, nHeight )
    METHOD DefineColunasQuadroProdutos()
    METHOD TextoTributo( nCampo, nLinha )
@@ -1199,6 +1200,7 @@ METHOD DrawTextoProduto( nCampo, nRow, nConteudo, nAlign ) CLASS hbNFeDaNFe
          cTexto := ::aLayout[ nCampo, nConteudo ]
          IF nConteudo == LAYOUT_CONTEUDO
             cTexto := Eval( cTexto )
+            nColunaFinal -= ::LarguraDecimais( nCampo ) // alinha pela vírgula
          ENDIF
       ENDIF
       //IF ::aLayout[ nCampo, LAYOUT_IMPRIME ] == LAYOUT_IMPRIMESEGUNDA
@@ -1208,6 +1210,28 @@ METHOD DrawTextoProduto( nCampo, nRow, nConteudo, nAlign ) CLASS hbNFeDaNFe
    ENDIF
 
    RETURN NIL
+
+// Largura das casas decimais que o item não tem, comparado com o máximo da coluna
+METHOD LarguraDecimais( nCampo ) CLASS hbNFeDaNFe
+
+   LOCAL cTag, nCasas, nFalta
+
+   DO CASE
+   CASE nCampo == LAYOUT_QTD        ; cTag := "qCom"    ; nCasas := 0
+   CASE nCampo == LAYOUT_UNITARIO   ; cTag := "vUnCom"  ; nCasas := 2
+   CASE nCampo == LAYOUT_QTD_TRIB   ; cTag := "qTrib"   ; nCasas := 0
+   CASE nCampo == LAYOUT_VALOR_TRIB ; cTag := "vUnTrib" ; nCasas := 2
+   OTHERWISE
+      RETURN 0
+   ENDCASE
+   nCasas := ::DefineDecimais( ::aItem[ cTag ], nCasas )
+   nFalta := ::aLayout[ nCampo, LAYOUT_DECIMAIS ] - nCasas
+   IF nFalta <= 0
+      RETURN 0
+   ENDIF
+   HPDF_Page_SetFontAndSize( ::oPDFPage, ::oPDFFontNormal, LAYOUT_FONTSIZE )
+
+   RETURN HPDF_Page_TextWidth( ::oPDFPage, Replicate( "0", nFalta ) + iif( nCasas == 0, ",", "" ) )
 
 METHOD DrawBoxProduto( nCampo, nRow, nHeight ) CLASS hbNfeDaNFe
 
@@ -1346,6 +1370,7 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       ::aLayout[ LAYOUT_QTD,      LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "qCom" ],   ::aLayout[ LAYOUT_QTD,      LAYOUT_DECIMAIS ] )
       ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "vUnCom" ], ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] )
       ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "qTrib" ],  ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] )
+      ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "vUnTrib" ], ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_DECIMAIS ] )
       FOR EACH aTributo IN ::aItemTributos
          ::aLayout[ LAYOUT_TRIALI, LAYOUT_DECIMAIS ] := ::DefineDecimais( aTributo[ 3 ], ::aLayout[ LAYOUT_TRIALI, LAYOUT_DECIMAIS ] )
       NEXT
@@ -1391,7 +1416,7 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
          EXIT
       ENDIF
       FOR EACH oElement IN ::aLayout
-         oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( Eval( oElement[ LAYOUT_CONTEUDO ] ) ) )
+         oElement[ LAYOUT_LARGURAPDF ] := Max( oElement[ LAYOUT_LARGURAPDF ], ::LarguraTexto( Eval( oElement[ LAYOUT_CONTEUDO ] ) ) + ::LarguraDecimais( oElement:__EnumIndex() ) )
       NEXT
       nItem += 1
    ENDDO
