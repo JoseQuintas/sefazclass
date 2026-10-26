@@ -61,11 +61,15 @@ Os campos que podem ser colocados na mesma coluna são:
 #define LAYOUT_IPIVAL          16
 #define LAYOUT_ICMALI          17
 #define LAYOUT_IPIALI          18
-#define LAYOUT_UN_TRIB         19
-#define LAYOUT_QTD_TRIB        20
-#define LAYOUT_VALOR_TRIB      21
+#define LAYOUT_TRINOME         19 // NT 2026.010: tributos um por linha
+#define LAYOUT_TRIBAS          20
+#define LAYOUT_TRIALI          21
+#define LAYOUT_TRIVAL          22
+#define LAYOUT_UN_TRIB         23
+#define LAYOUT_QTD_TRIB        24
+#define LAYOUT_VALOR_TRIB      25
 
-#define LAYOUT_TOTCOLUNAS      21
+#define LAYOUT_TOTCOLUNAS      25
 
 #define LAYOUT_FONTSIZE      8
 
@@ -96,6 +100,8 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    METHOD DrawTextoProduto( nCampo, nRow, nConteudo, nAlign )
    METHOD DrawBoxProduto( nCampo, nRow, nHeight )
    METHOD DefineColunasQuadroProdutos()
+   METHOD TextoTributo( nCampo, nLinha )
+   METHOD DrawTributos( nLinha, nRow )
    METHOD SetDescontoOff()      INLINE ::aLayout[ LAYOUT_DESCONTO,   LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
    METHOD SetSubBasOff()        INLINE ::aLayout[ LAYOUT_SUBBAS,     LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
    METHOD SetSubValOff()        INLINE ::aLayout[ LAYOUT_SUBVAL,     LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
@@ -155,6 +161,7 @@ CREATE CLASS hbNFeDaNFe INHERIT hbNFeDaGeral
    VAR aItemCOFINS
    VAR aItemCOFINSST
    VAR aItemISSQN
+   VAR aItemTributos INIT {}
 
    VAR cFonteNFe  INIT "Times"
    VAR cFonteCode128
@@ -205,6 +212,10 @@ METHOD Init() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_UN_TRIB,    LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
    ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+   ::aLayout[ LAYOUT_TRINOME,    LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   ::aLayout[ LAYOUT_TRIBAS,     LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   ::aLayout[ LAYOUT_TRIALI,     LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+   ::aLayout[ LAYOUT_TRIVAL,     LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
 
    RETURN SELF
 
@@ -597,6 +608,11 @@ METHOD QuadroNotaFiscal() CLASS hbNFeDaNFe
    ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 240, 16, "INSCRIÇÃO ESTADUAL", ::aEmit[ "IE" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::DrawBoxTituloTexto( 245, ::nLinhaPdf, 225, 16, "INSCRIÇÃO ESTADUAL DO SUBS. TRIBUTÁRIO", ::aEmit[ "IEST" ], HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
    ::DrawBoxTituloTexto( 470, ::nLinhaPdf, 120, 16, "CNPJ/CPF", FormatCnpj( ::aEmit[ "CNPJ" ] ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+   IF ::lLayoutReforma
+      ::nLinhaPdf -= 16
+      ::DrawBoxTituloTexto( 5, ::nLinhaPdf, 240, 16, "CÓDIGO DO REGIME TRIBUTÁRIO", DescRegimeTributario( ::aEmit[ "CRT" ] ), HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 )
+      ::DrawBoxTituloTexto( 245, ::nLinhaPdf, 345, 16, "TIPO DE REGIME DE APURAÇÃO DO IBS E DA CBS", "", HPDF_TALIGN_LEFT, ::oPDFFontNormal, 10 ) // NT 2026.010: tag ainda não definida
+   ENDIF
    ::nLinhaPdf -= 17
 
    RETURN NIL
@@ -826,7 +842,7 @@ METHOD QuadroProdutosDesenho( nLinhaFinalProd, nAlturaQuadroProdutos ) CLASS hbN
 
 METHOD QuadroProdutos() CLASS hbNFeDaNFe
 
-   LOCAL nLinhaFinalProd, nAlturaQuadroProdutos, nItem, nNumLinha, nCont
+   LOCAL nLinhaFinalProd, nAlturaQuadroProdutos, nItem, nNumLinha, nCont, nLinhaTrib
 
    nLinhaFinalProd := ::nLinhaPdf - ( ::ItensDaFolha() * LAYOUT_FONTSIZE ) - 2
    nAlturaQuadroProdutos := ( ::ItensDaFolha() * LAYOUT_FONTSIZE ) + 2
@@ -840,7 +856,7 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
       ENDIF
       ::aItem[ "xProd" ]     := ::FormataMemo( ::aItem[ "xProd" ],     ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] - 2 )
       ::aItem[ "infAdProd" ] := ::FormataMemo( ::aItem[ "infAdProd" ], ::aLayout[ LAYOUT_DESCRICAO, LAYOUT_LARGURAPDF ] - 2 )
-      IF ::nLinhaFolha + MLCount( ::aItem[ "xProd" ], 1000 ) + MLCount( ::aItem[ "infAdProd" ], 1000 ) > ::ItensDaFolha()
+      IF ::nLinhaFolha + Max( MLCount( ::aItem[ "xProd" ], 1000 ) + MLCount( ::aItem[ "infAdProd" ], 1000 ), Len( ::aItemTributos ) ) > ::ItensDaFolha()
          ::saltaPagina()
       ENDIF
       ::DrawTextoProduto( LAYOUT_CODIGO,     ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_CENTER )
@@ -864,6 +880,8 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
       ::DrawTextoProduto( LAYOUT_UN_TRIB,    ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
       ::DrawTextoProduto( LAYOUT_QTD_TRIB,   ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
       ::DrawTextoProduto( LAYOUT_VALOR_TRIB, ::nLinhaPdf, LAYOUT_CONTEUDO, HPDF_TALIGN_RIGHT )
+      ::DrawTributos( 1, ::nLinhaPdf )
+      nLinhaTrib := 2
       ::nLinhaPdf -= LAYOUT_FONTSIZE
       nItem++
       ::nLinhaFolha++
@@ -872,6 +890,7 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
 //            ::saltaPagina()
 //         ENDIF
          ::DrawTextoProduto( LAYOUT_DESCRICAO, ::nLinhaPdf, MemoLine( ::aItem[ "xProd" ], 1000, nNumLinha ), HPDF_TALIGN_LEFT )
+         ::DrawTributos( nLinhaTrib++, ::nLinhaPdf )
          ::nLinhaFolha++
          ::nLinhaPdf -= LAYOUT_FONTSIZE
       NEXT
@@ -880,9 +899,15 @@ METHOD QuadroProdutos() CLASS hbNFeDaNFe
 //            ::saltaPagina()
 //         ENDIF
          ::DrawTextoProduto( LAYOUT_DESCRICAO, ::nLinhaPdf, MemoLine( ::aItem[ "infAdProd" ], 1000, nNumLinha ), HPDF_TALIGN_LEFT )
+         ::DrawTributos( nLinhaTrib++, ::nLinhaPdf )
          ::nLinhaFolha++
          ::nLinhaPdf -= LAYOUT_FONTSIZE
       NEXT
+      DO WHILE nLinhaTrib <= Len( ::aItemTributos )
+         ::DrawTributos( nLinhaTrib++, ::nLinhaPdf )
+         ::nLinhaFolha++
+         ::nLinhaPdf -= LAYOUT_FONTSIZE
+      ENDDO
       IF ::lLayoutEspacoDuplo
          ::nLinhaPdf -= LAYOUT_FONTSIZE
          ::nLinhaFolha++
@@ -960,7 +985,7 @@ METHOD QuadroDadosAdicionais() CLASS hbNFeDaNFe
 
 METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
 
-   LOCAL cItem, aItem, cDetalhamentoArma, cDetalhamentoVeiculo, xValue, cTxt
+   LOCAL cItem, aItem, cDetalhamentoArma, cDetalhamentoVeiculo, xValue, cTxt, cIBSCBS, cIS
 
    aItem := MultipleNodeToArray( cXml, "det" )
    IF Len( aItem ) < nItem
@@ -1056,6 +1081,33 @@ METHOD ProcessaItens( cXml, nItem ) CLASS hbNFeDaNFe
             "nFCI " + ::aItem[ "nFCI" ]
       ENDIF
 
+      // NT 2026.010: uma linha por tributo { nome, base, alíquota, valor }
+      ::aItemTributos := {}
+      IF ::lLayoutReforma
+         IF Val( ::aItemICMS[ "vBC" ] ) > 0 .OR. Val( ::aItemICMS[ "vICMS" ] ) > 0
+            AAdd( ::aItemTributos, { "ICMS", ::aItemICMS[ "vBC" ], ::aItemICMS[ "pICMS" ], ::aItemICMS[ "vICMS" ] } )
+         ENDIF
+         IF Val( ::aItemICMS[ "vBCST" ] ) > 0 .OR. Val( ::aItemICMS[ "vICMSST" ] ) > 0
+            AAdd( ::aItemTributos, { "ICMS ST", ::aItemICMS[ "vBCST" ], ::aItemICMS[ "pICMSST" ], ::aItemICMS[ "vICMSST" ] } )
+         ENDIF
+         IF Val( ::aItemIPI[ "pIPI" ] ) > 0 .OR. Val( ::aItemIPI[ "vIPI" ] ) > 0
+            AAdd( ::aItemTributos, { "IPI", ::aItemIPI[ "vBC" ], ::aItemIPI[ "pIPI" ], ::aItemIPI[ "vIPI" ] } )
+         ENDIF
+         cIBSCBS := XmlNode( XmlNode( cItem, "IBSCBS" ), "gIBSCBS" )
+         IF ! Empty( cIBSCBS )
+            AAdd( ::aItemTributos, { "IBS UF",  XmlNode( cIBSCBS, "vBC" ), AliquotaReforma( XmlNode( cIBSCBS, "gIBSUF" ), "pIBSUF" ), ;
+               XmlNode( XmlNode( cIBSCBS, "gIBSUF" ), "vIBSUF" ) } )
+            AAdd( ::aItemTributos, { "IBS MUN", XmlNode( cIBSCBS, "vBC" ), AliquotaReforma( XmlNode( cIBSCBS, "gIBSMun" ), "pIBSMun" ), ;
+               XmlNode( XmlNode( cIBSCBS, "gIBSMun" ), "vIBSMun" ) } )
+            AAdd( ::aItemTributos, { "CBS",     XmlNode( cIBSCBS, "vBC" ), AliquotaReforma( XmlNode( cIBSCBS, "gCBS" ), "pCBS" ), ;
+               XmlNode( XmlNode( cIBSCBS, "gCBS" ), "vCBS" ) } )
+         ENDIF
+         cIS := XmlNode( cItem, "IS" )
+         IF ! Empty( cIS )
+            AAdd( ::aItemTributos, { "IS", XmlNode( cIS, "vBCIS" ), XmlNode( cIS, "pIS" ), XmlNode( cIS, "vIS" ) } )
+         ENDIF
+      ENDIF
+
    ENDIF
 
    RETURN .T.
@@ -1128,6 +1180,9 @@ METHOD ItensDaFolha( nFolha ) CLASS hbNFeDaNFe
          ENDIF
       ENDIF
    ENDIF
+   IF ::lLayoutReforma
+      nQuadro -= 16 // CRT e regime de apuração no quadro do emitente
+   ENDIF
 
    RETURN Int( nQuadro / LAYOUT_FONTSIZE )
 
@@ -1162,9 +1217,40 @@ METHOD DrawBoxProduto( nCampo, nRow, nHeight ) CLASS hbNfeDaNFe
 
    RETURN NIL
 
+METHOD TextoTributo( nCampo, nLinha ) CLASS hbNFeDaNFe
+
+   LOCAL cTexto := "", aTributo
+
+   IF nLinha == NIL // sem linha, o mais largo, pra calcular a coluna
+      FOR EACH aTributo IN ::aItemTributos
+         IF ::LarguraTexto( ::TextoTributo( nCampo, aTributo:__EnumIndex() ) ) > ::LarguraTexto( cTexto )
+            cTexto := ::TextoTributo( nCampo, aTributo:__EnumIndex() )
+         ENDIF
+      NEXT
+   ELSEIF nLinha <= Len( ::aItemTributos )
+      aTributo := ::aItemTributos[ nLinha ]
+      DO CASE
+      CASE nCampo == LAYOUT_TRINOME ; cTexto := aTributo[ 1 ]
+      CASE nCampo == LAYOUT_TRIBAS  ; cTexto := Alltrim( FormatNumber( Val( aTributo[ 2 ] ), 15, 2 ) )
+      CASE nCampo == LAYOUT_TRIALI  ; cTexto := Alltrim( FormatNumber( Val( aTributo[ 3 ] ), 15, ::aLayout[ LAYOUT_TRIALI, LAYOUT_DECIMAIS ] ) )
+      CASE nCampo == LAYOUT_TRIVAL  ; cTexto := Alltrim( FormatNumber( Val( aTributo[ 4 ] ), 15, 2 ) )
+      ENDCASE
+   ENDIF
+
+   RETURN cTexto
+
+METHOD DrawTributos( nLinha, nRow ) CLASS hbNFeDaNFe
+
+   ::DrawTextoProduto( LAYOUT_TRINOME, nRow, ::TextoTributo( LAYOUT_TRINOME, nLinha ), HPDF_TALIGN_LEFT )
+   ::DrawTextoProduto( LAYOUT_TRIBAS,  nRow, ::TextoTributo( LAYOUT_TRIBAS,  nLinha ), HPDF_TALIGN_RIGHT )
+   ::DrawTextoProduto( LAYOUT_TRIALI,  nRow, ::TextoTributo( LAYOUT_TRIALI,  nLinha ), HPDF_TALIGN_RIGHT )
+   ::DrawTextoProduto( LAYOUT_TRIVAL,  nRow, ::TextoTributo( LAYOUT_TRIVAL,  nLinha ), HPDF_TALIGN_RIGHT )
+
+   RETURN NIL
+
 METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
 
-   LOCAL oElement, nItem, nCont, nColunaFinal, nTentativa
+   LOCAL oElement, nItem, nCont, nColunaFinal, nTentativa, aTributo
 
    ::ProcessaItens( ::cXml, 1 ) // precisa de ::aItem pra gerar o codeblock
    ::aLayout[ LAYOUT_CODIGO,     LAYOUT_TITULO1 ]   := "CÓDIGO"
@@ -1223,12 +1309,32 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_TITULO1 ]   := "VALOR"
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_TITULO2 ]   := "TRIB"
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_CONTEUDO ]  := { || Alltrim( FormatNumber( Val( ::aItem[ "vUnTrib" ] ), 15, ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_DECIMAIS ] ) ) }
+   ::aLayout[ LAYOUT_TRINOME,    LAYOUT_TITULO1 ]   := "TRIBUTO"
+   ::aLayout[ LAYOUT_TRINOME,    LAYOUT_CONTEUDO ]  := { || ::TextoTributo( LAYOUT_TRINOME ) }
+   ::aLayout[ LAYOUT_TRIBAS,     LAYOUT_TITULO1 ]   := "B.CÁLC."
+   ::aLayout[ LAYOUT_TRIBAS,     LAYOUT_CONTEUDO ]  := { || ::TextoTributo( LAYOUT_TRIBAS ) }
+   ::aLayout[ LAYOUT_TRIALI,     LAYOUT_TITULO1 ]   := "ALÍQ"
+   ::aLayout[ LAYOUT_TRIALI,     LAYOUT_TITULO2 ]   := "%"
+   ::aLayout[ LAYOUT_TRIALI,     LAYOUT_CONTEUDO ]  := { || ::TextoTributo( LAYOUT_TRIALI ) }
+   ::aLayout[ LAYOUT_TRIVAL,     LAYOUT_TITULO1 ]   := "VALOR"
+   ::aLayout[ LAYOUT_TRIVAL,     LAYOUT_CONTEUDO ]  := { || ::TextoTributo( LAYOUT_TRIVAL ) }
+
+   // NT 2026.010: no layout da reforma, colunas de tributos substituem as de ICMS/ST/IPI
+   IF ::lLayoutReforma
+      FOR EACH nCont IN { LAYOUT_ICMBAS, LAYOUT_ICMVAL, LAYOUT_SUBBAS, LAYOUT_SUBVAL, LAYOUT_IPIVAL, LAYOUT_ICMALI, LAYOUT_IPIALI }
+         ::aLayout[ nCont, LAYOUT_IMPRIME ] := LAYOUT_NAOIMPRIME
+      NEXT
+      FOR EACH nCont IN { LAYOUT_TRINOME, LAYOUT_TRIBAS, LAYOUT_TRIALI, LAYOUT_TRIVAL }
+         ::aLayout[ nCont, LAYOUT_IMPRIME ] := LAYOUT_IMPRIMEXMLTEM
+      NEXT
+   ENDIF
 
    // Define decimais default, mas será ajustado conforme conteúdo do XML
    ::aLayout[ LAYOUT_QTD,        LAYOUT_DECIMAIS ] := 0
    ::aLayout[ LAYOUT_UNITARIO,   LAYOUT_DECIMAIS ] := 2
    ::aLayout[ LAYOUT_QTD_TRIB,   LAYOUT_DECIMAIS ] := 0
    ::aLayout[ LAYOUT_VALOR_TRIB, LAYOUT_DECIMAIS ] := 2
+   ::aLayout[ LAYOUT_TRIALI,     LAYOUT_DECIMAIS ] := 2
    FOR EACH oElement IN ::aLayout
       oElement[ LAYOUT_LARGURA ] := Max( Len( oElement[ LAYOUT_TITULO1 ] ), Len( oElement[ LAYOUT_TITULO2 ] ) )
    NEXT
@@ -1240,6 +1346,9 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       ::aLayout[ LAYOUT_QTD,      LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "qCom" ],   ::aLayout[ LAYOUT_QTD,      LAYOUT_DECIMAIS ] )
       ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "vUnCom" ], ::aLayout[ LAYOUT_UNITARIO, LAYOUT_DECIMAIS ] )
       ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] := ::DefineDecimais( ::aItem[ "qTrib" ],  ::aLayout[ LAYOUT_QTD_TRIB, LAYOUT_DECIMAIS ] )
+      FOR EACH aTributo IN ::aItemTributos
+         ::aLayout[ LAYOUT_TRIALI, LAYOUT_DECIMAIS ] := ::DefineDecimais( aTributo[ 3 ], ::aLayout[ LAYOUT_TRIALI, LAYOUT_DECIMAIS ] )
+      NEXT
       FOR EACH oElement IN ::aLayout
          oElement[ LAYOUT_LARGURA ] := Max( oElement[ LAYOUT_LARGURA ], Len( Eval( oElement[ LAYOUT_CONTEUDO ] ) ) )
       NEXT
@@ -1253,6 +1362,12 @@ METHOD DefineColunasQuadroProdutos() CLASS hbNFeDaNFe
       ENDIF
       IF Val( ::aItem[ "vDesc" ] ) > 0
          AtivaImprime( @::aLayout[ LAYOUT_DESCONTO, LAYOUT_IMPRIME ] )
+      ENDIF
+      IF Len( ::aItemTributos ) > 0
+         AtivaImprime( @::aLayout[ LAYOUT_TRINOME, LAYOUT_IMPRIME ] )
+         AtivaImprime( @::aLayout[ LAYOUT_TRIBAS,  LAYOUT_IMPRIME ] )
+         AtivaImprime( @::aLayout[ LAYOUT_TRIALI,  LAYOUT_IMPRIME ] )
+         AtivaImprime( @::aLayout[ LAYOUT_TRIVAL,  LAYOUT_IMPRIME ] )
       ENDIF
       IF ! Empty( ::aItem[ "cEAN" ] )
          AtivaImprime( @::aLayout[ LAYOUT_EAN, LAYOUT_IMPRIME ] )
@@ -1375,6 +1490,13 @@ METHOD QuadroLocalEntrega() CLASS hbNFeDaNFe
 
    RETURN NIL
 
+// NT 2026.010: com redução (gRed) imprime a alíquota efetiva
+STATIC FUNCTION AliquotaReforma( cGrupo, cTag )
+
+   LOCAL cGRed := XmlNode( cGrupo, "gRed" )
+
+   RETURN iif( Empty( cGRed ), XmlNode( cGrupo, cTag ), XmlNode( cGRed, "pAliqEfet" ) )
+
 STATIC FUNCTION AtivaImprime( nImprime )
 
    IF nImprime == LAYOUT_IMPRIMEXMLTEM
@@ -1489,3 +1611,17 @@ STATIC FUNCTION LoadJson( cTipo )
    ENDCASE
 
    RETURN Nil
+
+STATIC FUNCTION DescRegimeTributario( cCRT )
+
+   LOCAL cTexto
+
+   DO CASE
+   CASE cCRT == "1" ; cTexto := "1 - SIMPLES NACIONAL"
+   CASE cCRT == "2" ; cTexto := "2 - SIMPLES NACIONAL - EXCESSO DE SUBLIMITE DE RECEITA BRUTA"
+   CASE cCRT == "3" ; cTexto := "3 - REGIME NORMAL"
+   CASE cCRT == "4" ; cTexto := "4 - SIMPLES NACIONAL - MEI"
+   OTHERWISE        ; cTexto := cCRT
+   ENDCASE
+
+   RETURN cTexto

@@ -21,6 +21,7 @@ CREATE CLASS hbNFeDaGeral
    VAR    lQuadroEntrega      INIT .T.
    VAR    nLinhaDesenvolvedor INIT 7
    VAR    lBarCodeChave       INIT .F.
+   VAR    lLayoutReforma      INIT .F.
 
    METHOD ToPDF( cXmlDocumento, cFilePDF, cXmlAuxiliar, oPDF, lEnd )
    METHOD DrawBarcode128( cBarCode, nAreaX, nAreaY, nBarWidth, nAreaHeight )
