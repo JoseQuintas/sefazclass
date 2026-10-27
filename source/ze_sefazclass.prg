@@ -160,7 +160,7 @@ CREATE CLASS SefazClass
    METHOD MDFeStatusServico( ... )          INLINE ::MDFeStatus( ... )
    METHOD MDFeConsNaoEnc( ... )             INLINE ::MDFeEmAberto( ... )
    METHOD MDFeDistribuicaoDFe( ...)         INLINE ::MDFeDistribuicao( ... )
-   METHOD MDFeEventoInclusaoCondutor( ... ) INLINE ::MDFeCondutor( ... )
+   METHOD MDFeEventoInclusaoCondutor( ... ) INLINE ::MDFeEventoCondutor( ... )
    METHOD NFeStatusServicoSVC( ... )        INLINE ::NFeStatusSVC( ... )
 
    ENDCLASS
