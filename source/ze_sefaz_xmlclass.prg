@@ -1128,7 +1128,7 @@ STATIC FUNCTION XmlToDocNfeInut( cXmlInput, oDocSped )
       oDocSped:Emitente:Cnpj := Transform( XmlNode( cXmlInput, "CNPJ" ), "@R !!.!!!.!!!/!!!!-!!" )
       oDocSped:cAssinatura   := XmlNode( cXmlInput, "Signature" )
       oDocSped:cSequencia    := "01"
-      oDocSped:Protocolo     := XmlNode( cXmlInput, "infInut" )
+      oDocSped:Protocolo     := XmlNode( cXmlInput, "nProt" )
       oDocSped:Status        := "999" // inutilizada, evento 110999
       cModelo                := StrZero( Val( XmlNode( cXmlInput, "mod" ) ), 2 )
       cSerie                 := StrZero( Val( XmlNode( cXmlInput, "serie" ) ), 3 )
