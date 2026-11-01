@@ -157,7 +157,7 @@ jobs:
       env:
          REPO_SEFAZ:    https://github.com/JoseQuintas/sefazclass
          REPO_BOLETO:   https://github.com/JoseQuintas/boletoclass
-         REPO_RMCHART:  https://github.com/JoseQuintas/rmchartclass
+         REPO_CHART:    https://github.com/JoseQuintas/chartclass
          REPO_WVGTEST:  https://github.com/JoseQuintas/wvgtest
          REPO_PDFCLASS: http://github.com/JoseQuintas/pdfclass
          REPO_HWGUI:    https://github.com/JoseQuintas/hwgui_fork
@@ -168,7 +168,7 @@ jobs:
          REPO_DLGAUTO:  https://github.com/JoseQuintas/dlgauto
          PATH_SEFAZ:    c:\temp\harbour\addons\sefazclass
          PATH_BOLETO:   c:\temp\harbour\addons\boletoclass
-         PATH_RMCHART:  c:\temp\harbour\addons\rmchartclass
+         PATH_CHART:    c:\temp\harbour\addons\chartclass
          PATH_PDFCLASS: c:\temp\harbour\addons\pdfclass
          PATH_WVGTEST:  c:\temp\harbour\addons\wvgtest
          PATH_HWGUI:    c:\temp\harbour\addons\hwgui
@@ -180,7 +180,7 @@ jobs:
          c:
          git clone $env:REPO_SEFAZ       $env:PATH_SEFAZ        --depth 1
          git clone $env:REPO_BOLETO      $env:PATH_BOLETO       --depth 1
-         git clone $env:REPO_RMCHART     $env:PATH_RMCHART      --depth 1
+         git clone $env:REPO_CHART       $env:PATH_CHART        --depth 1
          git clone $env:REPO_WVGTEST     $env:PATH_WVGTEST      --depth 1
          git clone $env:REPO_PDFCLASS    $env:PATH_PDFCLASS     --depth 1
          git clone $env:REPO_HWGUI       $env:PATH_HWGUI        --depth 1
@@ -230,10 +230,10 @@ jobs:
 
          Write-Output ""
          Write-Output ""
-         Write-Output "rmchartclass"
+         Write-Output "chartclass"
          Write-Output ""
-         cd c:\temp\harbour\addons\rmchartclass
-         hbmk2 rmchartclass.hbp -q -rebuild
+         cd c:\temp\harbour\addons\chartclass
+         hbmk2 chartclass.hbp -q -rebuild
 
          Write-Output ""
          Write-Output ""
