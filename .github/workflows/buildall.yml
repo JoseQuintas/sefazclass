@@ -175,7 +175,6 @@ jobs:
          PATH_HMGE:     c:\temp\harbour\addons\hmge
          PATH_HMG3:     c:\temp\harbour\addons\hmg3
          PATH_OOHG:     c:\temp\harbour\addons\oohg
-         PATH_ZEPACK:   c:\temp\harbour\addons\zepack
          PATH_DLGAUTO:  c:\temp\harbour\addons\dlgauto
       run: |
          c:
