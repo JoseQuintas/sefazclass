@@ -326,26 +326,26 @@ jobs:
          7z a -r c:\temp\pack_hb32_${{matrix.compiler}}.7z c:\temp\harbour\*.* -xr'!.git' -xr'!.github' -xr'!.hbmk'
 
     - name: Save mingw_xxxx
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
          name: ${{matrix.compiler}}
          path: c:\temp\${{matrix.compiler}}.7z
 
     - name: Save hb32_xxxx.zip
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
          name: hb32_${{matrix.compiler}}
          path: c:\temp\hb32_${{matrix.compiler}}.7z
 
     - name: Save addons_hb32_xxxx.zip
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
          name: addons_hb32_${{matrix.compiler}}
          path: c:\temp\addons_hb32_${{matrix.compiler}}.7z
 
     - name: Save pack_hb32_xxxx.zip
       if: ${{ 'true' == 'false' }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
          name: pack_hb32_${{matrix.compiler}}
          path: c:\temp\pack_hb32_${{matrix.compiler}}.7z
