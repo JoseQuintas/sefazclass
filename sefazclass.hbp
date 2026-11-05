@@ -33,6 +33,7 @@ source/ze_sefaz_pdf_nfce.prg
 source/ze_sefaz_pdf_comum.prg
 source/ze_sefaz_xmlclass.prg
 source/ze_xmlfunc.prg
+source/ze_sefaz_GnreLote.prg
 source/ze_miscfunc.prg
 source/ze_digitodoc.prg
 source/ze_sefaz_BpeProtocolo.prg
