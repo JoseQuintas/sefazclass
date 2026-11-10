@@ -112,6 +112,8 @@ FUNCTION XmlTransform( cXml )
       CASE cLetra $ ",.:/;%*$@?<>()+-#=:_" + Chr(34) + Chr(32); lTroca := .F.
       CASE nAscii == 231; cLetra := "c"
       CASE nAscii == 199; cLetra := "C"
+      CASE nAscii == 241; cLetra := "n"
+      CASE nAscii == 209; cLetra := "N"
       CASE hb_AScan( { 193, 194, 195, 192 }, nAscii ) != 0 ; cLetra := "A"
       CASE hb_AScan( { 224, 225, 226, 227, 228, 229 }, nAscii ) != 0 ; cLetra := "a"
       CASE hb_AScan( { 242, 243, 244, 245, 246 }, nAscii ) != 0 ; cLetra := "o"
