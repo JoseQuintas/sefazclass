@@ -39,6 +39,8 @@ CREATE CLASS SefazClass
    VAR    cUFTimeZone     INIT ""                      // Para TimeZone diferente da UF de comunicação
    VAR    cUserTimeZone   INIT ""                      // Para TimeZone definido pelo usuário
    VAR    cPassword       INIT ""                      // Senha de arquivo PFX
+   VAR    nAssinatura     INIT WS_ASSINATURA_WINAPI    // WS_ASSINATURA_WINAPI, WS_ASSINATURA_AMBAS ou WS_ASSINATURA_CAPICOM
+   VAR    cAssinaturaAviso INIT ""                     // erro da assinatura nova quando usou o capicom
    VAR    cProxyUrl       INIT ""
    VAR    cProxyUser      INIT ""
    VAR    cProxyPassword  INIT ""
@@ -214,7 +216,20 @@ METHOD lSincrono( lValue ) CLASS SefazClass
 
 METHOD AssinaXml() CLASS SefazClass
 
-   ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado,,::cPassword )
+   LOCAL cXmlOriginal := ::cXmlDocumento, cCategoria := ""
+
+   ::cAssinaturaAviso := ""
+   IF ::nAssinatura == WS_ASSINATURA_WINAPI .OR. ::nAssinatura == WS_ASSINATURA_AMBAS
+      ::cXmlRetorno := WinApiAssinaXml( @::cXmlDocumento, ::cCertificado,, @cCategoria )
+      IF ::nAssinatura == WS_ASSINATURA_AMBAS .AND. ::cXmlRetorno != "OK" .AND. ! cCategoria == "cancelado"
+         ::cAssinaturaAviso := ::cXmlRetorno
+         ::cXmlDocumento    := cXmlOriginal
+         ::cXmlRetorno      := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado,,::cPassword )
+         SefazClassAviso( Self )
+      ENDIF
+   ELSE
+      ::cXmlRetorno := CapicomAssinaXml( @::cXmlDocumento, ::cCertificado,,::cPassword )
+   ENDIF
    IF ::cXmlRetorno != "OK"
       ::nStatus := 999
       ::cMotivo := ::cXmlRetorno
@@ -689,3 +704,21 @@ FUNCTION SefazClassTipoXml( cXml )
 
    RETURN oSefaz:TipoXml( cXml )
 
+
+/*
+SefazClassAviso( bBloco ) - define o bloco chamado quando a assinatura nova falha e usa o capicom
+SefazClassAviso( oSefaz ) - chamado pela SefazClass, executa o bloco com o objeto
+(o aviso fica em oSefaz:cAssinaturaAviso; quem usa a classe decide se grava ou envia)
+*/
+
+FUNCTION SefazClassAviso( xValue )
+
+   STATIC s_bAviso := NIL
+
+   IF ValType( xValue ) == "B"
+      s_bAviso := xValue
+   ELSEIF ValType( xValue ) == "O" .AND. ValType( s_bAviso ) == "B"
+      Eval( s_bAviso, xValue )
+   ENDIF
+
+   RETURN NIL

@@ -23,6 +23,7 @@ hbwin.hbc
 source/ze_atmseguroclass.prg
 source/ze_sefazclass.prg
 source/ze_sefaz_capicom.prg
+source/ze_sefaz_winapi.c
 source/ze_sefaz_Assina.prg
 source/ze_sefaz_Assinachk.prg
 source/ze_sefaz_pdf_cte.prg

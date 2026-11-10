@@ -333,3 +333,80 @@ STATIC FUNCTION AssinaAjustaAssinado( cXml )
    // oCert      := win_OleCreateObject( "CAPICOM.Certificate" )
    // oCert:Load( "c:\path\file.pfx", "password", 1, 0 )
    // oCert:Add( oCert )
+
+/*
+Assinatura pela API do Windows (ze_sefaz_winapi.c), sem capicom e sem msxml5
+Retorna "OK" ou "Erro Assinatura - <categoria>: <mensagem>"
+cCategoria (por referencia): certificado, cancelado, documento, rotina
+Arquivo PFX ainda nao suportado: retorna categoria "rotina"
+*/
+
+FUNCTION WinApiAssinaXml( cTxtXml, cCertCN, lRemoveAnterior, cCategoria, lComURI )
+
+   LOCAL cXmlTagInicial, cXmlTagFinal, cRetorno := "", cURI, cCanon, cMensagem := "", cAssinatura, cCertDer := ""
+   LOCAL cXmlOriginal := cTxtXml
+
+   hb_Default( @lRemoveAnterior, .T. )
+   hb_Default( @lComURI, .T. )
+   cCategoria := ""
+
+   IF Empty( cCertCN )
+      cCategoria := "certificado"
+      RETURN "Erro Assinatura - certificado: nao informado o certificado"
+   ENDIF
+   IF Upper( Right( cCertCN, 4 ) ) == ".PFX"
+      cCategoria := "rotina"
+      RETURN "Erro Assinatura - rotina: arquivo PFX ainda nao suportado pela assinatura nova"
+   ENDIF
+
+   AssinaRemoveAssinatura( @cTxtXml, lRemoveAnterior )
+   AssinaRemoveDeclaracao( @cTxtXml )
+   IF ! AssinaAjustaInformacao( @cTxtXml, @cXmlTagInicial, @cXmlTagFinal, @cRetorno, @lComURI )
+      cTxtXml    := cXmlOriginal
+      cCategoria := "documento"
+      RETURN StrTran( cRetorno, "Erro Assinatura:", "Erro Assinatura - documento:" )
+   ENDIF
+   cURI := Substr( cTxtXml, At( [<Reference URI="], cTxtXml ) + 16 )
+   cURI := Substr( cURI, 1, At( ["], cURI ) - 1 )
+   IF Left( cURI, 1 ) == "#"
+      cURI := Substr( cURI, 2 )
+   ENDIF
+
+   BEGIN SEQUENCE
+      IF Empty( cURI )
+         cCategoria := "rotina"
+         cMensagem  := "assinatura sem URI ainda nao suportada pela assinatura nova"
+         BREAK
+      ENDIF
+      cCanon := SEFAZ_WINAPI_C14N( cTxtXml, cURI, "", @cCategoria, @cMensagem )
+      IF ! Empty( cCategoria )
+         BREAK
+      ENDIF
+      // a assinatura tem que ficar fora do elemento assinado (transformacao enveloped nao implementada)
+      IF "<Signature" $ cCanon
+         cCategoria := "rotina"
+         cMensagem  := "assinatura dentro do elemento assinado ainda nao suportada pela assinatura nova"
+         BREAK
+      ENDIF
+      cTxtXml := StrTran( cTxtXml, "<DigestValue></DigestValue>", ;
+         "<DigestValue>" + hb_Base64Encode( hb_SHA1( cCanon, .T. ) ) + "</DigestValue>" )
+      cCanon := SEFAZ_WINAPI_C14N( cTxtXml, "", "SignedInfo", @cCategoria, @cMensagem )
+      IF ! Empty( cCategoria )
+         BREAK
+      ENDIF
+      cAssinatura := SEFAZ_WINAPI_ASSINA( cCertCN, hb_SHA1( cCanon, .T. ), @cCertDer, @cCategoria, @cMensagem )
+      IF ! Empty( cCategoria )
+         BREAK
+      ENDIF
+      cTxtXml := StrTran( cTxtXml, "<SignatureValue></SignatureValue>", ;
+         "<SignatureValue>" + hb_Base64Encode( cAssinatura ) + "</SignatureValue>" )
+      cTxtXml := StrTran( cTxtXml, "<KeyInfo></KeyInfo>", ;
+         "<KeyInfo><X509Data><X509Certificate>" + hb_Base64Encode( cCertDer ) + "</X509Certificate></X509Data></KeyInfo>" )
+   END SEQUENCE
+
+   IF ! Empty( cCategoria )
+      cTxtXml := cXmlOriginal
+      RETURN "Erro Assinatura - " + cCategoria + ": " + cMensagem
+   ENDIF
+
+   RETURN "OK"
