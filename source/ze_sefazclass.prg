@@ -39,7 +39,7 @@ CREATE CLASS SefazClass
    VAR    cUFTimeZone     INIT ""                      // Para TimeZone diferente da UF de comunicação
    VAR    cUserTimeZone   INIT ""                      // Para TimeZone definido pelo usuário
    VAR    cPassword       INIT ""                      // Senha de arquivo PFX
-   VAR    nAssinatura     INIT WS_ASSINATURA_WINAPI    // WS_ASSINATURA_WINAPI, WS_ASSINATURA_AMBAS ou WS_ASSINATURA_CAPICOM
+   VAR    nAssinatura     INIT WS_ASSINATURA_AMBAS     // WS_ASSINATURA_WINAPI, WS_ASSINATURA_AMBAS ou WS_ASSINATURA_CAPICOM
    VAR    cAssinaturaAviso INIT ""                     // erro da assinatura nova quando usou o capicom
    VAR    cProxyUrl       INIT ""
    VAR    cProxyUser      INIT ""

@@ -6,8 +6,8 @@
 #define WS_AMBIENTE_HOMOLOGACAO      "2"
 #define WS_AMBIENTE_PRODUCAO         "1"
 
-#define WS_ASSINATURA_WINAPI         1                 // API do Windows, sem capicom (a definitiva, padrao)
-#define WS_ASSINATURA_AMBAS          2                 // API do Windows e, se der erro, capicom com aviso (reserva)
+#define WS_ASSINATURA_WINAPI         1                 // API do Windows, sem capicom (a definitiva)
+#define WS_ASSINATURA_AMBAS          2                 // API do Windows e, se der erro, capicom com aviso (padrao enquanto testa A3 etc.)
 #define WS_ASSINATURA_CAPICOM        3                 // capicom e msxml5 (reserva, sai junto com o capicom)
 
 #define WS_XMLNS_BPE                 [xmlns="http://www.portalfiscal.inf.br/bpe"]
