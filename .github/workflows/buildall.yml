@@ -351,8 +351,9 @@ jobs:
          path: c:\temp\pack_hb32_${{matrix.compiler}}.7z
 #----------------------------
 
-# apaga as execucoes anteriores desta workflow, so se todas as compilacoes deram certo
-# (a execucao atual fica, com os artifacts que a proxima vai usar)
+# apaga as execucoes antigas desta workflow, so se todas as compilacoes deram certo
+# ficam as KEEP mais recentes que deram certo (contando a atual), com os artifacts
+# as que deram erro tambem sao apagadas; as que ainda estao rodando ficam
 
   limpeza:
     needs: mingwall
@@ -360,13 +361,20 @@ jobs:
     permissions:
       actions: write
     steps:
-    - name: Apaga execucoes anteriores
+    - name: Apaga execucoes antigas
       env:
          GH_TOKEN: ${{ github.token }}
+         KEEP: 3
       run: |
-         gh run list --repo ${{ github.repository }} --workflow buildall.yml --limit 500 --json databaseId --jq '.[].databaseId' |
-         while read id; do
-            if [ "$id" != "${{ github.run_id }}" ]; then
-               gh run delete "$id" --repo ${{ github.repository }}
+         n=1
+         gh run list --repo ${{ github.repository }} --workflow buildall.yml --limit 500 --json databaseId,status,conclusion --jq '.[] | "\(.databaseId) \(.status) \(.conclusion)"' |
+         while read id status conclusion; do
+            if [ "$id" = "${{ github.run_id }}" ] || [ "$status" != "completed" ]; then
+               continue
             fi
+            if [ "$conclusion" = "success" ] && [ $n -lt $KEEP ]; then
+               n=$((n+1))
+               continue
+            fi
+            gh run delete "$id" --repo ${{ github.repository }}
          done
