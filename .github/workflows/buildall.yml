@@ -43,7 +43,6 @@ jobs:
 #----- restore zip -----
 
     - name: load mingw_xxxx.zip
-      if: ${{ matrix.compiler != 'mingw_1602' }}  # so nesta vez: forca baixar o r3 do winlibs
       uses: dawidd6/action-download-artifact@v21
       with:
          workflow: buildall.yml
@@ -54,7 +53,7 @@ jobs:
          if_no_artifact_found: warn
 
     - name: load hb32_xxx.zip
-      if: ${{ github.event_name == 'push' && matrix.compiler != 'mingw_1602' }}  # so nesta vez: harbour com o r3
+      if: ${{ github.event_name == 'push' }}
       uses: dawidd6/action-download-artifact@v21
       with:
          workflow: buildall.yml
