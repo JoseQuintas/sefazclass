@@ -46,7 +46,7 @@ jobs:
 #----- restore zip -----
 
     - name: load mingw_xxxx.zip
-      ##if: ${{ matrix.compiler != 'mingw_1502' && matrix.compiler != 'mingw_1502' }}
+      if: ${{ matrix.compiler != 'mingw_1602' }}  # so nesta vez: forca baixar o r3 do winlibs
       uses: dawidd6/action-download-artifact@v21
       with:
          workflow: buildall.yml
@@ -57,7 +57,7 @@ jobs:
          if_no_artifact_found: warn
 
     - name: load hb32_xxx.zip
-      if: ${{ github.event_name == 'push' }}
+      if: ${{ github.event_name == 'push' && matrix.compiler != 'mingw_1602' }}  # so nesta vez: harbour com o r3
       uses: dawidd6/action-download-artifact@v21
       with:
          workflow: buildall.yml
@@ -350,3 +350,23 @@ jobs:
          name: pack_hb32_${{matrix.compiler}}
          path: c:\temp\pack_hb32_${{matrix.compiler}}.7z
 #----------------------------
+
+# apaga as execucoes anteriores desta workflow, so se todas as compilacoes deram certo
+# (a execucao atual fica, com os artifacts que a proxima vai usar)
+
+  limpeza:
+    needs: mingwall
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+    - name: Apaga execucoes anteriores
+      env:
+         GH_TOKEN: ${{ github.token }}
+      run: |
+         gh run list --repo ${{ github.repository }} --workflow buildall.yml --limit 500 --json databaseId --jq '.[].databaseId' |
+         while read id; do
+            if [ "$id" != "${{ github.run_id }}" ]; then
+               gh run delete "$id" --repo ${{ github.repository }}
+            fi
+         done
