@@ -354,7 +354,7 @@ jobs:
     - name: Apaga execucoes antigas
       env:
          GH_TOKEN: ${{ github.token }}
-         KEEP: 3
+         KEEP: 5
       run: |
          n=1
          gh run list --repo ${{ github.repository }} --workflow buildall.yml --limit 500 --json databaseId,status,conclusion --jq '.[] | "\(.databaseId) \(.status) \(.conclusion)"' |
