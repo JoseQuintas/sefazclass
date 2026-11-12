@@ -387,8 +387,8 @@ METHOD GeraPDF( cFilePDF, oPDF, lEnd ) CLASS hbnfeDaCte
          ::cRetorno := "Falha da criação do objeto PDF !"
          RETURN .F.
       ENDIF
-      HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
    ENDIF
+   HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
    ::oPDFFontNormal     := HPDF_GetFont( ::oPdf, "Times-Roman", "CP1252" )
    ::oPDFFontBold := HPDF_GetFont( ::oPdf, "Times-Bold",  "CP1252" )
 

@@ -211,8 +211,8 @@ METHOD GeraPDF( cFilePDF, oPDF, lEnd ) CLASS hbNFeDaNFCe
    ENDIF
 
    IF oPDF == Nil
-      HPDF_SetCompressionMode( ::oPDF, HPDF_COMP_ALL )
    ENDIF
+   HPDF_SetCompressionMode( ::oPDF, HPDF_COMP_ALL )
 
    ::oPDFFontNormal := HPDF_GetFont( ::oPDF, "Times-Roman", "CP1252" )
    ::oPDFFontBold   := HPDF_GetFont( ::oPDF, "Times-Bold" , "CP1252" )

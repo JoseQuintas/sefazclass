@@ -198,9 +198,8 @@ METHOD GeraPDF( cFilePDF, oPDF, lEnd ) CLASS hbNfeDaEvento
          ::cRetorno := "Falha da criação do objeto PDF da Carta de Correção!"
          RETURN ::cRetorno
       ENDIF
-      /* set compression mode */
-      HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
    ENDIF
+   HPDF_SetCompressionMode( ::oPdf, HPDF_COMP_ALL )
 
    /* setando fonte */
    DO CASE
